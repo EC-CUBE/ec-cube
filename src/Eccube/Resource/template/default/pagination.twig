@@ -20,23 +20,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% if pages.pageCount > 1 %}
-    {% if pages.previous is defined %}
-        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}">&lt;&lt;前へ</a>
-    {% endif %}
+<div class="pagination">
+    <ul>
+        {% if pages.previous is defined %}
+        <li>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
+               aria-label="Previous"><span aria-hidden="true">前へ</span></a>
+        </li>
+        {% endif %}
 
-    {% if pages.pagesInRange|length > 2 %}
         {% for page in pages.pagesInRange %}
             {% if page == pages.current %}
-                <strong>{{ page }}</strong>
+                <li class="active"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% else %}
-                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a>
+                <li><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% endif %}
         {% endfor %}
-    {% else %}
-         | 
-    {% endif %}
 
-    {% if pages.next is defined %}
-        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}">次へ&gt;&gt;</a>
-    {% endif %}
+        {% if pages.next is defined %}
+        <li>
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
+               aria-label="Next"><span aria-hidden="true">次へ</span></a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
 {% endif %}

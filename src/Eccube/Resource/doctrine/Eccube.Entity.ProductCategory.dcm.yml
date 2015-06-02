@@ -1,6 +1,6 @@
 Eccube\Entity\ProductCategory:
     type: entity
-    table: dtb_product_categories
+    table: dtb_product_category
     repositoryClass: Eccube\Repository\ProductCategoryRepository
     id:
         product_id:

@@ -169,7 +169,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $point_rate;
+    private $point_rate = 0;
 
     /**
      * @var \DateTime
@@ -180,16 +180,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * @var \DateTime
      */
     private $update_date;
-
-    /**
-     * @var string
-     */
-    private $down_filename;
-
-    /**
-     * @var string
-     */
-    private $down_realfilename;
 
     /**
      * @var integer
@@ -215,6 +205,11 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\ClassCategory
      */
     private $ClassCategory2;
+
+    /**
+     * @var \Eccube\Entity\Master\DeliveryDate
+     */
+    private $DeliveryDate;
 
     /**
      * @var \Eccube\Entity\Member
@@ -462,52 +457,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set down_filename
-     *
-     * @param  string       $downFilename
-     * @return ProductClass
-     */
-    public function setDownFilename($downFilename)
-    {
-        $this->down_filename = $downFilename;
-
-        return $this;
-    }
-
-    /**
-     * Get down_filename
-     *
-     * @return string
-     */
-    public function getDownFilename()
-    {
-        return $this->down_filename;
-    }
-
-    /**
-     * Set down_realfilename
-     *
-     * @param  string       $downRealfilename
-     * @return ProductClass
-     */
-    public function setDownRealfilename($downRealfilename)
-    {
-        $this->down_realfilename = $downRealfilename;
-
-        return $this;
-    }
-
-    /**
-     * Get down_realfilename
-     *
-     * @return string
-     */
-    public function getDownRealfilename()
-    {
-        return $this->down_realfilename;
-    }
-
-    /**
      * Set del_flg
      *
      * @param  integer      $delFlg
@@ -640,6 +589,30 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function hasClassCategory2()
     {
         return isset($this->ClassCategory2);
+    }
+
+
+    /**
+     * Set DeliveryDate
+     *
+     * @param \Eccube\Entity\Master\DeliveryDate $deliveryDate
+     * @return ProductClass
+     */
+    public function setDeliveryDate(\Eccube\Entity\Master\DeliveryDate $deliveryDate = null)
+    {
+        $this->DeliveryDate = $deliveryDate;
+
+        return $this;
+    }
+
+    /**
+     * Get DeliveryDate
+     *
+     * @return \Eccube\Entity\Master\DeliveryDate 
+     */
+    public function getDeliveryDate()
+    {
+        return $this->DeliveryDate;
     }
 
     /**

@@ -29,6 +29,8 @@ class TopControllerTest extends AbstractWebTestCase
 
     public function testRoutingCart()
     {
+        self::markTestSkipped();
+
         $client = $this->createClient();
         $client->request('GET', '/');
         $this->assertTrue($client->getResponse()->isSuccessful());

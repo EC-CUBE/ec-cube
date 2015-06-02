@@ -63,6 +63,7 @@ class ProductClassType extends AbstractType
             ))
             ->add('sale_limit', 'integer', array(
                 'label' => '販売制限数',
+                'required' => false,
             ))
             ->add('price01', 'money', array(
                 'label' => '通常価格',
@@ -91,6 +92,7 @@ class ProductClassType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
+                'data' => 0,
             ))
             ->add('product_type', 'product_type', array(
                 'label' => '商品種別',
@@ -98,14 +100,6 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('down_filename', 'text', array(
-                'label' => 'ダウンロードファイル名',
-            ))
-            ->add('down_file', 'file', array(
-                'label' => 'ダウンロードファイル',
-                'mapped' => false,
-            ))
-            ->add('down_real_filename', 'hidden')
         ;
 
         $transformer = new DataTransformer\EntityToIdTransformer(

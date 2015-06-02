@@ -104,28 +104,23 @@ class ProductRepository extends EntityRepository
             }
         }
 
-        // maker_id
-        if (!empty($searchData['maker_id']) && $searchData['maker_id']) {
-            $qb
-                ->andWhere('p.Maker = :Maker')
-                ->setParameter('Maker', $searchData['maker_id']);
-        }
-
         // name
         if (!empty($searchData['name']) && $searchData['name']) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
             foreach ($keywords as $keyword) {
                 $qb
-                    ->andWhere('p.name LIKE :keyword OR p.comment3 LIKE :keyword')
+                    ->andWhere('p.name LIKE :keyword')
                     ->setParameter('keyword', '%' . $keyword . '%');
             }
         }
 
         // Order By
-        if (!empty($searchData['orderby']) && $searchData['orderby'] === 'price') {
+        // 価格順
+        if (!empty($searchData['orderby']) && $searchData['orderby'] === '1') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.price02', 'ASC');
-        } elseif (!empty($searchData['orderby']) && $searchData['orderby'] === 'date') {
+        // 新着順
+        } elseif (!empty($searchData['orderby']) && $searchData['orderby'] === '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.create_date', 'DESC');
         } else {
@@ -151,16 +146,22 @@ class ProductRepository extends EntityRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p')
+                ->select(array('p', 'pi'))
+                ->leftJoin('p.ProductImage', 'pi')
+                ->innerJoin('p.ProductClasses', 'pc');
 
         // id
         if (!empty($searchData['id']) && $searchData['id']) {
+            $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
-                ->andWhere('p.id = :id')
-                ->setParameter('id', $searchData['id']);
+                ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
+                ->setParameter('id', $id)
+                ->setParameter('likeid', '%' . $searchData['id'] . '%');
         }
 
         // code
+        /*
         if (!empty($searchData['code']) && $searchData['code']) {
             $qb
                 ->innerJoin('p.ProductClasses', 'pc')
@@ -177,6 +178,7 @@ class ProductRepository extends EntityRepository
                     ->setParameter('name', '%' . $keyword . '%');
             }
         }
+       */
 
         // category
         if (!empty($searchData['category_id']) && $searchData['category_id']) {
@@ -197,6 +199,13 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Status', $searchData['status']->toArray());
         }
 
+        // stock status
+        if (isset($searchData['stock_status'])) {
+            $qb
+                ->andWhere('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
+                ->setParameter('StockUnlimited', $searchData['stock_status']);
+        }
+
         // product_status
         if (!empty($searchData['product_status']) && $searchData['product_status']->toArray()) {
             $qb
@@ -212,28 +221,46 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Maker', $searchData['maker_id']->toArray());
         }
 
-        // create date start
-        if (!empty($searchData['register_start'])) {
+        // crate_date
+        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+            $date = $searchData['create_date_start']
+                ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('p.create_date >= :create_date_start')
-                ->setParameter('create_date_start', $searchData['register_start']);
+                ->setParameter('create_date_start', $date);
         }
 
-        // create date end
-        if (!empty($searchData['register_end'])) {
-            // 日付のみ保持しているため, 時刻を設定.
-            $endDate = clone $searchData['register_end'];
-            $endDate->setTime(23, 59, 59);
+        if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+            $date = $searchData['create_date_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
             $qb
-                ->andWhere('p.create_date <= :create_date_end')
-                ->setParameter('create_date_end', $endDate);
+                ->andWhere('p.create_date < :create_date_end')
+                ->setParameter('create_date_end', $date);
         }
 
-        // TODO 更新日の検索を実装
+        // update_date
+        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+            $date = $searchData['update_date_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('p.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        }
+        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+            $date = $searchData['update_date_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('p.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        }
+
 
         // Order By
         $qb
-            ->orderBy('p.update_date', 'DESC');
+            ->orderBy('p.update_date', 'DESC')
+            ->orderBy('pi.rank', 'DESC');
 
         return $qb;
     }

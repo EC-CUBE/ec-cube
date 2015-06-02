@@ -122,6 +122,7 @@ class Application extends \Silex\Application
         ));
         $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
+            $twig->addExtension(new \Twig_Extension_StringLoader());
 
             return $twig;
         }));
@@ -435,6 +436,20 @@ class Application extends \Silex\Application
         parent::boot();
 
         $app = $this;
+
+        // constant 上書き
+        $app['config'] = $app->share($app->extend("config", function ($config, \Silex\Application $app) {
+            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
+            if (is_readable($constant_file)) {
+                $config_constant = Yaml::parse($constant_file);
+            } else {
+                $config_constant = $app['eccube.repository.master.constant']->getAll($config);
+                if ($config_constant) {
+                    file_put_contents($constant_file, Yaml::dump($config_constant));
+                }
+            }
+            return array_merge($config_constant, $config);
+        }));
 
         // ログイン時のイベント
         $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));

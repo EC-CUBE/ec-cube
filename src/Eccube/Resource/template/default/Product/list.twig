@@ -22,245 +22,65 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'site_main.twig' %}
 
 {% block javascript %}
-    eccube.productsClassCategories = {
-        {% for Product in pagination %}
-            "{{ Product.id|escape('js') }}": {{ Product.class_categories|json_encode|raw }}{% if loop.last == false %},{% endif %}
-        {% endfor %}
-    };
-
-    function fnSetClassCategories(form, classcat_id2_selected) {
-        var $form = $(form);
-        var product_id = $form.find('input[name=product_id]').val();
-        var $sele1 = $form.find('select[name=classcategory_id1]');
-        var $sele2 = $form.find('select[name=classcategory_id2]');
-        eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
-    }
+<script type="text/javascript">
     // 並び順を変更
-    function fnChangeOrderby(orderby) {
+    function fnChangeOrderBy(orderby) {
         eccube.setValue('orderby', orderby);
         eccube.setValue('pageno', 1);
         eccube.submitForm();
     }
+
     // 表示件数を変更
     function fnChangeDispNumber(dispNumber) {
         eccube.setValue('disp_number', dispNumber);
         eccube.setValue('pageno', 1);
         eccube.submitForm();
     }
-    // カゴに入れる
-    function fnInCart(productForm) {
-        var searchForm = $("#form1");
-        var cartForm = $(productForm);
-        // 検索条件を引き継ぐ
-        var hiddenValues = ['mode','category_id','maker_id','name','orderby','disp_number','pageno'];
-        $.each(hiddenValues, function(){
-            // 商品別のフォームに検索条件の値があれば上書き
-            if (cartForm.has('input[name='+this+']').length != 0) {
-                cartForm.find('input[name='+this+']').val(searchForm.find('input[name='+this+']').val());
-            }
-            // なければ追加
-            else {
-                cartForm.append($('<input type="hidden" />').attr("name", this).val(searchForm.find('input[name='+this+']').val()));
-            }
-        });
-        // 商品別のフォームを送信
-        cartForm.submit();
-    }
-{% endblock%}
-
-{% block onload %}
-    {%- for Product in pagination %}
-        {%- if Product.stock_find %}
-            {%- if forms[Product.id].vars.data.classcategory_id2 is defined %}
-                fnSetClassCategories(document.product_form{{ Product.id|escape('js') }}, "{{ forms[Product.id].vars.data.classcategory_id2|default('')|escape('js') }}");
-            {%- else %}
-                fnSetClassCategories(document.product_form{{ Product.id|escape('js') }});
-            {%- endif %}
-        {%- endif %}
-    {%- endfor %}
-{% endblock%}
-
-{% set page_navi_body %}
-    <!--▼ページナビ(本文)-->
-    {% if pagination.totalItemCount %}
-        <div class="pagenumber_area clearfix">
-            <div class="change">
-                {% if search_form.vars.data.orderby == 'price' %}
-                    <strong>価格順</strong>
-                {% else %}
-                    <a href="javascript:fnChangeOrderby('price');">価格順</a>
-                {% endif %}&nbsp;
-                {% if search_form.vars.data.orderby == 'date' %}
-                    <strong>新着順</strong>
-                {% else %}
-                    <a href="javascript:fnChangeOrderby('date');">新着順</a>
-                {% endif %}
-                表示件数
-                {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
-            </div>
-            <div class="navi">{% include "pagination.twig" with { 'pages' : pagination.paginationData } %}</div>
-        </div>
-    {% endif %}
-    <!--▲ページナビ(本文)-->
-{% endset %}
+</script>
+{% endblock %}
 
 {% block main %}
-<div id="undercolumn">
-    <form name="form1" id="form1" method="get" action="?">
-        {{ form_widget(search_form) }}
-    </form>
-
-    <!--★タイトル★-->
-    <h2 class="title">{{ subtitle }}</h2>
-
-    {% if search_form.vars.data.mode ==  'search'%}
-        <!--▼検索条件-->
-        <ul class="pagecond_area">
-            <li><strong>商品カテゴリ：</strong>{{ search_form.vars.data.category_id|default('指定なし') }}</li>
-            {% if search_form.vars.data.maker_id %}<li><strong>メーカー：</strong>{{ search_form.vars.data.maker_id }}</li>{% endif %}
-            <li><strong>商品名：</strong>{{ search_form.vars.data.name|default('指定なし') }}</li>
-        </ul>
-        <!--▲検索条件-->
-    {% endif %}
-
-    {% if pagination.totalItemCount > 0 %}
-        <!--▼件数-->
-        <div>
-            <span class="attention">{{ pagination.totalItemCount }}件</span>の商品がございます。
-        </div>
-        <!--▲件数-->
-
-        <!--▼ページナビ(上部)-->
-        <form name="page_navi_top" id="page_navi_top" method="get" action="?">
-            {{ page_navi_body }}
+    <div id="main">
+        <form name="form1" id="form1" method="get" action="?">
+            {{ form_widget(search_form) }}
         </form>
-        <!--▲ページナビ(上部)-->
+        <div class="row">
+            <form name="page_navi_top" id="page_navi_top" action="?">
+            <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。</p>
+            <div class="col-sm-6 no-padding">
+                {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
+                {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
+            </div>
+            </form>
+        </div>
 
-        {% for Product in pagination %}
-            <!--▼商品-->
-            <form name="product_form{{ Product.id }}" method="post" action="{{ app.request.requestUri }}">
-                {% set form = forms[Product.id] %}
-                <div class="list_area clearfix">
-                    <a name="product{{ Product.id }}"></a>
-                    <div class="listphoto">
-                        <!--★画像★-->
-                        <a href="{{ path('product_detail', {'productId': Product.id}) }}">
-                            <img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_main_list }}" alt="{{ Product.name }}" class="picture" /></a>
-                    </div>
-
-                    <div class="listrightbloc">
-                        {% if Product.ProductStatuses is not empty %}
-                            <!--▼商品ステータス-->
-                            <ul class="status_icon clearfix">
-                                {% for ProductStatus in Product.ProductStatuses %}
-                                <li>
-                                    <img src="{{ app.config.tpl }}{{ ProductStatus.StatusImage.name }}" width="60" height="17" alt="{{ ProductStatus.Status.name }}" id="icon{{ ProductStatus.Status.id }}" />
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            <!--▲商品ステータス-->
-                        {% endif %}
-
-                        <!--★商品名★-->
-                        <h3>
-                            <a href="{{ path('product_detail', {'productId': Product.id}) }}">{{ Product.name }}</a>
-                        </h3>
-                        <!--★価格★-->
-                        <div class="pricebox sale_price">
-                            {{ app.config.sale_price_title }}(税込)：
-                            <span class="price">
-                                <span id="price02_default_{{ Product.id }}">{% spaceless %}
-                                    {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
-                                        {{ Product.price02_inc_tax_min|number_format }}
-                                    {% else %}
-                                        {{ Product.price02_inc_tax_min|number_format }}～{{ Product.price02_inc_tax_max|number_format }}
-                                    {% endif %}
-                                </span><span id="price02_dynamic_{{ Product.id }}"></span>{% endspaceless %}
-                                円</span>
-                        </div>
-
-                        <!--★コメント★-->
-                        <div class="listcomment">{{ Product.main_list_comment|nl2br }}</div>
-
-                        <!--★商品詳細を見る★-->
-                        <div class="detail_btn">
-                            <a href="{{ path('product_detail', {'productId': Product.id}) }}">
-                                <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_detail.jpg" alt="商品詳細を見る" name="detail{{ Product.id }}" id="detail{{ Product.id }}" />
-                            </a>
-                        </div>
-
-                        <!--▼買い物カゴ-->
-                        <div class="cart_area clearfix">
-                            {% if Product.stock_find %}
-                                {% if form.classcategory_id1 is defined %}
-                                    <div class="classlist">
-                                        <dl class="size01 clearfix">
-                                                <!--▼規格1-->
-                                                <dt>{{ form_label(form.classcategory_id1) }}：</dt>
-                                                <dd>
-                                                    {{ form_widget(form.classcategory_id1) }}<br />
-                                                    {{ form_errors(form.classcategory_id1) }}
-                                                </dd>
-                                                <!--▲規格1-->
-                                        </dl>
-                                        {% if form.classcategory_id2 is defined %}
-                                            <dl class="size02 clearfix">
-                                                <!--▼規格2-->
-                                                <dt>{{ form_label(form.classcategory_id2) }}：</dt>
-                                                <dd>
-                                                    {{ form_widget(form.classcategory_id2, {'id': ''}) }}<br />
-                                                    {{ form_errors(form.classcategory_id2) }}
-                                                </dd>
-                                                <!--▲規格2-->
-                                            </dl>
-                                        {% endif %}
-                                    </div>
+        <!-- ▼item_list▼ -->
+        <div id="item_list">
+            <div class="row no-padding">
+                {% for Product in pagination %}
+                <div class="col-sm-3 col-xs-6">
+                    <div class="product_item">
+                        <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                            <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_product }}">{#<button type="button" class="btn_circle" data-toggle="modal" data-target="#myModal"><span class="fa fa-ellipsis-h"></span></button>#}</div>
+                            <dl>
+                                <dt class="item_name">{{ Product.name }}</dt>
+                                {% if Product.hasProductClass %}
+                                <dd class="item_price">\{{ Product.getPrice02IncTaxMin|number_format }}～\{{ Product.getPrice02IncTaxMax|number_format }}</dd>
+                                {% else %}
+                                <dd class="item_price">\{{ Product.getPrice02IncTaxMin|number_format }}</dd>
                                 {% endif %}
-                                <div class="cartin clearfix">
-                                    <div class="quantity">
-                                        {{ form_label(form.quantity) }}：{{ form_widget(form.quantity, {'attr': {'class': 'box', 'id' : ''}}) }}<br />
-                                        {{ form_errors(form.quantity) }}
-                                    </div>
-                                    <div class="cartin_btn">
-                                        <!--★カゴに入れる★-->
-                                        <div id="cartbtn_default_{{ Product.id }}">
-                                            <input type="image" id="cart{{ Product.id }}" src="{{ app.config.tpl }}img/button/btn_cartin.jpg" alt="カゴに入れる" onclick="fnInCart(this.form); return false;" class="hover_change_image" />
-                                        </div>
-                                        <div class="attention" id="cartbtn_dynamic_{{ Product.id }}"></div>
-                                    </div>
-                                </div>
-                                {{ form_rest(form) }}
-                            {% else %}
-                                <div class="cartbtn attention">申し訳ございませんが、只今品切れ中です。</div>
-                            {% endif %}
-                        </div>
-                        <!--▲買い物カゴ-->
+                            </dl>
+                        </a>
                     </div>
                 </div>
-            </form>
-            <!--▲商品-->
-        {% endfor %}
-
-        <!--▼ページナビ(下部)-->
-        <form name="page_navi_bottom" id="page_navi_bottom" method="get" action="?">
-            {{ page_navi_body }}
-        </form>
-        <!--▲ページナビ(下部)-->
-    {% else %}
-        {# 検索該当0件 #}
-        <div id="undercolumn_error">
-            <div class="message_area">
-                <!--★エラーメッセージ-->
-                <p class="error">
-                    {% if search_form.vars.data.mode ==  'search'%}
-                        該当件数<strong>0件</strong>です。<br />
-                        他の検索キーワードより再度検索をしてください。
-                    {% else %}
-                        現在、商品はございません。
-                    {% endif %}
-                </p>
+                {% endfor %}
             </div>
+
         </div>
-    {% endif %}
-</div>
+        <!-- ▲item_list▲ -->
+        {% if pagination.totalItemCount > 0 %}
+            {% include "pagination.twig" with { 'pages' : pagination.paginationData } %}
+        {% endif %}
+    </div><!-- /#main -->
+
 {% endblock %}

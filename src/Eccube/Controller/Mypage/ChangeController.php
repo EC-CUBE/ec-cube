@@ -30,17 +30,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ChangeController extends AbstractController
 {
-    private $title;
-
-    public function __construct()
-    {
-        $this->title = 'MYページ';
-    }
 
     /**
      * Index
      *
-     * @param  Application                                        $app
+     * @param  Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, Request $request)
@@ -56,7 +50,7 @@ class ChangeController extends AbstractController
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
@@ -81,7 +75,6 @@ class ChangeController extends AbstractController
         }
 
         return $app['twig']->render('Mypage/change.twig', array(
-            'title' => $this->title,
             'subtitle' => '会員登録内容変更(入力ページ)',
             'mypageno' => 'change',
             'form' => $form->createView(),
@@ -97,7 +90,6 @@ class ChangeController extends AbstractController
     public function complete(Application $app, Request $request)
     {
         return $app['view']->render('Mypage/change_complete.twig', array(
-            'title' => $this->title,
             'subtitle' => '会員登録内容変更(完了ページ)',
             'mypageno' => 'change',
         ));

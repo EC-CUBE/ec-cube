@@ -1,0 +1,41 @@
+Eccube\Entity\ProductTag:
+    type: entity
+    table: dtb_product_tag
+    repositoryClass: Eccube\Repository\ProductTagRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: product_tag_id
+            generator:
+                strategy: AUTO
+    fields:
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            inversedBy: ProductTag
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+                nullable: false
+        Tag:
+            targetEntity: Eccube\Entity\Master\Tag
+            inversedBy: ProductTag
+            joinColumn:
+                name: tag
+                referencedColumnName: id
+                nullable: false
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            inversedBy: ProductTag
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

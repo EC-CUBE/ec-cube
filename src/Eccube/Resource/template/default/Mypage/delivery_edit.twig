@@ -1,0 +1,76 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'site_main.twig' %}
+
+{% set mypageno = 'delivery' %}
+
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+  $('#zip-search').click(function() {
+    event.preventDefault();
+    AjaxZip3.zip2addr('customer_address[zip][zip01]', 'customer_address[zip][zip02]', 'customer_address[address][pref]', 'customer_address[address][addr01]');
+  });
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+            <div id="main">
+                <h1 class="page-heading">マイページ</h1>
+                <div class="container-fluid">
+
+                    {{ include('Mypage/navi.twig') }}
+
+                    <h2 class="heading01">お届け先編集</h2>
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <form role="form" action="" method="post">
+                                {{ form_widget(form._token) }}
+                            	<div class="dl_table">
+
+                                    {{ form_row(form.name, { attr : { class : 'middle'} } ) }}
+                                    {{ form_row(form.kana, { attr : { class : 'middle'} } ) }}
+                                    {{ form_row(form.company_name) }}
+                                    {{ form_row(form.zip, { attr : { class : 'short'} } ) }}
+                                    {{ form_row(form.address) }}
+                                    {{ form_row(form.tel, { attr : { class : 'short'} } ) }}
+                                    {{ form_row(form.fax, { attr : { class : 'short'} } ) }}
+
+                                </div>
+                                <div class="row no-padding">
+                                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                                        <p>
+                                            <button type="submit" class="btn btn-info btn-block">
+                                                登録する
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
+            </div>
+{% endblock %}

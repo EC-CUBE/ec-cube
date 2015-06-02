@@ -61,6 +61,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.constant'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Constant');
         });
+        $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
+        });
+
         $app['eccube.repository.category'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Category');
         });
@@ -83,6 +87,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $productRepository->setConfig($app['config']);
 
             return $productRepository;
+        });
+        $app['eccube.repository.product_image'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductImage');
+        });
+        $app['eccube.repository.product_class'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductClass');
         });
         $app['eccube.repository.maker'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Maker');
@@ -123,8 +133,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $orderRepository;
         });
-        $app['eccube.repository.other_deliv'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\OtherDeliv');
+        $app['eccube.repository.customer_address'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\CustomerAddress');
         });
         $app['eccube.repository.order_status'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
@@ -207,6 +217,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ZipType();
             $types[] = new \Eccube\Form\Type\Master\ProductTypeType();
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
+            $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
+            $types[] = new \Eccube\Form\Type\Master\PageMaxType();
             $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
@@ -216,8 +228,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             }
             $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
+            $types[] = new \Eccube\Form\Type\CustomerAddressType($app['config']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
-            $types[] = new \Eccube\Form\Type\ShopMasterType($app);
+            $types[] = new \Eccube\Form\Type\ShopMasterType($app['config']);
             $types[] = new \Eccube\Form\Type\PointType($app);
             $types[] = new \Eccube\Form\Type\TradelawType($app);
             $types[] = new \Eccube\Form\Type\TaxRuleType($app);
@@ -228,7 +241,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\NonMemberType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
-            $types[] = new \Eccube\Form\Type\OtherDelivType($app['config']);
             $types[] = new \Eccube\Form\Type\OrderType();
             $types[] = new \Eccube\Form\Type\OrderDetailType();
             $types[] = new \Eccube\Form\Type\ShippingType();
@@ -240,11 +252,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ProductType($app);
             $types[] = new \Eccube\Form\Type\Admin\ProductClassType($app);
             $types[] = new \Eccube\Form\Type\Admin\SearchProductType($app);
-            $types[] = new \Eccube\Form\Type\Admin\SearchCustomerType($app);
+            $types[] = new \Eccube\Form\Type\Admin\SearchCustomerType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\CustomerType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\MakerType($app);
             $types[] = new \Eccube\Form\Type\Admin\ClassNameType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app['config']);
-            $types[] = new \Eccube\Form\Type\Admin\CategoryType($app);
+            $types[] = new \Eccube\Form\Type\Admin\CategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\MemberType($app['config']);
 
             return $types;

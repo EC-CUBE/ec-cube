@@ -31,11 +31,11 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class SearchCustomerType extends AbstractType
 {
-    public $app;
+    private $config;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct($config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
 
     /**
@@ -43,26 +43,25 @@ class SearchCustomerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
+        $config = $this->config;
         $builder
-            ->add('customer_id', 'integer', array(
-                'label' => '会員ID',
+            // 会員ID・メールアドレス・名前・名前(フリガナ)
+            ->add('multi', 'text', array(
+                'label' => '会員ID・メールアドレス・名前・名前(フリガナ)',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Type(array(
-                        'type' => 'integer',
-                    )),
+                    new Assert\Length(array('max' => $config['stext_len'])),
+                ),
+            ))
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
             ->add('pref', 'pref', array(
                 'label' => '都道府県',
-                'required' => false,
-            ))
-            ->add('name', 'text', array(
-                'required' => false,
-            ))
-            ->add('kana', 'text', array(
                 'required' => false,
             ))
             ->add('sex', 'sex', array(
@@ -90,10 +89,8 @@ class SearchCustomerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('email', 'email', array(
-                'required' => false,
-            ))
             ->add('tel', 'tel', array(
+                'label' => '電話番号',
                 'required' => false,
             ))
             ->add('job', 'job', array(
@@ -105,29 +102,57 @@ class SearchCustomerType extends AbstractType
             ->add('buy_total_start', 'integer', array(
                 'label' => '購入金額',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['price_len'])),
+                ),
             ))
             ->add('buy_total_end', 'integer', array(
                 'label' => '購入金額',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['price_len'])),
+                ),
             ))
             ->add('buy_times_start', 'integer', array(
                 'label' => '購入回数',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['int_len'])),
+                ),
             ))
             ->add('buy_times_end', 'integer', array(
                 'label' => '購入回数',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['int_len'])),
+                ),
             ))
-            ->add('register_start', 'date', array(
-                'label' => '登録・更新日',
+            ->add('create_date_start', 'date', array(
+                'label' => '登録日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('register_end', 'date', array(
-                'label' => '登録・更新日',
+            ->add('create_date_end', 'date', array(
+                'label' => '登録日',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('update_date_start', 'date', array(
+                'label' => '更新日',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('update_date_end', 'date', array(
+                'label' => '更新日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -153,22 +178,44 @@ class SearchCustomerType extends AbstractType
             ->add('buy_product_name', 'text', array(
                 'label' => '購入商品名',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['stext_len'])),
+                ),
             ))
             ->add('buy_product_code', 'text', array(
                 'label' => '購入商品コード',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('max' => $config['stext_len'])),
+                ),
             ))
             ->add('customer_status', 'choice', array(
-                'label' => '会員状態',
+                'label' => '会員ステータス',
                 'required' => false,
                 'choices' => array(
-                    '1' => '非会員',
-                    '2' => '正会員',
+                    '1' => '仮会員',
+                    '2' => '本会員',
                 ),
                 'expanded' => true,
                 'multiple' => false,
                 'empty_value' => false,
             ))
+            ->add('mailmaga_flg', 'choice', array(
+                'label' => 'メルマガ購読',
+                'required' => false,
+                'choices' => array(
+                    '1' => '購読する',
+                    '0' => '購読しない',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+                'empty_value' => false,
+            ))
+            ->add('pageno', 'hidden', array(
+            ))
+            ->add('pagemax', 'page_max', array(
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

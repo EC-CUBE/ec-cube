@@ -75,51 +75,90 @@ class EntryType extends AbstractType
                 ),
             ))
             ->add('zip', 'zip', array(
-                'required' => false,
+                'zip01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 3, 'max' => 3))
+                    ),
+                ),
+                'zip02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 4, 'max' => 4))
+                    ),
+                ),
             ))
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
-                'required' => false,
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $app['config']['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('tel', 'tel', array(
-                'required' => false,
+                'tel01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 3)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel03_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
             ))
             ->add('fax', 'tel', array(
+                'label' => 'Fax番号',
                 'required' => false,
             ))
-            ->add('email', 'email', array(
+            ->add('email', 'repeated', array(
+                'invalid_message' => 'form.member.email.invalid',
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Email(),
+                    ),
+                ),
+            ))
+            ->add('password', 'text', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
-                )
-            ))
-            ->add('sex', 'sex', array(
-                'required' => false,
-            ))
-            ->add('job', 'job', array(
-                'required' => false,
+                    new Assert\Length(array(
+                        'min' => $app['config']['password_min_len'],
+                        'max' => $app['config']['password_max_len'],
+                    )),
+                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
+                ),
             ))
             ->add('birth', 'birthday', array(
+                'label' => '生年月日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('password', 'repeated')
-            ->add('reminder', 'reminder', array(
-                'required' => true,
+            ->add('sex', 'sex', array(
+                'label' => '性別',
+                'required' => false,
             ))
-            ->add('reminder_answer', 'text', array(
-                'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $app['config']['stext_len']
-                    ))
-                )
-            ))
-            ->add('mailmaga_flg', 'mailmagazinetype', array(
+            ->add('job', 'job', array(
+                'label' => '職業',
                 'required' => false,
             ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'));

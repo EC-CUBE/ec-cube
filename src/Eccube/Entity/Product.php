@@ -33,8 +33,8 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $stockFinds = array();
     private $stocks = array();
     private $stockUnlimiteds = array();
-    private $price01s = array();
-    private $price02s = array();
+    private $price01 = array();
+    private $price02 = array();
     private $price01IncTaxs = array();
     private $price02IncTaxs = array();
     private $codes = array();
@@ -74,10 +74,10 @@ class Product extends \Eccube\Entity\AbstractEntity
                 $this->stockUnlimiteds[] = $ProductClass->getStockUnlimited();
 
                 // price01
-                $this->price01s[] = $ProductClass->getPrice01();
+                $this->price01[] = $ProductClass->getPrice01();
 
                 // price02
-                $this->price02s[] = $ProductClass->getPrice02();
+                $this->price02[] = $ProductClass->getPrice02();
 
                 // price01IncTax
                 $this->price01IncTaxs[] = $ProductClass->getPrice01IncTax();
@@ -103,9 +103,12 @@ class Product extends \Eccube\Entity\AbstractEntity
                     }
                 }
                 if ($ProductClass->getClassCategory1()) {
-                    $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
-                    if ($ProductClass->getClassCategory2()) {
-                        $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                    $classCategoryId1 = $ProductClass->getClassCategory1()->getId();
+                    if (!empty($classCategoryId1)) {
+                        $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
+                        if ($ProductClass->getClassCategory2()) {
+                            $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                        }
                     }
                 }
                 $i++;
@@ -241,7 +244,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return min($this->price01s);
+        return min($this->price01);
     }
 
     /**
@@ -253,7 +256,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return max($this->price01s);
+        return max($this->price01);
     }
 
     /**
@@ -265,7 +268,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return min($this->price02s);
+        return min($this->price02);
     }
 
     /**
@@ -277,7 +280,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return max($this->price02s);
+        return max($this->price02);
     }
 
     /**
@@ -432,6 +435,11 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $class_categories;
     }
 
+    public function getMainListImage() {
+        $ProductImages = $this->getProductImage();
+        return empty($ProductImages) ? null : $ProductImages[0];
+    }
+
     /**
      * @var integer
      */
@@ -445,182 +453,22 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $comment1;
-
-    /**
-     * @var string
-     */
-    private $comment2;
-
-    /**
-     * @var string
-     */
-    private $comment3;
-
-    /**
-     * @var string
-     */
-    private $comment4;
-
-    /**
-     * @var string
-     */
-    private $comment5;
-
-    /**
-     * @var string
-     */
-    private $comment6;
-
-    /**
-     * @var string
-     */
     private $note;
 
     /**
      * @var string
      */
-    private $main_list_comment;
+    private $description_list;
 
     /**
      * @var string
      */
-    private $main_list_image;
+    private $description_detail;
 
     /**
      * @var string
      */
-    private $main_comment;
-
-    /**
-     * @var string
-     */
-    private $main_image;
-
-    /**
-     * @var string
-     */
-    private $main_large_image;
-
-    /**
-     * @var string
-     */
-    private $sub_title1;
-
-    /**
-     * @var string
-     */
-    private $sub_comment1;
-
-    /**
-     * @var string
-     */
-    private $sub_image1;
-
-    /**
-     * @var string
-     */
-    private $sub_large_image1;
-
-    /**
-     * @var string
-     */
-    private $sub_title2;
-
-    /**
-     * @var string
-     */
-    private $sub_comment2;
-
-    /**
-     * @var string
-     */
-    private $sub_image2;
-
-    /**
-     * @var string
-     */
-    private $sub_large_image2;
-
-    /**
-     * @var string
-     */
-    private $sub_title3;
-
-    /**
-     * @var string
-     */
-    private $sub_comment3;
-
-    /**
-     * @var string
-     */
-    private $sub_image3;
-
-    /**
-     * @var string
-     */
-    private $sub_large_image3;
-
-    /**
-     * @var string
-     */
-    private $sub_title4;
-
-    /**
-     * @var string
-     */
-    private $sub_comment4;
-
-    /**
-     * @var string
-     */
-    private $sub_image4;
-
-    /**
-     * @var string
-     */
-    private $sub_large_image4;
-
-    /**
-     * @var string
-     */
-    private $sub_title5;
-
-    /**
-     * @var string
-     */
-    private $sub_comment5;
-
-    /**
-     * @var string
-     */
-    private $sub_image5;
-
-    /**
-     * @var string
-     */
-    private $sub_large_image5;
-
-    /**
-     * @var string
-     */
-    private $sub_title6;
-
-    /**
-     * @var string
-     */
-    private $sub_comment6;
-
-    /**
-     * @var string
-     */
-    private $sub_image6;
-
-    /**
-     * @var string
-     */
-    private $sub_large_image6;
+    private $free_area;
 
     /**
      * @var integer
@@ -715,6 +563,8 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->Reviews = new \Doctrine\Common\Collections\ArrayCollection();
         $this->BestProducts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductImage = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -751,144 +601,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set comment1
-     *
-     * @param  string  $comment1
-     * @return Product
-     */
-    public function setComment1($comment1)
-    {
-        $this->comment1 = $comment1;
-
-        return $this;
-    }
-
-    /**
-     * Get comment1
-     *
-     * @return string
-     */
-    public function getComment1()
-    {
-        return $this->comment1;
-    }
-
-    /**
-     * Set comment2
-     *
-     * @param  string  $comment2
-     * @return Product
-     */
-    public function setComment2($comment2)
-    {
-        $this->comment2 = $comment2;
-
-        return $this;
-    }
-
-    /**
-     * Get comment2
-     *
-     * @return string
-     */
-    public function getComment2()
-    {
-        return $this->comment2;
-    }
-
-    /**
-     * Set comment3
-     *
-     * @param  string  $comment3
-     * @return Product
-     */
-    public function setComment3($comment3)
-    {
-        $this->comment3 = $comment3;
-
-        return $this;
-    }
-
-    /**
-     * Get comment3
-     *
-     * @return string
-     */
-    public function getComment3()
-    {
-        return $this->comment3;
-    }
-
-    /**
-     * Set comment4
-     *
-     * @param  string  $comment4
-     * @return Product
-     */
-    public function setComment4($comment4)
-    {
-        $this->comment4 = $comment4;
-
-        return $this;
-    }
-
-    /**
-     * Get comment4
-     *
-     * @return string
-     */
-    public function getComment4()
-    {
-        return $this->comment4;
-    }
-
-    /**
-     * Set comment5
-     *
-     * @param  string  $comment5
-     * @return Product
-     */
-    public function setComment5($comment5)
-    {
-        $this->comment5 = $comment5;
-
-        return $this;
-    }
-
-    /**
-     * Get comment5
-     *
-     * @return string
-     */
-    public function getComment5()
-    {
-        return $this->comment5;
-    }
-
-    /**
-     * Set comment6
-     *
-     * @param  string  $comment6
-     * @return Product
-     */
-    public function setComment6($comment6)
-    {
-        $this->comment6 = $comment6;
-
-        return $this;
-    }
-
-    /**
-     * Get comment6
-     *
-     * @return string
-     */
-    public function getComment6()
-    {
-        return $this->comment6;
-    }
-
-    /**
      * Set note
      *
      * @param  string  $note
@@ -912,671 +624,74 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set main_list_comment
+     * Set description_list
      *
-     * @param  string  $mainListComment
+     * @param string $descriptionList
      * @return Product
      */
-    public function setMainListComment($mainListComment)
+    public function setDescriptionList($descriptionList)
     {
-        $this->main_list_comment = $mainListComment;
+        $this->description_list = $descriptionList;
 
         return $this;
     }
 
     /**
-     * Get main_list_comment
+     * Get description_list
      *
-     * @return string
+     * @return string 
      */
-    public function getMainListComment()
+    public function getDescriptionList()
     {
-        return $this->main_list_comment;
+        return $this->description_list;
     }
 
     /**
-     * Set main_list_image
+     * Set description_detail
      *
-     * @param  string  $mainListImage
+     * @param string $descriptionDetail
      * @return Product
      */
-    public function setMainListImage($mainListImage)
+    public function setDescriptionDetail($descriptionDetail)
     {
-        $this->main_list_image = $mainListImage;
+        $this->description_detail = $descriptionDetail;
 
         return $this;
     }
 
     /**
-     * Get main_list_image
+     * Get description_detail
      *
-     * @return string
+     * @return string 
      */
-    public function getMainListImage()
+    public function getDescriptionDetail()
     {
-        return $this->main_list_image;
+        return $this->description_detail;
     }
 
     /**
-     * Set main_comment
+     * Set free_area
      *
-     * @param  string  $mainComment
+     * @param string $freeArea
      * @return Product
      */
-    public function setMainComment($mainComment)
+    public function setFreeArea($freeArea)
     {
-        $this->main_comment = $mainComment;
+        $this->free_area = $freeArea;
 
         return $this;
     }
 
     /**
-     * Get main_comment
+     * Get free_area
      *
-     * @return string
+     * @return string 
      */
-    public function getMainComment()
+    public function getFreeArea()
     {
-        return $this->main_comment;
+        return $this->free_area;
     }
 
-    /**
-     * Set main_image
-     *
-     * @param  string  $mainImage
-     * @return Product
-     */
-    public function setMainImage($mainImage)
-    {
-        $this->main_image = $mainImage;
-
-        return $this;
-    }
-
-    /**
-     * Get main_image
-     *
-     * @return string
-     */
-    public function getMainImage()
-    {
-        return $this->main_image;
-    }
-
-    /**
-     * Set main_large_image
-     *
-     * @param  string  $mainLargeImage
-     * @return Product
-     */
-    public function setMainLargeImage($mainLargeImage)
-    {
-        $this->main_large_image = $mainLargeImage;
-
-        return $this;
-    }
-
-    /**
-     * Get main_large_image
-     *
-     * @return string
-     */
-    public function getMainLargeImage()
-    {
-        return $this->main_large_image;
-    }
-
-    /**
-     * Set sub_title1
-     *
-     * @param  string  $subTitle1
-     * @return Product
-     */
-    public function setSubTitle1($subTitle1)
-    {
-        $this->sub_title1 = $subTitle1;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_title1
-     *
-     * @return string
-     */
-    public function getSubTitle1()
-    {
-        return $this->sub_title1;
-    }
-
-    /**
-     * Set sub_comment1
-     *
-     * @param  string  $subComment1
-     * @return Product
-     */
-    public function setSubComment1($subComment1)
-    {
-        $this->sub_comment1 = $subComment1;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_comment1
-     *
-     * @return string
-     */
-    public function getSubComment1()
-    {
-        return $this->sub_comment1;
-    }
-
-    /**
-     * Set sub_image1
-     *
-     * @param  string  $subImage1
-     * @return Product
-     */
-    public function setSubImage1($subImage1)
-    {
-        $this->sub_image1 = $subImage1;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_image1
-     *
-     * @return string
-     */
-    public function getSubImage1()
-    {
-        return $this->sub_image1;
-    }
-
-    /**
-     * Set sub_large_image1
-     *
-     * @param  string  $subLargeImage1
-     * @return Product
-     */
-    public function setSubLargeImage1($subLargeImage1)
-    {
-        $this->sub_large_image1 = $subLargeImage1;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_large_image1
-     *
-     * @return string
-     */
-    public function getSubLargeImage1()
-    {
-        return $this->sub_large_image1;
-    }
-
-    /**
-     * Set sub_title2
-     *
-     * @param  string  $subTitle2
-     * @return Product
-     */
-    public function setSubTitle2($subTitle2)
-    {
-        $this->sub_title2 = $subTitle2;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_title2
-     *
-     * @return string
-     */
-    public function getSubTitle2()
-    {
-        return $this->sub_title2;
-    }
-
-    /**
-     * Set sub_comment2
-     *
-     * @param  string  $subComment2
-     * @return Product
-     */
-    public function setSubComment2($subComment2)
-    {
-        $this->sub_comment2 = $subComment2;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_comment2
-     *
-     * @return string
-     */
-    public function getSubComment2()
-    {
-        return $this->sub_comment2;
-    }
-
-    /**
-     * Set sub_image2
-     *
-     * @param  string  $subImage2
-     * @return Product
-     */
-    public function setSubImage2($subImage2)
-    {
-        $this->sub_image2 = $subImage2;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_image2
-     *
-     * @return string
-     */
-    public function getSubImage2()
-    {
-        return $this->sub_image2;
-    }
-
-    /**
-     * Set sub_large_image2
-     *
-     * @param  string  $subLargeImage2
-     * @return Product
-     */
-    public function setSubLargeImage2($subLargeImage2)
-    {
-        $this->sub_large_image2 = $subLargeImage2;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_large_image2
-     *
-     * @return string
-     */
-    public function getSubLargeImage2()
-    {
-        return $this->sub_large_image2;
-    }
-
-    /**
-     * Set sub_title3
-     *
-     * @param  string  $subTitle3
-     * @return Product
-     */
-    public function setSubTitle3($subTitle3)
-    {
-        $this->sub_title3 = $subTitle3;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_title3
-     *
-     * @return string
-     */
-    public function getSubTitle3()
-    {
-        return $this->sub_title3;
-    }
-
-    /**
-     * Set sub_comment3
-     *
-     * @param  string  $subComment3
-     * @return Product
-     */
-    public function setSubComment3($subComment3)
-    {
-        $this->sub_comment3 = $subComment3;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_comment3
-     *
-     * @return string
-     */
-    public function getSubComment3()
-    {
-        return $this->sub_comment3;
-    }
-
-    /**
-     * Set sub_image3
-     *
-     * @param  string  $subImage3
-     * @return Product
-     */
-    public function setSubImage3($subImage3)
-    {
-        $this->sub_image3 = $subImage3;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_image3
-     *
-     * @return string
-     */
-    public function getSubImage3()
-    {
-        return $this->sub_image3;
-    }
-
-    /**
-     * Set sub_large_image3
-     *
-     * @param  string  $subLargeImage3
-     * @return Product
-     */
-    public function setSubLargeImage3($subLargeImage3)
-    {
-        $this->sub_large_image3 = $subLargeImage3;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_large_image3
-     *
-     * @return string
-     */
-    public function getSubLargeImage3()
-    {
-        return $this->sub_large_image3;
-    }
-
-    /**
-     * Set sub_title4
-     *
-     * @param  string  $subTitle4
-     * @return Product
-     */
-    public function setSubTitle4($subTitle4)
-    {
-        $this->sub_title4 = $subTitle4;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_title4
-     *
-     * @return string
-     */
-    public function getSubTitle4()
-    {
-        return $this->sub_title4;
-    }
-
-    /**
-     * Set sub_comment4
-     *
-     * @param  string  $subComment4
-     * @return Product
-     */
-    public function setSubComment4($subComment4)
-    {
-        $this->sub_comment4 = $subComment4;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_comment4
-     *
-     * @return string
-     */
-    public function getSubComment4()
-    {
-        return $this->sub_comment4;
-    }
-
-    /**
-     * Set sub_image4
-     *
-     * @param  string  $subImage4
-     * @return Product
-     */
-    public function setSubImage4($subImage4)
-    {
-        $this->sub_image4 = $subImage4;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_image4
-     *
-     * @return string
-     */
-    public function getSubImage4()
-    {
-        return $this->sub_image4;
-    }
-
-    /**
-     * Set sub_large_image4
-     *
-     * @param  string  $subLargeImage4
-     * @return Product
-     */
-    public function setSubLargeImage4($subLargeImage4)
-    {
-        $this->sub_large_image4 = $subLargeImage4;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_large_image4
-     *
-     * @return string
-     */
-    public function getSubLargeImage4()
-    {
-        return $this->sub_large_image4;
-    }
-
-    /**
-     * Set sub_title5
-     *
-     * @param  string  $subTitle5
-     * @return Product
-     */
-    public function setSubTitle5($subTitle5)
-    {
-        $this->sub_title5 = $subTitle5;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_title5
-     *
-     * @return string
-     */
-    public function getSubTitle5()
-    {
-        return $this->sub_title5;
-    }
-
-    /**
-     * Set sub_comment5
-     *
-     * @param  string  $subComment5
-     * @return Product
-     */
-    public function setSubComment5($subComment5)
-    {
-        $this->sub_comment5 = $subComment5;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_comment5
-     *
-     * @return string
-     */
-    public function getSubComment5()
-    {
-        return $this->sub_comment5;
-    }
-
-    /**
-     * Set sub_image5
-     *
-     * @param  string  $subImage5
-     * @return Product
-     */
-    public function setSubImage5($subImage5)
-    {
-        $this->sub_image5 = $subImage5;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_image5
-     *
-     * @return string
-     */
-    public function getSubImage5()
-    {
-        return $this->sub_image5;
-    }
-
-    /**
-     * Set sub_large_image5
-     *
-     * @param  string  $subLargeImage5
-     * @return Product
-     */
-    public function setSubLargeImage5($subLargeImage5)
-    {
-        $this->sub_large_image5 = $subLargeImage5;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_large_image5
-     *
-     * @return string
-     */
-    public function getSubLargeImage5()
-    {
-        return $this->sub_large_image5;
-    }
-
-    /**
-     * Set sub_title6
-     *
-     * @param  string  $subTitle6
-     * @return Product
-     */
-    public function setSubTitle6($subTitle6)
-    {
-        $this->sub_title6 = $subTitle6;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_title6
-     *
-     * @return string
-     */
-    public function getSubTitle6()
-    {
-        return $this->sub_title6;
-    }
-
-    /**
-     * Set sub_comment6
-     *
-     * @param  string  $subComment6
-     * @return Product
-     */
-    public function setSubComment6($subComment6)
-    {
-        $this->sub_comment6 = $subComment6;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_comment6
-     *
-     * @return string
-     */
-    public function getSubComment6()
-    {
-        return $this->sub_comment6;
-    }
-
-    /**
-     * Set sub_image6
-     *
-     * @param  string  $subImage6
-     * @return Product
-     */
-    public function setSubImage6($subImage6)
-    {
-        $this->sub_image6 = $subImage6;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_image6
-     *
-     * @return string
-     */
-    public function getSubImage6()
-    {
-        return $this->sub_image6;
-    }
-
-    /**
-     * Set sub_large_image6
-     *
-     * @param  string  $subLargeImage6
-     * @return Product
-     */
-    public function setSubLargeImage6($subLargeImage6)
-    {
-        $this->sub_large_image6 = $subLargeImage6;
-
-        return $this;
-    }
-
-    /**
-     * Get sub_large_image6
-     *
-     * @return string
-     */
-    public function getSubLargeImage6()
-    {
-        return $this->sub_large_image6;
-    }
 
     /**
      * Set del_flg
@@ -1711,6 +826,16 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getProductClasses()
     {
         return $this->ProductClasses;
+    }
+
+    public function hasProductClass()
+    {
+        foreach ($this->ProductClasses as $ProductClass) {
+            if (!is_null($ProductClass->getClassCategory1())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -2024,5 +1149,91 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getProductStatusColor()
     {
         return $this->ProductStatusColor;
+    }
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ProductImage;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ProductTag;
+
+
+    /**
+     * Add ProductImage
+     *
+     * @param \Eccube\Entity\ProductImage $productImage
+     * @return Product
+     */
+    public function addProductImage(\Eccube\Entity\ProductImage $productImage)
+    {
+        $this->ProductImage[] = $productImage;
+
+        return $this;
+    }
+
+    /**
+     * Remove ProductImage
+     *
+     * @param \Eccube\Entity\ProductImage $productImage
+     */
+    public function removeProductImage(\Eccube\Entity\ProductImage $productImage)
+    {
+        $this->ProductImage->removeElement($productImage);
+    }
+
+    /**
+     * Get ProductImage
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductImage()
+    {
+        return $this->ProductImage;
+    }
+
+    public function getMainFileName()
+    {
+        if (count($this->ProductImage) > 0) {
+            return $this->ProductImage[0];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Add ProductTag
+     *
+     * @param \Eccube\Entity\ProductTag $productTag
+     * @return Product
+     */
+    public function addProductTag(\Eccube\Entity\ProductTag $productTag)
+    {
+        $this->ProductTag[] = $productTag;
+
+        return $this;
+    }
+
+    /**
+     * Remove ProductTag
+     *
+     * @param \Eccube\Entity\ProductTag $productTag
+     */
+    public function removeProductTag(\Eccube\Entity\ProductTag $productTag)
+    {
+        $this->ProductTag->removeElement($productTag);
+    }
+
+    /**
+     * Get ProductTag
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductTag()
+    {
+        return $this->ProductTag;
     }
 }

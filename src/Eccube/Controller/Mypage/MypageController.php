@@ -43,7 +43,7 @@ class MypageController extends AbstractController
     public function login(Application $app, Request $request)
     {
         if ($app['security']->isGranted('ROLE_USER')) {
-            return $app->redirect($app['url_generator']->generate('mypage'));
+            return $app->redirect($app->url('mypage'));
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */

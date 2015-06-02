@@ -28,23 +28,15 @@ use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class EntryController extends AbstractController
 {
-    private $title;
-
-    public $form;
-
-    public function __construct()
-    {
-        $this->title = '会員登録';
-
-    }
 
     /**
      * Index
      *
-     * @param  Application                                        $app
+     * @param  Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, Request $request)
@@ -56,7 +48,7 @@ class EntryController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -67,7 +59,6 @@ class EntryController extends AbstractController
                         $form->handleRequest($request);
 
                         return $app['twig']->render('Entry/confirm.twig', array(
-                            'title' => $this->title,
                             'form' => $form->createView(),
                         ));
                         break;
@@ -89,13 +80,33 @@ class EntryController extends AbstractController
                                 ->getUniqueSecretKey($app)
                         );
 
+                        $CustomerAddress = new \Eccube\Entity\CustomerAddress();
+                        $CustomerAddress->setName01($Customer->getName01())
+                            ->setName02($Customer->getName02())
+                            ->setKana01($Customer->getKana01())
+                            ->setKana02($Customer->getKana02())
+                            ->setZip01($Customer->getZip01())
+                            ->setZip02($Customer->getZip02())
+                            ->setZipcode($Customer->getZip01() . $Customer->getZip02())
+                            ->setAddr01($Customer->getAddr01())
+                            ->setAddr02($Customer->getAddr02())
+                            ->setTel01($Customer->getTel01())
+                            ->setTel02($Customer->getTel02())
+                            ->setTel03($Customer->getTel03())
+                            ->setFax01($Customer->getFax01())
+                            ->setFax02($Customer->getFax02())
+                            ->setFax03($Customer->getFax03())
+                            ->setDelFlg($app['config']['disabled'])
+                            ->setCustomer($Customer);
+
                         $app['orm.em']->persist($Customer);
+                        $app['orm.em']->persist($CustomerAddress);
                         $app['orm.em']->flush();
 
-                        $activateUrl = $app['url_generator']
-                            ->generate('entry_activate', array(
+                        $activateUrl = $app->url('entry_activate', array(
                                 'id' => $Customer->getSecretKey()
                             ), true);
+
 
                         if ($app['config']['customer_confirm_mail']) {
                             // TODO: 後でEventとして実装する、送信元アドレス、BCCを調整する
@@ -103,7 +114,7 @@ class EntryController extends AbstractController
                             $message = $app['mailer']->createMessage()
                                 ->setSubject('[EC-CUBE3] 会員登録のご確認')
                                 ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
-                                    'Customer' => $Customer,
+                                    'customer' => $Customer,
                                     'activateUrl' => $activateUrl,
                                 )))
                                 ->setFrom(array('sample@example.com'))
@@ -111,7 +122,8 @@ class EntryController extends AbstractController
                                 ->setTo(array($Customer->getEmail()));
                             $app['mailer']->send($message);
 
-                            return $app->redirect($app['url_generator']->generate('entry_complete'));
+                            return $app->redirect($app->url('entry_complete'));
+
                         } else {
                             return $app->redirect($activateUrl);
                         }
@@ -121,13 +133,7 @@ class EntryController extends AbstractController
             }
         }
 
-        $kiyaku = $app['orm.em']
-            ->getRepository('Eccube\Entity\Kiyaku')
-            ->findAll();
-
         return $app['view']->render('Entry/index.twig', array(
-            'title' => $this->title,
-            'kiyaku' => $kiyaku,
             'form' => $form->createView(),
         ));
     }
@@ -141,7 +147,6 @@ class EntryController extends AbstractController
     public function complete(Application $app)
     {
         return $app['view']->render('Entry/complete.twig', array(
-            'title' => $this->title,
         ));
     }
 
@@ -159,7 +164,8 @@ class EntryController extends AbstractController
                 new Assert\Regex(array(
                     'pattern' => '/^[a-zA-Z0-9]+$/',
                 ))
-            )        );
+            )
+            );
 
         if ($request->getMethod() === 'GET' && count($errors) === 0) {
             try {
@@ -187,9 +193,11 @@ class EntryController extends AbstractController
                 ->setTo(array($Customer->getEmail()));
             $app['mailer']->send($message);
 
-            return $app['view']->render('Entry/activate.twig', array(
-                'title' => $this->title,
-            ));
+            // 本会員登録
+            $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
+            $app['security']->setToken($token);
+
+            return $app['view']->render('Entry/activate.twig');
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }

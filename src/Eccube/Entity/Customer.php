@@ -133,14 +133,8 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 
     /**
      * @var string
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
-
-    /**
-     * @var string
-     */
-    private $email_mobile;
 
     /**
      * @var string
@@ -183,16 +177,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $password;
 
     /**
-     * @var integer
-     */
-    private $Reminder;
-
-    /**
-     * @var string
-     */
-    private $reminder_answer;
-
-    /**
      * @var string
      */
     private $salt;
@@ -225,11 +209,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var string
      */
-    private $point;
-
-    /**
-     * @var string
-     */
     private $note;
 
     /**
@@ -251,16 +230,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      * @var integer
      */
     private $del_flg;
-
-    /**
-     * @var string
-     */
-    private $mobile_phone_id;
-
-    /**
-     * @var integer
-     */
-    private $Mailmaga_flg;
 
     /**
      * @var \Eccube\Entity\Master\Sex
@@ -290,7 +259,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $OtherDelivs;
+    private $CustomerAddresses;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -303,7 +272,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function __construct()
     {
         $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->OtherDelivs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->CustomerAddresses = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -492,16 +461,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Get pref_id
-     *
-     * @return integer
-     */
-    public function getPrefId()
-    {
-        return $this->pref_id;
-    }
-
-    /**
      * Set addr01
      *
      * @param  string   $addr01
@@ -570,28 +529,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
         return $this->email;
     }
 
-    /**
-     * Set email_mobile
-     *
-     * @param  string   $emailMobile
-     * @return Customer
-     */
-    public function setEmailMobile($emailMobile)
-    {
-        $this->email_mobile = $emailMobile;
-
-        return $this;
-    }
-
-    /**
-     * Get email_mobile
-     *
-     * @return string
-     */
-    public function getEmailMobile()
-    {
-        return $this->email_mobile;
-    }
 
     /**
      * Set tel01
@@ -778,52 +715,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set reminder
-     *
-     * @param  \Eccube\Entity\Master\Reminder $reminder
-     * @return Customer
-     */
-    public function setReminder(\Eccube\Entity\Master\Reminder $Reminder = null)
-    {
-        $this->Reminder = $Reminder;
-
-        return $this;
-    }
-
-    /**
-     * Get reminder
-     *
-     * @return \Eccube\Entity\Master\Reminder
-     */
-    public function getReminder()
-    {
-        return $this->Reminder;
-    }
-
-    /**
-     * Set reminder_answer
-     *
-     * @param  string   $reminderAnswer
-     * @return Customer
-     */
-    public function setReminderAnswer($reminderAnswer)
-    {
-        $this->reminder_answer = $reminderAnswer;
-
-        return $this;
-    }
-
-    /**
-     * Get reminder_answer
-     *
-     * @return string
-     */
-    public function getReminderAnswer()
-    {
-        return $this->reminder_answer;
-    }
-
-    /**
      * Set salt
      *
      * @param  string   $salt
@@ -962,29 +853,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set point
-     *
-     * @param  string   $point
-     * @return Customer
-     */
-    public function setPoint($point)
-    {
-        $this->point = $point;
-
-        return $this;
-    }
-
-    /**
-     * Get point
-     *
-     * @return string
-     */
-    public function getPoint()
-    {
-        return $this->point;
-    }
-
-    /**
      * Set note
      *
      * @param  string   $note
@@ -1100,52 +968,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Set mobile_phone_id
-     *
-     * @param  string   $mobilePhoneId
-     * @return Customer
-     */
-    public function setMobilePhoneId($mobilePhoneId)
-    {
-        $this->mobile_phone_id = $mobilePhoneId;
-
-        return $this;
-    }
-
-    /**
-     * Get mobile_phone_id
-     *
-     * @return string
-     */
-    public function getMobilePhoneId()
-    {
-        return $this->mobile_phone_id;
-    }
-
-    /**
-     * Set mailmaga_flg
-     *
-     * @param  \Eccube\Entity\Master\MailMagazinType $MailmagaFlg
-     * @return Customer
-     */
-    public function setMailmagaFlg($MailmagaFlg)
-    {
-        $this->Mailmaga_flg = $MailmagaFlg;
-
-        return $this;
-    }
-
-    /**
-     * Get Mailmaga_flg
-     *
-     * @return \Eccube\Entity\Master\MailMagazinType
-     */
-    public function getMailmagaFlg()
-    {
-        return $this->Mailmaga_flg;
-    }
-
-    /**
      * Add CustomerFavoriteProducts
      *
      * @param  \Eccube\Entity\CustomerFavoriteProduct $customerFavoriteProducts
@@ -1212,36 +1034,36 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
-     * Add OtherDelivs
+     * Add CustomerAddress
      *
-     * @param  \Eccube\Entity\Orders $order
+     * @param  \Eccube\Entity\CustomerAddress $CustomerAddress
      * @return Customer
      */
-    public function addOtherDeliv(\Eccube\Entity\OtherDeliv $otherDeliv)
+    public function addCustomerAddresses(\Eccube\Entity\CustomerAddress $CustomerAddress)
     {
-        $this->OtherDelivs[] = $otherDeliv;
+        $this->CustomerAddresses[] = $CustomerAddress;
 
         return $this;
     }
 
     /**
-     * Remove OtherDelivs
+     * Remove CustomerAddresses
      *
-     * @param \Eccube\Entity\OtherDelivs $otherDeliv
+     * @param \Eccube\Entity\CustomerAddress $CustomerAddress
      */
-    public function removeOtherDeliv(\Eccube\Entity\OtherDeliv $otherDeliv)
+    public function removeCustomerAddress(\Eccube\Entity\CustomerAddress $CustomerAddress)
     {
-        $this->OtherDelivs->removeElement($otherDeliv);
+        $this->CustomerAddresses->removeElement($CustomerAddress);
     }
 
     /**
-     * Get OtherDelivs
+     * Get CustomerAddresses
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getOtherDelivs()
+    public function getCustomerAddresses()
     {
-        return $this->OtherDelivs;
+        return $this->CustomerAddresses;
     }
 
     /**
