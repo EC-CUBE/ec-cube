@@ -22,61 +22,72 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'site_main.twig' %}
 
 {% block main %}
-<div id="mypagecolumn">
-    <h2 class="title">{{ title }}</h2>
-    {% include 'Mypage/navi.twig' %}
-    <div id="mycontents_area">
-        <h3 class="title">{{ subtitle }}</h3>
-        <p class="inforamtion">登録住所以外への住所へ送付される場合等にご利用いただくことができます。<br />
-        ※最大<span class="attention">{{ app.config.deliv_addr_max }}件</span>まで登録できます。</p>
+            <div id="main">
+                <h1 class="page-heading">マイページ</h1>
+                <div class="container-fluid">
+                	<nav class="local_nav">
+                    	<ul>
+                        <li><a href="#">ご注文履歴</a></li>
+                        <li><a href="#">お気に入り商品</a></li>
+                        <li><a href="#">会員情報編集</a></li>
+                        <li><a>お届け先編集</a></li>
+                        <li><a href="#">カード情報編集</a></li>
+                        <li><a href="#">退会手続き</a></li>
+                        </ul>
+                    </nav>
+                    <div class="message">
+                    	<p>
+                            ようこそ ／ {{ app.user.name01 }} {{ app.user.name02 }} 様
+                        </p>
+                    </div>
 
-        {% if Customer.OtherDelivs|length < app.config.deliv_addr_max %}
-            <p class="add_address">
-                <a href="{{ path('mypage_delivery_address') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_address') }}','delivadd','600','640',{menubar:'no'}); return false;" target="_blank"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_address.jpg" alt="新しいお届け先を追加" /></a>
-            </p>
-        {% endif %}
+                    <h2 class="heading01">お届け先編集</h2>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="intro"><strong>{{ Customer.CustomerAddresses|length }}件</strong>のお届け先があります。</p>
+                                <div id="deliveradd_select" class="row">
+                                    <div class="col-sm-10 col-sm-offset-1">
+                                        <p>
+                                            <a href="{{ url('mypage_delivery_new') }}">
+                                                <button class="btn btn-default btn-sm">新規お届け先を追加する</button>
+                                            </a>
+                                        </p>
 
-        {% if Customer.OtherDelivs|length > 0 %}
-            <form name="form1" id="form1" method="post" action="{{ path('mypage_delivery') }}" >
-                <input type="hidden" name="mode" value="" />
-                <input type="hidden" name="other_deliv_id" value="" />
-                {{ form_widget(form) }}
+                                        {% if Customer.CustomerAddresses|length > 0 %}
+                                        <div class="table address_table">
+                                            <div class="tbody">
 
-                <table summary="お届け先">
-                    <col width="5%" />
-                    <col width="25%" />
-                    <col width="50%" />
-                    <col width="10%" />
-                    <col width="10%" />
-                    <tr>
-                        <th colspan="5">お届け先</th>
-                    </tr>
-                    {% for OtherDeliv in Customer.OtherDelivs %}
-                        <tr>
-                            <td class="alignC">{{ loop.index }}</td>
-                            <td><label for="add{{ loop.index }}">お届け先住所</label></td>
-                            <td>
-                                {% if app.config.form_country_enable %}
-                                    {{ OtherDeliv.Country }}<br/>
-                                {% endif %}
-                                〒{{ OtherDeliv.zip01 }}-{{ OtherDeliv.zip02 }}<br />
-                                {{ OtherDeliv.Pref }}{{ OtherDeliv.addr01 }}{{ OtherDeliv.addr02 }}<br />
-                                {% if OtherDeliv.company_name is not empty %}{{ OtherDeliv.company_name }}&nbsp;{% endif -%}
-                                {{ OtherDeliv.name01 }}&nbsp;{{ OtherDeliv.name02 }}
-                            </td>
-                            <td class="alignC">
-                                <a href="{{ path('mypage_delivery_address', {'other_deliv_id': OtherDeliv.id}) }}" onclick="eccube.openWindow('{{ path('mypage_delivery_address', {'other_deliv_id': OtherDeliv.id}) }}','deliv_disp','600','640'); return false;">変更</a>
-                            </td>
-                            <td class="alignC">
-                                <a href="#" onclick="eccube.setModeAndSubmit('delete','other_deliv_id','{{ OtherDeliv.id }}'); return false;">削除</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </form>
-        {% else %}
-            <p class="delivempty"><strong>新しいお届け先はありません。</strong></p>
-        {% endif %}
-    </div>
-</div>
+                                                {% for CustomerAddress in Customer.CustomerAddresses %}
+                                                    <div class="addr_box tr">
+                                                        <div class="icon_edit td">
+                                                            <button class="no-style"><svg class="cb cb-close"><use xlink:href="#cb-close" /></svg></button>
+                                                        </div>
+                                                        <div class="column is-edit td">
+                                                            <label for="address01">
+                                                            <p class="address">
+                                                                {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
+                                                                〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
+                                                                {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
+                                                            </label>
+                                                            <p class="btn_edit">
+                                                                <a href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">
+                                                                    <button class="btn btn-default btn-sm">変更</button>
+                                                                </a>
+                                                            </p>
+                                                        </div>
+                                                    </div><!--/addr_box-->
+                                                {% endfor %}
+
+                                            </div>
+                                        </div><!--/table-->
+                                        {% endif %}
+
+                                    </div>
+                                </div><!-- /.row -->
+
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
+            </div>
 {% endblock %}
