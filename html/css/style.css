@@ -257,7 +257,7 @@ dd.form-group .errormsg {
 	margin-left: 0;
 }
 
-.required {
+span.required {
 	color: #DE5D50;
 	font-weight: normal !important;
 	margin-left: 1em;

@@ -68,6 +68,7 @@ class CustomerAddressType extends AbstractType
                 ),
             ))
             ->add('company_name', 'text', array(
+                'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(

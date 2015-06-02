@@ -19,55 +19,43 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{%- extends 'form_table_layout.html.twig' -%}
+{%- extends 'bootstrap_3_layout.html.twig' -%}
 
 {%- block form_widget_compound -%}
     {%- if form.vars.freeze_display_text -%}
-        <table {{ block('widget_container_attributes') }}>
-            <col width="30%" />
-            <col width="70%" />
+        <div class="dl_table" {{ block('widget_container_attributes') }}>
             {%- if form.parent is empty and errors|length > 0 -%}
-            <tr>
-                <td colspan="2">
                     {{- form_errors(form) -}}
-                </td>
-            </tr>
             {%- endif -%}
             {{- block('form_rows') -}}
             {{- form_rest(form) -}}
-        </table>
+        </div>
     {%- else -%}
-        {{- form_errors(form) -}}
         {{- block('form_rows') -}}
         {{- form_rest(form) -}}
     {%- endif -%}
 {%- endblock form_widget_compound -%}
 
-{%- block form_row -%}
-    {%- if form.vars.freeze_display_text -%}
-        <tr>
-            <th>
-                {{- form_label(form) -}}
-                {% if form.vars.required %}<span class="attention">※</span>{% endif %}
-            </th>
-            <td>
-                {{- form_errors(form) -}}
-                {{- form_widget(form) -}}
-            </td>
-        </tr>
-    {%- else -%}
-        {{- form_errors(form) -}}
-        {{- form_widget(form) -}}
-    {%- endif -%}
-{%- endblock form_row -%}
+{% block form_row -%}
+    {% set attr = attr|merge({class: attr.class|default('')}) %}
+    <dl>
+        <dt>{{ form_label(form) }}{% if required %} <span class="required">必須</span>{% endif %}</dt>
+        <dd class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}{% if 'middle' in attr.class %} input_name{% endif %}{% if 'short' in attr.class %} input_tel{% endif %}">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </dd>
+    </dl>
+{%- endblock form_row %}
 
-{%- block form_errors -%}
-    {%- if errors|length > 0 -%}
-        {%- for error in errors -%}
-            <span class="attention">※ {{ error.messageTemplate|trans(error.messageParameters, 'validators')|replace({'{{ field }}': label}) }}<br /></span>
-        {%- endfor -%}
-    {%- endif -%}
-{%- endblock form_errors -%}
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form.parent %}
+            {%- for error in errors -%}
+                <p class="errormsg text-danger">{{ error.message |trans }}</p>
+            {%- endfor -%}
+        {%- endif %}
+    {%- endif %}
+{%- endblock form_errors %}
 
 {# Widgets #}
 
@@ -90,30 +78,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {{- parent() -}}
 {%- endblock form_widget_simple -%}
 
-{%- block widget_attributes -%}
-    {%- if errors|length > 0 -%}
-        {%- set style = 'background-color:#ffe8e8;' -%}
-        {%- if attr -%}
-            {%- if attr['style'] is defined and attr['style']|length > 0 -%}
-                {%- set style = style~' '~attr['style'] -%}
-            {%- endif -%}
-            {%- set attr = attr|merge({'style': style}) -%}
-        {%- else -%}
-            {%- set attr = {'style': style} -%}
-        {%- endif -%}
-    {%- endif -%}
-    id="{{ id }}" name="{{ full_name }}"{%- if read_only -%} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif -%}
-    {%- if freeze == false -%}
-        {%- for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}" {% endfor -%}
-    {%- endif -%}
-{%- endblock widget_attributes -%}
-
 {%- block hidden_row -%}
     {%- if freeze_display_text -%}
         <tr style="display: none">
-            <td colspan="2">
-                {{- form_widget(form) -}}
-            </td>
+            {{- form_widget(form) -}}
         </tr>
     {%- else -%}
         {{- form_widget(form) -}}
@@ -198,19 +166,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock password_widget -%}
 
 
+
 {# EC-CUBE Widget #}
 
+
+
 {%- block name_widget -%}
-    {%- for child in form %}
-        {{- form_errors(child) -}}
-    {% endfor -%}
     {%- for child in form %}
         {%- if freeze -%}
             {{ form_widget(child) }}
         {%- else -%}
-            {{ form_label(child) }}&nbsp;{{ form_widget(child, {'attr': {'class': 'box120', 'style': 'ime-mode: active;'}}) -}}
+            {{ form_widget(child) -}}
         {%- endif -%}
-        {%- if loop.last == false%}　{% endif -%}
+    {% endfor -%}
+    {%- for child in form %}
+        {{- form_errors(child) -}}
     {% endfor -%}
 {%- endblock name_widget -%}
 
@@ -238,19 +208,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {%- if freeze -%}
         〒&nbsp;{{ form_widget(form[form.vars.zip01_name]) }}&nbsp;-&nbsp;{{- form_widget(form[form.vars.zip02_name]) }}
     {%- else -%}
-        <p class="top">
-            〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
-            {{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}　
-            <a href="http://www.post.japanpost.jp/zipcode/" target="_blank"><span class="mini">郵便番号検索</span></a>
-        </p>
+            〒&nbsp;
+            {{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
+            {{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'style': 'ime-mode: disabled;'}}) }}
+            <svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="#">郵便番号検索</a>
+            <button class="btn btn-default btn-sm" type="submit">郵便番号から自動入力</button>
         {%- for child in form %}
             {{- form_errors(child) -}}
         {% endfor -%}
-        <p class="zipimg">
-            <a href="#" id="zip-search">
-                <img src="{{ app.config.tpl }}img/button/btn_address_input.jpg" alt="住所自動入力" /></a>
-            <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
-        </p>
     {%- endif -%}
 {%- endblock zip_widget -%}
 
