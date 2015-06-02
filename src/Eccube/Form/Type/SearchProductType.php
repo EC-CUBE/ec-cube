@@ -52,20 +52,6 @@ class SearchProductType extends AbstractType
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
         ));
-        $builder->add('maker_id', 'entity', array(
-            'data_class' => 'Eccube\Entity\Maker',
-            'class' => 'Eccube\Entity\Maker',
-            'property' => 'name',
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('m')
-                    ->orderBy('m.rank', 'ASC');
-            },
-            'empty_value' => 'すべてのメーカー',
-            'empty_data' => null,
-            'required' => false,
-            'label' => 'メーカーから選ぶ',
-        ));
         $builder->add('name', 'search', array(
             'required' => false,
             'label' => '商品名を入力',
@@ -79,14 +65,8 @@ class SearchProductType extends AbstractType
         $builder->add('disp_number', 'product_list_max', array(
             'label' => '表示件数',
         ));
-        $builder->add('orderby', 'choice', array(
-            'choices' => array(
-                'price' => '価格順',
-                'date' => '新着順',
-            ),
-            'empty_value' => '',
-            'empty_data' => null,
-            'required' => false,
+        $builder->add('orderby', 'product_list_order_by', array(
+            'label' => '表示順',
         ));
     }
 
