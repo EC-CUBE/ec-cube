@@ -24,8 +24,6 @@
 
 {% block title %}MYページ{% endblock title %}
 
-{% form_theme form 'Form/bootstrap_3_layout.html.twig' %}
-
 {% block javascript %}
 <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
@@ -52,20 +50,8 @@ $(function() {
                             <form method="post" action="{{ url('mypage_change') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="dl_table">
-                                    <dl>
-                                        <dt>お名前<span class="required">必須</span></dt>
-                                        <dd class="form-group input_name {% if form.name.name01.vars.errors is not empty or form.name.name02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.name.name01, {attr: {placeholder: '姓'}}) }}{{ form_widget(form.name.name02, {attr: {placeholder: '名'}}) }}
-                                            {{ form_errors(form.name.name01) }}
-                                            {{ form_errors(form.name.name02) }}
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>お名前(カナ)<span class="required">必須</span></dt>
-                                        <dd class="form-group input_name {% if form.kana.kana01.vars.errors is not empty or form.kana.kana02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.kana.kana01, {attr: {placeholder: 'セイ'}}) }}{{ form_widget(form.kana.kana02, {attr: {placeholder: 'メイ'}}) }}
-                                            {{ form_errors(form.kana.kana01) }}
-                                            {{ form_errors(form.kana.kana02) }}
-                                        </dd>
-                                    </dl>
+                                    {{ form_row(form.name, {attr : {class : 'middle'}}) }}
+                                    {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
                                     <dl>
                                         <dt>住所<span class="required">必須</span></dt>
                                         <dd>
@@ -76,18 +62,8 @@ $(function() {
                                             </div>
                                         </dd>
                                     </dl>
-                                    <dl>
-                                        <dt>電話番号<span class="required">必須</span></dt>
-                                        <dd>
-                                            <div class="form-group form-inline input_tel {% if form.tel.tel01.vars.errors is not empty or form.tel.tel02.vars.errors is not empty or form.tel.tel03.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.tel) }}</div>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>FAX番号</dt>
-                                        <dd>
-                                            <div class="form-group form-inline input_tel {% if form.fax.fax01.vars.errors is not empty or form.fax.fax02.vars.errors is not empty or form.fax.fax03.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.fax) }}</div>
-                                        </dd>
-                                    </dl>
+                                    {{ form_row(form.tel, {attr : {class : 'short'}}) }}
+                                    {{ form_row(form.fax, {attr : {class : 'short'}}) }}
                                     <dl>
                                         <dt>メールアドレス<span class="required">必須</span></dt>
                                         <dd>
@@ -108,14 +84,7 @@ $(function() {
                                     </dl>
                                 </div>
                                 <div class="dl_table not_required">
-                                    <dl>
-                                        <dt>生年月日</dt>
-                                        <dd><div class="form-group form-inline {% if form.birth.vars.errors is not empty %}has-error{% endif %}">
-                                            {{ form_widget(form.birth) }}
-                                            {{ form_errors(form.birth) }}
-                                        </div>
-                                        </dd>
-                                    </dl>
+                                    {{ form_row(form.birth, {attr : { class : 'short'}}) }}
                                     <dl>
                                         <dt>性別</dt>
                                         <dd><div class="form-group form-inline">
