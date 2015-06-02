@@ -1198,7 +1198,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getMainFileName()
     {
         if (count($this->ProductImage) > 0) {
-            return $this->ProductImage[0]->getFileName();
+            return $this->ProductImage[0];
         } else {
             return null;
         }
