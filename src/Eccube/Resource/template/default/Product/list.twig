@@ -21,23 +21,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
-{% form_theme search_form 'Form/bootstrap_3_layout.html.twig' %}
-{% form_theme disp_number_form 'Form/bootstrap_3_layout.html.twig' %}
-
 {% block javascript %}
-// 並び順を変更
-function fnChangeOrderBy(orderby) {
-    eccube.setValue('orderby', orderby);
-    eccube.setValue('pageno', 1);
-    eccube.submitForm();
-}
+<script type="text/javascript">
+    // 並び順を変更
+    function fnChangeOrderBy(orderby) {
+        eccube.setValue('orderby', orderby);
+        eccube.setValue('pageno', 1);
+        eccube.submitForm();
+    }
 
-// 表示件数を変更
-function fnChangeDispNumber(dispNumber) {
-    eccube.setValue('disp_number', dispNumber);
-    eccube.setValue('pageno', 1);
-    eccube.submitForm();
-}
+    // 表示件数を変更
+    function fnChangeDispNumber(dispNumber) {
+        eccube.setValue('disp_number', dispNumber);
+        eccube.setValue('pageno', 1);
+        eccube.submitForm();
+    }
+</script>
 {% endblock %}
 
 {% block main %}
