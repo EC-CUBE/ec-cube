@@ -119,14 +119,13 @@ class ProductController
     public function addImage(Application $app, Request $request)
     {
         $images = $request->files->get('admin_product');
-        error_log(json_encode($images));
 
         $files = array();
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
                     $extension = $image->guessExtension();
-                    $filename = date('mdHisu') . '.' . $extension;
+                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
@@ -188,6 +187,14 @@ class ProductController
         }
         $form['images']->setData($images);
 
+        $categories = array();
+        $ProductCategories = $Product->getProductCategories();
+        foreach ($ProductCategories as $ProductCategory) {
+            /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+            $categories[] = $ProductCategory->getCategory();
+        }
+        $form['Category']->setData($categories);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -195,6 +202,34 @@ class ProductController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
+                    $app['orm.em']->persist($ProductClass);
+                }
+
+                // カテゴリの登録
+                // 一度クリア
+                /* @var $Product \Eccube\Entity\Product */
+                foreach ($Product->getProductCategories() as $ProductCategory) {
+                    $Product->removeProductCategory($ProductCategory);
+                    $app['orm.em']->remove($ProductCategory);
+                }
+                $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+                $count = 1;
+                $Categories = $form->get('Category')->getData();
+                foreach ($Categories as $Category) {
+                    $ProductCategory = new \Eccube\Entity\ProductCategory();
+                    $ProductCategory
+                        ->setProduct($Product)
+                        ->setProductId($Product->getId())
+                        ->setCategory($Category)
+                        ->setCategoryId($Category->getId())
+                        ->setRank($count)
+                    ;
+                    $app['orm.em']->persist($ProductCategory);
+                    $count ++;
+                    /* @var $Product \Eccube\Entity\Product */
+                    $Product->addProductCategory($ProductCategory);
                 }
 
                 // 画像の登録
@@ -216,11 +251,13 @@ class ProductController
                 // 画像の削除
                 $delete_images = $form->get('delete_images')->getData();
                 foreach ($delete_images as $delete_image) {
-                    var_dump($delete_image);
                     $ProductImage = $app['eccube.repository.product_image']
                         ->findOneBy(array('file_name' => $delete_image));
-                    $Product->removeProductImage($ProductImage);
-                    $app['orm.em']->remove($ProductImage);
+                    // 追加してすぐに削除した画像は、Entityに追加されない
+                    if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
+                        $Product->removeProductImage($ProductImage);
+                        $app['orm.em']->remove($ProductImage);
+                    }
                     $app['orm.em']->persist($Product);
 
                     // 削除

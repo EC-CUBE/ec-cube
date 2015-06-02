@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductImage extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getFileName();
+    }
+
+    /**
      * @var integer
      */
     private $id;

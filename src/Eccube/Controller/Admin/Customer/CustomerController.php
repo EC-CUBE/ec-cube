@@ -95,7 +95,7 @@ class CustomerController
 
         $app->addSuccess('admin.customer.resend.complete', 'admin');
 
-        return $this->index($app, $request);
+        return $app->redirect($app->url('admin_customer'));
     }
 
     public function delete(Application $app, Request $request, $id)
@@ -113,6 +113,6 @@ class CustomerController
         $app['orm.em']->flush();
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
-        return $this->index($app, $request);
+        return $app->redirect($app->url('admin_customer'));
     }
 }

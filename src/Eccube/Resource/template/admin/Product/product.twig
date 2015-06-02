@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block javascript %}
 $(function(){
-
+    {% if has_class == false %}
     $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function(){
         if ($(this).prop("checked")) {
             $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
@@ -49,11 +49,11 @@ $(function(){
             $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
         }
     });
+    {% endif %}
 
     var proto_img = '<li><img src="__path__" /><a class="delete-image"><svg class="cb cb-close"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use></svg></a></li>';
     var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
     var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
-    var images = new Array();
 
     {% for image in form.images %}
         var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}{{ image.vars.value }}'));
@@ -75,7 +75,7 @@ $(function(){
 
     // 画像削除時
     var count_del = 0;
-    $(".delete-image").on("click", function(){
+    $("#thumb").on("click", ".delete-image", function(){
         var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
         var src = $(this).prev().attr('src')
             .replace('{{ app.config.image_temp_urlpath }}', '')
@@ -95,12 +95,9 @@ $(function(){
             $.each(data.result.files, function(index, file) {
                 var path = '{{ app.config.image_temp_urlpath }}' + file;
                 var $img = $(proto_img.replace(/__path__/g, path));
-                $img.val(file);
                 var $new_img = $(proto_add.replace(/__name__/g, count_add));
                 $new_img.val(file);
-                $child = $('<li></li>')
-                    .append($img)
-                    .append($new_img);
+                $child = $img.append($new_img);
 
                 $('#thumb').append($child);
                 count_add ++;
@@ -229,8 +226,9 @@ $(function(){
                                 <div class="col-sm-9 col-lg-10">
                                     <div class="accordion">
                                         <a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>カテゴリを選択</a>
-                                        <div class="accpanel form-group">
+                                        <div class="accpanel form-group{% if form.Category.vars.valid == false %} has-error{% endif %}">
                                             {{ form_widget(form.Category) }}
+                                            {{ form_errors(form.Category) }}
                                         </div>
                                     </div>
                                 </div>
