@@ -155,7 +155,6 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'min' => $config['ltext_len'],
                         'max' => $config['ltext_len'],
                     )),
                 ),

@@ -200,17 +200,6 @@ class SearchCustomerType extends AbstractType
                 'multiple' => false,
                 'empty_value' => false,
             ))
-            ->add('mailmaga_flg', 'choice', array(
-                'label' => 'メルマガ購読',
-                'required' => false,
-                'choices' => array(
-                    '1' => '購読する',
-                    '0' => '購読しない',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-                'empty_value' => false,
-            ))
             ->add('pageno', 'hidden', array(
             ))
             ->add('pagemax', 'page_max', array(

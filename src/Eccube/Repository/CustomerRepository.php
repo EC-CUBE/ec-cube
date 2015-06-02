@@ -131,12 +131,17 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->andWhere('c.del_flg = 0');
 
         if (!empty($searchData['multi']) && $searchData['multi']) {
-            $qb
-                ->andWhere('c.id = :customer_id OR CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
-                ->setParameter('customer_id', $searchData['multi'])
-                ->setParameter('name', '%' . $searchData['multi'] . '%')
-                ->setParameter('kana', '%' . $searchData['multi'] . '%')
-                ->setParameter('email', '%' . $searchData['multi'] . '%');
+            if (is_int($searchData['multi'])) {
+                $qb
+                    ->andWhere('c.id = :customer_id')
+                    ->setParameter('customer_id', $searchData['multi']);
+            } else {
+                $qb
+                    ->andWhere('CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
+                    ->setParameter('name', '%' . $searchData['multi'] . '%')
+                    ->setParameter('kana', '%' . $searchData['multi'] . '%')
+                    ->setParameter('email', '%' . $searchData['multi'] . '%');
+            }
         }
 
         // Pref
@@ -155,9 +160,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         // birth_month
         if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
-            $qb
-                ->andWhere('EXTRACT(month from c.birth) = :sex')
-                ->setParameter('birth_month', $searchData['birth_month']);
+//            TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
+//            $qb
+//                ->andWhere('extract(month from c.birth) = :birth_month')
+//                ->setParameter('birth_month', $searchData['birth_month']);
         }
 
         // birth

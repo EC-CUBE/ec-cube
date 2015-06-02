@@ -42,13 +42,9 @@ class CustomerEditController extends AbstractController
             if (is_null($Customer)) {
                 throw new NotFoundHttpException();
             }
-
-            if ('POST' === $request->getMethod()) {
-                $previous_password = $Customer->getPassword();
-            } else {
-                // 編集用にデフォルトパスワードをセット
-                $Customer->setPassword($app['config']['default_password']);
-            }
+            // 編集用にデフォルトパスワードをセット
+            $previous_password = $Customer->getPassword();
+            $Customer->setPassword($app['config']['default_password']);
         // 新規登録
         } else {
             $Customer =  $app['eccube.repository.customer']->newCustomer();
