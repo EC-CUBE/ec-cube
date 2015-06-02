@@ -124,7 +124,7 @@ class PageLayoutRepository extends EntityRepository
             throw new \Doctrine\ORM\NoResultException();
         }
 
-        return $this->getByUrl($deviceTypeId, $legacyUrls[$routingName]);
+        return $this->getByUrl($deviceTypeId, $routingName);
     }
 
     public function newPageLayout($deviceTypeId)

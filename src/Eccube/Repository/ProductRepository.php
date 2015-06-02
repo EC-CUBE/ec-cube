@@ -104,28 +104,23 @@ class ProductRepository extends EntityRepository
             }
         }
 
-        // maker_id
-        if (!empty($searchData['maker_id']) && $searchData['maker_id']) {
-            $qb
-                ->andWhere('p.Maker = :Maker')
-                ->setParameter('Maker', $searchData['maker_id']);
-        }
-
         // name
         if (!empty($searchData['name']) && $searchData['name']) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
             foreach ($keywords as $keyword) {
                 $qb
-                    ->andWhere('p.name LIKE :keyword OR p.comment3 LIKE :keyword')
+                    ->andWhere('p.name LIKE :keyword')
                     ->setParameter('keyword', '%' . $keyword . '%');
             }
         }
 
         // Order By
-        if (!empty($searchData['orderby']) && $searchData['orderby'] === 'price') {
+        // 価格順
+        if (!empty($searchData['orderby']) && $searchData['orderby'] === '1') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.price02', 'ASC');
-        } elseif (!empty($searchData['orderby']) && $searchData['orderby'] === 'date') {
+        // 新着順
+        } elseif (!empty($searchData['orderby']) && $searchData['orderby'] === '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.create_date', 'DESC');
         } else {

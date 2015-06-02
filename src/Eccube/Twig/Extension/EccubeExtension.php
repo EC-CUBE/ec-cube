@@ -58,6 +58,7 @@ class EccubeExtension extends \Twig_Extension
         return array(
             'no_image_main_list' => new \Twig_Filter_Method($this, 'getNoImageMainList'),
             'no_image_main' => new \Twig_Filter_Method($this, 'getNoImageMain'),
+            'no_image_product' => new \Twig_Filter_Method($this, 'getNoImageProduct'),
         );
     }
 
@@ -104,6 +105,16 @@ class EccubeExtension extends \Twig_Extension
         }
 
         return $image_info;
+    }
+
+    /**
+     * return No Image filename
+     *
+     * @return string
+     */
+    public function getNoImageProduct($image)
+    {
+        return empty($image) ? 'no_image_product.jpg' : $image;
     }
 
     /**

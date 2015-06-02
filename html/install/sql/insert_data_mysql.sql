@@ -231,6 +231,9 @@ INSERT INTO mtb_product_list_max (id, name, rank) VALUES (15, '15件', 0);
 INSERT INTO mtb_product_list_max (id, name, rank) VALUES (30, '30件', 1);
 INSERT INTO mtb_product_list_max (id, name, rank) VALUES (50, '50件', 2);
 
+INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (1, '価格順', 0);
+INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (2, '新着順', 1);
+
 INSERT INTO mtb_product_status_color (id, name, rank) VALUES (1, '#FFFFFF', 0);
 INSERT INTO mtb_product_status_color (id, name, rank) VALUES (2, '#C9C9C9', 1);
 INSERT INTO mtb_product_status_color (id, name, rank) VALUES (3, '#DDE6F2', 2);
@@ -839,9 +842,9 @@ INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, cr
 INSERT INTO dtb_bloc (device_type_id, bloc_id, bloc_name, tpl_path, filename, create_date, update_date, php_path, deletable_flg) VALUES (10, 10, 'ロゴ', 'logo.twig', 'logo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
 
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 0, 'プレビューデータ', 'preview', NULL, 1, 1, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 1, 'TOPページ', 'index.php', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 2, '商品一覧ページ', 'products/list', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 3, '商品詳細ページ', 'products/detail', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 1, 'TOPページ', 'homepage', 'index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 2, '商品一覧ページ', 'product_list', 'products/list', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
+INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 3, '商品詳細ページ', 'product_detail', 'products/detail', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 4, 'MYページ', 'mypage', 'mypage/index', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 5, 'MYページ/会員登録内容変更(入力ページ)', 'mypage/change', 'mypage/change', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
 INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, header_chk, footer_chk, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 6, 'MYページ/会員登録内容変更(完了ページ)', 'mypage/change_complete', 'mypage/change_complete', 1, 1, 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'noindex');
@@ -870,20 +873,14 @@ INSERT INTO dtb_pagelayout (device_type_id, page_id, page_name, url, filename, h
 
 
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 5, 10, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 5, 3, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 5, 4, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 5, 9, 4, 1);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 5, 1, 5, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 6, 7, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 6, 5, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 9, 2, 1, 0);
-
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 1, 3, 1, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 1, 2, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 2, 3, 0);
-INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 1, 3, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 5, 4, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 1, 5, 1, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 5, 10, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 5, 4, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 2, 5, 1, 3, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 5, 10, 1, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 5, 4, 2, 0);
+INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 3, 5, 1, 3, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 1, 2, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 2, 3, 0);
 INSERT INTO dtb_blocposition (device_type_id, page_id, target_id, bloc_id, bloc_row, anywhere) VALUES (10, 4, 1, 3, 1, 0);

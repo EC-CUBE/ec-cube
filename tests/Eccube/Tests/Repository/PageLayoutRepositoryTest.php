@@ -71,7 +71,7 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
         $app = $this->createApplication();
 
         $expected = array(
-            'url' => 'index.php',
+            'url' => 'homepage',
             'device_type_id' => $app['config']['device_type_pc'],
         );
 
