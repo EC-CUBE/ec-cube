@@ -19,18 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+{% extends 'site_main.twig' %}
 
+{% block title %}利用規約{% endblock title %}
 
-<nav class="local_nav">
-    <ul>
-        <li><a{% if mypageno|default('') != 'index' %} href="{{ url('mypage') }}"{% endif %}>ご注文履歴</a></li>
-        <li><a{% if mypageno|default('') != 'change' %} href="{{ url('mypage_change') }}"{% endif %}>会員情報編集</a></li>
-        <li><a{% if mypageno|default('') != 'delivery' %} href="{{ url('mypage_delivery') }}"{% endif %}>お届け先編集</a></li>
-        <li><a{% if mypageno|default('') != 'refusal' %} href="{{ url('mypage_refusal') }}{% endif %}">退会手続き</a></li>
-    </ul>
-</nav>
-<div class="message">
-    <p>
-        ようこそ ／ {{ app.user.name01 }} {{ app.user.name02 }} 様
-    </p>
-</div>
+{% block main %}
+    <div id="undercolumn">
+        <div id="undercolumn_aboutus">
+            <h2 class="title">利用規約</h2>
+            {% if help is not null %}
+            {{ help.customerAgreement|nl2br }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

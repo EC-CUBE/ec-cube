@@ -1934,7 +1934,7 @@ dl.accordion {
     padding: 32px 0 16px;
     position: relative;
     top: -1px;
-    z-index: -1;
+    z-index: 0;
 }
 .search-box .search-box-inner .row {
     margin: 0;

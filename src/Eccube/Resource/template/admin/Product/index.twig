@@ -156,7 +156,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Product in pagination %}
                                         <div class="item_box tr">
                                             <div class="item_photo td">
-                                                <img src="{{ app.config.image_save_urlpath }}{{ Product.productImage[0].fileName|no_image_main_list }}" />
+                                                <img src="{{ app.config.image_save_urlpath }}{{ Product.mainFileName|no_image_main_list }}" />
                                                 {#
                                                     <span class="fa fa-picture-o fa-4x"></span>
                                                 #}

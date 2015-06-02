@@ -21,9 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
-
 {% block javascript %}
+<script type="text/javascript">
     eccube.classCategories = {{ Product.class_categories|json_encode|raw }};
 
     // 規格2に選択肢を割り当てる。
@@ -34,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         var $sele2 = $form.find('select[name=classcategory_id2]');
         eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
     }
+</script>
 {% endblock %}
 
 {% block onload %}

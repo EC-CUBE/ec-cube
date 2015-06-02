@@ -123,6 +123,7 @@ class EntryType extends AbstractType
                 ),
             ))
             ->add('fax', 'tel', array(
+                'label' => 'Fax番号',
                 'required' => false,
             ))
             ->add('email', 'repeated', array(
@@ -134,7 +135,7 @@ class EntryType extends AbstractType
                     ),
                 ),
             ))
-            ->add('password', 'password', array(
+            ->add('password', 'text', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -145,6 +146,7 @@ class EntryType extends AbstractType
                 ),
             ))
             ->add('birth', 'birthday', array(
+                'label' => '生年月日',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -152,9 +154,11 @@ class EntryType extends AbstractType
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('sex', 'sex', array(
+                'label' => '性別',
                 'required' => false,
             ))
             ->add('job', 'job', array(
+                'label' => '職業',
                 'required' => false,
             ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'));
