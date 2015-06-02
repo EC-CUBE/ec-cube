@@ -65,4 +65,14 @@ class HelpController extends AbstractController
 
         return $app['twig']->render('Help/privacy.twig', compact('title', 'baseInfo'));
     }
+
+    public function agreement(Application $app)
+    {
+
+        $Help = $app['orm.em']->getRepository('Eccube\Entity\Help')->find(1);
+
+        return $app['view']->render('Help/agreement.twig', array(
+            'help' => $Help,
+        ));
+    }
 }

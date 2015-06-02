@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock form_widget_compound -%}
 
 {% block form_row -%}
+    {%- if form.vars.freeze_display_text -%}
     {% set attr = attr|merge({class: attr.class|default('')}) %}
     <dl>
         <dt>{{ form_label(form) }}{% if required %} <span class="required">必須</span>{% endif %}</dt>
@@ -45,6 +46,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {{ form_errors(form) }}
         </dd>
     </dl>
+    {%- else -%}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+    {%- endif -%}
 {%- endblock form_row %}
 
 {% block form_errors -%}
@@ -208,14 +213,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {%- if freeze -%}
         〒&nbsp;{{ form_widget(form[form.vars.zip01_name]) }}&nbsp;-&nbsp;{{- form_widget(form[form.vars.zip02_name]) }}
     {%- else -%}
-            〒&nbsp;
-            {{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
-            {{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'style': 'ime-mode: disabled;'}}) }}
-            <svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="#">郵便番号検索</a>
-            <button class="btn btn-default btn-sm" type="submit">郵便番号から自動入力</button>
+        <p class="top">
+            〒&nbsp;{{- form_widget(form[form.vars.zip01_name], {'id': 'zip01', 'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
+            {{- form_widget(form[form.vars.zip02_name], {'id': 'zip02', 'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) }}　
+            <span><svg class="cb cb-question"><use xlink:href="#cb-question" /></svg></span> <a href="http://www.post.japanpost.jp/zipcode/" target="_blank">郵便番号検索</a>
+        </p>
         {%- for child in form %}
             {{- form_errors(child) -}}
         {% endfor -%}
+        <p class="zipimg">
+            <a href="#" id="zip-search">
+                <img src="{{ app.config.tpl }}img/button/btn_address_input.jpg" alt="住所自動入力" /></a>
+            <span class="mini">&nbsp;郵便番号を入力後、クリックしてください。</span>
+        </p>
     {%- endif -%}
 {%- endblock zip_widget -%}
 

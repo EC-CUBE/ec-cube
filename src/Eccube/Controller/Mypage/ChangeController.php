@@ -39,33 +39,33 @@ class ChangeController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $customer = $app['user'];
+        $Customer = $app['user'];
 
-        $previous_password = $customer->getPassword();
-        $customer->setPassword($app['config']['default_password']);
+        $previous_password = $Customer->getPassword();
+        $Customer->setPassword($app['config']['default_password']);
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('entry', $customer);
+        $builder = $app['form.factory']->createBuilder('entry', $Customer);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
                     case 'complete':
-                        if ($customer->getPassword() === $app['config']['default_password']) {
-                            $customer->setPassword($previous_password);
+                        if ($Customer->getPassword() === $app['config']['default_password']) {
+                            $Customer->setPassword($previous_password);
                         } else {
-                            $customer->setPassword(
+                            $Customer->setPassword(
                                 $app['orm.em']
                                     ->getRepository('Eccube\Entity\Customer')
-                                    ->encryptPassword($app, $customer)
+                                    ->encryptPassword($app, $Customer)
                             );
                         }
 
-                        $app['orm.em']->persist($customer);
+                        $app['orm.em']->persist($Customer);
                         $app['orm.em']->flush();
 
                         return $app->redirect($app['url_generator']->generate('mypage_change_complete'));
