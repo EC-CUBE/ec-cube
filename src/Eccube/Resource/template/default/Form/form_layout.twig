@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% set attr = attr|merge({class: attr.class|default('')}) %}
     <dl>
         <dt>{{ form_label(form) }}{% if required %} <span class="required">必須</span>{% endif %}</dt>
-        <dd class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}{% if 'middle' in attr.class %} input_name{% endif %}{% if 'short' in attr.class %} input_tel{% endif %}">
+        <dd class="form-group{% if not valid %} has-error{% endif %}{% if 'middle' in attr.class %} input_name{% endif %}{% if 'short' in attr.class %} input_tel{% endif %}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
         </dd>
