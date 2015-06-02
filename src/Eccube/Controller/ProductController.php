@@ -95,7 +95,7 @@ class ProductController
             $forms[$Product->getId()] = $addCartForm->createView();
         }
 
-        //
+        // 表示件数
         $builder = $app['form.factory']->createNamedBuilder('disp_number', 'product_list_max', null, array(
             'empty_data' => null,
             'required' => false,
@@ -108,23 +108,37 @@ class ProductController
         $dispNumberForm = $builder->getForm();
         $dispNumberForm->handleRequest($request);
 
+        // ソート順
+        $builder = $app['form.factory']->createNamedBuilder('orderby', 'product_list_order_by', null, array(
+            'empty_data' => null,
+            'required' => false,
+            'label' => '表示順',
+            'allow_extra_fields' => true,
+        ));
+        if ($request->getMethod() === 'GET') {
+            $builder->setMethod('GET');
+        }
+        $orderByForm = $builder->getForm();
+        $orderByForm->handleRequest($request);
+
         return $app['twig']->render('Product/list.twig', array(
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),
             'disp_number_form' => $dispNumberForm->createView(),
+            'order_by_form' => $orderByForm->createView(),
             'forms' => $forms,
         ));
     }
 
-    public function detail(Application $app, Request $request, $productId)
+    public function detail(Application $app, Request $request, $id)
     {
         if ($app['config']['nostock_hidden']) {
             $app['orm.em']->getFilters()->enable('nostock_hidden');
         }
 
-        /* @var $product \Eccube\Entity\Product */
-        $Product = $app['eccube.repository.product']->get($productId);
+        /* @var $Product \Eccube\Entity\Product */
+        $Product = $app['eccube.repository.product']->get($id);
         if ($Product->getStatus()->getId() !== 1) {
             throw new NotFoundHttpException();
         }
@@ -149,11 +163,11 @@ class ProductController
                         $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
                     }
 
-                    return $app->redirect($app['url_generator']->generate('product_detail', array('productId' => $Product->getId())));
+                    return $app->redirect($app->url('product_detail', array('productId' => $Product->getId())));
                 } else {
                     $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
 
-                    return $app->redirect($app['url_generator']->generate('cart'));
+                    return $app->redirect($app->url('cart'));
                 }
             }
         }
@@ -165,7 +179,7 @@ class ProductController
             $is_favorite = false;
         }
 
-        return $app['twig']->render('Product/detail.twig', array(
+        return $app->render('Product/detail.twig', array(
             'title' => $this->title,
             'form' => $form->createView(),
             'Product' => $Product,

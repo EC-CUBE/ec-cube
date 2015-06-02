@@ -158,15 +158,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         <footer id="footer">
             <div class="container-fluid inner">
+                {#
                 <ul>
                 <li><a href="#">当サイトについて</a></li>
                 <li><a href="#">プライバシーポリシー</a></li>
                 <li><a href="#">特定商取引法に関する法律について</a></li>
                 <li><a href="#">お問い合わせ</a></li>
                 </ul>
+                #}
                 <div class="footer_logo_area">
-                    <p class="logo"><a href="#">{{ app.config.shop_name }}</a></p>
-                    <p class="copyright"><small>copyright (c) {{ app.config.shop_name }} all rights reserved.</small></p>
+                    <p class="logo"><a href="{{url('homepage') }}">{{ BaseInfo.shop_name }}</a></p>
+                    <p class="copyright"><small>copyright (c) {{ BaseInfo.shop_name }} all rights reserved.</small></p>
                 </div>
             </div>
 
@@ -190,6 +192,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.root }}js/bootstrap.min.js"></script>
     <script src="{{ app.config.root }}js/slick.min.js"></script>
     <script src="{{ app.config.root }}js/function.js"></script>
+    <script src="{{ app.config.root }}js/eccube.js"></script>
     {% block javascript %}{% endblock %}
     <script type="text/javascript">
         $(function(){
@@ -201,7 +204,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             });
 
             $("#drawer").append($("#drawer_pc").clone(true).children());
+
+            /*
+             * for svg icon
+             */
+            $.ajax({
+                type: 'GET',
+                url: '{{ app.config.root }}img/common/svg.html',
+                dataType: 'html',
+                success: function(data){
+                    $('body').prepend(data);
+                },
+                error: function() {
+                    console.log('error');
+                }
+            });
+            {{ block('onload') }}
         });
     </script>
   </body>
-</html
+</html>

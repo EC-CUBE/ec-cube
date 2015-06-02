@@ -1,0 +1,23 @@
+Eccube\Entity\Master\ProductListOrderBy:
+    type: entity
+    table: mtb_product_list_order_by
+    repositoryClass: Eccube\Repository\Master\ProductListOrderByRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: 0
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: 0
+    lifecycleCallbacks: {  }

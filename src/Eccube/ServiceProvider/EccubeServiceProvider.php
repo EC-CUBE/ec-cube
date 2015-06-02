@@ -133,8 +133,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $orderRepository;
         });
-        $app['eccube.repository.other_deliv'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\OtherDeliv');
+        $app['eccube.repository.customer_address'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\CustomerAddress');
         });
         $app['eccube.repository.order_status'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
@@ -217,6 +217,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ZipType();
             $types[] = new \Eccube\Form\Type\Master\ProductTypeType();
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
+            $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
             $types[] = new \Eccube\Form\Type\Master\PageMaxType();
             $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
 
@@ -227,6 +228,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             }
             $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
+            $types[] = new \Eccube\Form\Type\CustomerAddressType($app['config']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\ShopMasterType($app['config']);
             $types[] = new \Eccube\Form\Type\PointType($app);
@@ -239,7 +241,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\NonMemberType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
-            $types[] = new \Eccube\Form\Type\OtherDelivType($app['config']);
             $types[] = new \Eccube\Form\Type\OrderType();
             $types[] = new \Eccube\Form\Type\OrderDetailType();
             $types[] = new \Eccube\Form\Type\ShippingType();
