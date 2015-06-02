@@ -33,8 +33,8 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $stockFinds = array();
     private $stocks = array();
     private $stockUnlimiteds = array();
-    private $price01s = array();
-    private $price02s = array();
+    private $price01 = array();
+    private $price02 = array();
     private $price01IncTaxs = array();
     private $price02IncTaxs = array();
     private $codes = array();
@@ -74,10 +74,10 @@ class Product extends \Eccube\Entity\AbstractEntity
                 $this->stockUnlimiteds[] = $ProductClass->getStockUnlimited();
 
                 // price01
-                $this->price01s[] = $ProductClass->getPrice01();
+                $this->price01[] = $ProductClass->getPrice01();
 
                 // price02
-                $this->price02s[] = $ProductClass->getPrice02();
+                $this->price02[] = $ProductClass->getPrice02();
 
                 // price01IncTax
                 $this->price01IncTaxs[] = $ProductClass->getPrice01IncTax();
@@ -244,7 +244,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return min($this->price01s);
+        return min($this->price01);
     }
 
     /**
@@ -256,7 +256,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return max($this->price01s);
+        return max($this->price01);
     }
 
     /**
@@ -268,7 +268,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return min($this->price02s);
+        return min($this->price02);
     }
 
     /**
@@ -280,7 +280,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         $this->_calc();
 
-        return max($this->price02s);
+        return max($this->price02);
     }
 
     /**
@@ -821,6 +821,16 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getProductClasses()
     {
         return $this->ProductClasses;
+    }
+
+    public function hasProductClass()
+    {
+        foreach ($this->ProductClasses as $ProductClass) {
+            if (!is_null($ProductClass->getClassCategory1())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
