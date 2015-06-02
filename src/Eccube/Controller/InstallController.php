@@ -236,7 +236,7 @@ class InstallController
 
         $protectedDirs=array(); 
         $base = __DIR__ . '/../../..';
-        $dirs=array('/html' ,'/app', '/app/template', '/app/cache', '/app/config', '/app/download', '/app/downloads', '/app/font', '/app/fonts','/app/log' ,'/app/upload', '/app/upload/csv');
+        $dirs=array('/app/config/eccube','/html' ,'/app', '/app/template', '/app/cache', '/app/config', '/app/download', '/app/downloads', '/app/font', '/app/fonts','/app/log' ,'/app/upload', '/app/upload/csv');
         foreach($dirs as $dir) {
             if(!is_writable($base.$dir)) {
                 $protectedDirs[]=$base.$dir;
