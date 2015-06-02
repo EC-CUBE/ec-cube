@@ -119,7 +119,6 @@ class ProductController
     public function addImage(Application $app, Request $request)
     {
         $images = $request->files->get('admin_product');
-        error_log(json_encode($images));
 
         $files = array();
         if (count($images) > 0) {
