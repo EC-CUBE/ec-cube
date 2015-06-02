@@ -43,9 +43,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ app.config.root }}css/slick.css">
     <link rel="stylesheet" href="{{ app.config.root }}css/theme_origin.css"><!-- for original theme CSS -->
+    {% block stylesheet %}{% endblock %}
     {% if app.request.attributes.get('_route') == 'help_about' %}
         {% if app.request.isSecure %}
-            <script type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+            <script type="text/javascript" src="//maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
        {% else %}
             <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         {% endif %}
@@ -182,12 +183,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
     <div id="drawer" class="drawer sp">
     </div>
-    
+
     <div class="overlay"></div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ app.config.root }}js/jquery-1.11.3.min.js"><\/script>')</script>
     <script src="{{ app.config.root }}js/bootstrap.min.js"></script>
     <script src="{{ app.config.root }}js/slick.min.js"></script>
     <script src="{{ app.config.root }}js/function.js"></script>
+    {% block javascript %}{% endblock %}
     <script type="text/javascript">
         $(function(){
             $('.main_visual').slick({
