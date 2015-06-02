@@ -187,6 +187,14 @@ class ProductController
         }
         $form['images']->setData($images);
 
+        $categories = array();
+        $ProductCategories = $Product->getProductCategories();
+        foreach ($ProductCategories as $ProductCategory) {
+            /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+            $categories[] = $ProductCategory->getCategory();
+        }
+        $form['Category']->setData($categories);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -194,6 +202,34 @@ class ProductController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
+                    $app['orm.em']->perssit($ProductClass);
+                }
+
+                // カテゴリの登録
+                // 一度クリア
+                /* @var $Product \Eccube\Entity\Product */
+                foreach ($Product->getProductCategories() as $ProductCategory) {
+                    $Product->removeProductCategory($ProductCategory);
+                    $app['orm.em']->remove($ProductCategory);
+                }
+                $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+                $count = 1;
+                $Categories = $form->get('Category')->getData();
+                foreach ($Categories as $Category) {
+                    $ProductCategory = new \Eccube\Entity\ProductCategory();
+                    $ProductCategory
+                        ->setProduct($Product)
+                        ->setProductId($Product->getId())
+                        ->setCategory($Category)
+                        ->setCategoryId($Category->getId())
+                        ->setRank($count)
+                    ;
+                    $app['orm.em']->persist($ProductCategory);
+                    $count ++;
+                    /* @var $Product \Eccube\Entity\Product */
+                    $Product->addProductCategory($ProductCategory);
                 }
 
                 // 画像の登録

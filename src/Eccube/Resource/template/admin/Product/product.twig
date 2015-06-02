@@ -226,8 +226,9 @@ $(function(){
                                 <div class="col-sm-9 col-lg-10">
                                     <div class="accordion">
                                         <a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>カテゴリを選択</a>
-                                        <div class="accpanel form-group">
+                                        <div class="accpanel form-group{% if form.Category.vars.valid == false %} has-error{% endif %}">
                                             {{ form_widget(form.Category) }}
+                                            {{ form_errors(form.Category) }}
                                         </div>
                                     </div>
                                 </div>
