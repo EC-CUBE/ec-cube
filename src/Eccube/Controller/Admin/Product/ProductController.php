@@ -125,7 +125,8 @@ class ProductController
             foreach ($images as $img) {
                 foreach ($img as $image) {
                     $extension = $image->guessExtension();
-                    $filename = date('mdHisu') . '.' . $extension;
+                    $dt = new \DateTime();
+                    $filename = $dt->format('mdHisu') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
