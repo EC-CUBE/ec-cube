@@ -551,7 +551,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENABLED', 1, 1423, 
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DISABLED', 0, 1424, null);
 
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_products', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
+INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order_temp', 'order_temp_id', 0, '注文数が多いときに試してみてください。');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'status', 2, '注文数が多いときに試してみてください。');
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_email', 2, '注文数が多いときに試してみてください。');
@@ -1342,9 +1342,9 @@ INSERT INTO dtb_module (module_id, module_code, module_name, sub_data, auto_upda
 
 INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_products (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (1, 'アイスクリーム', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
-INSERT INTO dtb_products (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
-INSERT INTO dtb_products (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
+INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (1, 'アイスクリーム', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
+INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
+INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (1, 5, 1);
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (2, 4, 2);
@@ -1368,7 +1368,7 @@ INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, creat
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_recommend_products (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_recommend_product (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (1, 0, 1, 2, NULL, 'たまには鍋でもどうでしょう。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (2, 0, 2, 1, NULL, 'お口直しに。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

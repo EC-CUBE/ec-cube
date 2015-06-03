@@ -1,6 +1,6 @@
 Eccube\Entity\RecommendProduct:
     type: entity
-    table: dtb_recommend_products
+    table: dtb_recommend_product
     repositoryClass: Eccube\Repository\RecommendProductRepository
     id:
         product_id:
