@@ -22,6 +22,6 @@
  */
 
 require_once __DIR__.'/../vendor/autoload.php';
-$app = new Eccube\Application();
+$app = new Eccube\InstallApplication();
 
 $app->run();
