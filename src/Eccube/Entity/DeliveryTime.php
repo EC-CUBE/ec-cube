@@ -49,7 +49,7 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
      *
      * @return integer
      */
-    public function geId()
+    public function getId()
     {
         return $this->id;
     }
