@@ -12,13 +12,9 @@ Eccube\Entity\Order:
             generator:
                 strategy: AUTO
     fields:
-        order_temp_id:
+        pre_order_id:
             type: text
             nullable: true
-#        customer_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
         message:
             type: text
             nullable: true
@@ -82,16 +78,6 @@ Eccube\Entity\Order:
             type: text
             nullable: true
             column: order_zipcode
-#        country_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-#            column: order_country_id
-#        pref:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
-#            column: order_pref
         addr01:
             type: text
             nullable: true
@@ -100,20 +86,10 @@ Eccube\Entity\Order:
             type: text
             nullable: true
             column: order_addr02
-#        sex:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
-#            column: order_sex
         birth:
             type: datetime
             nullable: true
             column: order_birth
-#        job:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-#            column: order_job
         subtotal:
             type: decimal
             nullable: true
@@ -125,11 +101,7 @@ Eccube\Entity\Order:
             precision: 10
             scale: 0
             default: '0'
-#        deliv_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-        deliv_fee:
+        delivery_fee_total:
             type: decimal
             nullable: true
             precision: 10
@@ -139,24 +111,6 @@ Eccube\Entity\Order:
             nullable: true
             precision: 10
             scale: 0
-        use_point:
-            type: decimal
-            nullable: false
-            precision: 10
-            scale: 0
-            default: '0'
-        add_point:
-            type: decimal
-            nullable: false
-            precision: 10
-            scale: 0
-            default: '0'
-        birth_point:
-            type: decimal
-            nullable: false
-            precision: 10
-            scale: 0
-            default: '0'
         tax:
             type: decimal
             nullable: true
@@ -172,20 +126,12 @@ Eccube\Entity\Order:
             nullable: true
             precision: 10
             scale: 0
-#        payment_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
         payment_method:
             type: text
             nullable: true
         note:
             type: text
             nullable: true
-#        status:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
         create_date:
             type: datetime
             nullable: false
@@ -194,58 +140,21 @@ Eccube\Entity\Order:
             type: datetime
             nullable: false
             default: '0000-00-00 00:00:00'
+        order_date:
+            type: datetime
+            nullable: true
         commit_date:
             type: datetime
             nullable: true
         payment_date:
             type: datetime
             nullable: true
-#        device_type_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
             default: '0'
-        memo01:
-            type: text
-            nullable: true
-        memo02:
-            type: text
-            nullable: true
-        memo03:
-            type: text
-            nullable: true
-        memo04:
-            type: text
-            nullable: true
-        memo05:
-            type: text
-            nullable: true
-        memo06:
-            type: text
-            nullable: true
-        memo07:
-            type: text
-            nullable: true
-        memo08:
-            type: text
-            nullable: true
-        memo09:
-            type: text
-            nullable: true
-        memo10:
-            type: text
-            nullable: true
     manyToOne:
-#        OrderTemp:
-#            targetEntity: Eccube\Entity\OrderTemp
-#            inversedBy: Orders
-#            joinColumn:
-#                name: order_temp_id
-#                referencedColumnName: order_temp_id
         Customer:
             targetEntity: Eccube\Entity\Customer
             inversedBy: Orders
@@ -254,55 +163,46 @@ Eccube\Entity\Order:
                 referencedColumnName: customer_id
         Country:
             targetEntity: Eccube\Entity\Master\Country
-            inversedBy: Orders
             joinColumn:
                 name: order_country_id
                 referencedColumnName: id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: Orders
             joinColumn:
                 name: order_pref
                 referencedColumnName: id
         Sex:
             targetEntity: Eccube\Entity\Master\Sex
-            inversedBy: Orders
             joinColumn:
                 name: order_sex
                 referencedColumnName: id
         Job:
             targetEntity: Eccube\Entity\Master\Job
-            inversedBy: Orders
             joinColumn:
                 name: order_job
                 referencedColumnName: id
         Payment:
             targetEntity: Eccube\Entity\Payment
-            inversedBy: Orders
             joinColumn:
                 name: payment_id
                 referencedColumnName: payment_id
         DeviceType:
             targetEntity: Eccube\Entity\Master\DeviceType
-            inversedBy: Orders
             joinColumn:
                 name: device_type_id
                 referencedColumnName: id
         CustomerOrderStatus:
             targetEntity: Eccube\Entity\Master\CustomerOrderStatus
-            inversedBy: Orders
             joinColumn:
                 name: status
                 referencedColumnName: id
         OrderStatusColor:
             targetEntity: Eccube\Entity\Master\OrderStatusColor
-            inversedBy: Orders
             joinColumn:
                 name: status
                 referencedColumnName: id
         OrderStatus:
             targetEntity: Eccube\Entity\Master\OrderStatus
-            inversedBy: Orders
             joinColumn:
                 name: status
                 referencedColumnName: id
