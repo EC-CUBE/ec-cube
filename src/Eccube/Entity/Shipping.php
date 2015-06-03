@@ -180,6 +180,11 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     private $Order;
 
     /**
+     * @var \Eccube\Entity\Delivery
+     */
+    private $Delivery;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -885,5 +890,28 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     public function getOrder()
     {
         return $this->Order;
+    }
+
+    /**
+     * Set Delivery
+     *
+     * @param  \Eccube\Entity\Delivery $Delivery
+     * @return PaymentOption
+     */
+    public function setDelivery(\Eccube\Entity\Delivery $Delivery)
+    {
+        $this->Delivery = $Delivery;
+
+        return $this;
+    }
+
+    /**
+     * Get Delivery
+     *
+     * @return \Eccube\Entity\Delivery
+     */
+    public function getDelivery()
+    {
+        return $this->Delivery;
     }
 }

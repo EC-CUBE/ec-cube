@@ -1,28 +1,24 @@
-Eccube\Entity\Deliv:
+Eccube\Entity\Delivery:
     type: entity
-    table: dtb_deliv
-    repositoryClass: Eccube\Repository\DelivRepository
+    table: dtb_delivery
+    repositoryClass: Eccube\Repository\DeliveryRepository
     id:
         id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-            column: deliv_id
+            column: delivery_id
             generator:
                 strategy: AUTO
     fields:
-        product_type_id:
-            type: integer
-            nullable: true
-            unsigned: false
         name:
             type: text
             nullable: true
         service_name:
             type: text
             nullable: true
-        remark:
+        description:
             type: text
             nullable: true
         confirm_url:
@@ -32,20 +28,11 @@ Eccube\Entity\Deliv:
             type: integer
             nullable: true
             unsigned: false
-        status:
-            type: smallint
-            nullable: false
-            unsigned: false
-            default: '1'
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
             default: '0'
-#        creator_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
         create_date:
             type: datetime
             nullable: false
@@ -57,22 +44,27 @@ Eccube\Entity\Deliv:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Delivs
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
+                nullable: false
+        ProductType:
+            targetEntity: Eccube\Entity\Master\ProductType
+            joinColumn:
+                name: product_type_id
+                referencedColumnName: id
                 nullable: false
     oneToMany:
         PaymentOptions:
             targetEntity: Eccube\Entity\PaymentOption
             cascade: ["persist", "remove"]
-            mappedBy: Deliv
-        DelivFees:
-            targetEntity: Eccube\Entity\DelivFee
+            mappedBy: Delivery
+        DeliveryFees:
+            targetEntity: Eccube\Entity\DeliveryFee
             cascade: ["persist", "remove"]
-            mappedBy: Deliv
-        DelivTimes:
-            targetEntity: Eccube\Entity\DelivTime
+            mappedBy: Delivery
+        DeliveryTimes:
+            targetEntity: Eccube\Entity\DeliveryTime
             cascade: ["persist", "remove"]
-            mappedBy: Deliv
+            mappedBy: Delivery
     lifecycleCallbacks: {  }

@@ -1,38 +1,31 @@
-Eccube\Entity\DelivFee:
+Eccube\Entity\DeliveryFee:
     type: entity
-    table: dtb_delivfee
-    repositoryClass: Eccube\Repository\DelivFeeRepository
+    table: dtb_delivery_fee
+    repositoryClass: Eccube\Repository\DeliveryFeeRepository
     id:
-        deliv_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-        fee_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            column: fee_id
+            generator:
+                strategy: AUTO
     fields:
         fee:
             type: decimal
             nullable: false
             precision: 10
             scale: 0
-#        pref:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
     manyToOne:
-        Deliv:
-            targetEntity: Eccube\Entity\Deliv
-            inversedBy: DelivFees
+        Delivery:
+            targetEntity: Eccube\Entity\Delivery
+            inversedBy: DeliveryFees
             joinColumn:
-                name: deliv_id
-                referencedColumnName: deliv_id
+                name: delivery_id
+                referencedColumnName: delivery_id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: DelivFees
             joinColumn:
                 name: pref
                 referencedColumnName: id

@@ -276,12 +276,6 @@ Eccube\Entity\Order:
             joinColumn:
                 name: order_job
                 referencedColumnName: id
-        Deliv:
-            targetEntity: Eccube\Entity\Deliv
-            inversedBy: Orders
-            joinColumn:
-                name: deliv_id
-                referencedColumnName: deliv_id
         Payment:
             targetEntity: Eccube\Entity\Payment
             inversedBy: Orders

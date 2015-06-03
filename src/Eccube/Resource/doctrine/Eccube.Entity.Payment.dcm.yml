@@ -30,16 +30,9 @@ Eccube\Entity\Payment:
             type: integer
             nullable: true
             unsigned: false
-        note:
-            type: text
-            nullable: true
-        fix:
+        fix_flg:
             type: smallint
             nullable: true
-            unsigned: false
-        status:
-            type: smallint
-            nullable: false
             unsigned: false
             default: '1'
         del_flg:
@@ -47,10 +40,6 @@ Eccube\Entity\Payment:
             nullable: false
             unsigned: false
             default: '0'
-        creator_id:
-            type: integer
-            nullable: false
-            unsigned: false
         create_date:
             type: datetime
             nullable: false
@@ -62,11 +51,6 @@ Eccube\Entity\Payment:
         payment_image:
             type: text
             nullable: true
-        upper_rule:
-            type: decimal
-            nullable: true
-            precision: 10
-            scale: 0
         charge_flg:
             type: smallint
             nullable: true
@@ -77,48 +61,13 @@ Eccube\Entity\Payment:
             nullable: true
             precision: 10
             scale: 0
-        upper_rule_max:
-            type: decimal
-            nullable: true
-            precision: 10
-            scale: 0
-        module_id:
-            type: integer
-            nullable: true
-            unsigned: false
-        module_path:
-            type: text
-            nullable: true
-        memo01:
-            type: text
-            nullable: true
-        memo02:
-            type: text
-            nullable: true
-        memo03:
-            type: text
-            nullable: true
-        memo04:
-            type: text
-            nullable: true
-        memo05:
-            type: text
-            nullable: true
-        memo06:
-            type: text
-            nullable: true
-        memo07:
-            type: text
-            nullable: true
-        memo08:
-            type: text
-            nullable: true
-        memo09:
-            type: text
-            nullable: true
-        memo10:
-            type: text
-            nullable: true
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
     oneToMany:
         PaymentOptions:
             targetEntity: Eccube\Entity\PaymentOption

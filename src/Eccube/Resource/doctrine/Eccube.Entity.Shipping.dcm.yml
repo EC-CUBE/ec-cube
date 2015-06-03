@@ -125,13 +125,11 @@ Eccube\Entity\Shipping:
     manyToOne:
         Country:
             targetEntity: Eccube\Entity\Master\Country
-            inversedBy: Shippings
             joinColumn:
                 name: shipping_country_id
                 referencedColumnName: id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: Shippings
             joinColumn:
                 name: shipping_pref
                 referencedColumnName: id
@@ -141,4 +139,9 @@ Eccube\Entity\Shipping:
             joinColumn:
                 name: order_id
                 referencedColumnName: order_id
+        Delivery:
+            targetEntity: Eccube\Entity\Delivery
+            joinColumn:
+                name: delivery_id
+                referencedColumnName: delivery_id
     lifecycleCallbacks: {  }

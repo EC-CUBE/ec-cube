@@ -25,85 +25,44 @@
 namespace Eccube\Entity;
 
 /**
- * DelivTime
+ * DeliveryTime
  */
-class DelivTime extends \Eccube\Entity\AbstractEntity
+class DeliveryTime extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
      */
-    private $deliv_id;
-
-    /**
-     * @var integer
-     */
-    private $time_id;
+    private $id;
 
     /**
      * @var string
      */
-    private $deliv_time;
+    private $delivery_time;
 
     /**
-     * @var \Eccube\Entity\Deliv
+     * @var \Eccube\Entity\Delivery
      */
-    private $Deliv;
+    private $Delivery;
 
     /**
-     * Set deliv_id
-     *
-     * @param  integer   $delivId
-     * @return DelivTime
-     */
-    public function setDelivId($delivId)
-    {
-        $this->deliv_id = $delivId;
-
-        return $this;
-    }
-
-    /**
-     * Get deliv_id
+     * Get id
      *
      * @return integer
      */
-    public function getDelivId()
+    public function geId()
     {
-        return $this->deliv_id;
+        return $this->id;
     }
 
     /**
-     * Set time_id
+     * Set delivery_time
      *
-     * @param  integer   $timeId
-     * @return DelivTime
+     * @param  string    $deliveryTime
+     * @return DeliveryTime
      */
-    public function setTimeId($timeId)
+    public function setDeliveryTime($deliveryTime)
     {
-        $this->time_id = $timeId;
-
-        return $this;
-    }
-
-    /**
-     * Get time_id
-     *
-     * @return integer
-     */
-    public function getTimeId()
-    {
-        return $this->time_id;
-    }
-
-    /**
-     * Set deliv_time
-     *
-     * @param  string    $delivTime
-     * @return DelivTime
-     */
-    public function setDelivTime($delivTime)
-    {
-        $this->deliv_time = $delivTime;
+        $this->delivery_time = $deliveryTime;
 
         return $this;
     }
@@ -113,31 +72,31 @@ class DelivTime extends \Eccube\Entity\AbstractEntity
      *
      * @return string
      */
-    public function getDelivTime()
+    public function getDeliveryTime()
     {
-        return $this->deliv_time;
+        return $this->delivery_time;
     }
 
     /**
-     * Set Deliv
+     * Set Delivery
      *
-     * @param  \Eccube\Entity\Deliv $deliv
-     * @return DelivTime
+     * @param  \Eccube\Entity\Delivery $Delivery
+     * @return DeliveryTime
      */
-    public function setDeliv(\Eccube\Entity\Deliv $deliv = null)
+    public function setDelivery(\Eccube\Entity\Delivery $Delivery)
     {
-        $this->Deliv = $deliv;
+        $this->Delivery = $Delivery;
 
         return $this;
     }
 
     /**
-     * Get Deliv
+     * Get Delivery
      *
-     * @return \Eccube\Entity\Deliv
+     * @return \Eccube\Entity\$Delivery
      */
-    public function getDeliv()
+    public function getDelivery()
     {
-        return $this->Deliv;
+        return $this->Delivery;
     }
 }

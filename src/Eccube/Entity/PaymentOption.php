@@ -32,7 +32,7 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $deliv_id;
+    private $delivery_id;
 
     /**
      * @var integer
@@ -45,9 +45,9 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     private $rank;
 
     /**
-     * @var \Eccube\Entity\Deliv
+     * @var \Eccube\Entity\Delivery
      */
-    private $Deliv;
+    private $Delivery;
 
     /**
      * @var \Eccube\Entity\Payment
@@ -55,26 +55,26 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     private $Payment;
 
     /**
-     * Set deliv_id
+     * Set delivery_id
      *
-     * @param  integer       $delivId
+     * @param  integer       $deliveryId
      * @return PaymentOption
      */
-    public function setDelivId($delivId)
+    public function setDeliveryId($deliveryId)
     {
-        $this->deliv_id = $delivId;
+        $this->delivery_id = $deliveryId;
 
         return $this;
     }
 
     /**
-     * Get deliv_id
+     * Get delivery_id
      *
      * @return integer
      */
-    public function getDelivId()
+    public function getDeliveryId()
     {
-        return $this->deliv_id;
+        return $this->delivery_id;
     }
 
     /**
@@ -101,49 +101,26 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set rank
+     * Set Delivery
      *
-     * @param  integer       $rank
+     * @param  \Eccube\Entity\Delivery $Delivery
      * @return PaymentOption
      */
-    public function setRank($rank)
+    public function setDelivery(\Eccube\Entity\Delivery $Delivery)
     {
-        $this->rank = $rank;
+        $this->Delivery = $Delivery;
 
         return $this;
     }
 
     /**
-     * Get rank
+     * Get Delivery
      *
-     * @return integer
+     * @return \Eccube\Entity\Delivery
      */
-    public function getRank()
+    public function getDelivery()
     {
-        return $this->rank;
-    }
-
-    /**
-     * Set Deliv
-     *
-     * @param  \Eccube\Entity\Deliv $deliv
-     * @return PaymentOption
-     */
-    public function setDeliv(\Eccube\Entity\Deliv $deliv)
-    {
-        $this->Deliv = $deliv;
-
-        return $this;
-    }
-
-    /**
-     * Get Deliv
-     *
-     * @return \Eccube\Entity\Deliv
-     */
-    public function getDeliv()
-    {
-        return $this->Deliv;
+        return $this->Delivery;
     }
 
     /**

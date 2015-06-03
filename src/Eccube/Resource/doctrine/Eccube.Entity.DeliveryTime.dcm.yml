@@ -1,27 +1,25 @@
-Eccube\Entity\DelivTime:
+Eccube\Entity\DeliveryTime:
     type: entity
-    table: dtb_delivtime
-    repositoryClass: Eccube\Repository\DelivTimeRepository
+    table: dtb_delivery_time
+    repositoryClass: Eccube\Repository\DeliveryTimeRepository
     id:
-        deliv_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-        time_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            column: time_id
+            generator:
+                strategy: AUTO
     fields:
-        deliv_time:
+        delivery_time:
             type: text
             nullable: false
     manyToOne:
-        Deliv:
-            targetEntity: Eccube\Entity\Deliv
-            inversedBy: DelivTimes
+        Delivery:
+            targetEntity: Eccube\Entity\Delivery
+            inversedBy: DeliveryTimes
             joinColumn:
-                name: deliv_id
-                referencedColumnName: deliv_id
+                name: delivery_id
+                referencedColumnName: delivery_id
     lifecycleCallbacks: {  }
