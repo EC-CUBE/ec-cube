@@ -117,7 +117,7 @@ dtb_order_detail_order_detail_id_seq
 dtb_other_deliv_other_deliv_id_seq
 dtb_payment_payment_id_seq
 dtb_product_class_product_class_id_seq
-dtb_products_product_id_seq
+dtb_product_product_id_seq
 dtb_review_review_id_seq
 dtb_send_history_send_id_seq
 dtb_mailmaga_template_template_id_seq
@@ -161,7 +161,7 @@ dtb_tax_rule_tax_rule_id_seq
 get_optional_sql()
 {
     echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', 1, 0, 0, 1, 1, current_timestamp, current_timestamp);"
-    echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, update_date, point_rate, welcome_point) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', current_timestamp, 0, 0);"
+    echo "INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, point_rate, welcome_point) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', current_timestamp, 0, 0);"
 }
 
 create_config_php()
