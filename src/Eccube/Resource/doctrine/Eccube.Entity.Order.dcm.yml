@@ -216,7 +216,7 @@ Eccube\Entity\Order:
             targetEntity: Eccube\Entity\Shipping
             mappedBy: Order
             orderBy:
-                shipping_id: ASC
+                id: ASC
         MailHistories:
             targetEntity: Eccube\Entity\MailHistory
             mappedBy: Order

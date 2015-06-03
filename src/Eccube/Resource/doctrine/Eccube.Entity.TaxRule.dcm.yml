@@ -73,31 +73,26 @@ Eccube\Entity\TaxRule:
     manyToOne:
         Country:
             targetEntity: Eccube\Entity\Master\Country
-            inversedBy: TaxRules
             joinColumn:
                 name: country_id
                 referencedColumnName: id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: TaxRules
             joinColumn:
                 name: pref_id
                 referencedColumnName: id
         Product:
             targetEntity: Eccube\Entity\Product
-            inversedBy: TaxRules
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
         ProductClass:
             targetEntity: Eccube\Entity\ProductClass
-            inversedBy: TaxRules
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id
         Calc_rule:
             targetEntity: Eccube\Entity\Master\Taxrule
-            inversedBy: TaxRules
             joinColumn:
                 name: calc_rule
                 referencedColumnName: id
