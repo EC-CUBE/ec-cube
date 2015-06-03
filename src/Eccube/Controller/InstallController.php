@@ -27,6 +27,11 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\InstallApplication;
 use Symfony\Component\Filesystem\Filesystem;
+use Doctrine\DBAL\Migrations\Migration;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Symfony\Component\Console\Helper\HelperSet;
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
+
 
 class InstallController
 {
@@ -119,19 +124,23 @@ class InstallController
         flush();
     }
 
+
     private function doMigrate()
     {
-        $this->resetNatTimer();
-        $this->progress[] = "Migrating database...."; 
+        $app= new \Eccube\Application();
+        $config = new Configuration($app['db']);
+        $config->setMigrationsNamespace('DoctrineMigrations');
 
-        $console = __DIR__ . '/../../../app/console';
-        exec('( php ' . $console . ' migrations:migrate --no-interaction 2>&1 ) ', $output,$state);
-        if($state!=0) // 失敗時
-        {
-            throw new \Exception( join("\n",$output) );
-        }
+        $migrationDir= __DIR__ . '/../Resource/doctrine/migration' ;
+        $config->setMigrationsDirectory($migrationDir);
+        $config->registerMigrationsFromDirectory($migrationDir );
+
+        $migration = new Migration($config);
+                                  // nullを渡すと最新バージョンまでマイグレートする
+        $migration->migrate(null, false); 
         return $this;
     }
+
 
     private function createTable()
     {
