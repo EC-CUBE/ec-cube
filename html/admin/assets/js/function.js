@@ -11,20 +11,23 @@ jQuery(document).ready(function($){
 
 	
 	$(window).on('load , resize', function(){
-		if(window.innerWidth < 768){		
-			$('body').addClass('sp_view');
-			$('body').removeClass('md_view');
-			$('body').removeClass('pc_view');
+		if(window.innerWidth < 768){
+			$('body')
+				.addClass('sp_view')
+				.removeClass('md_view')
+				.removeClass('pc_view');
 			$('#wrapper').removeClass('sidebar-open'); // for Drawer menu
 		} else if (window.innerWidth < 992) {
-			$('body').removeClass('sp_view');
-			$('body').addClass('md_view');
-			$('body').removeClass('pc_view');
+			$('body')
+				.removeClass('sp_view')
+				.addClass('md_view')
+				.removeClass('pc_view');
 			$('#wrapper').addClass('sidebar-open'); // for Drawer menu
 		} else {
-			$('body').removeClass('sp_view');
-			$('body').removeClass('md_view');
-			$('body').addClass('pc_view');
+			$('body')
+				.removeClass('sp_view')
+				.removeClass('md_view')
+				.addClass('pc_view');
 			$('#wrapper').addClass('sidebar-open'); // for Drawer menu
 //			$(window).on('scroll',fix_scroll);
 		}

@@ -64,7 +64,28 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
         });
+        $app['eccube.repository.master.pref'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Pref');
+        });
+        $app['eccube.repository.master.product_type'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductType');
+        });
 
+        $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Deliv');
+        });
+        $app['eccube.repository.delivery_fee'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\DelivFee');
+        });
+        $app['eccube.repository.delivery_time'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\DelivTime');
+        });
+        $app['eccube.repository.payment'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Payment');
+        });
+        $app['eccube.repository.payment_option'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\PaymentOption');
+        });
         $app['eccube.repository.category'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Category');
         });

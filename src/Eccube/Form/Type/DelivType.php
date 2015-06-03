@@ -87,6 +87,15 @@ class DelivType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
+            ->add('free_all', 'money', array(
+                'label' => false,
+                'currency' => 'JPY',
+                'precision' => 0,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+                'mapped' => false,
+            ))
             ->add('deliv_fees', 'collection', array(
                 'label' => '都道府県別設定',
                 'required' => true,

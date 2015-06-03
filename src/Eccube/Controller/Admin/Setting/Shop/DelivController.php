@@ -40,90 +40,90 @@ class DelivController extends AbstractController
 
     public function index(Application $app)
     {
-        $Delivs = $app['orm.em']->getRepository('Eccube\Entity\Deliv')
-            ->findBy(array('del_flg' => 0), array('rank' => 'DESC'));
+        $Deliveries = $app['eccube.repository.delivery']
+            ->findBy(
+                array('del_flg' => 0),
+                array('rank' => 'DESC')
+            );
 
-        return $app['view']->render('Setting/Shop/deliv.twig', array(
-            'Delivs' => $Delivs,
+        return $app->render('Setting/Shop/delivery.twig', array(
+            'Deliveries' => $Deliveries,
         ));
     }
 
     public function edit(Application $app, $id = 0)
     {
-        $Deliv = $app['orm.em']->getRepository('\Eccube\Entity\Deliv')
+        $Delivery = $app['eccube.repository.delivery']
             ->findOrCreate($id);
 
         // FormType: DelivFeeの生成
-        $Prefs = $app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\Pref')
+        $Prefs = $app['eccube.repository.master.pref']
             ->findAll();
 
         foreach ($Prefs as $Pref) {
-            $DelivFee = $app['orm.em']
-                ->getRepository('\Eccube\Entity\DelivFee')
+            $DeliveryFee = $app['eccube.repository.delivery_fee']
                 ->findOrCreate(array(
-                    'Deliv' => $Deliv,
+                    'Deliv' => $Delivery,
                     'deliv_id' => $id,
                     'Pref' => $Pref,
                 ));
-            if (!$DelivFee->getFee()) {
-                $Deliv->addDelivFee($DelivFee);
+            if (!$DeliveryFee->getFee()) {
+                $Delivery->addDelivFee($DeliveryFee);
             }
         }
 
-        $DelivFees = $Deliv->getDelivFees();
-        $DelivFeesIndex = array();
-        foreach ($DelivFees as $DelivFee) {
-            $Deliv->removeDelivFee($DelivFee);
-            $DelivFeesIndex[$DelivFee->getPref()->getId()] = $DelivFee;
+        $DeliveryFees = $Delivery->getDelivFees();
+        $DeliveryFeesIndex = array();
+        foreach ($DeliveryFees as $DeliveryFee) {
+            $Delivery->removeDelivFee($DeliveryFee);
+            $DeliveryFeesIndex[$DeliveryFee->getPref()->getId()] = $DeliveryFee;
         }
-        ksort($DelivFeesIndex);
-        foreach ($DelivFeesIndex as $timeId => $DelivFee) {
-            $Deliv->addDelivFee($DelivFee);
+        ksort($DeliveryFeesIndex);
+        foreach ($DeliveryFeesIndex as $timeId => $DeliveryFee) {
+            $Delivery->addDelivFee($DeliveryFee);
         }
 
         // FormType: DelivTimeの生成
         for ($timeId = 1; $timeId <= 16; $timeId++) {
-            $DelivTime = $app['orm.em']
-                ->getRepository('\Eccube\Entity\DelivTime')
+            $DeliveryTime = $app['eccube.repository.delivery_time']
                 ->findOrCreate(array(
-                    'Deliv' => $Deliv,
+                    'Deliv' => $Delivery,
                     'deliv_id' => $id,
                     'time_id' => $timeId,
                 ));
-            if (!$DelivTime->getDelivTime()) {
-                $Deliv->addDelivTime($DelivTime);
+            if (!$DeliveryTime->getDelivTime()) {
+                $Delivery->addDelivTime($DeliveryTime);
             }
         }
 
         // 商品種別をセット
-        $productTypeId = $Deliv->getProductTypeId();
-        $ProductType = $app['orm.em']->getRepository('\Eccube\Entity\Master\ProductType')
+        $productTypeId = $Delivery->getProductTypeId();
+        $ProductType = $app['eccube.repository.master.product_type']
             ->find($productTypeId);
-        $Deliv->setProductType($ProductType);
+        $Delivery->setProductType($ProductType);
 
         // 配送方法を順番に並び替え
-        $DelivTimes = $Deliv->getDelivTimes();
-        $DelivTimesIndex = array();
-        foreach ($DelivTimes as $DelivTime) {
-            $Deliv->removeDelivTime($DelivTime);
-            $DelivTimesIndex[$DelivTime->getTimeId()] = $DelivTime;
+        $DeliveryTimes = $Delivery->getDelivTimes();
+        $DeliveryTimesIndex = array();
+        foreach ($DeliveryTimes as $DeliveryTime) {
+            $Delivery->removeDelivTime($DeliveryTime);
+            $DeliveryTimesIndex[$DeliveryTime->getTimeId()] = $DeliveryTime;
         }
-        ksort($DelivTimesIndex);
-        foreach ($DelivTimesIndex as $timeId => $DelivTime) {
-            $Deliv->addDelivTime($DelivTime);
+        ksort($DeliveryTimesIndex);
+        foreach ($DeliveryTimesIndex as $timeId => $DeliveryTime) {
+            $Delivery->addDelivTime($DeliveryTime);
         }
 
         $builder = $app['form.factory']
             ->createBuilder('deliv');
 
         $form = $builder->getForm();
-        $form->setData($Deliv);
+        $form->setData($Delivery);
 
         // 支払方法をセット
         $Payments = array();
-        foreach ($Deliv->getPaymentOptions() as $PaymentOption) {
-            $Payments[] = $app['orm.em']->getRepository('\Eccube\Entity\Payment')
+        foreach ($Delivery->getPaymentOptions() as $PaymentOption) {
+            $Payments[] = $app['eccube.repository.payment']
                 ->find($PaymentOption->getPaymentId());
         }
         $form->get('payments')->setData($Payments);
@@ -133,33 +133,33 @@ class DelivController extends AbstractController
             $form->handleRequest($app['request']);
 
             if ($form->isValid()) {
-                $DelivData = $form->getData();
+                $DeliveryData = $form->getData();
 
                 // 商品種別をEntityからIDに変換してセット
-                $ProductType = $DelivData->getProductType();
-                $DelivData->setProductTypeId($ProductType->getId());
+                $ProductType = $DeliveryData->getProductType();
+                $DeliveryData->setProductTypeId($ProductType->getId());
 
                 // 配送時間の登録
-                $DelivTimes = $form->get('deliv_times')->getData();
-                foreach ($DelivTimes as $DelivTime) {
-                    if (is_null($DelivTime->getDelivTime())) {
-                        $Deliv->removeDelivTime($DelivTime);
+                $DeliveryTimes = $form->get('deliv_times')->getData();
+                foreach ($DeliveryTimes as $DeliveryTime) {
+                    if (is_null($DeliveryTime->getDelivTime())) {
+                        $Delivery->removeDelivTime($DeliveryTime);
                     }
                 }
 
                 // お支払いの登録
-                $PaymentOptions = $app['orm.em']->getRepository('\Eccube\Entity\PaymentOption')
+                $PaymentOptions = $app['eccube.repository.payment_option']
                     ->findBy(array('deliv_id' => $id));
                 // 消す
                 foreach ($PaymentOptions as $PaymentOption) {
-                    $DelivData->removePaymentOption($PaymentOption);
+                    $DeliveryData->removePaymentOption($PaymentOption);
                     $app['orm.em']->remove($PaymentOption);
                 }
-                $app['orm.em']->persist($DelivData);
+                $app['orm.em']->persist($DeliveryData);
                 $app['orm.em']->flush();
 
                 // 新しく今登録したIDを取得する必要がある
-                $id = $Deliv->getId();
+                $id = $Delivery->getId();
 
                 // いれる
                 $rank = 1;
@@ -169,24 +169,24 @@ class DelivController extends AbstractController
                     $PaymentOption
                         ->setDelivId($id)
                         ->setPaymentId($PaymentData->getId())
-                        ->setDeliv($DelivData)
+                        ->setDeliv($DeliveryData)
                         ->setPayment($PaymentData)
                         ->setRank($rank)
                     ;
-                    $DelivData->addPaymentOption($PaymentOption);
+                    $DeliveryData->addPaymentOption($PaymentOption);
                     $rank ++;
                 }
 
-                $app['orm.em']->persist($DelivData);
+                $app['orm.em']->persist($DeliveryData);
                 $app['orm.em']->flush();
 
-                $app['session']->getFlashBag()->add('deliv.complete', 'admin.register.complete');
+                $app->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop_delivery'));
+                return $app->redirect($app->url('admin_setting_shop_delivery'));
             }
         }
 
-        return $app['view']->render('Setting/Shop/deliv_edit.twig', array(
+        return $app->render('Setting/Shop/delivery_edit.twig', array(
             'form' => $form->createView(),
             'deliv_id' => $id,
         ));
@@ -194,7 +194,7 @@ class DelivController extends AbstractController
 
     public function delete(Application $app, $id)
     {
-        $repo = $app['orm.em']->getRepository('Eccube\Entity\Deliv');
+        $repo = $app['eccube.repository.delivery'];
         $Deliv = $repo->find($id);
 
         $Deliv
@@ -203,7 +203,11 @@ class DelivController extends AbstractController
         $app['orm.em']->persist($Deliv);
 
         $rank = 1;
-        $Delivs = $repo->findBy(array('del_flg' => 0), array('rank' => 'ASC'));
+        $Delivs = $repo
+            ->findBy(
+                array('del_flg' => 0),
+                array('rank' => 'ASC')
+            );
         foreach ($Delivs as $Deliv) {
             if ($Deliv->getId() != $id) {
                 $Deliv->setRank($rank);
@@ -212,14 +216,14 @@ class DelivController extends AbstractController
         }
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('deliv.complete', 'admin.delete.complete') ;
+        $app->addSuccess('admin.register.complete', 'admin') ;
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_shop_deliv'));
+        return $app->redirect($app->url('admin_setting_shop_deliv'));
     }
 
     public function up(Application $app, $id)
     {
-        $repo = $app['orm.em']->getRepository('Eccube\Entity\Deliv');
+        $repo = $app['eccube.repository.delivery'];
 
         $current = $repo->find($id);
         $currentRank = $current->getRank();
@@ -231,14 +235,14 @@ class DelivController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('deliv.complete', 'admin.rank.move.complete');
+        $app->addSuccess('admin.register.complete', 'admin');
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_shop_deliv'));
+        return $app->redirect($appurl('admin_setting_shop_deliv'));
     }
 
     public function down(Application $app, $id)
     {
-        $repo = $app['orm.em']->getRepository('Eccube\Entity\Deliv');
+        $repo = $app['eccube.repository.delivery'];
 
         $current = $repo->find($id);
         $currentRank = $current->getRank();
@@ -250,8 +254,8 @@ class DelivController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('deliv.complete', 'admin.rank.move.complete');
+        $app->addSuccess('admin.register.complete', 'admin');
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_shop_deliv'));
+        return $app->redirect($app->url('admin_setting_shop_deliv'));
     }
 }

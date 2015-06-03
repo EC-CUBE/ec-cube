@@ -46,19 +46,25 @@ class PaymentRegisterType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('charge', 'integer', array(
+            ->add('charge', 'money', array(
                 'label' => '手数料',
+                'currency' => 'JPY',
+                'precision' => 0,
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('rule_max', 'integer', array(
+           ->add('rule_max', 'money', array(
                 'label' => '利用条件（円）',
+               'currency' => 'JPY',
+               'precision' => 0,
                 'required' => true,
             ))
-            ->add('upper_rule', 'integer', array(
+            ->add('upper_rule', 'money', array(
                 'label' => '〜利用条件（円）',
+                'currency' => 'JPY',
+                'precision' => 0,
                 'required' => true,
             ))
             // カード会社などの上限

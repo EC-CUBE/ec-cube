@@ -40,7 +40,9 @@ class DelivTimeType extends AbstractType
         $builder
             ->add('deliv_id', 'hidden')
             ->add('time_id', 'hidden')
-            ->add('deliv_time', 'text')
+            ->add('deliv_time', 'text', array(
+                'label' => false,
+            ))
         ;
     }
 

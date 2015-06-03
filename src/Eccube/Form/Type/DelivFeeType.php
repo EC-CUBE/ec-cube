@@ -40,7 +40,10 @@ class DelivFeeType extends AbstractType
         $builder
             ->add('deliv_id', 'hidden')
             ->add('fee_id', 'hidden')
-            ->add('fee', 'integer', array(
+            ->add('fee', 'money', array(
+                'label' => false,
+                'currency' => 'JPY',
+                'precision' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
