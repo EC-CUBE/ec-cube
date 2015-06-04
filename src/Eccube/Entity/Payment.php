@@ -237,7 +237,7 @@ class Payment extends \Eccube\Entity\AbstractEntity
      */
     public function getFixFlg()
     {
-        return $this->fixFlg;
+        return $this->fix_flg;
     }
 
     /**
