@@ -2237,50 +2237,67 @@ ul.link-with-bar li:last-child::after {
 .hide  { display: none;}
 
 /* !Margin ------------------------------------------------------------------ */
+
 .marT00 { margin-top: 0   !important;}
 .marT05 { margin-top: 5px !important;}
+.marT08 { margin-top: 8px !important;}
 .marT10 { margin-top:10px !important;}
 .marT12 { margin-top:12px !important;}
 .marT15 { margin-top:15px !important;}
+.marT16 { margin-top:16px !important;}
 .marT20 { margin-top:20px !important;}
+.marT24 { margin-top:24px !important;}
 .marT25 { margin-top:25px !important;}
 .marT30 { margin-top:30px !important;}
+.marT32 { margin-top:32px !important;}
 .marT35 { margin-top:35px !important;}
 .marT40 { margin-top:40px !important;}
 .marT45 { margin-top:45px !important;}
 .marT50 { margin-top:50px !important;}
 .marR00 { margin-right: 0   !important;}
 .marR05 { margin-right: 5px !important;}
+.marR08 { margin-right: 8px !important;}
 .marR10 { margin-right:10px !important;}
 .marR12 { margin-right:12px !important;}
 .marR15 { margin-right:15px !important;}
+.marR16 { margin-right:16px !important;}
 .marR20 { margin-right:20px !important;}
+.marR24 { margin-right:24px !important;}
 .marR25 { margin-right:25px !important;}
 .marR30 { margin-right:30px !important;}
+.marR32 { margin-right:32px !important;}
 .marR35 { margin-right:35px !important;}
 .marR40 { margin-right:40px !important;}
 .marR45 { margin-right:45px !important;}
 .marR50 { margin-right:50px !important;}
 .marB00 { margin-bottom: 0   !important;}
 .marB05 { margin-bottom: 5px !important;}
+.marB08 { margin-bottom: 8px !important;}
 .marB10 { margin-bottom:10px !important;}
 .marB12 { margin-bottom:12px !important;}
 .marB15 { margin-bottom:15px !important;}
+.marB16 { margin-bottom:16px !important;}
 .marB20 { margin-bottom:20px !important;}
+.marB24 { margin-bottom:24px !important;}
 .marB25 { margin-bottom:25px !important;}
 .marB30 { margin-bottom:30px !important;}
+.marB32 { margin-bottom:32px !important;}
 .marB35 { margin-bottom:35px !important;}
 .marB40 { margin-bottom:40px !important;}
 .marB45 { margin-bottom:45px !important;}
 .marB50 { margin-bottom:50px !important;}
 .marL00 { margin-left: 0   !important;}
 .marL05 { margin-left: 5px !important;}
+.marL08 { margin-left: 8px !important;}
 .marL10 { margin-left:10px !important;}
 .marL12 { margin-left:12px !important;}
 .marL15 { margin-left:15px !important;}
+.marL16 { margin-left:16px !important;}
 .marL20 { margin-left:20px !important;}
+.marL24 { margin-left:24px !important;}
 .marL25 { margin-left:25px !important;}
 .marL30 { margin-left:30px !important;}
+.marL32 { margin-left:32px !important;}
 .marL35 { margin-left:35px !important;}
 .marL40 { margin-left:40px !important;}
 .marL45 { margin-left:45px !important;}
