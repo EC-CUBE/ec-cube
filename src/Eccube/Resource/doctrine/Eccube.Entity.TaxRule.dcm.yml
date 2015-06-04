@@ -12,31 +12,6 @@ Eccube\Entity\TaxRule:
             generator:
                 strategy: AUTO
     fields:
-#        country_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
-#        pref_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
-#        product_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
-#        product_class_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
-#        calc_rule:
-#            type: smallint
-#            nullable: false
-#            unsigned: false
-#            default: '1'
         tax_rate:
             type: decimal
             nullable: false
@@ -53,10 +28,6 @@ Eccube\Entity\TaxRule:
             type: datetime
             nullable: false
             default: CURRENT_TIMESTAMP
-        member_id:
-            type: integer
-            nullable: false
-            unsigned: false
         del_flg:
             type: smallint
             nullable: false
@@ -71,33 +42,34 @@ Eccube\Entity\TaxRule:
             nullable: false
             default: '0000-00-00 00:00:00'
     manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
         Country:
             targetEntity: Eccube\Entity\Master\Country
-            inversedBy: TaxRules
             joinColumn:
                 name: country_id
                 referencedColumnName: id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: TaxRules
             joinColumn:
                 name: pref_id
                 referencedColumnName: id
         Product:
             targetEntity: Eccube\Entity\Product
-            inversedBy: TaxRules
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
         ProductClass:
             targetEntity: Eccube\Entity\ProductClass
-            inversedBy: TaxRules
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id
-        Calc_rule:
+        CalcRule:
             targetEntity: Eccube\Entity\Master\Taxrule
-            inversedBy: TaxRules
             joinColumn:
                 name: calc_rule
                 referencedColumnName: id

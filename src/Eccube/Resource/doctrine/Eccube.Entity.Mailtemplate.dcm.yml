@@ -41,7 +41,6 @@ Eccube\Entity\Mailtemplate:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Mailtemplates
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
