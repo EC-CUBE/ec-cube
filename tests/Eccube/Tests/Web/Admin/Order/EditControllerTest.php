@@ -29,6 +29,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
 {
     public function test_routeing_AdminOrderEdit_index()
     {
+        self::markTestSkipped();
         $this->client->request(
             'GET',
             $this->app['url_generator']->generate('admin_order_edit', array('id' => 0)));
