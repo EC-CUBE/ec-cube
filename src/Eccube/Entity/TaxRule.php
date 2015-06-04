@@ -32,6 +32,34 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
+    private $rank;
+
+    /**
+     * Set rank
+     *
+     * @param  integer $rank
+     * @return TaxRule
+     */
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+
+        return $this;
+    }
+
+    /**
+     * Get rank
+     *
+     * @return integer
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
+    
+    /**
+     * @var integer
+     */
     private $id;
 
     /**
