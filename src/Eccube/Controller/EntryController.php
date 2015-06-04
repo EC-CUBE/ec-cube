@@ -85,6 +85,7 @@ class EntryController extends AbstractController
                             ->setName02($Customer->getName02())
                             ->setKana01($Customer->getKana01())
                             ->setKana02($Customer->getKana02())
+                            ->setPref($Customer->getPref())
                             ->setZip01($Customer->getZip01())
                             ->setZip02($Customer->getZip02())
                             ->setZipcode($Customer->getZip01() . $Customer->getZip02())
