@@ -104,6 +104,7 @@ class DeliveryType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 
