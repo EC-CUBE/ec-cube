@@ -36,6 +36,15 @@ class TaxRuleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+//            ->add('product_tax_flg', 'choice', array(
+//                'label' => '商品別税率機能',
+//                'choices' => array(
+//                    '0' => '無効',
+//                    '1' => '有効',
+//                ),
+//                'expanded' => true,
+//                'multiple' => false,
+//            ))
             ->add('tax_rate', 'integer', array(
                 'label' => '消費税率',
                 'required' => true,
