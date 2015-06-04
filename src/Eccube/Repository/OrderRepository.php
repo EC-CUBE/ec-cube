@@ -260,13 +260,20 @@ class OrderRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('o');
 
-        $joinedCustomer = false;
-
         // order_id_start
         if (!empty($searchData['order_id_start']) && $searchData['order_id_start']) {
             $qb
                 ->andWhere('o.id >= :order_id_start')
                 ->setParameter('order_id_start', $searchData['order_id_start']);
+        }
+        // multi
+        if (!empty($searchData['multi']) && $searchData['multi']) {
+            $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['mutli'] : null;
+            $qb
+                ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR ' .
+                           'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti')
+                ->setParameter('multi', $id)
+                ->setParameter('likemulti', '%' . $searchData['multi'] . '%');
         }
 
         // order_id_end
@@ -345,7 +352,7 @@ class OrderRepository extends EntityRepository
             $date = $searchData['order_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
-                ->andWhere('o.create_date >= :order_date_start')
+                ->andWhere('o.order_date >= :order_date_start')
                 ->setParameter('order_date_start', $date);
         }
         if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
@@ -353,11 +360,46 @@ class OrderRepository extends EntityRepository
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
-                ->andWhere('o.create_date < :order_date_end')
+                ->andWhere('o.order_date < :order_date_end')
                 ->setParameter('order_date_end', $date);
         }
 
-        // create_date
+        // payment_date
+        if (!empty($searchData['payment_date_start']) && $searchData['payment_date_start']) {
+            $date = $searchData['payment_date_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.payment_date >= :payment_date_start')
+                ->setParameter('payment_date_start', $date);
+        }
+        if (!empty($searchData['payment_date_end']) && $searchData['payment_date_end']) {
+            $date = $searchData['payment_date_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.payment_date < :payment_date_end')
+                ->setParameter('payment_date_end', $date);
+        }
+
+        // commit_date
+        if (!empty($searchData['commit_date_start']) && $searchData['commit_date_start']) {
+            $date = $searchData['commit_date_start']
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.commit_date >= :commit_date_start')
+                ->setParameter('commit_date_start', $date);
+        }
+        if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
+            $date = $searchData['commit_date_end']
+                ->modify('+1 days')
+                ->format('Y-m-d H:i:s');
+            $qb
+                ->andWhere('o.commit_date < :commit_date_end')
+                ->setParameter('commit_date_end', $date);
+        }
+
+
+        // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start']
                 ->format('Y-m-d H:i:s');

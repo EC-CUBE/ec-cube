@@ -210,18 +210,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <tbody>
                                     {% for Order in pagination %}
                                             <tr>
-                                                <td class="member_id">{{ Order.order_date|date('Y/m/d') }}</td>
-                                                <td class="member_name">{{ Order.pre_order_id }}</td>
-                                                <td class="member_tel">{{ Order.name01 }} {{ Order.name02 }}</td>
-                                                <td class="member_mail">{{ Order.payment_method }}</td>
-                                                <td class="member_mail">{{ Order.payment_total }}</td>
-                                                <td class="member_mail">{{ Order.commit_date|date('Y/m/d') }}</td>
-                                                <td class="member_mail">{{ Order.OrderStatus }}</td>
+                                                <td>{{ Order.order_date is empty ? "" : Order.order_date|date('Y/m/d') }}</td>
+                                                <td>{{ Order.pre_order_id }}</td>
+                                                <td>{{ Order.name01 }} {{ Order.name02 }}</td>
+                                                <td>{{ Order.payment_method }}</td>
+                                                <td>{{ Order.payment_total|number_format }}</td>
+                                                <td>{{ Order.commit_date is empty ? "" : Order.commit_date|date('Y/m/d') }}</td>
+                                                <td>{{ Order.OrderStatus }}</td>
                                                 <td class="icon_edit">
                                                     <div class="dropdown">
                                                         <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                         <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li><a>編集</a></li>
+                                                        <li><a href="{{ url('admin_order_edit', { id : Order.id }) }}">編集</a></li>
                                                         <li><a>削除</a></li>
                                                         <li><a>メール通知</a></li>
                                                         </ul>
@@ -235,7 +235,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div><!-- /.box-body --> 
                         {% if pagination.totalItemCount > 0 %}
-                            {% include "pager.twig" with { 'pages' : pagination.paginationData } %}
+                            {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
                         {% endif %}
                         {% else %}
                         <div class="box-header with-arrow">

@@ -81,7 +81,7 @@ class SearchOrderType extends AbstractType
                 'multiple' => true,
             ))
             ->add('order_date_start', 'date', array(
-                'label' => '注文日',
+                'label' => '受注日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -89,7 +89,39 @@ class SearchOrderType extends AbstractType
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('order_date_end', 'date', array(
-                'label' => '注文日',
+                'label' => '受注日(TO)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('payment_date_start', 'date', array(
+                'label' => '入金日(FROM)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('payment_date_end', 'date', array(
+                'label' => '入金日(TO)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('commit_date_start', 'date', array(
+                'label' => '発送日(FROM)',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'choice',
+                'format' => 'yyyy-MM-dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('commit_date_end', 'date', array(
+                'label' => '発送日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -97,7 +129,7 @@ class SearchOrderType extends AbstractType
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', 'date', array(
-                'label' => '更新日',
+                'label' => '更新日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -105,7 +137,7 @@ class SearchOrderType extends AbstractType
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', 'date', array(
-                'label' => '更新日',
+                'label' => '更新日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
@@ -113,11 +145,11 @@ class SearchOrderType extends AbstractType
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_total_start', 'integer', array(
-                'label' => '購入金額',
+                'label' => '購入金額(下限)',
                 'required' => false,
             ))
             ->add('payment_total_end', 'integer', array(
-                'label' => '購入金額',
+                'label' => '購入金額(上限)',
                 'required' => false,
             ))
             ->add('buy_product_name', 'text', array(
