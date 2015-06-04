@@ -45,7 +45,6 @@ Eccube\Entity\Kiyaku:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Kiyakus
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

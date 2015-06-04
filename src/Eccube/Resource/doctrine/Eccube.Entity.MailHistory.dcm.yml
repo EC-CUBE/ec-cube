@@ -43,13 +43,11 @@ Eccube\Entity\MailHistory:
                 nullable: false
         MailTemplate:
             targetEntity: Eccube\Entity\Master\MailTemplate
-            inversedBy: MailHistories
             joinColumn:
                 name: template_id
                 referencedColumnName: id
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: MailHistories
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
