@@ -50,58 +50,36 @@ class PaymentRegisterType extends AbstractType
                 'label' => '手数料',
                 'currency' => 'JPY',
                 'precision' => 0,
-                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-           ->add('rule_max', 'money', array(
-                'label' => '利用条件（円）',
-               'currency' => 'JPY',
-               'precision' => 0,
-                'required' => true,
-            ))
-            ->add('upper_rule', 'money', array(
-                'label' => '〜利用条件（円）',
+            ->add('rule_min', 'money', array(
+                'label' => false,
                 'currency' => 'JPY',
                 'precision' => 0,
-                'required' => true,
             ))
-            // カード会社などの上限
-            ->add('upper_rule_max', 'hidden')
-            // カード会社などの下限
-            ->add('rule_min', 'hidden')
-            ->add('charge_flg', 'hidden')
+            ->add('rule_max', 'money', array(
+                'label' => false,
+                'currency' => 'JPY',
+                'precision' => 0,
+                'required' => false,
+            ))
             ->add('payment_image_file', 'file', array(
                 'label' => 'ロゴ画像',
                 'mapped' => false,
+                'required' => false,
             ))
-
+            ->add('charge_flg', 'hidden')
+            ->add('fix_flg', 'hidden')
             ->addEventListener(FormEvents::POST_BIND, function ($event) {
                 $form = $event->getForm();
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
                 if ($ruleMin != '' && $ruleMax < $ruleMin) {
-                    $form['rule_max']->addError(new FormError('利用条件(下限)は' . $ruleMin .'円以下にしてください。'));
+                    $form['rule_min']->addError(new FormError('利用条件(下限)は' . $ruleMin . '円以下にしてください。'));
                 }
-            })
-            ->addEventListener(FormEvents::POST_BIND, function ($event) {
-                $form = $event->getForm();
-                $upperRule = $form['upper_rule']->getData();
-                $upperRuleMax = $form['upper_rule_max']->getData();
-                if ($upperRuleMax != '' && $upperRule < $upperRuleMax) {
-                    $form['upper_rule']->addError(new FormError('利用条件(上限)は' . $upperRuleMax .'円以下にしてください。'));
-                }
-            })
-            ->addEventListener(FormEvents::POST_BIND, function ($event) {
-                $form = $event->getForm();
-                $upperRule = $form['upper_rule']->getData();
-                $ruleMax = $form['rule_max']->getData();
-                if ($ruleMax > $upperRule) {
-                    $form['upper_rule']->addError(new FormError('利用条件(上限)は利用条件（下限）以上にしてください。'));
-                }
-            })
-        ;
+            });
 
     }
 

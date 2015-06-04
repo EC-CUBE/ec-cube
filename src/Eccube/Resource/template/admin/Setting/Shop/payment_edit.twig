@@ -29,6 +29,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{{ url('admin_setting_shop_payment_edit', {id: payment_id}) }}" {{ form_enctype(form) }}>
         {{ form_widget(form._token) }}
+        {{ form_widget(form.charge_flg) }}
+        {{ form_widget(form.fix_flg) }}
         <div class="row">
             <div class="col-md-12">
                 <div class="box">
@@ -39,17 +41,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                         {{ form_row(form.method) }}
 
-                        {% if(Payment.charge_flg != 2) %}
+                        {% if(Payment.charge_flg == 1) %}
                             {{ form_row(form.charge) }}
                         {% endif %}
 
-                        {{ form_row(form.rule_max) }}
-                        {{ form_row(form.upper_rule) }}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                利用条件
+                            </label>
+                            <div class="col-sm-10 form-inline{% if form.rule_min.vars.valid == false or form.rule_max.vars.valid == false %} has-error{% endif %}">
+                                {{ form_widget(form.rule_min) }}
+                                〜
+                                {{ form_widget(form.rule_max) }}
+                                {{ form_errors(form.rule_min) }}
+                                {{ form_errors(form.rule_max) }}
+                            </div>
+                        </div>
                         {{ form_label(form.payment_image_file) }}
                         {% if image is not null %}
                             <img src="{{ image }}" /><a href="{{ url('admin_setting_shop_payment_delete_image', {id: payment_id}) }}">[画像を削除]</a>
                         {% endif %}
                         {{ form_widget(form.payment_image_file) }}
+                        {{ form_errors(form.payment_image_file) }}
 
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

@@ -51,21 +51,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                         <td class="member_name">{{ Payment.method }}</td>
                                         <td class="member_name">
-                                            {% if Payment.charge_flg != 2 %}
-                                            {% else %}
-                                                {{ Payment.charge }}
-                                            {% endif %}
+                                            {{ Payment.charge }}
                                         </td>
                                         <td class="member_name">
-                                            {% if Payment.rule_max > 0 %}
-                                                {{ Payment.rule_max }}
+                                            {% if Payment.rule_min > 0 %}
+                                                {{ Payment.rule_min }}
                                             {% else %}
                                                 0
                                             {% endif %}円
 
-                                            {% if Payment.upper_rule > 0 %}
-                                                ～{{ Payment.upper_rule }}円
-                                            {% elseif Payment.upper_rule is null %}
+                                            {% if Payment.rule_max > 0 %}
+                                                ～{{ Payment.rule_max }}円
+                                            {% elseif Payment.rule_max is null %}
                                                 ～無制限
                                             {% endif %}
                                         </td>
@@ -74,14 +71,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                     <li>
-                                                        {% if Payment.fix != 1 %}
+                                                        {% if Payment.fix_flg == 1 %}
                                                             <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
                                                         {% else %}
                                                             <a>編集</a>
                                                         {% endif %}
                                                     </li>
                                                     <li>
-                                                        {% if Payment.fix != 1 %}
+                                                        {% if Payment.fix_flg == 1 %}
                                                             <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}">削除</a>
                                                         {% else %}
                                                             <a>削除</a>

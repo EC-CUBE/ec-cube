@@ -30,7 +30,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DelivType extends AbstractType
+class DeliveryType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -52,11 +52,13 @@ class DelivType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('remark', 'textarea', array(
+            ->add('description', 'textarea', array(
                 'label' => '説明',
+                'required' => false,
             ))
             ->add('confirm_url', 'text', array(
                 'label' => '伝票No.URL',
+                'required' => false,
                 'constraints' => array(
                     new Assert\Url(),
                 ),
@@ -79,10 +81,10 @@ class DelivType extends AbstractType
                 },
                 'mapped' => false,
             ))
-            ->add('deliv_times', 'collection', array(
+            ->add('delivery_times', 'collection', array(
                 'label' => 'お届け時間',
                 'required' => false,
-                'type' => 'deliv_time',
+                'type' => 'delivery_time',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -91,15 +93,13 @@ class DelivType extends AbstractType
                 'label' => false,
                 'currency' => 'JPY',
                 'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
+                'required' => false,
                 'mapped' => false,
             ))
-            ->add('deliv_fees', 'collection', array(
+            ->add('delivery_fees', 'collection', array(
                 'label' => '都道府県別設定',
                 'required' => true,
-                'type' => 'deliv_fee',
+                'type' => 'delivery_fee',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -113,7 +113,7 @@ class DelivType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Deliv',
+            'data_class' => 'Eccube\Entity\Delivery',
         ));
     }
 
@@ -122,6 +122,6 @@ class DelivType extends AbstractType
      */
     public function getName()
     {
-        return 'deliv';
+        return 'delivery';
     }
 }

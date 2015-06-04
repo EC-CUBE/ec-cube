@@ -72,13 +72,13 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Deliv');
+            return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
         });
         $app['eccube.repository.delivery_fee'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\DelivFee');
+            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryFee');
         });
         $app['eccube.repository.delivery_time'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\DelivTime');
+            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryTime');
         });
         $app['eccube.repository.payment'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Payment');
@@ -215,9 +215,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\FaxType();
             $types[] = new \Eccube\Form\Type\AddressType();
             $types[] = new \Eccube\Form\Type\PaymentType();
-            $types[] = new \Eccube\Form\Type\DelivType();
-            $types[] = new \Eccube\Form\Type\DelivFeeType();
-            $types[] = new \Eccube\Form\Type\DelivTimeType();
+            $types[] = new \Eccube\Form\Type\DeliveryType();
+            $types[] = new \Eccube\Form\Type\DeliveryFeeType();
+            $types[] = new \Eccube\Form\Type\DeliveryTimeType();
             $types[] = new \Eccube\Form\Type\ProductTypeType();
             $types[] = new \Eccube\Form\Type\PaymentRegisterType();
             $types[] = new \Eccube\Form\Type\MailType();
