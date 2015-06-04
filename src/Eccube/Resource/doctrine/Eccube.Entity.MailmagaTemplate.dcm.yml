@@ -42,7 +42,6 @@ Eccube\Entity\MailmagaTemplate:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: MailmagaTemplates
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

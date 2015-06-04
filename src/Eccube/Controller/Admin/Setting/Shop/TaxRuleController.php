@@ -26,34 +26,34 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxRuleController extends AbstractController
 {
-    const DEFAULT_TAX_RULE_ID = 0;
-
-    public $form;
-
-    public function __construct()
-    {
-    }
-
     /**
      * 税率設定の初期表示・登録
      *
-     * @param  Application                                        $app
-     * @param  null                                               $id
+     * @param  Application $app
+     * @param  null $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, $id = null)
     {
+        $TargetTaxRule = null;
+
         if ($id == null) {
-            $TaxRule = $app['eccube.repository.tax_rule']->newTaxRule();
+            $TargetTaxRule = $app['eccube.repository.tax_rule']->newTaxRule();
         } else {
-            $TaxRule = $app['eccube.repository.tax_rule']->getById($id);
+            $TargetTaxRule = $app['eccube.repository.tax_rule']->find($id);
+            if (is_null($TargetTaxRule)) {
+                throw new NotFoundHttpException();
+            }
         }
 
-        $builder = $app['form.factory']->createBuilder('tax_rule', $TaxRule);
-        if ($id == self::DEFAULT_TAX_RULE_ID && $id <> null) {
+        $builder = $app['form.factory']
+            ->createBuilder('tax_rule', $TargetTaxRule);
+
+        if ($TargetTaxRule->isDefaultTaxRule()) {
             // 基本税率設定は適用日時の変更は行わない
             $builder = $builder->remove('apply_date');
         }
@@ -64,20 +64,20 @@ class TaxRuleController extends AbstractController
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                $TaxRule->setMemberId(1); //FIXME: 管理画面ログイン認証完成後に対応
-                $app['orm.em']->persist($TaxRule);
+                $app['orm.em']->persist($TargetTaxRule);
                 $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('tax_rule.complete', 'admin.register.complete');
 
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop_tax'));
+                $app->addSuccess('admin.shop.tax.save.complete', 'admin');
+
+                return $app->redirect($app->url('admin_setting_shop_tax'));
             }
         }
 
         // 共通税率一覧
         $TaxRules = $app['eccube.repository.tax_rule']->getList();
 
-        return $app['view']->render('Setting/Shop/tax_rule.twig', array(
-            'tax_rule_id' => $id,
+        return $app->render('Setting/Shop/tax_rule.twig', array(
+            'TargetTaxRule' => $TargetTaxRule,
             'TaxRules' => $TaxRules,
             'form' => $form->createView(),
         ));
@@ -86,19 +86,19 @@ class TaxRuleController extends AbstractController
     /**
      * 特定の共通税率の削除
      *
-     * @param  Application                                        $app
+     * @param  Application $app
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(Application $app, $id)
     {
-
-        if ($id != self::DEFAULT_TAX_RULE_ID) {
-            $TaxRule = $app['eccube.repository.tax_rule']->getById($id);
-            $app['eccube.repository.tax_rule']->delete($TaxRule);
+        $TargetTaxRule = $app['eccube.repository.tax_rule']->find($id);
+        if (!$TargetTaxRule->isDefaultTaxRule()) {
+            $app['eccube.repository.tax_rule']->delete($TargetTaxRule);
+            $app->addSuccess('admin.shop.tax.delete.complete', 'admin');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_shop_tax'));
+        return $app->redirect($app->url('admin_setting_shop_tax'));
     }
 
     public function parameterEdit(Application $app, $id)
