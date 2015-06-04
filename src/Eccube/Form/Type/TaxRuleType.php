@@ -30,11 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxRuleType extends AbstractType
 {
-    public $app;
-
     public function __construct(\Eccube\Application $app)
     {
-        $this->app = $app;
+
     }
 
     /**
@@ -69,9 +67,7 @@ class TaxRuleType extends AbstractType
                     'hours' => '--',
                     'minutes' => '--'
                 ),
-            ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
-
+            ));
     }
 
     /**

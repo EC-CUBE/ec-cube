@@ -32,7 +32,22 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
+    const DEFAULT_TAX_RULE_ID = 1;
+
+    /**
+     * @var integer
+     */
     private $rank;
+
+    /**
+     * is default
+     *
+     * @return bool
+     */
+    public function isDefaultTaxRule()
+    {
+        return (self::DEFAULT_TAX_RULE_ID === $this->getId());
+    }
 
     /**
      * Set rank
@@ -56,7 +71,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     {
         return $this->rank;
     }
-    
+
     /**
      * @var integer
      */
