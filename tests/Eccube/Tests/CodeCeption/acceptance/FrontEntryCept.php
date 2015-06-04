@@ -1,8 +1,9 @@
 <?php 
 $I = new AcceptanceTester($scenario);
 
-$I->amOnPage('/entry');
+$token = date('dHis');
 
+$I->amOnPage('/entry');
 $I->fillField('entry[name][name01]', '高橋');
 $I->fillField('entry[name][name02]', '慎一');
 $I->fillField('entry[kana][kana01]', 'タｋハシ');
@@ -18,8 +19,8 @@ $I->fillField('entry[tel][tel03]', '7500');
 $I->fillField('entry[fax][fax01]', '06');
 $I->fillField('entry[fax][fax02]', '4795');
 $I->fillField('entry[fax][fax03]', '7501');
-$I->fillField('entry[email][first]', 'takahashi@lockon.co.jp');
-$I->fillField('entry[email][second]', 'takahashi@lockon.co.jp');
+$I->fillField('entry[email][first]', 'takahashi' . $token .  '@lockon.co.jp');
+$I->fillField('entry[email][second]', 'takahashi' . $token . '@lockon.co.jp');
 $I->fillField('entry[password]', '1234abcd');
 $I->selectOption('entry[birth][year]', '1987');
 $I->selectOption('entry[birth][month]', '08');
@@ -34,3 +35,4 @@ $I->click('会員登録をする');
 
 $I->see('本登録が完了いたしました。');
 $I->click('トップページへ');
+?>
