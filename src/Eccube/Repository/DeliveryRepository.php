@@ -37,10 +37,13 @@ class DeliveryRepository extends EntityRepository
     public function findOrCreate($id)
     {
         if ($id == 0) {
-            $Creator = $this
-                ->getEntityManager()
+            $em = $this->getEntityManager();
+            $Creator = $em
                 ->getRepository('\Eccube\Entity\Member')
                 ->find(2);
+            $ProductType = $em
+                ->getRepository('\Eccube\Entity\Master\ProductType')
+                ->find(1);
 
             $rank = $this
                 ->findOneBy(array(), array('rank' => 'DESC'))
@@ -49,10 +52,9 @@ class DeliveryRepository extends EntityRepository
             $Delivery = new \Eccube\Entity\Delivery();
             $Delivery
                 ->setRank($rank)
-                ->setStatus(1)
                 ->setDelFlg(0)
                 ->setCreator($Creator)
-                ->setProductTypeId(1)
+                ->setProductType($ProductType)
             ;
 
         } else {

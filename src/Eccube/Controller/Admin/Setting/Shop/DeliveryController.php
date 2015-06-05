@@ -27,7 +27,7 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 
-class DelivController extends AbstractController
+class DeliveryController extends AbstractController
 {
     private $main_title;
     private $sub_title;
