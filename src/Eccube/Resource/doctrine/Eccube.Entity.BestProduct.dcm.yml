@@ -57,7 +57,6 @@ Eccube\Entity\BestProduct:
                 referencedColumnName: product_id
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: BestProducts
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

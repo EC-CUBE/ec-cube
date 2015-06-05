@@ -34,10 +34,10 @@ Eccube\Entity\OrderDetail:
         product_code:
             type: text
             nullable: true
-        classcategory_name1:
+        class_category_name1:
             type: text
             nullable: true
-        classcategory_name2:
+        class_category_name2:
             type: text
             nullable: true
         price:
@@ -50,12 +50,6 @@ Eccube\Entity\OrderDetail:
             nullable: true
             precision: 10
             scale: 0
-        point_rate:
-            type: decimal
-            nullable: false
-            precision: 10
-            scale: 0
-            default: '0'
         tax_rate:
             type: decimal
             nullable: true
@@ -75,14 +69,12 @@ Eccube\Entity\OrderDetail:
                 nullable: false
         Product:
             targetEntity: Eccube\Entity\Product
-            inversedBy: OrderDetails
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
                 nullable: false
         ProductClass:
             targetEntity: Eccube\Entity\ProductClass
-            inversedBy: OrderDetails
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id

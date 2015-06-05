@@ -33,7 +33,6 @@ Eccube\Entity\ProductImage:
                 nullable: false
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: ProductImage
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

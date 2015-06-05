@@ -130,12 +130,12 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
 
         // delivery
-        $c->match('/setting/shop/delivery', '\Eccube\Controller\Admin\Setting\Shop\DelivController::index')->bind('admin_setting_shop_delivery');
-        $c->match('/setting/shop/delivery/new', '\Eccube\Controller\Admin\Setting\Shop\DelivController::edit')->bind('admin_setting_shop_delivery_new');
-        $c->match('/setting/shop/delivery/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\DelivController::edit')->assert('id', '\d+')->bind('admin_setting_shop_delivery_edit');
-        $c->match('/setting/shop/delivery/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\DelivController::delete')->assert('id', '\d+')->bind('admin_setting_shop_delivery_delete');
-        $c->match('/setting/shop/delivery/{id}/up', '\Eccube\Controller\Admin\Setting\Shop\DelivController::up')->assert('id', '\d+')->bind('admin_setting_shop_delivery_up');
-        $c->match('/setting/shop/delivery/{id}/down', '\Eccube\Controller\Admin\Setting\Shop\DelivController::down')->assert('id', '\d+')->bind('admin_setting_shop_delivery_down');
+        $c->match('/setting/shop/delivery', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::index')->bind('admin_setting_shop_delivery');
+        $c->match('/setting/shop/delivery/new', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::edit')->bind('admin_setting_shop_delivery_new');
+        $c->match('/setting/shop/delivery/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::edit')->assert('id', '\d+')->bind('admin_setting_shop_delivery_edit');
+        $c->match('/setting/shop/delivery/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::delete')->assert('id', '\d+')->bind('admin_setting_shop_delivery_delete');
+        $c->match('/setting/shop/delivery/{id}/up', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::up')->assert('id', '\d+')->bind('admin_setting_shop_delivery_up');
+        $c->match('/setting/shop/delivery/{id}/down', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::down')->assert('id', '\d+')->bind('admin_setting_shop_delivery_down');
 
         // payment
         $c->match('/setting/shop/payment', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::index')->bind('admin_setting_shop_payment');

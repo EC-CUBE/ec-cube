@@ -74,19 +74,16 @@ Eccube\Entity\Review:
                 nullable: false
         Sex:
             targetEntity: Eccube\Entity\Master\Sex
-            inversedBy: Reviews
             joinColumn:
                 name: sex
                 referencedColumnName: id
         Customer:
             targetEntity: Eccube\Entity\Customer
-            inversedBy: Reviews
             joinColumn:
                 name: customer_id
                 referencedColumnName: customer_id
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Reviews
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
