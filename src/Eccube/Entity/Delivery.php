@@ -318,7 +318,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * Add DeliveryFees
      *
-     * @param  \Eccube\Entity\DelivFee $DeliveryFees
+     * @param  \Eccube\Entity\DeliveryFee $DeliveryFees
      * @return Delivery
      */
     public function addDeliveryFee(\Eccube\Entity\DeliveryFee $DeliveryFees)
@@ -331,7 +331,7 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * Remove DeliveryFees
      *
-     * @param \Eccube\Entity\DeliveryFee $deliveryFees
+     * @param \Eccube\Entity\DeliveryFee $DeliveryFees
      */
     public function removeDeliveryFee(\Eccube\Entity\DeliveryFee $DeliveryFees)
     {
@@ -351,12 +351,12 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * Add DeliveryTimes
      *
-     * @param  \Eccube\Entity\DelivTime $DeliveryTimes
+     * @param  \Eccube\Entity\DeliveryTime $DeliveryTimes
      * @return Delivery
      */
     public function addDeliveryTime(\Eccube\Entity\DeliveryTime $DeliveryTimes)
     {
-        $this->DelivTimes[] = $DeliveryTimes;
+        $this->DeliveryTimes[] = $DeliveryTimes;
 
         return $this;
     }
@@ -364,11 +364,11 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * Remove DeliveryTimes
      *
-     * @param \Eccube\Entity\DelivTime $DeliveryTimes
+     * @param \Eccube\Entity\DeliveryTime $DeliveryTimes
      */
     public function removeDeliveryTime(\Eccube\Entity\DeliveryTime $DeliveryTimes)
     {
-        $this->DelivTimes->removeElement($DeliveryTimes);
+        $this->DeliveryTimes->removeElement($DeliveryTimes);
     }
 
     /**

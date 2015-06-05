@@ -29,25 +29,22 @@ use Eccube\Controller\AbstractController;
 
 class PaymentController extends AbstractController
 {
-    public $form;
-
-    public function __construct()
-    {
-    }
-
     public function index(Application $app)
     {
-        $payments = $app['orm.em']->getRepository('Eccube\Entity\Payment')
-            ->findBy(array('del_flg' => 0), array('rank' => 'DESC'));
+        $Payments = $app['eccube.repository.payment']
+            ->findBy(
+                array('del_flg' => 0),
+                array('rank' => 'DESC')
+            );
 
-        return $app['view']->render('Basis/payment.twig', array(
-            'Payments' => $payments,
+        return $app->render('Setting/Shop/payment.twig', array(
+            'Payments' => $Payments,
         ));
     }
 
-    public function edit(Application $app, $id = 0, $delete_image = false)
+    public function edit(Application $app, $id = null, $delete_image = false)
     {
-        $Payment = $app['orm.em']->getRepository('\Eccube\Entity\Payment')
+        $Payment = $app['eccube.repository.payment']
             ->findOrCreate($id);
 
         $form = $app['form.factory']
@@ -62,7 +59,7 @@ class PaymentController extends AbstractController
         }
 
         // 登録ボタン押下
-        if ($app['request']->getMethod() === 'POST') {
+        if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
 
             if ($form->isValid()) {
@@ -77,11 +74,7 @@ class PaymentController extends AbstractController
                 $file = $form['payment_image_file']->getData();
                 if (!$delete_image && $file !== null) {
                     $extension = $file->guessExtension();
-                    if (!$extension) {
-                        // 拡張子が推測できなかった場合
-                        $extension = 'jpg';
-                    }
-                    $filename = date('mdHi') . '_' . uniqid('') . '.' . $extension;
+                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $file->move($app['config']['image_save_realdir'], $filename);
                     $PaymentData->setPaymentImage($filename);
                 }
@@ -92,13 +85,13 @@ class PaymentController extends AbstractController
                 $app['orm.em']->persist($PaymentData);
                 $app['orm.em']->flush();
 
-                $app['session']->getFlashBag()->add('payment.complete', 'admin.register.complete');
+                $app->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop_payment'));
+                return $app->redirect($app->url('admin_setting_shop_payment'));
             }
         }
 
-        return $app['view']->render('Setting/Shop/payment_edit.twig', array(
+        return $app->render('Setting/Shop/payment_edit.twig', array(
             'form' => $form->createView(),
             'payment_id' => $id,
             'Payment' => $Payment,
@@ -113,10 +106,9 @@ class PaymentController extends AbstractController
 
     public function delete(Application $app, $id)
     {
-        $repo = $app['orm.em']->getRepository('Eccube\Entity\Payment');
-        $Payment = $repo->find($id);
-
-        $Payment
+        $repo = $app['eccube.repository.payment'];
+        $Payment = $repo
+            ->find($id)
             ->setDelFlg(1)
             ->setRank(0);
         $app['orm.em']->persist($Payment);
@@ -131,9 +123,9 @@ class PaymentController extends AbstractController
         }
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('payment.complete', 'admin.delete.complete') ;
+        $app->addSuccess('admin.delete.complete', 'admin') ;
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_shop_payment'));
+        return $app->redirect($app->url('admin_setting_shop_payment'));
     }
 
     public function up(Application $app, $id)
@@ -150,9 +142,9 @@ class PaymentController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('payment.complete', 'admin.rank.move.complete');
+        $app->addSuccess('admin.move.complete', 'admin');
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_shop_payment'));
+        return $app->redirect($app->url('admin_setting_shop_payment'));
     }
 
     public function down(Application $app, $id)
@@ -169,8 +161,8 @@ class PaymentController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app['session']->getFlashBag()->add('payment.complete', 'admin.rank.move.complete');
+        $app->addSuccess('admin.move.complete', 'admin');
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_shop_payment'));
+        return $app->redirect($app->url('admin_setting_shop_payment'));
     }
 }
