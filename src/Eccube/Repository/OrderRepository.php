@@ -331,7 +331,7 @@ class OrderRepository extends EntityRepository
         // sex
         if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
             $qb
-                ->andWhere($qb->expr()->in('o.order_sex', ':sex'))
+                ->andWhere($qb->expr()->in('o.Sex', ':sex'))
                 ->setParameter('sex', $searchData['sex']->toArray());
         }
 
