@@ -184,7 +184,7 @@ class DeliveryController extends AbstractController
         }
         $app['orm.em']->flush();
 
-        $app->addSuccess('admin.register.complete', 'admin') ;
+        $app->addSuccess('admin.delete.complete', 'admin') ;
 
         return $app->redirect($app->url('admin_setting_shop_delivery'));
     }
