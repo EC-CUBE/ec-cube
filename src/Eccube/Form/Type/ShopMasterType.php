@@ -288,19 +288,6 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
-            ->add('downloadable_days_unlimited', 'checkbox', array(
-                'label' => 'ダウンロード無制限',
-                'required' => false,
-            ))
-            ->add('downloadable_days', 'integer', array(
-                'label' => 'ダウンロード可能日数',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['download_days_len'],
-                    )),
-                ),
-            ))
 
             // 地図設定
             ->add('latitude', 'number', array(
