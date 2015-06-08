@@ -41,6 +41,7 @@ class Application extends \Silex\Application
     /** @var Application app */
     protected static $app;
 
+    const PRIORITY_LATE = -500;
     /**
      * Alias
      *
@@ -253,6 +254,22 @@ class Application extends \Silex\Application
             ->directories()
             ->depth(0);
 
+        $finder->sortByName();
+
+         require_once(__DIR__.'/../../app/plugin/SampleEvent/SamplePlugin.php');
+
+        //  register event-handler function.
+
+        // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
+        $priorities=array();
+        $em=$app['orm.em'];
+        $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
+        foreach($handlers as $handler){
+            $plugin = $em->find('Eccube\Entity\Plugin',$handler->getPluginId());
+             //ここjoinにしたい....
+            $priorities[$plugin->getClassName()][$handler->getEvent()][$handler->getHandler()] = $handler->getPriority();
+        }
+        
         // Plugin events / service
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
@@ -262,9 +279,28 @@ class Application extends \Silex\Application
                 if (isset($config['event'])) {
                     $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
                     $subscriber = new $class($app);
-                    $app['eccube.event.dispatcher']->addSubscriber($subscriber);
-                }
+                    #$app['eccube.event.dispatcher']->addSubscriber($subscriber);
+                    foreach($subscriber->getSubscribedEvents() as $event=>$handlers){
+                        foreach($handlers as $handler){
+                            if(!isset($priorities[$config['event']][ $event ][$handler[0] ])){
+                                $priority = self::PRIORITY_LATE;
+                                // handlerテーブルに登録されていない場合
+                            }else{
+                                // handlerテーブルに登録されている場合
+                                $priority = $priorities[$config['event']][ $event ][$handler[0]];
+                                // TODO:handler[1]の内容にあわせてデフォルト優先度は変更する
+                            }
+                            # 優先度0は登録しない
 
+#echo "$event - $handler[0] - $priority <br>";
+#echo "<hr>";
+                            if(0<$priority){
+                                $app['eccube.event.dispatcher']->addListener($event,array($subscriber,$handler[0]),$priority  );
+                            } 
+                        }
+                    }
+                    
+                }
                 // Type: ServiceProvider
                 if (isset($config['service'])) {
                     foreach ($config['service'] as $service) {
