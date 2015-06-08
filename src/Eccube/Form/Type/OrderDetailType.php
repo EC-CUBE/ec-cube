@@ -21,21 +21,22 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 15/04/23
- * Time: 15:17
- */
 
 namespace Eccube\Form\Type;
 
+use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OrderDetailType extends AbstractType
 {
+    protected $app;
+
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * {@inheritdoc}
@@ -43,28 +44,29 @@ class OrderDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id')
-            // ->add('ProductClass', 'entity', array(
-            //     'label' => '原因',
-            //     'class' => 'Eccube\Entity\ProductClass',
-            //     'property' => 'code',
-            // ))
-            ->add('product_name', 'form', array(
-                'mapped' => false,
-            ))
+            ->add('product_name')
             ->add('product_code')
-            ->add('classcategory_name1')
-            ->add('classcategory_name2')
+            ->add('class_name1')
+            ->add('class_name2')
+            ->add('class_category_name1')
+            ->add('class_category_name2')
             ->add('price')
             ->add('quantity')
-            ->add('point_rate', 'form', array(
-                'mapped' => false,
-            ))
             ->add('tax_rate')
             ->add('tax_rule')
-            ->add('total_price', 'integer', array(
-                'mapped' => false,
-            ));
+            ->add('total_price');
+        $builder
+            ->add($builder->create('Product', 'hidden')
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->app['orm.em'],
+                    '\Eccube\Entity\Product'
+                )))
+            ->add($builder->create('ProductClass', 'hidden')
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->app['orm.em'],
+                    '\Eccube\Entity\ProductClass'
+                )));
+
     }
 
     /**
@@ -73,7 +75,7 @@ class OrderDetailType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\OrderDetail',
+            'data_class' => 'Eccube\Entity\OrderDetail',
         ));
     }
 

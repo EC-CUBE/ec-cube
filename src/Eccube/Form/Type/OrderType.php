@@ -21,90 +21,146 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 15/04/23
- * Time: 15:17
- */
 
 namespace Eccube\Form\Type;
 
+use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderType extends AbstractType
 {
+    protected $app;
+
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $config = $this->app['config'];
+
         $builder
-            ->add('id', 'hidden', array(
-                'mapped' => false,
+            ->add('name', 'name', array(
+                'required' => true,
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $config['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $config['stext_len'])),
+                    ),
+                ),
             ))
-            // ->add('Country')
-            // ->add('zipcode', 'text')
-            ->add('Deliv', 'entity', array(
-                'class' => 'Eccube\Entity\Deliv',
+            ->add('kana', 'name', array(
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $config['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $config['stext_len'])),
+                    ),
+                ),
+            ))
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['stext_len'],
+                    ))
+                ),
+            ))
+            ->add('zip', 'zip', array(
+                'zip01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Regex(array('pattern' => '/^\d{3}$/'))
+                    ),
+                ),
+                'zip02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Regex(array('pattern' => '/^\d{4}$/'))
+                    ),
+                ),
+            ))
+            ->add('address', 'address', array(
+                'addr01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array(
+                            'max' => $config['mtext_len'],
+                        )),
+                    ),
+                ),
+                'addr02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array(
+                            'max' => $config['mtext_len'],
+                        )),
+                    ),
+                ),
+            ))
+            ->add('email', 'email', array(
+                'label' => 'メールアドレス',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Email(),
+                ),
+            ))
+            ->add('tel', 'tel', array())
+            ->add('fax', 'tel', array(
+                'label' => 'FAX番号',
+                'required' => false,
+            ))
+            ->add('message', 'textarea', array(
+                'label' => '備考',
+                'required' => false,
+            ))
+            ->add('subtotal')
+            ->add('discount')
+            ->add('delivery_fee_total')
+            ->add('charge')
+            ->add('tax')
+            ->add('total')
+            ->add('payment_total')
+            ->add('payment_method', 'hidden')
+            ->add('note', 'textarea')
+            ->add('OrderStatus', 'entity', array(
+                'class' => 'Eccube\Entity\Master\OrderStatus',
                 'property' => 'name',
-                'expanded' => false,
-                'multiple' => false,
-                'empty_value' => '-',
+                'empty_value' => false,
+                'empty_data' => null,
             ))
             ->add('Payment', 'entity', array(
                 'class' => 'Eccube\Entity\Payment',
                 'property' => 'method',
-                'expanded' => false,
-                'multiple' => false,
-                'empty_value' => '-',
+                'empty_value' => false,
+                'empty_data' => null,
             ))
-            ->add('Customer', 'hidden', array(
-                'mapped' => false,
+            ->add('OrderDetails', 'collection', array(
+                'type' => new OrderDetailType($this->app)
             ))
-            ->add('Sex', 'sex', array(
-                'expanded' => true,
-                'multiple' => false,
+            ->add('Shippings', 'collection', array(
+                'type' => new ShippingType($this->app)
             ))
-            ->add('Job')
-            ->add('DeviceType')
-            ->add('message')
-            ->add('name', 'name')
-            ->add('kana01', 'text')
-            ->add('kana02', 'text')
-            ->add('company_name', 'text')
-            ->add('email', 'text')
-            ->add('tel', 'tel')
-            ->add('fax', 'fax')
-            ->add('zip', 'zip')
-            ->add('address', 'address')
-            ->add('birth', 'birthday', array(
-                'format' => 'yyyy-MM-dd',
-            ))
-            ->add('subtotal')
-            ->add('discount')
-            ->add('deliv_fee')
-            ->add('charge')
-            ->add('use_point')
-            ->add('add_point')
-            ->add('birth_point')
-            ->add('tax')
-            ->add('total')
-            ->add('payment_total')
-            ->add('payment_method')
-            ->add('note', 'textarea')
-            ->add('OrderStatus')
-            ->add('commit_date')
-            ->add('payment_date')
-            ->add('create_date', 'date', array(
-                'mapped' => false,
-            ))
-            ->add('OrderDetails', 'collection', array('type' => new OrderDetailType()))
-            ->add('Shippings', 'collection', array('type' => new ShippingType()))
         ;
+        $builder
+            ->add($builder->create('Customer', 'hidden')
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->app['orm.em'],
+                    '\Eccube\Entity\Customer'
+                )));
     }
 
     /**
@@ -113,7 +169,7 @@ class OrderType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\Order',
+            'data_class' => 'Eccube\Entity\Order',
         ));
     }
 

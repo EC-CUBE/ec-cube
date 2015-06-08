@@ -21,55 +21,42 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 15/04/23
- * Time: 14:01
- */
-
 namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Application;
-use Symfony\Component\HttpKernel\Exception as HttpException;
+use Eccube\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class EditController
+class EditController extends AbstractController
 {
-    public function index(Application $app, $id = 0)
+    public function index(Application $app, Request $request, $id = null)
     {
-        if ($id == 0) {
-            $Order = $app['eccube.service.order']->newOrder();
+        $TargetOrder = null;
+
+        if (is_null($id)) {
+            $TargetOrder = $app['eccube.service.order']->newOrder();
         } else {
-            $Order = $app['orm.em']
-                ->getRepository('Eccube\Entity\Order')
-                ->find($id);
-        }
-        if (is_null($Order)) {
-            throw new HttpException\NotFoundHttpException('order is not found.');
-        }
-
-        $form = $app['form.factory']
-            ->createBuilder('order', $Order)
-            ->getForm();
-
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
-                $Order = $form->getData();
-                $OrderDetails = $Order->getOrderDetails();
-                $Shippings = $Order->getShippings();
-
-                $app['orm.em']->persist($Order);
-                $app['orm.em']->flush();
-                // TODO: リダイレクトすると検索条件が消える
-                // return $app->redirect($app['url_generator']->generate('admin_order'));
+            $TargetOrder = $app['eccube.repository.order']->find($id);
+            if (is_null($TargetOrder)) {
+                throw new NotFoundHttpException();
             }
         }
 
-        return $app['view']->render('Order/edit.twig', array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-                'orderId' => $id,
+        $form = $app['form.factory']
+            ->createBuilder('order', $TargetOrder)
+            ->getForm();
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                // todo
+            }
+        }
+
+        return $app->render('Order/edit.twig', array(
+            'form' => $form->createView(),
+            'Order' => $TargetOrder,
         ));
     }
 }

@@ -119,6 +119,24 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
         return $this->getPriceIncTax() * $this->getQuantity();
     }
 
+    public function getClassName1()
+    {
+        $ClassCategory = $this->getProductClass()->getClassCategory1();
+
+        return is_null($ClassCategory)
+            ? null
+            : $this->getProductClass()->getClassCategory1()->getClassName();
+    }
+
+    public function getClassName2()
+    {
+        $ClassCategory = $this->getProductClass()->getClassCategory2();
+
+        return is_null($ClassCategory)
+            ? null
+            : $this->getProductClass()->getClassCategory2()->getClassName();
+    }
+
     /**
      * @var integer
      */
