@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class PluginEventHandlerRepository extends EntityRepository
 {
+
+
+    public function getHandlers()
+    {
+        $qb = $this->createQueryBuilder('p')->andWhere('p.del_flg = 0 ');
+        return $qb->getQuery()->getResult();
+    }
+
+
 }
