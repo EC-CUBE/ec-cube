@@ -59,6 +59,7 @@ class EccubeExtension extends \Twig_Extension
             'no_image_main_list' => new \Twig_Filter_Method($this, 'getNoImageMainList'),
             'no_image_main' => new \Twig_Filter_Method($this, 'getNoImageMain'),
             'no_image_product' => new \Twig_Filter_Method($this, 'getNoImageProduct'),
+            'date_format' => new \Twig_Filter_Method($this, 'getDateFormat'),
         );
     }
 
@@ -146,4 +147,20 @@ class EccubeExtension extends \Twig_Extension
     {
         return $price + $this->app['eccube.service.tax_rule']->calcTax($price, $tax_rate, $tax_rule);
     }
+
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getDateFormat($date, $value = '', $format = 'Y/m/d')
+    {
+        if (is_null($date)) {
+            return $value;
+        } else {
+            return $date->format($format);
+        }
+    }
+
 }
