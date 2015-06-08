@@ -677,8 +677,8 @@ fieldset[disabled] .btn-link:focus {
 }
 
 .btn .cb-angle-right {
-    font-size: 12px;
-    font-size: 1.2rem;
+	position: relative;
+	top: -1px;
 }
 
 .btn-lg, .btn-group-lg > .btn {
@@ -1169,11 +1169,12 @@ dd.form-group .errormsg {
 /* item_box */
 
 .item_box > div {
+	border-top: 1px solid #d1d8d9;
     padding: 8px 16px;
 }
 .item_box .item_photo img {
 	width: 100%;
-    max-width: 100px;
+    max-width: 80px;
 }
 .item_box .icon_edit {
     position: absolute;
@@ -1218,7 +1219,8 @@ dd.form-group .errormsg {
 	vertical-align: middle;
 }
 .item_list .item_box .item_photo {
-    width: 135px;
+    width: 98px;
+	padding-right: 0;
 }
 .item_list .item_box .icon_edit {
     position: static;
@@ -1258,6 +1260,9 @@ dd.form-group .errormsg {
     position: relative;
     padding-left: 1em;
 }
+.sortable_list .item_box > div {
+	border-top: 0 none;
+}
 .sortable_list .icon_sortable {
     position: absolute;
     left: 0; top: 50%;
@@ -1267,6 +1272,10 @@ dd.form-group .errormsg {
     color: #b8bec4;
     font-size: 20px;
     font-size: 2rem;
+}
+.sortable_list .icon_sortable .cb {
+	position: relative;
+	top: -1px;
 }
 .sortable_list .number_sort {
     white-space: nowrap;
@@ -1296,7 +1305,6 @@ dd.form-group .errormsg {
     .item_box > div {
         padding: 16px;
         vertical-align: middle;
-        border-top: 1px solid #d1d8d9;
     }
     .no-header > .box-body .item_box:first-child > div {
         border-top: 0 none;
@@ -1330,12 +1338,17 @@ dd.form-group .errormsg {
     .sortable_list .item_box {
         padding-left: 16px;
     }
+	.sortable_list .item_box > div {
+		border-top: 1px solid #d1d8d9;
+	}
+    .sortable_list .item_box > div:first-child {
+        padding-left: 8px;
+    }
     .sortable_list .icon_sortable {
         display: table-cell;
         position: inherit;
         vertical-align: middle;
         margin-top: 0;
-        padding: 1em;
     }
     .sortable_list .item_pattern {
         padding: 16px;
@@ -1343,7 +1356,15 @@ dd.form-group .errormsg {
     .sortable_list .icon_sortable + .item_photo {
         padding-left: 0;
     }
+    .sortable_list .icon_edit .dropdown > a {
+		padding: 13px 16px;
+	}
+	.sortable_list .item_pattern + .icon_edit {
+		width: 4%;
+	}
+
 }
+
 
 
 /* amount_area */
@@ -1358,6 +1379,16 @@ dd.form-group .errormsg {
 }
 
 /* table_list */
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+	border-bottom: 1px solid #ddd;
+	border-top: 0 none;
+}
 
 .table_list table {
     margin-bottom: 0;
@@ -1490,8 +1521,12 @@ dl.accordion {
 }
 .tree ul li .cb {
     display: inline-block;
-    color: #d0d0d0;
-    margin-right: 5px;
+    color: #bbb;
+    margin-right: 1px;
+	font-size: 13px;
+	font-size: 1.3rem;
+	position: relative;
+	top: -1px;
 }
 
 /*	header
@@ -1929,8 +1964,8 @@ dl.accordion {
     font-size: 1.6rem;
     margin-left: 16px;
 	vertical-align: middle;
-}
-#main h2.page-header {
+	position: relative;
+	top: -2px;
 }
 
 
@@ -2065,7 +2100,7 @@ ul.link-with-bar li:last-child::after {
 
 /* form layout */
 
-.form-group.range input[type="text"],
+.form-group.range .form-control,
 .form-group.range label {
     display: inline-block;
     vertical-align: middle;
@@ -2073,8 +2108,14 @@ ul.link-with-bar li:last-child::after {
     margin-left: 1%;
     margin-right: 1%;
 }
-.form-group.range input[type="text"] {
+.form-group.range .form-control {
     width: 28%;
+}
+.form-group.range input.input_cal.form-control {
+    width: 43%;
+}
+.form-group.range input.input_cal.form-control:first-child {
+    margin-left: 0;
 }
 
 .input_tel input {
@@ -2094,7 +2135,7 @@ ul.link-with-bar li:last-child::after {
     vertical-align: middle;
     margin-left: 2%;
     margin-bottom: 0;
-    width: 49%;
+    width: 48%;
 }
 .form-group .input_name input:first-child {
     margin-left: 0;
