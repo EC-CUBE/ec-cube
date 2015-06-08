@@ -62,7 +62,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <dl class="item_detail td">
                                                         <dt class="item_name">{{ OrderDetail.product_name }}</dt>
                                                         <dd class="item_pattern small">
-                                                            {{ OrderDetail.class_category_name1 }}&nbsp;{{ OrderDetail.class_category_name2 }}
+                                                            {% if OrderDetail.class_category_name1 is not empty %}
+                                                                {{ OrderDetail.class_category_name1 }}
+                                                            {% endif %}
+                                                            {% if OrderDetail.class_category_name1 is not empty %}
+                                                                / {{ OrderDetail.class_category_name2 }}
+                                                            {% endif %}
                                                         </dd>
                                                         <dd class="item_price">￥{{ OrderDetail.price }} ×{{ OrderDetail.quantity }}</dd>
                                                     </dl>

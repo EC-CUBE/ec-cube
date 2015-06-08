@@ -75,12 +75,12 @@ class MypageController extends AbstractController
      * @param  Request     $request
      * @return string
      */
-    public function history(Application $app, Request $request, $orderId)
+    public function history(Application $app, Request $request, $id)
     {
         $Customer = $app['user'];
 
         $Order = $app['eccube.repository.order']->findOneBy(array(
-            'id' => $orderId,
+            'id' => $id,
             'Customer' => $Customer,
         ));
         if (!$Order) {
@@ -128,13 +128,13 @@ class MypageController extends AbstractController
      * @param  Request     $request
      * @return string
      */
-    public function mailView(Application $app, Request $request, $sendId)
+    public function mailView(Application $app, Request $request, $id)
     {
         $Customer = $app['user'];
 
         /* @var $MailHistory \Eccube\Entity\MailHistory */
         try {
-            $MailHistory = $app['eccube.repository.mail_history']->getByCustomerAndId($Customer, $sendId);
+            $MailHistory = $app['eccube.repository.mail_history']->getByCustomerAndId($Customer, $id);
         } catch (\Exception $e) {
             throw new NotFoundHttpException();
         }
