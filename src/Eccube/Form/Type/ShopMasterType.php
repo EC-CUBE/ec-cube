@@ -311,15 +311,6 @@ class ShopMasterType extends AbstractType
                 ),
             ))
 
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
-                $form = $event->getForm();
-                $downloadable_days_unlimited = $form['downloadable_days_unlimited']->getData();
-                $downloadable_days = $form['downloadable_days']->getData();
-
-                if (empty($downloadable_days) && empty($downloadable_days_unlimited)) {
-                    $form['downloadable_days']->addError(new FormError('admin.shop.download.invalid'));
-                }
-            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
