@@ -1,34 +1,31 @@
-Eccube\Entity\Plugin:
+Eccube\Entity\PluginEventHandler:
     type: entity
-    table: dtb_plugin
-    repositoryClass: Eccube\Repository\PluginRepository
+    table: dtb_plugin_event_handler
+    repositoryClass: Eccube\Repository\PluginEventHandlerRepository
     id:
         id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-            column: plugin_id
+            column: id
             generator:
-                strategy: AUTO
+                strategy: IDENTITY
     fields:
-        name:
-            type: text
+        event:
+            type: string
             nullable: false
-            column: plugin_name
-        code:
-            type: text
+        priority:
+            type: integer
             nullable: false
-            column: plugin_code
-        class_name:
-            type: text
+        plugin_id:
+            type: integer
             nullable: false
-        enable:
+        del_flg:
             type: smallint
             nullable: false
-            unsigned: false
-            default: '0'
-        version:
+            default: 0
+        handler:
             type: string
             nullable: false
         create_date:

@@ -5,9 +5,9 @@ namespace Eccube\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Plugin
+ * PluginEventHandler
  */
-class Plugin
+class PluginEventHandler
 {
     /**
      * @var integer
@@ -17,27 +17,27 @@ class Plugin
     /**
      * @var string
      */
-    private $name;
+    private $event;
 
     /**
-     * @var string
+     * @var int
      */
-    private $code;
+    private $priority;
 
     /**
-     * @var string
+     * @var int
      */
-    private $class_name;
+    private $plugin_id;
 
     /**
      * @var integer
      */
-    private $enable;
+    private $del_flg;
 
     /**
      * @var string
      */
-    private $version;
+    private $handler;
 
     /**
      * @var \DateTime
@@ -61,125 +61,125 @@ class Plugin
     }
 
     /**
-     * Set name
+     * Set event
      *
-     * @param string $name
-     * @return Plugin
+     * @param string $event
+     * @return PluginEventHandler
      */
-    public function setName($name)
+    public function setEvent($event)
     {
-        $this->name = $name;
+        $this->event = $event;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get event
      *
      * @return string 
      */
-    public function getName()
+    public function getEvent()
     {
-        return $this->name;
+        return $this->event;
     }
 
     /**
-     * Set code
+     * Set priority
      *
-     * @param string $code
-     * @return Plugin
+     * @param \int $priority
+     * @return PluginEventHandler
      */
-    public function setCode($code)
+    public function setPriority(\int $priority)
     {
-        $this->code = $code;
+        $this->priority = $priority;
 
         return $this;
     }
 
     /**
-     * Get code
+     * Get priority
      *
-     * @return string 
+     * @return \int 
      */
-    public function getCode()
+    public function getPriority()
     {
-        return $this->code;
+        return $this->priority;
     }
 
     /**
-     * Set class_name
+     * Set plugin_id
      *
-     * @param string $className
-     * @return Plugin
+     * @param \int $pluginId
+     * @return PluginEventHandler
      */
-    public function setClassName($className)
+    public function setPluginId(\int $pluginId)
     {
-        $this->class_name = $className;
+        $this->plugin_id = $pluginId;
 
         return $this;
     }
 
     /**
-     * Get class_name
+     * Get plugin_id
      *
-     * @return string 
+     * @return \int 
      */
-    public function getClassName()
+    public function getPluginId()
     {
-        return $this->class_name;
+        return $this->plugin_id;
     }
 
     /**
-     * Set enable
+     * Set del_flg
      *
-     * @param integer $enable
-     * @return Plugin
+     * @param integer $delFlg
+     * @return PluginEventHandler
      */
-    public function setEnable($enable)
+    public function setDelFlg($delFlg)
     {
-        $this->enable = $enable;
+        $this->del_flg = $delFlg;
 
         return $this;
     }
 
     /**
-     * Get enable
+     * Get del_flg
      *
      * @return integer 
      */
-    public function getEnable()
+    public function getDelFlg()
     {
-        return $this->enable;
+        return $this->del_flg;
     }
 
     /**
-     * Set version
+     * Set handler
      *
-     * @param string $version
-     * @return Plugin
+     * @param string $handler
+     * @return PluginEventHandler
      */
-    public function setVersion($version)
+    public function setHandler($handler)
     {
-        $this->version = $version;
+        $this->handler = $handler;
 
         return $this;
     }
 
     /**
-     * Get version
+     * Get handler
      *
      * @return string 
      */
-    public function getVersion()
+    public function getHandler()
     {
-        return $this->version;
+        return $this->handler;
     }
 
     /**
      * Set create_date
      *
      * @param \DateTime $createDate
-     * @return Plugin
+     * @return PluginEventHandler
      */
     public function setCreateDate($createDate)
     {
@@ -202,7 +202,7 @@ class Plugin
      * Set update_date
      *
      * @param \DateTime $updateDate
-     * @return Plugin
+     * @return PluginEventHandler
      */
     public function setUpdateDate($updateDate)
     {
