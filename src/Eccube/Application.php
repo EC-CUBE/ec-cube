@@ -260,16 +260,21 @@ class Application extends \Silex\Application
 
         //  register event-handler function.
 
-        // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
-        $priorities=array();
-        $em=$app['orm.em'];
-        $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
-        foreach($handlers as $handler){
-            $plugin = $em->find('Eccube\Entity\Plugin',$handler->getPluginId());
-             //ここjoinにしたい....
-            $priorities[$plugin->getClassName()][$handler->getEvent()][$handler->getHandler()] = $handler->getPriority();
+
+
+        if ($app['env'] !== 'cli' ) {
+            // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
+            $priorities=array();
+            $em=$app['orm.em'];
+            $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
+            foreach($handlers as $handler){
+                $plugin = $em->find('Eccube\Entity\Plugin',$handler->getPluginId());
+                 //ここjoinにしたい....
+                $priorities[$plugin->getClassName()][$handler->getEvent()][$handler->getHandler()] = $handler->getPriority();
+            }
         }
-        
+
+
         // Plugin events / service
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
@@ -292,8 +297,8 @@ class Application extends \Silex\Application
                             }
                             # 優先度0は登録しない
 
-#echo "$event - $handler[0] - $priority <br>";
-#echo "<hr>";
+echo "$event - $handler[0] - $priority <br>";
+echo "<hr>";
                             if(0<$priority){
                                 $app['eccube.event.dispatcher']->addListener($event,array($subscriber,$handler[0]),$priority  );
                             } 
@@ -325,6 +330,7 @@ class Application extends \Silex\Application
                 }
             }
         }
+      
 
         // hook point
         $this->before(function (Request $request, Application $app) {
