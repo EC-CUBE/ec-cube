@@ -1917,9 +1917,11 @@ dl.accordion {
 }
 #main h1.page-header {
     margin: 0 0 16px;
+    padding: 24px 16px;
     background: #fff;
-    padding: 16px;
     border-bottom: 1px solid #e6e6e6;
+	font-size: 28px;
+	font-size: 2.8rem;
 	font-weight: normal;
 }
 #main h1.page-header span {
