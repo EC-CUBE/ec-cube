@@ -21,8 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
-{% block main %}
+{% block title %}ご注文内容の確認{% endblock %}
 
+{% block main %}
 <script type="text/javascript">//<![CDATA[
 var sent = false;
 $(document).ready(function(){
@@ -42,6 +43,149 @@ $(document).ready(function(){
 });
 
 //]]></script>
+
+
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+        
+            <div id="main">
+                <h1 class="page-heading">ご注文内容のご確認</h1>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="flowline step3">
+                                <ul class="clearfix">
+                                <li><span class="flow_number">1</span><br>カートの商品</li>
+                                <li class="active"><span class="flow_number">2</span><br>ご注文内容確認</li>
+                                <li><span class="flow_number">3</span><br>完了</li>
+                                </ul>
+                            </div>
+                        </div><!-- /.col --> 
+                    </div><!-- /.row --> 
+                    
+                    <form>
+                        <div id="shopping_confirm" class="row">
+                            <div id="confirm_main" class="col-sm-8">    
+                                <div class="cart_item table">
+                                    <div class="tbody">
+                                        {% for OrderDetail in Order.OrderDetails %}
+                                        <div class="item_box tr">
+                                            <div class="td table">
+                                                <div class="item_photo"><a href="#"><img src="img/top/img06.jpg"></a></div>
+                                                <dl class="item_detail">
+                                                    <dt class="item_name text-default"><a href="#">{{ OrderDetail.product_name }}</a></dt>
+                                                    <dd class="item_pattern small">味：抹茶 <br>大きさ：M</dd>
+                                                    <dd class="item_price">￥ {{ OrderDetail.priceIncTax|number_format }} ×{{ OrderDetail.quantity }}</dd>
+                                                    <dd class="item_subtotal">小計：￥{{ OrderDetail.totalPrice|number_format }}</dd>
+                                                </dl>
+                                            </div>
+                                        </div><!--/item_box-->
+                                        {% endfor %}
+
+
+
+
+
+
+
+                                        
+                                    </div>
+                                </div><!--/cart_item-->
+                                
+                               <h2 class="heading02">お客様情報</h2>
+                               <div class="column is-edit">
+                                    <p class="address">CUBE 太郎 様<br>
+                                    〒000-0000　北海道00 TestTest<br>
+                                    000-0000-0000</p>
+                                    <p class="btn_edit"><button class="btn btn-default btn-sm">変更</button></p>
+                               </div>
+
+                               <h2 class="heading02">お届け先情報</h2>
+                               <div class="column is-edit">
+                                <p class="address">お客様情報と同じ</p>
+                            
+                                <div class="form-inline form-group">
+                                    <label>お届け日</label>
+                                    {{ form_widget(form.deliveryDate) }}<br class="sp">
+                                    <label>お届け時間</label>
+                                    {{ form_widget(form.deliveryTime) }}
+                                </div>
+                                <p><button class="btn btn-default btn-sm">お届け先を追加する</button></p>
+                                <p class="btn_edit"><button class="btn btn-default btn-sm">変更</button></p>
+                               </div>
+
+                               <h2 class="heading02">配送方法・お支払方法</h2>
+                               <div class="column">
+                                   <div class="form-inline form-group">
+                                       <label>配送方法</label>
+                                       {{ form_widget(form.delivery) }}
+                                   </div>
+                                   <div class="form-inline form-group">
+                                       <label>支払方法</label>
+                                       {{ form_widget(form.payment) }}
+                                   </div>
+                               </div>
+
+                               <h2 class="heading02">ポイントのご利用</h2>
+                               <div class="column is-edit">
+                                <p>0pt 利用する　（10pt 利用可能）</p>
+                                <p class="btn_edit"><button class="btn btn-default btn-sm">変更</button></p>
+                               </div>
+
+                               <h2 class="heading02">お問い合わせ欄</h2>
+                               <div class="column">
+                                    <textarea placeholder="お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)" rows="6" class="form-control"></textarea>
+                               </div>
+
+
+
+                            </div><!-- /.col -->
+                            
+                            <div id="confirm_side" class="col-sm-4">
+                                <div class="total_box">
+                                    <dl>
+                                    <dt>小計</dt>
+                                    <dd class="text-primary">\ 1,285</dd>
+                                    </dl>
+                                    <dl>
+                                    <dt>ポイント利用</dt>
+                                    <dd>- \ 85</dd>
+                                    </dl>
+                                    <dl>
+                                    <dt>手数料</dt>
+                                    <dd>\ 0</dd>
+                                    </dl>
+                                    <dl>
+                                    <dt>送料</dt>
+                                    <dd>\ 785</dd>
+                                    </dl>
+
+                                    <div class="total_amount">
+                                        <p class="total_price">合計 <strong class="text-primary">\ 1,285<span class="small">税込</span></strong></p>
+                                        <p class="total_point">178 Pt獲得</p>
+                                        <p><button type="button" class="btn btn-primary btn-block">注文する</button></p>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div><!-- /.row --> 
+                    </form>
+
+                </div>
+            </div>
+            
+            
+        </div>
+
+
+
+
+
+
+
+
+
+
 
 <!--CONTENTS-->
 <div id="undercolumn">
@@ -78,7 +222,7 @@ $(document).ready(function(){
                     <th scope="col">数量</th>
                     <th scope="col">小計</th>
                 </tr>
-                {% for detail in order.OrderDetails %}
+                {% for detail in Order.OrderDetails %}
                 <tr>
                     <td class="alignC">
                         <img src="{{ app.config.image_save_urlpath }}{{ detail.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ detail.Product.name }}" />
@@ -102,19 +246,19 @@ $(document).ready(function(){
                 {% endfor %}
                 <tr>
                     <th colspan="4" class="alignR" scope="row">小計</th>
-                    <td class="alignR">{{ order.subtotal }}円</td>
+                    <td class="alignR">{{ Order.subtotal }}円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="alignR" scope="row">送料</th>
-                    <td class="alignR">{{ order.deliv_fee }}円</td>
+                    <td class="alignR">{{ Order.delivery_fee_total }}円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="alignR" scope="row">手数料</th>
-                    <td class="alignR">{{ order.charge }}円</td>
+                    <td class="alignR">{{ Order.charge }}円</td>
                 </tr>
                 <tr>
                     <th colspan="4" class="alignR" scope="row">合計</th>
-                    <td class="alignR"><span class="price">{{ order.payment_total }}円</span></td>
+                    <td class="alignR"><span class="price">{{ Order.payment_total }}円</span></td>
                 </tr>
             </table>
 
@@ -164,7 +308,7 @@ $(document).ready(function(){
         <a href="{{ path('shopping_shipping_multiple') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_several_address.jpg" alt="お届け先を複数指定する" /></a>
     </h3>
 
-{% for shipping in order.Shippings %}
+{% for shipping in Order.Shippings %}
     <h2>お届け先</h2>
     <table summary="ご注文内容確認">
         <col width="10%" />
@@ -204,9 +348,7 @@ $(document).ready(function(){
             <th scope="row">お届け日</th>
             <td>
                 お届け日：
-                {{ form_widget(form.delivery_date) }}
                 お届け時間：
-                {{ form_widget(form.delivery_time) }}
             </td>
         </tr>
         </tbody>
@@ -219,7 +361,6 @@ $(document).ready(function(){
             <col width="80%" />
             <tr>
                 <th>お問い合わせ</th>
-                <td>{{ form_widget(form.message) }}</td>
             </tr>
         </table>
     </div>

@@ -150,6 +150,7 @@ order_new: 1
 order_pay_wait: 2
 order_pending: 7
 order_pre_end: 6
+order_processing: 8
 order_status_max: 50
 ostore_log_realfile: /PATH/TO/WEB_ROOT/data/logs/ownersstore.log
 ostore_sslurl: 'https://www.ec-cube.net/'

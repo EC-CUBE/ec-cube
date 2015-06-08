@@ -27,6 +27,7 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Form\Type\ShippingMultiType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class ShoppingController extends AbstractController
 {
@@ -53,7 +54,8 @@ class ShoppingController extends AbstractController
         $app['eccube.service.cart']->lock();
         $app['eccube.service.cart']->save();
 
-        return $app->redirect($app['url_generator']->generate('shopping'));
+        return $app->redirect($app->url('shopping'));
+
     }
 
     protected function init($app)
@@ -71,30 +73,36 @@ class ShoppingController extends AbstractController
 
     public function index(Application $app)
     {
-        // TODO delete_flagではなく, 注文の確定フラグをみるようにする.
+        // delete_flagではなく, 注文の確定フラグをみるようにする
         $app['orm.em']->getFilters()->disable('soft_delete');
 
-        // カートの変更チェック
-        if (!$app['eccube.service.cart']->isLocked()) {
-            return $app->redirect($app['url_generator']->generate('cart'));
+        $cartService = $app['eccube.service.cart'];
+
+        // カートチェック
+        if (!$cartService->isLocked()) {
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
         }
 
-        // 受注データを取得.
-        $preOrderId = $app['eccube.service.cart']->getPreOrderId();
-        $Order = $app['eccube.repository.order']->findOneBy(array('id' => $preOrderId)); // TODO order_temp_idにする.
+        // 未ログインの場合は, ログイン画面へリダイレクト.
+        if (!$app['security']->isGranted('ROLE_USER')) {
+            return $app->redirect($app->url('shopping_login'));
+        }
 
-        // 初回アクセス(受注データがない)の場合は, 受注データを生成
+        // 受注データを取得
+        $preOrderId = $cartService->getPreOrderId();
+        $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $preOrderId, 'OrderStatus' => $app['config']['order_processing']));
+
+        // 初回アクセス(受注データがない)の場合は, 受注データを作成
         if (is_null($Order)) {
-            // 未ログインの場合は, ログイン画面へリダイレクト.
-            if (!$app['security']->isGranted('ROLE_USER')) {
-                return $app->redirect($app['url_generator']->generate('shopping_login'));
-            }
-            $Order = $app['eccube.service.order']->registerPreOrderFromCartItems(
-                $app['eccube.service.cart']->getCart()->getCartItems(),
-                $app['user']
-            );
-            $app['eccube.service.cart']->setPreOrderId($Order->getId());
-            $app['eccube.service.cart']->save();
+            // ランダムなpre_order_idを作成
+            $preOrderId = md5(uniqid(rand(), true));
+
+            // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
+            $Order = $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $app['user'], $preOrderId);
+
+            $cartService->setPreOrderId($preOrderId);
+            $cartService->save();
         }
 
         // 受注関連情報を最新状態に更新
@@ -104,17 +112,50 @@ class ShoppingController extends AbstractController
             ->createBuilder('shopping')
             ->getForm();
 
-        // 配送業者選択
+        // 配送業社の設定
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
         $form->add('delivery', 'entity', array(
-            'class' => 'Eccube\Entity\Deliv',
+            'class' => 'Eccube\Entity\Delivery',
             'property' => 'name',
             'choices' => $deliveries,
-            'data' => $Order->getDeliv()));
+        ));
+
+
+        // お届け日の設定
+        $minDate = 0;
+        foreach ($Order->getOrderDetails() as $detail) {
+            if ($minDate < $detail->getProductClass()->getDeliveryDate()->getValue()) {
+                $minDate < $detail->getProductClass()->getDeliveryDate()->getValue();
+            }
+        }
+        error_log($minDate);
+        // 日付を設定
+        $deliveryDates = array();
+        for ($i = $minDate; $i < $app['config']['deliv_date_end_max']; $i++) {
+            $deliveryDate = new \Eccube\Entity\DeliveryDate();
+            $deliveryDate->setName($i);
+            $deliveryDates[] = $deliveryDate;
+        }
+
+
+        $form->add('deliveryDate', 'entity', array(
+            'class' => 'Eccube\Entity\DeliveryDate',
+            'property' => 'name',
+            'choices' => $deliveryDates,
+        ));
+
+
+        // お届け時間の設定
+        $form->add('deliveryTime', 'entity', array(
+            'class' => 'Eccube\Entity\DeliveryTime',
+            'property' => 'delivery_time',
+            'choices' => $deliveries[0]->getDeliveryTimes(),
+        ));
 
         // 支払い方法選択
-        $paymentOptions = $Order->getDeliv()->getPaymentOptions();
+        $paymentOptions = $deliveries[0]->getPaymentOptions();
         $payments = array();
+        // 初期値で設定されている配送業社を設定
         foreach ($paymentOptions as $paymentOption) {
             $payments[] = $paymentOption->getPayment();
         }
@@ -122,17 +163,12 @@ class ShoppingController extends AbstractController
             'class' => 'Eccube\Entity\Payment',
             'property' => 'method',
             'choices' => $payments,
-            'data' => $Order->getPayment()));
+        ));
 
-        $title = "ご注文内容の確認";
-
-        return $app['view']->render(
-            'Shopping/index.twig',
-            array(
+        return $app['view']->render('Shopping/index.twig', array(
                 'form' => $form->createView(),
-                'title' => $title,
-                'order' => $Order)
-        );
+                'Order' => $Order,
+        ));
     }
 
     // 購入処理
@@ -150,12 +186,14 @@ class ShoppingController extends AbstractController
                 $this->orderService->commit($Order);
                 $this->cartService->clear()->save();
 
-                return $app->redirect($app['url_generator']->generate('shopping_complete'));
+                return $app->redirect($app->url('shopping_complete'));
+
             }
         }
 
         // todo エラーハンドリング
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
+
     }
 
     // 購入完了画面表示
@@ -201,7 +239,8 @@ class ShoppingController extends AbstractController
             }
         }
 
-        return $app->redirect($app['url_generator']->generate('shopping'));
+        return $app->redirect($app->url('shopping'));
+
     }
 
     // 支払い方法設定
@@ -225,7 +264,8 @@ class ShoppingController extends AbstractController
             }
         }
 
-        return $app->redirect($app['url_generator']->generate('shopping'));
+        return $app->redirect($app->url('shopping'));
+
     }
 
     // ポイント設定
@@ -262,7 +302,8 @@ class ShoppingController extends AbstractController
                 $app['orm.em']->persist($Order);
                 $app['orm.em']->flush();
 
-                return $app->redirect($app['url_generator']->generate('shopping'));
+                return $app->redirect($app->url('shopping'));
+
             }
         }
 
@@ -339,7 +380,8 @@ class ShoppingController extends AbstractController
                 $app['orm.em']->persist($Shipping);
                 $app['orm.em']->flush();
 
-                return $app->redirect($app['url_generator']->generate('shopping'));
+                return $app->redirect($app->url('shopping'));
+
             }
         }
 
@@ -442,7 +484,8 @@ class ShoppingController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
-                return $app->redirect($app['url_generator']->generate('shopping'));
+                return $app->redirect($app->url('shopping'));
+
             }
         }
 
@@ -457,24 +500,44 @@ class ShoppingController extends AbstractController
         );
     }
 
-    public function login(Application $app)
+    public function login(Application $app, Request $request)
     {
         if (!$app['eccube.service.cart']->isLocked()) {
             //return $app->redirect($app['url_generator']->generate('cart'));
         }
 
         if ($app['security']->isGranted('ROLE_USER')) {
-            return $app->redirect($app['url_generator']->generate('shopping'));
+            return $app->redirect($app->url('shopping'));
+        }
+        $session = $request->getSession();
+
+        // ログインエラーがあれば、ここで取得
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        // Sessionにエラー情報があるか確認
+        } elseif ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            // Sessionからエラー情報を取得
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            // 一度表示したらSessionからは削除する
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
+
         /* @var $form \Symfony\Component\Form\FormInterface */
+        /*
+        $options = array(
+            'csrf_protection' => true,
+        );
+         * 
+         */
         $form = $app['form.factory']
+//            ->createNamedBuilder('', 'customer_login', null, $options)
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
         return $app['view']->render('Shopping/login.twig', array(
-            'title' => 'ログイン',
-            'error' => $app['security.last_error']($app['request']),
+//            'error' => $app['security.last_error']($app['request']),
+            'error'         => $error,
             'form'  => $form->createView(),
         ));
     }
@@ -482,7 +545,7 @@ class ShoppingController extends AbstractController
     public function nonmember(Application $app)
     {
         if ($this->cartChanged($app)) {
-            $app->redirect($app['url_generator']->generate('shopping_error'));
+            return $app->redirect($app->url('shopping_error'));
         }
 
         $builder = $app['form.factory']->createBuilder('nonmember');
@@ -529,7 +592,8 @@ class ShoppingController extends AbstractController
                     $app['eccube.service.cart']->save();
                 }
 
-                return $app->redirect($app['url_generator']->generate('shopping'));
+                return $app->redirect($app->url('shopping'));
+
             }
         }
 
@@ -578,23 +642,30 @@ class ShoppingController extends AbstractController
     }
 
     // todo リファクタ
+    /**
+     * 配送業者を取得
+     */
     private function findDeliveriesFromOrderDetails($app, $details)
     {
-        $productTypeIds = array();
+
+        $productTypes = array();
         foreach ($details as $detail) {
-            $productTypeIds[] = $detail->getProductClass()->getProductType()->getId();
+            $productTypes[] = $detail->getProductClass()->getProductType();
         }
-        $productTypeIds = array_unique($productTypeIds);
+
         $qb = $app['orm.em']->createQueryBuilder();
         $deliveries = $qb->select("d")
-            ->from("\\Eccube\\Entity\\Deliv", "d")
-            ->where($qb->expr()->in('d.product_type_id', $productTypeIds))
-            ->andWhere("d.del_flg = 0")
+            ->from("\Eccube\Entity\Delivery", "d")
+            ->where($qb->expr()->in('d.ProductType', ':productTypes'))
+            ->setParameter('productTypes', $productTypes)
+            ->andWhere("d.del_flg = :delFlg")
+            ->setParameter('delFlg', $app['config']['disabled'])
             ->orderBy("d.rank", "ASC")
-            ->setMaxResults(1)
             ->getQuery()
             ->getResult();
 
         return $deliveries;
+
+
     }
 }

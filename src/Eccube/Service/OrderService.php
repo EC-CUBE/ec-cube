@@ -41,17 +41,13 @@ class OrderService
         $Order->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())
             ->setDiscount(0)
-            ->setUsePoint(0)
-            ->setAddPoint(0)
-            ->setBirthPoint(0)
             ->setSubtotal(0)
             ->setTotal(0)
             ->setPaymentTotal(0)
             ->setCharge(0)
             ->setTax(0)
-            ->setDelivFee(0)
-            ->setOrderStatus($this->app['eccube.repository.order_status']->find(1)) // todo
-            ->setDelFlg(0); // todo
+            ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
+            ->setDelFlg($this->app['config']['disabled']);
 
         return $Order;
     }
@@ -59,15 +55,16 @@ class OrderService
     public function newOrderDetail($Product, $ProductClass, $quantity)
     {
         $OrderDetail = new \Eccube\Entity\OrderDetail();
+        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
         $OrderDetail->setProduct($Product)
             ->setProductClass($ProductClass)
             ->setProductName($Product->getName())
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity)
-            ->setPointRate(0) // todo
-            ->setTaxRule(0) // todo
-            ->setTaxRate(0); // todo
+            ->setTaxRule($TaxRule->getId())
+            ->setTaxRate($TaxRule->getTaxRate());
+
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if (!is_null($ClassCategory1)) {
             $OrderDetail->setClasscategoryName1($ClassCategory1->getName());
@@ -104,6 +101,7 @@ class OrderService
             ->setFax03($Customer->getFax03())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
+            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02())
@@ -133,6 +131,7 @@ class OrderService
             ->setFax03($Customer->getFax03())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
+            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
@@ -140,11 +139,12 @@ class OrderService
             return $Shipping;
         }
 
-        public function registerPreOrderFromCartItems($cartItems, \Eccube\Entity\Customer $Customer = null)
+        public function registerPreOrderFromCartItems($cartItems, \Eccube\Entity\Customer $Customer = null, $preOrderId)
         {
             // 受注
             $Order = $this->newOrder();
             $this->copyToOrderFromCustomer($Order, $Customer);
+            $Order->setPreOrderId($preOrderId);
 
             $this->app['orm.em']->persist($Order);
             $this->app['orm.em']->flush();
@@ -153,19 +153,17 @@ class OrderService
             $Shipping = new \Eccube\Entity\Shipping();
 
             $this->copyToShippingFromCustomer($Shipping, $Customer)
-            ->setShippingId(1)
-            ->setOrderId($Order->getId())
-            ->setOrder($Order)
-            ->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime())
-            ->setDelFlg(0);
+                ->setOrder($Order)
+                ->setCreateDate(new \DateTime())
+                ->setUpdateDate(new \DateTime())
+                ->setDelFlg($this->app['config']['disabled']);
             $this->app['orm.em']->persist($Shipping);
 
             $Order->addShipping($Shipping);
 
             $point = 0;
             $subTotal = 0;
-            $productTypeIds = array();
+            $productTypes = array();
 
             // 受注詳細, 配送商品
             foreach ($cartItems as $item) {
@@ -175,7 +173,7 @@ class OrderService
                 $Product = $ProductClass->getProduct();
 
                 $quantity = $item->getQuantity();
-                $productTypeIds[] = $ProductClass->getProductType()->getId();
+                $productTypes[] = $ProductClass->getProductType();
 
                 // 受注詳細
                 $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
@@ -187,20 +185,16 @@ class OrderService
                 // 小計
                 $subTotal += $ProductClass->getPrice02IncTax();
 
-                // 加算ポイント
-                $point += $ProductClass->getPoint();
-
                 // 配送商品
                 $ShipmentItem = new \Eccube\Entity\ShipmentItem();
-                $ShipmentItem->setShippingId($Shipping->getShippingId());
                 $ShipmentItem->setShipping($Shipping)
-                ->setOrderId($Order->getId())
-                ->setProductClassId($ProductClass->getId())
-                ->setProductClass($ProductClass)
-                ->setProductName($Product->getName())
-                ->setProductCode($ProductClass->getCode())
-                ->setPrice($ProductClass->getPrice02())
-                ->setQuantity($quantity);
+                    ->setOrder($Order)
+                    ->setProductClass($ProductClass)
+                    ->setProduct($Product)
+                    ->setProductName($Product->getName())
+                    ->setProductCode($ProductClass->getCode())
+                    ->setPrice($ProductClass->getPrice02())
+                    ->setQuantity($quantity);
 
                 $ClassCategory1 = $ProductClass->getClassCategory1();
                 if (!is_null($ClassCategory1)) {
@@ -215,30 +209,29 @@ class OrderService
             }
 
             // 初期選択の配送業者をセット
-            $productTypeIds = array_unique($productTypeIds);
             $qb = $this->app['orm.em']->createQueryBuilder();
             $delivery = $qb->select("d")
-            ->from("\\Eccube\\Entity\\Deliv", "d")
-            ->where($qb->expr()->in('d.product_type_id', $productTypeIds))
-            ->andWhere("d.del_flg = 0")
-            ->orderBy("d.rank", "ASC")
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getSingleResult();
-            $deliveryFees = $delivery->getDelivFees();
-            $Order->setDeliv($delivery);
-            $Order->setDelivFee($deliveryFees[0]->getFee());
+                ->from("\Eccube\Entity\Delivery", "d")
+                ->where($qb->expr()->in('d.ProductType', ':productTypes'))
+                ->setParameter('productTypes', $productTypes)
+                ->andWhere("d.del_flg = :delFlg")
+                ->setParameter('delFlg', $this->app['config']['disabled'])
+                ->orderBy("d.rank", "ASC")
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleResult();
+            $deliveryFees = $delivery->getDeliveryFees();
+            // $Order->setDelivFee($deliveryFees[0]->getFee());
 
             // 初期選択の支払い方法をセット
             $paymentOptions = $delivery->getPaymentOptions();
             $payment = $paymentOptions[0]->getPayment();
-            ;
+
             $Order->setPayment($payment);
             $Order->setPaymentMethod($payment->getMethod());
             $Order->setCharge($payment->getCharge());
 
-            $total = $subTotal + $Order->getCharge() + $Order->getDelivFee();
-            $paymentTotal = $total - $Order->getUsePoint();
+            $total = $subTotal + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
             $Order->setTotal($total);
             $Order->setSubTotal($subTotal);

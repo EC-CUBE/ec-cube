@@ -21,87 +21,59 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
+{% block title %}ログイン{% endblock title %}
+
 {% block main %}
-    <div id="undercolumn">
-        <h2 class="title">{{ title }}</h2>
-        <div id="undercolumn_login">
-            <form name="member_form" id="member_form" method="post" action="{{ path('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('member_form')" {{ form_enctype(form) }}>
-                <div class="login_area">
-                    <h3>会員登録がお済みのお客様</h3>
-                    <p class="inputtext">会員の方は、登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
-                    <div class="inputbox">
-                        {% if error %}
-                        <span class="attention">{{ error }}</span>
-                        {% endif %}
-                        <dl class="formlist clearfix">
-                            <dt>{{ form_label(form.login_email) }}&nbsp;：</dt>
-                            <dd>
-                                {{ form_errors(form.login_email) }}
-                                {{ form_widget(form.login_email, {'attr': {'class': "box300", 'style': 'ime-mode: disabled;'}}) }}
-                                <p class="login_memory">
-                                    {{ form_widget(form.login_memory) }}
-                                    {{ form_label(form.login_memory) }}
-                                </p>
-                            </dd>
-                        </dl>
-                        <dl class="formlist clearfix">
-                            <dt>
-                                {{ form_label(form.login_pass) }}&nbsp;：
-                            </dt>
-                            <dd>
-                                {{ form_errors(form.login_pass) }}
-                                {{ form_widget(form.login_pass, {'attr': {'class': 'box300'}}) }}
-                            </dd>
-                        </dl>
-                        <div class="btn_area">
-                            <ul>
-                                <li>
-                                    <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_login.jpg" alt="ログイン" name="log" id="log" />
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <p>
-                        ※パスワードを忘れた方は<a href="{{ path('forgot') }}" onclick="eccube.openWindow('{{ path('forgot') }}','forget','600','460',{scrollbars:'no',resizable:'no'}); return false;" target="_blank">こちら</a>からパスワードの再発行を行ってください。<br />
-                        ※メールアドレスを忘れた方は、お手数ですが、<a href="{{ path('contact') }}">お問い合わせページ</a>からお問い合わせください。
-                    </p>
-                </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                {{ form_rest(form) }}
-            </form>
-            <div class="login_area">
-                <h3>まだ会員登録されていないお客様</h3>
-                <h4>会員登録をする</h4>
-                <p class="inputtext">会員登録をすると便利なMyページをご利用いただけます。<br />
-                    また、ログインするだけで、毎回お名前や住所などを入力することなくスムーズにお買い物をお楽しみいただけます。
-                </p>
-                <div class="inputbox">
-                    <div class="btn_area">
-                        <ul>
-                            <li>
-                                <a href="{{ path('entry') }}">
-                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_entry.jpg" alt="会員登録をする" />
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <h4>会員登録をせずに購入手続きへ進む</h4>
-                <p class="inputtext">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。</p>
-                <div class="inputbox">
-                    <div class="btn_area">
-                        <ul>
-                            <li>
-                                <a href="{{ path('shopping_nonmember') }}">
-                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_buystep.jpg" alt="購入手続きへ" />
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            {% if error %}
+    <div>{{ error.message }}</div>
+{% endif %}
+
+            <div id="main">
+                <h1 class="page-heading">ログイン</h1>
+                <div class="container-fluid">
+                    <form method="post" action="{{ url('login_check') }}">
+                        <input type="hidden" name="_target_path" value="shopping" />
+                        <input type="hidden" name="_failure_path" value="shopping_login" />
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div id="login_box" class="login_cart row">
+                            <div class="col-sm-8">
+                                <div class="column">
+                                    <div class="column_inner clearfix">
+                                        <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
+                                            <label><input type="checkbox">記憶</label></div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
+                                            </div>
+                                        <div class="btn_area">
+                                            <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
+                                            <ul>
+                                            <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
+                                            <li><a href="{{ url('entry') }}">新規会員登録</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.col -->
+                            <div class="col-sm-4">
+                                <div class="column">
+                                    <div class="column_inner">
+                                        <p class="message">会員登録をせずに購入手続きをされたい方は、下記よりお進みください
+                                        <p class="btn_area">
+                                            <a href="{{ url('shopping_nonmember') }}" class="btn btn-info btn-block btn-lg">ゲスト購入</a></p>
+                                    </div>
+                                </div>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
 
 {% endblock %}

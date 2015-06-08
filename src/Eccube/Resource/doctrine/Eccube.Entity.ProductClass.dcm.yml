@@ -122,10 +122,10 @@ Eccube\Entity\ProductClass:
                 referencedColumnName: class_category_id
                 nullable: true
         DeliveryDate:
-            targetEntity: Eccube\Entity\Master\DeliveryDate
+            targetEntity: Eccube\Entity\DeliveryDate
             joinColumn:
                 name: delivery_date_id
-                referencedColumnName: id
+                referencedColumnName: date_id
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:

@@ -207,7 +207,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $ClassCategory2;
 
     /**
-     * @var \Eccube\Entity\Master\DeliveryDate
+     * @var \Eccube\Entity\DeliveryDate
      */
     private $DeliveryDate;
 
@@ -595,10 +595,10 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set DeliveryDate
      *
-     * @param \Eccube\Entity\Master\DeliveryDate $deliveryDate
+     * @param \Eccube\Entity\DeliveryDate $deliveryDate
      * @return ProductClass
      */
-    public function setDeliveryDate(\Eccube\Entity\Master\DeliveryDate $deliveryDate = null)
+    public function setDeliveryDate(\Eccube\Entity\DeliveryDate $deliveryDate = null)
     {
         $this->DeliveryDate = $deliveryDate;
 
@@ -608,7 +608,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get DeliveryDate
      *
-     * @return \Eccube\Entity\Master\DeliveryDate 
+     * @return \Eccube\Entity\DeliveryDate 
      */
     public function getDeliveryDate()
     {
