@@ -1551,6 +1551,16 @@ dl.accordion {
 #header .navbar .logo {
     display: none;
 }
+#header .navbar .logo .cb-logomark {
+	font-size: 30px;
+}
+#header .navbar .logo .cb-logotext {
+	font-size: 140px;
+	fill: #fff;
+	height: 64px;
+	line-height: 64px;
+	margin-left: 2px;
+}
 #header .navbar #sitename {
     display: table-cell;
     padding: 0 8px;
