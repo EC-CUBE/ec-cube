@@ -41,7 +41,7 @@ class Application extends \Silex\Application
     /** @var Application app */
     protected static $app;
 
-    const PRIORITY_LATE = -500;
+    const PRIORITY_LATEST = -500;
     /**
      * Alias
      *
@@ -136,14 +136,14 @@ class Application extends \Silex\Application
                         $paths[] = __DIR__ . '/../../template/admin';
                     }
                     $paths[] = __DIR__ . '/Resource/template/admin';
-                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $paths[] = __DIR__ . '/../../app/Plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/admin';
                 } else {
                     if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_name'])) {
                         $paths[] = __DIR__ . '/../../template/' . $app['config']['template_name'];
                     }
                     $paths[] = __DIR__ . '/Resource/template/default';
-                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $paths[] = __DIR__ . '/../../app/Plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_name'];
                 }
                 $twig->setCache($cache);
@@ -248,7 +248,7 @@ class Application extends \Silex\Application
         });
 
         // EventSubscriber
-        $basePath = __DIR__ . '/../../app/plugin';
+        $basePath = __DIR__ . '/../../app/Plugin';
         $finder = Finder::create()
             ->in($basePath)
             ->directories()
@@ -256,21 +256,15 @@ class Application extends \Silex\Application
 
         $finder->sortByName();
 
-         require_once(__DIR__.'/../../app/plugin/SampleEvent/SamplePlugin.php');
-
-        //  register event-handler function.
-
-
-
-        if ($app['env'] !== 'cli' ) {
+        if ($app['env'] !== 'cli' ) { // cliモードではテーブルがない場合があるのでロードしない
             // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
             $priorities=array();
             $em=$app['orm.em'];
             $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
             foreach($handlers as $handler){
-                $plugin = $em->find('Eccube\Entity\Plugin',$handler->getPluginId());
+                #$plugin = $em->find('Eccube\Entity\Plugin',$handler->getPluginId());
                  //ここjoinにしたい....
-                $priorities[$plugin->getClassName()][$handler->getEvent()][$handler->getHandler()] = $handler->getPriority();
+                $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $handler->getPriority();
             }
         }
 
@@ -288,7 +282,7 @@ class Application extends \Silex\Application
                     foreach($subscriber->getSubscribedEvents() as $event=>$handlers){
                         foreach($handlers as $handler){
                             if(!isset($priorities[$config['event']][ $event ][$handler[0] ])){
-                                $priority = self::PRIORITY_LATE;
+                                $priority = self::PRIORITY_LATEST;
                                 // handlerテーブルに登録されていない場合
                             }else{
                                 // handlerテーブルに登録されている場合
@@ -297,8 +291,6 @@ class Application extends \Silex\Application
                             }
                             # 優先度0は登録しない
 
-echo "$event - $handler[0] - $priority <br>";
-echo "<hr>";
                             if(0<$priority){
                                 $app['eccube.event.dispatcher']->addListener($event,array($subscriber,$handler[0]),$priority  );
                             } 

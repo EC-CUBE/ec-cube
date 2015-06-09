@@ -48,6 +48,7 @@ class PluginEventHandler
      * @var \DateTime
      */
     private $update_date;
+    private $Plugin;
 
 
     /**
@@ -220,4 +221,15 @@ class PluginEventHandler
     {
         return $this->update_date;
     }
+
+    public function getPlugin()
+    {
+        return $this->Plugin;
+    }
+    public function setPlugin(\Eccube\Entity\Plugin $Plugin)
+    {
+        $this->Plugin = $plugin;
+        return $this;
+    }
+
 }

@@ -38,6 +38,9 @@ class SamplePlugin implements EventSubscriberInterface
     
     public static function getSubscribedEvents() {
         return array(
+            'eccube.event.app.before' => array(
+                array('onCartIndexBefore', 10),
+            ),
             'eccube.event.controller.cart.before' => array(
                 array('onCartIndexBefore', 10),
             ),

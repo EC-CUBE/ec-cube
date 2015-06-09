@@ -49,6 +49,13 @@ class Plugin
      */
     private $update_date;
 
+    private $PluginEventHandlers;
+
+
+    public function __construct()
+    {
+        $this->PluginEventHandlers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -219,5 +226,20 @@ class Plugin
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    public function getPluginEventHandlers()
+    {
+        return $this->PluginEventHanders;
+    }
+    public function addPluginEventHandlers($PluginEventHandler)
+    {
+        $this->PluginEventHanders[] = $PluginEventHandlers;
+        return $this;
+    }
+    public function removePluginEventHandlers($PluginEventHandler)
+    {
+        $this->PluginEventHanders->removeElement($PluginEventHandler);
+        return $this;
     }
 }

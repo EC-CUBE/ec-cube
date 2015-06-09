@@ -36,4 +36,15 @@ Eccube\Entity\PluginEventHandler:
             type: datetime
             nullable: false
             default: '0000-00-00 00:00:00'
+
+    manyToOne:
+        Plugin:
+            targetEntity: Eccube\Entity\Plugin
+            inversedBy: PluginEventHandlers
+            joinColumn:
+                name: plugin_id
+                referencedColumnName: plugin_id
+
+
+
     lifecycleCallbacks: {  }

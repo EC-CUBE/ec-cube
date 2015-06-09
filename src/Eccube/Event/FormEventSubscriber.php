@@ -36,7 +36,7 @@ class FormEventSubscriber implements EventSubscriberInterface
     {
         $events = array();
         // YamlでParseしてがんばる
-        $basePath = __DIR__ . '/../../../app/plugin';
+        $basePath = __DIR__ . '/../../../app/Plugin';
         $finder = Finder::create()
             ->in($basePath)
             ->directories()
