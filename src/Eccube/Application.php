@@ -268,7 +268,31 @@ class Application extends \Silex\Application
             }
         }
 
-
+/*
+$p=yaml_parse(
+"---
+eccube.event.app.before:
+- - onCartIndexBefore
+  - 10
+- - onCartIndexBefore2
+  - 20
+eccube.event.controller.cart.before:
+- - onCartIndexBefore
+  - 10
+eccube.event.controller.cart.after:
+- - onCartIndexAfter
+  - 10
+eccube.event.controller.cart.finish:
+- - onCartIndexFinish
+  - 10
+eccube.event.render.cart.before:
+- - onCartRenderBefore
+  - 10
+...");
+echo "<pre>";
+echo Yaml::dump($p);
+echo "</pre>";
+*/
         // Plugin events / service
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
@@ -278,8 +302,8 @@ class Application extends \Silex\Application
                 if (isset($config['event'])) {
                     $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
                     $subscriber = new $class($app);
-                    #$app['eccube.event.dispatcher']->addSubscriber($subscriber);
-                    foreach($subscriber->getSubscribedEvents() as $event=>$handlers){
+ 
+                    foreach(Yaml::Parse($dir->getRealPath() . '/event.yml') as $event=>$handlers){
                         foreach($handlers as $handler){
                             if(!isset($priorities[$config['event']][ $event ][$handler[0] ])){
                                 $priority = self::PRIORITY_LATEST;
@@ -291,7 +315,7 @@ class Application extends \Silex\Application
                             }
                             # 優先度0は登録しない
 
-                            if(0<$priority){
+                            if(0!=$priority){
                                 $app['eccube.event.dispatcher']->addListener($event,array($subscriber,$handler[0]),$priority  );
                             } 
                         }
