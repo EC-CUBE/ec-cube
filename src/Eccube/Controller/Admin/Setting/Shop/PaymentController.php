@@ -142,7 +142,7 @@ class PaymentController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app->addSuccess('admin.move.complete', 'admin');
+        $app->addSuccess('admin.rank.move.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }
@@ -161,7 +161,7 @@ class PaymentController extends AbstractController
         $app['orm.em']->persist($current->setRank($targetRank));
         $app['orm.em']->flush();
 
-        $app->addSuccess('admin.move.complete', 'admin');
+        $app->addSuccess('admin.rank.move.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_payment'));
     }

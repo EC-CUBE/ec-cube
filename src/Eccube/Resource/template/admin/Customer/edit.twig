@@ -27,6 +27,8 @@
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}会員登録・編集{% endblock %}
 
+{% set menus = ['customer', 'edit'] %}
+
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
@@ -44,7 +46,7 @@
                     {# 会員ID #}
                     {% if Customer.id %}
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">会員ID</label>
+                        <label class="col-sm-3 col-lg-2 control-label">会員ID</label>
                         <div class="col-sm-9 col-lg-10">{{ Customer.id }}</div>
                     </div>
                     {% endif %}

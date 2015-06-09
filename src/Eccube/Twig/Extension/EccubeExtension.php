@@ -45,6 +45,7 @@ class EccubeExtension extends \Twig_Extension
         return array(
             'image_info' => new \Twig_Function_Method($this, 'getImageInfo'),
             'calc_inc_tax' => new \Twig_Function_Method($this, 'getCalcIncTax'),
+            'active_menus' => new \Twig_Function_Method($this, 'getActiveMenus'),
         );
     }
 
@@ -161,6 +162,16 @@ class EccubeExtension extends \Twig_Extension
         } else {
             return $date->format($format);
         }
+    }
+
+    public function getActiveMenus($menus = array())
+    {
+        $count = count($menus);
+        for ($i = $count; $i <= 2; $i++) {
+            $menus[] = '';
+        }
+
+        return $menus;
     }
 
 }
