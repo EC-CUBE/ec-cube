@@ -103,8 +103,8 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         $c->match('/mypage/download', '\Eccube\Page\Mypage\Download')->bind('mypage_download');
         $c->match('/mypage/favorite', '\Eccube\Controller\Mypage\MypageController::favorite')->bind('mypage_favorite');
-        $c->match('/mypage/history/{orderId}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('orderId', '\d+');
-        $c->match('/mypage/mail_view/{sendId}', '\Eccube\Controller\Mypage\MypageController::mailView')->bind('mypage_mail_view')->assert('sendId', '\d+');
+        $c->match('/mypage/history/{id}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('id', '\d+');
+        $c->match('/mypage/mail_view/{id}', '\Eccube\Controller\Mypage\MypageController::mailView')->bind('mypage_mail_view')->assert('id', '\d+');
         $c->match('/mypage/order', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
         $c->match('/mypage/refusal', '\Eccube\Controller\Mypage\RefusalController::index')->bind('mypage_refusal');
         $c->match('/mypage/refusal_complete', '\Eccube\Controller\Mypage\RefusalController::complete')->bind('mypage_refusal_complete');
