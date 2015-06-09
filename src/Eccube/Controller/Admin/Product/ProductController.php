@@ -43,11 +43,11 @@ class ProductController
 
         $pagination = array();
 
-        $em = $app['orm.em'];
-        $disps = $em->getRepository('Eccube\Entity\Master\Disp')->findAll();
-        $pageMaxis = $em->getRepository('Eccube\Entity\Master\PageMax')->findAll();
+        $disps = $app['eccube.repository.master.disp']->findAll();
+        $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
         $page_count = $app['config']['default_page_count'];
         $page_status = null;
+        $active = false;
 
         if ('POST' === $request->getMethod()) {
 
@@ -67,6 +67,7 @@ class ProductController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
+                $active = true;
             }
         } else {
             if (is_null($page_no)) {
@@ -101,6 +102,26 @@ class ProductController
                         $page_count
                     );
 
+                    // セッションから検索条件を復元
+                    if (!empty($searchData['category_id'])) {
+                        $searchData['category_id'] = $app['eccube.repository.category']->find($searchData['category_id']);
+                    }
+                    if (count($searchData['status']) > 0) {
+                        $status_ids = array();
+                        foreach ($searchData['status'] as $Status) {
+                            $status_ids[] = $Status->getId();
+                        }
+                        $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
+                    }
+                    if (count($searchData['product_status']) > 0) {
+                        $product_status_ids = array();
+                        foreach ($searchData['product_status'] as $ProductStatus) {
+                            $product_status_ids[] = $ProductStatus->getId();
+                        }
+                        $searchData['product_status'] = $app['eccube.repository.master.product_status']->findBy(array('id' => $product_status_ids));
+                    }
+                    $searchForm->setData($searchData);
+                    $active = true;
                 }
             }
         }
@@ -113,6 +134,7 @@ class ProductController
             'page_no' => $page_no,
             'page_status' => $page_status,
             'page_count' => $page_count,
+            'active' => $active,
         ));
     }
 
