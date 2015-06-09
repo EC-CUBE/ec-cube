@@ -288,19 +288,6 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
-            ->add('downloadable_days_unlimited', 'checkbox', array(
-                'label' => 'ダウンロード無制限',
-                'required' => false,
-            ))
-            ->add('downloadable_days', 'integer', array(
-                'label' => 'ダウンロード可能日数',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['download_days_len'],
-                    )),
-                ),
-            ))
 
             // 地図設定
             ->add('latitude', 'number', array(
@@ -324,15 +311,6 @@ class ShopMasterType extends AbstractType
                 ),
             ))
 
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
-                $form = $event->getForm();
-                $downloadable_days_unlimited = $form['downloadable_days_unlimited']->getData();
-                $downloadable_days = $form['downloadable_days']->getData();
-
-                if (empty($downloadable_days) && empty($downloadable_days_unlimited)) {
-                    $form['downloadable_days']->addError(new FormError('admin.shop.download.invalid'));
-                }
-            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
