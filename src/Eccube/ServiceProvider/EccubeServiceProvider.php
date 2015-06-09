@@ -56,6 +56,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.tax_rule'] = $app->share(function () use ($app) {
             return new \Eccube\Service\TaxRuleService($app['eccube.repository.tax_rule']);
         });
+        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
+            return new \Eccube\Service\PluginService( $app );
+        });
 
         // Repository
         $app['eccube.repository.master.constant'] = $app->share(function () use ($app) {

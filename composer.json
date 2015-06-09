@@ -37,8 +37,8 @@
         "swiftmailer/swiftmailer": "5.*",
         "knplabs/knp-components": "*",
         "doctrine/migrations": "1.0.*@dev" ,
-        "knplabs/console-service-provider": "dev-master"
-
+        "knplabs/console-service-provider": "dev-master",
+        "pear-pear.php.net/archive_tar": "^1.3" 
     },
     "require-dev": {
         "satooshi/php-coveralls": "dev-master",
