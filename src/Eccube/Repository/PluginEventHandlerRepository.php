@@ -18,8 +18,7 @@ class PluginEventHandlerRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e')
             ->innerJoin('e.Plugin', 'p')
-            ->andWhere('e.del_flg = 0 ') 
-            ->andWhere('p.enable = 1 ');
+            ->andWhere('e.del_flg = 0 ') ;
 
         return $qb->getQuery()->getResult();
     }

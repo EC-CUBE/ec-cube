@@ -41,7 +41,8 @@ class Application extends \Silex\Application
     /** @var Application app */
     protected static $app;
 
-    const PRIORITY_LATEST = -500;
+    const EVENT_PRIORITY_LATEST = -500;
+    const EVENT_PRIORITY_DISABLED = 0;
     /**
      * Alias
      *
@@ -262,37 +263,16 @@ class Application extends \Silex\Application
             $em=$app['orm.em'];
             $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
             foreach($handlers as $handler){
-                #$plugin = $em->find('Eccube\Entity\Plugin',$handler->getPluginId());
-                 //ここjoinにしたい....
-                $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $handler->getPriority();
+                if($handler->getPlugin()->getEnable()){
+                    $priority = $handler->getPriority();
+                }else{
+                    $priority = EVENT_PRIORITY_DISABLED;
+                }
+                $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority ;
+
             }
         }
 
-/*
-$p=yaml_parse(
-"---
-eccube.event.app.before:
-- - onCartIndexBefore
-  - 10
-- - onCartIndexBefore2
-  - 20
-eccube.event.controller.cart.before:
-- - onCartIndexBefore
-  - 10
-eccube.event.controller.cart.after:
-- - onCartIndexAfter
-  - 10
-eccube.event.controller.cart.finish:
-- - onCartIndexFinish
-  - 10
-eccube.event.render.cart.before:
-- - onCartRenderBefore
-  - 10
-...");
-echo "<pre>";
-echo Yaml::dump($p);
-echo "</pre>";
-*/
         // Plugin events / service
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
@@ -306,7 +286,7 @@ echo "</pre>";
                     foreach(Yaml::Parse($dir->getRealPath() . '/event.yml') as $event=>$handlers){
                         foreach($handlers as $handler){
                             if(!isset($priorities[$config['event']][ $event ][$handler[0] ])){
-                                $priority = self::PRIORITY_LATEST;
+                                $priority = self::EVENT_PRIORITY_LATEST;
                                 // handlerテーブルに登録されていない場合
                             }else{
                                 // handlerテーブルに登録されている場合
@@ -315,7 +295,7 @@ echo "</pre>";
                             }
                             # 優先度0は登録しない
 
-                            if(0!=$priority){
+                            if(EVENT_PRIORITY_DISABLED!=$priority){
                                 $app['eccube.event.dispatcher']->addListener($event,array($subscriber,$handler[0]),$priority  );
                             } 
                         }
