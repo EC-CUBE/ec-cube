@@ -142,7 +142,7 @@ $(function(){
 {% block main %}
             <form role="form" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
             {{ form_widget(form._token) }}
-            <div class="row">
+            <div class="row" id="aside_wrap">
                 <div class="col-md-9">
                     <div class="box form-horizontal">
                         <div class="box-header">
@@ -287,10 +287,8 @@ $(function(){
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
-                                            <div class="radio">
-                                                {{ form_widget(form.Status, { attr : { class : 'form-inline' } }) }}
-                                                {{ form_errors(form.Status) }}
-                                            </div>
+                                            {{ form_widget(form.Status) }}
+                                            {{ form_errors(form.Status) }}
                                         </div>
                                     </div>
                                 </div>
