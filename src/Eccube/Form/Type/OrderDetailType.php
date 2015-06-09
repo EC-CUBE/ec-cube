@@ -44,17 +44,10 @@ class OrderDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product_name')
-            ->add('product_code')
-            ->add('class_name1')
-            ->add('class_name2')
-            ->add('class_category_name1')
-            ->add('class_category_name2')
             ->add('price')
             ->add('quantity')
-            ->add('tax_rate')
-            ->add('tax_rule')
-            ->add('total_price');
+            ->add('tax_rate');
+
         $builder
             ->add($builder->create('Product', 'hidden')
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(

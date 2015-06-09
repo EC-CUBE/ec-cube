@@ -33,15 +33,20 @@ class EditController extends AbstractController
     public function index(Application $app, Request $request, $id = null)
     {
         $TargetOrder = null;
+        $OriginOrder = null;
 
         if (is_null($id)) {
             $TargetOrder = $app['eccube.service.order']->newOrder();
         } else {
+            // todo 決済処理中, 購入処理中は除く
             $TargetOrder = $app['eccube.repository.order']->find($id);
             if (is_null($TargetOrder)) {
                 throw new NotFoundHttpException();
             }
         }
+
+        // 編集前の受注情報を保持
+        $OriginOrder = clone $TargetOrder;
 
         $form = $app['form.factory']
             ->createBuilder('order', $TargetOrder)
@@ -49,8 +54,21 @@ class EditController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
+            // 入力情報にもとづいて再計算.
+            $this->calculate($app, $TargetOrder);
+
             if ($form->isValid()) {
-                // todo
+                if ('register' === $request->get('mode')) {
+                    // 受注日/発送日/入金日の更新.
+                    $this->updateDate($TargetOrder, $OriginOrder);
+
+                    $app['orm.em']->persist($TargetOrder);
+                    $app['orm.em']->flush();
+
+                    $app->addSuccess('admin.order.save.complete', 'admin');
+
+                    return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
+                }
             }
         }
 
@@ -58,5 +76,109 @@ class EditController extends AbstractController
             'form' => $form->createView(),
             'Order' => $TargetOrder,
         ));
+    }
+
+    /**
+     * フォームからの入直内容に基づいて、受注情報の再計算を行う
+     *
+     * TODO 新規登録時の税金マスタ取得.
+     *
+     * @param $app
+     * @param $Order
+     */
+    protected function calculate($app, $Order)
+    {
+        $tax = 0;
+        $subtotal = 0;
+
+        // 受注明細データの税・小計を再計算
+        $OrderDetails = $Order->getOrderDetails();
+        foreach ($OrderDetails as $OrderDetail) {
+            // 税
+            $tax += $app['eccube.service.tax_rule']
+                ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
+            $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+
+            // 小計
+            $subtotal += $OrderDetail->getTotalPrice();
+        }
+
+        // 受注データの税・小計・合計を再計算
+        $Order->setTax($tax);
+        $Order->setSubtotal($subtotal);
+        $Order->setTotal($subtotal + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount());
+        // お支払い合計は、totalと同一金額(2系ではtotal - point)
+        $Order->setPaymentTotal($Order->getTotal());
+
+        // お支払い方法の更新
+        $Order->setPaymentMethod($Order->getPayment()->getMethod());
+
+        // お届け先の更新
+        $Shippings = $Order->getShippings();
+        foreach ($Shippings as $Shipping) {
+            $Shipping->setShippingDeliveryName($Shipping->getDelivery()->getName());
+            $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
+        }
+    }
+
+    /**
+     * 受注ステータスに応じて, 受注日/入金日/発送日を更新する,
+     * 発送済ステータスが設定された場合は, お届け先情報の発送日も更新を行う.
+     *
+     * 編集の場合
+     * - 受注ステータスが他のステータスから発送済へ変更された場合に発送日を更新
+     * - 受注ステータスが他のステータスから入金済へ変更された場合に入金日を更新
+     *
+     * 新規登録の場合
+     * - 受注日を更新
+     * - 受注ステータスが発送済に設定された場合に発送日を更新
+     * - 受注ステータスが入金済に設定された場合に入金日を更新
+     *
+     * TODO 受注ステータスの定数化.
+     *
+     * @param $TargetOrder
+     * @param $OriginOrder
+     */
+    protected function updateDate($TargetOrder, $OriginOrder)
+    {
+        $dateTime = new \DateTime();
+
+        // 編集
+        if ($TargetOrder->getId()) {
+            // 発送済
+            if ($TargetOrder->getOrderStatus()->getId() == 5) {
+                // 編集前と異なる場合のみ更新
+                if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
+                    $TargetOrder->setCommitDate($dateTime);
+                    // お届け先情報の発送日も更新する.
+                    $Shippings = $TargetOrder->getShippings();
+                    foreach ($Shippings as $Shipping) {
+                        $Shipping->setShippingCommitDate($dateTime);
+                    }
+                }
+                // 入金済
+            } elseif ($TargetOrder->getOrderStatus()->getId() == 6) {
+                // 編集前と異なる場合のみ更新
+                if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
+                    $TargetOrder->setPaymentDate($dateTime);
+                }
+            }
+            // 新規
+        } else {
+            // 発送済
+            if ($TargetOrder->getOrderStatus()->getId() == 5) {
+                $TargetOrder->setCommitDate($dateTime);
+                // お届け先情報の発送日も更新する.
+                $Shippings = $TargetOrder->getShippings();
+                foreach ($Shippings as $Shipping) {
+                    $Shipping->setShippingCommitDate($dateTime);
+                }
+                // 入金済
+            } elseif ($TargetOrder->getOrderStatus()->getId() == 6) {
+                $TargetOrder->setPaymentDate($dateTime);
+            }
+            // 受注日時
+            $TargetOrder->setOrderDate($dateTime);
+        }
     }
 }

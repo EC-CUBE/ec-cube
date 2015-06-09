@@ -115,7 +115,6 @@ class ShippingType extends AbstractType
                 'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('shipping_delivery_name')
             ->add('Delivery', 'entity', array(
                 'label' => '配送業者',
                 'class' => 'Eccube\Entity\Delivery',
@@ -123,7 +122,6 @@ class ShippingType extends AbstractType
                 'empty_value' => false,
                 'empty_data' => null,
             ))
-            ->add('shipping_delivery_time')
             ->add('DeliveryTime', 'entity', array(
                 'label' => 'お届け時間',
                 'class' => 'Eccube\Entity\DeliveryTime',
@@ -133,8 +131,7 @@ class ShippingType extends AbstractType
             ))
             ->add('shipping_delivery_date', null, array(
                 'label' => 'お届け日'
-            ))
-        ;
+            ));
     }
 
     /**

@@ -28,14 +28,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 
-    <div class="row" id="aside_wrap">
+<div class="row" id="aside_wrap">
+    <form role="form" name="form1" id="form1" method="post" action="?">
+    {{ form_widget(form._token) }}
         <div class="col-md-9">
             <div class="box accordion">
                 <div class="box-header toggle active">
                     <h3 class="box-title">注文者情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body accpanel" style="display: block;">
-                    <form role="form" class="form-horizontal">
+                    <div class="form-horizontal">
                         <div class="btn_area">
                             <ul>
                                 <li><a class="btn btn-default btn-block btn-sm">会員検索</a></li>
@@ -127,7 +129,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.message) }}
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
 
@@ -145,8 +147,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="tableish">
                             {% for orderDetailForm in form.OrderDetails %}
-                            {% set Product = orderDetailForm.Product.vars.value %}
-                            {% set ProductClass = orderDetailForm.ProductClass.vars.value %}
                             <div class="item_box tr">
                                 <div class="item_photo td">
                                     <img src="http://www.ec-cube.net/user_data/packages/default/img/banner/top_bnr_design_template2_13_3.jpg">
@@ -154,10 +154,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="item_detail td">
                                     {{ form_widget(orderDetailForm.Product) }}
                                     {{ form_widget(orderDetailForm.ProductClass) }}
-                                    <strong class="item_name">{{ orderDetailForm.product_name.vars.value }}</strong><br>
-                                    <span class="item_id small">{{ orderDetailForm.product_code.vars.value }}</span><br>
+                                    <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
+                                    <span class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span><br>
                                     {# todo 商品規格情報の表示 #}
-                                    <span class="item_pattern small">{{ orderDetailForm.class_name1.vars.value }}：{{ orderDetailForm.class_category_name1.vars.value }} / {{ orderDetailForm.class_name2.vars.value }}：{{ orderDetailForm.class_category_name2.vars.value }}</span>
+                                    <span class="item_pattern small">{{ orderDetailForm.vars.value.class_name1 }}：{{ orderDetailForm.vars.value.class_category_name1 }} / {{ orderDetailForm.vars.value.class_name2 }}：{{ orderDetailForm.vars.value.class_category_name2 }}</span>
                                     <div class="row">
                                         <div class="col-lg-6 form-group form-inline">
                                             <span class="item_price">\ {{ form_widget(orderDetailForm.price) }}</span>
@@ -169,7 +169,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <span class="item_quantity">税率：{{ form_widget(orderDetailForm.tax_rate) }} %</span>
                                         </div>
                                     </div>
-                                    <span class="item_subtotal"><span class="small">小計</span> \ {{ orderDetailForm.total_price.vars.value|number_format}}</span>
+                                    <span class="item_subtotal"><span class="small">小計</span> \ {{ orderDetailForm.vars.value.total_price|number_format}}</span>
                                 </div>
                                 <div class="icon_edit td">
                                     <button class="btn btn-default btn-sm">削除</button>
@@ -182,7 +182,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="col-lg-9 col-lg-offset-3">
                                 <dl class="dl-horizontal amount_area">
                                     <dt>小計：</dt>
-                                    <dd>\ {{ form.subtotal.vars.value }}</dd>
+                                    <dd>\ {{ Order.subtotal|number_format }}</dd>
                                     <dt>値引き：</dt>
                                     <dd class="form-group form-inline">\ {{ form_widget(form.discount) }}</dd>
                                     <dt>送料：</dt>
@@ -197,9 +197,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="col-lg-9 col-lg-offset-3">
                                 <dl class="dl-horizontal amount_area">
                                     <dt>合計：</dt>
-                                    <dd>\ {{ form.total.vars.value }}</dd>
+                                    <dd>\ {{ Order.total|number_format }}</dd>
                                     <dt>お支払合計：</dt>
-                                    <dd>\ {{ form.subtotal.vars.value }}</dd>
+                                    <dd>\ {{ Order.payment_total|number_format }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -216,9 +216,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <dl class="dl-horizontal">
                         <dt>お支払方法</dt>
                         <dd class="form-group form-inline">
-                            {{ form.payment_method.vars.value }}<br/>
-                            {{ form_widget(form.payment_method) }}
-                            {{ form_errors(form.payment_method) }}
+                            {{ form.vars.value.payment_method }}<br/>
                             {{ form_widget(form.Payment) }}
                             {{ form_errors(form.Payment) }}
                             <p class="small">お支払方法の変更に伴う手数料の変更は手動にてお願いします。</p>
@@ -313,7 +311,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="form-group">
                                 {{ form_label(shippingForm.Delivery) }}
                                 <div class="col-sm-9 col-lg-10">
-                                    {{ shippingForm.shipping_delivery_name.vars.value }}<br/>
+                                    {{ shippingForm.vars.value.shipping_delivery_name }}<br/>
                                     {{ form_widget(shippingForm.Delivery) }}
                                     {{ form_errors(shippingForm.Delivery) }}
                                 </div>
@@ -322,7 +320,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="form-group">
                                 {{ form_label(shippingForm.DeliveryTime) }}
                                 <div class="col-sm-9 col-lg-10">
-                                    {{ shippingForm.shipping_delivery_time.vars.value }}<br/>
+                                    {{ shippingForm.vars.value.shipping_delivery_time }}<br/>
                                     {{ form_widget(shippingForm.DeliveryTime) }}
                                     {{ form_errors(shippingForm.DeliveryTime) }}
                                 </div>
@@ -344,7 +342,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             <div class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <button class="btn btn-primary btn-block btn-lg">登録</button>
+                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
                     <p><a href="#">戻る</a></p>
                 </div>
             </div>
@@ -367,7 +365,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg">受注情報を登録</button>
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">受注情報を登録</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->
@@ -391,7 +389,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             </div>
         </div><!-- /.col -->
-
-    </div>
+    </form>
+</div>
 
 {% endblock %}

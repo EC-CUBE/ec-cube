@@ -127,14 +127,9 @@ class OrderType extends AbstractType
                 'label' => '備考',
                 'required' => false,
             ))
-            ->add('subtotal')
             ->add('discount')
             ->add('delivery_fee_total')
             ->add('charge')
-            ->add('tax')
-            ->add('total')
-            ->add('payment_total')
-            ->add('payment_method', 'hidden')
             ->add('note', 'textarea')
             ->add('OrderStatus', 'entity', array(
                 'class' => 'Eccube\Entity\Master\OrderStatus',
@@ -153,8 +148,7 @@ class OrderType extends AbstractType
             ))
             ->add('Shippings', 'collection', array(
                 'type' => new ShippingType($this->app)
-            ))
-        ;
+            ));
         $builder
             ->add($builder->create('Customer', 'hidden')
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
