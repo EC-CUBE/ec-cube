@@ -292,9 +292,9 @@ class ProductController
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app['url_generator']->generate('admin_product'));
+            } else {
+                $app->addError('admin.register.failed', 'admin');
             }
-            $app->addError('admin.register.failed', 'admin');
         }
 
         // 検索結果の保持

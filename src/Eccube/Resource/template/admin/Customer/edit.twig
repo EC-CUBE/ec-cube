@@ -138,6 +138,14 @@
                             {{ form_errors(form.sex) }}
                         </div>
                     </div>
+                    {# 会社名 #}
+                    <div class="form-group">
+                        {{ form_label(form.company_name) }}
+                        <div class="col-sm-9 col-lg-10">
+                            {{ form_widget(form.company_name) }}
+                            {{ form_errors(form.company_name) }}
+                        </div>
+                    </div>
                     {# 職業 #}
                     <div class="form-group">
                         {{ form_label(form.job) }}

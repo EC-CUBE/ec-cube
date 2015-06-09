@@ -156,13 +156,12 @@ $(function(){
                             {% endif %}
 
                             <div class="form-group">
-                                {{ form_label(form.product_image) }}
+                                <label class="col-sm-2 control-label" for="admin_product_product_image">
+                                    {{ form.product_image.vars.label }}<br>
+                                    <span class="small">620px以上推奨</span>
+                                </label>
                                 <div class="col-sm-9 col-lg-10">
-                                    {#<div class="photo_files" draggable="true">#}
                                     <div class="photo_files" id="drag-drop-area">
-                                        {#<div class="drag-drop-inside">
-                                            <svg class="cb cb-photo no-image"> <use xlink:href="#cb-photo" /></svg>
-                                        </div>#}
                                         <ul id="thumb" class="clearfix"></ul>
                                     </div>
                                 </div>
@@ -197,7 +196,7 @@ $(function(){
                             {% if has_class == false %}
                             <div class="form-group">
                                 {{ form_label(form.class.price02) }}
-                                <div class="col-sm-9 col-lg-10">
+                                <div class="col-sm-3 col-lg-3">
                                     {{ form_widget(form.class.price02) }}
                                     {{ form_errors(form.class.price02) }}
                                     <div class="accordion marT15 marB20"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
@@ -255,8 +254,12 @@ $(function(){
                             {{ form_row(form.search_word) }}
                             {{ form_row(form.DeliveryDate) }}
                             {% if has_class == false %}
-                                {{ form_row(form.class.deliv_fee) }}
-                                {{ form_row(form.class.point_rate) }}
+                                <div class="form-group">
+                                    {{ form_label(form.class.deliv_fee) }}
+                                    <div class="col-sm-3 col-lg-3">
+                                        {{ form_widget(form.class.deliv_fee) }}
+                                    </div>
+                                </div>
                             {% endif %}
 
                         </div>
@@ -273,7 +276,6 @@ $(function(){
                     
                     <div class="row hidden-xs hidden-sm">
                         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                            <p><a href="#">商品一覧に戻る</a></p>
                             <p><a href="{{ url('admin_product') }}">検索画面に戻る</a></p>
                         </div>
                     </div>
