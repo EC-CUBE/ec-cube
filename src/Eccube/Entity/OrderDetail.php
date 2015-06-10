@@ -121,20 +121,28 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
 
     public function getClassName1()
     {
-        $ClassCategory = $this->getProductClass()->getClassCategory1();
+        $ProductClass = $this->getProductClass();
+        $ClassCategory = null;
+        if ($ProductClass) {
+            $ClassCategory = $ProductClass->getClassCategory1();
+        }
 
         return is_null($ClassCategory)
             ? null
-            : $this->getProductClass()->getClassCategory1()->getClassName();
+            : $ClassCategory->getClassName();
     }
 
     public function getClassName2()
     {
-        $ClassCategory = $this->getProductClass()->getClassCategory2();
+        $ProductClass = $this->getProductClass();
+        $ClassCategory = null;
+        if ($ProductClass) {
+            $ClassCategory = $ProductClass->getClassCategory2();
+        }
 
         return is_null($ClassCategory)
             ? null
-            : $this->getProductClass()->getClassCategory2()->getClassName();
+            : $ClassCategory->getClassName();
     }
 
     /**

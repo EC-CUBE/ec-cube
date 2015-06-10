@@ -26,6 +26,72 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}受注管理{% endblock %}
 {% block sub_title %}受注登録・編集{% endblock %}
 
+{% block onload %}
+    // 会員検索
+    $('#searchCustomerModalButton').on('click', function() {
+        $.ajax({
+            type: 'GET',
+            data: { 'search_word' : $('#searchCustomerModalSearchWord').val() },
+            url: '{{ url('admin_order_search_customer') }}',
+            success: function(data) {
+                var tbody = $('#searchCustomerModalList tbody');
+                tbody.children().remove();
+                for (var i = 0; i < data.length; i++) {
+                    // モーダルウィンドウ内に結果を出力.
+                    var tr = $('<tr></tr>');
+                    var id = $('<td>' + data[i]['id'] + '</td>');
+                    var name = $('<td>' + data[i]['name'] + '</td>');
+                    var tel = $('<td>' + data[i]['tel'] + '</td>');
+                    var select = $('<td>決定</td>');
+                    tr.append(id);
+                    tr.append(name);
+                    tr.append(tel);
+                    tr.append(select);
+                    tbody.append(tr);
+
+                    // 決定ボタンに検索イベントを設定.
+                    var customer_id = data[i]['id'];
+                    select.on('click', function() {
+                        $.ajax({
+                            type: 'GET',
+                            data: { 'id' : customer_id },
+                            url: '{{ url('admin_order_search_customer_by_id') }}',
+                            success: function(data) {
+                                // 顧客情報をフォームにセット
+                                $('#order_CustomerId').html(data['id']);
+                                $('#order_Customer').val(data['id']);
+                                $('#order_name_name01').val(data['name01']);
+                                $('#order_name_name02').val(data['name02']);
+                                $('#order_kana_kana01').val(data['kana01']);
+                                $('#order_kana_kana02').val(data['kana02']);
+                                $('#order_zip_zip01').val(data['zip01']);
+                                $('#order_zip_zip02').val(data['zip02']);
+                                $('#order_address_pref').val(data['pref']);
+                                $('#order_address_addr01').val(data['addr01']);
+                                $('#order_address_addr02').val(data['addr02']);
+                                $('#order_email').val(data['email']);
+                                $('#order_tel_tel01').val(data['tel01']);
+                                $('#order_tel_tel02').val(data['tel02']);
+                                $('#order_tel_tel03').val(data['tel03']);
+                                $('#order_fax_fax01').val(data['fax01']);
+                                $('#order_fax_fax02').val(data['fax02']);
+                                $('#order_fax_fax03').val(data['fax03']);
+                                $('#searchCustomerModal').modal('hide');
+                            },
+                            error: function() {
+                                console.log('search customer(by id) failed.');
+                            }
+                        });
+                     });
+                }
+            },
+            error: function() {
+                console.log('search customer failed.');
+            }
+        });
+    });
+{% endblock %}
+
 {% block main %}
 
 <div class="row" id="aside_wrap">
@@ -37,16 +103,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h3 class="box-title">注文者情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body accpanel" style="display: block;">
-                    <div class="form-horizontal">
+                    <div class="order_list form-horizontal">
+                        {% if Order.id is empty %}
                         <div class="btn_area">
                             <ul>
-                                <li><a class="btn btn-default btn-block btn-sm">会員検索</a></li>
+                                <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchCustomerModal">会員検索</a></li>
                             </ul>
                         </div>
+                        {% endif %}
                         <div class="form-group">
                             <div class="col-sm-3 col-lg-2">会員ID</div>
                             <div class="col-sm-9 col-lg-10">
-                                {{ form.Customer.vars.value is empty ? '非会員' :  form.Customer.vars.value }}
+                                <p id="order_CustomerId">{{ form.Customer.vars.value is empty ? '非会員' :  form.Customer.vars.value }}</p>
                                 {{ form_widget(form.Customer) }}
                                 {{ form_errors(form.Customer) }}
                             </div>
@@ -390,6 +458,41 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div><!-- /.col -->
     </form>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin: 120px auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
+                <h4 class="modal-title" id="myModalLabel">会員検索</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" id="searchCustomerModalSearchWord" name="search_word" value="" class="form-control" placeholder="会員ID お名前 お名前(カナ)">
+                </div>
+                <div class="btn_area">
+                    <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >検索</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="searchCustomerModalList">
+                        <thead>
+                        <tr>
+                            <th>会員ID</th>
+                            <th>お名前(カナ)</th>
+                            <th>電話番号</th>
+                            <th>決定</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

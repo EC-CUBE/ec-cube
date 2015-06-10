@@ -36,7 +36,7 @@ class EditController extends AbstractController
         $OriginOrder = null;
 
         if (is_null($id)) {
-            $TargetOrder = $app['eccube.service.order']->newOrder();
+            $TargetOrder = $this->newOrder();
         } else {
             // todo 決済処理中, 購入処理中は除く
             $TargetOrder = $app['eccube.repository.order']->find($id);
@@ -58,17 +58,15 @@ class EditController extends AbstractController
             $this->calculate($app, $TargetOrder);
 
             if ($form->isValid()) {
-                if ('register' === $request->get('mode')) {
-                    // 受注日/発送日/入金日の更新.
-                    $this->updateDate($TargetOrder, $OriginOrder);
+                // 受注日/発送日/入金日の更新.
+                $this->updateDate($TargetOrder, $OriginOrder);
 
-                    $app['orm.em']->persist($TargetOrder);
-                    $app['orm.em']->flush();
+                $app['orm.em']->persist($TargetOrder);
+                $app['orm.em']->flush();
 
-                    $app->addSuccess('admin.order.save.complete', 'admin');
+                $app->addSuccess('admin.order.save.complete', 'admin');
 
-                    return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
-                }
+                return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
             }
         }
 
@@ -76,6 +74,87 @@ class EditController extends AbstractController
             'form' => $form->createView(),
             'Order' => $TargetOrder,
         ));
+    }
+
+    public function searchCustomer(Application $app, Request $request)
+    {
+        $searchData = array(
+            'multi' => $request->get('search_word'),
+        );
+
+        $Customers = $app['eccube.repository.customer']
+            ->getQueryBuilderBySearchData($searchData)
+            ->getQuery()
+            ->getResult();
+
+        $data = array();
+
+        $formatTel = '%s-%s-%s';
+        $formatName = '%s%s(%s%s)';
+        foreach ($Customers as $Customer) {
+            $data[] = array(
+                'id' => $Customer->getId(),
+                'name' => sprintf($formatName, $Customer->getName01(),  $Customer->getName02(),  $Customer->getKana01(), $Customer->getKana02()),
+                'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+            );
+        }
+        return $app->json($data);
+    }
+
+    public function searchCustomerById(Application $app, Request $request)
+    {
+        $app['monolog']->addDebug('search customer by id start.');
+
+        /** @var $Customer \Eccube\Entity\Customer */
+        $Customer = $app['eccube.repository.customer']
+            ->find($request->get('id'));
+
+        if (is_null($Customer)) {
+            $app['monolog']->addDebug('search customer by id not found.');
+            return $app->json(array(), 404);
+        }
+
+        $app['monolog']->addDebug('search customer by id found.');
+
+        $data = array(
+            'id' => $Customer->getId(),
+            'name01' => $Customer->getName01(),
+            'name02' => $Customer->getName02(),
+            'kana01' => $Customer->getKana01(),
+            'kana02' => $Customer->getKana02(),
+            'zip01' => $Customer->getZip01(),
+            'zip02' => $Customer->getZip02(),
+            'pref' => is_null($Customer->getPref()) ? null : $Customer->getPref()->getId(),
+            'addr01' => $Customer->getAddr01(),
+            'addr02' => $Customer->getAddr02(),
+            'email' => $Customer->getEmail(),
+            'tel01' => $Customer->getTel01(),
+            'tel02' => $Customer->getTel02(),
+            'tel03' => $Customer->getTel03(),
+            'fax01' => $Customer->getFax01(),
+            'fax02' => $Customer->getFax02(),
+            'fax03' => $Customer->getFax03(),
+        );
+
+        return $app->json($data);
+    }
+
+    public function searchProduct(Application $app, Request $request)
+    {
+        $data = array();
+
+        return $app->json($data, 200);
+    }
+
+    protected function newOrder()
+    {
+        $Order = new \Eccube\Entity\Order();
+        $Order->setDelFlg(0);
+        $Shipping = new \Eccube\Entity\Shipping();
+        $Shipping->setDelFlg(0);
+        $Order->addShipping($Shipping);
+        $Shipping->setOrder($Order);
+        return $Order;
     }
 
     /**
