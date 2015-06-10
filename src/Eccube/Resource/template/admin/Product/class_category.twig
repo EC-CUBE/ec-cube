@@ -72,7 +72,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                                     {% set delete_action = url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) %}
                                                     <li>
-                                                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。¥n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ eccube.changeAction('{{ delete_action }}'); document.form1.submit(); } return false;">削除</a>
+                                                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ eccube.changeAction('{{ delete_action }}'); document.form1.submit(); } return false;">削除</a>
                                                     </li>
 
                                                     {% if loop.first == false %}
