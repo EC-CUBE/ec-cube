@@ -719,8 +719,8 @@ fieldset[disabled] .btn-link:focus {
     opacity:1
 }
 .alert-dismissable .close, .alert-dismissible .close {
-    top: -3px;
-	font-size: 26px;
+    top: 2px;
+	font-size: 13px;
 }
 .btn_area2 {
     padding: 16px 0 48px;
@@ -1528,6 +1528,19 @@ dl.accordion {
 	position: relative;
 	top: -1px;
 }
+
+
+/*	modal
+============================ */
+
+.modal-header .close {
+	margin-top: 5px;
+}
+.modal-header .close .cb {
+	fill: #444;
+	color: #444;
+}
+
 
 /*	header
 ============================ */
