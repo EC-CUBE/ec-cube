@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <dd>{{ Order.CustomerOrderStatus }}</dd>
                                         {% endif %}
                                     </dl>
-                                    <p><a class="btn btn-default btn-sm" href="{{ url('mypage_history', {'orderId': Order.id}) }}">詳細を見る</a></p>
+                                    <p><a class="btn btn-default btn-sm" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
                                 </div>
                                 <div class="col-sm-8">
                                     {% for OrderDetail in Order.OrderDetails %}
