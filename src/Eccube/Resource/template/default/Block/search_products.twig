@@ -19,8 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-            <div id="drawer_pc" class="drawer header_bottom_area pc">
-                <div id="search" class="search">
+                <div id="search" class="search drawer_parts header_bottom_area pc">
                     <form method="get" id="searchform" action="{{ path('product_list') }}">
                         <div class="search_inner">
                             {{ form_widget(form.category_id) }}
@@ -31,42 +30,3 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </form>
                 </div>
-                {# todo 別ブロック化
-                <div id="member" class="member">
-                    <ul class="member_link">
-                    {% if is_granted('ROLE_USER') %}
-
-                        <li>
-                            <a href="{{ url('mypage') }}">
-                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-user fa-stack-1x fa-inverse"></span> </span>マイページ
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url('mypage_favorite') }}">
-                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-heart-o fa-stack-1x fa-inverse"></span> </span>お気に入り
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url('mypage_login') }}">
-                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-sign-in fa-stack-1x fa-inverse"></span> </span>ログイン
-                            </a>
-                        </li>
-
-                    {% else %}
-
-                        <li>
-                            <a href="{{ url('mypage_favorite') }}">
-                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-heart-o fa-stack-1x fa-inverse"></span> </span>お気に入り
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url('forgot') }}">
-                                <span class="fa-stack"> <span class="fa fa-circle fa-stack-2x"></span> <span class="fa fa-sign-in fa-stack-1x fa-inverse"></span> </span>ログイン
-                            </a>
-                        </li>
-
-                    {% endif %}
-                    </ul>
-                </div>
-                #}
-            </div>
