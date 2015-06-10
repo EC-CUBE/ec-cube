@@ -13,8 +13,8 @@ html {
 }
 
 body {
-	font-size: 12px;
-	font-size: 1.2rem;
+	font-size: 16px;
+	font-size: 1.6rem;
 }
 a { color: #0092C4;
 	text-decoration: none;
@@ -3085,12 +3085,7 @@ fieldset[disabled] .btn-link:focus {
 @media only screen and (max-width: 767px) {
 	
 	/* --------- common ---------- */
-	
-	body {
-		font-size: 12px;
-		font-size: 1.2rem;
-	}
-	
+		
 	.drawer-open #contents, .drawer-open #header, .drawer-open #footer, .drawer-open .pagetop {
 		-webkit-transform: translateX(-260px);
 		-moz-transform: translateX(-260px);
@@ -3151,10 +3146,6 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* --------- common ---------- */
 	
-	body {
-		font-size: 16px;
-		font-size: 1.6rem;
-	}
 	.container-fluid {
 		padding-left: 16px;
 		padding-right: 16px;
