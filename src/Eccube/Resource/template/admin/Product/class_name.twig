@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
                                         </div>
                                         <div class="item_pattern td">
-                                            <a href="{{ url('admin_product_class_name_edit', {id: ClassName.id}) }}">
+                                            <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">
                                                 {{ ClassName.name }} ({{ ClassName.ClassCategories|length }})
                                             </a>
                                         </div>
@@ -59,6 +59,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <div class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">
+                                                            分類登録
+                                                        </a>
+                                                    </li>
+
                                                     {% if ClassName.id != TargetClassName.id %}
                                                         <li><a href="{{ url('admin_product_class_name_edit', {id: ClassName.id}) }}">編集</a></li>
                                                     {% else %}

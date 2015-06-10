@@ -53,7 +53,7 @@ class PaymentRepository extends EntityRepository
             $Payment
                 ->setRank($rank)
                 ->setDelFlg(0)
-                ->setFixFlg(0)
+                ->setFixFlg(1)
                 ->setChargeFlg(1)
                 ->setCreator($Creator)
             ;
