@@ -71,11 +71,8 @@ class ShoppingController extends AbstractController
         $app['orm.em']->getFilters()->disable('soft_delete');
     }
 
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
-        // delete_flagではなく, 注文の確定フラグをみるようにする
-        $app['orm.em']->getFilters()->disable('soft_delete');
-
         $cartService = $app['eccube.service.cart'];
 
         // カートチェック
@@ -120,36 +117,38 @@ class ShoppingController extends AbstractController
             'choices' => $deliveries,
         ));
 
-
         // お届け日の設定
         $minDate = 0;
+
+        // 配送時の最大公約数となる商品の日数を取得
         foreach ($Order->getOrderDetails() as $detail) {
             if ($minDate < $detail->getProductClass()->getDeliveryDate()->getValue()) {
-                $minDate < $detail->getProductClass()->getDeliveryDate()->getValue();
+                $minDate = $detail->getProductClass()->getDeliveryDate()->getValue();
             }
         }
-        error_log($minDate);
-        // 日付を設定
+
+        // 配達最大日数期間を設定
+        $period = new \DatePeriod (
+            new \DateTime($minDate . ' day'),
+            new \DateInterval('P1D'),
+            new \DateTime($minDate + $app['config']['deliv_date_end_max'] . ' day')
+        );
+ 
         $deliveryDates = array();
-        for ($i = $minDate; $i < $app['config']['deliv_date_end_max']; $i++) {
-            $deliveryDate = new \Eccube\Entity\DeliveryDate();
-            $deliveryDate->setName($i);
-            $deliveryDates[] = $deliveryDate;
+        foreach ($period as $day) {
+            $deliverDates[] = $day->format('Y/m/d');
         }
 
-
-        $form->add('deliveryDate', 'entity', array(
-            'class' => 'Eccube\Entity\DeliveryDate',
-            'property' => 'name',
-            'choices' => $deliveryDates,
+        $form->add('deliveryDate', 'choice', array(
+            'choices' => $deliverDates,
         ));
-
 
         // お届け時間の設定
         $form->add('deliveryTime', 'entity', array(
             'class' => 'Eccube\Entity\DeliveryTime',
             'property' => 'delivery_time',
             'choices' => $deliveries[0]->getDeliveryTimes(),
+            'empty_value' => '指定なし',
         ));
 
         // 支払い方法選択
@@ -172,9 +171,23 @@ class ShoppingController extends AbstractController
     }
 
     // 購入処理
-    public function confirm(Application $app)
+    public function confirm(Application $app, Request $request)
     {
         $this->init($app);
+
+        // カートチェック
+        if (!$cartService->isLocked()) {
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
+        // 認証チェック
+        if (!$this->isAuthenticated($app)) {
+            return $app->redirect($app->url('shopping'));
+        }
+
+        // 在庫チェック
+
 
         if ('POST' === $app['request']->getMethod()) {
             $this->form->handleRequest($app['request']);
@@ -199,16 +212,7 @@ class ShoppingController extends AbstractController
     // 購入完了画面表示
     public function complete(Application $app)
     {
-        $title = "ご購入完了";
-        $baseInfo = $app['eccube.repository.base_info']->find(1);
-
-        return $app['view']->render(
-            'Shopping/complete.twig',
-            array(
-                'title' => $title,
-                'baseInfo' => $baseInfo
-            )
-        );
+        return $app['view']->render('Shopping/complete.twig');
     }
 
     // 配送業者設定
@@ -524,14 +528,7 @@ class ShoppingController extends AbstractController
 
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        /*
-        $options = array(
-            'csrf_protection' => true,
-        );
-         * 
-         */
         $form = $app['form.factory']
-//            ->createNamedBuilder('', 'customer_login', null, $options)
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
@@ -634,8 +631,6 @@ class ShoppingController extends AbstractController
             ->setPref($OtherDeliv->getPref())
             ->setAddr01($OtherDeliv->getAddr01())
             ->setAddr02($OtherDeliv->getAddr02())
-            ->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime())
             ->setDelFlg(0);
 
         return $Shipping;

@@ -41,7 +41,7 @@ class ShoppingType extends AbstractType
             ->add('message', 'textarea', array(
                     'required' => false,
                     'constraints' => array(
-                        new Assert\Length(array('min' => 0, 'max' => 500))),
+                        new Assert\Length(array('min' => 0, 'max' => 3000))),
             ));
     }
 

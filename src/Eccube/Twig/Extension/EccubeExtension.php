@@ -43,8 +43,8 @@ class EccubeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'image_info' => new \Twig_Function_Method($this, 'getImageInfo'),
-            'calc_inc_tax' => new \Twig_Function_Method($this, 'getCalcIncTax'),
+            new \Twig_SimpleFunction('image_info', array($this, 'getImageInfo')),
+            new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
         );
     }
 
@@ -56,10 +56,11 @@ class EccubeExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'no_image_main_list' => new \Twig_Filter_Method($this, 'getNoImageMainList'),
-            'no_image_main' => new \Twig_Filter_Method($this, 'getNoImageMain'),
-            'no_image_product' => new \Twig_Filter_Method($this, 'getNoImageProduct'),
-            'date_format' => new \Twig_Filter_Method($this, 'getDateFormat'),
+            new \Twig_SimpleFilter('no_image_main_list', array($this, 'getNoImageMainList')),
+            new \Twig_SimpleFilter('no_image_main', array($this, 'getNoImageMain')),
+            new \Twig_SimpleFilter('no_image_product', array($this, 'getNoImageProduct')),
+            new \Twig_SimpleFilter('date_format', array($this, 'getDateFormatFilter')),
+            new \Twig_SimpleFilter('price', array($this, 'getPriceFilter')),
         );
     }
 
@@ -154,13 +155,27 @@ class EccubeExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function getDateFormat($date, $value = '', $format = 'Y/m/d')
+    public function getDateFormatFilter($date, $value = '', $format = 'Y/m/d')
     {
         if (is_null($date)) {
             return $value;
         } else {
             return $date->format($format);
         }
+    }
+
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
+    {
+        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
+        $price = '¥ '.$price;
+
+        return $price;
     }
 
 }
