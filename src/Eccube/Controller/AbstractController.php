@@ -41,4 +41,23 @@ class AbstractController
 
         return $form;
     }
+
+    protected function getSecurity($app)
+    {
+        return $app['security'];
+    }
+
+
+    protected function getUser($app)
+    {
+        return $app['user'];
+    }
+
+    protected function isAuthenticated($app) {
+        if ($this->getSecurity($app)->isGranted('ROLE_USER')) {
+            return true;
+        }
+        return false;
+    }
+
 }
