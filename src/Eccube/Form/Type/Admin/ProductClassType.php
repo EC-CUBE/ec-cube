@@ -83,16 +83,11 @@ class ProductClassType extends AbstractType
                 'label' => '消費税率',
                 'mapped' => false,
             ))
-            ->add('deliv_fee', 'integer', array(
+            ->add('deliv_fee', 'money', array(
                 'label' => '商品送料',
+                'currency' => 'JPY',
+                'precision' => 0,
                 'required' => false,
-            ))
-            ->add('point_rate', 'integer', array(
-                'label' => 'ポイント付与率',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-                'data' => 0,
             ))
             ->add('product_type', 'product_type', array(
                 'label' => '商品種別',

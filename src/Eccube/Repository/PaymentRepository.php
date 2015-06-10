@@ -52,10 +52,10 @@ class PaymentRepository extends EntityRepository
             $Payment = new \Eccube\Entity\Payment();
             $Payment
                 ->setRank($rank)
-                ->setStatus(1)
                 ->setDelFlg(0)
-                ->setFix(2)
-                ->setCreatorId($Creator->getId())
+                ->setFixFlg(1)
+                ->setChargeFlg(1)
+                ->setCreator($Creator)
             ;
 
         } else {

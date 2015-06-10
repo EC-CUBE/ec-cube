@@ -13,8 +13,8 @@ html {
 }
 
 body {
-	font-size: 12px;
-	font-size: 1.2rem;
+	font-size: 16px;
+	font-size: 1.6rem;
 }
 a { color: #0092C4;
 	text-decoration: none;
@@ -860,7 +860,7 @@ p.message {
 }
 
 /* side */
-#side {
+.side {
 
 }
 	
@@ -3085,12 +3085,7 @@ fieldset[disabled] .btn-link:focus {
 @media only screen and (max-width: 767px) {
 	
 	/* --------- common ---------- */
-	
-	body {
-		font-size: 12px;
-		font-size: 1.2rem;
-	}
-	
+		
 	.drawer-open #contents, .drawer-open #header, .drawer-open #footer, .drawer-open .pagetop {
 		-webkit-transform: translateX(-260px);
 		-moz-transform: translateX(-260px);
@@ -3151,10 +3146,6 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* --------- common ---------- */
 	
-	body {
-		font-size: 16px;
-		font-size: 1.6rem;
-	}
 	.container-fluid {
 		padding-left: 16px;
 		padding-right: 16px;
@@ -3441,33 +3432,32 @@ fieldset[disabled] .btn-link:focus {
 		z-index: 2;
 	}
 	
-	/* -- main_left -- */
+	
+	#side1 {
+		float: left;
+		width: 25%;
+		padding-right: 16px;
+	}
+	#side2 {
+		float: right;
+		width: 25%;
+		padding-left: 16px;
+	}
+	
+	/* -- main_left (side2 only) -- */
 	
 	/* main */
 	.main_left #main {
 		width: 75%;
 		float: left;
 	}
-	
-	/* side */
-	.main_left #side {
-		width: 25%;
-		float: right;
-	}
 
-
-	/* -- main_right -- */
+	/* -- main_right (side1 only) -- */
 
 	/* main */
 	.main_right #main {
 		width: 75%;
 		float: right;
-	}
-	
-	/* side */
-	.main_right #side {
-		width: 25%;
-		float: left;
 	}
 
 	/* -- main_only -- */
@@ -3477,6 +3467,15 @@ fieldset[disabled] .btn-link:focus {
 		width: 100%;
 	}
 
+
+	/* -- main_left_right (side1 & 2) -- */
+	
+	/* main */
+	.main_left_right #main {
+		width: 50%;
+		float: left;
+	}
+	
 	/* category_nav */
 	#category {
 		clear: both;
@@ -3710,24 +3709,24 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* category-nav */
 
-	#side .category-nav > li {
+	.side .category-nav > li {
 		display: block;
 		margin: 0;
 	}
-	#side .category-nav li > a {
+	.side .category-nav li > a {
 		width: 100%;
 	}
 
-	#side .category-nav > ul ul {
+	.side .category-nav > ul ul {
 		width: 100%;
 	}	
-	#side .category-nav > ul {
+	.side .category-nav > ul {
 		width: 100%;
 	}
-	#side .category-nav > ul > li {
+	.side .category-nav > ul > li {
 		width: 100%;
 	}
-	#side .category-nav > ul > li a {
+	.side .category-nav > ul > li a {
 		padding-left: 10px;
 	}
 
@@ -4131,8 +4130,8 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* ----- category_nav in side ---- */
 	
-	#side #searchform select,
-	#side #searchform input {
+	.side #searchform select,
+	.side #searchform input {
 		float: none;
 	}
 

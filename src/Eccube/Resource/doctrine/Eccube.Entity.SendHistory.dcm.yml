@@ -60,7 +60,6 @@ Eccube\Entity\SendHistory:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: SendHistories
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

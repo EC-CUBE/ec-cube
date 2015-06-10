@@ -25,24 +25,14 @@
 namespace Eccube\Entity;
 
 /**
- * Deliv
+ * Delivery
  */
-class Deliv extends \Eccube\Entity\AbstractEntity
+class Delivery extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
      */
     private $id;
-
-    /**
-     * @var integer
-     */
-    private $product_type_id;
-
-    /**
-     * @var \Eccube\Entity\Master\ProductType
-     */
-    private $ProductType;
 
     /**
      * @var string
@@ -57,7 +47,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $remark;
+    private $description;
 
     /**
      * @var string
@@ -68,11 +58,6 @@ class Deliv extends \Eccube\Entity\AbstractEntity
      * @var integer
      */
     private $rank;
-
-    /**
-     * @var integer
-     */
-    private $status;
 
     /**
      * @var integer
@@ -90,14 +75,19 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Eccube\Entity\Master\ProductType
      */
-    private $DelivFees;
+    private $ProductType;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $DelivTimes;
+    private $DeliveryFees;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $DeliveryTimes;
 
     /**
      * @var \Eccube\Entity\Member
@@ -114,8 +104,8 @@ class Deliv extends \Eccube\Entity\AbstractEntity
      */
     public function __construct()
     {
-        $this->DelivFees = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->DelivTimes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->DeliveryFees = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->DeliveryTimes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->PaymentOptions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -127,29 +117,6 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set product_type_id
-     *
-     * @param  integer $productTypeId
-     * @return Deliv
-     */
-    public function setProductTypeId($productTypeId)
-    {
-        $this->product_type_id = $productTypeId;
-
-        return $this;
-    }
-
-    /**
-     * Get product_type_id
-     *
-     * @return integer
-     */
-    public function getProductTypeId()
-    {
-        return $this->product_type_id;
     }
 
     public function setProductType(\Eccube\Entity\Master\ProductType $ProductType)
@@ -211,33 +178,33 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set remark
+     * Set description
      *
-     * @param  string $remark
-     * @return Deliv
+     * @param  string $description
+     * @return Delivery
      */
-    public function setRemark($remark)
+    public function setDescription($description)
     {
-        $this->remark = $remark;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get remark
+     * Get description
      *
      * @return string
      */
-    public function getRemark()
+    public function getDescription()
     {
-        return $this->remark;
+        return $this->description;
     }
 
     /**
      * Set confirm_url
      *
      * @param  string $confirmUrl
-     * @return Deliv
+     * @return Delivery
      */
     public function setConfirmUrl($confirmUrl)
     {
@@ -260,7 +227,7 @@ class Deliv extends \Eccube\Entity\AbstractEntity
      * Set rank
      *
      * @param  integer $rank
-     * @return Deliv
+     * @return Delivery
      */
     public function setRank($rank)
     {
@@ -277,29 +244,6 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
-    }
-
-    /**
-     * Set status
-     *
-     * @param  integer $status
-     * @return Deliv
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -372,80 +316,80 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add DelivFees
+     * Add DeliveryFees
      *
-     * @param  \Eccube\Entity\DelivFee $delivFees
-     * @return Deliv
+     * @param  \Eccube\Entity\DeliveryFee $DeliveryFees
+     * @return Delivery
      */
-    public function addDelivFee(\Eccube\Entity\DelivFee $delivFees)
+    public function addDeliveryFee(\Eccube\Entity\DeliveryFee $DeliveryFees)
     {
-        $this->DelivFees[] = $delivFees;
+        $this->DeliveryFees[] = $DeliveryFees;
 
         return $this;
     }
 
     /**
-     * Remove DelivFees
+     * Remove DeliveryFees
      *
-     * @param \Eccube\Entity\DelivFee $delivFees
+     * @param \Eccube\Entity\DeliveryFee $DeliveryFees
      */
-    public function removeDelivFee(\Eccube\Entity\DelivFee $delivFees)
+    public function removeDeliveryFee(\Eccube\Entity\DeliveryFee $DeliveryFees)
     {
-        $this->DelivFees->removeElement($delivFees);
+        $this->DeliveryFees->removeElement($DeliveryFees);
     }
 
     /**
-     * Get DelivFees
+     * Get DeliveryFees
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getDelivFees()
+    public function getDeliveryFees()
     {
-        return $this->DelivFees;
+        return $this->DeliveryFees;
     }
 
     /**
-     * Add DelivTimes
+     * Add DeliveryTimes
      *
-     * @param  \Eccube\Entity\DelivTime $delivTimes
-     * @return Deliv
+     * @param  \Eccube\Entity\DeliveryTime $DeliveryTimes
+     * @return Delivery
      */
-    public function addDelivTime(\Eccube\Entity\DelivTime $delivTimes)
+    public function addDeliveryTime(\Eccube\Entity\DeliveryTime $DeliveryTimes)
     {
-        $this->DelivTimes[] = $delivTimes;
+        $this->DeliveryTimes[] = $DeliveryTimes;
 
         return $this;
     }
 
     /**
-     * Remove DelivTimes
+     * Remove DeliveryTimes
      *
-     * @param \Eccube\Entity\DelivTime $delivTimes
+     * @param \Eccube\Entity\DeliveryTime $DeliveryTimes
      */
-    public function removeDelivTime(\Eccube\Entity\DelivTime $delivTimes)
+    public function removeDeliveryTime(\Eccube\Entity\DeliveryTime $DeliveryTimes)
     {
-        $this->DelivTimes->removeElement($delivTimes);
+        $this->DeliveryTimes->removeElement($DeliveryTimes);
     }
 
     /**
-     * Get DelivTimes
+     * Get DeliveryTimes
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getDelivTimes()
+    public function getDeliveryTimes()
     {
-        return $this->DelivTimes;
+        return $this->DeliveryTimes;
     }
 
     /**
      * Set Creator
      *
-     * @param  \Eccube\Entity\Member $creator
-     * @return Deliv
+     * @param  \Eccube\Entity\Member $Creator
+     * @return Delivery
      */
-    public function setCreator(\Eccube\Entity\Member $creator)
+    public function setCreator(\Eccube\Entity\Member $Creator)
     {
-        $this->Creator = $creator;
+        $this->Creator = $Creator;
 
         return $this;
     }
@@ -463,12 +407,12 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Add PaymentOptions
      *
-     * @param  \Eccube\Entity\PaymentOption $paymentOptions
-     * @return Deliv
+     * @param  \Eccube\Entity\PaymentOption $PaymentOption
+     * @return Delivery
      */
-    public function addPaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
+    public function addPaymentOption(\Eccube\Entity\PaymentOption $PaymentOption)
     {
-        $this->PaymentOptions[] = $paymentOptions;
+        $this->PaymentOptions[] = $PaymentOption;
 
         return $this;
     }
@@ -476,11 +420,11 @@ class Deliv extends \Eccube\Entity\AbstractEntity
     /**
      * Remove PaymentOptions
      *
-     * @param \Eccube\Entity\PaymentOption $paymentOptions
+     * @param \Eccube\Entity\PaymentOption $PaymentOption
      */
-    public function removePaymentOption(\Eccube\Entity\PaymentOption $paymentOptions)
+    public function removePaymentOption(\Eccube\Entity\PaymentOption $PaymentOption)
     {
-        $this->PaymentOptions->removeElement($paymentOptions);
+        $this->PaymentOptions->removeElement($PaymentOption);
     }
 
     /**
