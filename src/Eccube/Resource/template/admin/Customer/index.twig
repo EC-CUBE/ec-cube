@@ -52,7 +52,7 @@ function fnReSendMail(action) {
             <div class="row">
                 <div class="col-md-12 accordion">
 
-                    {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前・お名前(フリガナ)', class : 'input_search' } } ) }}
+                    {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前', class : 'input_search' } } ) }}
 
                     <a class="toggle" href="#"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
                     <div class="search-box-inner accpanel">
@@ -145,7 +145,7 @@ function fnReSendMail(action) {
                     </div>
                 </div><!-- /.box-body -->
                 {% if pagination.totalItemCount > 0 %}
-                    {% include "pager.twig" with { 'pages' : pagination.paginationData } %}
+                    {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
                 {% endif %}
             </div><!-- /.box -->
         </div><!-- /.col -->
