@@ -56,6 +56,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.tax_rule'] = $app->share(function () use ($app) {
             return new \Eccube\Service\TaxRuleService($app['eccube.repository.tax_rule']);
         });
+        $app['eccube.service.mail'] = $app->share(function () use ($app) {
+            return new \Eccube\Service\MailService($app);
+        });
 
         // Repository
         $app['eccube.repository.master.constant'] = $app->share(function () use ($app) {
@@ -67,8 +70,23 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.pref'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Pref');
         });
+        $app['eccube.repository.master.sex'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Sex');
+        });
+        $app['eccube.repository.master.disp'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Disp');
+        });
         $app['eccube.repository.master.product_type'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductType');
+        });
+        $app['eccube.repository.master.product_status'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Status');
+        });
+        $app['eccube.repository.master.page_max'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\PageMax');
+        });
+        $app['eccube.repository.master.order_status'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         });
 
         $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
@@ -114,6 +132,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.product_class'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductClass');
+        });
+        $app['eccube.repository.product_stock'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductStock');
         });
         $app['eccube.repository.maker'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Maker');

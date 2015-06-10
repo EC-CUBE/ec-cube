@@ -23,6 +23,7 @@
 
 namespace Eccube\Service;
 
+use Doctrine\DBAL\LockMode;
 use Eccube\Application;
 
 class OrderService
@@ -244,6 +245,74 @@ class OrderService
 
         return $Order;
     }
+
+
+    /**
+     * 商品公開ステータスチェック、在庫チェックを行い、購入制限数チェック、在庫情報をロックする
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     * @return true : 成功、false : 失敗
+     */
+    public function isOrderProduct($em, \Eccube\Entity\Order $Order)
+    {
+        // 商品公開ステータスチェック
+        $orderDetails = $Order->getOrderDetails();
+        foreach ($orderDetail as $orderDetail) {
+            if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
+                // 商品が非公開ならエラー
+                return false;
+            }
+
+            // 購入制限数チェック
+            if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
+                return false;
+            }
+
+        }
+
+        // 在庫チェック
+        foreach ($orderDetail as $orderDetail) {
+            // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
+            if ($orderDetail->getProductClass()->getStockUnlimited() == $this->app['config']['enabled']) {
+                // 在庫チェックあり
+                // 在庫に対してロック(select ... for update)を実行
+                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->findOneBy(
+                        array('product_class_id' => $orderDetail->getProductClass()->getId()), LockMode::PESSIMISTIC_WRITE
+                );
+                // 購入数量と在庫数をチェックしてなければエラー
+                if ($orderDetail->getQuantity() > $productStock->getStock()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+ 
+    }
+
+    /**
+     * 受注情報、お届け先情報の更新
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     */
+    public function setOrderUpdate($em, \Eccube\Entity\Order $Order)
+    {
+
+        // 受注情報を更新
+        $Order->setOrderDate(new \DatetTime());
+        $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
+
+        // お届け先情報を更新
+        $shippings = $Order->getShippings();
+        foreach ($shippings as $shipping) {
+        }
+
+
+    }
+
+
+
 
     public function commit(\Eccube\Entity\Order $Order)
     {

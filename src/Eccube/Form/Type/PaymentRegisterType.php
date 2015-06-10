@@ -76,8 +76,8 @@ class PaymentRegisterType extends AbstractType
                 $form = $event->getForm();
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
-                if ($ruleMin != '' && $ruleMax < $ruleMin) {
-                    $form['rule_min']->addError(new FormError('利用条件(下限)は' . $ruleMin . '円以下にしてください。'));
+                if (!empty($ruleMin) && !empty($ruleMax) && $ruleMax < $ruleMin) {
+                    $form['rule_min']->addError(new FormError('利用条件(上限)は' . $ruleMin . '円以下にしてください。'));
                 }
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())

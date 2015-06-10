@@ -43,8 +43,9 @@ class EccubeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('image_info', array($this, 'getImageInfo')),
-            new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
+            'image_info' => new \Twig_Function_Method($this, 'getImageInfo'),
+            'calc_inc_tax' => new \Twig_Function_Method($this, 'getCalcIncTax'),
+            'active_menus' => new \Twig_Function_Method($this, 'getActiveMenus'),
         );
     }
 
@@ -164,7 +165,6 @@ class EccubeExtension extends \Twig_Extension
         }
     }
 
-
     /**
      * Name of this extension
      *
@@ -176,6 +176,16 @@ class EccubeExtension extends \Twig_Extension
         $price = '¥ '.$price;
 
         return $price;
+    }
+
+    public function getActiveMenus($menus = array())
+    {
+        $count = count($menus);
+        for ($i = $count; $i <= 2; $i++) {
+            $menus[] = '';
+        }
+
+        return $menus;
     }
 
 }

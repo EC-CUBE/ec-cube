@@ -637,4 +637,32 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     {
         return $this->Creator;
     }
+    /**
+     * @var \Eccube\Entity\ProductStock
+     */
+    private $ProductStock;
+
+
+    /**
+     * Set ProductStock
+     *
+     * @param \Eccube\Entity\ProductStock $productStock
+     * @return ProductClass
+     */
+    public function setProductStock(\Eccube\Entity\ProductStock $productStock = null)
+    {
+        $this->ProductStock = $productStock;
+
+        return $this;
+    }
+
+    /**
+     * Get ProductStock
+     *
+     * @return \Eccube\Entity\ProductStock 
+     */
+    public function getProductStock()
+    {
+        return $this->ProductStock;
+    }
 }

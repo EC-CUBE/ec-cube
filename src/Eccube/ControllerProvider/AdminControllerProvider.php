@@ -84,6 +84,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // customer
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');
+        $c->match('/customer/page/{page_no}', '\Eccube\Controller\Admin\Customer\CustomerController::index')->assert('page_no', '\d+')->bind('admin_customer_page');
         $c->match('/customer/new', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->bind('admin_customer_new');
         $c->match('/customer/{id}/edit', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->assert('id', '\d+')->bind('admin_customer_edit');
         $c->post('/customer/{id}/delete', '\Eccube\Controller\Admin\Customer\CustomerController::delete')->assert('id', '\d+')->bind('admin_customer_delete');
@@ -166,7 +167,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/mail/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_edit');
 
         // customer_agreement
-        $c->match('/setting/shop/customer_agreement/', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
+        $c->match('/setting/shop/customer_agreement/', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
         // system/system
         $c->match('/setting/system/system', '\Eccube\Controller\Admin\System\SystemController::index')->bind('admin_setting_system_system');

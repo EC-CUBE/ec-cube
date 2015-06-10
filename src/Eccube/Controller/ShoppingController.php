@@ -82,7 +82,7 @@ class ShoppingController extends AbstractController
         }
 
         // 未ログインの場合は, ログイン画面へリダイレクト.
-        if (!$app['security']->isGranted('ROLE_USER')) {
+        if (!$this->isAuthenticated($app)) {
             return $app->redirect($app->url('shopping_login'));
         }
 
@@ -93,7 +93,7 @@ class ShoppingController extends AbstractController
         // 初回アクセス(受注データがない)の場合は, 受注データを作成
         if (is_null($Order)) {
             // ランダムなpre_order_idを作成
-            $preOrderId = md5(uniqid(rand(), true));
+            $preOrderId = sha1(uniqid(mt_rand(), true));
 
             // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
             $Order = $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $app['user'], $preOrderId);
@@ -175,6 +175,10 @@ class ShoppingController extends AbstractController
     {
         $this->init($app);
 
+        $cartService = $app['eccube.service.cart'];
+        $orderService = $app['eccube.service.order'];
+        $orderRepository = $app['eccube.repository.order'];
+
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
@@ -186,18 +190,47 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        // 在庫チェック
 
+        $form = $app['form.factory']
+            ->createBuilder('shopping')
+            ->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $this->form->handleRequest($app['request']);
-            if ($this->form->isValid()) {
-                $data = $this->form->getData();
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
                 /** @var $Order \Eccube\Entity\Order */
-                $Order = $this->orderRepository->find($this->cartService->getPreOrderId());
+                $Order = $this->orderRepository->find($cartService->getPreOrderId());
                 $Order->setMessage($data['message']);
-                $this->orderService->commit($Order);
-                $this->cartService->clear()->save();
+
+                // トランザクション制御
+                $em = $app['orm.em'];
+                $em->getConnection()->beginTransaction();
+                try {
+                    // 商品公開ステータスチェック、在庫チェック
+                    $orderService->isOrderProduct($em, $Order);
+
+                    // 受注情報、配送情報を更新
+                    $orderService->setOrderUpdate($em, $Order);
+                    // 在庫情報を更新
+                    // 購入金額を更新
+
+                    // カート削除
+                    $cartService->clear()->save();
+
+                    $em->getConnection()->commit();
+                    $em->flush();
+                    $em->close();
+
+                } catch (Exception $e) {
+                    $em->close();
+                    $em->getConnection()->rollback();
+                    return $app->redirect($app->url('shopping_error'));
+                }
+
+                // メール送信
 
                 return $app->redirect($app->url('shopping_complete'));
 

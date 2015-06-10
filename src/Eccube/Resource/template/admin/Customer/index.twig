@@ -52,9 +52,9 @@ function fnReSendMail(action) {
             <div class="row">
                 <div class="col-md-12 accordion">
 
-                    {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前・お名前(フリガナ)', class : 'input_search' } } ) }}
+                    {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前', class : 'input_search' } } ) }}
 
-                    <a class="toggle fa-stack" href="#"><span class="fa fa-minus fa-stack-1x"></span> <span class="fa fa-minus fa-stack-1x"></span></a>
+                    <a class="toggle" href="#"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
                     <div class="search-box-inner accpanel">
                         {{ form_rest(searchForm, { attr : { class : 'search' } }) }}
 
@@ -70,7 +70,7 @@ function fnReSendMail(action) {
             <div class="row btn_area">
                 <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                     <button class="btn btn-primary btn-block btn-lg" onclick="fnChangeActionSubmit('{{ url('admin_customer') }}'); return false;">
-                        検索する <span class="fa fa-chevron-right"></span>
+                        検索する <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
                     </button>
                 </div>
                 <!-- /.col -->
@@ -85,19 +85,19 @@ function fnReSendMail(action) {
                 <div class="box-header with-arrow">
                     <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body no-padding">
+                <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="sort-dd">
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown">20件<span class="fa fa-chevron-down icon_down"></span></a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown">20件<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                                     <ul class="dropdown-menu">
                                         <li><a>50件</a></li>
                                         <li><a>100件</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                                     <ul class="dropdown-menu">
                                         <li><a>ダウンロード</a></li>
                                         <li><a>出力項目設定</a></li>
@@ -145,7 +145,7 @@ function fnReSendMail(action) {
                     </div>
                 </div><!-- /.box-body -->
                 {% if pagination.totalItemCount > 0 %}
-                    {% include "pager.twig" with { 'pages' : pagination.paginationData } %}
+                    {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
                 {% endif %}
             </div><!-- /.box -->
         </div><!-- /.col -->

@@ -41,12 +41,11 @@ class OrderController
 
         $pagination = array();
 
-        $em = $app['orm.em'];
-        $disps = $em->getRepository('Eccube\Entity\Master\Disp')->findAll();
-        $pageMaxis = $em->getRepository('Eccube\Entity\Master\PageMax')->findAll();
+        $disps = $app['eccube.repository.master.disp']->findAll();
+        $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
         $page_count = $app['config']['default_page_count'];
         $page_status = null;
-
+        $active = false;
 
         if ('POST' === $request->getMethod()) {
 
@@ -66,6 +65,7 @@ class OrderController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.order.search', $searchData);
+                $active = true;
             }
         } else {
             if (is_null($page_no)) {
@@ -99,6 +99,26 @@ class OrderController
                         $page_count
                     );
 
+                    // セッションから検索条件を復元
+                    if (!empty($searchData['status'])) {
+                        $searchData['status'] = $app['eccube.repository.master.order_status']->find($searchData['status']);
+                    }
+                    if (count($searchData['sex']) > 0) {
+                        $sex_ids = array();
+                        foreach ($searchData['sex'] as $Sex) {
+                            $sex_ids[] = $Sex->getId();
+                        }
+                        $searchData['sex'] = $app['eccube.repository.master.sex']->findBy(array('id' => $sex_ids));
+                    }
+                    if (count($searchData['payment']) > 0) {
+                        $payment_ids = array();
+                        foreach ($searchData['payment'] as $Payment) {
+                            $payment_ids[] = $Payment->getId();
+                        }
+                        $searchData['payment'] = $app['eccube.repository.payment']->findBy(array('id' => $payment_ids));
+                    }
+                    $searchForm->setData($searchData);
+                    $active = true;
                 }
             }
         }
@@ -111,6 +131,7 @@ class OrderController
             'page_no' => $page_no,
             'page_status' => $page_status,
             'page_count' => $page_count,
+            'active' => $active,
         ));
 
     }

@@ -132,4 +132,9 @@ Eccube\Entity\ProductClass:
                 name: creator_id
                 referencedColumnName: member_id
                 nullable: false
+    oneToOne:
+        ProductStock:
+            targetEntity: Eccube\Entity\ProductStock
+            cascade: ["persist", "remove"]
+            mappedBy: ProductClass
     lifecycleCallbacks: {  }
