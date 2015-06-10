@@ -27,15 +27,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}受注登録・編集{% endblock %}
 
 {% block onload %}
+    // 注文者情報をコピー
+    $('#copyCustomerToShippingButton').on('click', function() {
+        $('#order_Shippings_0_name_name01').val($('#order_name_name01').val());
+        $('#order_Shippings_0_name_name02').val($('#order_name_name02').val());
+        $('#order_Shippings_0_kana_kana01').val($('#order_kana_kana01').val());
+        $('#order_Shippings_0_kana_kana02').val($('#order_kana_kana02').val());
+        $('#order_Shippings_0_zip_zip01').val($('#order_zip_zip01').val());
+        $('#order_Shippings_0_zip_zip02').val($('#order_zip_zip02').val());
+        $('#order_Shippings_0_address_pref').val($('#order_address_pref').val());
+        $('#order_Shippings_0_address_addr01').val($('#order_address_addr01').val());
+        $('#order_Shippings_0_address_addr02').val($('#order_address_addr02').val());
+        $('#order_Shippings_0_email').val($('#order_email').val());
+        $('#order_Shippings_0_tel_tel01').val($('#order_tel_tel01').val());
+        $('#order_Shippings_0_tel_tel02').val($('#order_tel_tel02').val());
+        $('#order_Shippings_0_tel_tel03').val($('#order_tel_tel03').val());
+        $('#order_Shippings_0_fax_fax01').val($('#order_fax_fax01').val());
+        $('#order_Shippings_0_fax_fax02').val($('#order_fax_fax02').val());
+        $('#order_Shippings_0_fax_fax03').val($('#order_fax_fax03').val());
+    });
     // 会員検索
     $('#searchCustomerModalButton').on('click', function() {
+        var tbody = $('#searchCustomerModalList tbody');
+        tbody.children().remove();
         $.ajax({
             type: 'GET',
             data: { 'search_word' : $('#searchCustomerModalSearchWord').val() },
             url: '{{ url('admin_order_search_customer') }}',
             success: function(data) {
-                var tbody = $('#searchCustomerModalList tbody');
-                tbody.children().remove();
                 for (var i = 0; i < data.length; i++) {
                     // モーダルウィンドウ内に結果を出力.
                     var tr = $('<tr></tr>');
@@ -303,7 +322,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="order_list">
                         <div class="btn_area">
                             <ul>
-                                <li><a class="btn btn-default btn-block btn-sm">注文者情報をコピー</a></li>
+                                <li><a class="btn btn-default btn-block btn-sm" id="copyCustomerToShippingButton">注文者情報をコピー</a></li>
                             </ul>
                         </div>
                         <div class="form-horizontal">
@@ -462,7 +481,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 <!-- Modal -->
 <div class="modal" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="margin: 120px auto">
+    <div class="modal-dialog" style="margin: 150px auto">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
@@ -470,7 +489,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input type="text" id="searchCustomerModalSearchWord" name="search_word" value="" class="form-control" placeholder="会員ID お名前 お名前(カナ)">
+                    <input type="text" id="searchCustomerModalSearchWord" name="search_word" value="" class="form-control" placeholder="会員ID・メールアドレス・お名前">
                 </div>
                 <div class="btn_area">
                     <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >検索</button>
