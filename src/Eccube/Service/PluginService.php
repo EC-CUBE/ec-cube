@@ -60,9 +60,9 @@ class PluginService
 
        $this->unpackPluginArchive($filename,$pluginBaseDir); // 問題なければ本当のplugindirへ
        $this->registerPlugin($meta,$event);
+       $this->callPluginManagerMethod( $meta,'install' );
 echo "<hr>";
 exit;
-       $this->callInstallMethod(  );
 
     }
     public function uninstall($filename)
@@ -104,7 +104,6 @@ exit;
     }
     public function unpackPluginArchive($archive,$dir)
     {
-
         $tar = new \Archive_Tar($archive, true);
         $tar->setErrorHandling(PEAR_ERROR_EXCEPTION);
         $result = $tar->extractModify($dir . '/', '');
@@ -112,7 +111,9 @@ exit;
     public function registerPlugin( $meta ,$event_yml )
     {
 
+
         $em = $this->app['orm.em'];
+        $em->getConnection()->beginTransaction(); 
         $p = new \Eccube\Entity\Plugin();
         $p->setName($meta['name'])
           ->setEnable(1)
@@ -122,7 +123,10 @@ exit;
           ->setSource(0)
           ->setCode($meta['code']);
 
-           $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
+        $em->persist($p); 
+        $em->flush(); 
+
+        $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
 
 
         foreach($event_yml as $event=>$handlers){
@@ -134,20 +138,23 @@ exit;
                     ->setHandler($handler[0])
                     ->setPriority($handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
                 $em->persist($peh);
+                $em->flush(); 
             }
         }
 
         $em->persist($p); 
         $em->flush(); 
-
+        $em->getConnection()->commit();
 
     }
 
-    public function registerEventHandler()
+    public function callPluginManagerMethod($meta,$method)
     {
-    }
-    public function callInstallMethod()
-    {
+        $class = '\\Plugin'.'\\'.$meta['name'].'\\' .'PluginManager';
+        if(class_exists($class)){
+            $installer = new $class();
+            $installer->$method($meta,$this->app);
+        }
     }
 
 }

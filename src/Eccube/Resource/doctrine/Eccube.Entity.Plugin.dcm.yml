@@ -2,6 +2,10 @@ Eccube\Entity\Plugin:
     type: entity
     table: dtb_plugin
     repositoryClass: Eccube\Repository\PluginRepository
+    uniqueConstraints:
+        dtb_plugin_code_unique_key:
+            columns:
+                - code
     id:
         id:
             type: integer
@@ -15,11 +19,11 @@ Eccube\Entity\Plugin:
         name:
             type: text
             nullable: false
-            column: plugin_name
+#            column: plugin_name
         code:
             type: text
             nullable: false
-            column: plugin_code
+#            column: plugin_code
         class_name:
             type: text
             nullable: false
