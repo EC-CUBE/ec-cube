@@ -380,6 +380,8 @@ class ShoppingController extends AbstractController
 
             // 配送先を更新
             $app['orm.em']->flush();
+            
+            // TODO 計算処理
 
             return $app->redirect($app->url('shopping'));
 
@@ -392,6 +394,106 @@ class ShoppingController extends AbstractController
             )
         );
     }
+
+
+    /**
+     * お届け先の設定(非会員でも使用する)
+     */
+    public function shippingEdit(Application $app, Request $request)
+    {
+
+        $cartService = $app['eccube.service.cart'];
+
+        // カートチェック
+        if (!$cartService->isLocked()) {
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
+
+        $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $app['eccube.service.cart']->getPreOrderId()));
+        $shippings = $Order->getShippings();
+
+        // 会員の場合、お届け先情報を新規登録
+        if ($this->isGranted($app)) {
+            $builder = $app['form.factory']->createBuilder('shipping');
+        } else {
+            // 非会員の場合、お届け先を追加
+            $builder = $app['form.factory']->createBuilder('shipping', $shippings[0]);
+        }
+
+        $form = $builder->getForm();
+
+        if ('POST' === $request->getMethod()) {
+
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                // 会員の場合、お届け先情報を新規登録
+                if ($this->isGranted($app)) {
+                    $customerAddress = new \Eccube\Entity\CustomerAddress();
+                    $customerAddress
+                        ->setCustomer($this->getUser($app))
+                        ->setName01($data['name01'])
+                        ->setName02($data['name02'])
+                        ->setKana01($data['kana01'])
+                        ->setKana02($data['kana02'])
+                        ->setCompanyName($data['company_name'])
+                        ->setTel01($data['tel01'])
+                        ->setTel02($data['tel02'])
+                        ->setTel03($data['tel03'])
+                        ->setZip01($data['zip01'])
+                        ->setZip02($data['zip02'])
+                        ->setZipCode($data['zip01'] . $data['zip02'])
+                        ->setPref($data['pref'])
+                        ->setAddr01($data['addr01'])
+                        ->setAddr02($data['addr02'])
+                        ->setDelFlg($app['config']['disabled']);
+
+                    $app['orm.em']->persist($customerAddress);
+
+                }
+                foreach ($shippings as $shipping) {
+                    $shipping
+                        ->setName01($data['name01'])
+                        ->setName02($data['name02'])
+                        ->setKana01($data['kana01'])
+                        ->setKana02($data['kana02'])
+                        ->setCompanyName($data['company_name'])
+                        ->setTel01($data['tel01'])
+                        ->setTel02($data['tel02'])
+                        ->setTel03($data['tel03'])
+                        ->setZip01($data['zip01'])
+                        ->setZip02($data['zip02'])
+                        ->setZipCode($data['zip01'] . $data['zip02'])
+                        ->setPref($data['pref'])
+                        ->setAddr01($data['addr01'])
+                        ->setAddr02($data['addr02']);
+                }
+
+                // 配送先を更新
+                $app['orm.em']->flush();
+
+                // 受注関連情報を最新状態に更新
+                $app['orm.em']->refresh($Order);
+
+
+                // TODO 計算処理
+
+                return $app->redirect($app->url('shopping'));
+
+            }
+        }
+
+        return $app['view']->render('Shopping/shipping_edit.twig', array(
+            'form'  => $form->createView(),
+        ));
+
+    }
+
+
 
     // 複数配送
     public function shippingMultiple(Application $app)
@@ -560,12 +662,13 @@ class ShoppingController extends AbstractController
         $builder = $app['form.factory']->createBuilder('nonmember');
         $form = $builder->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
                 $Customer = new \Eccube\Entity\Customer();
-                $Customer->setName01($data['name01'])
+                $Customer
+                    ->setName01($data['name01'])
                     ->setName02($data['name02'])
                     ->setKana01($data['kana01'])
                     ->setKana02($data['kana02'])
@@ -576,6 +679,7 @@ class ShoppingController extends AbstractController
                     ->setTel03($data['tel03'])
                     ->setZip01($data['zip01'])
                     ->setZip02($data['zip02'])
+                    ->setZipCode($data['zip01'] . $data['zip02'])
                     ->setPref($data['pref'])
                     ->setAddr01($data['addr01'])
                     ->setAddr02($data['addr02']);

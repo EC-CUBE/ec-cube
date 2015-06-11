@@ -41,19 +41,26 @@ $(function(){
                    .submit();
     });
 
-    var ref;
+   {% if is_granted('ROLE_USER') == false %}
+    var ref = new Array();
     var name = new Array();
     var input = new Array();
     $('#customer').click(function() {
         // ref = $('.customer-name01');
-        ref = $('.customer-edit');
+        var edit = $('.customer-edit');
+
+        $(edit).each(function(index) {
+            ref[index] = $(this);
+        });
         $(ref).each(function(index) {
             name[index] = $(this).text();
         });
         $(name).each(function(index) {
-            input[index] = $('<input id="editName" type="text" />').val(name);
+            input[index] = $('<input id="editName' + index + '" type="text" />').val(name[index]);
         });
-        ref.empty().append(input);
+        $(input).each(function(index) {
+            ref[index].empty().append(input[index]);
+        });
 
         $('#customer').prop("disabled", true);
         $('.mod-button').show();
@@ -61,19 +68,27 @@ $(function(){
 
     $('#customer-ok').click(function() {
 
-        var nameAfter = input.val();
-        ref.empty().text(nameAfter);
-        input.remove();
+        $(ref).each(function(index) {
+            var nameAfter = input[index].val();
+            ref[index].empty().text(nameAfter);
+            input[index].remove();
+        });
 
         $('#customer').prop("disabled", false);
         $('.mod-button').hide();
     });
+
     $('#customer-cancel').click(function() {
-        ref.empty().text(name);
-        input.remove();
+
+        $(ref).each(function(index) {
+            ref[index].empty().text(name[index]);
+            input[index].remove();
+        });
+
         $('#customer').prop("disabled", false);
         $('.mod-button').hide();
     });
+    {% endif %}
 
 
 });
@@ -130,9 +145,9 @@ $(function(){
                                 <p><a href="{{ url('cart') }}" class="btn btn-default btn-sm">数量を変更または削除する</a></p>
                                 <h2 class="heading02">お客様情報</h2>
                                 <div class="column is-edit">
-                                    <p class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }} 様</span><br>
-                                    〒<span class="customer-edit">{{ Order.zip01 }}</span>{{ Order.zip02 }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}<br>
-                                    {{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}</p>
+                                    <p class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様<br>
+                                    〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
+                                    <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                                     {% if is_granted('ROLE_USER') == false %}
                                     <div class="mod-button" style="display:none;">
                                         <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
@@ -162,7 +177,7 @@ $(function(){
                                     {% if is_granted('ROLE_USER') %}
                                     <p class="btn_edit"><a href="{{ url('shopping_shipping') }}" class="btn btn-default btn-sm">変更</a></p>
                                     {% else %}
-                                    <p class="btn_edit"><a href="{{ url('shopping_shipping') }}" class="btn btn-default btn-sm">変更</a></p>
+                                    <p class="btn_edit"><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">変更</a></p>
                                     {% endif %}
                                </div>
 
