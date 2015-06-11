@@ -50,7 +50,6 @@ Eccube\Entity\ClassCategory:
                 nullable: false
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: ClassCategories
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

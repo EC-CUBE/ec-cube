@@ -31,27 +31,29 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
     public function test_routeing_AdminBasisTax_index()
     {
-
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_tax'));
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_shop_tax')
+        );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routeing_AdminBasisTax_edit()
     {
-
-        $this->client->request('GET', $this->app['url_generator']
-            ->generate('admin_setting_shop_tax_edit', array('id' => 0))
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_shop_tax_edit', array('id' => 1))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routeing_AdminBasisTax_delete()
     {
+        $redirectUrl = $this->app->url('admin_setting_shop_tax');
 
-        $redirectUrl = $this->app['url_generator']->generate('admin_setting_shop_tax');
-
-        $this->client->request('GET', $this->app['url_generator']
-            ->generate('admin_setting_shop_tax_delete', array('id' => 0))
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_shop_tax_delete', array('id' => 1))
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);

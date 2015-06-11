@@ -3,21 +3,14 @@ Eccube\Entity\ShipmentItem:
     table: dtb_shipment_item
     repositoryClass: Eccube\Repository\ShipmentItemRepository
     id:
-        shipping_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-        product_class_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
-        order_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            column: item_id
+            generator:
+                strategy: AUTO
     fields:
         product_name:
             type: text
@@ -25,10 +18,10 @@ Eccube\Entity\ShipmentItem:
         product_code:
             type: text
             nullable: true
-        classcategory_name1:
+        class_category_name1:
             type: text
             nullable: true
-        classcategory_name2:
+        class_category_name2:
             type: text
             nullable: true
         price:
@@ -42,21 +35,30 @@ Eccube\Entity\ShipmentItem:
             precision: 10
             scale: 0
     manyToOne:
-        Shipping:
-             targetEntity: Eccube\Entity\Shipping
-             inversedBy: ShipmentItems
-             joinColumns:
-                shipping_id:
-                    referencedColumnName: shipping_id
-                    nullable: false
-                order_id:
-                    referencedColumnName: order_id
-                    nullable: false
+        Order:
+            targetEntity: Eccube\Entity\Order
+            inversedBy: OrderDetails
+            joinColumn:
+                name: order_id
+                referencedColumnName: order_id
+                nullable: false
+        Product:
+            targetEntity: Eccube\Entity\Product
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+                nullable: false
         ProductClass:
             targetEntity: Eccube\Entity\ProductClass
-            inversedBy: ShipmentItems
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id
+                nullable: false
+        Shipping:
+            targetEntity: Eccube\Entity\Shipping
+            inversedBy: ShipmentItems
+            joinColumn:
+                name: shipping_id
+                referencedColumnName: shipping_id
                 nullable: false
     lifecycleCallbacks: {  }

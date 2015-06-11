@@ -70,8 +70,6 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'free_rule' => '1000',
         'latitude' => '34.4138',
         'longitude' => '135.3008',
-        'downloadable_days_unlimited' => false,
-        'downloadable_days' => 10,
         'deliv_free_amount' => 100,
         'use_multiple_shipping' => 1,
         'forgot_mail' => 1,
@@ -671,53 +669,6 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidDownloadableDaysUnlimited_Valid()
-    {
-        $this->formData['downloadable_days_unlimited'] = true;
-        $this->formData['downloadable_days'] = '';
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidDownloadableDaysUnlimited_NoBlankInvalid()
-    {
-        $this->formData['downloadable_days_unlimited'] = false;
-        $this->formData['downloadable_days'] = '';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidDownloadableDaysUnlimited_ZeroCheckInvalid()
-    {
-        $this->formData['downloadable_days_unlimited'] = false;
-        $this->formData['downloadable_days'] = 0;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidDownloadableDaysUnlimited_NumCheckInvalid()
-    {
-        $this->formData['downloadable_days_unlimited'] = false;
-        $this->formData['downloadable_days'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidDownloadableDaysUnlimited_MaxLengthCheck()
-    {
-        $this->formData['downloadable_days_unlimited'] = false;
-
-        $num = str_repeat('1', $this->app['config']['download_days_len']) . '1';
-        $this->formData['downloadable_days'] = $num;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidLatitude_MaxLengthInvalid()

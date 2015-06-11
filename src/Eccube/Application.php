@@ -154,13 +154,11 @@ class Application extends \Silex\Application
             //
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
+            $menus = array('', '', '');
+            $app['twig']->addGlobal('menus', $menus);
         }, self::EARLY_EVENT);
 
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-            if (!$event->isMasterRequest()) {
-                return;
-            }
-
             $request = $event->getRequest();
             try {
                 $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $request->attributes->get('_route'));
@@ -169,6 +167,10 @@ class Application extends \Silex\Application
             }
             $app["twig"]->addGlobal("PageLayout", $PageLayout);
             $app["twig"]->addGlobal("title", $PageLayout->getName());
+
+            if (!$event->isMasterRequest()) {
+                return;
+            }
         });
 
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());

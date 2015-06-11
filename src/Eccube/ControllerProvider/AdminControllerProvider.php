@@ -84,6 +84,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // customer
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');
+        $c->match('/customer/page/{page_no}', '\Eccube\Controller\Admin\Customer\CustomerController::index')->assert('page_no', '\d+')->bind('admin_customer_page');
         $c->match('/customer/new', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->bind('admin_customer_new');
         $c->match('/customer/{id}/edit', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->assert('id', '\d+')->bind('admin_customer_edit');
         $c->post('/customer/{id}/delete', '\Eccube\Controller\Admin\Customer\CustomerController::delete')->assert('id', '\d+')->bind('admin_customer_delete');
@@ -93,6 +94,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // order
         $c->match('/order', '\Eccube\Controller\Admin\Order\OrderController::index')->bind('admin_order');
+        $c->match('/order/page/{page_no}', '\Eccube\Controller\Admin\Order\OrderController::index')->assert('page_no', '\d+')->bind('admin_order_page');
         $c->match('/order/new', '\Eccube\Controller\Admin\Order\EditController::index')->bind('admin_order_new');
         $c->match('/order/{id}/edit', '\Eccube\Controller\Admin\Order\EditController::index')->assert('id', '\d+')->bind('admin_order_edit');
         $c->match('/order/{id}/delete', '\Eccube\Controller\Admin\Order\OrderController::delete')->assert('id', '\d+')->bind('admin_order_delete');
@@ -130,12 +132,12 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
 
         // delivery
-        $c->match('/setting/shop/delivery', '\Eccube\Controller\Admin\Setting\Shop\DelivController::index')->bind('admin_setting_shop_delivery');
-        $c->match('/setting/shop/delivery/new', '\Eccube\Controller\Admin\Setting\Shop\DelivController::edit')->bind('admin_setting_shop_delivery_new');
-        $c->match('/setting/shop/delivery/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\DelivController::edit')->assert('id', '\d+')->bind('admin_setting_shop_delivery_edit');
-        $c->match('/setting/shop/delivery/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\DelivController::delete')->assert('id', '\d+')->bind('admin_setting_shop_delivery_delete');
-        $c->match('/setting/shop/delivery/{id}/up', '\Eccube\Controller\Admin\Setting\Shop\DelivController::up')->assert('id', '\d+')->bind('admin_setting_shop_delivery_up');
-        $c->match('/setting/shop/delivery/{id}/down', '\Eccube\Controller\Admin\Setting\Shop\DelivController::down')->assert('id', '\d+')->bind('admin_setting_shop_delivery_down');
+        $c->match('/setting/shop/delivery', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::index')->bind('admin_setting_shop_delivery');
+        $c->match('/setting/shop/delivery/new', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::edit')->bind('admin_setting_shop_delivery_new');
+        $c->match('/setting/shop/delivery/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::edit')->assert('id', '\d+')->bind('admin_setting_shop_delivery_edit');
+        $c->match('/setting/shop/delivery/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::delete')->assert('id', '\d+')->bind('admin_setting_shop_delivery_delete');
+        $c->match('/setting/shop/delivery/{id}/up', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::up')->assert('id', '\d+')->bind('admin_setting_shop_delivery_up');
+        $c->match('/setting/shop/delivery/{id}/down', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::down')->assert('id', '\d+')->bind('admin_setting_shop_delivery_down');
 
         // payment
         $c->match('/setting/shop/payment', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::index')->bind('admin_setting_shop_payment');
@@ -157,6 +159,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/tax/new', '\Eccube\Controller\Admin\Setting\Shop\TaxRuleController::index')->assert('id', '\d+')->bind('admin_setting_shop_tax_new');
         $c->match('/setting/shop/tax/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\TaxRuleController::index')->assert('id', '\d+')->bind('admin_setting_shop_tax_edit');
         $c->match('/setting/shop/tax/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\TaxRuleController::delete')->assert('id', '\d+')->bind('admin_setting_shop_tax_delete');
+        $c->match('/setting/shop/tax/edit_param', '\Eccube\Controller\Admin\Setting\Shop\TaxRuleController::editParameter')->assert('id', '\d+')->bind('admin_setting_shop_tax_edit_param');
 
         // mail
         $c->match('/setting/shop/mail', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->bind('admin_setting_shop_mail');
@@ -164,7 +167,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/mail/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_edit');
 
         // customer_agreement
-        $c->match('/setting/shop/customer_agreement/', '\\Eccube\\Controller\\Admin\\Setting\\Shop\\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
+        $c->match('/setting/shop/customer_agreement/', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
         // system/system
         $c->match('/setting/system/system', '\Eccube\Controller\Admin\System\SystemController::index')->bind('admin_setting_system_system');
