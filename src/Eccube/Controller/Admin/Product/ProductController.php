@@ -43,11 +43,11 @@ class ProductController
 
         $pagination = array();
 
-        $em = $app['orm.em'];
-        $disps = $em->getRepository('Eccube\Entity\Master\Disp')->findAll();
-        $pageMaxis = $em->getRepository('Eccube\Entity\Master\PageMax')->findAll();
+        $disps = $app['eccube.repository.master.disp']->findAll();
+        $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
         $page_count = $app['config']['default_page_count'];
         $page_status = null;
+        $active = false;
 
         if ('POST' === $request->getMethod()) {
 
@@ -67,6 +67,7 @@ class ProductController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
+                $active = true;
             }
         } else {
             if (is_null($page_no)) {
@@ -101,6 +102,26 @@ class ProductController
                         $page_count
                     );
 
+                    // セッションから検索条件を復元
+                    if (!empty($searchData['category_id'])) {
+                        $searchData['category_id'] = $app['eccube.repository.category']->find($searchData['category_id']);
+                    }
+                    if (count($searchData['status']) > 0) {
+                        $status_ids = array();
+                        foreach ($searchData['status'] as $Status) {
+                            $status_ids[] = $Status->getId();
+                        }
+                        $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
+                    }
+                    if (count($searchData['product_status']) > 0) {
+                        $product_status_ids = array();
+                        foreach ($searchData['product_status'] as $ProductStatus) {
+                            $product_status_ids[] = $ProductStatus->getId();
+                        }
+                        $searchData['product_status'] = $app['eccube.repository.master.product_status']->findBy(array('id' => $product_status_ids));
+                    }
+                    $searchForm->setData($searchData);
+                    $active = true;
                 }
             }
         }
@@ -113,20 +134,20 @@ class ProductController
             'page_no' => $page_no,
             'page_status' => $page_status,
             'page_count' => $page_count,
+            'active' => $active,
         ));
     }
 
     public function addImage(Application $app, Request $request)
     {
         $images = $request->files->get('admin_product');
-        error_log(json_encode($images));
 
         $files = array();
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
                     $extension = $image->guessExtension();
-                    $filename = date('mdHisu') . '.' . $extension;
+                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
@@ -153,6 +174,7 @@ class ProductController
                 ->addProductClass($ProductClass);
             $ProductClass
                 ->setDelFlg(0)
+                ->setStockUnlimited(true)
                 ->setProduct($Product);
         } else {
             $Product = $app['eccube.repository.product']->find($id);
@@ -188,6 +210,14 @@ class ProductController
         }
         $form['images']->setData($images);
 
+        $categories = array();
+        $ProductCategories = $Product->getProductCategories();
+        foreach ($ProductCategories as $ProductCategory) {
+            /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+            $categories[] = $ProductCategory->getCategory();
+        }
+        $form['Category']->setData($categories);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -195,6 +225,34 @@ class ProductController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
+                    $app['orm.em']->persist($ProductClass);
+                }
+
+                // カテゴリの登録
+                // 一度クリア
+                /* @var $Product \Eccube\Entity\Product */
+                foreach ($Product->getProductCategories() as $ProductCategory) {
+                    $Product->removeProductCategory($ProductCategory);
+                    $app['orm.em']->remove($ProductCategory);
+                }
+                $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+                $count = 1;
+                $Categories = $form->get('Category')->getData();
+                foreach ($Categories as $Category) {
+                    $ProductCategory = new \Eccube\Entity\ProductCategory();
+                    $ProductCategory
+                        ->setProduct($Product)
+                        ->setProductId($Product->getId())
+                        ->setCategory($Category)
+                        ->setCategoryId($Category->getId())
+                        ->setRank($count)
+                    ;
+                    $app['orm.em']->persist($ProductCategory);
+                    $count ++;
+                    /* @var $Product \Eccube\Entity\Product */
+                    $Product->addProductCategory($ProductCategory);
                 }
 
                 // 画像の登録
@@ -216,11 +274,13 @@ class ProductController
                 // 画像の削除
                 $delete_images = $form->get('delete_images')->getData();
                 foreach ($delete_images as $delete_image) {
-                    var_dump($delete_image);
                     $ProductImage = $app['eccube.repository.product_image']
                         ->findOneBy(array('file_name' => $delete_image));
-                    $Product->removeProductImage($ProductImage);
-                    $app['orm.em']->remove($ProductImage);
+                    // 追加してすぐに削除した画像は、Entityに追加されない
+                    if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
+                        $Product->removeProductImage($ProductImage);
+                        $app['orm.em']->remove($ProductImage);
+                    }
                     $app['orm.em']->persist($Product);
 
                     // 削除
@@ -233,9 +293,9 @@ class ProductController
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app['url_generator']->generate('admin_product'));
+            } else {
+                $app->addError('admin.register.failed', 'admin');
             }
-            $app->addError('admin.register.failed', 'admin');
         }
 
         // 検索結果の保持

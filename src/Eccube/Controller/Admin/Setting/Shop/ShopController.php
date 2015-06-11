@@ -32,7 +32,6 @@ class ShopController extends AbstractController
     public function index(Application $app)
     {
         $BaseInfo = $app['eccube.repository.base_info']->get();
-        $BaseInfo->setDownloadableDaysUnlimited($BaseInfo->getDownloadableDaysUnlimited() == 1 ? true : false);
 
         $form = $app['form.factory']
             ->createBuilder('shop_master', $BaseInfo)

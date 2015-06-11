@@ -26,23 +26,27 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxRuleType extends AbstractType
 {
-    public $app;
-
-    public function __construct(\Silex\Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('option_product_tax_rule', 'choice', array(
+                'label' => '商品別税率機能',
+                'choices' => array(
+                    '1' => '有効',
+                    '0' => '無効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+                'mapped' => false,
+            ))
             ->add('tax_rate', 'integer', array(
                 'label' => '消費税率',
                 'required' => true,
@@ -70,8 +74,17 @@ class TaxRuleType extends AbstractType
                     'minutes' => '--'
                 ),
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'allow_extra_fields' => true,
+        ));
     }
 
     /**

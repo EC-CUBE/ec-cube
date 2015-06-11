@@ -32,7 +32,22 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
+    const DEFAULT_TAX_RULE_ID = 1;
+
+    /**
+     * @var integer
+     */
     private $rank;
+
+    /**
+     * is default
+     *
+     * @return bool
+     */
+    public function isDefaultTaxRule()
+    {
+        return (self::DEFAULT_TAX_RULE_ID === $this->getId());
+    }
 
     /**
      * Set rank
@@ -63,11 +78,6 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
-     * @var \Eccube\Entity\Master\Taxrule
-     */
-    private $Calc_rule;
-
-    /**
      * @var string
      */
     private $tax_rate;
@@ -85,11 +95,6 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $member_id;
-
-    /**
-     * @var integer
-     */
     private $del_flg;
 
     /**
@@ -101,6 +106,11 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
      * @var \DateTime
      */
     private $update_date;
+
+    /**
+     * @var \Eccube\Entity\Member
+     */
+    private $Creator;
 
     /**
      * @var \Eccube\Entity\Master\Country
@@ -123,9 +133,15 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     private $ProductClass;
 
     /**
+     * @var \Eccube\Entity\Master\Taxrule
+     */
+    private $CalcRule;
+
+
+    /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -133,32 +149,9 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Calc_rule
-     *
-     * @param  \Eccube\Entity\Master\Taxrule $calcRule
-     * @return TaxRule
-     */
-    public function setCalcRule($calcRule)
-    {
-        $this->Calc_rule = $calcRule;
-
-        return $this;
-    }
-
-    /**
-     * Get Calc_rule
-     *
-     * @return integer
-     */
-    public function getCalcRule()
-    {
-        return $this->Calc_rule;
-    }
-
-    /**
      * Set tax_rate
      *
-     * @param  string  $taxRate
+     * @param string $taxRate
      * @return TaxRule
      */
     public function setTaxRate($taxRate)
@@ -171,7 +164,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_rate
      *
-     * @return string
+     * @return string 
      */
     public function getTaxRate()
     {
@@ -181,7 +174,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set tax_adjust
      *
-     * @param  string  $taxAdjust
+     * @param string $taxAdjust
      * @return TaxRule
      */
     public function setTaxAdjust($taxAdjust)
@@ -194,7 +187,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_adjust
      *
-     * @return string
+     * @return string 
      */
     public function getTaxAdjust()
     {
@@ -204,7 +197,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set apply_date
      *
-     * @param  \DateTime $applyDate
+     * @param \DateTime $applyDate
      * @return TaxRule
      */
     public function setApplyDate($applyDate)
@@ -217,7 +210,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get apply_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getApplyDate()
     {
@@ -225,32 +218,9 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set member_id
-     *
-     * @param  integer $memberId
-     * @return TaxRule
-     */
-    public function setMemberId($memberId)
-    {
-        $this->member_id = $memberId;
-
-        return $this;
-    }
-
-    /**
-     * Get member_id
-     *
-     * @return integer
-     */
-    public function getMemberId()
-    {
-        return $this->member_id;
-    }
-
-    /**
      * Set del_flg
      *
-     * @param  integer $delFlg
+     * @param integer $delFlg
      * @return TaxRule
      */
     public function setDelFlg($delFlg)
@@ -263,7 +233,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer
+     * @return integer 
      */
     public function getDelFlg()
     {
@@ -273,7 +243,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param  \DateTime $createDate
+     * @param \DateTime $createDate
      * @return TaxRule
      */
     public function setCreateDate($createDate)
@@ -286,7 +256,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateDate()
     {
@@ -296,7 +266,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param  \DateTime $updateDate
+     * @param \DateTime $updateDate
      * @return TaxRule
      */
     public function setUpdateDate($updateDate)
@@ -309,7 +279,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getUpdateDate()
     {
@@ -317,9 +287,32 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set Creator
+     *
+     * @param \Eccube\Entity\Member $creator
+     * @return TaxRule
+     */
+    public function setCreator(\Eccube\Entity\Member $creator)
+    {
+        $this->Creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Get Creator
+     *
+     * @return \Eccube\Entity\Member 
+     */
+    public function getCreator()
+    {
+        return $this->Creator;
+    }
+
+    /**
      * Set Country
      *
-     * @param  \Eccube\Entity\Master\Country $country
+     * @param \Eccube\Entity\Master\Country $country
      * @return TaxRule
      */
     public function setCountry(\Eccube\Entity\Master\Country $country = null)
@@ -332,7 +325,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get Country
      *
-     * @return \Eccube\Entity\Master\Country
+     * @return \Eccube\Entity\Master\Country 
      */
     public function getCountry()
     {
@@ -342,7 +335,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set Pref
      *
-     * @param  \Eccube\Entity\Master\Pref $pref
+     * @param \Eccube\Entity\Master\Pref $pref
      * @return TaxRule
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref = null)
@@ -355,7 +348,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref
+     * @return \Eccube\Entity\Master\Pref 
      */
     public function getPref()
     {
@@ -365,7 +358,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set Product
      *
-     * @param  \Eccube\Entity\Product $product
+     * @param \Eccube\Entity\Product $product
      * @return TaxRule
      */
     public function setProduct(\Eccube\Entity\Product $product = null)
@@ -378,7 +371,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product
+     * @return \Eccube\Entity\Product 
      */
     public function getProduct()
     {
@@ -388,7 +381,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Set ProductClass
      *
-     * @param  \Eccube\Entity\ProductClass $productClass
+     * @param \Eccube\Entity\ProductClass $productClass
      * @return TaxRule
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass = null)
@@ -401,10 +394,33 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductClass
      *
-     * @return \Eccube\Entity\ProductClass
+     * @return \Eccube\Entity\ProductClass 
      */
     public function getProductClass()
     {
         return $this->ProductClass;
+    }
+
+    /**
+     * Set CalcRule
+     *
+     * @param \Eccube\Entity\Master\Taxrule $calcRule
+     * @return TaxRule
+     */
+    public function setCalcRule(\Eccube\Entity\Master\Taxrule $calcRule = null)
+    {
+        $this->CalcRule = $calcRule;
+
+        return $this;
+    }
+
+    /**
+     * Get CalcRule
+     *
+     * @return \Eccube\Entity\Master\Taxrule 
+     */
+    public function getCalcRule()
+    {
+        return $this->CalcRule;
     }
 }

@@ -39,7 +39,6 @@ Eccube\Entity\ClassName:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: ClassNames
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

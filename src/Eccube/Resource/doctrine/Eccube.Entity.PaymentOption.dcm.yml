@@ -1,9 +1,9 @@
 Eccube\Entity\PaymentOption:
     type: entity
-    table: dtb_payment_options
+    table: dtb_payment_option
     repositoryClass: Eccube\Repository\PaymentOptionRepository
     id:
-        deliv_id:
+        delivery_id:
             type: integer
             nullable: false
             unsigned: false
@@ -13,18 +13,13 @@ Eccube\Entity\PaymentOption:
             nullable: false
             unsigned: false
             id: true
-    fields:
-        rank:
-            type: integer
-            nullable: true
-            unsigned: false
     manyToOne:
-        Deliv:
-            targetEntity: Eccube\Entity\Deliv
+        Delivery:
+            targetEntity: Eccube\Entity\Delivery
             inversedBy: PaymentOptions
             joinColumn:
-                name: deliv_id
-                referencedColumnName: deliv_id
+                name: delivery_id
+                referencedColumnName: delivery_id
                 nullable: false
         Payment:
             targetEntity: Eccube\Entity\Payment
