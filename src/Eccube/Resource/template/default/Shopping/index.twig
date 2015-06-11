@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block title %}ご注文内容の確認{% endblock %}
 
-{% block main %}
-<script type="text/javascript">//<![CDATA[
+{% block javascript %}
+<script>
 var sent = false;
-$(document).ready(function(){
+$(function(){
     $('#form1').on('submit', function () {
         $(this).find('input:image').attr('disabled', 'disabled');
     });
@@ -40,10 +40,47 @@ $(document).ready(function(){
         $("#form1").attr("action", "{{ path('shopping_payment') }}" )
                    .submit();
     });
+
+    var ref;
+    var name = new Array();
+    var input = new Array();
+    $('#customer').click(function() {
+        // ref = $('.customer-name01');
+        ref = $('.customer-edit');
+        $(ref).each(function(index) {
+            name[index] = $(this).text();
+        });
+        $(name).each(function(index) {
+            input[index] = $('<input id="editName" type="text" />').val(name);
+        });
+        ref.empty().append(input);
+
+        $('#customer').prop("disabled", true);
+        $('.mod-button').show();
+    });
+
+    $('#customer-ok').click(function() {
+
+        var nameAfter = input.val();
+        ref.empty().text(nameAfter);
+        input.remove();
+
+        $('#customer').prop("disabled", false);
+        $('.mod-button').hide();
+    });
+    $('#customer-cancel').click(function() {
+        ref.empty().text(name);
+        input.remove();
+        $('#customer').prop("disabled", false);
+        $('.mod-button').hide();
+    });
+
+
 });
+</script>
+{% endblock javascript %}
 
-//]]></script>
-
+{% block main %}
 
     <div id="contents" class="main_only">
         <div class="container-fluid inner no-padding">
@@ -93,10 +130,16 @@ $(document).ready(function(){
                                 <p><a href="{{ url('cart') }}" class="btn btn-default btn-sm">数量を変更または削除する</a></p>
                                 <h2 class="heading02">お客様情報</h2>
                                 <div class="column is-edit">
-                                    <p class="address">{{ Order.name01 }} {{ Order.name02 }} 様<br>
-                                    〒{{ Order.zip01 }}-{{ Order.zip02 }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}<br>
+                                    <p class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }} 様</span><br>
+                                    〒<span class="customer-edit">{{ Order.zip01 }}</span>{{ Order.zip02 }} {{ Order.pref }}{{ Order.addr01 }}{{ Order.addr02 }}<br>
                                     {{ Order.tel01 }}-{{ Order.tel02 }}-{{ Order.tel03 }}</p>
-                                    <p class="btn_edit"><button class="btn btn-default btn-sm">変更</button></p>
+                                    {% if is_granted('ROLE_USER') == false %}
+                                    <div class="mod-button" style="display:none;">
+                                        <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
+                                        <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
+                                    </div>
+                                    <p class="btn_edit"><button type="button" id="customer" class="btn btn-default btn-sm">変更</button></p>
+                                    {% endif %}
                                 </div>
 
                                <h2 class="heading02">お届け先情報</h2>
@@ -116,7 +159,11 @@ $(document).ready(function(){
                                         <label>お届け時間</label>
                                         {{ form_widget(form.deliveryTime) }}
                                     </div>
-                                    <p class="btn_edit"><button class="btn btn-default btn-sm">変更</button></p>
+                                    {% if is_granted('ROLE_USER') %}
+                                    <p class="btn_edit"><a href="{{ url('shopping_shipping') }}" class="btn btn-default btn-sm">変更</a></p>
+                                    {% else %}
+                                    <p class="btn_edit"><a href="{{ url('shopping_shipping') }}" class="btn btn-default btn-sm">変更</a></p>
+                                    {% endif %}
                                </div>
 
                                <h2 class="heading02">お支払方法</h2>
@@ -138,7 +185,6 @@ $(document).ready(function(){
                                     <dt>小計</dt>
                                     <dd class="text-primary">{{ Order.subtotal|price }}</dd>
                                     </dl>
-                                    <dl>
                                     <dl>
                                     <dt>手数料</dt>
                                     <dd>{{ Order.charge|price }}</dd>

@@ -1259,15 +1259,15 @@ INSERT INTO dtb_delivery_time (delivery_id, delivery_time) VALUES (1, '指定な
 INSERT INTO dtb_delivery_time (delivery_id, delivery_time) VALUES (1, '午前');
 INSERT INTO dtb_delivery_time (delivery_id, delivery_time) VALUES (1, '午後');
 
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('即日', 0, 0);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('1～2日後', 1, 1);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('3～4日後', 3, 2);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('1週間以降', 7, 3);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('2週間以降', 14, 4);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('3週間以降', 21, 5);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('1ヶ月以降', 30, 6);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('2ヶ月以降', 60, 7);
-INSERT INTO dtb_delivery_date (name, rank, value) VALUES ('お取り寄せ(商品入荷後)', 0, 8);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('即日', 0, 0);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('1～2日後', 1, 1);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('3～4日後', 3, 2);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('1週間以降', 7, 3);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('2週間以降', 14, 4);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('3週間以降', 21, 5);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('1ヶ月以降', 30, 6);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('2ヶ月以降', 60, 7);
+INSERT INTO dtb_delivery_date (name, value, rank) VALUES ('お取り寄せ(商品入荷後)', 0, 8);
 
 
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '元日(1月1日)', 1, 1, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

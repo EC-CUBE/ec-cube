@@ -247,6 +247,53 @@ class OrderService
     }
 
 
+
+    /**
+     * 住所などの情報が変更された時に金額の再計算を行う
+     */
+    public function setAmount(\Eccube\Entity\Order $Order, \Eccube\Entity\Shipping $shipping)
+    {
+
+        // 初期選択の配送業者をセット
+        $qb = $em->createQueryBuilder();
+        $delivery = $qb->select("d")
+            ->from("\Eccube\Entity\Delivery", "d")
+            ->where($qb->expr()->in('d.ProductType', ':productTypes'))
+            ->setParameter('productTypes', $productTypes)
+            ->orderBy("d.rank", "ASC")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+
+        // 配送料金の設定
+        $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $delivery, 'Pref' => $Shipping->getPref()));
+        $Shipping->setDelivery($delivery);
+        $Shipping->setDeliveryFee($deliveryFee);
+
+        // 初期選択の支払い方法をセット
+        $paymentOptions = $delivery->getPaymentOptions();
+        $payment = $paymentOptions[0]->getPayment();
+
+        $Order->setTax($tax);
+        $Order->setPayment($payment);
+        $Order->setPaymentMethod($payment->getMethod());
+        $Order->setCharge($payment->getCharge());
+        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
+
+        $total = $subTotal + $Order->getCharge() + $Order->getDeliveryFeeTotal();
+
+        $Order->setTotal($total);
+        $Order->setSubTotal($subTotal);
+        $Order->setPaymentTotal($total);
+        $em->flush();
+
+        return $Order;
+
+    }
+
+
+
+
     /**
      * 商品公開ステータスチェック、在庫チェックを行い、購入制限数チェック、在庫情報をロックする
      *
@@ -313,9 +360,11 @@ class OrderService
         $shippings = $Order->getShippings();
         foreach ($shippings as $shipping) {
             $shipping->setShippingDeliveryName($formData['delivery']->getName());
-            $shipping->setShippingDeliveryTime($formData['deliveryTime']);
-            //$shipping->setShippingDeliveryDate($formData['deliveryDate']);
-        //    $shipping->setShippingDeliveryFee($shpping->getDeliveryFee()->getFee());
+            $shipping->setShippingDeliveryTime($formData['deliveryTime']->getDeliveryTime());
+            if (!empty($formData['deliveryDate'])) {
+                $shipping->setShippingDeliveryDate(new \DateTime($formData['deliveryDate']));
+            }
+            $shipping->setShippingDeliveryFee($shipping->getDeliveryFee()->getFee());
         }
 
     }

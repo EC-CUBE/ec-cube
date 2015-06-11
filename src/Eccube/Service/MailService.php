@@ -38,21 +38,20 @@ class MailService
     /**
      * Send order mail.
      *
-     * @param User $user
+     * @param Order $Order
      */
-    public function sendOrderMail(\Eccube\Entity\Order $Order, \Eccube\Entity\Customer $user)
+    public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
 
         $body = $this->app['view']->render('Mail/order.twig', array(
             'Order' => $Order,
-            'user' => $user,
         ));
 
         $message = \Swift_Message::newInstance()
             ->setSubject('[EC-CUBE3] 購入が完了しました。')
             ->setFrom(array('sample@example.com'))
             ->setBcc($this->app['config']['mail_cc'])
-            ->setTo(array($user->getEmail()))
+            ->setTo(array($Order->getEmail()))
             ->setBody($body);
 
         $this->app['mailer']->send($message);

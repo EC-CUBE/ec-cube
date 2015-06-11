@@ -1258,15 +1258,15 @@ INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (1, 1
 INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (2, 1, '午前');
 INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (3, 1, '午後');
 
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (1, '即日', 0, 0);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (2, '1～2日後', 1, 1);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (3, '3～4日後', 3, 2);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (4, '1週間以降', 7, 3);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (5, '2週間以降', 14, 4);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (6, '3週間以降', 21, 5);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (7, '1ヶ月以降', 30, 6);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (8, '2ヶ月以降', 60, 7);
-INSERT INTO dtb_delivery_date (date_id, name, rank, value) VALUES (9, 'お取り寄せ(商品入荷後)', 0, 8);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (1, '即日', 0, 0);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (2, '1～2日後', 1, 1);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (3, '3～4日後', 3, 2);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (4, '1週間以降', 7, 3);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (5, '2週間以降', 14, 4);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (6, '3週間以降', 21, 5);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (7, '1ヶ月以降', 30, 6);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (8, '2ヶ月以降', 60, 7);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (9, 'お取り寄せ(商品入荷後)', 0, 8);
 
 
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '元日(1月1日)', 1, 1, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

@@ -53,7 +53,7 @@ class AbstractController
         return $app['user'];
     }
 
-    protected function isAuthenticated($app) {
+    protected function isGranted($app) {
         if ($this->getSecurity($app)->isGranted('ROLE_USER')) {
             return true;
         }
