@@ -70,14 +70,35 @@ class EditController extends AbstractController
             }
         }
 
+        // 会員検索フォーム
+        $searchCustomerModalForm = $app['form.factory']
+            ->createBuilder('admin_search_customer')
+            ->getForm();
+
+        // 商品検索フォーム
+        $searchProductModalForm = $app['form.factory']
+            ->createBuilder('admin_search_product')
+            ->getForm();
+
         return $app->render('Order/edit.twig', array(
             'form' => $form->createView(),
+            'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
+            'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
         ));
     }
 
+    /**
+     * 顧客情報を検索する.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function searchCustomer(Application $app, Request $request)
     {
+        $app['monolog']->addDebug('search customer start.');
+
         $searchData = array(
             'multi' => $request->get('search_word'),
         );
@@ -86,6 +107,10 @@ class EditController extends AbstractController
             ->getQueryBuilderBySearchData($searchData)
             ->getQuery()
             ->getResult();
+
+        if (empty($Customers)) {
+            $app['monolog']->addDebug('search customer not found.');
+        }
 
         $data = array();
 
@@ -101,6 +126,13 @@ class EditController extends AbstractController
         return $app->json($data);
     }
 
+    /**
+     * 顧客情報を検索する.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function searchCustomerById(Application $app, Request $request)
     {
         $app['monolog']->addDebug('search customer by id start.');
@@ -141,9 +173,32 @@ class EditController extends AbstractController
 
     public function searchProduct(Application $app, Request $request)
     {
+        $app['monolog']->addDebug('search product start.');
+
+        $searchData = array(
+            'id' => $request->get('id'),
+            'category_id' => $request->get('category_id'),
+        );
+
+        $Products = $app['eccube.repository.product']
+            ->getQueryBuilderBySearchData($searchData)
+            ->getQuery()
+            ->getResult();
+
+        if (empty($Products)) {
+            $app['monolog']->addDebug('search product not found.');
+        }
+
         $data = array();
 
-        return $app->json($data, 200);
+        foreach ($Products as $Product) {
+            $data[] = array(
+                'id' => $Product->getId(),
+                'name' => $Product->getName(),
+                'code' => '',
+            );
+        }
+        return $app->json($data);
     }
 
     protected function newOrder()
