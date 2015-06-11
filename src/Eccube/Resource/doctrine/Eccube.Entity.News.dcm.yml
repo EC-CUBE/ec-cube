@@ -61,7 +61,6 @@ Eccube\Entity\News:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Newses
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

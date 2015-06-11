@@ -1,0 +1,88 @@
+<?php
+require_once("vendor/autoload.php");
+
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\TableHelper;
+
+$console = new Application('Silex Console', '1.0.0');
+
+$app = new Eccube\Application();
+// ...require $app...
+$app->boot();
+
+
+// Define some formatter output
+$table = $console->getHelperSet()->get('table');
+$table->setHeaders(array('Name', 'Path', 'Pattern'));
+$table->setLayout(TableHelper::LAYOUT_DEFAULT); // Different layout exists; this is the default
+
+$console
+    ->register('router:debug')
+    ->setDescription('Dumps all the routes with their name, path and requirements')
+    ->setCode(function(InputInterface $input, OutputInterface $output) use ($app, $table) {
+        $controllers    = $app['controllers'];
+        $collection     = $controllers->flush();
+
+        foreach ($collection as $name => $route) {
+            $requirements = array();
+            foreach ($route->getRequirements() as $key => $requirement) {
+                // $requirements[] = $key . ' => ' . $requirement;
+                $requirements[] = $requirement;
+            }
+
+            $table->addRow(array(
+                $name,
+                $route->getPath(),
+                join(', ', $requirements)
+            ));
+
+        }
+
+
+        $routes = $app['routes']->all();
+
+        $maxName = 4;
+        $maxMethod = 6;
+        foreach ($routes as $name => $route) {
+            $requirements = $route->getRequirements();
+            $method = isset($requirements['_method'])
+                ? strtoupper(is_array($requirements['_method'])
+                    ? implode(', ', $requirements['_method']) : $requirements['_method']
+                )
+                : 'ANY';
+
+            if (strlen($name) > $maxName) {
+                $maxName = strlen($name);
+            }
+
+            if (strlen($method) > $maxMethod) {
+                $maxMethod = strlen($method);
+            }
+        }
+        $format  = '%-'.$maxName.'s %-'.$maxMethod.'s %s';
+
+        // displays the generated routes
+        foreach ($routes as $name => $route) {
+            $requirements = $route->getRequirements();
+            $method = isset($requirements['_method'])
+                ? strtoupper(is_array($requirements['_method'])
+                    ? implode(', ', $requirements['_method']) : $requirements['_method']
+                )
+                : 'ANY';
+
+            $table->addRow(array(
+                $name,
+                $route->getPattern(),
+                $method,
+            ));
+        }
+
+
+        $table->render($output);
+    })
+;
+
+$console->run();

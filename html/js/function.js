@@ -92,33 +92,42 @@ $(function(){
 		e.stopPropagation();
 	});
 	
-	/////////// 追従サイドバー
+	/////////// 追従サイドバー + ページトップフェードイン
 		
 	// スクロールした時に以下の処理        
 	$(window).on("scroll", function() {
+		// ページトップフェードイン
+		if ($(this).scrollTop() > 300) {
+			$('.pagetop').fadeIn();
+		} else {
+			$('.pagetop').fadeOut();
+		}
+	
 		//PC表示の時のみに適用
-		if (window.innerWidth > 767){		
-			var	side = $("#confirm_side"),
-				wrap = $("#shopping_confirm"),
-				min_move = wrap.offset().top,
-				max_move = min_move + wrap.height() - side.height() - 2*parseInt(side.css("top") ),
-				margin_bottom = max_move - min_move;
-			 
-				var scrollTop =  $(window).scrollTop();
-				if( scrollTop > min_move && scrollTop < max_move ){
-					var margin_top = scrollTop - min_move ;
-					side.css({"margin-top": margin_top});
-				} else if( scrollTop < min_move ){
-					side.css({"margin-top":0});
-				}else if( scrollTop > max_move ){
-					side.css({"margin-top":margin_bottom});
-				}
-			}
+		if (window.innerWidth > 767){
+			
+			if ($('#shopping_confirm').length) {
+
+				var	side = $("#confirm_side"),
+					wrap = $("#shopping_confirm"),
+					min_move = wrap.offset().top,
+					max_move = min_move + wrap.height() - side.height() - 2*parseInt(side.css("top") ),
+					margin_bottom = max_move - min_move;
+				 
+					var scrollTop =  $(window).scrollTop();
+					if ( scrollTop > min_move && scrollTop < max_move ){
+						var margin_top = scrollTop - min_move ;
+						side.css({"margin-top": margin_top});
+					} else if ( scrollTop < min_move ){
+						side.css({"margin-top":0});
+					} else if ( scrollTop > max_move ){
+						side.css({"margin-top":margin_bottom});
+					}
+	
+			}			
+		}
 		return false;
 	});
-	
-	
-	
 	
 		
 });
@@ -160,16 +169,14 @@ this.options)});b._afterUpdate&&b._afterUpdate(a,b._groups)};b._update=function(
 
 // 高さ揃えの要素を指定
 $(function() {
-	$('.item_comment').matchHeight({
-		byRow: true,
-		property: 'height'
-	});
-	$('.item_name').matchHeight({
+	$('.product_item .item_name').matchHeight({
 		byRow: true,
 		property: 'height'
 	});
 	$('button.thumbnail').matchHeight({
 		byRow: true,
 		property: 'height'
+	});
+	$('#login_box > div').matchHeight({
 	});
 });

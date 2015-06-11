@@ -30,7 +30,7 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class DelivTimeType extends AbstractType
+class DeliveryTimeType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -38,9 +38,10 @@ class DelivTimeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('deliv_id', 'hidden')
-            ->add('time_id', 'hidden')
-            ->add('deliv_time', 'text')
+            ->add('delivery_time', 'text', array(
+                'label' => false,
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 
@@ -50,7 +51,7 @@ class DelivTimeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\DelivTime',
+            'data_class' => 'Eccube\Entity\DeliveryTime',
             'query_builder' => function (EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('dt')
@@ -64,6 +65,6 @@ class DelivTimeType extends AbstractType
      */
     public function getName()
     {
-        return 'deliv_time';
+        return 'delivery_time';
     }
 }

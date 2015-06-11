@@ -13,8 +13,8 @@ html {
 }
 
 body {
-	font-size: 12px;
-	font-size: 1.2rem;
+	font-size: 16px;
+	font-size: 1.6rem;
 }
 a { color: #0092C4;
 	text-decoration: none;
@@ -309,7 +309,8 @@ h2 {
 /* btn */
 
 .btn {
-	font-size: 12px;
+	font-size: 16px;
+	font-size: 1.6rem;
 	padding:10px 16px;
 	font-weight: bold;
 }
@@ -458,7 +459,7 @@ div.table .tbody .tr > .td {
 .dl_table dd > .form-group:first-child {
 	padding-top: 0;
 }
-.dl_table .input_zip + button {
+.dl_table .zip-search {
 	margin-top: 8px;
 }
 
@@ -576,48 +577,19 @@ p.message {
 /* pagenumberarea */
 
 .pagenumberarea {
-	width: 100%;
-	margin: 0 auto;
+	text-align: right;
+	margin: 0;
+	padding-right: 16px;
+	padding-bottom: 20px;
 }
 .pagenumberarea > li {
-	width: 50%;
-	float: left;
-	text-align: center;
-	position: relative;
+	float: none;
+	display: inline-block;
+	margin-left: 3px;
+	width: auto;
 }
-.pagenumberarea > li > a {
-	background: #F3F3F3;
-	display: block;
-	width: 100%;
-	padding: 0.8em 0;
-	font-size: 16px;
-	font-size:1.6rem;
-	text-decoration: none;
-	color: #525263;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-.pagenumberarea > li > a .cb {
-	margin-left: 5px;
-}
-.pagenumberarea > li:first-child > a {
-	border-right: 1px solid #fff;
-}
-.pagenumberarea > li a:link { text-decoration: none; color: #525263;}
-.pagenumberarea > li a:visited { text-decoration: none; color: #525263;}
-.pagenumberarea > li a:hover { text-decoration: none; color: #525263; background:#ededed;}
-.pagenumberarea > li a:active { text-decoration: none; color: #525263;}
-
-.pagenumberarea > li > a.active,
-.pagenumberarea > li > a:focus,
 .dropdown.open > a {
 	background: #ededed;
-}
-.pagenumberarea .dropdown-menu {
-	width: 100%;
-    left: 0;
-    right: auto;
 }
 
 /* flowline */
@@ -860,7 +832,7 @@ p.message {
 }
 
 /* side */
-#side {
+.side {
 
 }
 	
@@ -1460,8 +1432,6 @@ dl.quantity dd {
 	margin-top: 0;
 }
 .btn_area .btn {
-	font-size: 16px;
-	font-size: 1.6rem;
 	height: 56px;
 	line-height: 56px;
 	vertical-align: middle;
@@ -1755,12 +1725,7 @@ dl.quantity dd {
 	padding-left: 50%;
 	text-align: right;
 }
-.total_box dl.total_price dt {
-	padding-top: 0.3em;
-}
 .total_box dl.total_price dd {
-	font-size: 16px;
-	font-size: 1.6rem;
 	font-weight: bold;
 }
 .total_box .btn_group {
@@ -1783,12 +1748,14 @@ dl.quantity dd {
 	position: static;
 	width: 8.3333333333%;
 }
-.cart_item .icon_edit span {
+.cart_item .icon_edit a .cb {
+	color: #B8BEC4;
+	fill: #B8BEC4;
 	font-size: 20px;
 	font-size: 2rem;
 	color: #B8BEC4;
 }
-.cart_item .icon_edit button:hover span {
+.cart_item .icon_edit a:hover .cb {
 	opacity: 0.8;
 }
 .cart_item .item_box a:hover img {
@@ -1825,16 +1792,45 @@ dl.quantity dd {
 .cart_item .item_quantity {
 	width: 16.66666667%;
 }
-.cart_item.table .tbody .tr > .item_quantity {
-	text-align: left;
-}
-.cart_item .item_quantity input {
-	width: 90%;
-	min-width: 110px;
-	text-align: right;
-}
 .cart_item .item_quantity::before {
     content: "数量：";
+}
+.cart_item .item_quantity ul {
+	text-align: center;
+	white-space: nowrap;
+}
+.cart_item .item_quantity ul li {
+	display: inline-block;
+	margin: 8px 4px;
+}
+.cart_item .item_quantity ul li a,
+.cart_item .item_quantity ul li span {
+	display: inline-block;
+	width: 32px; height: 32px;
+	line-height: 32px;
+	vertical-align: middle;
+	border-radius: 50%;
+}
+.cart_item .item_quantity ul li a {
+	border: 2px solid #c9c9c9;
+}
+.cart_item .item_quantity ul li span {
+	border: 2px solid #e9e9e9;
+}
+.cart_item .item_quantity ul li a .cb {
+	color: #525263;
+	fill: #525263;
+	margin-top: 6px;
+	vertical-align: top;
+}
+.cart_item .item_quantity ul li span .cb {
+	color: #babac1;
+	fill: #babac1;
+	margin-top: 6px;
+	vertical-align: top;
+}
+.cart_item .item_quantity ul li a:hover {
+	opacity: 0.8;
 }
 .column p {
 	margin: 8px 0;
@@ -1882,7 +1878,7 @@ div.table .tbody .addr_box .column {
 	min-height: 40px;
 }
 .addr_box .column.is-edit .btn_edit {
-	top: 8px;
+	top: 10px;
 }
 .addr_box > .td {
 	border-top: 1px dotted #ccc;
@@ -1902,7 +1898,9 @@ div.table .tbody .addr_box .column {
 
 .local_nav li {
 	float: left;
-	width: 33.33333333%;
+	width: 50%;
+	/* 項目が1行に3件の場合
+	width: 33.33333333%;*/
 	border-color: #D0D0D0;
 	border-style: solid;
 	border-width: 0 1px 1px 0;
@@ -1927,7 +1925,6 @@ div.table .tbody .addr_box .column {
 .local_nav li a:not([href]):hover {
 	background: #fff;
 }
-
 .order_detail dt {
 	float: left;
 	font-weight: bold;
@@ -1996,8 +1993,9 @@ div.table .tbody .addr_box .column {
     width: 8.33333%;
 	vertical-align: middle;
 }
-.address_table .icon_edit span {
+.address_table .icon_edit a .cb {
     color: #b8bec4;
+    fill: #b8bec4;
     font-size: 2rem;
 }
 
@@ -2200,6 +2198,7 @@ div.table .tbody .addr_box .column {
 
 #shopping_confirm .heading02 {
 	margin-top: 24px;
+	background: #
 }
 #shopping_confirm .column {
 	position: relative;
@@ -3085,12 +3084,7 @@ fieldset[disabled] .btn-link:focus {
 @media only screen and (max-width: 767px) {
 	
 	/* --------- common ---------- */
-	
-	body {
-		font-size: 12px;
-		font-size: 1.2rem;
-	}
-	
+		
 	.drawer-open #contents, .drawer-open #header, .drawer-open #footer, .drawer-open .pagetop {
 		-webkit-transform: translateX(-260px);
 		-moz-transform: translateX(-260px);
@@ -3151,10 +3145,6 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* --------- common ---------- */
 	
-	body {
-		font-size: 16px;
-		font-size: 1.6rem;
-	}
 	.container-fluid {
 		padding-left: 16px;
 		padding-right: 16px;
@@ -3212,9 +3202,6 @@ fieldset[disabled] .btn-link:focus {
 
 	/* btn */
 	
-	.btn {
-		font-size: 16px;
-	}
 	.btn-lg{padding:10px 16px;font-size:18px;line-height:1.3333333}
 	.btn-sm{padding:8px 10px;font-size:14px;line-height:1.5}
 	.btn-xs{padding:5px 8px;font-size:12px;line-height:1.5}
@@ -3294,7 +3281,7 @@ fieldset[disabled] .btn-link:focus {
 	.dl_table dd .form-group {
 		padding-top: 16px;
 	}
-	.dl_table .input_zip + button {
+	.dl_table .zip-search {
 		margin-top: 16px;
 	}
 	
@@ -3335,46 +3322,7 @@ fieldset[disabled] .btn-link:focus {
 	.message .errormsg {
 		padding: 16px;
 	}
-
-	/* pagenumberarea */
 	
-	.pagenumberarea {
-		text-align: right;
-		margin: 0;
-		padding-right: 16px;
-		padding-bottom: 20px;
-	}
-	.pagenumberarea > li {
-		float: none;
-		display: inline-block;
-		margin-left: 3px;
-		width: auto;
-	}
-	.pagenumberarea > li > a {
-		border: none;
-		background: none;
-		display: inline-block;
-		width: auto;
-		padding: 0.5em 0.7em;
-		font-weight: normal;
-	}
-	.pagenumberarea > li a:hover { background: none; opacity: 0.8;}
-	
-	.pagenumberarea > li > a.active,
-	.pagenumberarea > li > a:focus,
-	.dropdown.open > a {
-		background:  none;
-		opacity: 0.8;
-	}
-	.pagenumberarea .dropdown-menu {
-		width: 100%;
-		left: 0;
-		right: auto;
-	}
-	.pagenumberarea .dropdown-menu {
-		left: auto;
-		right: 0;
-	}
 	
 	/* flowline */
 	
@@ -3441,33 +3389,32 @@ fieldset[disabled] .btn-link:focus {
 		z-index: 2;
 	}
 	
-	/* -- main_left -- */
+	
+	#side1 {
+		float: left;
+		width: 25%;
+		padding-right: 16px;
+	}
+	#side2 {
+		float: right;
+		width: 25%;
+		padding-left: 16px;
+	}
+	
+	/* -- main_left (side2 only) -- */
 	
 	/* main */
 	.main_left #main {
 		width: 75%;
 		float: left;
 	}
-	
-	/* side */
-	.main_left #side {
-		width: 25%;
-		float: right;
-	}
 
-
-	/* -- main_right -- */
+	/* -- main_right (side1 only) -- */
 
 	/* main */
 	.main_right #main {
 		width: 75%;
 		float: right;
-	}
-	
-	/* side */
-	.main_right #side {
-		width: 25%;
-		float: left;
 	}
 
 	/* -- main_only -- */
@@ -3477,6 +3424,15 @@ fieldset[disabled] .btn-link:focus {
 		width: 100%;
 	}
 
+
+	/* -- main_left_right (side1 & 2) -- */
+	
+	/* main */
+	.main_left_right #main {
+		width: 50%;
+		float: left;
+	}
+	
 	/* category_nav */
 	#category {
 		clear: both;
@@ -3710,24 +3666,24 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* category-nav */
 
-	#side .category-nav > li {
+	.side .category-nav > li {
 		display: block;
 		margin: 0;
 	}
-	#side .category-nav li > a {
+	.side .category-nav li > a {
 		width: 100%;
 	}
 
-	#side .category-nav > ul ul {
+	.side .category-nav > ul ul {
 		width: 100%;
 	}	
-	#side .category-nav > ul {
+	.side .category-nav > ul {
 		width: 100%;
 	}
-	#side .category-nav > ul > li {
+	.side .category-nav > ul > li {
 		width: 100%;
 	}
-	#side .category-nav > ul > li a {
+	.side .category-nav > ul > li a {
 		padding-left: 10px;
 	}
 
@@ -3973,6 +3929,9 @@ fieldset[disabled] .btn-link:focus {
 	.total_box .btn_group p {
 		margin: 16px 0;
 	}
+	.total_box dl.total_price dt {
+		padding-top: 0.3em;
+	}
 	.total_box dl.total_price dd {
 		font-size: 24px;
 		font-size: 2.4rem;
@@ -3980,9 +3939,6 @@ fieldset[disabled] .btn-link:focus {
 	.cart_item {
 		margin: 24px 0 16px;
 		border-top: 0 none;
-	}
-	.cart_item .icon_edit {
-		width: 8.3333333333%;
 	}
 	.cart_item .item_box .table {
 		width:58.33333333%;
@@ -4049,8 +4005,13 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* MyPage
 	------------------------------------------- */
+	/* ナビゲーション項目が6件の場合
 	.local_nav li {
-		width: 16.66666667%
+		width: 16.66666667% 
+	}*/
+	
+	.local_nav li {
+		width: 25%;
 	}
 	.historylist_column {
 		border-top: 1px solid #ccc;
@@ -4131,8 +4092,8 @@ fieldset[disabled] .btn-link:focus {
 	
 	/* ----- category_nav in side ---- */
 	
-	#side #searchform select,
-	#side #searchform input {
+	.side #searchform select,
+	.side #searchform input {
 		float: none;
 	}
 

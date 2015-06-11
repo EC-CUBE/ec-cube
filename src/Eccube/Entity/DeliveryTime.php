@@ -25,24 +25,19 @@
 namespace Eccube\Entity;
 
 /**
- * PaymentOption
+ * DeliveryTime
  */
-class PaymentOption extends \Eccube\Entity\AbstractEntity
+class DeliveryTime extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
      */
-    private $delivery_id;
+    private $id;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $payment_id;
-
-    /**
-     * @var integer
-     */
-    private $rank;
+    private $delivery_time;
 
     /**
      * @var \Eccube\Entity\Delivery
@@ -50,61 +45,43 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     private $Delivery;
 
     /**
-     * @var \Eccube\Entity\Payment
+     * Get id
+     *
+     * @return integer
      */
-    private $Payment;
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
-     * Set delivery_id
+     * Set delivery_time
      *
-     * @param  integer       $deliveryId
-     * @return PaymentOption
+     * @param  string    $deliveryTime
+     * @return DeliveryTime
      */
-    public function setDeliveryId($deliveryId)
+    public function setDeliveryTime($deliveryTime)
     {
-        $this->delivery_id = $deliveryId;
+        $this->delivery_time = $deliveryTime;
 
         return $this;
     }
 
     /**
-     * Get delivery_id
+     * Get deliv_time
      *
-     * @return integer
+     * @return string
      */
-    public function getDeliveryId()
+    public function getDeliveryTime()
     {
-        return $this->delivery_id;
-    }
-
-    /**
-     * Set payment_id
-     *
-     * @param  integer       $paymentId
-     * @return PaymentOption
-     */
-    public function setPaymentId($paymentId)
-    {
-        $this->payment_id = $paymentId;
-
-        return $this;
-    }
-
-    /**
-     * Get payment_id
-     *
-     * @return integer
-     */
-    public function getPaymentId()
-    {
-        return $this->payment_id;
+        return $this->delivery_time;
     }
 
     /**
      * Set Delivery
      *
      * @param  \Eccube\Entity\Delivery $Delivery
-     * @return PaymentOption
+     * @return DeliveryTime
      */
     public function setDelivery(\Eccube\Entity\Delivery $Delivery)
     {
@@ -116,33 +93,10 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * Get Delivery
      *
-     * @return \Eccube\Entity\Delivery
+     * @return \Eccube\Entity\$Delivery
      */
     public function getDelivery()
     {
         return $this->Delivery;
-    }
-
-    /**
-     * Set Payment
-     *
-     * @param  \Eccube\Entity\Payment $payment
-     * @return PaymentOption
-     */
-    public function setPayment(\Eccube\Entity\Payment $payment)
-    {
-        $this->Payment = $payment;
-
-        return $this;
-    }
-
-    /**
-     * Get Payment
-     *
-     * @return \Eccube\Entity\Payment
-     */
-    public function getPayment()
-    {
-        return $this->Payment;
     }
 }

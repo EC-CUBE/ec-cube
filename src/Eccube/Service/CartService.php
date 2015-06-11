@@ -31,10 +31,6 @@ use Doctrine\ORM\EntityManager;
 
 class CartService
 {
-    const PRODUCT_TYPE_NORMAL = 1;
-
-    const PRODUCT_TYPE_DOWNLOAD = 2;
-
     /**
      * @var Session
      */
@@ -43,7 +39,7 @@ class CartService
     /**
      * @var EntityManager
      */
-    private $entityManagaer;
+    private $entityManager;
 
     /**
      * @var \Eccube\Entity\Cart
@@ -55,21 +51,32 @@ class CartService
      */
     private $errors = array();
 
+    private $ProductType = null;
+
     /**
      * @var array
      */
     private $messages = array();
 
-    public function __construct(Session $session, EntityManager $entityManagaer)
+    public function __construct(Session $session, EntityManager $entityManager)
     {
         $this->session = $session;
-        $this->entityManagaer = $entityManagaer;
+        $this->entityManager = $entityManager;
 
         if ($this->session->has('cart')) {
             $this->cart = $this->session->get('cart');
         } else {
             $this->cart = new \Eccube\Entity\Cart();
         }
+
+        foreach ($this->cart->getCartItems() as $CartItem) {
+            $ProductClass = $this
+                ->entityManager
+                ->getRepository($CartItem->getClassName())
+                ->find($CartItem->getClassId());
+            $this->setCanAddProductType($ProductClass->getProductType());
+        }
+
     }
 
     public function save()
@@ -134,11 +141,43 @@ class CartService
     public function getCart()
     {
         foreach ($this->cart->getCartItems() as $CartItem) {
-            $ProductClass = $this->entityManagaer->getRepository($CartItem->getClassName())->find($CartItem->getClassId());
+            $ProductClass = $this
+                ->entityManager
+                ->getRepository($CartItem->getClassName())
+                ->find($CartItem->getClassId());
             $CartItem->setObject($ProductClass);
         }
 
         return $this->cart;
+    }
+
+    /**
+     * @param  string  $productClassId
+     * @return boolean
+     */
+    public function canAddProduct($productClassId)
+    {
+        $ProductClass = $this
+            ->entityManager
+            ->getRepository('\Eccube\Entity\ProductClass')
+            ->find($productClassId);
+        $ProductType = $ProductClass->getProductType();
+
+        return $this->ProductType == $ProductType;
+    }
+
+    public function setCanAddProductType(\Eccube\Entity\Master\ProductType $ProductType)
+    {
+        if (is_null($this->ProductType)) {
+            $this->ProductType = $ProductType;
+        }
+
+        return $this;
+    }
+
+    public function getCanAddProductType()
+    {
+        return $this->ProductType;
     }
 
     /**
@@ -207,11 +246,17 @@ class CartService
     public function setProductQuantity($ProductClass, $quantity)
     {
         if (!$ProductClass instanceof \Eccube\Entity\ProductClass) {
-            $ProductClass = $this->entityManagaer
+            $ProductClass = $this->entityManager
                 ->getRepository('Eccube\Entity\ProductClass')
                 ->find($ProductClass);
         }
         if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== 1) {
+            throw new \Exception();
+        }
+
+        $this->setCanAddProductType($ProductClass->getProductType());
+
+        if (!$this->canAddProduct($ProductClass->getId())) {
             throw new \Exception();
         }
 
