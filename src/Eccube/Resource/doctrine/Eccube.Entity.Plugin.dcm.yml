@@ -2,10 +2,7 @@ Eccube\Entity\Plugin:
     type: entity
     table: dtb_plugin
     repositoryClass: Eccube\Repository\PluginRepository
-    uniqueConstraints:
-        dtb_plugin_code_unique_key:
-            columns:
-                - code
+
     id:
         id:
             type: integer

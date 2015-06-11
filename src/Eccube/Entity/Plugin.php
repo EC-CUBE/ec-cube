@@ -309,16 +309,16 @@ class Plugin
 
     public function getPluginEventHandlers()
     {
-        return $this->PluginEventHanders;
+        return $this->PluginEventHandlers;
     }
-    public function addPluginEventHandlers($PluginEventHandler)
+    public function addPluginEventHandlers(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
     {
-        $this->PluginEventHanders[] = $PluginEventHandlers;
+        $this->PluginEventHandlers[] = $PluginEventHandlers;
         return $this;
     }
-    public function removePluginEventHandlers($PluginEventHandler)
+    public function removePluginEventHandlers(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
     {
-        $this->PluginEventHanders->removeElement($PluginEventHandler);
+        $this->PluginEventHandlers->removeElement($PluginEventHandler);
         return $this;
     }
 }

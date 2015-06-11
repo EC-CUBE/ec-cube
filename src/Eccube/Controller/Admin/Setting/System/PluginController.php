@@ -29,11 +29,17 @@ use Eccube\Application;
 
 class PluginController extends AbstractController
 {
-
     public function index(Application $app)
     {
+        // 動作試験用
+        //# ちゃんと画面を作るときに置き換えてください
         $service = $app['eccube.service.plugin'];
-        $service->install("/SampleEvent.tar");
-        return "aa";
+        $service->install('/SampleEvent.tar');
+
+        #$em = $app['orm.em'];
+        #$plugin=$em->getRepository('Eccube\Entity\Plugin')->getPluginByCode('tomita-test');
+        
+        #$service->uninstall($plugin[0]);
+
     }
 }

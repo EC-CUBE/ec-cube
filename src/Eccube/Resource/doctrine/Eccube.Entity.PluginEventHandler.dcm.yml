@@ -2,11 +2,6 @@ Eccube\Entity\PluginEventHandler:
     type: entity
     table: dtb_plugin_event_handler
     repositoryClass: Eccube\Repository\PluginEventHandlerRepository
-    uniqueConstraints:
-        dtb_plugin_event_handler_priority_unique_key:
-            columns:
-                - priority
-                - event
 
     id:
         id:

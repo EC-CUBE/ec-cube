@@ -34,4 +34,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class PluginRepository extends EntityRepository
 {
+    public function getPluginByCode($code)
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->andWhere('e.del_flg = 0 ')  
+            ->andWhere('e.code = :code ') 
+            ->setParameter('code',$code) 
+            ->andWhere('e.enable = 1 ') ;
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

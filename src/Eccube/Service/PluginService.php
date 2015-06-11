@@ -25,6 +25,8 @@
 namespace Eccube\Service;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class PluginService
 {
@@ -43,41 +45,72 @@ class PluginService
        $tmp = $this->createTempDir();
 
        $this->unpackPluginArchive($filename,$tmp); //一旦テンポラリに展開
+       $this->checkPluginArchiveContent($tmp);
 
-       // TODO:テンポラリファイル削除
-       $meta = $this->readYml($tmp."/config.yml");
+
+       $config = $this->readYml($tmp."/config.yml");
        $event = $this->readYml($tmp."/event.yml");
+
+       $this->deleteFile($tmp); // テンポラリのファイルを削除
+
+       $this->checkSamePlugin($config['code']);
+
+       $pluginBaseDir =  $this->calcPluginDir($config['name'])  ;
+       $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
+
+
+       $this->unpackPluginArchive($filename,$pluginBaseDir); // 問題なければ本当のplugindirへ
+
+       $this->registerPlugin($config,$event); // dbにプラグイン登録
+       $this->callPluginManagerMethod( $config,'install' ); 
+
+    }
+
+    public function calcPluginDir($name)
+    {
+        return __DIR__.'/../../../app/Plugin'.'/'.$name;
+    }
+    public function checkSamePlugin($code)
+    {
+        $em = $this->app['orm.em'];
+
+        $rep=$em->getRepository('Eccube\Entity\Plugin') ;
+        if(count($rep->getPluginByCode($code))){
+            throw new \Exception('plugin already installed.');
+        }
+
+    }
+    public function checkPluginArchiveContent($dir)
+    {
+       $meta = $this->readYml($dir."/config.yml");
+       $event = $this->readYml($dir."/event.yml");
        if(!$event) {
            throw new \Exception("event.yml not found or syntax error");
        }
        if(!$meta) {
            throw new \Exception("config.yml not found or syntax error");
        }
-
-       $pluginBaseDir =   __DIR__.'/../../../app/Plugin'.'/'.$meta['name']  ; // ここの埋め込みはなくしたい
-       $this->createPluginDir($pluginBaseDir);
-
-
-       $this->unpackPluginArchive($filename,$pluginBaseDir); // 問題なければ本当のplugindirへ
-       $this->registerPlugin($meta,$event);
-       $this->callPluginManagerMethod( $meta,'install' );
-echo "<hr>";
-exit;
-
+       if(!file_exists($dir . "/" . $meta['event'].".php")){
+           throw new \Exception("event handler class not found");
+       }
     }
-    public function uninstall($filename)
+
+    public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
-       // エラーチェック
-       // ファイルコピー
-       // インストーラ起動      
+       $pluginDir = $this->calcPluginDir($plugin->getName());
+
+       $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'."config.yml" ),'uninstall' ); 
+       $this->unregisterPlugin($plugin);
+       $this->deleteFile($pluginDir); 
+
     }
-    public function enable($filename)
+    public function enable(\Eccube\Entity\Plugin $plugin)
     {
     }
-    public function disable($filename)
+    public function disable(\Eccube\Entity\Plugin $plugin)
     {
     }
-    public function update($filename)
+    public function update(\Eccube\Entity\Plugin $plugin)
     {
     }
 
@@ -111,7 +144,6 @@ exit;
     public function registerPlugin( $meta ,$event_yml )
     {
 
-
         $em = $this->app['orm.em'];
         $em->getConnection()->beginTransaction(); 
         $p = new \Eccube\Entity\Plugin();
@@ -125,9 +157,6 @@ exit;
 
         $em->persist($p); 
         $em->flush(); 
-
-        $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
-
 
         foreach($event_yml as $event=>$handlers){
             foreach($handlers as $handler){
@@ -148,6 +177,31 @@ exit;
 
     }
 
+    public function unregisterPlugin(\Eccube\Entity\Plugin $p){
+        $em = $this->app['orm.em'];
+        $em->getConnection()->beginTransaction(); 
+
+        $p->setDelFlg(1);
+
+/*
+        foreach($p->getPluginEventHandlers()->toArray() as $handler){
+            $handler->setDelFlg(1);
+            $em->persist($handler); 
+        }
+*/
+       
+        $rep=$em->getRepository('Eccube\Entity\PluginEventHandler');
+        foreach($rep->findBy(array('plugin_id'=> $p->getId()  )) as $peh ) {
+            $peh->setDelFlg(1); 
+            $em->persist($peh); 
+        }
+
+        $em->persist($p); 
+        $em->flush(); 
+
+        $em->getConnection()->commit();
+    }
+
     public function callPluginManagerMethod($meta,$method)
     {
         $class = '\\Plugin'.'\\'.$meta['name'].'\\' .'PluginManager';
@@ -155,6 +209,12 @@ exit;
             $installer = new $class();
             $installer->$method($meta,$this->app);
         }
+    }
+
+    public function deleteFile($path)
+    {
+        $f=new Filesystem();
+        return $f->remove($path);
     }
 
 }
