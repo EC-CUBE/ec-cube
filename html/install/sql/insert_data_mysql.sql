@@ -1255,6 +1255,7 @@ INSERT INTO dtb_delivery_fee (delivery_id, fee, pref) VALUES (2, 0, 45);
 INSERT INTO dtb_delivery_fee (delivery_id, fee, pref) VALUES (2, 0, 46);
 INSERT INTO dtb_delivery_fee (delivery_id, fee, pref) VALUES (2, 0, 47);
 
+INSERT INTO dtb_delivery_time (delivery_id, delivery_time) VALUES (1, '指定なし');
 INSERT INTO dtb_delivery_time (delivery_id, delivery_time) VALUES (1, '午前');
 INSERT INTO dtb_delivery_time (delivery_id, delivery_time) VALUES (1, '午後');
 
@@ -1381,17 +1382,17 @@ INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, creat
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(0, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(1, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(2, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(3, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(4, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(5, 10, 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(6, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(7, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(8, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(9, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_product_stock (product_class_id, stock, creator_id, create_date, update_date) VALUES(11, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(1, 0, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(2, 1, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(3, 2, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(4, 3, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(5, 4, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(6, 5, 10, 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(7, 6, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(8, 7, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(9, 8, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(10, 9, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(11, 11, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 INSERT INTO dtb_recommend_product (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
