@@ -226,24 +226,38 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
+        // Plugin
+        $basePath = __DIR__ . '/../../app/Plugin';
+        $finder = Finder::create()
+            ->in($basePath)
+            ->directories()
+            ->depth(0);
+
+        $finder->sortByName();
+
         // プラグインのmeta定義は先にやっておく必要がある
-        $orm_options = array();
+        $orm_mappings[] = array(
+            'type' => 'yml',
+            'namespace' => 'Eccube\Entity',
+            'path' => array(
+                __DIR__ . '/Resource/doctrine',
+                __DIR__ . '/Resource/doctrine/master',
+            ),
+        );
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
 
             if ($config['enable'] === true) {
                 // Doctrine Extend
                 if (isset($config['orm.path'])) {
-                    $pathes = array();
+                    $paths = array();
                     foreach ($config['orm.path'] as $path) {
-                        $pathes[] = $basePath . '/' . $config['name'] . $path;
+                        $paths[] = $basePath . '/' . $config['name'] . $path;
                     }
-                    $orm_options[] = array(
-                        'mappings' => array(
-                            'type' => 'yml',
-                            'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
-                            'path' => $pathes,
-                        )
+                    $orm_mappings[] = array(
+                        'type' => 'yml',
+                        'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                        'path' => $paths,
                     );
                 }
             }
@@ -253,16 +267,7 @@ class Application extends \Silex\Application
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/Resource/doctrine',
-                            __DIR__ . '/Resource/doctrine/master',
-                        ),
-                    ),
-                ),
+                'mappings' => $orm_mappings,
             ),
         ));
 
@@ -272,14 +277,6 @@ class Application extends \Silex\Application
         });
 
         // EventSubscriber
-        $basePath = __DIR__ . '/../../app/Plugin';
-        $finder = Finder::create()
-            ->in($basePath)
-            ->directories()
-            ->depth(0);
-
-        $finder->sortByName();
-
         if ($app['env'] !== 'cli') { // cliモードではテーブルがない場合があるのでロードしない
             // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
             $priorities = array();
