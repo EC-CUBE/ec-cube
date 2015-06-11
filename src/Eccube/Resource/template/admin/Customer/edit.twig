@@ -223,4 +223,12 @@
     </div><!-- /.col -->
     </form>
 </div>
+<script src="{{ app.config.root }}admin/assets/js/hideShowPassword.min.js"></script>
+<script>
+	$('#admin_customer_password').hideShowPassword({
+		show: true, // パスワード可視の有無
+		innerToggle: true, // トグルボタンを入力欄に設置するかの有無
+		hideToggleUntil: 'focus' // フォーカスされるまでトグルを隠す
+	});
+</script>
 {% endblock %}
