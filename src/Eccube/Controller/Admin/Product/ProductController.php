@@ -174,6 +174,7 @@ class ProductController
                 ->addProductClass($ProductClass);
             $ProductClass
                 ->setDelFlg(0)
+                ->setStockUnlimited(true)
                 ->setProduct($Product);
         } else {
             $Product = $app['eccube.repository.product']->find($id);

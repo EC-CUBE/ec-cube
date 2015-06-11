@@ -80,7 +80,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </div>
                                                     <div class="td table">
                                                         <div class="item_photo">
-                                                            <a target="_blank" href="{{ app.config.image_save_urlpath }}{{ Product.MainListImage|no_image_main_list }}">
+                                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
                                                                 <img src="{{ app.config.image_save_urlpath }}{{ Product.MainListImage|no_image_main_list }}" alt="{{ Product.name }}" />
                                                             </a>
                                                         </div>

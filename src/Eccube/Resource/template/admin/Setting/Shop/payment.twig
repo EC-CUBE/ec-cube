@@ -25,6 +25,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}支払方法管理{% endblock %}
 
 {% block main %}
+    <script>
+        function fnDelete(action) {
+            document.delete_form.action = action;
+            document.delete_form.submit();
+        }
+    </script>
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -46,6 +52,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    <form name="delete_form" id="delete_form" action="" method="post">
+                                    </form>
                                     {% for Payment in Payments %}
                                     <tr>
 
@@ -79,7 +87,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </li>
                                                     <li>
                                                         {% if Payment.fix_flg == 1 %}
-                                                            <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}">削除</a>
+                                                            <a href="javascript:;" onclick="fnDelete('{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}'); return false;">削除</a>
                                                         {% else %}
                                                             <a>削除</a>
                                                         {% endif %}
