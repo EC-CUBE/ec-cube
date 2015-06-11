@@ -24,7 +24,7 @@
 
 namespace Eccube\Service;
 
-#use Eccube\Event\RenderEvent;
+use Symfony\Component\Yaml\Yaml;
 
 class PluginService
 {
@@ -43,14 +43,25 @@ class PluginService
        $tmp = $this->createTempDir();
 
        $this->unpackPluginArchive($filename,$tmp); //一旦テンポラリに展開
-exit;
+
        // TODO:テンポラリファイル削除
-       $meta = $this->readMetaData($tmp);
-       $pluginBaseDir =   __DIR__.'/../../app/Plugin'.'/'.$meta['name']  ; // ここの埋め込みはなくしたい
+       $meta = $this->readYml($tmp."/config.yml");
+       $event = $this->readYml($tmp."/event.yml");
+       if(!$event) {
+           throw new \Exception("event.yml not found or syntax error");
+       }
+       if(!$meta) {
+           throw new \Exception("config.yml not found or syntax error");
+       }
+
+       $pluginBaseDir =   __DIR__.'/../../../app/Plugin'.'/'.$meta['name']  ; // ここの埋め込みはなくしたい
        $this->createPluginDir($pluginBaseDir);
+
+
        $this->unpackPluginArchive($filename,$pluginBaseDir); // 問題なければ本当のplugindirへ
-       $this->registerPlugin($meta);
-       $this->registerEventHandler($meta);
+       $this->registerPlugin($meta,$event);
+echo "<hr>";
+exit;
        $this->callInstallMethod(  );
 
     }
@@ -70,10 +81,9 @@ exit;
     {
     }
 
-    public function readMetaData($dir)
+    public function readYml($yml)
     {
-        $ymlfile = $dir."/config.yml";
-        return Yaml::Parse($ymlfile);
+        return Yaml::Parse($yml);
     }
     public function createTempDir()
     {
@@ -99,8 +109,38 @@ exit;
         $tar->setErrorHandling(PEAR_ERROR_EXCEPTION);
         $result = $tar->extractModify($dir . '/', '');
     }
-    public function registerPlugin()
+    public function registerPlugin( $meta ,$event_yml )
     {
+
+        $em = $this->app['orm.em'];
+        $p = new \Eccube\Entity\Plugin();
+        $p->setName($meta['name'])
+          ->setEnable(1)
+          ->setClassName($meta['event'])
+          ->setVersion($meta['version'])
+          ->setDelflg(0)
+          ->setSource(0)
+          ->setCode($meta['code']);
+
+           $handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers() ;
+
+
+        foreach($event_yml as $event=>$handlers){
+            foreach($handlers as $handler){
+                $peh = new \Eccube\Entity\PluginEventHandler();
+                $peh->setPlugin($p)
+                    ->setEvent($event)
+                    ->setdelFlg(0)
+                    ->setHandler($handler[0])
+                    ->setPriority($handlers=$em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
+                $em->persist($peh);
+            }
+        }
+
+        $em->persist($p); 
+        $em->flush(); 
+
+
     }
 
     public function registerEventHandler()

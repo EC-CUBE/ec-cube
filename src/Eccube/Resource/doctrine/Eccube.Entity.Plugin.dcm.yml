@@ -28,8 +28,15 @@ Eccube\Entity\Plugin:
             nullable: false
             unsigned: false
             default: '0'
+        del_flg:
+            type: smallint
+            nullable: false
+            default: '0'
         version:
             type: string
+            nullable: false
+        source:
+            type: integer
             nullable: false
         create_date:
             type: datetime

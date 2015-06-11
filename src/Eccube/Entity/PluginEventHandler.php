@@ -31,6 +31,23 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PluginEventHandler
 {
+
+    const EVENT_PRIORITY_LATEST = -500; // ハンドラテーブルに登録されていない場合の優先度
+    const EVENT_PRIORITY_DISABLED = 0; // ハンドラを無効にする
+
+    const EVENT_PRIORITY_NORMAL_START = 400; // 先発、後発、通常の各型毎の優先度範囲
+    const EVENT_PRIORITY_NORMAL_END = -399;
+
+    const EVENT_PRIORITY_FIRST_START = 500;
+    const EVENT_PRIORITY_FIRST_END = 401;
+
+    const EVENT_PRIORITY_LAST_START = -400;
+    const EVENT_PRIORITY_LAST_END = -499;
+
+    const EVENT_HANDLER_TYPE_NORMAL = 'NORMAL';
+    const EVENT_HANDLER_TYPE_FIRST = 'FIRST';
+    const EVENT_HANDLER_TYPE_LAST = 'LAST';
+
     /**
      * @var integer
      */
@@ -112,7 +129,7 @@ class PluginEventHandler
      * @param \int $priority
      * @return PluginEventHandler
      */
-    public function setPriority(\int $priority)
+    public function setPriority($priority)
     {
         $this->priority = $priority;
 
@@ -135,7 +152,7 @@ class PluginEventHandler
      * @param \int $pluginId
      * @return PluginEventHandler
      */
-    public function setPluginId(\int $pluginId)
+    public function setPluginId($pluginId)
     {
         $this->plugin_id = $pluginId;
 
@@ -250,7 +267,7 @@ class PluginEventHandler
     }
     public function setPlugin(\Eccube\Entity\Plugin $Plugin)
     {
-        $this->Plugin = $plugin;
+        $this->Plugin = $Plugin;
         return $this;
     }
 

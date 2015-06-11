@@ -67,8 +67,16 @@ class Plugin
     private $create_date;
 
     /**
-     * @var \DateTime
+     * @var integer
      */
+    private $del_flg;
+
+    /**
+     * @var integer
+     */
+    private $source;
+
+
     private $update_date;
 
     private $PluginEventHandlers;
@@ -249,6 +257,55 @@ class Plugin
     {
         return $this->update_date;
     }
+
+    /**
+     * Set del_flg
+     *
+     * @param integer $delFlg
+     * @return PluginEventHandler
+     */
+    public function setDelFlg($delFlg)
+    {
+        $this->del_flg = $delFlg;
+
+        return $this;
+    }
+
+    /**
+     * Get del_flg
+     *
+     * @return integer
+     */
+    public function getDelFlg()
+    {
+        return $this->del_flg;
+    }
+
+    /**
+     * Set source
+     *
+     * @param integer $delFlg
+     * @return PluginEventHandler
+     */
+    public function setSource($delFlg)
+    {
+        $this->source = $delFlg;
+
+        return $this;
+    }
+
+    /**
+     * Get source
+     *
+     * @return integer
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+
+
 
     public function getPluginEventHandlers()
     {

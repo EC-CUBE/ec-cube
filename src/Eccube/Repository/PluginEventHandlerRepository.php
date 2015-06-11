@@ -24,6 +24,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\PluginEventHandler;
 
 /**
  * PluginEventHandlerRepository
@@ -34,7 +35,6 @@ use Doctrine\ORM\EntityRepository;
 class PluginEventHandlerRepository extends EntityRepository
 {
 
-
     public function getHandlers()
     {
         $qb = $this->createQueryBuilder('e')
@@ -43,6 +43,34 @@ class PluginEventHandlerRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+    public function calcNewPriority($event , $type){
 
+        if(PluginEventHandler::EVENT_HANDLER_TYPE_FIRST==$type){
+            $range_start=PluginEventHandler::EVENT_PRIORITY_FIRST_START;
+            $range_end=PluginEventHandler::EVENT_PRIORITY_FIRST_END;
+        }elseif(PluginEventHandler::EVENT_HANDLER_TYPE_LAST==$type){
+            $range_start=PluginEventHandler::EVENT_PRIORITY_LAST_START;
+            $range_end=PluginEventHandler::EVENT_PRIORITY_LAST_END;
+        }else{
+            $range_start=PluginEventHandler::EVENT_PRIORITY_NORMAL_START;
+            $range_end=PluginEventHandler::EVENT_PRIORITY_NORMAL_END;
+        }
+
+        $qb = $this->createQueryBuilder('e');
+        $qb->andWhere("e.priority >= $range_end ")
+           ->andWhere("e.priority <= $range_start ")
+           ->andWhere('e.event = :event')
+           ->setParameter('event',$event)
+           ->setMaxResults(1)
+           ->orderBy('e.priority','DESC');
+
+        $result=$qb->getQuery()->getResult();
+        if(count($result)){
+             return $result[0]->getPriority() -1;
+        }else{
+             return $range_start;
+        }
+
+    }
 
 }

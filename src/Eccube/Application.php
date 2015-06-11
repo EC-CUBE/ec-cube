@@ -41,8 +41,6 @@ class Application extends \Silex\Application
     /** @var Application app */
     protected static $app;
 
-    const EVENT_PRIORITY_LATEST = -500;
-    const EVENT_PRIORITY_DISABLED = 0;
     /**
      * Alias
      *
@@ -266,7 +264,7 @@ class Application extends \Silex\Application
                 if($handler->getPlugin()->getEnable()){ // Pluginがdisableの場合、EventHandlerのPriorityを全て0とみなして登録しない
                     $priority = $handler->getPriority();
                 }else{
-                    $priority =self::EVENT_PRIORITY_DISABLED;
+                    $priority =  \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
                 }
                 $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority ;
 
@@ -286,13 +284,13 @@ class Application extends \Silex\Application
                     foreach(Yaml::Parse($dir->getRealPath() . '/event.yml') as $event=>$handlers){
                         foreach($handlers as $handler){
                             if(!isset($priorities[$config['event']][ $event ][$handler[0] ])){ // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
-                                $priority = self::EVENT_PRIORITY_LATEST;
+                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
                             }else{
                                 $priority = $priorities[$config['event']][ $event ][$handler[0]];
                             }
                             # 優先度0は登録しない
 
-                            if(self::EVENT_PRIORITY_DISABLED!=$priority){
+                            if(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED !=$priority){
                                 $app['eccube.event.dispatcher']->addListener($event,array($subscriber,$handler[0]),$priority  );
                             } 
                         }
