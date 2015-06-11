@@ -32,17 +32,103 @@ class ShoppingType extends AbstractType
 {
     public $app;
 
+    public function __construct(\Eccube\Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $app = $this->app;
+
         $builder
             ->add('message', 'textarea', array(
                     'required' => false,
                     'constraints' => array(
                         new Assert\Length(array('min' => 0, 'max' => 3000))),
+            ))
+            ->add('name', 'name', array(
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $app['config']['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
+            ->add('kana', 'name', array(
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $app['config']['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
+            ->add('company_name', 'hidden', array(
+                'label' => '会社名',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['stext_len'],
+                    ))
+                ),
+            ))
+            ->add('zip', 'zip', array(
+                'zip01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 3, 'max' => 3))
+                    ),
+                ),
+                'zip02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 4, 'max' => 4))
+                    ),
+                ),
+            ))
+            ->add('address', 'address', array(
+                'help' => 'form.contact.address.help',
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $app['config']['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
+            ->add('tel', 'tel', array(
+                'tel01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 3)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel03_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
             ));
+
     }
 
     /**
