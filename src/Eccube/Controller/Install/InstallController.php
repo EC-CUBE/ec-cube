@@ -141,6 +141,7 @@ class InstallController
                         ->setPDO()
                         ->createTable()
                         ->insert()
+                        // TODO: migrationどうするか
 //                        ->doMigrate()
                     ;
                 } catch (\MigrationException $e) {
@@ -204,11 +205,12 @@ class InstallController
     {
         $this->resetNatTimer();
 
-        $data = $this->data;
+        $config_file = __DIR__ . '/../../../../app/config/eccube/database.yml';
+        $data = Yaml::parse($config_file);
 
-        if ($data['db_type'] == 'pgsql') {
+        if ($data['driver'] == 'pdo_pgsql') {
             $sqlFile = __DIR__ . '/../../../../html/install/sql/insert_data_pgsql.sql';
-        } elseif ($data['db_type'] == 'mysql') {
+        } elseif ($data['driver'] == 'pdo_mysql') {
             $sqlFile = __DIR__ . '/../../../../html/install/sql/insert_data_mysql.sql';
         } else {
             $sqlFile = __DIR__ . '/../../../../html/install/sql/insert_data.sql';
