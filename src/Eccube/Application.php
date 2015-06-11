@@ -247,19 +247,17 @@ class Application extends \Silex\Application
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
 
-            if ($config['enable'] === true) {
-                // Doctrine Extend
-                if (isset($config['orm.path'])) {
-                    $paths = array();
-                    foreach ($config['orm.path'] as $path) {
-                        $paths[] = $basePath . '/' . $config['name'] . $path;
-                    }
-                    $orm_mappings[] = array(
-                        'type' => 'yml',
-                        'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
-                        'path' => $paths,
-                    );
+            // Doctrine Extend
+            if (isset($config['orm.path'])) {
+                $paths = array();
+                foreach ($config['orm.path'] as $path) {
+                    $paths[] = $basePath . '/' . $config['name'] . $path;
                 }
+                $orm_mappings[] = array(
+                    'type' => 'yml',
+                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'path' => $paths,
+                );
             }
         }
 
@@ -283,7 +281,8 @@ class Application extends \Silex\Application
             $em = $app['orm.em'];
             $handlers = $em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers();
             foreach ($handlers as $handler) {
-                if ($handler->getPlugin()->getEnable()) { // Pluginがdisableの場合、EventHandlerのPriorityを全て0とみなして登録しない
+                if (!$handler->getPlugin()->getDelFlg() and 
+                     $handler->getPlugin()->getEnable()){ // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
                     $priority = $handler->getPriority();
                 } else {
                     $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
@@ -297,34 +296,32 @@ class Application extends \Silex\Application
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
 
-            if ($config['enable'] === true) {
                 // Type: Event
-                if (isset($config['event'])) {
-                    $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
-                    $subscriber = new $class($app);
+            if (isset($config['event'])) {
+                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
+                $subscriber = new $class($app);
 
-                    foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
-                        foreach ($handlers as $handler) {
-                            if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
-                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
-                            } else {
-                                $priority = $priorities[$config['event']][$event][$handler[0]];
-                            }
-                            # 優先度0は登録しない
+                foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                    foreach ($handlers as $handler) {
+                        if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
+                            $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
+                        } else {
+                            $priority = $priorities[$config['event']][$event][$handler[0]];
+                        }
+                        # 優先度0は登録しない
 
-                            if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
-                                $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
-                            }
+                        if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
+                            $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
                         }
                     }
-
                 }
-                // Type: ServiceProvider
-                if (isset($config['service'])) {
-                    foreach ($config['service'] as $service) {
-                        $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
-                        $app->register(new $class($app));
-                    }
+
+            }
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
+                    $app->register(new $class($app));
                 }
             }
         }
