@@ -162,6 +162,14 @@ class InstallController
         return $app['twig']->render('complete.twig');
     }
 
+    public function admin(InstallApplication $app, Request $request)
+    {
+        $config_file = __DIR__ . '/../../../../app/config/eccube/config.yml';
+        $config = Yaml::parse($config_file);
+
+        return $app->redirect($config['root'] . $config['admin_dir']);
+    }
+
     private function setPDO()
     {
         $config_file = __DIR__ . '/../../../../app/config/eccube/database.yml';
