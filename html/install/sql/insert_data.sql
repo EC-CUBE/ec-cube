@@ -115,6 +115,7 @@ INSERT INTO mtb_order_status (id, name, rank) VALUES (6, '入金済み', 3);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (3, 'キャンセル', 4);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (4, '取り寄せ中', 5);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (5, '発送済み', 6);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (8, '購入処理中' 7);
 
 
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (1, '#FFFFFF', 0);
