@@ -29,6 +29,7 @@
 #-- Shop Configuration
 CONFIG_PHP="app/config/eccube/config.php"
 CONFIG_YML="app/config/eccube/config.yml"
+DATABASE_YML="app/config/eccube/database.yml"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 HTTP_URL=${HTTP_URL:-"http://test.local/"}
@@ -197,7 +198,7 @@ __EOF__
 
 create_config_yml()
 {
-    cat > "./${CONFIG_YML}" <<__EOF__
+    cat > "./${DATABASE_YML}" <<__EOF__
 database:
     driver: ${DBDRIVER}
     host: ${DBSERVER}
@@ -206,6 +207,9 @@ database:
     user: ${DBUSER}
     password : ${CONFIGPASS:-$DBPASS}
     charset: utf8
+__EOF__
+
+    cat > "./${CONFIG_YML}" <<__EOF__
 mail:
     host: localhost
     port: 25
