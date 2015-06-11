@@ -109,60 +109,19 @@ class ShoppingController extends AbstractController
             ->createBuilder('shopping')
             ->getForm();
 
-        // 配送業社の設定
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
-        $form->add('delivery', 'entity', array(
-            'class' => 'Eccube\Entity\Delivery',
-            'property' => 'name',
-            'choices' => $deliveries,
-        ));
+
+        // 配送業社の設定
+        $this->setFormDelivery($form, $deliveries);
 
         // お届け日の設定
-        $minDate = 0;
-
-        // 配送時の最大公約数となる商品の日数を取得
-        foreach ($Order->getOrderDetails() as $detail) {
-            if ($minDate < $detail->getProductClass()->getDeliveryDate()->getValue()) {
-                $minDate = $detail->getProductClass()->getDeliveryDate()->getValue();
-            }
-        }
-
-        // 配達最大日数期間を設定
-        $period = new \DatePeriod (
-            new \DateTime($minDate . ' day'),
-            new \DateInterval('P1D'),
-            new \DateTime($minDate + $app['config']['deliv_date_end_max'] . ' day')
-        );
- 
-        $deliveryDates = array();
-        foreach ($period as $day) {
-            $deliverDates[] = $day->format('Y/m/d');
-        }
-
-        $form->add('deliveryDate', 'choice', array(
-            'choices' => $deliverDates,
-        ));
+        $this->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $form->add('deliveryTime', 'entity', array(
-            'class' => 'Eccube\Entity\DeliveryTime',
-            'property' => 'delivery_time',
-            'choices' => $deliveries[0]->getDeliveryTimes(),
-            'empty_value' => '指定なし',
-        ));
+        $this->setFormDeliveryTime($form, $deliveries[0]);
 
         // 支払い方法選択
-        $paymentOptions = $deliveries[0]->getPaymentOptions();
-        $payments = array();
-        // 初期値で設定されている配送業社を設定
-        foreach ($paymentOptions as $paymentOption) {
-            $payments[] = $paymentOption->getPayment();
-        }
-        $form->add('payment', 'entity', array(
-            'class' => 'Eccube\Entity\Payment',
-            'property' => 'method',
-            'choices' => $payments,
-        ));
+        $this->setFormPayment($form, $deliveries[0]);
 
         return $app['view']->render('Shopping/index.twig', array(
                 'form' => $form->createView(),
@@ -173,7 +132,6 @@ class ShoppingController extends AbstractController
     // 購入処理
     public function confirm(Application $app, Request $request)
     {
-        $this->init($app);
 
         $cartService = $app['eccube.service.cart'];
         $orderService = $app['eccube.service.order'];
@@ -185,40 +143,51 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        // 認証チェック
-        if (!$this->isAuthenticated($app)) {
-            return $app->redirect($app->url('shopping'));
-        }
-
 
         $form = $app['form.factory']
             ->createBuilder('shopping')
             ->getForm();
 
+        $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
+
+        $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+
+        // 配送業社の設定
+        $this->setFormDelivery($form, $deliveries);
+
+        // お届け日の設定
+        $this->setFormDeliveryDate($form, $Order, $app);
+
+        // お届け時間の設定
+        $this->setFormDeliveryTime($form, $deliveries[0]);
+
+        // 支払い方法選択
+        $this->setFormPayment($form, $deliveries[0]);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $data = $form->getData();
+                $formData = $form->getData();
 
                 /** @var $Order \Eccube\Entity\Order */
-                $Order = $this->orderRepository->find($cartService->getPreOrderId());
-                $Order->setMessage($data['message']);
 
                 // トランザクション制御
                 $em = $app['orm.em'];
                 $em->getConnection()->beginTransaction();
                 try {
-                    // 商品公開ステータスチェック、在庫チェック
-                    $orderService->isOrderProduct($em, $Order);
+                    // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
+                    $check = $orderService->isOrderProduct($em, $Order);
+                    if (!$check) {
+                        return $app->redirect($app->url('shopping'));
+                    }
 
                     // 受注情報、配送情報を更新
-                    $orderService->setOrderUpdate($em, $Order);
+                    $orderService->setOrderUpdate($em, $Order, $formData);
                     // 在庫情報を更新
+                    $orderService->setStockUpdate($em, $Order);
                     // 購入金額を更新
-
-                    // カート削除
-                    $cartService->clear()->save();
+                    $orderService->setCustomerUpdate($em, $Order, $this->getUser($app));
 
                     $em->getConnection()->commit();
                     $em->flush();
@@ -230,7 +199,11 @@ class ShoppingController extends AbstractController
                     return $app->redirect($app->url('shopping_error'));
                 }
 
+                // カート削除
+                $cartService->clear()->save();
+
                 // メール送信
+                $app['eccube.service.mail']->sendOrderMail($Order, $this->getUser($app));
 
                 return $app->redirect($app->url('shopping_complete'));
 
@@ -241,6 +214,7 @@ class ShoppingController extends AbstractController
         return $app->redirect($app->url('cart'));
 
     }
+
 
     // 購入完了画面表示
     public function complete(Application $app)
@@ -669,7 +643,6 @@ class ShoppingController extends AbstractController
         return $Shipping;
     }
 
-    // todo リファクタ
     /**
      * 配送業者を取得
      */
@@ -696,4 +669,93 @@ class ShoppingController extends AbstractController
 
 
     }
+
+
+    /**
+     * 配送業者のフォームを設定
+     */
+    private function setFormDelivery($form, $deliveries)
+    {
+
+        // 配送業社の設定
+        $form->add('delivery', 'entity', array(
+            'class' => 'Eccube\Entity\Delivery',
+            'property' => 'name',
+            'choices' => $deliveries,
+        ));
+
+    }
+
+
+    /**
+     * お届け日のフォームを設定
+     */
+    private function setFormDeliveryDate($form, $Order, $app)
+    {
+
+        // お届け日の設定
+        $minDate = 0;
+
+        // 配送時に最大となる商品日数を取得
+        foreach ($Order->getOrderDetails() as $detail) {
+            if ($minDate < $detail->getProductClass()->getDeliveryDate()->getValue()) {
+                $minDate = $detail->getProductClass()->getDeliveryDate()->getValue();
+            }
+        }
+
+        // 配達最大日数期間を設定
+        $period = new \DatePeriod (
+            new \DateTime($minDate . ' day'),
+            new \DateInterval('P1D'),
+            new \DateTime($minDate + $app['config']['deliv_date_end_max'] . ' day')
+        );
+ 
+        $deliveryDates = array();
+        foreach ($period as $day) {
+            $deliverDates[] = $day->format('Y/m/d');
+        }
+
+        $form->add('deliveryDate', 'choice', array(
+            'choices' => $deliverDates,
+        ));
+
+    }
+
+    /**
+     * お届け時間のフォームを設定
+     */
+    private function setFormDeliveryTime($form, $delivery)
+    {
+        // お届け時間の設定
+        $form->add('deliveryTime', 'entity', array(
+            'class' => 'Eccube\Entity\DeliveryTime',
+            'property' => 'delivery_time',
+            'choices' => $delivery->getDeliveryTimes(),
+            'empty_value' => '指定なし',
+        ));
+        
+    }
+
+    /**
+     * 支払い方法のフォームを設定
+     */
+    private function setFormPayment($form, $delivery)
+    {
+
+        // 支払い方法選択
+        $paymentOptions = $delivery->getPaymentOptions();
+        $payments = array();
+        // 初期値で設定されている配送業社を設定
+        foreach ($paymentOptions as $paymentOption) {
+            $payments[] = $paymentOption->getPayment();
+        }
+        $form->add('payment', 'entity', array(
+            'class' => 'Eccube\Entity\Payment',
+            'property' => 'method',
+            'choices' => $payments,
+        ));
+
+    }
+
+
 }

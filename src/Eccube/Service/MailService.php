@@ -35,29 +35,27 @@ class MailService
         $this->app = $app;
     }
 
-
-
     /**
      * Send order mail.
      *
      * @param User $user
      */
-    public function sendRegistrationConfirmMail(Town $town, TempUser $user)
+    public function sendOrderMail(\Eccube\Entity\Order $Order, \Eccube\Entity\Customer $user)
     {
 
-        $body = $app['view']->render('Mail/order_complete.twig', array(
-            'town' => $town,
+        $body = $this->app['view']->render('Mail/order.twig', array(
+            'Order' => $Order,
             'user' => $user,
         ));
 
-        $message = $app['mail.message']
-            ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
+        $message = \Swift_Message::newInstance()
+            ->setSubject('[EC-CUBE3] 購入が完了しました。')
             ->setFrom(array('sample@example.com'))
-            ->setBcc($app['config']['mail_cc'])
-            ->setTo(array($Customer->getEmail()))
+            ->setBcc($this->app['config']['mail_cc'])
+            ->setTo(array($user->getEmail()))
             ->setBody($body);
 
-        $app['mailer']->send($message);
+        $this->app['mailer']->send($message);
 
     }
 

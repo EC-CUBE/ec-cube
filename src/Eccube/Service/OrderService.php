@@ -252,40 +252,44 @@ class OrderService
      *
      * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
-     * @return true : 成功、false : 失敗
+     * @return true : 成功、 false : 失敗
      */
     public function isOrderProduct($em, \Eccube\Entity\Order $Order)
     {
         // 商品公開ステータスチェック
         $orderDetails = $Order->getOrderDetails();
-        foreach ($orderDetail as $orderDetail) {
+
+        foreach ($orderDetails as $orderDetail) {
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
                 return false;
             }
 
             // 購入制限数チェック
-            if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
-                return false;
+            if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
+                if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
+                    return false;
+                }
             }
 
         }
 
         // 在庫チェック
-        foreach ($orderDetail as $orderDetail) {
+        foreach ($orderDetails as $orderDetail) {
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if ($orderDetail->getProductClass()->getStockUnlimited() == $this->app['config']['enabled']) {
                 // 在庫チェックあり
                 // 在庫に対してロック(select ... for update)を実行
-                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->findOneBy(
-                        array('product_class_id' => $orderDetail->getProductClass()->getId()), LockMode::PESSIMISTIC_WRITE
+                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
+                        $orderDetail->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
                 );
-                // 購入数量と在庫数をチェックしてなければエラー
+                // 購入数量と在庫数をチェックして在庫がなければエラー
                 if ($orderDetail->getQuantity() > $productStock->getStock()) {
                     return false;
                 }
             }
         }
+
         return true;
  
     }
@@ -295,33 +299,85 @@ class OrderService
      *
      * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
+     * @param $formData フォームデータ
      */
-    public function setOrderUpdate($em, \Eccube\Entity\Order $Order)
+    public function setOrderUpdate($em, \Eccube\Entity\Order $Order, $formData)
     {
 
         // 受注情報を更新
-        $Order->setOrderDate(new \DatetTime());
+        $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
+        $Order->setMessage($formData['message']);
 
         // お届け先情報を更新
         $shippings = $Order->getShippings();
         foreach ($shippings as $shipping) {
+            $shipping->setShippingDeliveryName($formData['delivery']->getName());
+            $shipping->setShippingDeliveryTime($formData['deliveryTime']);
+            //$shipping->setShippingDeliveryDate($formData['deliveryDate']);
+        //    $shipping->setShippingDeliveryFee($shpping->getDeliveryFee()->getFee());
         }
 
-
     }
 
 
-
-
-    public function commit(\Eccube\Entity\Order $Order)
+    /**
+     * 在庫情報の更新
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     */
+    public function setStockUpdate($em, \Eccube\Entity\Order $Order)
     {
-        // todo delFlagではなく確定フラグにする
-        $Order->setDelFlg(0);
 
-        // todo 在庫引当
-        // todo ポイント引当
-        $this->app['orm.em']->persist($Order);
-        $this->app['orm.em']->flush();
+        $orderDetails = $Order->getOrderDetails();
+
+        // 在庫情報更新
+        foreach ($orderDetails as $orderDetail) {
+            // 在庫が無制限かチェックし、制限ありなら在庫数を更新
+            if ($orderDetail->getProductClass()->getStockUnlimited() == $this->app['config']['enabled']) {
+
+                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
+                        $orderDetail->getProductClass()->getProductStock()->getId()
+                );
+
+                // 在庫情報の在庫数を更新
+                $stock = $productStock->getStock() - $orderDetail->getQuantity();
+                $productStock->setStock($stock);
+
+                // 商品規格情報の在庫数を更新
+                $orderDetail->getProductClass()->setStock($stock);
+
+            }
+        }
+
     }
+
+
+    /**
+     * 顧客情報の更新
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     * @param $user ログインユーザ
+     */
+    public function setCustomerUpdate($em, \Eccube\Entity\Order $Order, \Eccube\Entity\Customer $user)
+    {
+
+        // 商品公開ステータスチェック
+        $orderDetails = $Order->getOrderDetails();
+
+        // 顧客情報を更新
+        $now = new \DateTime();
+        $firstBuyDate = $user->getFirstBuyDate();
+        if (empty($firstBuyDate)) {
+            $user->setFirstBuyDate($now);
+        }
+        $user->setLastBuyDate($now);
+
+        $user->setBuyTimes($user->getBuyTimes() + 1);
+        $user->setBuyTotal($user->getBuyTotal() + $Order->getTotal());
+
+    }
+
 }

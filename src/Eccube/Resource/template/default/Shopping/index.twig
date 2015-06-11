@@ -63,7 +63,7 @@ $(document).ready(function(){
                         </div><!-- /.col --> 
                     </div><!-- /.row --> 
                     <form method="post" action="{{ url('shopping_confirm') }}">
-                    <form>
+                        {{ form_widget(form._token) }}
                         <div id="shopping_confirm" class="row">
                             <div id="confirm_main" class="col-sm-8">
                                 <div class="cart_item table">
