@@ -75,7 +75,7 @@ class PluginService
         $em = $this->app['orm.em'];
 
         $rep=$em->getRepository('Eccube\Entity\Plugin') ;
-        if(count($rep->getPluginByCode($code))){
+        if(count($rep->getPluginByCode($code,true))){
             throw new \Exception('plugin already installed.');
         }
 
@@ -104,11 +104,16 @@ class PluginService
        $this->deleteFile($pluginDir); 
 
     }
-    public function enable(\Eccube\Entity\Plugin $plugin)
+    public function enable(\Eccube\Entity\Plugin $plugin,$enable=true)
     {
+        $em = $this->app['orm.em'];
+        $plugin->setEnable($enable ? 1:0);
+        $em->persist($plugin); 
+        $em->flush(); 
     }
     public function disable(\Eccube\Entity\Plugin $plugin)
     {
+        $this->enable($plugin,false);
     }
     public function update(\Eccube\Entity\Plugin $plugin)
     {
@@ -181,7 +186,7 @@ class PluginService
         $em = $this->app['orm.em'];
         $em->getConnection()->beginTransaction(); 
 
-        $p->setDelFlg(1);
+        $p->setDelFlg(1)->setEnable(0);
 
 /*
         foreach($p->getPluginEventHandlers()->toArray() as $handler){
