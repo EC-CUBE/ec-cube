@@ -1,0 +1,7 @@
+driver: pdo_pgsql
+host: localhost
+dbname: cube3_dev
+port: null
+user: eccube3_dev_user
+password: password
+charset: utf8

@@ -95,7 +95,18 @@ class Application extends \Silex\Application
                 $config_constant = array();
             }
 
-            return array_merge($config_constant, $config);
+            $database_file = __DIR__ . '/../../app/config/eccube/database.yml';
+            $database_dist = __DIR__ . '/../../app/config/eccube/database.yml.dist';
+            if (file_exists($database_file)) {
+                $config_database = Yaml::parse($database_file);
+            } elseif (file_exists($database_dist)) {
+                $config_database = Yaml::parse($database_dist);
+            } else {
+                $config_database = array();
+            }
+            $config = array_merge($config_constant, $config);
+            $config['database'] = $config_database;
+            return $config;
         });
 
         // load config dev

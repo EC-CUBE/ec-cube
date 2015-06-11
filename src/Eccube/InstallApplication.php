@@ -74,13 +74,12 @@ class InstallApplication extends \Silex\Application
             $app['debug'] = true;
         }
 
-
         // load config
         $this['config'] = $app->share(function () {
             $config = array();
             $constant_dist = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
 
-               $config_constant = Yaml::parse($constant_dist);
+           $config_constant = Yaml::parse($constant_dist);
 
             return array_merge($config_constant, $config);
         });
@@ -89,10 +88,10 @@ class InstallApplication extends \Silex\Application
             'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
         ));
 
-        $this->register(new \Silex\Provider\SessionServiceProvider());
+        $app->register(new \Silex\Provider\SessionServiceProvider());
 
-        $this->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.form.templates' => array('Form/form_layout.twig'),
+        $app->register(new \Silex\Provider\TwigServiceProvider(), array(
+            'twig.form.templates' => array('bootstrap_3_horizontal_layout.html.twig'),
         ));
         $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
@@ -104,26 +103,13 @@ class InstallApplication extends \Silex\Application
             return new EventDispatcher();
         });
 
-
-
-
         $this->before(function (Request $request, \Silex\Application $app) {
-            //
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
-                $paths = array();
-
-                if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_name'])) {
-                    $paths[] = __DIR__ . '/../../template/' . $app['config']['template_name'];
-                }
-                $paths[] = __DIR__ . '/Resource/template/default';
-                $paths[] = __DIR__ . '/../../app/plugin';
-
+                $paths[] = __DIR__ . '/Resource/template/install';
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
                 return $twig;
             }));
-
-            //
         }, self::EARLY_EVENT);
 
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
@@ -135,7 +121,7 @@ class InstallApplication extends \Silex\Application
         ));
         $app['translator'] = $app->share($app->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
-            $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', 'ja');
+            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', 'ja');
 
             return $translator;
         }));
@@ -177,18 +163,9 @@ class InstallApplication extends \Silex\Application
         }
     }
 
-    public function parseController(Request $request)
-    {
-        $route = str_replace('_', '.', $request->attributes->get('_route'));
-
-        return 'eccube.event.controller.' . $route;
-    }
-
     public function boot()
     {
         parent::boot();
-
-        $app = $this;
     }
 
     public function addSuccess($message, $namespace = 'front')

@@ -236,7 +236,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\TaxRuleType($app);
             $types[] = new \Eccube\Form\Type\MainEditType($app);
             $types[] = new \Eccube\Form\Type\BlockType($app);
-            $types[] = new \Eccube\Form\Type\InstallType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\NonMemberType($app);
@@ -259,6 +258,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\CategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\MemberType($app['config']);
+
+            $types[] = new \Eccube\Form\Type\Install\Step1Type($app);
+            $types[] = new \Eccube\Form\Type\Install\Step3Type($app);
+            $types[] = new \Eccube\Form\Type\Install\Step4Type($app);
+            $types[] = new \Eccube\Form\Type\Install\Step5Type($app);
 
             return $types;
         }));
