@@ -21,31 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 15/04/23
- * Time: 15:17
- */
 
 namespace Eccube\Form\Type;
 
-
+use Eccube\Application;
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 
-class ShippingType extends AbstractType
+class ShippingNonMemberType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
-
     /**
      * {@inheritdoc}
      */
@@ -136,18 +128,8 @@ class ShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\Shipping',
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
-        return 'shipping';
+        return 'shipping_nonmember';
     }
 }

@@ -43,10 +43,24 @@ class TaxRuleEventSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
+            Events::prePersist,
             Events::postLoad,
             Events::postPersist,
             Events::postUpdate,
         );
+    }
+
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getObject();
+
+        if ($entity instanceof \Eccube\Entity\ProductClass) {
+            $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
+            $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
+        }
+        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+            $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
+        }
     }
 
     public function postLoad(LifecycleEventArgs $args)

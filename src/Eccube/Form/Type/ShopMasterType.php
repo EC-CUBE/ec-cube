@@ -215,13 +215,13 @@ class ShopMasterType extends AbstractType
                     )),
                 ),
             ))
-            ->add('deliv_free_amount', 'integer', array(
+            ->add('delivery_free_amount', 'integer', array(
                 'label' => '送料無料条件(数量)',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('option_product_deliv_fee', 'choice', array(
+            ->add('option_product_delivery_fee', 'choice', array(
                 'label' => '商品ごとの送料設定を有効にする',
                 'choices' => array(
                     '0' => '無効',
@@ -230,7 +230,7 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
-            ->add('option_deliv_fee', 'choice', array(
+            ->add('option_delivery_fee', 'choice', array(
                 'label' => '配送業者ごとの配送料を加算するか',
                 'choices' => array(
                     '0' => '無効',

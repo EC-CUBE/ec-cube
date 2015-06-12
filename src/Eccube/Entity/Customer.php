@@ -1167,4 +1167,17 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     {
         return $this->zipcode;
     }
+
+    /**
+     * Add CustomerAddresses
+     *
+     * @param \Eccube\Entity\CustomerAddress $customerAddresses
+     * @return Customer
+     */
+    public function addCustomerAddress(\Eccube\Entity\CustomerAddress $customerAddresses)
+    {
+        $this->CustomerAddresses[] = $customerAddresses;
+
+        return $this;
+    }
 }

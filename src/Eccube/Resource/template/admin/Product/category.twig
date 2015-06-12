@@ -31,11 +31,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-9">
             <div class="box">
                 <div class="box-header">
-                    <div class="form-inline">
-                        全カテゴリー
+                    <div class="box-title box-title-category">
+                        <a href="{{ url('admin_product_category') }}">全カテゴリー</a>
                         {% for ParentCategory in TargetCategory.path %}
                             {% if ParentCategory.id is not null %}
-                            &nbsp;>&nbsp;<a href="{{ url('admin_product_category_show', { parent_id : ParentCategory.id }) }}">{{ ParentCategory.name }}</a>
+                            &nbsp;<svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>&nbsp;<a href="{{ url('admin_product_category_show', { parent_id : ParentCategory.id }) }}">{{ ParentCategory.name }}</a>
                             {% endif %}
                         {% endfor %}
                     </div>
@@ -143,7 +143,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="box no-header">
                     <div class="box-body">
                         <div class="tree">
-                            <p><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
+                            <p class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
                             <ul>
                                 {% for TopCategory in TopCategories %}
                                     {{ _self.tree(TopCategory, TargetCategory.Parent.id | default(null)) }}
