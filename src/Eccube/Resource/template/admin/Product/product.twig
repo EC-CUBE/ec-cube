@@ -55,6 +55,9 @@ $(function(){
         cursor: 'move',
         opacity: 0.7,
         placeholder: 'ui-state-highlight',
+        update: function( event, ui ) {
+            updateRank();
+        }
     });
 
     {% if has_class == false %}
@@ -110,6 +113,19 @@ $(function(){
         }
     };
 
+    var updateRank = function() {
+        $("#thumb li").each(function(index){
+            $(this).find(".rank_images").remove();
+            filename = $(this).find("input[type='hidden']").val();
+            $rank = $('<input type="hidden" class="rank_images" name="rank_images[]" />');
+            $rank.val(filename + '//' + parseInt(index + 1));
+            $(this).append($rank);
+        });
+    }
+
+    hideSvg();
+    updateRank();
+
     // 画像削除時
     var count_del = 0;
     $("#thumb").on("click", ".delete-image", function(){
@@ -121,6 +137,7 @@ $(function(){
         $("#thumb").append($new_delete_image);
         $(this).parent("li").remove();
         hideSvg();
+        updateRank();
 
         count_del ++;
     });
@@ -142,6 +159,7 @@ $(function(){
                 count_add ++;
             });
             hideSvg();
+            updateRank();
         },
         fail: function(e, data) {
             alert('アップロードに失敗しました。');

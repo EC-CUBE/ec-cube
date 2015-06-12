@@ -287,8 +287,21 @@ class ProductController
                     $fs = new Filesystem();
                     $fs->remove($app['config']['image_save_realdir'] . $delete_image);
                 }
-
                 $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+
+                $ranks = $request->get('rank_images');
+                foreach ($ranks as $rank) {
+                    list($filename, $rank_val) = explode('//', $rank);
+                    $ProductImage = $app['eccube.repository.product_image']
+                        ->findOneBy(array(
+                            'file_name' => $filename,
+                            'Product' => $Product,
+                        ));
+                    $ProductImage->setRank($rank_val);
+                    $app['orm.em']->persist($ProductImage);
+                }
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
