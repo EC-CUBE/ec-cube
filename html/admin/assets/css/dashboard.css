@@ -867,6 +867,13 @@ dd.form-group .errormsg {
     color: inherit;  background: #FDF1F0;
 }
 
+.has-error .help-block, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
+    color: #de5d50;
+}
+.has-error .control-label {
+    color: #444;
+}
+
 .form-inline .radio input[type="radio"], .form-inline .checkbox input[type="checkbox"] {
     margin-right: 5px;
 }
