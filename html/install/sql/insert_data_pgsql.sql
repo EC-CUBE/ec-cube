@@ -519,6 +519,7 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_CANCEL', '3',
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_BACK_ORDER', '4', 804, '取り寄せ中');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_DELIV', '5', 805, '発送済み');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PENDING', '7', 806, '決済処理中');
+INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ORDER_PROCESSING', '8', 807, '購入処理中');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCT_TYPE_NORMAL', '1', 900, '通常商品');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('PRODUCT_TYPE_DOWNLOAD', '2', 901, 'ダウンロード商品');
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('SQL_QUERY_LOG_MODE', '1', 1000, 'DBログの記録モード (0:記録しない, 1:遅延時のみ記録する, 2:常に記録する)');
