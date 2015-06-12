@@ -37,9 +37,9 @@ class EditController extends AbstractController
         $OriginOrder = null;
 
         if (is_null($id)) {
+            // 空のエンティティを作成.
             $TargetOrder = $this->newOrder();
         } else {
-            // todo 決済処理中, 購入処理中は除く
             $TargetOrder = $app['eccube.repository.order']->find($id);
             if (is_null($TargetOrder)) {
                 throw new NotFoundHttpException();
@@ -267,6 +267,12 @@ class EditController extends AbstractController
                 $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
                 $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
                 $OrderDetail->setPrice($OrderDetail->getProductClass()->getPrice02());
+                $OrderDetail->setClassName1($OrderDetail->getProductClass()->hasClassCategory1()
+                    ? $OrderDetail->getProductClass()->getClassCategory1()->getClassName()->getName()
+                    : null);
+                $OrderDetail->setClassName2($OrderDetail->getProductClass()->hasClassCategory2()
+                    ? $OrderDetail->getProductClass()->getClassCategory2()->getClassName()->getName()
+                    : null);
                 $OrderDetail->setClassCategoryName1($OrderDetail->getProductClass()->hasClassCategory1()
                     ? $OrderDetail->getProductClass()->getClassCategory1()->getName()
                     : null);

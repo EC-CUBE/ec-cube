@@ -126,11 +126,24 @@ class OrderType extends AbstractType
             ->add('message', 'textarea', array(
                 'label' => '備考',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['ltext_len'],
+                    )),
+                ),
             ))
             ->add('discount')
             ->add('delivery_fee_total')
             ->add('charge')
-            ->add('note', 'textarea')
+            ->add('note', 'textarea', array(
+                'label' => 'SHOP用メモ',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['ltext_len'],
+                    )),
+                ),
+            ))
             ->add('OrderStatus', 'entity', array(
                 'class' => 'Eccube\Entity\Master\OrderStatus',
                 'property' => 'name',
