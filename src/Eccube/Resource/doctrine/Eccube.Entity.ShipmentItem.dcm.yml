@@ -18,6 +18,12 @@ Eccube\Entity\ShipmentItem:
         product_code:
             type: text
             nullable: true
+        class_name1:
+            type: text
+            nullable: true
+        class_name2:
+            type: text
+            nullable: true
         class_category_name1:
             type: text
             nullable: true
