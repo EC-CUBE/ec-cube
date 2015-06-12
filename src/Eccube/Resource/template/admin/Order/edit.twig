@@ -78,7 +78,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             data: { 'id' : customer_id },
                             url: '{{ url('admin_order_search_customer_by_id') }}',
                             success: function(data) {
-                                // 顧客情報をフォームにセット
+                                // 顧客情報をフォームにセットする.
                                 $('#order_CustomerId').html(data['id']);
                                 $('#order_Customer').val(data['id']);
                                 $('#order_name_name01').val(data['name01']);
@@ -97,6 +97,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 $('#order_fax_fax01').val(data['fax01']);
                                 $('#order_fax_fax02').val(data['fax02']);
                                 $('#order_fax_fax03').val(data['fax03']);
+                                // モーダルを閉じる.
                                 $('#searchCustomerModal').modal('hide');
                             },
                             error: function() {
@@ -116,54 +117,34 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         var tbody = $('#searchProductModalList tbody');
         tbody.children().remove();
         $.ajax({
-            type: 'GET',
+            type: 'POST',
+            dataType: 'html',
             data: {
                 'id' : $('#admin_search_product_id').val(),
                 'category_id' : $('#admin_search_product_category_id').val()
             },
             url: '{{ url('admin_order_search_product') }}',
             success: function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    // モーダルウィンドウ内に結果を出力.
-                    var tr = $('<tr></tr>');
-                    var id = $('<td>' + data[i]['id'] + '</td>');
-                    var name = $('<td>' + data[i]['name'] + '</td>');
-                    var code = $('<td>' + data[i]['code'] + '</td>');
-                    var select = $('<td>決定</td>');
-                    tr.append(id);
-                    tr.append(name);
-                    tr.append(code);
-                    tr.append(select);
-                    tbody.append(tr);
-
-                    // 決定ボタンに検索イベントを設定.
-                    var product_id = data[i]['id'];
-                    select.on('click', function() {
-                        $.ajax({
-                            type: 'GET',
-                            data: { 'id' : product_id },
-                            url: '{{ url('admin_order_search_product_by_id') }}',
-                            success: function(data) {
-                                // 商品情報をフォームにセット
-                                 $('#searchProductModal').modal('hide');
-                             },
-                            error: function() {
-                                console.log('search product(by id) failed.');
-                            }
-                        });
-                    });
-                }
+                // モーダルに結果を書き出し.
+                $('#searchProductModalList').html(data);
             },
             error: function() {
                 console.log('search product failed.');
             }
         });
     });
+
+    // 受注明細行の行数カウンタ.
+    // 受注登録・編集画面上でグローバルな変数.
+    // search_product.twig/order_detail_prototype.twigで利用しています.
+    eccube.order_details_count = '{{ form.OrderDetails|length }}';
+
 {% endblock %}
 
 {% block main %}
 <div class="row" id="aside_wrap">
     <form role="form" name="form1" id="form1" method="post" action="?">
+    <input type="hidden" name="mode" value="">
     {{ form_widget(form._token) }}
         <div class="col-md-9">
             <div class="box accordion">
@@ -278,39 +259,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="btn_area">
                             <ul>
                                 <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchProductModal">商品の追加</a></li>
-                                <li><a class="btn btn-default btn-block btn-sm">計算結果の更新</a></li>
+                                <li><a class="btn btn-default btn-block btn-sm" onclick="eccube.setModeAndSubmit('')">計算結果の更新</a></li>
                             </ul>
                         </div>
-                        <div class="tableish">
+                        <div class="tableish"
+                             id="order_detail_list"
+                             data-prototype="
+                                {% filter escape %}
+                                     {{ include('Order/order_detail_prototype.twig', { 'orderDetailForm': form.OrderDetails.vars.prototype }) }}
+                                {% endfilter %}">
+
                             {% for orderDetailForm in form.OrderDetails %}
-                            <div class="item_box tr">
-                                <div class="item_photo td">
-                                    <img src="http://www.ec-cube.net/user_data/packages/default/img/banner/top_bnr_design_template2_13_3.jpg">
-                                </div>
-                                <div class="item_detail td">
-                                    {{ form_widget(orderDetailForm.Product) }}
-                                    {{ form_widget(orderDetailForm.ProductClass) }}
-                                    <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
-                                    <span class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span><br>
-                                    {# todo 商品規格情報の表示 #}
-                                    <span class="item_pattern small">{{ orderDetailForm.vars.value.class_name1 }}：{{ orderDetailForm.vars.value.class_category_name1 }} / {{ orderDetailForm.vars.value.class_name2 }}：{{ orderDetailForm.vars.value.class_category_name2 }}</span>
-                                    <div class="row">
-                                        <div class="col-lg-6 form-group form-inline">
-                                            <span class="item_price">\ {{ form_widget(orderDetailForm.price) }}</span>
+                                <div class="item_box tr">
+                                    <div class="item_detail td">
+                                        {{ form_widget(orderDetailForm.id) }}
+                                        {{ form_widget(orderDetailForm.Product) }}
+                                        {{ form_widget(orderDetailForm.ProductClass) }}
+                                        <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
+                                        <span class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span><br>
+                                        <span class="item_pattern small"></span>
+                                        <div class="row">
+                                            <div class="col-lg-6 form-group form-inline">
+                                                <span class="item_price">\ {{ form_widget(orderDetailForm.price) }}</span>
+                                            </div>
+                                            <div class="col-lg-6 form-group form-inline">
+                                                <span class="item_quantity">数量：{{ form_widget(orderDetailForm.quantity) }}</span>
+                                            </div>
+                                            <div class="col-lg-6 form-group form-inline">
+                                                <span class="item_quantity">税率：{{ form_widget(orderDetailForm.tax_rate) }} %</span>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-6 form-group form-inline">
-                                            <span class="item_quantity">数量：{{ form_widget(orderDetailForm.quantity) }}</span>
-                                        </div>
-                                        <div class="col-lg-6 form-group form-inline">
-                                            <span class="item_quantity">税率：{{ form_widget(orderDetailForm.tax_rate) }} %</span>
-                                        </div>
+                                        <span class="item_subtotal"><span class="small">小計</span> \ {{ orderDetailForm.vars.value.total_price|number_format }}</span>
                                     </div>
-                                    <span class="item_subtotal"><span class="small">小計</span> \ {{ orderDetailForm.vars.value.total_price|number_format}}</span>
-                                </div>
-                                <div class="icon_edit td">
-                                    <button class="btn btn-default btn-sm">削除</button>
-                                </div>
-                            </div><!-- /.item_box -->
+                                    <div class="icon_edit td">
+                                        <button class="btn btn-default btn-sm" onclick="$(this).parent().parent().remove(); eccube.order_details_count--;">削除</button>
+                                    </div>
+                                </div><!-- /.item_box -->
                             {% endfor %}
                         </div>
 
@@ -585,21 +569,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="form-group">
                     <button type="button" id="searchProductModalButton" class="btn btn-primary" >検索</button>
                 </div>
-                <div class="form-group">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="searchProductModalList">
-                            <thead>
-                            <tr>
-                                <th>商品ID</th>
-                                <th>商品コード</th>
-                                <th>商品名</th>
-                                <th>決定</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="form-group" id="searchProductModalList">
                 </div>
             </div>
         </div>

@@ -54,19 +54,22 @@ class EditController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
+
             // 入力情報にもとづいて再計算.
             $this->calculate($app, $TargetOrder);
 
             if ($form->isValid()) {
-                // 受注日/発送日/入金日の更新.
-                $this->updateDate($TargetOrder, $OriginOrder);
+                if ('register' === $request->get('mode')) {
+                    // 受注日/発送日/入金日の更新.
+                    $this->updateDate($TargetOrder, $OriginOrder);
 
-                $app['orm.em']->persist($TargetOrder);
-                $app['orm.em']->flush();
+                    $app['orm.em']->persist($TargetOrder);
+                    $app['orm.em']->flush();
 
-                $app->addSuccess('admin.order.save.complete', 'admin');
+                    $app->addSuccess('admin.order.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
+                    return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
+                }
             }
         }
 
@@ -119,10 +122,12 @@ class EditController extends AbstractController
         foreach ($Customers as $Customer) {
             $data[] = array(
                 'id' => $Customer->getId(),
-                'name' => sprintf($formatName, $Customer->getName01(),  $Customer->getName02(),  $Customer->getKana01(), $Customer->getKana02()),
+                'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(), $Customer->getKana01(),
+                    $Customer->getKana02()),
                 'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
             );
         }
+
         return $app->json($data);
     }
 
@@ -143,6 +148,7 @@ class EditController extends AbstractController
 
         if (is_null($Customer)) {
             $app['monolog']->addDebug('search customer by id not found.');
+
             return $app->json(array(), 404);
         }
 
@@ -180,6 +186,7 @@ class EditController extends AbstractController
             'category_id' => $request->get('category_id'),
         );
 
+        /** @var $Products \Eccube\Entity\Product[] */
         $Products = $app['eccube.repository.product']
             ->getQueryBuilderBySearchData($searchData)
             ->getQuery()
@@ -189,18 +196,23 @@ class EditController extends AbstractController
             $app['monolog']->addDebug('search product not found.');
         }
 
-        $data = array();
-
+        $forms = array();
         foreach ($Products as $Product) {
-            $data[] = array(
-                'id' => $Product->getId(),
-                'name' => $Product->getName(),
-                'code' => '',
-            );
+            /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+            $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
+                'product' => $Product,
+            ));
+            $addCartForm = $builder->getForm();
+            $forms[$Product->getId()] = $addCartForm->createView();
         }
-        return $app->json($data);
+
+        return $app->render('Order/search_product.twig', array(
+            'forms' => $forms,
+            'Products' => $Products,
+        ));
     }
 
+    // todo serviceを利用する.
     protected function newOrder()
     {
         $Order = new \Eccube\Entity\Order();
@@ -209,36 +221,57 @@ class EditController extends AbstractController
         $Shipping->setDelFlg(0);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
+
         return $Order;
     }
 
     /**
      * フォームからの入直内容に基づいて、受注情報の再計算を行う
      *
-     * TODO 新規登録時の税金マスタ取得.
-     *
      * @param $app
      * @param $Order
      */
-    protected function calculate($app, $Order)
+    protected function calculate($app, \Eccube\Entity\Order $Order)
     {
-        $tax = 0;
+        $taxtotal = 0;
         $subtotal = 0;
 
         // 受注明細データの税・小計を再計算
+        /** @var $OrderDetails \Eccube\Entity\OrderDetail[] */
         $OrderDetails = $Order->getOrderDetails();
         foreach ($OrderDetails as $OrderDetail) {
+            // 新規登録の場合は, 入力されたproduct_id/produc_class_idから明細にセットする.
+            // todo 別メソッドに切り出す
+            if (!$OrderDetail->getId()) {
+                $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
+                    $OrderDetail->getProductClass());
+                $OrderDetail->setTaxRate($TaxRule->getTaxRate());
+                $OrderDetail->setTaxRule($TaxRule->getCalcRule()->getId());
+                $OrderDetail->setQuantity(2);
+                $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
+                $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
+                $OrderDetail->setPrice($OrderDetail->getProductClass()->getPrice02());
+                $OrderDetail->setClassCategoryName1($OrderDetail->getProductClass()->hasClassCategory1()
+                    ? $OrderDetail->getProductClass()->getClassCategory1()->getName()
+                    : null);
+                $OrderDetail->setClassCategoryName2($OrderDetail->getProductClass()->hasClassCategory2()
+                    ? $OrderDetail->getProductClass()->getClassCategory2()->getName()
+                    : null);
+            }
+
             // 税
-            $tax += $app['eccube.service.tax_rule']
+            $tax = $app['eccube.service.tax_rule']
                 ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
             $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+
+            $taxtotal += $tax;
 
             // 小計
             $subtotal += $OrderDetail->getTotalPrice();
         }
 
         // 受注データの税・小計・合計を再計算
-        $Order->setTax($tax);
+        $Order->setTax($taxtotal);
         $Order->setSubtotal($subtotal);
         $Order->setTotal($subtotal + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount());
         // お支払い合計は、totalと同一金額(2系ではtotal - point)

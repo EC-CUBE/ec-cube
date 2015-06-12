@@ -1,0 +1,139 @@
+<script>
+    // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
+    eccube.productsClassCategories = {
+        {% for Product in Products %}
+            "{{ Product.id|escape('js') }}": {{ Product.class_categories|json_encode|raw }}{% if loop.last == false %},{% endif %}
+        {% endfor %}
+    };
+    // 規格1が選択された際に, 規格2のプルダウンリストを設定する,
+    function fnSetClassCategory2(select, product_id)
+    {
+        // 規格1の要素を取得
+        var $sele1 = $(select);
+        // 規格2の要素を取得
+        var $sele2 = $sele1.parent().find('select[name=classcategory_id2]');
+
+        // 規格1の選択肢
+        var classcat_id1 = $sele1.val() ? $sele1.val() : '';
+
+        // 規格2がある場合は選択肢を書き換える
+        if ($sele2 && $sele2.length) {
+            // 規格2の選択肢をクリア
+            $sele2.children().remove();
+            var classcat2 = eccube.productsClassCategories[product_id][classcat_id1];
+
+            // 規格2の要素を設定
+            for (var key in classcat2) {
+                if (classcat2.hasOwnProperty(key)) {
+                    var id = classcat2[key].classcategory_id2;
+                    var name = classcat2[key].name;
+                    var option = $('<option />').val(id ? id : '').text(name);
+                    $sele2.append(option);
+                }
+            }
+        }
+    }
+    // 受注明細行を追加する.
+    // 受注明細行のレコード数カウンタ(eccube.order_details_count)は, edit.twig側で定義している.
+    function fnAddOrderDetail($row, product_id) {
+        // 規格1の要素を取得
+        var $sele1 = $row.find('select[name=classcategory_id1]');
+        // 規格2の要素を取得
+        var $sele2 = $row.find('select[name=classcategory_id2]');
+
+        var product_class_id = null;
+        var price = null;
+        var quantity = 1;
+        var product_code = null;
+        var tax_rate = null;
+
+        // 規格なし商品の場合
+        if (!$sele1.length && !$sele2.length) {
+            var product = eccube.productsClassCategories[product_id]['__unselected2']['#'];
+            product_class_id = product['product_class_id'];
+            price = product['price02'];
+            product_code = product['product_code'];
+            //console.log('noclass');
+        // 規格が登録されている商品の場合
+        } else if ($sele1.length && $sele2.length) {
+            var class_category_id1 = $sele1.val();
+            var class_cateogry_id2 = $sele2.val();
+            var product = eccube.productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
+
+            product_class_id = product['product_class_id'];
+            price = product['price02'];
+            product_code = product['product_code'];
+
+            console.log('class1 class2');
+        } else if ($sele1.length) {
+            console.log('class1');
+        }
+
+        // 受注明細行を取得.
+        var list = $('#order_detail_list');
+
+        // prototype templateを取得.
+        var newWidget = list.attr('data-prototype');
+        // レコード数カウンタで置換.
+        newWidget = newWidget.replace(/__name__/g, eccube.order_details_count);
+        // フォーム入力値をセットm
+        $newWidget = $(newWidget);
+        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_Product').val(product_id);
+        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_ProductClass').val(product_class_id);
+        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_price').val(price);
+        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_quantity').val(quantity);
+        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_tax_rate').val(tax_rate);
+
+        // 明細行に追加.
+        list.append($newWidget);
+
+        // カウンタを更新.
+        eccube.order_details_count++;
+
+        // モーダル閉じる.
+        $('#searchProductModal').modal('hide');
+
+        // 再計算のためsubmit.
+        eccube.setModeAndSubmit('motal')
+
+        return false;
+    }
+</script>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>コード</th>
+            <th>商品名</th>
+            <th>商品規格</th>
+            <th>決定</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for Product in Products %}
+         <form name="product_form{{ Product.id }}">
+            {% set form = forms[Product.id] %}
+            <tr>
+                <td>
+                    {% if Product.hasProductClass %}
+                        {{ Product.code_min }}～{{ Product.code_max }}
+                    {% else %}
+                        {{ Product.code_min }}
+                    {% endif %}
+                </td>
+                <td>{{ Product.name }}</td>
+                <td>
+                    {% if form.classcategory_id1 is defined %}
+                        {{ form_label(form.classcategory_id1) }}：{{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
+                        {% if form.classcategory_id2 is defined %}
+                            <br/>{{ form_label(form.classcategory_id2) }}：{{ form_widget(form.classcategory_id2, {'id': ''}) }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td onclick="fnAddOrderDetail($(this).parent(), {{  Product.id }})">決定</td>
+            </tr>
+         </form>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

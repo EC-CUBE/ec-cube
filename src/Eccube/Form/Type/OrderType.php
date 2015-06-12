@@ -144,7 +144,10 @@ class OrderType extends AbstractType
                 'empty_data' => null,
             ))
             ->add('OrderDetails', 'collection', array(
-                'type' => new OrderDetailType($this->app)
+                'type' => new OrderDetailType($this->app),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
                 'type' => new ShippingType($this->app)

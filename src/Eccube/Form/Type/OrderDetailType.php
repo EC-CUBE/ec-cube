@@ -27,7 +27,10 @@ namespace Eccube\Form\Type;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderDetailType extends AbstractType
 {
@@ -44,6 +47,9 @@ class OrderDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('id', 'hidden', array(
+                'required' => false,
+            ))
             ->add('price')
             ->add('quantity')
             ->add('tax_rate');
@@ -60,6 +66,24 @@ class OrderDetailType extends AbstractType
                     '\Eccube\Entity\ProductClass'
                 )));
 
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            // モーダルからのPOST時に、金額等をセットする.
+            if ('motal' === $this->app['request']->get('mode')) {
+                $data = $event->getData();
+                // 新規明細行の場合にセット.
+                if (empty($data['id'])) {
+                    $ProductClass = $this->app['eccube.repository.product_class']
+                        ->find($data['ProductClass']);
+                    $Product = $ProductClass->getProduct();
+                    $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
+
+                    $data['price'] = $ProductClass->getPrice02();
+                    $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
+                    $data['tax_rate'] = $TaxRule->getTaxRate();
+                    $event->setData($data);
+                }
+            }
+        });
     }
 
     /**
