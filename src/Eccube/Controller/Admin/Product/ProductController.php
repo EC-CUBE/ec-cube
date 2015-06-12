@@ -106,12 +106,14 @@ class ProductController
                     if (!empty($searchData['category_id'])) {
                         $searchData['category_id'] = $app['eccube.repository.category']->find($searchData['category_id']);
                     }
-                    if (count($searchData['status']) > 0) {
-                        $status_ids = array();
-                        foreach ($searchData['status'] as $Status) {
-                            $status_ids[] = $Status->getId();
+                    if (empty($status)) {
+                        if (count($searchData['status']) > 0) {
+                            $status_ids = array();
+                            foreach ($searchData['status'] as $Status) {
+                                $status_ids[] = $Status->getId();
+                            }
+                            $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                         }
-                        $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                     }
                     if (count($searchData['product_status']) > 0) {
                         $product_status_ids = array();
