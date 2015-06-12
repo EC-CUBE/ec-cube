@@ -86,7 +86,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         </div>
                                                         <dl class="item_detail">
                                                             <dt class="item_name text-default">
-                                                                <a href="#">{{ Product.name }}</a>
+                                                                <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
                                                             </dt>
                                                             <dd class="item_pattern small">
                                                                 {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}

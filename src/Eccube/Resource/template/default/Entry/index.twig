@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
 $(function() {
-  $('#zip-search').click(function() {
+  $('#zip-search').click(function(event) {
     event.preventDefault();
     AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
   });
