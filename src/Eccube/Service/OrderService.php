@@ -347,7 +347,9 @@ class OrderService
         $shippings = $Order->getShippings();
         foreach ($shippings as $shipping) {
             $shipping->setShippingDeliveryName($formData['delivery']->getName());
-            $shipping->setShippingDeliveryTime($formData['deliveryTime']->getDeliveryTime());
+            if (!empty($formData['deliveryTime'])) {
+                $shipping->setShippingDeliveryTime($formData['deliveryTime']->getDeliveryTime());
+            }
             if (!empty($formData['deliveryDate'])) {
                 $shipping->setShippingDeliveryDate(new \DateTime($formData['deliveryDate']));
             }

@@ -125,7 +125,9 @@ class ShoppingController extends AbstractController
         ));
     }
 
-    // 購入処理
+    /**
+     * 購入処理
+     */
     public function confirm(Application $app, Request $request)
     {
 
@@ -146,17 +148,22 @@ class ShoppingController extends AbstractController
 
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
+
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries);
+        $shippings = $Order->getShippings();
+        $delivery = $shippings[0]->getDelivery();
+
+        // 配送業社の設定
+        $this->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
         $this->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $deliveries[0]);
+        $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $deliveries[0]);
+        $this->setFormPayment($form, $delivery, $Order->getPayment());
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -236,18 +243,20 @@ class ShoppingController extends AbstractController
 
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
+        $shippings = $Order->getShippings();
+        $delivery = $shippings[0]->getDelivery();
+
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries);
+        $this->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
         $this->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $deliveries[0]);
+        $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $deliveries[0]);
-
+        $this->setFormPayment($form, $delivery, $Order->getPayment());
 
         if ('POST' === $request->getMethod()) {
 
@@ -309,18 +318,20 @@ class ShoppingController extends AbstractController
 
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
+        $shippings = $Order->getShippings();
+        $delivery = $shippings[0]->getDelivery();
+
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries);
+        $this->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
         $this->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $deliveries[0]);
+        $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $deliveries[0]);
-
+        $this->setFormPayment($form, $delivery, $Order->getPayment());
 
         if ('POST' === $request->getMethod()) {
 
@@ -438,10 +449,10 @@ class ShoppingController extends AbstractController
 
         // 会員の場合、お届け先情報を新規登録
         if ($this->isGranted($app)) {
-            $builder = $app['form.factory']->createBuilder('shipping');
+            $builder = $app['form.factory']->createBuilder('shopping_shipping');
         } else {
             // 非会員の場合、お届け先を追加
-            $builder = $app['form.factory']->createBuilder('shipping', $shippings[0]);
+            $builder = $app['form.factory']->createBuilder('shopping_shipping', $shippings[0]);
         }
 
         $form = $builder->getForm();
@@ -659,17 +670,21 @@ class ShoppingController extends AbstractController
 
                 $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
+                $shippings = $Order->getShippings();
+                $delivery = $shippings[0]->getDelivery();
+
                 // 配送業社の設定
-                $this->setFormDelivery($form, $deliveries);
+                $this->setFormDelivery($form, $deliveries, $delivery);
 
                 // お届け日の設定
                 $this->setFormDeliveryDate($form, $Order, $app);
 
                 // お届け時間の設定
-                $this->setFormDeliveryTime($form, $deliveries[0]);
+                $this->setFormDeliveryTime($form, $delivery);
 
                 // 支払い方法選択
-                $this->setFormPayment($form, $deliveries[0]);
+                $this->setFormPayment($form, $delivery, $Order->getPayment());
+
 
                 return $app['view']->render('Shopping/index.twig', array(
                         'form' => $form->createView(),
@@ -779,6 +794,7 @@ class ShoppingController extends AbstractController
 
         $form->add('deliveryDate', 'choice', array(
             'choices' => $deliveryDates,
+            'required' => false,
             'empty_value' => '指定なし',
         ));
 

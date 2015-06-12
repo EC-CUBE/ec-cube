@@ -286,7 +286,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\OrderType($app);
             $types[] = new \Eccube\Form\Type\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\ShippingType($app);
-            $types[] = new \Eccube\Form\Type\ShippingNonMemberType($app);
+            $types[] = new \Eccube\Form\Type\ShoppingShippingType($app);
             $types[] = new \Eccube\Form\Type\ShipmentItemType();
             $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
 
