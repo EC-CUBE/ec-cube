@@ -119,32 +119,6 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
         return $this->getPriceIncTax() * $this->getQuantity();
     }
 
-    public function getClassName1()
-    {
-        $ProductClass = $this->getProductClass();
-        $ClassCategory = null;
-        if ($ProductClass) {
-            $ClassCategory = $ProductClass->getClassCategory1();
-        }
-
-        return is_null($ClassCategory)
-            ? null
-            : $ClassCategory->getClassName();
-    }
-
-    public function getClassName2()
-    {
-        $ProductClass = $this->getProductClass();
-        $ClassCategory = null;
-        if ($ProductClass) {
-            $ClassCategory = $ProductClass->getClassCategory2();
-        }
-
-        return is_null($ClassCategory)
-            ? null
-            : $ClassCategory->getClassName();
-    }
-
     /**
      * @var integer
      */
@@ -466,5 +440,61 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     public function getProductClass()
     {
         return $this->ProductClass;
+    }
+    /**
+     * @var string
+     */
+    private $class_name1;
+
+    /**
+     * @var string
+     */
+    private $class_name2;
+
+
+    /**
+     * Set class_name1
+     *
+     * @param string $className1
+     * @return OrderDetail
+     */
+    public function setClassName1($className1)
+    {
+        $this->class_name1 = $className1;
+
+        return $this;
+    }
+
+    /**
+     * Get class_name1
+     *
+     * @return string 
+     */
+    public function getClassName1()
+    {
+        return $this->class_name1;
+    }
+
+    /**
+     * Set class_name2
+     *
+     * @param string $className2
+     * @return OrderDetail
+     */
+    public function setClassName2($className2)
+    {
+        $this->class_name2 = $className2;
+
+        return $this;
+    }
+
+    /**
+     * Get class_name2
+     *
+     * @return string 
+     */
+    public function getClassName2()
+    {
+        return $this->class_name2;
     }
 }

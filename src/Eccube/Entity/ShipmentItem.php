@@ -324,4 +324,60 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     {
         return $this->Shipping;
     }
+    /**
+     * @var string
+     */
+    private $class_name1;
+
+    /**
+     * @var string
+     */
+    private $class_name2;
+
+
+    /**
+     * Set class_name1
+     *
+     * @param string $className1
+     * @return ShipmentItem
+     */
+    public function setClassName1($className1)
+    {
+        $this->class_name1 = $className1;
+
+        return $this;
+    }
+
+    /**
+     * Get class_name1
+     *
+     * @return string 
+     */
+    public function getClassName1()
+    {
+        return $this->class_name1;
+    }
+
+    /**
+     * Set class_name2
+     *
+     * @param string $className2
+     * @return ShipmentItem
+     */
+    public function setClassName2($className2)
+    {
+        $this->class_name2 = $className2;
+
+        return $this;
+    }
+
+    /**
+     * Get class_name2
+     *
+     * @return string 
+     */
+    public function getClassName2()
+    {
+        return $this->class_name2;
+    }
 }
