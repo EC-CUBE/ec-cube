@@ -293,6 +293,7 @@ class ProductController
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
+                return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
                 $app->addError('admin.register.failed', 'admin');
             }
