@@ -31,18 +31,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block assets %}
     <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload.css" rel="stylesheet">
     <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload-ui.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <script src="{{ app.config.root }}admin/file_upload/js/vendor/jquery.ui.widget.js"></script>
     <script src="{{ app.config.root }}admin/file_upload/js/jquery.iframe-transport.js"></script>
     <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload.js"></script>
     <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-process.js"></script>
     <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-validate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <style>
+        .ui-state-highlight {
+            height: 148px;
+            border: dashed 1px #ccc;
+            background: #fff;
+        }
+    </style>
 {% endblock %}
 
 
 {% block javascript %}
 $(function(){
+    $("#thumb").sortable({
+        cursor: 'move',
+        opacity: 0.7,
+        placeholder: 'ui-state-highlight',
+    });
+
     {% if has_class == false %}
+    if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
+        $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
+    } else {
+        $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
+    }
     $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function(){
         if ($(this).prop("checked")) {
             $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
@@ -52,7 +72,15 @@ $(function(){
     });
     {% endif %}
 
-    var proto_img = '<li><img src="__path__" /><a class="delete-image"><svg class="cb cb-close"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use></svg></a></li>';
+    var proto_img =''
+        + '<li class="ui-state-default">'
+        +     '<img src="__path__" />'
+        +     '<a class="delete-image">'
+        +         '<svg class="cb cb-close">'
+        +             '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
+        +         '</svg>'
+        +     '</a>'
+        + '</li>';
     var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
     var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
 
@@ -74,6 +102,14 @@ $(function(){
         $("#thumb").append('{{ form_widget(delete_image) }}');
     {% endfor %}
 
+    var hideSvg = function(){
+        if ($("#thumb li").length > 0) {
+            $("#icon_no_image").css("display", "none");
+        } else {
+            $("#icon_no_image").css("display", "");
+        }
+    };
+
     // 画像削除時
     var count_del = 0;
     $("#thumb").on("click", ".delete-image", function(){
@@ -84,6 +120,8 @@ $(function(){
         $new_delete_image.val(src);
         $("#thumb").append($new_delete_image);
         $(this).parent("li").remove();
+        hideSvg();
+
         count_del ++;
     });
     var count_add = {{ form.add_images|length|default(0) }};
@@ -103,6 +141,7 @@ $(function(){
                 $('#thumb').append($child);
                 count_add ++;
             });
+            hideSvg();
         },
         fail: function(e, data) {
             alert('アップロードに失敗しました。');
@@ -162,6 +201,7 @@ $(function(){
                                 </label>
                                 <div class="col-sm-9 col-lg-10">
                                     <div class="photo_files" id="drag-drop-area">
+                                        <svg id="icon_no_image" class="cb cb-photo no-image"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-photo"></use></svg>
                                         <ul id="thumb" class="clearfix"></ul>
                                     </div>
                                 </div>
