@@ -482,6 +482,12 @@ class Application extends \Silex\Application
         $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
     }
 
+    public function addRequestError($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
+    }
+
+
     /*
      * 以下のコードの著作権について
      *
