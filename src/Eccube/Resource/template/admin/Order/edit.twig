@@ -272,7 +272,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% for orderDetailForm in form.OrderDetails %}
                                 <div class="item_box tr">
                                     <div class="item_detail td">
-                                        {{ form_widget(orderDetailForm.id) }}
                                         {{ form_widget(orderDetailForm.Product) }}
                                         {{ form_widget(orderDetailForm.ProductClass) }}
                                         <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
@@ -462,7 +461,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             <div class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
+                    <button class="btn btn-primary btn-block btn-lg" onclick="eccube.setModeAndSubmit('register')">登録</button>
                     <p><a href="#">戻る</a></p>
                 </div>
             </div>
@@ -485,7 +484,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">受注情報を登録</button>
+                                <button class="btn btn-primary btn-block btn-lg" onclick="eccube.setModeAndSubmit('register')">受注情報を登録</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->

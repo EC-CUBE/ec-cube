@@ -62,11 +62,6 @@
 
             product_class_id = product['product_class_id'];
             price = product['price02'];
-            product_code = product['product_code'];
-
-            console.log('class1 class2');
-        } else if ($sele1.length) {
-            console.log('class1');
         }
 
         // 受注明細行を取得.
@@ -81,8 +76,8 @@
         $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_Product').val(product_id);
         $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_ProductClass').val(product_class_id);
         $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_price').val(price);
-        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_quantity').val(quantity);
-        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_tax_rate').val(tax_rate);
+        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
+        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
 
         // 明細行に追加.
         list.append($newWidget);
@@ -94,7 +89,7 @@
         $('#searchProductModal').modal('hide');
 
         // 再計算のためsubmit.
-        eccube.setModeAndSubmit('motal')
+        eccube.setModeAndSubmit('motal');
 
         return false;
     }

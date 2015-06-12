@@ -47,8 +47,10 @@ class OrderDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', 'hidden', array(
+            ->add('new', 'hidden', array(
                 'required' => false,
+                'mapped' => false,
+                'data' => 1
             ))
             ->add('price')
             ->add('quantity')
@@ -71,7 +73,7 @@ class OrderDetailType extends AbstractType
             if ('motal' === $this->app['request']->get('mode')) {
                 $data = $event->getData();
                 // 新規明細行の場合にセット.
-                if (empty($data['id'])) {
+                if (isset($data['new'])) {
                     $ProductClass = $this->app['eccube.repository.product_class']
                         ->find($data['ProductClass']);
                     $Product = $ProductClass->getProduct();

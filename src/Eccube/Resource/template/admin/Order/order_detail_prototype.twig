@@ -1,24 +1,8 @@
-<div class="item_box tr">
-    <div class="item_detail td">
-        {{ form_widget(orderDetailForm.Product) }}
-        {{ form_widget(orderDetailForm.ProductClass) }}
-        <strong class="item_name"></strong><br>
-        <span class="item_id small"></span><br>
-        <span class="item_pattern small"></span>
-        <div class="row">
-            <div class="col-lg-6 form-group form-inline">
-                <span class="item_price">\ {{ form_widget(orderDetailForm.price) }}</span>
-            </div>
-            <div class="col-lg-6 form-group form-inline">
-                <span class="item_quantity">数量：{{ form_widget(orderDetailForm.quantity) }}</span>
-            </div>
-            <div class="col-lg-6 form-group form-inline">
-                <span class="item_quantity">税率：{{ form_widget(orderDetailForm.tax_rate) }} %</span>
-            </div>
-        </div>
-        <span class="item_subtotal"><span class="small">小計</span> \ </span>
-    </div>
-    <div class="icon_edit td">
-        <button class="btn btn-default btn-sm" onclick="$(this).parent().parent().remove(); eccube.order_details_count--;">削除</button>
-    </div>
-</div><!-- /.item_box -->
+<div style="display: none">
+    {{ form_widget(orderDetailForm.new) }}
+    {{ form_widget(orderDetailForm.Product) }}
+    {{ form_widget(orderDetailForm.ProductClass) }}
+    {{ form_widget(orderDetailForm.price, { 'attr': {'type': 'hidden'} }) }}
+    {{ form_widget(orderDetailForm.quantity, { 'attr': {'type': 'hidden'} }) }}
+    {{ form_widget(orderDetailForm.tax_rate, { 'attr': {'type': 'hidden'} }) }}
+</div>
