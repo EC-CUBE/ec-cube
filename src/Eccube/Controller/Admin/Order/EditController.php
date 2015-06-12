@@ -23,6 +23,7 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,6 +48,11 @@ class EditController extends AbstractController
 
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
+        $OriginalOrderDetails = new ArrayCollection();
+
+        foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+            $OriginalOrderDetails->add($OrderDetail);
+        }
 
         $form = $app['form.factory']
             ->createBuilder('order', $TargetOrder)
@@ -62,6 +68,16 @@ class EditController extends AbstractController
                 if ('register' === $request->get('mode')) {
                     // 受注日/発送日/入金日の更新.
                     $this->updateDate($TargetOrder, $OriginOrder);
+
+                    // 受注明細で削除されているものをremove
+                    foreach ($OriginalOrderDetails as $OrderDetail) {
+                        if (false === $TargetOrder->getOrderDetails()->contains($OrderDetail)) {
+                            $app['orm.em']->remove($OrderDetail);
+                        }
+                    }
+                    foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+                        $OrderDetail->setOrder($TargetOrder);
+                    }
 
                     $app['orm.em']->persist($TargetOrder);
                     $app['orm.em']->flush();
