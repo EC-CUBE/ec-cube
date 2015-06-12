@@ -202,7 +202,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $deliv_free_amount;
+    private $delivery_free_amount;
 
     /**
      * @var integer
@@ -232,7 +232,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $option_product_deliv_fee;
+    private $option_product_delivery_fee;
 
     /**
      * @var integer
@@ -257,7 +257,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $option_deliv_fee;
+    private $option_delivery_fee;
     /**
      * Get id
      *
@@ -1028,16 +1028,16 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
         return $this->Pref;
     }
 
-    public function setDelivFreeAmount($deliv_free_amount)
+    public function setDeliveryFreeAmount($delivery_free_amount)
     {
-        $this->deliv_free_amount = $deliv_free_amount;
+        $this->delivery_free_amount = $delivery_free_amount;
 
         return $this;
     }
 
-    public function getDelivFreeAmount()
+    public function getDeliveryFreeAmount()
     {
-        return $this->deliv_free_amount;
+        return $this->delivery_free_amount;
     }
 
     public function setUseMultipleShipping($use_multiple_shipping)
@@ -1100,16 +1100,16 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
         return $this->option_favorite_product;
     }
 
-    public function setOptionProductDelivFee($fee)
+    public function setOptionProductDeliveryFee($fee)
     {
-        $this->option_product_deliv_fee = $fee;
+        $this->option_product_delivery_fee = $fee;
 
         return $this;
     }
 
-    public function getOptionProductDelivFee()
+    public function getOptionProductDeliveryFee()
     {
-        return $this->option_product_deliv_fee;
+        return $this->option_product_delivery_fee;
     }
 
     public function setOptionProductTaxRule($rule)
@@ -1160,15 +1160,15 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
         return $this->use_point;
     }
 
-    public function setOptionDelivFee($fee)
+    public function setOptionDeliveryFee($fee)
     {
-        $this->option_deliv_fee = $fee;
+        $this->option_delivery_fee = $fee;
 
         return $this;
     }
 
-    public function getOptionDelivFee()
+    public function getOptionDeliveryFee()
     {
-        return $this->option_deliv_fee;
+        return $this->option_delivery_fee;
     }
 }

@@ -118,7 +118,7 @@ Eccube\Entity\BaseInfo:
             type: smallint
             nullable: true
             unsigned: false
-        deliv_free_amount:
+        delivery_free_amount:
             type: integer
             nullable: true
             default: 0
@@ -142,11 +142,15 @@ Eccube\Entity\BaseInfo:
             type: smallint
             nullable: true
             default: 1
-        option_product_deliv_fee:
+        option_product_delivery_fee:
             type: smallint
             nullable: true
             default: 0
         option_product_tax_rule:
+            type: smallint
+            nullable: true
+            default: 0
+        option_delivery_fee:
             type: smallint
             nullable: true
             default: 0

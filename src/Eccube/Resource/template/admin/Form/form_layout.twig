@@ -206,7 +206,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {%- if freeze -%}
             {{ form_widget(child) }}
         {%- else -%}
-            {{ form_label(child) }}&nbsp;{{ form_widget(child, {'attr': {'class': 'box15', 'style': 'ime-mode: active;'}}) -}}
+            {{ form_label(child) }}&nbsp;{{ form_widget(child, {'attr': {'style': 'ime-mode: active;'}}) -}}
         {%- endif -%}
         {%- if loop.last == false%}　{% endif -%}
     {% endfor -%}
@@ -217,7 +217,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{- form_errors(child) -}}
     {% endfor -%}
     {%- for child in form %}
-        {{- form_widget(child, {'attr': {'class': 'box6', 'style': 'ime-mode: disabled;'}}) -}}
+        {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}}) -}}
         {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
     {% endfor -%}
 {%- endblock tel_widget -%}
@@ -227,7 +227,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{- form_errors(child) -}}
     {% endfor -%}
     {%- for child in form %}
-        {{- form_widget(child, {'attr': {'class': 'box60', 'style': 'ime-mode: disabled;'}}) -}}
+        {{- form_widget(child, {'attr': {'style': 'ime-mode: disabled;'}}) -}}
         {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
     {% endfor -%}
 {%- endblock fax_widget -%}
@@ -239,8 +239,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {%- if freeze -%}
         〒&nbsp;{{ form_widget(form[form.vars.zip01_name]) }}&nbsp;-&nbsp;{{- form_widget(form[form.vars.zip02_name]) }}
     {%- else -%}
-        〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'attr': {'class': 'box6', 'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
-        {{- form_widget(form[form.vars.zip02_name], {'attr': {'class': 'box6', 'style': 'ime-mode: disabled;'}}) }}
+        〒&nbsp;{{ form_widget(form[form.vars.zip01_name], {'attr': {'style': 'ime-mode: disabled;'}}) }}&nbsp;-&nbsp;
+        {{- form_widget(form[form.vars.zip02_name], {'attr': {'style': 'ime-mode: disabled;'}}) }}
         <a class="btn-normal" href="javascript:;" name="address_input" onclick="eccube.getAddress('{{ path('input_zip') }}', 'zip01', 'zip02', 'pref', 'addr01'); return false;">住所入力</a>
     {%- endif -%}
 {%- endblock zip_widget -%}
@@ -254,9 +254,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{- form_widget(form[form.vars.addr01_name]) -}}
         {{- form_widget(form[form.vars.addr02_name]) -}}
     {%- else -%}
-        {{- form_widget(form[form.vars.pref_name], {'attr': {'class': 'top'}}) -}}<br />
-        {{- form_widget(form[form.vars.addr01_name], {'attr': {'class': 'box60 top', 'style': 'ime-mode: active;'}}) -}}<br />
-        {{- form_widget(form[form.vars.addr02_name], {'attr': {'class': 'box60', 'style': 'ime-mode: active;'}}) -}}<br />
+        {{- form_widget(form[form.vars.pref_name]) -}}<br />
+        {{- form_widget(form[form.vars.addr01_name], {'attr': {'style': 'ime-mode: active;'}}) -}}<br />
+        {{- form_widget(form[form.vars.addr02_name], {'attr': {'style': 'ime-mode: active;'}}) -}}<br />
         {%- if help is defined and help is not empty -%}
             <span class="attention">{{ help|trans({}, translation_domain) }}</span>
         {%- endif -%}

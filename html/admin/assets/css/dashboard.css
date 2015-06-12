@@ -719,8 +719,8 @@ fieldset[disabled] .btn-link:focus {
     opacity:1
 }
 .alert-dismissable .close, .alert-dismissible .close {
-    top: -3px;
-	font-size: 26px;
+    top: 2px;
+	font-size: 13px;
 }
 .btn_area2 {
     padding: 16px 0 48px;
@@ -1268,7 +1268,7 @@ dd.form-group .errormsg {
     left: 0; top: 50%;
     margin-top: -1.5em;
     padding: 0.8em 0.3em;
-    min-width: 4%;
+    width: 4%;
     color: #b8bec4;
     font-size: 20px;
     font-size: 2rem;
@@ -1529,6 +1529,19 @@ dl.accordion {
 	top: -1px;
 }
 
+
+/*	modal
+============================ */
+
+.modal-header .close {
+	margin-top: 5px;
+}
+.modal-header .close .cb {
+	fill: #444;
+	color: #444;
+}
+
+
 /*	header
 ============================ */
 
@@ -1628,6 +1641,9 @@ dl.accordion {
     text-align: center;
     cursor: pointer;
     padding: 0 32px 0 8px;
+	white-space: nowrap;
+	font-size: 14px;
+	font-size: 1.4rem;
 }
 #header .navbar .navbar-menu dt .cb-user-circle {
     font-size: 38px;
@@ -1646,6 +1662,7 @@ dl.accordion {
 
 #header .navbar .navbar-menu dd {
     position: absolute;
+	right:0; left: auto;
     border: 1px solid #D9D9D9;
     border-top: 0 none;
     background: #fff;
@@ -1712,6 +1729,7 @@ dl.accordion {
     position: relative;
     background-color: transparent;
     background-image: none;
+	white-space: nowrap;
 }
 
 .bt_drawermenu .cb-bars {
@@ -1778,10 +1796,10 @@ dl.accordion {
 
 #side a:link { color: #d6dadd; text-decoration: none;}
 #side a:visited { color: #d6dadd; text-decoration: none;}
-#side a:hover,
-#side a.active,
+#side a:hover { color: #d6dadd; text-decoration: none; background: #3f5467;}
+/*#side a.active,
 #side li.active a,
-#side a:focus { color: #d6dadd; text-decoration: none; background: #3F5467;}
+#side a:focus { color: #d6dadd; text-decoration: none; background: #3F5467;}*/
 #side a:active { color: #d6dadd; text-decoration: none;}
 
 
@@ -1825,33 +1843,40 @@ dl.accordion {
     font-size: 1.4rem;
     border: 0 none;
 }
-#side li ul {
-    padding: 8px 0;
-}
 #side li ul li a {
-    padding: 8px 30px 8px 60px;
+    padding: 8px 30px 8px 47px;
 }
 #side li ul li a .cb:last-child {
-    right: 5px; top: 10px;
+    right: 5px; top: 14px;
 }
 #side li ul li ul li a {
-    padding: 8px 30px 8px 80px;
+    padding: 8px 30px 8px 56px;
+	font-size: 92%;
+	opacity: 0.8;
 }
 #side li ul li:hover,
 #side li ul li.active {
     border: 0 none;
 }
-#side li.active ul {
-    background: #2F3F4E;
+#side li ul {
+    background: #2c3c49 !important;
 }
-#side li.active ul li a {
-    background: #2F3F4E;
+#side li ul li a {
+    background: #2c3c49 !important;
 }
-#side li.active ul li a:hover,
-#side li.active ul li.active > a{
-    background: #3F5467;
+#side li ul li a:hover{
+    background: #263440 !important;
+	opacity: 1;
 }
-
+#side li ul li.active > a {
+    background: #263440 !important;
+}
+#side li ul li.active > a:hover{
+    background: #263440 !important;
+}
+#side li ul li ul{
+    border-bottom: 1px solid #263440;
+}
 .sidebar-open #side {
     -webkit-transform:translate(0, 0);
     -ms-transform:translate(0, 0);
@@ -1922,9 +1947,8 @@ dl.accordion {
 
 .hideShowPassword-toggle-hide .cb-eye {
     fill: #666;
-    overflow: 'hidden';
+    overflow: hidden;
     text-indent: -999em;
-    width: 46px;
     -moz-appearance: none;
     -webkit-appearance: none;
 }
@@ -2164,7 +2188,34 @@ ul.link-with-bar li:last-child::after {
 .form-horizontal .radio, .form-horizontal .checkbox, .form-horizontal .radio-inline, .form-horizontal .checkbox-inline {
     padding-top: 0;
 }
+.radio-inline + .radio-inline, .checkbox-inline + .checkbox-inline {
+	margin-left: 0;
+    margin-right: 10px;
+}
+.radio-inline + .radio-inline:last-child, .checkbox-inline + .checkbox-inline:last-child {
+	margin-right: 0;
+}
 
+/* each area style */
+
+.box-title-category {
+	font-weight: normal;
+}
+
+.box-title-category a:link,
+.box-title-category a:visited,
+.box-title-category a:hover,
+.box-title-category a:active {
+	color: #444;
+}
+.box-title-category a:last-child {
+	font-weight: bold;
+}
+.box-title-category .cb-angle-right {
+	position: relative;
+	top: -1px;
+	fill:#b8bec4;
+}
 
 /*	Fixed Column
 ============================ */

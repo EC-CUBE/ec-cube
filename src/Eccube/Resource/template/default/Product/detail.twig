@@ -83,16 +83,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="item_detail">
                         <!--★通常価格★-->
                         {% if Product.hasProductClass -%}
-                            <p class="normal_price"> 通常価格：\ <span id="price01_default">{{ Product.getPrice01IncTaxMin|number_format }}～ \ <span id="price01_default">{{ Product.getPrice01IncTaxMax|number_format }}</span> <span class="small">税込</span></p>
+                            <p class="normal_price"> 通常価格：\ <span class="price01_default">{{ Product.getPrice01IncTaxMin|number_format }}～ \ <span class="price01_default">{{ Product.getPrice01IncTaxMax|number_format }}</span> <span class="small">税込</span></p>
                         {% else -%}
-                            <p class="normal_price"> 通常価格：\ <span id="price01_default">{{ Product.getPrice01IncTaxMin|number_format }}</span> <span class="small">税込</span></p>
+                            <p class="normal_price"> 通常価格：\ <span class="price01_default">{{ Product.getPrice01IncTaxMin|number_format }}</span> <span class="small">税込</span></p>
                         {% endif -%}
 
                         <!--★販売価格★-->
                         {% if Product.hasProductClass -%}
-                            <p class="sale_price text-primary"> \ <span id="price02_default">{{ Product.getPrice02IncTaxMin|number_format }}</span> ～ \ <span id="price02_default">{{ Product.getPrice02IncTaxMax|number_format }}</span> <span class="small">税込</span></p>
+                            <p class="sale_price text-primary"> \ <span class="price02_default">{{ Product.getPrice02IncTaxMin|number_format }}</span> ～ \ <span class="price02_default">{{ Product.getPrice02IncTaxMax|number_format }}</span> <span class="small">税込</span></p>
                         {% else -%}
-                            <p class="sale_price text-primary"> \ <span id="price02_default">{{ Product.getPrice02IncTaxMin|number_format }}</span><span class="small">税込</span></p>
+                            <p class="sale_price text-primary"> \ <span class="price02_default">{{ Product.getPrice02IncTaxMin|number_format }}</span><span class="small">税込</span></p>
                         {% endif -%}
 
                         <!--▼商品コード-->
@@ -152,14 +152,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {# カートボタン #}
                                     <div class="btn_area">
                                         <ul class="row">
-                                            <li class="col-xs-9 col-sm-7"><button type="submit" class="btn btn-primary btn-block">カートに入れる</button></li>
+                                            <li class="col-xs-12 col-sm-8"><button type="submit" class="btn btn-primary btn-block">カートに入れる</button></li>
                                         </ul>
                                     </div>
                                 {% else %}
                                     {# 在庫がない場合は品切れボタンのみ表示 #}
                                     <div class="btn_area">
                                         <ul class="row">
-                                            <li class="col-xs-9 col-sm-7"><button type="button" class="btn btn-primary btn-block">ただいま品切れ中です</button></li>
+                                            <li class="col-xs-12 col-sm-8"><button type="button" class="btn btn-default btn-block" disabled="disabled">ただいま品切れ中です</button></li>
                                         </ul>
                                     </div>
                                 {% endif %}
