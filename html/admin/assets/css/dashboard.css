@@ -722,6 +722,7 @@ fieldset[disabled] .btn-link:focus {
     top: 2px;
 	font-size: 13px;
 }
+
 .btn_area2 {
     padding: 16px 0 48px;
 }
@@ -893,6 +894,10 @@ dd.form-group .errormsg {
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
 }
+.input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
 
 #drag-drop-area {
     cursor: pointer;
@@ -906,6 +911,8 @@ dd.form-group .errormsg {
 #drag-drop-area .no-image {
     fill: #d0d0d0;
     font-size: 60px;
+}
+#drag-drop-area {
 }
 
 #wysiwyg-area {
@@ -1232,11 +1239,38 @@ dd.form-group .errormsg {
     border-top: 1px dotted #d1d8d9;
     position: relative;
 }
+.order_list .item_box .icon_edit {
+	top: 16px;
+}
+.order_list .item_name_area {
+	padding-right: 66px;
+	padding-bottom: 8px;
+}
+.order_list .item_box input.form-control {
+	margin: 0;
+}
+.order_list .item_subtotal {
+	margin: 8px 0;
+	padding: 8px 15px;
+}
+.order_list .item_subtotal span {
+	margin-right: 10px;
+}
+
+@media (max-width:768px) {
+	.order_list  .item_box .item_quantity input {
+		width: 66.6667%;
+	}
+}
 .order_list .btn_area {
     padding: 0 0 8px;
 }
-.order_list  .item_box > div {
+.order_list .item_box > div {
     vertical-align: top;
+	border-top: 0 none;
+}
+.order_list .item_box .item_tax .input-group {
+    width: 80px;
 }
 .order_list .btn_area li {
     width: 20%;
@@ -1246,7 +1280,7 @@ dd.form-group .errormsg {
     margin-bottom: 8px;
 }
 
-.order_list dl.with-border2 {
+.order_list .with-border2 {
     padding-top: 16px;
 }
 
@@ -1309,9 +1343,12 @@ dd.form-group .errormsg {
     .no-header > .box-body .item_box:first-child > div {
         border-top: 0 none;
     }
-    .order_list  .item_box > div {
-        border-top: 1px dotted #d1d8d9;
-    }
+	.order_list  .item_box .icon_edit {
+		position: absolute;
+	}
+	.order_list  .item_box .icon_edit .btn {
+		margin: 0;
+	}
     .item_box > div:first-child {
         padding-left: 16px;
     }
@@ -1366,16 +1403,37 @@ dd.form-group .errormsg {
 }
 
 
-
 /* amount_area */
 
 .amount_area {
     padding-top: 16px;
     text-align: right;
 }
-.amount_area dl dt {
+.amount_area dt {
+    clear: left;
+    float: left;
+	line-height: 40px;
+	height: 40px;
+	vertical-align: middle;
+    overflow: hidden;
     text-align: right;
-    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: normal;
+}
+.amount_area dd.form-group {
+	line-height: 40px;
+	height: 40px;
+	vertical-align: middle;
+}
+.amount_area input {
+	margin: 0;
+}
+
+@media (max-width:768px) {
+	.amount_area dt {
+		width: 30%;
+	}
 }
 
 /* table_list */
@@ -1390,9 +1448,6 @@ dd.form-group .errormsg {
 	border-top: 0 none;
 }
 
-.table_list table {
-    margin-bottom: 0;
-}
 .table_list tr > th, .table_list tr > td {
     vertical-align: middle;
     border-left: 1px solid #d1d8d9;
@@ -1443,6 +1498,10 @@ dl.accordion {
 }
 .accordion .accpanel {
     display: none;
+}
+
+.accordion .toggle.with-icon:hover {
+	opacity: 0.8;
 }
 
 .dropdown-menu {
@@ -1756,7 +1815,7 @@ dl.accordion {
 
     width:230px;
     position: fixed;
-    top: 65px; bottom: 0; left: 0;
+    top: 64px; bottom: 0; left: 0;
     z-index:810;
     display: block;
     color: #d6dadd;
@@ -1906,7 +1965,7 @@ dl.accordion {
     transition:margin-left .3s ease;
     margin-left:230px;
     z-index:820;
-    padding: 0;
+    padding: 0 0 50px;
     margin-top: 64px;
 }
 
@@ -2173,10 +2232,10 @@ ul.link-with-bar li:last-child::after {
     max-width: 5em;
 }
 .form-group .item_price input,
-.form-group .item_quantity input {
+.form-group .item_quantity input,
+.form-group .item_tax input {
     text-align: right;
     width: 50%;
-    margin: 0 1%;
 }
 .item_detail .form-group {
     margin: 8px 0;
@@ -2299,6 +2358,7 @@ ul.link-with-bar li:last-child::after {
     width: 360px;
 }
 @media (max-width: 768px) {
+
     .login-box {
         margin-top: 20px;
         width: 90%;
