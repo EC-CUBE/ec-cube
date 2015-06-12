@@ -1,4 +1,0 @@
-name: SampleService
-enable: false
-service: 
-    - SamplePluginServiceProvider

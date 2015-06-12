@@ -33,7 +33,6 @@ Eccube\Entity\ProductTag:
                 nullable: false
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: ProductTag
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

@@ -1,0 +1,6 @@
+name: SampleService
+code: SampleService
+version: 0.1
+
+service: 
+    - SamplePluginServiceProvider

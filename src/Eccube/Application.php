@@ -101,7 +101,7 @@ class Application extends \Silex\Application
         // load config dev
         if ($app['env'] === 'dev' || $app['env'] === 'test') {
             $conf = $this['config'];
-            $this['config'] = $app->share(function () use($conf) {
+            $this['config'] = $app->share(function () use ($conf) {
                 $confarray = array();
                 $config_dev_file = __DIR__ . '/../../app/config/eccube/config_dev.yml';
                 if (file_exists($config_dev_file)) {
@@ -135,14 +135,14 @@ class Application extends \Silex\Application
                         $paths[] = __DIR__ . '/../../template/admin';
                     }
                     $paths[] = __DIR__ . '/Resource/template/admin';
-                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $paths[] = __DIR__ . '/../../app/Plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/admin';
                 } else {
                     if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_name'])) {
                         $paths[] = __DIR__ . '/../../template/' . $app['config']['template_name'];
                     }
                     $paths[] = __DIR__ . '/Resource/template/default';
-                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $paths[] = __DIR__ . '/../../app/Plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_name'];
                 }
                 $twig->setCache($cache);
@@ -154,13 +154,11 @@ class Application extends \Silex\Application
             //
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
+            $menus = array('', '', '');
+            $app['twig']->addGlobal('menus', $menus);
         }, self::EARLY_EVENT);
 
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-            if (!$event->isMasterRequest()) {
-                return;
-            }
-
             $request = $event->getRequest();
             try {
                 $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $request->attributes->get('_route'));
@@ -169,6 +167,10 @@ class Application extends \Silex\Application
             }
             $app["twig"]->addGlobal("PageLayout", $PageLayout);
             $app["twig"]->addGlobal("title", $PageLayout->getName());
+
+            if (!$event->isMasterRequest()) {
+                return;
+            }
         });
 
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
@@ -180,7 +182,7 @@ class Application extends \Silex\Application
         ));
         $app['translator'] = $app->share($app->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
-            $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', 'ja');
+            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', 'ja');
 
             return $translator;
         }));
@@ -224,71 +226,106 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
-        //Doctrine ORM
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/Resource/doctrine',
-                            __DIR__ . '/Resource/doctrine/master',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-       // EventDispatcher
-        $app['eccube.event.dispatcher'] = $app->share(function () {
-            return new EventDispatcher();
-        });
-
-        // EventSubscriber
-        $basePath = __DIR__ . '/../../app/plugin';
+        // Plugin
+        $basePath = __DIR__ . '/../../app/Plugin';
         $finder = Finder::create()
             ->in($basePath)
             ->directories()
             ->depth(0);
 
+        $finder->sortByName();
+
+        // プラグインのmeta定義は先にやっておく必要がある
+        $orm_mappings[] = array(
+            'type' => 'yml',
+            'namespace' => 'Eccube\Entity',
+            'path' => array(
+                __DIR__ . '/Resource/doctrine',
+                __DIR__ . '/Resource/doctrine/master',
+            ),
+        );
+        foreach ($finder as $dir) {
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+
+            // Doctrine Extend
+            if (isset($config['orm.path'])) {
+                $paths = array();
+                foreach ($config['orm.path'] as $path) {
+                    $paths[] = $basePath . '/' . $config['name'] . $path;
+                }
+                $orm_mappings[] = array(
+                    'type' => 'yml',
+                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'path' => $paths,
+                );
+            }
+        }
+
+        //Doctrine ORM
+        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.em.options' => array(
+                'mappings' => $orm_mappings,
+            ),
+        ));
+
+        // EventDispatcher
+        $app['eccube.event.dispatcher'] = $app->share(function () {
+            return new EventDispatcher();
+        });
+
+        // EventSubscriber
+        if ($app['env'] !== 'cli') { // cliモードではテーブルがない場合があるのでロードしない
+            // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
+            $priorities = array();
+            $em = $app['orm.em'];
+            $handlers = $em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers();
+            foreach ($handlers as $handler) {
+                if (!$handler->getPlugin()->getDelFlg() and 
+                     $handler->getPlugin()->getEnable()){ // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
+                    $priority = $handler->getPriority();
+                } else {
+                    $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
+                }
+                $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
+
+            }
+        }
+
         // Plugin events / service
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
 
-            if ($config['enable'] === true) {
                 // Type: Event
-                if (isset($config['event'])) {
-                    $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
-                    $subscriber = new $class($app);
-                    $app['eccube.event.dispatcher']->addSubscriber($subscriber);
-                }
+            if (isset($config['event'])) {
+                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
+                $subscriber = new $class($app);
 
-                // Type: ServiceProvider
-                if (isset($config['service'])) {
-                    foreach ($config['service'] as $service) {
-                        $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
-                        $app->register(new $class($app));
+                foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                    foreach ($handlers as $handler) {
+                        if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
+                            $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
+                        } else {
+                            $priority = $priorities[$config['event']][$event][$handler[0]];
+                        }
+                        # 優先度0は登録しない
+
+                        if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
+                            $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                        }
                     }
                 }
 
-                // Doctrine Extend
-                if (isset($config['orm.path'])) {
-                    $pathes = array();
-                    foreach ($config['orm.path'] as $path) {
-                        $pathes[] = $basePath . '/' . $config['name'] . $path;
-                    }
-                    $app['orm.em.options'] = $app->extend('orm.em.options', function ($options) use ($config, $pathes) {
-                        $options['mappings'][] = array(
-                            'type' => 'yml',
-                            'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
-                            'path' => $pathes,
-                        );
-                    });
+            }
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
+                    $app->register(new $class($app));
                 }
             }
         }
+
 
         // hook point
         $this->before(function (Request $request, Application $app) {
@@ -317,13 +354,13 @@ class Application extends \Silex\Application
 
         // Security
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
-             'security.firewalls' => array(
+            'security.firewalls' => array(
                 'admin' => array(
                     'pattern' => '^/admin',
                     'form' => array(
                         'login_path' => '/admin/login',
                         'check_path' => '/admin/login_check',
-                        'username_parameter' =>  'login_id',
+                        'username_parameter' => 'login_id',
                         'password_parameter' => 'password',
                         'with_csrf' => true,
                         'use_forward' => true,
@@ -340,7 +377,7 @@ class Application extends \Silex\Application
                     'form' => array(
                         'login_path' => '/mypage/login',
                         'check_path' => '/login_check',
-                        'username_parameter' =>  'login_email',
+                        'username_parameter' => 'login_email',
                         'password_parameter' => 'login_pass',
                         'with_csrf' => true,
                         'use_forward' => true,
@@ -352,7 +389,7 @@ class Application extends \Silex\Application
                     'users' => $app['orm.em']->getRepository('Eccube\Entity\Customer'),
                     'anonymous' => true,
                 ),
-             ),
+            ),
         ));
         $app['security.access_rules'] = array(
             array('^/admin/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
@@ -492,7 +529,7 @@ class Application extends \Silex\Application
     /**
      * Creates and returns a form builder instance
      *
-     * @param mixed $data    The initial data for the form
+     * @param mixed $data The initial data for the form
      * @param array $options Options for the form
      *
      * @return FormBuilder
@@ -507,8 +544,8 @@ class Application extends \Silex\Application
      * Adds a log record.
      *
      * @param string $message The log message
-     * @param array  $context The log context
-     * @param int    $level   The logging level
+     * @param array $context The log context
+     * @param int $level The logging level
      *
      * @return bool Whether the record has been processed
      */
@@ -541,8 +578,8 @@ class Application extends \Silex\Application
     /**
      * Encodes the raw password.
      *
-     * @param UserInterface $user     A UserInterface instance
-     * @param string        $password The password to encode
+     * @param UserInterface $user A UserInterface instance
+     * @param string $password The password to encode
      *
      * @return string The encoded password
      *
@@ -557,8 +594,8 @@ class Application extends \Silex\Application
     /**
      * Sends an email.
      *
-     * @param \Swift_Message $message          A \Swift_Message instance
-     * @param array          $failedRecipients An array of failures by-reference
+     * @param \Swift_Message $message A \Swift_Message instance
+     * @param array $failedRecipients An array of failures by-reference
      *
      * @return int The number of sent messages
      */
@@ -571,10 +608,10 @@ class Application extends \Silex\Application
     /**
      * Translates the given message.
      *
-     * @param string $id         The message id
-     * @param array  $parameters An array of parameters for the message
-     * @param string $domain     The domain for the message
-     * @param string $locale     The locale
+     * @param string $id The message id
+     * @param array $parameters An array of parameters for the message
+     * @param string $domain The domain for the message
+     * @param string $locale The locale
      *
      * @return string The translated string
      */
@@ -586,11 +623,11 @@ class Application extends \Silex\Application
     /**
      * Translates the given choice message by choosing a translation according to a number.
      *
-     * @param string $id         The message id
-     * @param int    $number     The number to use to find the indice of the message
-     * @param array  $parameters An array of parameters for the message
-     * @param string $domain     The domain for the message
-     * @param string $locale     The locale
+     * @param string $id The message id
+     * @param int $number The number to use to find the indice of the message
+     * @param array $parameters An array of parameters for the message
+     * @param string $domain The domain for the message
+     * @param string $locale The locale
      *
      * @return string The translated string
      */
@@ -605,9 +642,9 @@ class Application extends \Silex\Application
      *
      * To stream a view, pass an instance of StreamedResponse as a third argument.
      *
-     * @param string   $view       The view name
-     * @param array    $parameters An array of parameters to pass to the view
-     * @param Response $response   A Response instance
+     * @param string $view The view name
+     * @param array $parameters An array of parameters to pass to the view
+     * @param Response $response A Response instance
      *
      * @return Response A Response instance
      */
@@ -632,8 +669,8 @@ class Application extends \Silex\Application
     /**
      * Renders a view.
      *
-     * @param string $view       The view name
-     * @param array  $parameters An array of parameters to pass to the view
+     * @param string $view The view name
+     * @param array $parameters An array of parameters to pass to the view
      *
      * @return Response A Response instance
      */
@@ -646,8 +683,8 @@ class Application extends \Silex\Application
     /**
      * Generates a path from the given parameters.
      *
-     * @param string $route      The name of the route
-     * @param mixed  $parameters An array of parameters
+     * @param string $route The name of the route
+     * @param mixed $parameters An array of parameters
      *
      * @return string The generated path
      */
@@ -659,8 +696,8 @@ class Application extends \Silex\Application
     /**
      * Generates an absolute URL from the given parameters.
      *
-     * @param string $route      The name of the route
-     * @param mixed  $parameters An array of parameters
+     * @param string $route The name of the route
+     * @param mixed $parameters An array of parameters
      *
      * @return string The generated URL
      */

@@ -41,21 +41,18 @@ Eccube\Entity\ProductStatus:
                 nullable: false
         Status:
             targetEntity: Eccube\Entity\Master\Status
-            inversedBy: ProductStatuses
             joinColumn:
                 name: product_status_id
                 referencedColumnName: id
                 nullable: false
         StatusImage:
             targetEntity: Eccube\Entity\Master\StatusImage
-            inversedBy: ProductStatuses
             joinColumn:
                 name: product_status_id
                 referencedColumnName: id
                 nullable: false
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: ProductStatuses
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

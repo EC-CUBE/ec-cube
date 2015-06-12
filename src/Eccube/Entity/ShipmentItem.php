@@ -32,17 +32,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $shipping_id;
-
-    /**
-     * @var integer
-     */
-    private $product_class_id;
-
-    /**
-     * @var integer
-     */
-    private $order_id;
+    private $id;
 
     /**
      * @var string
@@ -57,12 +47,12 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $classcategory_name1;
+    private $class_category_name1;
 
     /**
      * @var string
      */
-    private $classcategory_name2;
+    private $class_category_name2;
 
     /**
      * @var string
@@ -75,9 +65,14 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     private $quantity;
 
     /**
-     * @var \Eccube\Entity\Shipping
+     * @var \Eccube\Entity\Order
      */
-    private $Shipping;
+    private $Order;
+
+    /**
+     * @var \Eccube\Entity\Product
+     */
+    private $Product;
 
     /**
      * @var \Eccube\Entity\ProductClass
@@ -85,78 +80,25 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     private $ProductClass;
 
     /**
-     * Set shipping_id
-     *
-     * @param  integer      $shippingId
-     * @return ShipmentItem
+     * @var \Eccube\Entity\Shipping
      */
-    public function setShippingId($shippingId)
-    {
-        $this->shipping_id = $shippingId;
+    private $Shipping;
 
-        return $this;
-    }
 
     /**
-     * Get shipping_id
+     * Get id
      *
-     * @return integer
+     * @return integer 
      */
-    public function getShippingId()
+    public function getId()
     {
-        return $this->shipping_id;
-    }
-
-    /**
-     * Set product_class_id
-     *
-     * @param  integer      $productClassId
-     * @return ShipmentItem
-     */
-    public function setProductClassId($productClassId)
-    {
-        $this->product_class_id = $productClassId;
-
-        return $this;
-    }
-
-    /**
-     * Get product_class_id
-     *
-     * @return integer
-     */
-    public function getProductClassId()
-    {
-        return $this->product_class_id;
-    }
-
-    /**
-     * Set order_id
-     *
-     * @param  integer      $orderId
-     * @return ShipmentItem
-     */
-    public function setOrderId($orderId)
-    {
-        $this->order_id = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get order_id
-     *
-     * @return integer
-     */
-    public function getOrderId()
-    {
-        return $this->order_id;
+        return $this->id;
     }
 
     /**
      * Set product_name
      *
-     * @param  string       $productName
+     * @param string $productName
      * @return ShipmentItem
      */
     public function setProductName($productName)
@@ -169,7 +111,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_name
      *
-     * @return string
+     * @return string 
      */
     public function getProductName()
     {
@@ -179,7 +121,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set product_code
      *
-     * @param  string       $productCode
+     * @param string $productCode
      * @return ShipmentItem
      */
     public function setProductCode($productCode)
@@ -192,7 +134,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get product_code
      *
-     * @return string
+     * @return string 
      */
     public function getProductCode()
     {
@@ -200,55 +142,55 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set classcategory_name1
+     * Set class_category_name1
      *
-     * @param  string       $classcategoryName1
+     * @param string $classCategoryName1
      * @return ShipmentItem
      */
-    public function setClasscategoryName1($classcategoryName1)
+    public function setClassCategoryName1($classCategoryName1)
     {
-        $this->classcategory_name1 = $classcategoryName1;
+        $this->class_category_name1 = $classCategoryName1;
 
         return $this;
     }
 
     /**
-     * Get classcategory_name1
+     * Get class_category_name1
      *
-     * @return string
+     * @return string 
      */
-    public function getClasscategoryName1()
+    public function getClassCategoryName1()
     {
-        return $this->classcategory_name1;
+        return $this->class_category_name1;
     }
 
     /**
-     * Set classcategory_name2
+     * Set class_category_name2
      *
-     * @param  string       $classcategoryName2
+     * @param string $classCategoryName2
      * @return ShipmentItem
      */
-    public function setClasscategoryName2($classcategoryName2)
+    public function setClassCategoryName2($classCategoryName2)
     {
-        $this->classcategory_name2 = $classcategoryName2;
+        $this->class_category_name2 = $classCategoryName2;
 
         return $this;
     }
 
     /**
-     * Get classcategory_name2
+     * Get class_category_name2
      *
-     * @return string
+     * @return string 
      */
-    public function getClasscategoryName2()
+    public function getClassCategoryName2()
     {
-        return $this->classcategory_name2;
+        return $this->class_category_name2;
     }
 
     /**
      * Set price
      *
-     * @param  string       $price
+     * @param string $price
      * @return ShipmentItem
      */
     public function setPrice($price)
@@ -261,7 +203,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get price
      *
-     * @return string
+     * @return string 
      */
     public function getPrice()
     {
@@ -271,7 +213,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Set quantity
      *
-     * @param  string       $quantity
+     * @param string $quantity
      * @return ShipmentItem
      */
     public function setQuantity($quantity)
@@ -284,7 +226,7 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get quantity
      *
-     * @return string
+     * @return string 
      */
     public function getQuantity()
     {
@@ -292,32 +234,55 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Shipping
+     * Set Order
      *
-     * @param  \Eccube\Entity\Shipping $shipping
+     * @param \Eccube\Entity\Order $order
      * @return ShipmentItem
      */
-    public function setShipping(\Eccube\Entity\Shipping $shipping)
+    public function setOrder(\Eccube\Entity\Order $order)
     {
-        $this->Shipping = $shipping;
+        $this->Order = $order;
 
         return $this;
     }
 
     /**
-     * Get Shipping
+     * Get Order
      *
-     * @return \Eccube\Entity\Shipping
+     * @return \Eccube\Entity\Order 
      */
-    public function getShipping()
+    public function getOrder()
     {
-        return $this->Shipping;
+        return $this->Order;
+    }
+
+    /**
+     * Set Product
+     *
+     * @param \Eccube\Entity\Product $product
+     * @return ShipmentItem
+     */
+    public function setProduct(\Eccube\Entity\Product $product)
+    {
+        $this->Product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get Product
+     *
+     * @return \Eccube\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->Product;
     }
 
     /**
      * Set ProductClass
      *
-     * @param  \Eccube\Entity\ProductClass $productClass
+     * @param \Eccube\Entity\ProductClass $productClass
      * @return ShipmentItem
      */
     public function setProductClass(\Eccube\Entity\ProductClass $productClass)
@@ -330,10 +295,33 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductClass
      *
-     * @return \Eccube\Entity\ProductClass
+     * @return \Eccube\Entity\ProductClass 
      */
     public function getProductClass()
     {
         return $this->ProductClass;
+    }
+
+    /**
+     * Set Shipping
+     *
+     * @param \Eccube\Entity\Shipping $shipping
+     * @return ShipmentItem
+     */
+    public function setShipping(\Eccube\Entity\Shipping $shipping)
+    {
+        $this->Shipping = $shipping;
+
+        return $this;
+    }
+
+    /**
+     * Get Shipping
+     *
+     * @return \Eccube\Entity\Shipping 
+     */
+    public function getShipping()
+    {
+        return $this->Shipping;
     }
 }

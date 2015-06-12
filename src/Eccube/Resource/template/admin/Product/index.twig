@@ -60,14 +60,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
             <!--検索条件設定テーブルここから-->
             <div class="search-box">
-                <form name="search_form" id="search_form" method="post" action="">
+                <form name="search_form" id="search_form" method="post" action="{{ url('admin_product') }}">
                     <div class="row">
                         <div class="col-md-12 accordion">
 
                             {{ form_widget(searchForm.id, { attr: { placeholder: '商品名・ID・コード', class : 'input_search' } } ) }}
 
-                            <a class="toggle fa-stack" href="#"><span class="fa fa-minus fa-stack-1x"></span> <span class="fa fa-minus fa-stack-1x"></span></a>
-                            <div class="search-box-inner accpanel">
+                            <a href="#" class="toggle{% if active %} active{% endif %}">
+                                <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg>
+                            </a>
+                            <div class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
                                 {{ form_rest(searchForm, { attr : { class : 'search' } }) }}
 
                                 <div class="row">
@@ -82,7 +84,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row btn_area">
                         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                             <button class="btn btn-primary btn-block btn-lg" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;">
-                                検索する <span class="fa fa-chevron-right"></span>
+                                検索する <svg class="cb cb-angle-righ"><use xlink:href="#cb-angle-right"></svg>
                             </button>
                         </div>
                         <!-- /.col --> 
@@ -107,7 +109,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% if page_status is null %}
                                         <a>すべて</a>
                                         {% else %}
-                                        <a href="{{ path('admin_product', {'page_no': page_no} ) }}">すべて</a>
+                                        <a href="{{ path('admin_product_page', {'page_no': page_no} ) }}">すべて</a>
                                         {% endif %}
                                     </li>
                                     {% for disp in disps %}
@@ -115,7 +117,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                       {% if page_status == disp.id %}
                                       <a>{{ disp.name|e }}</a>
                                       {% else %}
-                                      <a href="{{ path('admin_product', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                      <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
                                       {% endif %}
                                       </li>
                                     {% endfor %}
@@ -123,7 +125,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                       {% if page_status == app.config.admin_product_stock_status %}
                                           <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
                                       {% else %}
-                                          <a href="{{ path('admin_product', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                          <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
                                       {% endif %}
                                       </li>
                                     </ul>
@@ -132,16 +134,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <ul class="sort-dd">
                                     <li class="dropdown">
                                         {% for pageMax in pageMaxis if pageMax.name == page_count %}
-                                            <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<span class="fa fa-chevron-down icon_down"></span></a>
+                                            <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                                             <ul class="dropdown-menu">
                                         {% endfor %}
                                         {% for pageMax in pageMaxis if pageMax.name != page_count %}
-                                                <li><a href="{{ path('admin_product', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                                <li><a href="{{ path('admin_product_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
                                         {% endfor %}
                                             </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                                         <ul class="dropdown-menu">
                                             <li><a>ダウンロード</a></li>
                                             <li><a>出力項目設定</a></li>
@@ -156,10 +158,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Product in pagination %}
                                         <div class="item_box tr">
                                             <div class="item_photo td">
-                                                <img src="{{ app.config.image_save_urlpath }}{{ Product.mainFileName|no_image_main_list }}" />
-                                                {#
-                                                    <span class="fa fa-picture-o fa-4x"></span>
-                                                #}
+                                                <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
+                                                	<img src="{{ app.config.image_save_urlpath }}{{ Product.mainFileName|no_image_main_list }}" />
+                                                </a>
                                             </div>
                                             <div class="item_detail td">
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
@@ -173,7 +174,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </div>
                                             <div class="icon_edit td">
                                                 <div class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-pencil"></span></a>
+                                                    <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"></svg></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_product_product_class_edit', { id : Product.id }) }}">規格</a></li>
                                                     <li><a href="">確認</a></li>
@@ -188,7 +189,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div><!-- /.box-body --> 
                         {% if pagination.totalItemCount > 0 %}
-                            {% include "pager.twig" with { 'pages' : pagination.paginationData } %}
+                            {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
                         {% endif %}
                         {% else %}
                         <div class="box-header with-arrow">

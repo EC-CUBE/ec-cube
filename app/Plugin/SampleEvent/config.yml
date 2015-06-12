@@ -1,0 +1,4 @@
+name: SampleEvent
+event: SamplePlugin
+code: SampleEvent
+version: 0.1
