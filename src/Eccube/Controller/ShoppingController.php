@@ -64,16 +64,12 @@ class ShoppingController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
+        $orderService = $app['eccube.service.order'];
 
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
-        }
-
-        // 未ログインの場合は, ログイン画面へリダイレクト.
-        if (!$this->isGranted($app)) {
-            return $app->redirect($app->url('shopping_login'));
         }
 
         // 受注データを取得
@@ -82,14 +78,23 @@ class ShoppingController extends AbstractController
 
         // 初回アクセス(受注データがない)の場合は, 受注データを作成
         if (is_null($Order)) {
+
+            // 未ログインの場合は, ログイン画面へリダイレクト.
+            if (!$this->isGranted($app)) {
+                return $app->redirect($app->url('shopping_login'));
+            }
+
             // ランダムなpre_order_idを作成
             $preOrderId = sha1(uniqid(mt_rand(), true));
 
             // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-            $Order = $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $this->getUser($app), $preOrderId);
+            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $this->getUser($app), $preOrderId);
 
             $cartService->setPreOrderId($preOrderId);
             $cartService->save();
+        } else {
+            // 計算処理
+            $Order = $orderService->getAmount($Order);
         }
 
         // 受注関連情報を最新状態に更新
@@ -99,17 +104,20 @@ class ShoppingController extends AbstractController
 
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
+        $shippings = $Order->getShippings();
+        $delivery = $shippings[0]->getDelivery();
+
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries);
+        $this->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
         $this->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $deliveries[0]);
+        $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $deliveries[0]);
+        $this->setFormPayment($form, $delivery, $Order->getPayment());
 
         return $app['view']->render('Shopping/index.twig', array(
                 'form' => $form->createView(),
@@ -165,7 +173,9 @@ class ShoppingController extends AbstractController
                     // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
                     $check = $orderService->isOrderProduct($em, $Order);
                     if (!$check) {
-                        return $app->redirect($app->url('shopping'));
+                        $em->getConnection()->rollback();
+                        $em->close();
+                        return $app->redirect($app->url('shopping_error'));
                     }
 
                     // 受注情報、配送情報を更新
@@ -199,17 +209,19 @@ class ShoppingController extends AbstractController
             }
         }
 
-        // todo エラーハンドリング
         return $app->redirect($app->url('cart'));
 
     }
 
 
-    // 購入完了画面表示
+    /**
+     * 購入完了画面表示
+     */
     public function complete(Application $app)
     {
         return $app['view']->render('Shopping/complete.twig');
     }
+
 
     /**
      * 配送業者選択処理
@@ -274,10 +286,7 @@ class ShoppingController extends AbstractController
                 $app['orm.em']->refresh($Order);
 
 
-                return $app['view']->render('Shopping/index.twig', array(
-                        'form' => $form->createView(),
-                        'Order' => $Order,
-                ));
+                return $app->redirect($app->url('shopping'));
 
             }
         } else {
@@ -336,11 +345,7 @@ class ShoppingController extends AbstractController
 
                 $app['orm.em']->refresh($Order);
 
-
-                return $app['view']->render('Shopping/index.twig', array(
-                        'form' => $form->createView(),
-                        'Order' => $Order,
-                ));
+                return $app->redirect($app->url('shopping'));
 
             }
         } else {
@@ -399,8 +404,6 @@ class ShoppingController extends AbstractController
 
             // 配送先を更新
             $app['orm.em']->flush();
-            
-            // TODO 計算処理
 
             return $app->redirect($app->url('shopping'));
 
@@ -498,9 +501,6 @@ class ShoppingController extends AbstractController
                 // 受注関連情報を最新状態に更新
                 $app['orm.em']->refresh($Order);
 
-
-                // TODO 計算処理
-
                 return $app->redirect($app->url('shopping'));
 
             }
@@ -524,18 +524,18 @@ class ShoppingController extends AbstractController
             $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $app['eccube.service.cart']->getPreOrderId()));
 
             $Order
-                        ->setName01($data['customer_name01'])
-                        ->setName02($data['customer_name02'])
-                        ->setCompanyName($data['customer_company_name'])
-                        ->setTel01($data['customer_tel01'])
-                        ->setTel02($data['customer_tel02'])
-                        ->setTel03($data['customer_tel03'])
-                        ->setZip01($data['customer_zip01'])
-                        ->setZip02($data['customer_zip02'])
-                        ->setZipCode($data['customer_zip01'] . $data['customer_zip02'])
-                        // ->setPref($data['customer_pref'])
-                        ->setAddr01($data['customer_addr01'])
-                        ->setAddr02($data['customer_addr02']);
+                    ->setName01($data['customer_name01'])
+                    ->setName02($data['customer_name02'])
+                    ->setCompanyName($data['customer_company_name'])
+                    ->setTel01($data['customer_tel01'])
+                    ->setTel02($data['customer_tel02'])
+                    ->setTel03($data['customer_tel03'])
+                    ->setZip01($data['customer_zip01'])
+                    ->setZip02($data['customer_zip02'])
+                    ->setZipCode($data['customer_zip01'] . $data['customer_zip02'])
+                    // ->setPref($data['customer_pref'])
+                    ->setAddr01($data['customer_addr01'])
+                    ->setAddr02($data['customer_addr02']);
             // 配送先を更新
             $app['orm.em']->flush();
 
@@ -551,8 +551,6 @@ class ShoppingController extends AbstractController
         }
 
     }
-
-
 
 
     /**
@@ -686,6 +684,16 @@ class ShoppingController extends AbstractController
         ));
     }
 
+
+    /**
+     * 購入エラー画面表示
+     */
+    public function shoppingError(Application $app)
+    {
+        return $app['view']->render('Shopping/shopping_error.twig');
+    }
+
+
     /**
      * 配送業者を取得
      */
@@ -716,7 +724,7 @@ class ShoppingController extends AbstractController
     /**
      * 配送業者のフォームを設定
      */
-    private function setFormDelivery($form, $deliveries)
+    private function setFormDelivery($form, $deliveries, $delivery = null)
     {
 
         // 配送業社の設定
@@ -724,6 +732,7 @@ class ShoppingController extends AbstractController
             'class' => 'Eccube\Entity\Delivery',
             'property' => 'name',
             'choices' => $deliveries,
+            'data' => $delivery,
         ));
 
     }
@@ -792,7 +801,7 @@ class ShoppingController extends AbstractController
     /**
      * 支払い方法のフォームを設定
      */
-    private function setFormPayment($form, $delivery)
+    private function setFormPayment($form, $delivery, $payment = null)
     {
 
         // 支払い方法選択
@@ -806,6 +815,7 @@ class ShoppingController extends AbstractController
             'class' => 'Eccube\Entity\Payment',
             'property' => 'method',
             'choices' => $payments,
+            'data' => $payment,
             // 'expanded' => true,
         ));
 

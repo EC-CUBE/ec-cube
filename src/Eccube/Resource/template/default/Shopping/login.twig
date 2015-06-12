@@ -28,9 +28,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div id="contents" class="main_only">
         <div class="container-fluid inner no-padding">
             {% if error %}
-    <div>{{ error.message }}</div>
-{% endif %}
-
+                <div>{{ error.message }}</div>
+            {% endif %}
             <div id="main">
                 <h1 class="page-heading">ログイン</h1>
                 <div class="container-fluid">
@@ -40,10 +39,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                         <div id="login_box" class="login_cart row">
-                            <div class="col-sm-8">
+                            <div class="col-sm-8" style="height: 330px;">
                                 <div class="column">
                                     <div class="column_inner clearfix">
-                                        <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
+                                        <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
                                         <div class="form-group">
                                             {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
                                             <label><input type="checkbox">記憶</label></div>
@@ -60,10 +59,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </div>
                                 </div>
                             </div><!-- /.col -->
-                            <div class="col-sm-4">
+                            <div class="col-sm-4" style="height: 330px;">
                                 <div class="column">
                                     <div class="column_inner">
-                                        <p class="message">会員登録をせずに購入手続きをされたい方は、下記よりお進みください
+                                        <p class="message">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
                                         <p class="btn_area">
                                             <a href="{{ url('shopping_nonmember') }}" class="btn btn-info btn-block btn-lg">ゲスト購入</a></p>
                                     </div>
