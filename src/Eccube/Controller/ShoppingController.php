@@ -438,10 +438,10 @@ class ShoppingController extends AbstractController
 
         // 会員の場合、お届け先情報を新規登録
         if ($this->isGranted($app)) {
-            $builder = $app['form.factory']->createBuilder('shipping');
+            $builder = $app['form.factory']->createBuilder('shopping_shipping');
         } else {
             // 非会員の場合、お届け先を追加
-            $builder = $app['form.factory']->createBuilder('shipping', $shippings[0]);
+            $builder = $app['form.factory']->createBuilder('shopping_shipping', $shippings[0]);
         }
 
         $form = $builder->getForm();
@@ -779,6 +779,7 @@ class ShoppingController extends AbstractController
 
         $form->add('deliveryDate', 'choice', array(
             'choices' => $deliveryDates,
+            'required' => false,
             'empty_value' => '指定なし',
         ));
 

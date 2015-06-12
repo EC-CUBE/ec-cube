@@ -83,7 +83,7 @@ $(function(){
         });
 
         $.ajax({
-            url: '{{ url('shopping_customer') }}',
+            url: "{{ url('shopping_customer') }}",
             type: 'POST',
             data: postData,
             dataType: 'json',
@@ -140,9 +140,9 @@ $(function(){
                                         {% for orderDetail in Order.orderDetails %}
                                         <div class="item_box tr">
                                             <div class="td table">
-                                                <div class="item_photo"><a href="#"><img src="img/top/img06.jpg"></a></div>
+                                                <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}{{ orderDetail.product.MainListImage|no_image_main_list }}" alt="{{ orderDetail.productName }}" /></div>
                                                 <dl class="item_detail">
-                                                    <dt class="item_name text-default"><a href="#">{{ orderDetail.productName }}</a></dt>
+                                                    <dt class="item_name text-default">{{ orderDetail.productName }}</dt>
                                                     <dd class="item_pattern small">
                                                         {% if orderDetail.productClass.classCategory1 %}
                                                             {{ orderDetail.productClass.classCategory1.className }}：{{ orderDetail.productClass.classCategory1 }}
@@ -246,5 +246,6 @@ $(function(){
                 </div>
             </div>
         </div>
+    </div>
 
 {% endblock %}
