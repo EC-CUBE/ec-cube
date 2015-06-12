@@ -25,19 +25,14 @@
 namespace Eccube\Entity;
 
 /**
- * DelivFee
+ * DeliveryFee
  */
-class DelivFee extends \Eccube\Entity\AbstractEntity
+class DeliveryFee extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
      */
-    private $deliv_id;
-
-    /**
-     * @var integer
-     */
-    private $fee_id;
+    private $id;
 
     /**
      * @var string
@@ -45,9 +40,9 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     private $fee;
 
     /**
-     * @var \Eccube\Entity\Deliv
+     * @var \Eccube\Entity\Delivery
      */
-    private $Deliv;
+    private $Delivery;
 
     /**
      * @var \Eccube\Entity\Master\Pref
@@ -55,56 +50,22 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     private $Pref;
 
     /**
-     * Set deliv_id
-     *
-     * @param  integer  $delivId
-     * @return DelivFee
-     */
-    public function setDelivId($delivId)
-    {
-        $this->deliv_id = $delivId;
-
-        return $this;
-    }
-
-    /**
-     * Get deliv_id
+     * Get id
      *
      * @return integer
      */
-    public function getDelivId()
+    public function getId($id)
     {
-        return $this->deliv_id;
-    }
-
-    /**
-     * Set fee_id
-     *
-     * @param  integer  $feeId
-     * @return DelivFee
-     */
-    public function setFeeId($feeId)
-    {
-        $this->fee_id = $feeId;
+        $this->id = $id;
 
         return $this;
-    }
-
-    /**
-     * Get fee_id
-     *
-     * @return integer
-     */
-    public function getFeeId()
-    {
-        return $this->fee_id;
     }
 
     /**
      * Set fee
      *
      * @param  string   $fee
-     * @return DelivFee
+     * @return DeliveryFee
      */
     public function setFee($fee)
     {
@@ -124,33 +85,33 @@ class DelivFee extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Deliv
+     * Set Delivery
      *
-     * @param  \Eccube\Entity\Deliv $deliv
-     * @return DelivFee
+     * @param  \Eccube\Entity\Delivery $Delivery
+     * @return DeliveryFee
      */
-    public function setDeliv(\Eccube\Entity\Deliv $deliv = null)
+    public function setDelivery(\Eccube\Entity\Delivery $Delivery = null)
     {
-        $this->Deliv = $deliv;
+        $this->Delivery = $Delivery;
 
         return $this;
     }
 
     /**
-     * Get Deliv
+     * Get Delivery
      *
-     * @return \Eccube\Entity\Deliv
+     * @return \Eccube\Entity\Delivery
      */
-    public function getDeliv()
+    public function getDelivery()
     {
-        return $this->Deliv;
+        return $this->Delivery;
     }
 
     /**
      * Set Pref
      *
      * @param  \Eccube\Entity\Master\Pref $pref
-     * @return DelivFee
+     * @return DeliveryFee
      */
     public function setPref(\Eccube\Entity\Master\Pref $pref)
     {

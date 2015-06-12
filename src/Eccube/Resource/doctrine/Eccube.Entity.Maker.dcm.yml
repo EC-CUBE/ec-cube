@@ -40,7 +40,6 @@ Eccube\Entity\Maker:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Makers
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
