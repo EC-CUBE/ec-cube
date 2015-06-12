@@ -32,6 +32,9 @@ class PluginService
 {
     private $app;
 
+    CONST CONFIG_YML = "config.yml";
+    CONST EVENT_YML = "event.yml";
+
     public function __construct($app)
     {
         $this->app = $app;
@@ -39,17 +42,13 @@ class PluginService
 
     public function install($path)
     {
-       // エラーチェック
-       // ファイルコピー
-       // インストーラ起動      
        $tmp = $this->createTempDir();
 
        $this->unpackPluginArchive($path,$tmp); //一旦テンポラリに展開
        $this->checkPluginArchiveContent($tmp);
 
-
-       $config = $this->readYml($tmp."/config.yml");
-       $event = $this->readYml($tmp."/event.yml");
+       $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
+       $event = $this->readYml($tmp.'/'.self::EVENT_YML);
        $this->deleteFile($tmp); // テンポラリのファイルを削除
 
        $this->checkSamePlugin($config['code']);
@@ -69,22 +68,23 @@ class PluginService
     {
        $pluginDir = $this->calcPluginDir($plugin->getName());
 
-       $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'."config.yml" ),'uninstall' ); 
+       $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'.self::CONFIG_YML ),'uninstall' ); 
        $this->unregisterPlugin($plugin);
        $this->deleteFile($pluginDir); 
 
     }
     public function enable(\Eccube\Entity\Plugin $plugin,$enable=true)
     {
-        $em = $this->app['orm.em'];
-        $plugin->setEnable($enable ? 1:0);
-        $em->persist($plugin); 
-        $em->flush(); 
-        $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'."config.yml" ) ,$enable ? 'enable':'disable'    ); 
+       $pluginDir = $this->calcPluginDir($plugin->getName());
+       $em = $this->app['orm.em'];
+       $plugin->setEnable($enable ? 1:0);
+       $em->persist($plugin); 
+       $em->flush(); 
+       $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'.self::CONFIG_YML ) ,$enable ? 'enable':'disable'    ); 
     }
     public function disable(\Eccube\Entity\Plugin $plugin)
     {
-        $this->enable($plugin,false);
+       $this->enable($plugin,false);
     }
     public function update(\Eccube\Entity\Plugin $plugin,$path)
     {
@@ -93,7 +93,7 @@ class PluginService
        $this->unpackPluginArchive($path,$tmp); //一旦テンポラリに展開
        $this->checkPluginArchiveContent($tmp);
 
-       $config = $this->readYml($tmp."/config.yml");
+       $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
        $event = $this->readYml($tmp."/event.yml");
 
        if($plugin->getCode != $config['code']){
@@ -108,6 +108,10 @@ class PluginService
        $this->updatePlugin($config,$event); // dbにプラグイン登録
        $this->callPluginManagerMethod( $config,'update' ); 
     }
+
+
+
+
 
 
     public function calcPluginDir($name)
@@ -130,17 +134,27 @@ class PluginService
        if(!is_array($meta)) {
            throw new \Exception("config.yml not found or syntax error");
        }
-       if(!strlen($meta['code'])){
-           throw new \Exception("config.yml code not defined");
+       if(!$this->checkSymbolName($meta['code'])){
+           throw new \Exception("config.yml code  has invalid_character(\W) ");
        }
-       if(!strlen($meta['name'])){
-           throw new \Exception("config.yml name not defined");
+       if(!$this->checkSymbolName($meta['name'])){
+           throw new \Exception("config.yml name  has invalid_character(\W)");
+       }
+       if(strlen($meta['event']) and !$this->checkSymbolName($meta['event'])){
+           throw new \Exception("config.yml event has invalid_character(\W) ");
        }
        if(!strlen($meta['version'])){
-           throw new \Exception("config.yml version not defined");
+           throw new \Exception("config.yml version not defined. ");
        }
     }
 
+    public function checkSymbolName($string)
+    {
+       return preg_match('/^\w+$/',$string);
+       // plugin_nameやplugin_codeに使える文字のチェック
+       // a-z A-Z 0-9 _ 
+       // ディレクトリ名などに使われれるので厳しめ
+    }
 
     public function readYml($yml)
     {
@@ -242,15 +256,10 @@ class PluginService
 
         $p->setDelFlg(1)->setEnable(0);
 
-/*
-        foreach($p->getPluginEventHandlers()->toArray() as $handler){
-            $handler->setDelFlg(1);
-            $em->persist($handler); 
-        }
-*/
-       
         $rep=$em->getRepository('Eccube\Entity\PluginEventHandler');
         foreach($rep->findBy(array('plugin_id'=> $p->getId()  )) as $peh ) {
+            // Assosiationを経由して子エンティティが取れるはずなのだけどうまく動作していないので
+            // 一旦ベタな書き方で回避
             $peh->setDelFlg(1); 
             $em->persist($peh); 
         }
