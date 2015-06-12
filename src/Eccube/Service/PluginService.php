@@ -154,7 +154,7 @@ class PluginService
 
     public function checkSymbolName($string)
     {
-       return preg_match('/^\w+$/',$string);
+       return strlen($string) < 256 && preg_match('/^\w+$/',$string);
        // plugin_nameやplugin_codeに使える文字のチェック
        // a-z A-Z 0-9 _ 
        // ディレクトリ名などに使われれるので厳しめ
@@ -199,10 +199,13 @@ class PluginService
         $rep=$em->getRepository('Eccube\Entity\PluginEventHandler');
         foreach($event_yml as $event=>$handlers){
             foreach($handlers as $handler){
+                if( !$this->checkSymbolName($handler[0]) ){
+                    throw new \Exception("Handler name format error");
+                }
                 $peh = $rep->findBy(array('del_flg'=>0,'plugin_id'=> $plugin->getId(),'event' => $event ,'handler' => $handler[0] ));
                 if(!$peh){ // 新規にevent.ymlに定義されたハンドラなのでinsertする
                     $peh = new \Eccube\Entity\PluginEventHandler();
-                    $peh->setPlugin($p)
+                    $peh->setPlugin($plugin)
                         ->setEvent($event)
                         ->setdelFlg(0)
                         ->setHandler($handler[0])
@@ -237,6 +240,9 @@ class PluginService
 
         foreach($event_yml as $event=>$handlers){
             foreach($handlers as $handler){
+                if( !$this->checkSymbolName($handler[0]) ){
+                    throw new \Exception("Handler name format error");
+                }
                 $peh = new \Eccube\Entity\PluginEventHandler();
                 $peh->setPlugin($p)
                     ->setEvent($event)
