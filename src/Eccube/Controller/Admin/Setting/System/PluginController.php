@@ -31,16 +31,43 @@ class PluginController extends AbstractController
 {
     public function index(Application $app)
     {
-        // 動作試験用
-        //# ちゃんと画面を作るときに置き換えてください
+
+        $form = $app['form.factory']
+            ->createBuilder('plugin_local_install')
+            ->getForm();
         $service = $app['eccube.service.plugin'];
-        $service->install('/SampleEntity.tar');
+        $em = $app['orm.em'];
+        $repo=$em->getRepository('Eccube\Entity\Plugin');
 
-        #$em = $app['orm.em'];
-        #$plugin=$em->getRepository('Eccube\Entity\Plugin')->getPluginByCode('SampleEntity');
-        #$service->enable($plugin[0]);
-        #$service->uninstall($plugin[0]);
+        if ('POST' === $app['request']->getMethod()) {
+            $form->handleRequest($app['request']);
+            $data = $form->getData();
+            if($form->get('install')->isClicked()){
+                $tempfile=sha1( openssl_random_pseudo_bytes(20) );
+                $form['plugin_archive']->getData()->move(sys_get_temp_dir() ,$tempfile )   ;
+                $service->install(sys_get_temp_dir().'/'.$tempfile );
+            }
+            if($form->get('uninstall')->isClicked()){
+                $service->uninstall(  $repo->find((int)$data['plugin_id'] )     );
+            }
+            if($form->get('enable')->isClicked()){
+                $service->enable(  $repo->find((int)$data['plugin_id'] )     );
+            }
+            if($form->get('disable')->isClicked()){
+                $service->disable(  $repo->find((int)$data['plugin_id'] )     );
+            }
+            
+        }
 
-        return "<hr>plugin install success<hr>";
+/*
+        foreach($repo->findAll() as $plugin){
+            echo ($plugin->getId()."<br>");
+        }
+*/
+
+        return $app['twig']->render('Setting/System/plugin.twig', array(
+            'form' => $form->createView(),
+        ));
+
     }
 }

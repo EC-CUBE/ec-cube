@@ -96,16 +96,20 @@ class PluginService
        $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
        $event = $this->readYml($tmp."/event.yml");
 
-       if($plugin->getCode != $config['code']){
+       if($plugin->getCode() != $config['code']){
            throw new \Exception("new/old plugin code is different.");
        }
+       if($plugin->getName() != $config['name']){
+           throw new \Exception("new/old plugin name is different.");
+       }
 
+       $pluginBaseDir =  $this->calcPluginDir($config['name'])  ;
        $this->deleteFile($tmp); // テンポラリのファイルを削除
 
 
        $this->unpackPluginArchive($path,$pluginBaseDir); // 問題なければ本当のplugindirへ
 
-       $this->updatePlugin($config,$event); // dbにプラグイン登録
+       $this->updatePlugin($plugin,$config,$event); // dbにプラグイン登録
        $this->callPluginManagerMethod( $config,'update' ); 
     }
 
@@ -189,7 +193,7 @@ class PluginService
         $em = $this->app['orm.em'];
         $em->getConnection()->beginTransaction(); 
         $plugin->setVersion($meta['version']) 
-               ->setEvent($meta['event']) 
+               ->setClassName($meta['event'])
                ->setName($meta['name']);
 
         $rep=$em->getRepository('Eccube\Entity\PluginEventHandler');
