@@ -51,26 +51,28 @@ class ShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
+        $config = $this->app['config'];
         $builder
             ->add('name', 'name', array(
+                'required' => true,
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
@@ -79,7 +81,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $config['stext_len'],
                     ))
                 ),
             ))
@@ -87,49 +89,55 @@ class ShippingType extends AbstractType
                 'zip01_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 3, 'max' => 3))
+                        new Assert\Regex(array('pattern' => '/^\d{3}$/'))
                     ),
                 ),
                 'zip02_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 4, 'max' => 4))
+                        new Assert\Regex(array('pattern' => '/^\d{4}$/'))
                     ),
                 ),
             ))
             ->add('address', 'address', array(
-                'help' => 'form.contact.address.help',
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
-                    ),
+                'addr01_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array(
+                            'max' => $config['mtext_len'],
+                        )),
+                    ),
+                ),
+                'addr02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array(
+                            'max' => $config['mtext_len'],
+                        )),
                     ),
                 ),
             ))
-            ->add('tel', 'tel', array(
-                'tel01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 3)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel03_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
+            ->add('tel', 'tel', array())
+            ->add('fax', 'tel', array(
+                'label' => 'FAX番号',
+                'required' => false,
+            ))
+            ->add('Delivery', 'entity', array(
+                'label' => '配送業者',
+                'class' => 'Eccube\Entity\Delivery',
+                'property' => 'name',
+                'empty_value' => false,
+                'empty_data' => null,
+            ))
+            ->add('DeliveryTime', 'entity', array(
+                'label' => 'お届け時間',
+                'class' => 'Eccube\Entity\DeliveryTime',
+                'property' => 'delivery_time',
+                'empty_value' => false,
+                'empty_data' => null,
+            ))
+            ->add('shipping_delivery_date', null, array(
+                'label' => 'お届け日'
             ));
     }
 
