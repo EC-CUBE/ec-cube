@@ -50,7 +50,6 @@ class PluginService
 
        $config = $this->readYml($tmp."/config.yml");
        $event = $this->readYml($tmp."/event.yml");
-
        $this->deleteFile($tmp); // テンポラリのファイルを削除
 
        $this->checkSamePlugin($config['code']);
@@ -128,15 +127,17 @@ class PluginService
     public function checkPluginArchiveContent($dir)
     {
        $meta = $this->readYml($dir."/config.yml");
-       $event = $this->readYml($dir."/event.yml");
-       if(!$event) {
-           throw new \Exception("event.yml not found or syntax error");
-       }
-       if(!$meta) {
+       if(!is_array($meta)) {
            throw new \Exception("config.yml not found or syntax error");
        }
-       if(!file_exists($dir . "/" . $meta['event'].".php")){
-           throw new \Exception("event handler class not found");
+       if(!strlen($meta['code'])){
+           throw new \Exception("config.yml code not defined");
+       }
+       if(!strlen($meta['name'])){
+           throw new \Exception("config.yml name not defined");
+       }
+       if(!strlen($meta['version'])){
+           throw new \Exception("config.yml version not defined");
        }
     }
 

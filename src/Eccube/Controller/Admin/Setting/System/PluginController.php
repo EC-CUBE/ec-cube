@@ -34,13 +34,13 @@ class PluginController extends AbstractController
         // 動作試験用
         //# ちゃんと画面を作るときに置き換えてください
         $service = $app['eccube.service.plugin'];
-        $service->install('/SampleEvent.tar');
-/*
-        $em = $app['orm.em'];
-        $plugin=$em->getRepository('Eccube\Entity\Plugin')->getPluginByCode('tomita-test');
+        $service->install('/SampleEntity.tar');
+
+        #$em = $app['orm.em'];
+        #$plugin=$em->getRepository('Eccube\Entity\Plugin')->getPluginByCode('SampleEntity');
+        #$service->enable($plugin[0]);
         #$service->uninstall($plugin[0]);
-        $service->enable($plugin[0]);
-*/
+
         return "<hr>plugin install success<hr>";
     }
 }

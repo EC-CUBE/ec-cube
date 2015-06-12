@@ -1,5 +1,4 @@
 name: SampleEvent
-enable: false
 event: SamplePlugin
-code: tomita-test
+code: SampleEvent
 version: 0.1

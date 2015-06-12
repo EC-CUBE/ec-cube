@@ -1,5 +1,8 @@
 name: SampleEntity
-enable: false
 event: SampleEntity
+code: SampleEntity
+version: 0.1
 orm.path:
     - /Resource/doctrine
+migration.path:
+    - /migration

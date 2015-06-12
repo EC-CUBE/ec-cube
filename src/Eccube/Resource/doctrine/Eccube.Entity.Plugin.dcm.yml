@@ -23,7 +23,6 @@ Eccube\Entity\Plugin:
 #            column: plugin_code
         class_name:
             type: text
-            nullable: false
         enable:
             type: smallint
             nullable: false
