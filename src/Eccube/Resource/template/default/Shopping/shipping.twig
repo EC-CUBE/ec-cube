@@ -21,107 +21,54 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
+{% block title %}お届け先の指定{% endblock %}
+
 {% block main %}
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner">
+            <div id="main">
+                <h1 class="page-heading">お届け先の指定</h1>
+                <div class="container-fluid">
+                    <form method="post" action="{{ url('shopping_shipping') }}">
+                        <div id="deliveradd_select" class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <p><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
 
-<div id="undercolumn">
-    <div id="undercolumn_shopping">
-        <p class="flow_area"><img src="{{ app.config.tpl }}img/picture/img_flow_01.jpg" alt="購入手続きの流れ" /></p>
-        <h2 class="title">{{ title }}</h2>
+                                {% if Customer.CustomerAddresses|length > 0 %}
+                                 <div class="table address_table">
+                                    <div class="tbody">
+                                        {% for CustomerAddress in Customer.CustomerAddresses %}
+                                        <div class="addr_box tr">
+                                        <div class="icon_radio td"><input type="radio" id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" /></div>
+                                        <div class="column td">
+                                                        <label for="address{{ CustomerAddress.id }}">
+                                                        <p class="address">
+                                                            {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
+                                                            〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
+                                                            {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
+                                                        </label>
+                                        </div>
+                                        </div>
+                                        {% endfor %}
+                                        </div>
+                                    </div><!--/table-->
+                                    {% endif %}
 
-        <div id="address_area" class="clearfix">
-            <div class="information">
-                <p>下記一覧よりお届け先住所を選択して、「選択したお届け先に送る」ボタンをクリックしてください。</p>
-                <!--{if $tpl_addrmax < $smarty.const.DELIV_ADDR_MAX}-->
-                <p>一覧にご希望の住所が無い場合は、「新しいお届け先を追加する」より追加登録してください。</p>
-                <!--{/if}-->
-                <p class="mini attention">※最大<!--{$smarty.const.DELIV_ADDR_MAX|h}-->件まで登録できます。</p>
-            </div>
+
+
+                                <div class="row no-padding">
+                                <div class="btn_group col-sm-offset-4 col-sm-4">
+                                    <p><button type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button></p>
+                                    <p><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
+                                </div>
+                                </div>
+
+                            </div>
+                        </div><!-- /.row -->
+                    </form>
+
+                </div>
+            </div><!-- /#main -->
         </div>
-
-        <p class="addbtn">
-            <a href="{{ path('mypage_delivery_address') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_address') }}?page={{ path('shopping_shipping') }}','new_deiv','600','640'); return false;">
-                <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" />
-            </a>
-        </p>
-
-        <form name="form1" id="form1" method="post" action="{{ path('shopping_shipping') }}">
-            <input type="hidden" name="mode" value=""/>
-            {{ form_widget(form._token) }}
-            {% if is_granted('ROLE_USER') %}
-            <table summary="お届け先の指定">
-                <col width="10%" />
-                <col width="20%" />
-                <col width="50%" />
-                <col width="10%" />
-                <col width="10%" />
-                <tr>
-                    <th class="alignC">選択</th>
-                    <th class="alignC">住所種類</th>
-                    <th class="alignC">お届け先</th>
-                    <th class="alignC">変更</th>
-                    <th class="alignC">削除</th>
-                </tr>
-                {% for addr in form.addresses %}
-                    {% set entity = addr.vars.label %}
-                <tr>
-                    <td class="alignC">
-                        {{ form_widget(addr) }}
-                    </td>
-                    <td class="alignC">
-                        <label for="chk_id_{{ loop.index }}>">
-                            {% if loop.first %}会員登録住所{% else %}追加登録住所{% endif %}
-                        </label>
-                    </td>
-                    <td>
-                        {% if entity.company_name %}{{ entity.company_name }}<br />{% endif %}
-                        {{ entity.name01 }} {{ entity.name02 }} {% if entity.kana01 %}({{ entity.kana01 }}{{ entity.kana02 }}){% endif %}<br />
-                        〒{{ entity.zip01 }}-{{ entity.zip02 }} {{ entity.Pref.name }} {{ entity.addr01 }}{{ entity.addr02 }}
-                    </td>
-                    <td class="alignC">
-                        {% if loop.first %}
-                            -
-                        {% else %}
-                            <a href="{{ path('mypage_delivery_address') }}"
-                               onclick="eccube.openWindow('{{ path('mypage_delivery_address') }}?page={{ path('shopping_shipping') }}>&amp;other_deliv_id={{ entity.id }}','new_deiv','600','640'); return false;">変更</a>
-                        {% endif %}
-                    </td>
-                    <td class="alignC">
-                        {% if loop.first %}
-                            -
-                        {% else %}
-                            <a href="{{ path('shopping_shipping') }}" onclick="eccube.setModeAndSubmit('delete', 'other_deliv_id', '{{ entity.id }}'); return false">削除</a>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <a href="{{ path('shopping') }}" ><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
-                    </li>
-                    <li>
-                        <input type="image" onclick="eccube.setModeAndSubmit('select_address');return false;" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_next.jpg" alt="選択したお届け先に送る" name="send_button" id="send_button" />
-                    </li>
-                </ul>
-            </div>
-            {% endif %}
-
-            {{ form_widget(form.address) }}
-
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <a href="{{ path('shopping') }}" ><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
-                    </li>
-                    <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_next.jpg" alt="選択したお届け先に送る" name="send_button" id="send_button" />
-                    </li>
-                </ul>
-            </div>
-
-        </form>
-    </div>
-</div>
 
 {% endblock %}

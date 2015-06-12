@@ -117,6 +117,7 @@ INSERT INTO mtb_order_status (id, name, rank) VALUES (6, '入金済み', 3);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (3, 'キャンセル', 4);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (4, '取り寄せ中', 5);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (5, '発送済み', 6);
+INSERT INTO mtb_order_status (id, name, rank) VALUES (8, '購入処理中', 7);
 
 
 INSERT INTO mtb_order_status_color (id, name, rank) VALUES (1, '#FFFFFF', 0);
@@ -1253,8 +1254,20 @@ INSERT INTO dtb_delivery_fee (fee_id, delivery_id, fee, pref) VALUES (92, 2, 0, 
 INSERT INTO dtb_delivery_fee (fee_id, delivery_id, fee, pref) VALUES (93, 2, 0, 46);
 INSERT INTO dtb_delivery_fee (fee_id, delivery_id, fee, pref) VALUES (94, 2, 0, 47);
 
-INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (1, 1, '午前');
-INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (2, 1, '午後');
+INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (1, 1, '指定なし');
+INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (2, 1, '午前');
+INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (3, 1, '午後');
+
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (1, '即日', 0, 0);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (2, '1～2日後', 1, 1);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (3, '3～4日後', 3, 2);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (4, '1週間以降', 7, 3);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (5, '2週間以降', 14, 4);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (6, '3週間以降', 21, 5);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (7, '1ヶ月以降', 30, 6);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (8, '2ヶ月以降', 60, 7);
+INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (9, 'お取り寄せ(商品入荷後)', 0, 8);
+
 
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '元日(1月1日)', 1, 1, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_holiday (holiday_id, title, month, day, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '成人の日(1月第2月曜日)', 1, 14, 99, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
@@ -1367,6 +1380,18 @@ INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1,
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(1, 0, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(2, 1, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(3, 2, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(4, 3, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(5, 4, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(6, 5, 10, 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(7, 6, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(8, 7, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(9, 8, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(10, 9, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(11, 11, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO dtb_recommend_product (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
