@@ -73,7 +73,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 <div class="box accordion">
                     <div class="box-header toggle">
-                        <h3 class="box-title">お届け時間設定<span class="fa fa-chevron-down icon_down"></span></h3>
+                        <h3 class="box-title">お届け時間設定<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                     </div><!-- /.box-header -->
                     <div class="box-body accpanel">
                         {% for child in form.delivery_times %}
@@ -101,14 +101,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                     <div class="box-body">
                         <div class="form-inline">
-                            ※全国一律送料 {{ form_widget(form.free_all) }}
+                            全国一律送料&nbsp; {{ form_widget(form.free_all) }}
                             <a class="btn-normal" href="javascript:;" id="set_fee_all">
                                 <button class="btn btn-default btn-sm" type="button">設定</button>
                             </a>
                         </div>
                     </div><!-- /.box-header -->
                     <div class="box-body toggle" style="position:relative;">
-                        <h3 class="box-title">都道府県ごとに設定する<span class="fa fa-chevron-down icon_down"></span></h3>
+                        <h3 class="box-title">都道府県ごとに設定する<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                     </div>
                     <div class="box-body accpanel">
                         {% for child in form.delivery_fees %}

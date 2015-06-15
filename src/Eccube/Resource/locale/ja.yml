@@ -28,6 +28,7 @@ cart.over.stock: |-
 cart.over.sale_limit: |-
     ※ 選択された商品は販売制限しております。
     一度に販売制限数を超える購入はできません。
+cart.product.type.kind: この商品は同時に購入することはできません。
 
 admin.register.complete: ※ 登録が完了しました。
 admin.register.failed: ※ 登録できませんでした。
@@ -35,6 +36,7 @@ admin.delete.complete: ※ 削除が完了しました。
 admin.delete.failed: ※ 削除できませんでした。
 admin.rank.move.complete: ※ ランクの移動が完了しました。
 
+admin.order.save.complete: 受注情報を保存しました。
 admin.order.delete.complete: ※ 登録が完了しました。
 
 Quantity: 数量

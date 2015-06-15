@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
 $(function() {
-  $('#zip-search').click(function() {
+  $('#zip-search').click(function(event) {
     event.preventDefault();
     AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
   });
@@ -55,7 +55,7 @@ $(function() {
                                         <dt>住所<span class="required">必須</span></dt>
                                         <dd>
                                             <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                                            <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                            <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                                             {{ form_widget(form.address) }}
                                             {{ form_errors(form.address) }}
                                             </div>

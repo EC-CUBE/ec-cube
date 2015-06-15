@@ -97,7 +97,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <td>{{ TaxRule.default_tax_rule  ? '基本税率設定' : TaxRule.apply_date|date('Y/m/d') }}</td>
                                 <td class="icon_edit">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="fa fa-pencil"></span></a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li><a href="{{ url('admin_setting_shop_tax_edit', { id : TaxRule.id }) }}">編集</a></li>
                                             {% if TaxRule.default_tax_rule %}

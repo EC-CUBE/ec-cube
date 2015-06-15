@@ -212,11 +212,13 @@ Eccube\Entity\Order:
             mappedBy: Order
             orderBy:
                 id: ASC
+            cascade: ["persist"]
         Shippings:
             targetEntity: Eccube\Entity\Shipping
             mappedBy: Order
             orderBy:
                 id: ASC
+            cascade: ["persist"]
         MailHistories:
             targetEntity: Eccube\Entity\MailHistory
             mappedBy: Order

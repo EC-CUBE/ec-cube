@@ -21,44 +21,41 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Service;
 
-namespace Eccube\Form\Type;
+use Eccube\Application;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-
-class ShoppingType extends AbstractType
+class MailService
 {
+    /** @var \Eccube\Application */
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
     /**
-     * {@inheritdoc}
+     * Send order mail.
+     *
+     * @param Order $Order
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
 
-        $app = $this->app;
+        $body = $this->app['view']->render('Mail/order.twig', array(
+            'Order' => $Order,
+        ));
 
-        $builder
-            ->add('message', 'textarea', array(
-                    'required' => false,
-                    'constraints' => array(
-                        new Assert\Length(array('min' => 0, 'max' => 3000))),
-            ));
+        $message = \Swift_Message::newInstance()
+            ->setSubject('[EC-CUBE3] 購入が完了しました。')
+            ->setFrom(array('sample@example.com'))
+            ->setBcc($this->app['config']['mail_cc'])
+            ->setTo(array($Order->getEmail()))
+            ->setBody($body);
+
+        $this->app['mailer']->send($message);
 
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'shopping';
-    }
 }

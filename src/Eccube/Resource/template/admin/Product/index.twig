@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'main_frame.twig' %}
 
+{% set menus = ['product', 'index'] %}
+
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品マスター{% endblock %}
 
@@ -84,7 +86,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row btn_area">
                         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                             <button class="btn btn-primary btn-block btn-lg" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;">
-                                検索する <svg class="cb cb-angle-righ"><use xlink:href="#cb-angle-right"></svg>
+                                検索する <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
                             </button>
                         </div>
                         <!-- /.col --> 
@@ -193,7 +195,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% endif %}
                         {% else %}
                         <div class="box-header with-arrow">
-                            <h3 class="box-title">検索条件に該当するデータがありませんでした。</span></h3>
+                            <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
                         </div><!-- /.box-header -->
                         {% endif %}
                     </div><!-- /.box --> 

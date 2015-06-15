@@ -30,46 +30,114 @@
 
 namespace Eccube\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\Form\Extension\Core\Type;
+use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use \Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingType extends AbstractType
 {
+    public $app;
+
+    public function __construct(\Eccube\Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $config = $this->app['config'];
         $builder
-            ->add('Country')
-            ->add('zipcode')
-            ->add('name', 'name')
-            ->add('kana01')
-            ->add('kana02')
-            ->add('company_name')
-            ->add('tel', 'tel')
-            ->add('fax', 'fax', array(
-                'label' => 'FAX',
+            ->add('name', 'name', array(
+                'required' => true,
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $config['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $config['stext_len'])),
+                    ),
+                ),
             ))
-            ->add('zip', 'zip')
-            ->add('address', 'address')
-            ->add('time_id')
-            ->add('shipping_time')
-            ->add('shipping_date', 'date', array(
-                'format' => 'yyyy-MM-dd',
+            ->add('kana', 'name', array(
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $config['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $config['stext_len'])),
+                    ),
+                ),
             ))
-            ->add('shipping_commit_date')
-            ->add('ShipmentItems', 'collection', array(
-                'type' => new ShipmentItemType()
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['stext_len'],
+                    ))
+                ),
             ))
-            ->add('time', 'entity', array(
-                'class' => 'Eccube\Entity\DelivTime',
-                'property' => 'deliv_time',
-                'expanded' => false,
-                'multiple' => false,
-                'mapped' => false,
+            ->add('zip', 'zip', array(
+                'zip01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Regex(array('pattern' => '/^\d{3}$/'))
+                    ),
+                ),
+                'zip02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Regex(array('pattern' => '/^\d{4}$/'))
+                    ),
+                ),
+            ))
+            ->add('address', 'address', array(
+                'addr01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array(
+                            'max' => $config['mtext_len'],
+                        )),
+                    ),
+                ),
+                'addr02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array(
+                            'max' => $config['mtext_len'],
+                        )),
+                    ),
+                ),
+            ))
+            ->add('tel', 'tel', array())
+            ->add('fax', 'tel', array(
+                'label' => 'FAX番号',
+                'required' => false,
+            ))
+            ->add('Delivery', 'entity', array(
+                'label' => '配送業者',
+                'class' => 'Eccube\Entity\Delivery',
+                'property' => 'name',
+                'empty_value' => false,
+                'empty_data' => null,
+            ))
+            ->add('DeliveryTime', 'entity', array(
+                'label' => 'お届け時間',
+                'class' => 'Eccube\Entity\DeliveryTime',
+                'property' => 'delivery_time',
+                'empty_value' => false,
+                'empty_data' => null,
+            ))
+            ->add('shipping_delivery_date', null, array(
+                'label' => 'お届け日'
             ));
     }
 

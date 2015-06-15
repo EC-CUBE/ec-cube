@@ -288,6 +288,10 @@ class OrderRepository extends EntityRepository
             $qb
                 ->andWhere('o.OrderStatus = :status')
                 ->setParameter('status', $searchData['status']);
+        } else {
+            // 購入処理中は検索対象から除外
+            $qb->andWhere('o.OrderStatus <> :status')
+                ->setParameter('status', $this->config['order_processing']);
         }
 
         // name
@@ -307,25 +311,25 @@ class OrderRepository extends EntityRepository
         // email
         if (!empty($searchData['email']) && $searchData['email']) {
             $qb
-                ->andWhere('o.email = :email')
-                ->setParameter('email', $searchData['email']);
+                ->andWhere('o.email like :email')
+                ->setParameter('email', '%' . $searchData['email'] . '%');
         }
 
         // tel
         if (!empty($searchData['tel01']) && $searchData['tel01']) {
             $qb
-                ->andWhere('o.tel01 = :tel01')
-                ->setParameter('tel01', $searchData['tel01']);
+                ->andWhere('o.tel01 like :tel01')
+                ->setParameter('tel01', '%' . $searchData['tel01'] . '%');
         }
         if (!empty($searchData['tel02']) && $searchData['tel02']) {
             $qb
-                ->andWhere('o.tel02 = :tel02')
-                ->setParameter('tel02', $searchData['tel02']);
+                ->andWhere('o.tel02 like :tel02')
+                ->setParameter('tel02', '%' . $searchData['tel02'] . '%');
         }
         if (!empty($searchData['tel03']) && $searchData['tel03']) {
             $qb
-                ->andWhere('o.tel03 = :tel03')
-                ->setParameter('tel03', $searchData['tel03']);
+                ->andWhere('o.tel03 like :tel03')
+                ->setParameter('tel03', '%' . $searchData['tel03'] . '%');
         }
 
         // sex
@@ -435,6 +439,7 @@ class OrderRepository extends EntityRepository
                 ->andWhere('od.product_name LIKE :buy_product_name')
                 ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
         }
+
 
         // Order By
         $qb->addOrderBy('o.update_date', 'DESC');

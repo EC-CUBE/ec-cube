@@ -59,6 +59,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.plugin'] = $app->share(function () use ($app) {
             return new \Eccube\Service\PluginService( $app );
         });
+        $app['eccube.service.mail'] = $app->share(function () use ($app) {
+            return new \Eccube\Service\MailService($app);
+        });
 
         // Repository
         $app['eccube.repository.master.constant'] = $app->share(function () use ($app) {
@@ -132,6 +135,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.product_class'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductClass');
+        });
+        $app['eccube.repository.product_stock'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductStock');
         });
         $app['eccube.repository.maker'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Maker');
@@ -280,9 +286,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\NonMemberType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
-            $types[] = new \Eccube\Form\Type\OrderType();
-            $types[] = new \Eccube\Form\Type\OrderDetailType();
-            $types[] = new \Eccube\Form\Type\ShippingType();
+            $types[] = new \Eccube\Form\Type\OrderType($app);
+            $types[] = new \Eccube\Form\Type\OrderDetailType($app);
+            $types[] = new \Eccube\Form\Type\ShippingType($app);
+            $types[] = new \Eccube\Form\Type\ShoppingShippingType($app);
             $types[] = new \Eccube\Form\Type\ShipmentItemType();
             $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
 

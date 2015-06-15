@@ -21,23 +21,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
-use Silex\Application;
+
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 
-class NonMemberType extends AbstractType
+class ShoppingShippingType extends AbstractType
 {
     public $app;
 
-    public function __construct(Application $app)
+    public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -122,16 +123,17 @@ class NonMemberType extends AbstractType
                         new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                     ),
                 ),
-            ))
-            ->add('email', 'repeated', array(
-                'invalid_message' => 'form.member.email.invalid',
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Email(),
-                    ),
-                ),
             ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+                'data_class' => 'Eccube\Entity\Shipping',
+        ));
     }
 
     /**
@@ -139,6 +141,6 @@ class NonMemberType extends AbstractType
      */
     public function getName()
     {
-        return 'nonmember';
+        return 'shopping_shipping';
     }
 }

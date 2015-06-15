@@ -40,19 +40,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </ul>
                                 </div>
 
-                                <div class="message">
-                                    {% for error in app.session.flashbag.get('eccube.front.errors')  %}
+                                {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
+                                    <div class="message">
                                         <p class="errormsg bg-danger">
                                             <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
                                         </p>
-                                    {% endfor %}
-                                </div>
+                                    </div>
+                                {% endfor %}
 
                                 {% if Cart.CartItems|length > 0 %}
                                 <form name="form" id="form_cart" method="post" action="{{ url('cart') }}">
                                     <p class="message">
                                         商品の合計金額は「<strong>￥{{ Cart.total_price|number_format }}</strong>」です。
-                                        {% if BaseInfo.option_product_deliv_fee == 1 %}
+                                        {% if BaseInfo.option_product_delivery_fee == 1 %}
                                             あと「<strong>￥</strong>」のお買い上げで<strong class="text-primary">送料無料</strong>になります。
                                             {{ message.deliv_fee|default('') }}
                                         {% endif %}
@@ -80,13 +80,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </div>
                                                     <div class="td table">
                                                         <div class="item_photo">
-                                                            <a target="_blank" href="{{ app.config.image_save_urlpath }}{{ Product.MainListImage|no_image_main_list }}">
+                                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
                                                                 <img src="{{ app.config.image_save_urlpath }}{{ Product.MainListImage|no_image_main_list }}" alt="{{ Product.name }}" />
                                                             </a>
                                                         </div>
                                                         <dl class="item_detail">
                                                             <dt class="item_name text-default">
-                                                                <a href="#">{{ Product.name }}</a>
+                                                                <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
                                                             </dt>
                                                             <dd class="item_pattern small">
                                                                 {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
@@ -140,9 +140,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 </form>
                                 {% else %}
+                                <div class="message">
                                     <p class="errormsg bg-danger">
                                         <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>※ 現在カート内に商品はございません。
                                     </p>
+                                </div>
                                 {% endif %}
 
                             </div><!-- /.col -->

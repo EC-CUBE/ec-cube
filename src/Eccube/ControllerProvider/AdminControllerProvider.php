@@ -98,11 +98,10 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/new', '\Eccube\Controller\Admin\Order\EditController::index')->bind('admin_order_new');
         $c->match('/order/{id}/edit', '\Eccube\Controller\Admin\Order\EditController::index')->assert('id', '\d+')->bind('admin_order_edit');
         $c->match('/order/{id}/delete', '\Eccube\Controller\Admin\Order\OrderController::delete')->assert('id', '\d+')->bind('admin_order_delete');
-        $c->match('/order/{id}/recalc', '\Eccube\Controller\Admin\Order\OrderController::recalculate')->assert('id', '\d+')->bind('admin_order_recalc');
-        $c->match('/order/{id}/product/add/{shipping_id}', '\Eccube\Controller\Admin\Order\OrderController::addProduct')->assert('id', '\d+')->assert('shipping_id', '\d+')->bind('admin_order_product_add');
-        $c->match('/order/{id}/product/select/{shipping_id}', '\Eccube\Controller\Admin\Order\OrderController::selectProduct')->assert('id', '\d+')->assert('shipping_id', '\d+')->bind('admin_order_product_select');
-        $c->match('/order/{id}/product/delete/{shipping_id}', '\Eccube\Controller\Admin\Order\OrderController::deleteProduct')->assert('id', '\d+')->assert('shipping_id', '\d+')->bind('admin_order_product_delete');
-        $c->match('/order/shipping/add', '\Eccube\Controller\Admin\Order\OrderController::addShipping')->bind('admin_order_shipping_add');
+        $c->match('/order/search/customer', '\Eccube\Controller\Admin\Order\EditController::searchCustomer')->bind('admin_order_search_customer');
+        $c->match('/order/search/customer/id', '\Eccube\Controller\Admin\Order\EditController::searchCustomerById')->bind('admin_order_search_customer_by_id');
+        $c->match('/order/search/product', '\Eccube\Controller\Admin\Order\EditController::searchProduct')->bind('admin_order_search_product');
+        $c->match('/order/search/product/id', '\Eccube\Controller\Admin\Order\EditController::searchProductById')->bind('admin_order_search_product_by_id');
 
         $c->match('/order/{id}/mail', '\Eccube\Controller\Admin\Order\MailController::index')->assert('id', '\d+')->bind('admin_order_mail');
         $c->match('/order/mail/view/{sendId}', '\Eccube\Controller\Admin\Order\MailController::view')->assert('sendId', '\d+')->bind('admin_order_mail_view');
@@ -143,7 +142,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/payment', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::index')->bind('admin_setting_shop_payment');
         $c->match('/setting/shop/payment/new', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::edit')->bind('admin_setting_shop_payment_new');
         $c->match('/setting/shop/payment/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::edit')->assert('id', '\d+')->bind('admin_setting_shop_payment_edit');
-        $c->match('/setting/shop/payment/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::delete')->assert('id', '\d+')->bind('admin_setting_shop_payment_delete');
+        $c->post('/setting/shop/payment/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::delete')->assert('id', '\d+')->bind('admin_setting_shop_payment_delete');
         $c->match('/setting/shop/payment/{id}/image/delete', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::deleteImage')->assert('id', '\d+')->bind('admin_setting_shop_payment_delete_image');
         $c->match('/setting/shop/payment/{id}/up', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::up')->assert('id', '\d+')->bind('admin_setting_shop_payment_up');
         $c->match('/setting/shop/payment/{id}/down', '\Eccube\Controller\Admin\Setting\Shop\PaymentController::down')->assert('id', '\d+')->bind('admin_setting_shop_payment_down');
