@@ -145,6 +145,7 @@ class ProductType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
 
     }

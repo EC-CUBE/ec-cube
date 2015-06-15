@@ -52,7 +52,8 @@ class PageMaxType extends AbstractType
                 $data = current($values);
                 $event->setData($data);
             }
-        });
+        })
+        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
