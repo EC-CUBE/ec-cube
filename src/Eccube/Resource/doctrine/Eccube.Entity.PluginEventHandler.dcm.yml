@@ -25,7 +25,8 @@ Eccube\Entity\PluginEventHandler:
         del_flg:
             type: smallint
             nullable: false
-            default: 0
+            options:
+                default: 0
         handler:
             type: string
             nullable: false

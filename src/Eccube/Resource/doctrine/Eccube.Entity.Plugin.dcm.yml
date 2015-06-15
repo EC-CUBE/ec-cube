@@ -16,25 +16,23 @@ Eccube\Entity\Plugin:
         name:
             type: text
             nullable: false
-#            column: plugin_name
         code:
             type: text
             nullable: false
-#            column: plugin_code
         class_name:
             type: text
         enable:
             type: smallint
             nullable: false
             unsigned: false
-#            default: '0'
             options:
                 default: 0
             column: plugin_enable
         del_flg:
             type: smallint
             nullable: false
-            default: '0'
+            options:
+                default: 0
         version:
             type: string
             nullable: false
