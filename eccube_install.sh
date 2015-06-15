@@ -31,9 +31,9 @@ CONFIG_PHP="app/config/eccube/config.php"
 CONFIG_YML="app/config/eccube/config.yml"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-HTTP_URL=${HTTP_URL:-"http://test.local/"}
-HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
-ROOT_URLPATH=${ROOT_URLPATH:-"/"}
+HTTP_URL=${HTTP_URL:-"http://127.0.0.1/"}
+HTTPS_URL=${HTTPS_URL:-"http://127.0.0.1/"}
+ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
 ADMIN_DIR=${ADMIN_DIR:-"admin"}
 
@@ -59,7 +59,7 @@ case "${DBTYPE}" in
 ;;
 "mysql" )
     #-- DB Seting MySQL
-    MYSQL=mysql
+    MYSQL=C:/xampp2/mysql/bin/mysql.exe
     ROOTUSER=root
     ROOTPASS=$DBPASS
     DBSERVER=$DBSERVER

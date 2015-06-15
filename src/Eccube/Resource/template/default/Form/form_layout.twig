@@ -222,21 +222,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock zip_widget -%}
 
 {%- block address_widget -%}
+    <div class="form-inline form-group input_zip">
     {{- form_widget(form[form.vars.pref_name], {'id': 'pref'}) -}}
+    </div>
     {%- if freeze -%}
         {{- form_widget(form[form.vars.addr01_name]) -}}
         {{- form_widget(form[form.vars.addr02_name]) -}}
     {%- else -%}
-        <p>
+        <div class="form-group">
             {{- form_widget(form[form.vars.addr01_name], {'id': 'addr01', 'attr': {'style': 'ime-mode: active;'}}) -}}<br />
             {{ app.config.sample_address1 }}
-        </p>
-        <p>
+        </div>
+        <div class="form-group">
             {{- form_widget(form[form.vars.addr02_name], {'id': 'addr02', 'attr': {'style': 'ime-mode: active;'}}) -}}<br />
             {{ app.config.sample_address2 }}
-        </p>
+        </div>
         {%- if help is defined and help is not empty -%}
-            <p class="mini"><span class="attention">{{ help|trans({}, translation_domain) }}</span></p>
+            <p class="small"><span class="attention">{{ help|trans({}, translation_domain) }}</span></p>
         {%- endif -%}
         {%- for child in form %}
             {{- form_errors(child) -}}
