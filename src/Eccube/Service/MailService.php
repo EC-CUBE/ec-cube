@@ -57,7 +57,7 @@ class MailService
             ->setBcc($this->app['config']['mail_cc'])
             ->setBody($body);
 
-        $this->app['mailer']->send($message);
+        $this->app->mail($message);
 
     }
 
@@ -81,8 +81,7 @@ class MailService
             ->setBcc($this->app['config']['mail_cc'])
             ->setBody($body);
 
-        $this->app['mailer']->send($message);
-
+        $this->app->mail($message);
     }
 
 
@@ -108,7 +107,7 @@ class MailService
             ->setBcc($this->app['config']['mail_cc'])
             ->setBody($body);
 
-        $this->app['mailer']->send($message);
+        $this->app->mail($message);
 
     }
 
@@ -129,7 +128,7 @@ class MailService
             ->setBcc($this->app['config']['mail_cc'])
             ->setBody($formData['contents']);
 
-        $this->app['mailer']->send($message);
+        $this->app->mail($message);
 
         // 管理者へメール送信
         $message = \Swift_Message::newInstance()
@@ -138,7 +137,7 @@ class MailService
             ->setTo($this->app['config']['mail_cc'])
             ->setBody($data['contents']);
 
-        $this->app['mailer']->send($message);
+        $this->app->mail($message);
 
     }
 
@@ -162,7 +161,7 @@ class MailService
             ->setBcc($this->app['config']['mail_cc'])
             ->setBody($body);
 
-        $this->app['mailer']->send($message);
+        $this->app->mail($message);
 
     }
 
@@ -191,9 +190,36 @@ class MailService
             ->setReturnPath($BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->app['mailer']->send($message);
+        $this->app->mail($message);
 
     }
+
+
+    /**
+     * Send admin order mail.
+     *
+     * @param $Order 受注情報
+     * @param $formData 入力内容
+     */
+    public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
+    {
+
+        $body = $this->app['view']->render('Mail/order.twig', array(
+            'Order' => $Order,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($formData['subject'])
+            ->setFrom(array('sample@example.com'))
+            ->setTo(array($Order->getEmail()))
+            ->setTo(array($Order->getEmail()))
+            ->setBcc($this->app['config']['mail_cc'])
+            ->setBody($body);
+
+        $this->app->mail($message);
+
+    }
+
 
 
 }

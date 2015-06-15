@@ -215,11 +215,6 @@ class Application extends \Silex\Application
         }
         $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
 
-
-        $this['mail.message'] = function () {
-            return \Swift_Message::newInstance();
-        };
-
         // ORM
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
