@@ -207,14 +207,15 @@ class Application extends \Silex\Application
         }
 
         // Mail
-        $this['swiftmailer.option'] = $this['config']['mail'];
+        $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
+        $this['swiftmailer.options'] = $this['config']['mail'];
         // $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
         if ($app['env'] === 'dev' || $app['env'] === 'test') {
             if (isset($this['config']['delivery_address'])) {
                 $this['delivery_address'] = $this['config']['delivery_address'];
             }
         }
-        $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
+
 
         $this['mail.message'] = function () {
             return \Swift_Message::newInstance();
