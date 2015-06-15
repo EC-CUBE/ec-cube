@@ -132,7 +132,7 @@ function fnReSendMail(action) {
                                                 <li><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">編集</a></li>
                                                 <li><a href="#" onclick="fnDelete('{{ url('admin_customer_delete', { 'id': Customer.id}) }}');return false;">削除</a></li>
                                                 {% if Customer.Status.id == 1 %}
-                                                <li><a href="#" onclick="fnReSendMail('{{ url('admin_customer_delete', { 'id': Customer.id}) }}');return false;">仮会員メール再送</a></li>
+                                                <li><a href="#" onclick="fnReSendMail('{{ url('admin_customer_resend', { 'id': Customer.id}) }}');return false;">仮会員メール再送</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>

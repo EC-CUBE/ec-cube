@@ -207,14 +207,13 @@ class Application extends \Silex\Application
         }
 
         // Mail
-        $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
         $this['swiftmailer.options'] = $this['config']['mail'];
-        // $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
         if ($app['env'] === 'dev' || $app['env'] === 'test') {
             if (isset($this['config']['delivery_address'])) {
                 $this['delivery_address'] = $this['config']['delivery_address'];
             }
         }
+        $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
 
 
         $this['mail.message'] = function () {
@@ -361,7 +360,7 @@ class Application extends \Silex\Application
             array('^/admin/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/admin', 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/refusal_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage', 'ROLE_USER'),
         );
         $app['eccube.password_encoder'] = $app->share(function ($app) {

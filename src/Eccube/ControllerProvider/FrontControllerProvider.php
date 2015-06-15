@@ -67,7 +67,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         // entry
         $c->match('/entry', '\Eccube\Controller\EntryController::index')->bind('entry');
         $c->match('/entry/complete', '\Eccube\Controller\EntryController::complete')->bind('entry_complete');
-        $c->match('/entry/activate', '\Eccube\Controller\EntryController::activate')->bind('entry_activate');
+        $c->match('/entry/activate/{secret_key}', '\Eccube\Controller\EntryController::activate')->bind('entry_activate');
 
         // forgot
         $c->match('/forgot', '\Eccube\Page\Forgot\Index')->bind('forgot');
@@ -106,8 +106,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/history/{id}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('id', '\d+');
         $c->match('/mypage/mail_view/{id}', '\Eccube\Controller\Mypage\MypageController::mailView')->bind('mypage_mail_view')->assert('id', '\d+');
         $c->match('/mypage/order', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
-        $c->match('/mypage/refusal', '\Eccube\Controller\Mypage\RefusalController::index')->bind('mypage_refusal');
-        $c->match('/mypage/refusal_complete', '\Eccube\Controller\Mypage\RefusalController::complete')->bind('mypage_refusal_complete');
+        $c->match('/mypage/withdraw', '\Eccube\Controller\Mypage\WithdrawController::index')->bind('mypage_withdraw');
+        $c->match('/mypage/withdraw_complete', '\Eccube\Controller\Mypage\WithdrawController::complete')->bind('mypage_withdraw_complete');
 
         // preview
         $c->match('/preview', '\Eccube\Page\Preview\Index')->bind('preview');

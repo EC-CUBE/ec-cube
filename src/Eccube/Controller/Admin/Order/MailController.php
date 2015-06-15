@@ -116,6 +116,12 @@ class MailController
                         $app['orm.em']->persist($MailHistory);
                         $app['orm.em']->flush($MailHistory);
 
+
+                        // メール送信
+                        $app['eccube.service.mail']->sendAdminOrderMail($Order);
+
+
+
                         return $app->redirect($app['url_generator']->generate('admin_order'));
                         break;
                     default:

@@ -21,25 +21,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'site_main.twig' %}
 
+{% set mypageno = 'withdraw' %}
+
 {% block main %}
-    <div id="undercolumn">
+<div id="mypagecolumn">
+    <div id="mycontents_area">
+        <div id="complete_area">
+            <div class="message">退会手続きが完了いたしました。<br />
+                {{ BaseInfo.shop_name }}をご利用いただき誠にありがとうございました。<br />
+                またのご利用を心よりお待ち申し上げます。
+            </div>
 
-        <div id="undercolumn_contact">
-
-            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
-                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
-
-            <form name="form1" id="form1" method="post" action="?"{{ form_enctype(form) }}>
-                {{ form_widget(form) }}
-
-                <div class="btn_area">
-                    <ul>
-                        <li>
-                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_confirm.jpg" alt="確認ページへ" name="mode" value="confirm" />
-                        </li>
-                    </ul>
-                </div>
-            </form>
+            <div class="shop_information">
+                <p class="name">{{ BaseInfo.company_name }}</p>
+                <p>TEL：{{ BaseInfo.tel01 }}-{{ BaseInfo.tel02 }}-{{ BaseInfo.tel03 }} {% if BaseInfo.business_hour is not empty %}（受付時間/{{ BaseInfo.business_hour }}）{% endif %}<br />
+                E-mail：<a href="mailto:{{ BaseInfo.email02 }}">{{ BaseInfo.email02 }}</a></p>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}
