@@ -827,7 +827,7 @@ p.message {
 }
 
 /* main */
-#main {
+#main_middle {
 
 }
 
@@ -3390,29 +3390,29 @@ fieldset[disabled] .btn-link:focus {
 	}
 	
 	
-	#side1 {
+	#side_left {
 		float: left;
 		width: 25%;
 		padding-right: 16px;
 	}
-	#side2 {
+	#side_right {
 		float: right;
 		width: 25%;
 		padding-left: 16px;
 	}
 	
-	/* -- main_left (side2 only) -- */
+	/* -- main_left (side_right only) -- */
 	
 	/* main */
-	.main_left #main {
+	.theme_side_right #main_middle {
 		width: 75%;
 		float: left;
 	}
 
-	/* -- main_right (side1 only) -- */
+	/* -- main_right (side_left only) -- */
 
 	/* main */
-	.main_right #main {
+	.theme_side_left #main_middle {
 		width: 75%;
 		float: right;
 	}
@@ -3420,15 +3420,15 @@ fieldset[disabled] .btn-link:focus {
 	/* -- main_only -- */
 	
 	/* main */
-	.main_only #main {
+	.theme_main_only #main_middle {
 		width: 100%;
 	}
 
 
-	/* -- main_left_right (side1 & 2) -- */
+	/* -- main_left_right (side_left & side_right) -- */
 	
 	/* main */
-	.main_left_right #main {
+	.theme_side_both #main_middle {
 		width: 50%;
 		float: left;
 	}

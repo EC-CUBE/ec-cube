@@ -63,6 +63,23 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
         return 1 + ($this->getLeftNavi() ? 1 : 0) + ($this->getRightNavi() ? 1 : 0);
     }
 
+    public function getTheme()
+    {
+        $hasLeft = $this->getLeftNavi() ? true : false;
+        $hasRight = $this->getRightNavi() ? true : false;
+
+        $theme = 'theme_main_only';
+        if ($hasLeft && $hasRight) {
+            $theme = 'theme_side_both';
+        } elseif ($hasLeft) {
+            $theme = 'theme_side_left';
+        } elseif ($hasRight) {
+            $theme = 'theme_side_right';
+        }
+
+        return $theme;
+    }
+
     /**
      * Get LeftNavi
      *

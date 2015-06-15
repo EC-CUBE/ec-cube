@@ -165,6 +165,7 @@ class Application extends \Silex\Application
             } catch (\Doctrine\ORM\NoResultException $e) {
                 $PageLayout = $app['eccube.repository.page_layout']->newPageLayout(10);
             }
+
             $app["twig"]->addGlobal("PageLayout", $PageLayout);
             $app["twig"]->addGlobal("title", $PageLayout->getName());
 
