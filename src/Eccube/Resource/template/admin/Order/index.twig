@@ -154,7 +154,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row btn_area">
                         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                             <button class="btn btn-primary btn-block btn-lg" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;">
-                                検索する <span class="fa fa-chevron-right"></span>
+                                検索する <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
                             </button>
                         </div>
                         <!-- /.col --> 
@@ -176,7 +176,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <ul class="sort-dd">
                                     <li class="dropdown">
                                         {% for pageMax in pageMaxis if pageMax.name == page_count %}
-                                            <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<span class="fa fa-chevron-down icon_down"></span></a>
+                                            <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                             <ul class="dropdown-menu">
                                         {% endfor %}
                                         {% for pageMax in pageMaxis if pageMax.name != page_count %}
@@ -185,7 +185,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                         <ul class="dropdown-menu">
                                             <li><a>CSVダウンロード</a></li>
                                             <li><a>出力項目設定</a></li>
