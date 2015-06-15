@@ -67,10 +67,12 @@ class OrderService
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if (!is_null($ClassCategory1)) {
             $OrderDetail->setClasscategoryName1($ClassCategory1->getName());
+            $OrderDetail->setClassName1($ClassCategory1->getClassName()->getName());
         }
         $ClassCategory2 = $ProductClass->getClassCategory2();
         if (!is_null($ClassCategory2)) {
             $OrderDetail->setClasscategoryName2($ClassCategory2->getName());
+            $OrderDetail->setClassName2($ClassCategory2->getClassName()->getName());
         }
 
         return $OrderDetail;
@@ -199,10 +201,12 @@ class OrderService
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
                 $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
+                $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
             }
             $ClassCategory2 = $ProductClass->getClassCategory2();
             if (!is_null($ClassCategory2)) {
                 $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
+                $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
             }
             $Shipping->addShipmentItem($ShipmentItem);
             $em->persist($ShipmentItem);
@@ -282,7 +286,7 @@ class OrderService
 
 
     /**
-     * 商品公開ステータスチェック、在庫チェックを行い、購入制限数チェック、在庫情報をロックする
+     * 商品公開ステータスチェック、在庫チェック、購入制限数チェックを行い、在庫情報をロックする
      *
      * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
@@ -393,7 +397,7 @@ class OrderService
 
 
     /**
-     * 顧客情報の更新
+     * 会員情報の更新
      *
      * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
@@ -402,7 +406,6 @@ class OrderService
     public function setCustomerUpdate($em, \Eccube\Entity\Order $Order, \Eccube\Entity\Customer $user)
     {
 
-        // 商品公開ステータスチェック
         $orderDetails = $Order->getOrderDetails();
 
         // 顧客情報を更新

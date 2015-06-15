@@ -171,8 +171,6 @@ class ShoppingController extends AbstractController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                /** @var $Order \Eccube\Entity\Order */
-
                 // トランザクション制御
                 $em = $app['orm.em'];
                 $em->getConnection()->beginTransaction();
@@ -237,6 +235,13 @@ class ShoppingController extends AbstractController
     {
         $this->init($app);
 
+        // カートチェック
+        if (!$this->cartService->isLocked()) {
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
+
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
         $Order = $this->orderRepository->findOneBy(array('pre_order_id' => $this->cartService->getPreOrderId()));
@@ -291,9 +296,6 @@ class ShoppingController extends AbstractController
 
                 // 受注関連情報を最新状態に更新
                 $app['orm.em']->flush();
-
-                $app['orm.em']->refresh($Order);
-
 
                 return $app->redirect($app->url('shopping'));
 
@@ -354,8 +356,6 @@ class ShoppingController extends AbstractController
                 // 受注関連情報を最新状態に更新
                 $app['orm.em']->flush();
 
-                $app['orm.em']->refresh($Order);
-
                 return $app->redirect($app->url('shopping'));
 
             }
@@ -372,6 +372,12 @@ class ShoppingController extends AbstractController
     public function shipping(Application $app, Request $request)
     {
         $this->init($app);
+
+        // カートチェック
+        if (!$this->cartService->isLocked()) {
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
 
         if ('POST' === $request->getMethod()) {
             $address = $request->get('address');
@@ -509,9 +515,6 @@ class ShoppingController extends AbstractController
                 // 配送先を更新
                 $app['orm.em']->flush();
 
-                // 受注関連情報を最新状態に更新
-                $app['orm.em']->refresh($Order);
-
                 return $app->redirect($app->url('shopping'));
 
             }
@@ -582,7 +585,7 @@ class ShoppingController extends AbstractController
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         // Sessionにエラー情報があるか確認
-        } elseif ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
+        } else if ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
             // Sessionからエラー情報を取得
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             // 一度表示したらSessionからは削除する
@@ -663,33 +666,7 @@ class ShoppingController extends AbstractController
                     $cartService->save();
                 }
 
-                // 受注関連情報を最新状態に更新
-                $app['orm.em']->refresh($Order);
-
-                $form = $app['form.factory']->createBuilder('shopping')->getForm();
-
-                $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
-
-                $shippings = $Order->getShippings();
-                $delivery = $shippings[0]->getDelivery();
-
-                // 配送業社の設定
-                $this->setFormDelivery($form, $deliveries, $delivery);
-
-                // お届け日の設定
-                $this->setFormDeliveryDate($form, $Order, $app);
-
-                // お届け時間の設定
-                $this->setFormDeliveryTime($form, $delivery);
-
-                // 支払い方法選択
-                $this->setFormPayment($form, $delivery, $Order->getPayment());
-
-
-                return $app['view']->render('Shopping/index.twig', array(
-                        'form' => $form->createView(),
-                        'Order' => $Order,
-                ));
+                return $app->redirect($app->url('shopping'));
 
             }
         }
