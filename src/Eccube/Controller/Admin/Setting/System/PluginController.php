@@ -56,6 +56,11 @@ class PluginController extends AbstractController
             if($form->get('disable')->isClicked()){
                 $service->disable(  $repo->find((int)$data['plugin_id'] )     );
             }
+            if($form->get('update')->isClicked()){
+                $tempfile=sha1( openssl_random_pseudo_bytes(20) );
+                $form['plugin_archive']->getData()->move(sys_get_temp_dir() ,$tempfile )   ;
+                $service->update( $repo->find((int)$data['plugin_id'] )  , sys_get_temp_dir().'/'.$tempfile );
+            }
             
         }
 

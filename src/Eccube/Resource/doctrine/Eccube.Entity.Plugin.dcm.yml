@@ -27,7 +27,10 @@ Eccube\Entity\Plugin:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+#            default: '0'
+            options:
+                default: 0
+            column: plugin_enable
         del_flg:
             type: smallint
             nullable: false
@@ -51,6 +54,7 @@ Eccube\Entity\Plugin:
         PluginEventHandlers:
             targetEntity: Eccube\Entity\PluginEventHandler
             mappedBy: Plugin
+            cascade: ["persist", "remove"]
 
 
     lifecycleCallbacks: {  }

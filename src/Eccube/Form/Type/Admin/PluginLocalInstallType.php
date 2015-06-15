@@ -59,7 +59,8 @@ class PluginLocalInstallType extends AbstractType
             ->add('uninstall', 'submit') 
             ->add('enable', 'submit') 
             ->add('disable', 'submit') 
-            ->add('update', 'submit');
+            ->add('update', 'submit') 
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
