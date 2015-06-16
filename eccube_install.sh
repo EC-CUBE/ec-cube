@@ -209,12 +209,13 @@ database:
     password : ${CONFIGPASS:-$DBPASS}
     charset: utf8
 mail:
+    transport: smtp
     host: localhost
     port: 25
-    username: 
-    password: 
-    encryption: 
-    auth_mode: 
+    username: null
+    password: null
+    encryption: null
+    auth_mode: null
 delivery_address: 
 auth_magic: ${AUTH_MAGIC}
 password_hash_algos: sha256
