@@ -5,12 +5,13 @@ database:
     password: sample_password
     charset: utf8
 mail:
+    transport: smtp
     host: localhost
     port: 25
-    username: sample
-    password: sample
-    encryption:
-    auth_mode: 
+    username: null
+    password: null
+    encryption: null
+    auth_mode: null
 auth_magic: droucliuijeanamiundpnoufrouphudrastiokec
 password_hash_algos: sha256
 root: /

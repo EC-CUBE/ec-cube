@@ -213,7 +213,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Order in pagination %}
                                             <tr>
                                                 <td>{{ Order.order_date|date_format }}</td>
-                                                <td>{{ Order.pre_order_id }}</td>
+                                                <td>{{ Order.id }}</td>
                                                 <td>{{ Order.name01 }} {{ Order.name02 }}</td>
                                                 <td>{{ Order.payment_method }}</td>
                                                 <td class="text-right">{{ Order.payment_total|number_format }}</td>

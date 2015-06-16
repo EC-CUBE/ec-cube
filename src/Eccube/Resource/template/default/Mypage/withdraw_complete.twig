@@ -21,12 +21,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set mypageno = 'withdraw' %}
+
 {% block main %}
 <div id="mypagecolumn">
-    <h2 class="title">{{ title }}</h2>
-    {% include 'Mypage/navi.twig' %}
     <div id="mycontents_area">
-        <h3>{{ subtitle }}</h3>
         <div id="complete_area">
             <div class="message">退会手続きが完了いたしました。<br />
                 {{ BaseInfo.shop_name }}をご利用いただき誠にありがとうございました。<br />

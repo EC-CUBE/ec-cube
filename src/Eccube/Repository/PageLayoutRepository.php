@@ -150,8 +150,8 @@ class PageLayoutRepository extends EntityRepository
             'mypage_favorite' => 'mypage/favorite.php',
             'mypage_history' => 'mypage/history.php',
             'mypage_login' => 'mypage/login.php',
-            'mypage_refusal' => 'mypage/refusal.php',
-            'mypage_refusal_complete' => 'mypage/refusal_complete.php',
+            'mypage_withdraw' => 'mypage/withdraw.php',
+            'mypage_withdraw_complete' => 'mypage/withdraw_complete.php',
 
             'help_about' => 'abouts/index.php',
             'cart' => 'cart/index.php',
