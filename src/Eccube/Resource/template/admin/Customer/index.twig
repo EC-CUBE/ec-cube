@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}会員マスター{% endblock %}
 
-{% form_theme searchForm 'Form/bootstrap_3_layout.html.twig' %}
+{% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
 function fnChangeActionSubmit(action) {
@@ -47,6 +47,7 @@ function fnReSendMail(action) {
 
 {% block main %}
 <form name="search_form" id="search_form" method="post" action="">
+    {{ form_widget(searchForm._token) }}
     <!--検索条件設定テーブルここから-->
     <div class="search-box">
             <div class="row">
@@ -56,13 +57,128 @@ function fnReSendMail(action) {
 
                     <a class="toggle" href="#"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
                     <div class="search-box-inner accpanel">
-                        {{ form_rest(searchForm, { attr : { class : 'search' } }) }}
+                    	<div class="row">
+                            <div class="col-sm-12 col-lg-10 col-lg-offset-1 search">
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-4">
+                                        <div class="form-group">
+                                        <label>会員種別</label>
+                                        {{ form_widget(searchForm.customer_status) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-md-4">
+                                        <div class="form-group">
+                                            <label>性別</label>
+                                            {{ form_widget(searchForm.sex) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-4">
+                                        <div class="form-group">
+                                            <label>誕生月</label>
+                                            {{ form_widget(searchForm.birth_month) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>職業</label>
+                                            {{ form_widget(searchForm.job) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>誕生日</label>
+                                        <div class="form-group range">
+                                            {{ form_widget(searchForm.birth_start) }} ～ {{ form_widget(searchForm.birth_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                        <label>都道府県</label>
+                                        {{ form_widget(searchForm.pref) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>電話番号</label>
+                                            <div class="input_tel">
+                                            {{ form_widget(searchForm.tel) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>登録日</label>
+                                            {{ form_widget(searchForm.create_date_start) }} ～ {{ form_widget(searchForm.create_date_end) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>更新日</label>
+                                            {{ form_widget(searchForm.update_date_start) }} ～ {{ form_widget(searchForm.update_date_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>購入金額</label>
+                                            {{ form_widget(searchForm.buy_total_start) }} ～ {{ form_widget(searchForm.buy_total_end) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>購入回数</label>
+                                            {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row --> 
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>購入商品カテゴリー</label>
+                                            <select class="form-control">
+                                                <option>おなべ</option>
+                                                <option>アイス</option>
+                                                <option>立方体</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>購入商品名・コード</label>
+                                            {{ form_widget(searchForm.buy_product_code) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>最終購入日</label>
+                                            {{ form_widget(searchForm.last_buy_start) }} ～ {{ form_widget(searchForm.last_buy_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                    </div>
+                                </div><!-- /.row --> 
+
                             </div>
-                        </div><!-- /.row -->
+                        </div>
                     </div>
                 </div>
                 <!-- /.col -->
