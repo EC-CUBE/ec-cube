@@ -1,28 +1,8 @@
 <?php
-/*
- * This file is part of EC-CUBE
- *
- * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
- *
- * http://www.lockon.co.jp/
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-
 
 namespace Eccube\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PageLayout
@@ -32,26 +12,15 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     // 配置ID
     /** 配置ID: 未使用 */
     const TARGET_ID_UNUSED = 0;
-    /** 配置ID: LeftNavi */
-    const TARGET_ID_LEFT = 1;
-    /** 配置ID: MainHead */
-    const TARGET_ID_MAIN_HEAD = 2;
-    /** 配置ID: RightNavi */
-    const TARGET_ID_RIGHT = 3;
-    /** 配置ID: MainFoot */
-    const TARGET_ID_MAIN_FOOT = 4;
-    /** 配置ID: TopNavi */
-    const TARGET_ID_TOP = 5;
-    /** 配置ID: BottomNavi */
-    const TARGET_ID_BOTTOM = 6;
-    /** 配置ID: HeadNavi */
-    const TARGET_ID_HEAD = 7;
-    /** 配置ID: HeadTopNavi */
-    const TARGET_ID_HEAD_TOP = 8;
-    /** 配置ID: FooterBottomNavi */
-    const TARGET_ID_FOOTER_BOTTOM = 9;
-    /** 配置ID: HeaderInternalNavi */
-    const TARGET_ID_HEADER_INTERNAL = 10;
+    const TARGET_ID_HEAD = 1;
+    const TARGET_ID_HEADER = 2;
+    const TARGET_ID_CONTENTS_TOP = 3;
+    const TARGET_ID_SIDE_LEFT = 4;
+    const TARGET_ID_MAIN_TOP = 5;
+    const TARGET_ID_MAIN_BOTTOM = 6;
+    const TARGET_ID_SIDE_RIGHT = 7;
+    const TARGET_ID_CONTENTS_BOTTOM = 8;
+    const TARGET_ID_FOOTER = 9;
 
     /**
      * Get ColumnNum
@@ -60,107 +29,24 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      */
     public function getColumnNum()
     {
-        return 1 + ($this->getLeftNavi() ? 1 : 0) + ($this->getRightNavi() ? 1 : 0);
+        return 1 + ($this->getSideLeft() ? 1 : 0) + ($this->getSideRight() ? 1 : 0);
     }
 
-    /**
-     * Get LeftNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getLeftNavi()
+    public function getTheme()
     {
-        return $this->getBlocsByTargetId(self::TARGET_ID_LEFT);
-    }
+        $hasLeft = $this->getSideLeft() ? true : false;
+        $hasRight = $this->getSideRight() ? true : false;
 
-    /**
-     * Get MainHead
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getMainHead()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_MAIN_HEAD);
-    }
+        $theme = 'theme_main_only';
+        if ($hasLeft && $hasRight) {
+            $theme = 'theme_side_both';
+        } elseif ($hasLeft) {
+            $theme = 'theme_side_left';
+        } elseif ($hasRight) {
+            $theme = 'theme_side_right';
+        }
 
-    /**
-     * Get RightNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getRightNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_RIGHT);
-    }
-
-    /**
-     * Get MainFoot
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getMainFoot()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_MAIN_FOOT);
-    }
-
-    /**
-     * Get TopNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getTopNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_TOP);
-    }
-
-    /**
-     * Get BottomNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getBottomNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_BOTTOM);
-    }
-
-    /**
-     * Get 
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getHeadNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_HEAD);
-    }
-
-    /**
-     * Get HeaderTopNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getHeaderTopNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_HEAD_TOP);
-    }
-
-    /**
-     * Get FooterBottomNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getFooterBottomNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_FOOTER_BOTTOM);
-    }
-
-    /**
-     * Get HeaderInternalNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getHeaderInternalNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_HEADER_INTERNAL);
+        return $theme;
     }
 
     /**
@@ -169,27 +55,72 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      * @param integer $target_id
      * @return \Eccube\Entity\Bloc[]
      */
-    public function getBlocsByTargetId($target_id)
+    public function getBlocksByTargetId($target_id)
     {
-        $Blocs = array();
-        foreach ($this->getBlocPositions() as $BlocPositions) {
-            if ($BlocPositions->getTargetId() === $target_id) {
-                $Blocs[] = $BlocPositions->getBloc();
+        $Blocks = array();
+        foreach ($this->getBlockPositions() as $BlockPositions) {
+            if ($BlockPositions->getTargetId() === $target_id) {
+                $Blocks[] = $BlockPositions->getBlock();
             }
         }
-        return $Blocs;
+        return $Blocks;
+    }
+
+    public function getUnused()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_UNUSED);
+    }
+
+    public function getHead()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_HEAD);
+    }
+
+    public function getHeader()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_HEADER);
+    }
+
+    public function getContentsTop()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_TOP);
+    }
+
+    public function getSideLeft()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_LEFT);
+    }
+
+    public function getMainTop()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_TOP);
+    }
+
+    public function getMainBottom()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_BOTTOM);
+    }
+
+    public function getSideRight()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_RIGHT);
+    }
+
+    public function getContentsBottom()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
+    }
+
+    public function getFooter()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_FOOTER);
     }
 
 
     /**
      * @var integer
      */
-    private $device_type_id;
-
-    /**
-     * @var integer
-     */
-    private $page_id;
+    private $id;
 
     /**
      * @var string
@@ -204,17 +135,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $filename;
-
-    /**
-     * @var integer
-     */
-    private $header_chk;
-
-    /**
-     * @var integer
-     */
-    private $footer_chk;
+    private $file_name;
 
     /**
      * @var integer
@@ -259,25 +180,16 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $BlocPositions;
+    private $BlockPositions;
 
     /**
-     * Constructor
+     * @var \Eccube\Entity\Master\DeviceType
      */
-    public function __construct()
-    {
-        $this->BlocPositions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $DeviceType;
 
-    /**
-     * Set device_type_id
-     *
-     * @param  integer    $deviceTypeId
-     * @return PageLayout
-     */
-    public function setDeviceTypeId($deviceTypeId)
+    public function setDeviceTypeId($device_type_id)
     {
-        $this->device_type_id = $deviceTypeId;
+        $this->device_type_id = $device_type_id;
 
         return $this;
     }
@@ -293,32 +205,27 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set page_id
-     *
-     * @param  integer    $pageId
-     * @return PageLayout
+     * Constructor
      */
-    public function setPageId($pageId)
+    public function __construct()
     {
-        $this->page_id = $pageId;
-
-        return $this;
+        $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get page_id
+     * Get id
      *
-     * @return integer
+     * @return integer 
      */
-    public function getPageId()
+    public function getId()
     {
-        return $this->page_id;
+        return $this->id;
     }
 
     /**
      * Set name
      *
-     * @param  string     $name
+     * @param string $name
      * @return PageLayout
      */
     public function setName($name)
@@ -331,7 +238,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -341,7 +248,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set url
      *
-     * @param  string     $url
+     * @param string $url
      * @return PageLayout
      */
     public function setUrl($url)
@@ -354,7 +261,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get url
      *
-     * @return string
+     * @return string 
      */
     public function getUrl()
     {
@@ -362,78 +269,32 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set filename
+     * Set file_name
      *
-     * @param  string     $filename
+     * @param string $fileName
      * @return PageLayout
      */
-    public function setFilename($filename)
+    public function setFileName($fileName)
     {
-        $this->filename = $filename;
+        $this->file_name = $fileName;
 
         return $this;
     }
 
     /**
-     * Get filename
+     * Get file_name
      *
-     * @return string
+     * @return string 
      */
-    public function getFilename()
+    public function getFileName()
     {
-        return $this->filename;
-    }
-
-    /**
-     * Set header_chk
-     *
-     * @param  integer    $headerChk
-     * @return PageLayout
-     */
-    public function setHeaderChk($headerChk)
-    {
-        $this->header_chk = $headerChk;
-
-        return $this;
-    }
-
-    /**
-     * Get header_chk
-     *
-     * @return integer
-     */
-    public function getHeaderChk()
-    {
-        return $this->header_chk;
-    }
-
-    /**
-     * Set footer_chk
-     *
-     * @param  integer    $footerChk
-     * @return PageLayout
-     */
-    public function setFooterChk($footerChk)
-    {
-        $this->footer_chk = $footerChk;
-
-        return $this;
-    }
-
-    /**
-     * Get footer_chk
-     *
-     * @return integer
-     */
-    public function getFooterChk()
-    {
-        return $this->footer_chk;
+        return $this->file_name;
     }
 
     /**
      * Set edit_flg
      *
-     * @param  integer    $editFlg
+     * @param integer $editFlg
      * @return PageLayout
      */
     public function setEditFlg($editFlg)
@@ -446,7 +307,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get edit_flg
      *
-     * @return integer
+     * @return integer 
      */
     public function getEditFlg()
     {
@@ -456,7 +317,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set author
      *
-     * @param  string     $author
+     * @param string $author
      * @return PageLayout
      */
     public function setAuthor($author)
@@ -469,7 +330,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get author
      *
-     * @return string
+     * @return string 
      */
     public function getAuthor()
     {
@@ -479,7 +340,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set description
      *
-     * @param  string     $description
+     * @param string $description
      * @return PageLayout
      */
     public function setDescription($description)
@@ -492,7 +353,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get description
      *
-     * @return string
+     * @return string 
      */
     public function getDescription()
     {
@@ -502,7 +363,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set keyword
      *
-     * @param  string     $keyword
+     * @param string $keyword
      * @return PageLayout
      */
     public function setKeyword($keyword)
@@ -515,7 +376,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get keyword
      *
-     * @return string
+     * @return string 
      */
     public function getKeyword()
     {
@@ -525,7 +386,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_url
      *
-     * @param  string     $updateUrl
+     * @param string $updateUrl
      * @return PageLayout
      */
     public function setUpdateUrl($updateUrl)
@@ -538,7 +399,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_url
      *
-     * @return string
+     * @return string 
      */
     public function getUpdateUrl()
     {
@@ -548,7 +409,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param  \DateTime  $createDate
+     * @param \DateTime $createDate
      * @return PageLayout
      */
     public function setCreateDate($createDate)
@@ -561,7 +422,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateDate()
     {
@@ -571,7 +432,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param  \DateTime  $updateDate
+     * @param \DateTime $updateDate
      * @return PageLayout
      */
     public function setUpdateDate($updateDate)
@@ -584,7 +445,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getUpdateDate()
     {
@@ -594,7 +455,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set meta_robots
      *
-     * @param  string     $metaRobots
+     * @param string $metaRobots
      * @return PageLayout
      */
     public function setMetaRobots($metaRobots)
@@ -607,7 +468,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get meta_robots
      *
-     * @return string
+     * @return string 
      */
     public function getMetaRobots()
     {
@@ -615,35 +476,58 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add BlocPositions
+     * Add BlockPosition
      *
-     * @param  \Eccube\Entity\BlocPosition $blocPositions
+     * @param \Eccube\Entity\BlockPosition $blockPosition
      * @return PageLayout
      */
-    public function addBlocPosition(\Eccube\Entity\BlocPosition $blocPositions)
+    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
-        $this->BlocPositions[] = $blocPositions;
+        $this->BlockPositions[] = $blockPosition;
 
         return $this;
     }
 
     /**
-     * Remove BlocPositions
+     * Remove BlockPosition
      *
-     * @param \Eccube\Entity\BlocPosition $blocPositions
+     * @param \Eccube\Entity\BlockPosition $blockPosition
      */
-    public function removeBlocPosition(\Eccube\Entity\BlocPosition $blocPositions)
+    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
-        $this->BlocPositions->removeElement($blocPositions);
+        $this->BlockPositions->removeElement($blockPosition);
     }
 
     /**
-     * Get BlocPositions
+     * Get BlockPositions
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getBlocPositions()
+    public function getBlockPositions()
     {
-        return $this->BlocPositions;
+        return $this->BlockPositions;
+    }
+
+    /**
+     * Set DeviceType
+     *
+     * @param \Eccube\Entity\Master\DeviceType $deviceType
+     * @return PageLayout
+     */
+    public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
+    {
+        $this->DeviceType = $deviceType;
+
+        return $this;
+    }
+
+    /**
+     * Get DeviceType
+     *
+     * @return \Eccube\Entity\Master\DeviceType 
+     */
+    public function getDeviceType()
+    {
+        return $this->DeviceType;
     }
 }

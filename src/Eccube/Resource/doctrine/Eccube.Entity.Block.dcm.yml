@@ -1,43 +1,43 @@
-Eccube\Entity\Bloc:
+Eccube\Entity\Block:
     type: entity
-    table: dtb_bloc
-    repositoryClass: Eccube\Repository\BlocRepository
+    table: dtb_block
+    repositoryClass: Eccube\Repository\BlockRepository
     uniqueConstraints:
         device_type_id:
             columns:
                 - device_type_id
-                - filename
+                - file_name
     id:
-        device_type_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-        bloc_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            column: block_id
+            generator:
+                strategy: AUTO
     fields:
         name:
             type: text
-            column: bloc_name
+            column: block_name
             nullable: true
         tpl_path:
             type: text
             nullable: true
-        filename:
+        file_name:
             type: string
             length: 200
             nullable: false
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
+#            options:
+#                default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
+#            options:
+#                default: '0000-00-00 00:00:00'
         php_path:
             type: text
             nullable: true
@@ -45,20 +45,17 @@ Eccube\Entity\Bloc:
             type: smallint
             nullable: false
             unsigned: false
-            default: '1'
-#        plugin_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-    manyToOne:
-        Plugin:
-            targetEntity: Eccube\Entity\Plugin
-            joinColumn:
-                name: plugin_id
-                referencedColumnName: plugin_id
+            options:
+                default: '1'
     oneToMany:
-        BlocPositions:
-            targetEntity: Eccube\Entity\BlocPosition
+        BlockPositions:
+            targetEntity: Eccube\Entity\BlockPosition
             cascade: ["persist", "remove"]
-            mappedBy: Bloc
+            mappedBy: Block
+    manyToOne:
+        DeviceType:
+            targetEntity: Eccube\Entity\Master\DeviceType
+            joinColumn:
+                name: device_type_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

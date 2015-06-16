@@ -19,56 +19,50 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block title %}お届け先の指定{% endblock %}
 
 {% block main %}
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner">
-            <div id="main">
-                <h1 class="page-heading">お届け先の指定</h1>
-                <div class="container-fluid">
-                    <form method="post" action="{{ url('shopping_shipping') }}">
-                        <div id="deliveradd_select" class="row">
-                            <div class="col-sm-10 col-sm-offset-1">
-                                <p><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
+    <h1 class="page-heading">お届け先の指定</h1>
+    <div class="container-fluid">
+        <form method="post" action="{{ url('shopping_shipping') }}">
+            <div id="deliveradd_select" class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <p><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
 
-                                {% if Customer.CustomerAddresses|length > 0 %}
-                                 <div class="table address_table">
-                                    <div class="tbody">
-                                        {% for CustomerAddress in Customer.CustomerAddresses %}
-                                        <div class="addr_box tr">
-                                        <div class="icon_radio td"><input type="radio" id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" /></div>
-                                        <div class="column td">
-                                                        <label for="address{{ CustomerAddress.id }}">
-                                                        <p class="address">
-                                                            {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
-                                                            〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
-                                                            {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
-                                                        </label>
-                                        </div>
-                                        </div>
-                                        {% endfor %}
-                                        </div>
-                                    </div><!--/table-->
-                                    {% endif %}
-
-
-
-                                <div class="row no-padding">
-                                <div class="btn_group col-sm-offset-4 col-sm-4">
-                                    <p><button type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button></p>
-                                    <p><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
-                                </div>
-                                </div>
-
+                    {% if Customer.CustomerAddresses|length > 0 %}
+                     <div class="table address_table">
+                        <div class="tbody">
+                            {% for CustomerAddress in Customer.CustomerAddresses %}
+                            <div class="addr_box tr">
+                            <div class="icon_radio td"><input type="radio" id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" /></div>
+                            <div class="column td">
+                                            <label for="address{{ CustomerAddress.id }}">
+                                            <p class="address">
+                                                {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
+                                                〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
+                                                {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
+                                            </label>
                             </div>
-                        </div><!-- /.row -->
-                    </form>
+                            </div>
+                            {% endfor %}
+                            </div>
+                        </div><!--/table-->
+                        {% endif %}
+
+
+
+                    <div class="row no-padding">
+                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                        <p><button type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button></p>
+                        <p><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
+                    </div>
+                    </div>
 
                 </div>
-            </div><!-- /#main -->
-        </div>
+            </div><!-- /.row -->
+        </form>
 
+    </div>
 {% endblock %}
