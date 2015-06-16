@@ -34,7 +34,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Monolog\Logger;
-use Knp\Provider\ConsoleServiceProvider;
 
 class Application extends \Silex\Application
 {
@@ -67,14 +66,6 @@ class Application extends \Silex\Application
 
         parent::__construct($values);
 
-        // set env
-        if (!isset($app['env']) || empty($app['env'])) {
-            $app['env'] = 'prod';
-        }
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            $app['debug'] = true;
-        }
-
         // load config
         $this['config'] = $app->share(function () {
             $config_file = __DIR__ . '/../../app/config/eccube/config.yml';
@@ -97,22 +88,6 @@ class Application extends \Silex\Application
 
             return array_merge($config_constant, $config);
         });
-
-        // load config dev
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            $conf = $this['config'];
-            $this['config'] = $app->share(function () use($conf) {
-                $confarray = array();
-                $config_dev_file = __DIR__ . '/../../app/config/eccube/config_dev.yml';
-                if (file_exists($config_dev_file)) {
-                    $config_dev = Yaml::parse($config_dev_file);
-                    if (isset($config_dev)) {
-                        $confarray = array_replace_recursive($confarray, $config_dev);
-                    }
-                }
-                return array_replace_recursive($conf, $confarray);
-            });
-        }
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
@@ -187,36 +162,12 @@ class Application extends \Silex\Application
             return $translator;
         }));
 
-        // インストールされてなければこれこまで読み込む
-        if (!file_exists(__DIR__ . '/../../app/config/eccube/config.yml')) {
-            $app->mount('', new ControllerProvider\InstallControllerProvider());
-            $app->register(new ServiceProvider\EccubeServiceProvider());
-            $app->error(function (\Exception $e, $code) use ($app) {
-                if ($code === 404) {
-                    return $app->redirect($app['url_generator']->generate('install'));
-                } elseif ($app['debug']) {
-                    return;
-                }
-
-                return $app['view']->render('error.twig', array(
-                    'error' => 'エラーが発生しました.',
-                ));
-            });
-
-            return;
-        }
 
         // Mail
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            if (isset($this['config']['delivery_address'])) {
-                $this['delivery_address'] = $this['config']['delivery_address'];
-            }
-        }
-        $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
+        $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
         $this['swiftmailer.options'] = $this['config']['mail'];
 
         if (isset($this['config']['mail']['spool']) && is_bool($this['config']['mail']['spool'])) {
-            error_log($this['config']['mail']['spool']);
             $this['swiftmailer.use_spool'] = $this['config']['mail']['spool'];
         }
         // デフォルトはsmtpを使用
@@ -399,16 +350,6 @@ class Application extends \Silex\Application
             'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
         ));
 
-
-        // Silex Web Profiler
-        if ($app['env'] === 'dev') {
-            $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-                'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
-                'profiler.mount_prefix' => '/_profiler',
-            ));
-            $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
-        }
-
         $app->mount('', new ControllerProvider\FrontControllerProvider());
         $app->mount($app['config']['admin_dir'], new ControllerProvider\AdminControllerProvider());
         $app->error(function (\Exception $e, $code) use ($app) {
@@ -428,10 +369,6 @@ class Application extends \Silex\Application
             ));
         });
 
-        if ($app['env'] === 'test') {
-            $app['session.test'] = true;
-            $app['exception_handler']->disable();
-        }
     }
 
     public function parseController(Request $request)
