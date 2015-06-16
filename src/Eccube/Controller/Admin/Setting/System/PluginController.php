@@ -29,7 +29,7 @@ use Eccube\Application;
 
 class PluginController extends AbstractController
 {
-    public function index(Application $app)
+    public function install(Application $app)
     {
 
         $form = $app['form.factory']
@@ -64,15 +64,48 @@ class PluginController extends AbstractController
             
         }
 
-/*
-        foreach($repo->findAll() as $plugin){
-            echo ($plugin->getId()."<br>");
-        }
-*/
-
-        return $app['twig']->render('Setting/System/plugin.twig', array(
+        return $app['twig']->render('Setting/System/Plugin/install.twig', array(
             'form' => $form->createView(),
         ));
 
+    }
+
+
+    function handler(Application $app)
+    {
+        $em = $app['orm.em'];
+        $handlers = $em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers();
+        return $app->render('Setting/System/Plugin/handler.twig', array(
+            'handlers' => $handlers
+        ));
+
+    }
+    function handler_up(Application $app,$handlerId)
+    {
+        $em = $app['orm.em'];
+        $repo = $em->getRepository('Eccube\Entity\PluginEventHandler');
+        $repo->upPriority(  $repo->find( $handlerId )  );
+
+        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_handler'));
+    }
+
+    function handler_down(Application $app,$handlerId)
+    {
+        $em = $app['orm.em'];
+        $repo = $em->getRepository('Eccube\Entity\PluginEventHandler');
+        $repo->upPriority(  $repo->find( $handlerId ),false  );
+        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_handler'));
+    }
+
+    function disable(Application $app)
+    {
+    }
+
+    function enable(Application $app)
+    {
+    }
+
+    function edit(Application $app)
+    {
     }
 }

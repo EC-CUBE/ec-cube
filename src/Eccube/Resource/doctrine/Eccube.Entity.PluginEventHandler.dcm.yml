@@ -30,6 +30,9 @@ Eccube\Entity\PluginEventHandler:
         handler:
             type: string
             nullable: false
+        handler_type:
+            type: string
+            nullable: false
         create_date:
             type: datetime
             nullable: false

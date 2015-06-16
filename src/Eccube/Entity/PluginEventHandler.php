@@ -87,8 +87,10 @@ class PluginEventHandler
      * @var \DateTime
      */
     private $update_date;
+
     private $Plugin;
 
+    private $handler_type;
 
     /**
      * Get id
@@ -236,6 +238,18 @@ class PluginEventHandler
     public function getCreateDate()
     {
         return $this->create_date;
+    }
+
+    public function setHandlerType($handlerType)
+    {
+        $this->handler_type = $handlerType;
+
+        return $this;
+    }
+
+    public function getHandlerType()
+    {
+        return $this->handler_type;
     }
 
     /**

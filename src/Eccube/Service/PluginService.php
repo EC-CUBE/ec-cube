@@ -209,6 +209,7 @@ class PluginService
                         ->setEvent($event)
                         ->setdelFlg(0)
                         ->setHandler($handler[0])
+                        ->setHandlerType($handler[1])
                         ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
                     $em->persist($peh);
                     $em->flush(); 
@@ -248,6 +249,7 @@ class PluginService
                     ->setEvent($event)
                     ->setdelFlg(0)
                     ->setHandler($handler[0])
+                    ->setHandlerType($handler[1])
                     ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
                 $em->persist($peh);
                 $em->flush(); 

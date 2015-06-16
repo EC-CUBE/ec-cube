@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'main_frame.twig' %}
 
 {% block title %}システム設定{% endblock %}
-{% block sub_title %}プラグイン管理{% endblock %}
+{% block sub_title %}プラグインインストール{% endblock %}
 {% block main %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <p>uninstall,enable,disable：dtb_pluginのプラグインIDを入力して、uninstall,enable,disableボタン
 <p>update：dtb_pluginのプラグインIDとアーカイブを指定してupdateボタン
 
-<form action="plugin" method="post"  {{ form_enctype(form) }}>
+<form action="install" method="post"  {{ form_enctype(form) }}>
 {{ form_widget(form) }}
 </form>
 
