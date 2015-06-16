@@ -68,14 +68,6 @@ class MainEditType extends AbstractType
                     )),
                 )
             ))
-            ->add('header_chk', 'checkbox', array(
-                'label' => 'ヘッダチェック',
-                'required' => false,
-            ))
-            ->add('footer_chk', 'checkbox', array(
-                'label' => 'フッタチェック',
-                'required' => false,
-            ))
             ->add('tpl_data', 'textarea', array(
                 'label' => 'TPLデータ',
                 'mapped' => false,
@@ -118,9 +110,8 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('device_type_id', 'hidden')
-            ->add('page_id', 'hidden')
-            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->add('DeviceType', 'hidden')
+            ->add('id', 'hidden')
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $filename = $form['filename']->getData();
