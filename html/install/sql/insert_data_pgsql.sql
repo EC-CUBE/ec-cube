@@ -957,7 +957,6 @@ INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywher
 INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (28, 1, 1, 2, 0);
 INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (28, 1, 2, 3, 0);
 INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (28, 1, 3, 1, 0);
->>>>>>> upstream/eccube-3.0.0-dev
 
 INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (1, '食品', NULL, 1, 5, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_category (category_id, category_name, parent_category_id, level, rank, creator_id, create_date, update_date, del_flg) VALUES (2, '雑貨', NULL, 1, 6, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
