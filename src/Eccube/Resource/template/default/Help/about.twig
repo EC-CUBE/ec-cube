@@ -21,39 +21,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% block assets %}
+
+{% block javascript %}
     {% if app.request.isSecure %}
         <script src="//maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
     {% else %}
         <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
     {% endif %}
-{% endblock %}
-
-{% block onload %}
     {% if baseInfo.latitude is defined and baseInfo.longitude is defined %}
-        $(function() {
-            $("#maps").css({
-                'margin-top': '15px',
-                'margin-left': 'auto',
-                'margin-right': 'auto',
-                'width': '98%',
-                'height': '300px'
+        <script>
+            $(function() {
+                $("#maps").css({
+                    'margin-top': '15px',
+                    'margin-left': 'auto',
+                    'margin-right': 'auto',
+                    'width': '98%',
+                    'height': '300px'
+                });
+                var lat = {{ baseInfo.latitude|escape('js') }};
+                var lng = {{ baseInfo.longitude|escape('js') }};
+                if (lat && lng) {
+                    var latlng = new google.maps.LatLng(lat, lng);
+                    var mapOptions = {
+                        zoom: 15,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map($("#maps").get(0), mapOptions);
+                    var marker = new google.maps.Marker({map: map, position: latlng});
+                } else {
+                    $("#maps").remove();
+                }
             });
-            var lat = {{ baseInfo.latitude|escape('js') }};
-            var lng = {{ baseInfo.longitude|escape('js') }};
-            if (lat && lng) {
-                var latlng = new google.maps.LatLng(lat, lng);
-                var mapOptions = {
-                    zoom: 15,
-                    center: latlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map($("#maps").get(0), mapOptions);
-                var marker = new google.maps.Marker({map: map, position: latlng});
-            } else {
-                $("#maps").remove();
-            }
-        });
+        </script>
     {% endif %}
 {% endblock %}
 

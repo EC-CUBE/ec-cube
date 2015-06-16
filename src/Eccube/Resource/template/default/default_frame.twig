@@ -46,46 +46,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% block stylesheet %}{% endblock %}
 
     {# ▼Head COLUMN #}
-    {% if PageLayout.HeadNavi %}
+    {% if PageLayout.Head %}
         {# ▼上ナビ #}
-        {{ include('block.twig', {'Blocs': PageLayout.HeadNavi}) }}
+        {{ include('block.twig', {'Blocks': PageLayout.Head}) }}
         {# ▲上ナビ #}
     {% endif %}
     {# ▲Head COLUMN #}
 </head>
-<body class="front_page">
+<body class="{{ class_body|default('') }}">
 <div id="wrapper">
     <header id="header">
-
-        {# ▼HeaderHeaderTop COLUMN #}
-        {% if PageLayout.HeaderTopNavi %}
-            <div id="headertopcolumn">
-                {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocs': PageLayout.HeaderTopNavi}) }}
-                {# ▲上ナビ #}
-            </div>
-        {% endif %}
-        {# ▲HeaderHeaderTop COLUMN #}
-
         <div class="container-fluid inner">
-
             {# ▼HeaderInternal COLUMN #}
-            {% if PageLayout.HeaderInternalNavi %}
+            {% if PageLayout.Header %}
                 {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocs': PageLayout.HeaderInternalNavi}) }}
+                {{ include('block.twig', {'Blocks': PageLayout.Header}) }}
                 {# ▲上ナビ #}
             {% endif %}
             {# ▲HeaderInternal COLUMN #}
-
-
-            {# ▼TOP COLUMN #}
-            {% if PageLayout.TopNavi %}
-                {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocs': PageLayout.TopNavi}) }}
-                {# ▲上ナビ #}
-            {% endif %}
-            {# ▲TOP COLUMN #}
-
             <p id="btn_menu"><a class="nav-trigger" href="#nav">Menu<span></span></a></p>
         </div>
     </header>
@@ -93,61 +71,71 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div id="contents" class="{{ PageLayout.theme }}">
 
         <div id="contents_top">
+            {# ▼TOP COLUMN #}
+            {% if PageLayout.ContentsTop %}
+                {# ▼上ナビ #}
+                {{ include('block.twig', {'Blocks': PageLayout.ContentsTop}) }}
+                {# ▲上ナビ #}
+            {% endif %}
+            {# ▲TOP COLUMN #}
+        </div>
 
+        <div class="container-fluid inner">
             {# ▼LEFT COLUMN #}
-            {% if PageLayout.LeftNavi %}
+            {% if PageLayout.SideLeft %}
                 <div id="side_left" class="side">
                     {# ▼左ナビ #}
-                    {{ include('block.twig', {'Blocs': PageLayout.LeftNavi}) }}
+                    {{ include('block.twig', {'Blocks': PageLayout.SideLeft}) }}
                     {# ▲左ナビ #}
                 </div>
             {% endif %}
             {# ▲LEFT COLUMN #}
 
-            {# ▼メイン上部 #}
-            {% if PageLayout.MainHead %}
-                <div id="main_top">
-                    {{ include('block.twig', {'Blocs': PageLayout.MainHead}) }}
-                </div>
-            {% endif %}
-            {# ▲メイン上部 #}
+            <div id="main">
+                {# ▼メイン上部 #}
+                {% if PageLayout.MainTop %}
+                    <div id="main_top">
+                        {{ include('block.twig', {'Blocks': PageLayout.MainTop}) }}
+                    </div>
+                {% endif %}
+                {# ▲メイン上部 #}
 
-            <div id="main_middle" class="container-fluid inner">
-                {% block main %}{% endblock %}
+                <div id="main_middle">
+                    {% block main %}{% endblock %}
+                </div>
+
+                {# ▼メイン下部 #}
+                {% if PageLayout.MainBottom %}
+                    <div id="main_bottom">
+                        {{ include('block.twig', {'Blocks': PageLayout.MainBottom}) }}
+                    </div>
+                {% endif %}
+                {# ▲メイン下部 #}
             </div>
 
-            {# ▼メイン下部 #}
-            {% if PageLayout.MainFoot %}
-                <div id="main_bottom">
-                    {{ include('block.twig', {'Blocs': PageLayout.MainFoot}) }}
-                </div>
-            {% endif %}
-            {# ▲メイン下部 #}
-
             {# ▼RIGHT COLUMN #}
-            {% if PageLayout.RightNavi %}
+            {% if PageLayout.SideRight %}
                 <div id="side_right" class="side">
                     {# ▼右ナビ #}
-                    {{ include('block.twig', {'Blocs': PageLayout.RightNavi}) }}
+                    {{ include('block.twig', {'Blocks': PageLayout.SideRight}) }}
                     {# ▲右ナビ #}
                 </div>
             {% endif %}
             {# ▲RIGHT COLUMN #}
-        </div>
 
-        {# ▼BOTTOM COLUMN #}
-        {% if PageLayout.BottomNavi %}
-            <div class="container-fluid inner">
+            {# ▼BOTTOM COLUMN #}
+            {% if PageLayout.ContentsBottom %}
                 <div id="contents_bottom">
                     {# ▼下ナビ #}
-                    {{ include('block.twig', {'Blocs': PageLayout.BottomNavi}) }}
+                    {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
                     {# ▲下ナビ #}
                 </div>
-            </div>
-        {% endif %}
-        {# ▲BOTTOM COLUMN #}
+            {% endif %}
+            {# ▲BOTTOM COLUMN #}
 
-        <footer id="footer">
+        </div>
+
+       <footer id="footer">
             <div class="container-fluid inner">
                 <div class="footer_logo_area">
                     <p class="logo"><a href="{{ url('homepage') }}">{{ BaseInfo.shop_name }}</a></p>
@@ -158,17 +146,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
 
-            {# ▼FooterBottom COLUMN#}
-            {% if PageLayout.FooterBottomNavi %}
+            {# ▼Footer COLUMN#}
+            {% if PageLayout.Footer %}
                 {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocs': PageLayout.FooterBottomNavi}) }}
+                {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
                 {# ▲上ナビ #}
             {% endif %}
-            {# ▲FooterBottom COLUMN#}
+            {# ▲Footer COLUMN#}
 
         </footer>
 
     </div>
+
     <div id="drawer" class="drawer sp">
     </div>
 
@@ -179,9 +168,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.root }}js/slick.min.js"></script>
     <script src="{{ app.config.root }}js/function.js"></script>
     <script src="{{ app.config.root }}js/eccube.js"></script>
-    {{ block('assets') }}
     <script>
-        {{ block('javascript') }}
         $(function () {
             $("#drawer").append($(".drawer_block").clone(true).children());
 
@@ -196,8 +183,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     console.log('error');
                 }
             });
-            {{ block('onload') }}
         });
     </script>
+    {% block javascript %}{% endblock %}
 </body>
 </html>

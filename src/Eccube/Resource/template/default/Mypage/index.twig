@@ -23,72 +23,68 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set mypageno = 'index' %}
 {% block main %}
-    <div id="main">
+    <h1 class="page-heading">マイページ</h1>
+    <div class="container-fluid">
 
-        <h1 class="page-heading">マイページ</h1>
-        <div class="container-fluid">
+        {% include 'Mypage/navi.twig' %}
 
-            {% include 'Mypage/navi.twig' %}
+        <h2 class="heading01">ご注文履歴</h2>
+        <div class="row">
+            <div class="col-md-12">
 
-            <h2 class="heading01">ご注文履歴</h2>
-            <div class="row">
-                <div class="col-md-12">
+                {% if pagination.totalItemCount > 0 %}
+                    <p class="intro"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
 
-                    {% if pagination.totalItemCount > 0 %}
-                        <p class="intro"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
-
-                        {% for Order in pagination %}
-                            <div class="historylist_column row">
-                                <div class="col-sm-4">
-                                    <h3 class="order_date">{{ Order.order_date|date("Y/m/d H:i:s") }}</h3>
-                                    <dl class="order_detail">
-                                        <dt>ご注文番号：</dt>
-                                        <dd>{{ Order.id }}</dd>
-                                        {% if app.config.mypage_order_status_disp_flag %}
-                                            <dt>ご注文状況：</dt>
-                                            <dd>{{ Order.CustomerOrderStatus }}</dd>
-                                        {% endif %}
-                                    </dl>
-                                    <p><a class="btn btn-default btn-sm" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
-                                </div>
-                                <div class="col-sm-8">
-                                    {% for OrderDetail in Order.OrderDetails %}
-                                        <div class="item_box table">
-                                            <div class="tbody">
-                                                <div class="tr">
-                                                    <div class="item_photo td">
-                                                        <img src="{{ app.config.image_save_urlpath }}{{ OrderDetail.Product.mainFileName|no_image_main_list }}" />
-                                                    </div>
-                                                    <dl class="item_detail td">
-                                                        <dt class="item_name">{{ OrderDetail.product_name }}</dt>
-                                                        <dd class="item_pattern small">
-                                                            {% if OrderDetail.class_category_name1 is not empty %}
-                                                                {{ OrderDetail.class_category_name1 }}
-                                                            {% endif %}
-                                                            {% if OrderDetail.class_category_name1 is not empty %}
-                                                                / {{ OrderDetail.class_category_name2 }}
-                                                            {% endif %}
-                                                        </dd>
-                                                        <dd class="item_price">￥{{ OrderDetail.price }} ×{{ OrderDetail.quantity }}</dd>
-                                                    </dl>
+                    {% for Order in pagination %}
+                        <div class="historylist_column row">
+                            <div class="col-sm-4">
+                                <h3 class="order_date">{{ Order.order_date|date("Y/m/d H:i:s") }}</h3>
+                                <dl class="order_detail">
+                                    <dt>ご注文番号：</dt>
+                                    <dd>{{ Order.id }}</dd>
+                                    {% if app.config.mypage_order_status_disp_flag %}
+                                        <dt>ご注文状況：</dt>
+                                        <dd>{{ Order.CustomerOrderStatus }}</dd>
+                                    {% endif %}
+                                </dl>
+                                <p><a class="btn btn-default btn-sm" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
+                            </div>
+                            <div class="col-sm-8">
+                                {% for OrderDetail in Order.OrderDetails %}
+                                    <div class="item_box table">
+                                        <div class="tbody">
+                                            <div class="tr">
+                                                <div class="item_photo td">
+                                                    <img src="{{ app.config.image_save_urlpath }}{{ OrderDetail.Product.mainFileName|no_image_main_list }}" />
                                                 </div>
+                                                <dl class="item_detail td">
+                                                    <dt class="item_name">{{ OrderDetail.product_name }}</dt>
+                                                    <dd class="item_pattern small">
+                                                        {% if OrderDetail.class_category_name1 is not empty %}
+                                                            {{ OrderDetail.class_category_name1 }}
+                                                        {% endif %}
+                                                        {% if OrderDetail.class_category_name1 is not empty %}
+                                                            / {{ OrderDetail.class_category_name2 }}
+                                                        {% endif %}
+                                                    </dd>
+                                                    <dd class="item_price">￥{{ OrderDetail.price }} ×{{ OrderDetail.quantity }}</dd>
+                                                </dl>
                                             </div>
-                                        </div><!--/item_box-->
-                                    {% endfor %}
-                                </div>
-                            </div><!--/historylist_column-->
-                        {% endfor %}
+                                        </div>
+                                    </div><!--/item_box-->
+                                {% endfor %}
+                            </div>
+                        </div><!--/historylist_column-->
+                    {% endfor %}
 
-                        {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+                    {% include "pagination.twig" with {'pages': pagination.paginationData} %}
 
-                    {% else %}
-                        <p class="intro">ご注文履歴がありません。</p>
-                    {% endif %}
+                {% else %}
+                    <p class="intro">ご注文履歴がありません。</p>
+                {% endif %}
 
-                </div><!-- /.col -->
-            </div><!-- /.row -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
 
-        </div>
     </div>
-
 {% endblock %}

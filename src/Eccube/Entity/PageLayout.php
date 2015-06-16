@@ -32,26 +32,15 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     // 配置ID
     /** 配置ID: 未使用 */
     const TARGET_ID_UNUSED = 0;
-    /** 配置ID: LeftNavi */
-    const TARGET_ID_LEFT = 1;
-    /** 配置ID: MainHead */
-    const TARGET_ID_MAIN_HEAD = 2;
-    /** 配置ID: RightNavi */
-    const TARGET_ID_RIGHT = 3;
-    /** 配置ID: MainFoot */
-    const TARGET_ID_MAIN_FOOT = 4;
-    /** 配置ID: TopNavi */
-    const TARGET_ID_TOP = 5;
-    /** 配置ID: BottomNavi */
-    const TARGET_ID_BOTTOM = 6;
-    /** 配置ID: HeadNavi */
-    const TARGET_ID_HEAD = 7;
-    /** 配置ID: HeadTopNavi */
-    const TARGET_ID_HEAD_TOP = 8;
-    /** 配置ID: FooterBottomNavi */
-    const TARGET_ID_FOOTER_BOTTOM = 9;
-    /** 配置ID: HeaderInternalNavi */
-    const TARGET_ID_HEADER_INTERNAL = 10;
+    const TARGET_ID_HEAD = 1;
+    const TARGET_ID_HEADER = 2;
+    const TARGET_ID_CONTENTS_TOP = 3;
+    const TARGET_ID_SIDE_LEFT = 4;
+    const TARGET_ID_MAIN_TOP = 5;
+    const TARGET_ID_MAIN_BOTTOM = 6;
+    const TARGET_ID_SIDE_RIGHT = 7;
+    const TARGET_ID_CONTENTS_BOTTOM = 8;
+    const TARGET_ID_FOOTER = 9;
 
     /**
      * Get ColumnNum
@@ -60,13 +49,13 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      */
     public function getColumnNum()
     {
-        return 1 + ($this->getLeftNavi() ? 1 : 0) + ($this->getRightNavi() ? 1 : 0);
+        return 1 + ($this->getSideLeft() ? 1 : 0) + ($this->getSideRight() ? 1 : 0);
     }
 
     public function getTheme()
     {
-        $hasLeft = $this->getLeftNavi() ? true : false;
-        $hasRight = $this->getRightNavi() ? true : false;
+        $hasLeft = $this->getSideLeft() ? true : false;
+        $hasRight = $this->getSideRight() ? true : false;
 
         $theme = 'theme_main_only';
         if ($hasLeft && $hasRight) {
@@ -81,126 +70,78 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get LeftNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getLeftNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_LEFT);
-    }
-
-    /**
-     * Get MainHead
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getMainHead()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_MAIN_HEAD);
-    }
-
-    /**
-     * Get RightNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getRightNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_RIGHT);
-    }
-
-    /**
-     * Get MainFoot
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getMainFoot()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_MAIN_FOOT);
-    }
-
-    /**
-     * Get TopNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getTopNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_TOP);
-    }
-
-    /**
-     * Get BottomNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getBottomNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_BOTTOM);
-    }
-
-    /**
-     * Get 
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getHeadNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_HEAD);
-    }
-
-    /**
-     * Get HeaderTopNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getHeaderTopNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_HEAD_TOP);
-    }
-
-    /**
-     * Get FooterBottomNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getFooterBottomNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_FOOTER_BOTTOM);
-    }
-
-    /**
-     * Get HeaderInternalNavi
-     *
-     * @return \Eccube\Entity\Bloc[]
-     */
-    public function getHeaderInternalNavi()
-    {
-        return $this->getBlocsByTargetId(self::TARGET_ID_HEADER_INTERNAL);
-    }
-
-    /**
      * Get BlocsByTargetId
      *
      * @param integer $target_id
      * @return \Eccube\Entity\Bloc[]
      */
-    public function getBlocsByTargetId($target_id)
+    public function getBlocksByTargetId($target_id)
     {
-        $Blocs = array();
-        foreach ($this->getBlocPositions() as $BlocPositions) {
-            if ($BlocPositions->getTargetId() === $target_id) {
-                $Blocs[] = $BlocPositions->getBloc();
+        $Blocks = array();
+        foreach ($this->getBlocPositions() as $BlockPositions) {
+            if ($BlockPositions->getTargetId() === $target_id) {
+                $Blocks[] = $BlockPositions->getBloc();
             }
         }
-        return $Blocs;
+        return $Blocks;
+    }
+
+    public function getUnused()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_UNUSED);
+    }
+
+    public function getHead()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_HEAD);
+    }
+
+    public function getHeader()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_HEADER);
+    }
+
+    public function getContentsTop()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_TOP);
+    }
+
+    public function getSideLeft()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_LEFT);
+    }
+
+    public function getMainTop()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_TOP);
+    }
+
+    public function getMainBottom()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_BOTTOM);
+    }
+
+    public function getSideRight()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_RIGHT);
+    }
+
+    public function getContentsBottom()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
+    }
+
+    public function getFooter()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_FOOTER);
     }
 
 
     /**
      * @var integer
      */
+    private $id;
+
     private $device_type_id;
 
     /**
@@ -286,15 +227,14 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
         $this->BlocPositions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Set device_type_id
-     *
-     * @param  integer    $deviceTypeId
-     * @return PageLayout
-     */
-    public function setDeviceTypeId($deviceTypeId)
+    public function getId()
     {
-        $this->device_type_id = $deviceTypeId;
+        return $this->id;
+    }
+
+    public function setDeviceTypeId($device_type_id)
+    {
+        $this->device_type_id = $device_type_id;
 
         return $this;
     }

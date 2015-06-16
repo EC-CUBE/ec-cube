@@ -23,162 +23,160 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set mypageno = 'index' %}
 {% block main %}
-    <div id="main">
-        <h1 class="page-heading">マイページ</h1>
-        <div class="container-fluid">
+    <h1 class="page-heading">マイページ</h1>
+    <div class="container-fluid">
 
-            {% include 'Mypage/navi.twig' %}
+        {% include 'Mypage/navi.twig' %}
 
-            <h2 class="heading01">ご注文履歴詳細</h2>
-            <div class="row">
-                <div class="col-md-12">
-                    <dl class="order_detail">
-                        <dt>ご注文日時：</dt><dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
-                        <dt>ご注文番号：</dt><dd>{{ Order.id }}</dd>
-                        {% if app.config.mypage_order_status_disp_flag %}
-                            <dt>ご注文状況：</dt>
-                            <dd>{{ Order.CustomerOrderStatus }}</dd>
-                        {% endif %}
-                    </dl>
-                </div>
+        <h2 class="heading01">ご注文履歴詳細</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <dl class="order_detail">
+                    <dt>ご注文日時：</dt><dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
+                    <dt>ご注文番号：</dt><dd>{{ Order.id }}</dd>
+                    {% if app.config.mypage_order_status_disp_flag %}
+                        <dt>ご注文状況：</dt>
+                        <dd>{{ Order.CustomerOrderStatus }}</dd>
+                    {% endif %}
+                </dl>
             </div>
+        </div>
 
-            <div id="shopping_confirm" class="row">
-                <div id="confirm_main" class="col-sm-8">
-                    <div class="cart_item table">
-                        <div class="tbody">
+        <div id="shopping_confirm" class="row">
+            <div id="confirm_main" class="col-sm-8">
+                <div class="cart_item table">
+                    <div class="tbody">
 
-                            {% for OrderDetail in Order.OrderDetails %}
-                                <div class="item_box tr">
-                                    <div class="td table">
-                                        <div class="item_photo">
-                                            <a href="{{ url('product_detail', { id : OrderDetail.ProductClass.id } ) }}">
-                                                <img src="{{ app.config.image_save_urlpath }}{{ OrderDetail.Product.mainFileName|no_image_main_list }}">
-                                            </a>
-                                        </div>
-                                        <dl class="item_detail">
-                                            <dt class="item_name text-default">
-                                                {% if OrderDetail.enable %}
-                                                    <a href="{{ url('product_detail', {'productId': OrderDetail.Product.id}) }}">
-                                                {% endif %}
-                                                        {{ OrderDetail.product_name }}
-                                                {% if OrderDetail.enable %}
-                                                    </a>
-                                                {% endif %}
-                                            </dt>
-                                            <dd class="item_pattern small">
-                                                {% if OrderDetail.classcategory_name1 is not empty %}
-                                                    {{ OrderDetail.classcategory_name1 }}
-                                                {% endif %}
-                                                {% if OrderDetail.classcategory_name2 is not empty %}
-                                                    / {{ OrderDetail.classcategory_name2 }}
-                                                {% endif %}
-                                            </dd>
-                                            <dd class="item_price">￥{{ OrderDetail.price_inc_tax|number_format }} × {{ OrderDetail.quantity }}</dd>
-                                            <dd class="item_subtotal">小計：￥ {{ OrderDetail.total_price|number_format }}</dd>
-                                        </dl>
+                        {% for OrderDetail in Order.OrderDetails %}
+                            <div class="item_box tr">
+                                <div class="td table">
+                                    <div class="item_photo">
+                                        <a href="{{ url('product_detail', { id : OrderDetail.ProductClass.id } ) }}">
+                                            <img src="{{ app.config.image_save_urlpath }}{{ OrderDetail.Product.mainFileName|no_image_main_list }}">
+                                        </a>
                                     </div>
-                                </div><!--/item_box-->
-                            {% endfor %}
+                                    <dl class="item_detail">
+                                        <dt class="item_name text-default">
+                                            {% if OrderDetail.enable %}
+                                                <a href="{{ url('product_detail', {'productId': OrderDetail.Product.id}) }}">
+                                            {% endif %}
+                                                    {{ OrderDetail.product_name }}
+                                            {% if OrderDetail.enable %}
+                                                </a>
+                                            {% endif %}
+                                        </dt>
+                                        <dd class="item_pattern small">
+                                            {% if OrderDetail.classcategory_name1 is not empty %}
+                                                {{ OrderDetail.classcategory_name1 }}
+                                            {% endif %}
+                                            {% if OrderDetail.classcategory_name2 is not empty %}
+                                                / {{ OrderDetail.classcategory_name2 }}
+                                            {% endif %}
+                                        </dd>
+                                        <dd class="item_price">￥{{ OrderDetail.price_inc_tax|number_format }} × {{ OrderDetail.quantity }}</dd>
+                                        <dd class="item_subtotal">小計：￥ {{ OrderDetail.total_price|number_format }}</dd>
+                                    </dl>
+                                </div>
+                            </div><!--/item_box-->
+                        {% endfor %}
 
-                        </div>
-                    </div><!--/cart_item-->
+                    </div>
+                </div><!--/cart_item-->
 
-                    <h2 class="heading02">お客様情報</h2>
-                    {% set OrderDetail = Order.OrderDetails.0 %}
-                    {% for Shipping in Order.Shippings %}
-                        <div class="column">
-                            <p class="address">
-                                {{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
-                                ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})&nbsp;様<br>
-                                〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>
-                                {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
-                            </p>
-                            <p>
-                                配送方法：　{{ Shipping.shipping_delivery_name }}（＋￥{{ Shipping.delivery_fee.fee|number_format }}）<br>
-                                お届け日：　{{ Shipping.shipping_date|default('指定なし') }}<br>
-                                お届け時間：　{{ Shipping.shipping_time|default('指定なし') }}
-                            </p>
-                        </div>
-                    {% endfor %}
-                    <h2 class="heading02">お支払方法</h2>
+                <h2 class="heading02">お客様情報</h2>
+                {% set OrderDetail = Order.OrderDetails.0 %}
+                {% for Shipping in Order.Shippings %}
                     <div class="column">
+                        <p class="address">
+                            {{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
+                            ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})&nbsp;様<br>
+                            〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>
+                            {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
+                        </p>
                         <p>
-                            支払方法：　{{ Order.Payment }}
+                            配送方法：　{{ Shipping.shipping_delivery_name }}（＋￥{{ Shipping.delivery_fee.fee|number_format }}）<br>
+                            お届け日：　{{ Shipping.shipping_date|default('指定なし') }}<br>
+                            お届け時間：　{{ Shipping.shipping_time|default('指定なし') }}
                         </p>
                     </div>
+                {% endfor %}
+                <h2 class="heading02">お支払方法</h2>
+                <div class="column">
+                    <p>
+                        支払方法：　{{ Order.Payment }}
+                    </p>
+                </div>
 
-                    <h2 class="heading02">メール配信履歴一覧</h2>
-                    <div class="column mail_list">
-                        {% for MailHistory in Order.MailHistories %}
-                            <dl>
-                                <dt>
-                                    <span class="date">{{ MailHistory.send_date|date("Y/m/d H:i:s") }}</span>
-                                </dt>
-                                <dd>
-                                    <span class="title">
-                                        <a data-toggle="modal" data-target="#myModal{{ loop.index }}">{{ MailHistory.subject }}</a>
-                                    </span>
-                                </dd>
-                            </dl>
-
-                            <!-- Modal -->
-                            <div class="modal" id="myModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <form>
-                                            <div class="modal-header">
-                                                <button type="button" class="close no-style" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg class="cb cb-close"><use xlink:href="#cb-close" /></svg></span></button>
-                                                <h4 class="modal-title" id="myModalLabel">{{ MailHistory.subject }}</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>{{ MailHistory.MailTemplate }}</p>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal -->
-                        {% else %}
-                            メール履歴がありません。
-                        {% endfor %}
-                    </div>
-
-
-                </div><!-- /.col -->
-
-                <div id="confirm_side" class="col-sm-4">
-                    <div class="total_box">
+                <h2 class="heading02">メール配信履歴一覧</h2>
+                <div class="column mail_list">
+                    {% for MailHistory in Order.MailHistories %}
                         <dl>
-                            <dt>小計</dt>
-                            <dd class="text-primary">￥{{ Order.subtotal|number_format }}</dd>
-                        </dl>
-                        <dl>
-                            <dt>手数料</dt>
-                            <dd>￥{{ Order.charge|number_format }}</dd>
-                        </dl>
-                        <dl>
-                            <dt>送料合計</dt>
-                            <dd>￥{{ Order.delivery_fee_total|number_format }}</dd>
-                        </dl>
-                        <dl>
-                            <dt>値引き</dt>
+                            <dt>
+                                <span class="date">{{ MailHistory.send_date|date("Y/m/d H:i:s") }}</span>
+                            </dt>
                             <dd>
-                                {% if Order.discount > 0 %}
-                                    &minus;￥{{ Order.discount|number_format }}
-                                {% endif %}
+                                <span class="title">
+                                    <a data-toggle="modal" data-target="#myModal{{ loop.index }}">{{ MailHistory.subject }}</a>
+                                </span>
                             </dd>
                         </dl>
 
-                        <div class="total_amount">
-                            <p class="total_price">合計 <strong class="text-primary">￥{{ Order.payment_total|number_format }}<span class="small">税込</span></strong></p>
+                        <!-- Modal -->
+                        <div class="modal" id="myModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <form>
+                                        <div class="modal-header">
+                                            <button type="button" class="close no-style" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg class="cb cb-close"><use xlink:href="#cb-close" /></svg></span></button>
+                                            <h4 class="modal-title" id="myModalLabel">{{ MailHistory.subject }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>{{ MailHistory.MailTemplate }}</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
+                        <!-- Modal -->
+                    {% else %}
+                        メール履歴がありません。
+                    {% endfor %}
                 </div>
 
-            </div><!-- /.row -->
 
-        </div>
+            </div><!-- /.col -->
+
+            <div id="confirm_side" class="col-sm-4">
+                <div class="total_box">
+                    <dl>
+                        <dt>小計</dt>
+                        <dd class="text-primary">￥{{ Order.subtotal|number_format }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>手数料</dt>
+                        <dd>￥{{ Order.charge|number_format }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>送料合計</dt>
+                        <dd>￥{{ Order.delivery_fee_total|number_format }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>値引き</dt>
+                        <dd>
+                            {% if Order.discount > 0 %}
+                                &minus;￥{{ Order.discount|number_format }}
+                            {% endif %}
+                        </dd>
+                    </dl>
+
+                    <div class="total_amount">
+                        <p class="total_price">合計 <strong class="text-primary">￥{{ Order.payment_total|number_format }}<span class="small">税込</span></strong></p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div><!-- /.row -->
+
     </div>
 {% endblock %}
