@@ -3,14 +3,13 @@ Eccube\Entity\PageLayout:
     table: dtb_pagelayout
     repositoryClass: Eccube\Repository\PageLayoutRepository
     id:
-        device_type_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
-        page_id:
-            type: integer
-            nullable: false
-            unsigned: false
+            column: page_id
+            generator:
+                strategy: AUTO
     fields:
         name:
             type: text
@@ -19,24 +18,15 @@ Eccube\Entity\PageLayout:
         url:
             type: text
             nullable: false
-        filename:
+        file_name:
             type: text
             nullable: true
-        header_chk:
-            type: smallint
-            nullable: true
-            unsigned: false
-            default: '1'
-        footer_chk:
-            type: smallint
-            nullable: true
-            unsigned: false
-            default: '1'
         edit_flg:
             type: smallint
             nullable: true
             unsigned: false
-            default: '1'
+            options:
+                default: '1'
         author:
             type: text
             nullable: true
@@ -52,18 +42,25 @@ Eccube\Entity\PageLayout:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
+#            options:
+#                default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
+            options:
+                default: '0000-00-00 00:00:00'
         meta_robots:
             type: text
             nullable: true
     oneToMany:
-        BlocPositions:
-            targetEntity: Eccube\Entity\BlocPosition
-#            cascade: ["persist", "remove"]
+        BlockPositions:
+            targetEntity: Eccube\Entity\BlockPosition
             mappedBy: PageLayout
             indexBy: bloc_id
+    manyToOne:
+        DeviceType:
+            targetEntity: Eccube\Entity\Master\DeviceType
+            joinColumn:
+                name: device_type_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }
