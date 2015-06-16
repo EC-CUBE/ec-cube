@@ -187,11 +187,6 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      */
     private $DeviceType;
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
     public function setDeviceTypeId($device_type_id)
     {
         $this->device_type_id = $device_type_id;
