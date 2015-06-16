@@ -1,6 +1,6 @@
 Eccube\Entity\PageLayout:
     type: entity
-    table: dtb_pagelayout
+    table: dtb_page_layout
     repositoryClass: Eccube\Repository\PageLayoutRepository
     id:
         id:
