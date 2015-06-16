@@ -47,8 +47,8 @@ Eccube\Entity\PageLayout:
         update_date:
             type: datetime
             nullable: false
-            options:
-                default: '0000-00-00 00:00:00'
+#            options:
+#                default: '0000-00-00 00:00:00'
         meta_robots:
             type: text
             nullable: true
@@ -56,7 +56,7 @@ Eccube\Entity\PageLayout:
         BlockPositions:
             targetEntity: Eccube\Entity\BlockPosition
             mappedBy: PageLayout
-            indexBy: bloc_id
+            indexBy: block_id
     manyToOne:
         DeviceType:
             targetEntity: Eccube\Entity\Master\DeviceType

@@ -58,9 +58,9 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     public function getBlocksByTargetId($target_id)
     {
         $Blocks = array();
-        foreach ($this->getBlocPositions() as $BlockPositions) {
+        foreach ($this->getBlockPositions() as $BlockPositions) {
             if ($BlockPositions->getTargetId() === $target_id) {
-                $Blocks[] = $BlockPositions->getBloc();
+                $Blocks[] = $BlockPositions->getBlock();
             }
         }
         return $Blocks;
@@ -476,26 +476,26 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add BlockPositions
+     * Add BlockPosition
      *
-     * @param \Eccube\Entity\BlockPosition $blockPositions
+     * @param \Eccube\Entity\BlockPosition $blockPosition
      * @return PageLayout
      */
-    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
+    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
-        $this->BlockPositions[] = $blockPositions;
+        $this->BlockPositions[] = $blockPosition;
 
         return $this;
     }
 
     /**
-     * Remove BlockPositions
+     * Remove BlockPosition
      *
-     * @param \Eccube\Entity\BlockPosition $blockPositions
+     * @param \Eccube\Entity\BlockPosition $blockPosition
      */
-    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
+    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
-        $this->BlockPositions->removeElement($blockPositions);
+        $this->BlockPositions->removeElement($blockPosition);
     }
 
     /**
