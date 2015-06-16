@@ -28,19 +28,13 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class RefusalController extends AbstractController
+class WithdrawController extends AbstractController
 {
-    private $title;
-
-    public function __construct()
-    {
-        $this->title = 'MYページ';
-    }
 
     /**
      * Index
      *
-     * @param  Application                                        $app
+     * @param  Application $app
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function index(Application $app, Request $request)
@@ -59,13 +53,9 @@ class RefusalController extends AbstractController
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
                     case 'confirm':
-                        return $app['twig']->render('Mypage/refusal_confirm.twig', array(
-                            'title' => $this->title,
-                            'subtitle' => '退会手続き(確認ページ)',
-                            'mypageno' => 'refusal',
+                        return $app['twig']->render('Mypage/withdraw_confirm.twig', array(
                             'form' => $form->createView(),
                         ));
-                        break;
                     case 'complete':
                         // 顧客削除
                         $Customer->setDelFlg(1);
@@ -74,32 +64,18 @@ class RefusalController extends AbstractController
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
-                        // TODO: 後でEventとして実装する、送信元アドレス、BCCを調整する
-                        // $app['eccube.event.dispatcher']->dispatch('customer.refusal::after');
-                        $message = $app['mailer']->createMessage()
-                            ->setSubject('[EC-CUBE3] 退会手続きのご完了')
-                            ->setBody($app['view']->render('Mail/customer_refusal_mail.twig', array(
-                                'BaseInfo' => $BaseInfo,
-                                'Customer' => $Customer,
-                            )))
-                            ->setFrom($BaseInfo->getEmail03())
-                            ->setBcc($app['config']['mail_cc'])
-                            ->setTo(array($Customer->getEmail()));
-                        $app['mailer']->send($message);
+                        // メール送信
+                        $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $BaseInfo);
 
                         // ログアウト
-                        $app['security']->setToken(null);
+                        $this->getSecurity($app)->setToken(null);
 
-                        return $app->redirect($app['url_generator']->generate('mypage_refusal_complete'));
-                        break;
+                        return $app->redirect($app->url('mypage_withdraw_complete'));
                 }
             }
         }
 
-        return $app['twig']->render('Mypage/refusal.twig', array(
-            'title' => $this->title,
-            'subtitle' => '退会手続き(入力ページ)',
-            'mypageno' => 'refusal',
+        return $app['twig']->render('Mypage/withdraw.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -114,10 +90,7 @@ class RefusalController extends AbstractController
     {
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
-        return $app['view']->render('Mypage/refusal_complete.twig', array(
-            'title' => $this->title,
-            'subtitle' => '退会手続き(完了ページ)',
-            'mypageno' => 'refusal',
+        return $app['view']->render('Mypage/withdraw_complete.twig', array(
             'BaseInfo' => $BaseInfo,
         ));
     }

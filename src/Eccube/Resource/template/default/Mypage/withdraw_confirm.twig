@@ -19,33 +19,37 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}}
+
+{% set mypageno = 'withdraw' %}
 
 {% block main %}
 <div id="mypagecolumn">
-    <h2 class="title">{{ title }}</h2>
     {% include 'Mypage/navi.twig' %}
-    <div id="mycontents_area">
-        <h3>{{ subtitle }}</h3>
-        <form name="form1" id="form1" method="post" action="?">
-            <input type="hidden" name="mode" value="confirm" />
-            {{ form_widget(form) }}
+    <form name="form1" id="form1" method="post" action="?">
+        <input type="hidden" name="withdraw_transactionid" value="<!--{$withdraw_transactionid}-->" />
+        <input type="hidden" name="mode" value="complete" />
+        {{ form_widget(form) }}
+
+        <div id="mycontents_area">
             <div id="complete_area">
-                <div class="message">会員を退会された場合には、現在保存されている購入履歴や、<br />
-                お届け先などの情報は、全て削除されますがよろしいでしょうか？</div>
+                <div class="message">退会手続きを実行してもよろしいでしょうか？</div>
                 <div class="message_area">
-                    <p>退会手続きが完了した時点で、現在保存されている購入履歴や、<br />
-                    お届け先等の情報は全てなくなりますのでご注意ください。</p>
                     <div class="btn_area">
+                        <p>退会手続きが完了した時点で、現在保存されている購入履歴や、<br />
+                        お届け先等の情報は全てなくなりますのでご注意ください。</p>
                         <ul>
                             <li>
-                                <input type="image" src="{{ app.config.tpl }}img/button/btn_refuse.jpg" alt="会員退会を行う" class="hover_change_image" name="refusal" id="refusal" />
+                                <a href="{{ path('mypage') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_withdraw_not.jpg" alt="いいえ、退会しません" /></a>
+                            </li>
+                            <li>
+                                <input type="image" src="{{ app.config.tpl }}img/button/btn_withdraw_do.jpg" alt="はい、退会します" class="hover_change_image" name="withdraw_do" id="withdraw_do" />
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

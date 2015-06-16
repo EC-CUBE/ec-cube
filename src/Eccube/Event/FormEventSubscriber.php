@@ -45,11 +45,9 @@ class FormEventSubscriber implements EventSubscriberInterface
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
             
-            if ($config['enable'] === true) {
-                if (isset($config['form'])) {
-                    foreach ($config['form'] as $event => $class) {
-                        $events[$event][] = '\\Plugin\\' . $config['name'] . '\\' . $class;
-                    }
+            if (isset($config['form'])) {
+                foreach ($config['form'] as $event => $class) {
+                    $events[$event][] = '\\Plugin\\' . $config['name'] . '\\' . $class;
                 }
             }
         }

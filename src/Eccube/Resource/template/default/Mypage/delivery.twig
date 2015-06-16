@@ -19,66 +19,64 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% set mypageno = 'delivery' %}
 
 {% block main %}
-            <div id="main">
-                <h1 class="page-heading">マイページ</h1>
-                <div class="container-fluid">
+    <h1 class="page-heading">マイページ</h1>
+    <div class="container-fluid">
 
-                    {{ include('Mypage/navi.twig') }}
+        {{ include('Mypage/navi.twig') }}
 
-                    <h2 class="heading01">お届け先編集</h2>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="intro"><strong>{{ Customer.CustomerAddresses|length }}件</strong>のお届け先があります。</p>
-                                <div id="deliveradd_select" class="row">
-                                    <div class="col-sm-10 col-sm-offset-1">
-                                        <p>
-                                            <a href="{{ url('mypage_delivery_new') }}">
-                                                <button class="btn btn-default btn-sm">新規お届け先を追加する</button>
-                                            </a>
-                                        </p>
+        <h2 class="heading01">お届け先編集</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="intro"><strong>{{ Customer.CustomerAddresses|length }}件</strong>のお届け先があります。</p>
+                    <div id="deliveradd_select" class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <p>
+                                <a href="{{ url('mypage_delivery_new') }}">
+                                    <button class="btn btn-default btn-sm">新規お届け先を追加する</button>
+                                </a>
+                            </p>
 
-                                        {% if Customer.CustomerAddresses|length > 0 %}
-                                        <div class="table address_table">
-                                            <div class="tbody">
+                            {% if Customer.CustomerAddresses|length > 0 %}
+                            <div class="table address_table">
+                                <div class="tbody">
 
-                                                {% for CustomerAddress in Customer.CustomerAddresses %}
-                                                    <div class="addr_box tr">
-                                                        <div class="icon_edit td">
-                                                            <a href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}">
-                                                                <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
-                                                            </a>
-                                                        </div>
-                                                        <div class="column is-edit td">
-                                                            <label for="address01">
-                                                            <p class="address">
-                                                                {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
-                                                                〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
-                                                                {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
-                                                            </label>
-                                                            <p class="btn_edit">
-                                                                <a href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">
-                                                                    <button class="btn btn-default btn-sm">変更</button>
-                                                                </a>
-                                                            </p>
-                                                        </div>
-                                                    </div><!--/addr_box-->
-                                                {% endfor %}
-
+                                    {% for CustomerAddress in Customer.CustomerAddresses %}
+                                        <div class="addr_box tr">
+                                            <div class="icon_edit td">
+                                                <a href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}">
+                                                    <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
+                                                </a>
                                             </div>
-                                        </div><!--/table-->
-                                        {% endif %}
+                                            <div class="column is-edit td">
+                                                <label for="address01">
+                                                <p class="address">
+                                                    {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
+                                                    〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
+                                                    {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
+                                                </label>
+                                                <p class="btn_edit">
+                                                    <a href="{{ url('mypage_delivery_edit', { id : CustomerAddress.id }) }}">
+                                                        <button class="btn btn-default btn-sm">変更</button>
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div><!--/addr_box-->
+                                    {% endfor %}
 
-                                    </div>
-                                </div><!-- /.row -->
+                                </div>
+                            </div><!--/table-->
+                            {% endif %}
 
-                        </div><!-- /.col -->
+                        </div>
                     </div><!-- /.row -->
 
-                </div>
-            </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div>
 {% endblock %}
