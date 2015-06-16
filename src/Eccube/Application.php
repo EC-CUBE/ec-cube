@@ -207,13 +207,26 @@ class Application extends \Silex\Application
         }
 
         // Mail
-        $this['swiftmailer.options'] = $this['config']['mail'];
         if ($app['env'] === 'dev' || $app['env'] === 'test') {
             if (isset($this['config']['delivery_address'])) {
                 $this['delivery_address'] = $this['config']['delivery_address'];
             }
         }
         $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
+        $this['swiftmailer.options'] = $this['config']['mail'];
+
+        if (isset($this['config']['mail']['spool']) && is_bool($this['config']['mail']['spool'])) {
+            error_log($this['config']['mail']['spool']);
+            $this['swiftmailer.use_spool'] = $this['config']['mail']['spool'];
+        }
+        // デフォルトはsmtpを使用
+        $transport = $this['config']['mail']['transport'];
+        if ($transport == 'sendmail') {
+            $this['swiftmailer.transport'] = \Swift_SendmailTransport::newInstance();
+        } else if ($transport == 'mail') {
+            $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
+        }
+
 
         // ORM
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
