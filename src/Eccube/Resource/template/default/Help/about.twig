@@ -19,11 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
-{% block main %}
+
+{% block javascript %}
+    {% if app.request.isSecure %}
+        <script src="//maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+    {% else %}
+        <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    {% endif %}
     {% if baseInfo.latitude is defined and baseInfo.longitude is defined %}
-        <script type="text/javascript">//<![CDATA[
+        <script>
             $(function() {
                 $("#maps").css({
                     'margin-top': '15px',
@@ -47,9 +53,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     $("#maps").remove();
                 }
             });
-        //]]></script>
+        </script>
     {% endif %}
+{% endblock %}
 
+{% block main %}
     <div id="undercolumn">
         <div id="undercolumn_aboutus">
             <h2 class="title">{{ title }}</h2>

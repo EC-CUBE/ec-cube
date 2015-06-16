@@ -40,45 +40,45 @@ class PageLayoutRepository extends EntityRepository
         $this->app = $app;
     }
 
-    public function get($deviceTypeId, $pageId)
+    public function get($DeviceType, $pageId)
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlocPositions', 'bp', 'WITH', 'p.page_id = bp.page_id OR bp.anywhere = 1')
-            ->innerJoin('bp.Bloc', 'b')
-            ->andWhere('p.device_type_id = :deviceTypeId AND p.page_id = :pageId')
+            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id OR bp.anywhere = 1')
+            ->innerJoin('bp.Block', 'b')
+            ->andWhere('p.DeviceType = :DeviceType AND p.id = :pageId')
             ->addOrderBy('bp.target_id', 'ASC')
-            ->addOrderBy('bp.bloc_row', 'ASC');
+            ->addOrderBy('bp.block_row', 'ASC');
 
         return $qb
             ->getQuery()
             ->setParameters(array(
-                'deviceTypeId'  => $deviceTypeId,
+                'DeviceType'  => $DeviceType,
                 'pageId'        => $pageId,
             ))
             ->getSingleResult();
     }
 
-    public function getByUrl($deviceTypeId, $url)
+    public function getByUrl($DeviceType, $url)
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlocPositions', 'bp', 'WITH', 'p.page_id = bp.page_id OR bp.anywhere = 1')
-            ->innerJoin('bp.Bloc', 'b')
-            ->andWhere('p.device_type_id = :deviceTypeId AND p.url = :url')
+            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id OR bp.anywhere = 1')
+            ->innerJoin('bp.Block', 'b')
+            ->andWhere('p.DeviceType = :DeviceType AND p.url = :url')
             ->addOrderBy('bp.target_id', 'ASC')
-            ->addOrderBy('bp.bloc_row', 'ASC');
+            ->addOrderBy('bp.block_row', 'ASC');
 
         return $qb
             ->getQuery()
             ->setParameters(array(
-                'deviceTypeId'  => $deviceTypeId,
-                'url'           => $url,
+                'DeviceType' => $DeviceType,
+                'url'  => $url,
             ))
             ->getSingleResult();
     }
 
-    public function getByRoutingName($deviceTypeId, $routingName)
+    public function getByRoutingName($DeviceType, $routingName)
     {
         $legacyUrls = array(
             'preview' => 'preview',
@@ -124,7 +124,7 @@ class PageLayoutRepository extends EntityRepository
             throw new \Doctrine\ORM\NoResultException();
         }
 
-        return $this->getByUrl($deviceTypeId, $routingName);
+        return $this->getByUrl($DeviceType, $routingName);
     }
 
     public function newPageLayout($deviceTypeId)
@@ -154,7 +154,7 @@ class PageLayoutRepository extends EntityRepository
     private function getNewPageId($deviceTypeId)
     {
         $qb = $this->createQueryBuilder('l')
-            ->select('max(l.page_id) +1 as page_id')
+            ->select('max(l.id) +1 as page_id')
             ->where('l.device_type_id = :device_type_id')
             ->setParameter('device_type_id', $deviceTypeId);
         $result = $qb->getQuery()->getSingleResult();
@@ -178,10 +178,10 @@ class PageLayoutRepository extends EntityRepository
     {
 
         $qb = $this->createQueryBuilder('l')
-            ->orderBy('l.page_id', 'DESC')
+            ->orderBy('l.id', 'DESC')
             ->where('l.device_type_id = :device_type_id')
             ->setParameter('device_type_id', $deviceTypeId)
-            ->andWhere('l.page_id <> 0');
+            ->andWhere('l.id <> 0');
         if ($where != '') {
             $qb->andWhere($where);
             foreach ($parameters as $key => $val) {

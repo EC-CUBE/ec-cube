@@ -9,6 +9,114 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PageLayout extends \Eccube\Entity\AbstractEntity
 {
+    // 配置ID
+    /** 配置ID: 未使用 */
+    const TARGET_ID_UNUSED = 0;
+    const TARGET_ID_HEAD = 1;
+    const TARGET_ID_HEADER = 2;
+    const TARGET_ID_CONTENTS_TOP = 3;
+    const TARGET_ID_SIDE_LEFT = 4;
+    const TARGET_ID_MAIN_TOP = 5;
+    const TARGET_ID_MAIN_BOTTOM = 6;
+    const TARGET_ID_SIDE_RIGHT = 7;
+    const TARGET_ID_CONTENTS_BOTTOM = 8;
+    const TARGET_ID_FOOTER = 9;
+
+    /**
+     * Get ColumnNum
+     *
+     * @return integer
+     */
+    public function getColumnNum()
+    {
+        return 1 + ($this->getSideLeft() ? 1 : 0) + ($this->getSideRight() ? 1 : 0);
+    }
+
+    public function getTheme()
+    {
+        $hasLeft = $this->getSideLeft() ? true : false;
+        $hasRight = $this->getSideRight() ? true : false;
+
+        $theme = 'theme_main_only';
+        if ($hasLeft && $hasRight) {
+            $theme = 'theme_side_both';
+        } elseif ($hasLeft) {
+            $theme = 'theme_side_left';
+        } elseif ($hasRight) {
+            $theme = 'theme_side_right';
+        }
+
+        return $theme;
+    }
+
+    /**
+     * Get BlocsByTargetId
+     *
+     * @param integer $target_id
+     * @return \Eccube\Entity\Bloc[]
+     */
+    public function getBlocksByTargetId($target_id)
+    {
+        $Blocks = array();
+        foreach ($this->getBlockPositions() as $BlockPositions) {
+            if ($BlockPositions->getTargetId() === $target_id) {
+                $Blocks[] = $BlockPositions->getBlock();
+            }
+        }
+        return $Blocks;
+    }
+
+    public function getUnused()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_UNUSED);
+    }
+
+    public function getHead()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_HEAD);
+    }
+
+    public function getHeader()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_HEADER);
+    }
+
+    public function getContentsTop()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_TOP);
+    }
+
+    public function getSideLeft()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_LEFT);
+    }
+
+    public function getMainTop()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_TOP);
+    }
+
+    public function getMainBottom()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_MAIN_BOTTOM);
+    }
+
+    public function getSideRight()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_SIDE_RIGHT);
+    }
+
+    public function getContentsBottom()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
+    }
+
+    public function getFooter()
+    {
+        return $this->getBlocksByTargetId(self::TARGET_ID_FOOTER);
+    }
+
+
     /**
      * @var integer
      */
@@ -78,6 +186,23 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\Master\DeviceType
      */
     private $DeviceType;
+
+    public function setDeviceTypeId($device_type_id)
+    {
+        $this->device_type_id = $device_type_id;
+
+        return $this;
+    }
+
+    /**
+     * Get device_type_id
+     *
+     * @return integer
+     */
+    public function getDeviceTypeId()
+    {
+        return $this->device_type_id;
+    }
 
     /**
      * Constructor
@@ -351,26 +476,26 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Add BlockPositions
+     * Add BlockPosition
      *
-     * @param \Eccube\Entity\BlockPosition $blockPositions
+     * @param \Eccube\Entity\BlockPosition $blockPosition
      * @return PageLayout
      */
-    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
+    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
-        $this->BlockPositions[] = $blockPositions;
+        $this->BlockPositions[] = $blockPosition;
 
         return $this;
     }
 
     /**
-     * Remove BlockPositions
+     * Remove BlockPosition
      *
-     * @param \Eccube\Entity\BlockPosition $blockPositions
+     * @param \Eccube\Entity\BlockPosition $blockPosition
      */
-    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
+    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPosition)
     {
-        $this->BlockPositions->removeElement($blockPositions);
+        $this->BlockPositions->removeElement($blockPosition);
     }
 
     /**

@@ -19,12 +19,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% for Bloc in Blocs %}
-    <!-- ▼{{ Bloc.name }} -->
-    {% if Bloc.php_path %}
-        {{ render(path('block_' ~ Bloc.filename)) }}
+{% for Block in Blocks %}
+    <!-- ▼{{ Block.name }} -->
+    {% if Block.php_path %}
+        {{ render(path('block_' ~ Block.filename)) }}
     {% else %}
-        {{ include('frontparts/block/' ~ Bloc.tplPath) }}
+        {{ include('frontparts/block/' ~ Block.tplPath) }}
     {% endif %}
-    <!-- ▲{{ Bloc.name }} -->
+    <!-- ▲{{ Block.name }} -->
 {% endfor %}

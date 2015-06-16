@@ -873,10 +873,10 @@ INSERT INTO dtb_page_layout (device_type_id, page_id, page_name, url, file_name,
 INSERT INTO dtb_page_layout (device_type_id, page_id, page_name, url, file_name, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 28, 'プライバシーポリシー', 'help/privacy', 'help/privacy', 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
 
 
-INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 5, 10, 1, 0);
-INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 5, 4, 2, 0);
-INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 5, 9, 3, 0);
-INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 5, 1, 4, 0);
+INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 2, 10, 1, 0);
+INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 2, 4, 2, 0);
+INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 2, 9, 3, 0);
+INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (1, 2, 1, 4, 0);
 INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (2, 5, 10, 1, 0);
 INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (2, 5, 4, 2, 0);
 INSERT INTO dtb_block_position (page_id, target_id, block_id, block_row, anywhere) VALUES (2, 5, 1, 3, 0);

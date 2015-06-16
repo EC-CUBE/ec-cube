@@ -161,10 +161,12 @@ class Application extends \Silex\Application
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
             $request = $event->getRequest();
             try {
-                $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $request->attributes->get('_route'));
+                $DeviceType = $app['eccube.repository.master.device_type']->find(10);
+                $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName($DeviceType, $request->attributes->get('_route'));
             } catch (\Doctrine\ORM\NoResultException $e) {
-                $PageLayout = $app['eccube.repository.page_layout']->newPageLayout(10);
+                $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
             }
+
             $app["twig"]->addGlobal("PageLayout", $PageLayout);
             $app["twig"]->addGlobal("title", $PageLayout->getName());
 

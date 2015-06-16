@@ -141,17 +141,17 @@ body {
 .front_page .item a:hover img {
 	opacity: 1;
 }
-.front_page #primary .item_comment {
+.front_page #contents_top .item_comment {
 	color: #525263;
 	font-weight: normal;
 	font-size: 14px;
 	font-size: 1.4rem;
 }
-.front_page #primary .item_name {
+.front_page #contents_top .item_name {
 	color: #9A947E;
 	font-weight: bold;
 }
-.front_page #primary .item .more_link {
+.front_page #contents_top .item .more_link {
 	font-weight: bold;
 	color: #9A947E;
 }
