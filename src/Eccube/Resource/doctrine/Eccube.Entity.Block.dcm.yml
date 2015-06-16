@@ -19,7 +19,7 @@ Eccube\Entity\Block:
     fields:
         name:
             type: text
-            column: bloc_name
+            column: block_name
             nullable: true
         tpl_path:
             type: text

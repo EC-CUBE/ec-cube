@@ -22,12 +22,12 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $bloc_id;
+    private $block_id;
 
     /**
      * @var integer
      */
-    private $bloc_row;
+    private $block_row;
 
     /**
      * @var integer
@@ -92,49 +92,49 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set bloc_id
+     * Set block_id
      *
-     * @param integer $blocId
+     * @param integer $blockId
      * @return BlockPosition
      */
-    public function setBlocId($blocId)
+    public function setBlockId($blockId)
     {
-        $this->bloc_id = $blocId;
+        $this->block_id = $blockId;
 
         return $this;
     }
 
     /**
-     * Get bloc_id
+     * Get block_id
      *
      * @return integer 
      */
-    public function getBlocId()
+    public function getBlockId()
     {
-        return $this->bloc_id;
+        return $this->block_id;
     }
 
     /**
-     * Set bloc_row
+     * Set block_row
      *
-     * @param integer $blocRow
+     * @param integer $blockRow
      * @return BlockPosition
      */
-    public function setBlocRow($blocRow)
+    public function setBlockRow($blockRow)
     {
-        $this->bloc_row = $blocRow;
+        $this->block_row = $blockRow;
 
         return $this;
     }
 
     /**
-     * Get bloc_row
+     * Get block_row
      *
      * @return integer 
      */
-    public function getBlocRow()
+    public function getBlockRow()
     {
-        return $this->bloc_row;
+        return $this->block_row;
     }
 
     /**
