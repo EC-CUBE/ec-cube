@@ -71,27 +71,12 @@ class CustomerController
             throw new NotFoundHttpException();
         }
 
-        $subject = $app->render('Mail/mail_title.twig', array(
-            'title' => '会員登録のご確認',
-        ));
-
-        $body = $app->render('Mail/entry_confirm.twig', array(
-            'name01' => $Customer->getName01(),
-            'name01' => $Customer->getName01(),
-            'secretKey' => $Customer->getSecretKey(),
-        ));
-
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
-        $message = $app['mail.message']
-            ->setFrom(array($BaseInfo->getEmail03() => $BaseInfo->getShopName()))
-            ->setTo(array($Customer->getEmail()))
-            ->setBcc($BaseInfo->getEmail01())
-            ->setReplyTo($BaseInfo->getEmail03())
-            ->setReturnPath($BaseInfo->getEmail04())
-            ->setSubject($subject)
-            ->setBody($body);
-        $app['mailer']->send($message);
+        $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
+
+        // メール送信
+        $app['eccube.service.mail']->sendAdminCustomerConfirmMail($Customer, $BaseInfo, $activateUrl);
 
         $app->addSuccess('admin.customer.resend.complete', 'admin');
 

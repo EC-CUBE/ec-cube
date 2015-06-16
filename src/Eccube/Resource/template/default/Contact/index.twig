@@ -21,21 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% form_theme form _self %}
-
-{% block _contact_email_widget %}
-    {%- set attr = attr|merge({'class': 'box380', 'style': 'ime-mode: active;'}) -%}
-    {{ block('email_widget') }}
-{% endblock %}
-
-{% block _contact_contents_widget %}
-    {%- set attr = attr|merge({'class': 'box380', 'style': 'ime-mode: active;', 'cols': "60", 'rows': "20"}) -%}
-    {{ block('textarea_widget') }}
-{% endblock %}
-
 {% block main %}
     <div id="undercolumn">
-        <h2 class="title">{{ title }}</h2>
 
         <div id="undercolumn_contact">
 

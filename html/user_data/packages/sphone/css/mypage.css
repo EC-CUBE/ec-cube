@@ -86,7 +86,7 @@ MYページナビ
 }
 #mypage_nav ul li.nav_history,
 #mypage_nav ul li.nav_favorite,
-#mypage_nav ul li.nav_refusal {
+#mypage_nav ul li.nav_withdraw {
     width: 33%;
 }
 #mypage_nav li:first-child {
@@ -215,25 +215,25 @@ MYページナビ
 /* -----------------------------------------------
 退会手続き
 ----------------------------------------------- */
-.refusetxt {
+.withdrawtxt {
     padding: 15px 10px 10px 10px;
 }
-.refusetxt p:first-child {
+.withdrawtxt p:first-child {
     margin-bottom: 10px;
 }
-.btn_refuse {
+.btn_withdraw {
     padding: 0;
     margin: 20px auto 0 auto;
 }
-.btn_refuse li {
+.btn_withdraw li {
     display: inline-block;
     vertical-align: middle;
 }
-.btn_refuse a.btn,
-.btn_refuse input[type="submit"].btn {
+.btn_withdraw a.btn,
+.btn_withdraw input[type="submit"].btn {
     font-size: 13px!important;
     display: inline;
 }
-.btn_refuse li:first-child {
+.btn_withdraw li:first-child {
     margin-right: 1em;
 }
