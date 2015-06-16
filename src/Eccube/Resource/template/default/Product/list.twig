@@ -19,10 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block javascript %}
-<script type="text/javascript">
+<script>
     // 並び順を変更
     function fnChangeOrderBy(orderby) {
         eccube.setValue('orderby', orderby);
@@ -40,53 +40,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <div id="main">
-        <form name="form1" id="form1" method="get" action="?">
-            {{ form_widget(search_form) }}
+    <form name="form1" id="form1" method="get" action="?">
+        {{ form_widget(search_form) }}
+    </form>
+    <div class="row">
+        <form name="page_navi_top" id="page_navi_top" action="?">
+        <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。</p>
+        <div class="col-sm-6 no-padding">
+            <ul class="pagenumberarea clearfix">
+            <li>
+            {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
+            </li>
+            <li>
+            {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
+            </li>
+            </ul>
+        </div>
         </form>
-        <div class="row">
-            <form name="page_navi_top" id="page_navi_top" action="?">
-            <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。</p>
-            <div class="col-sm-6 no-padding">
-                <ul class="pagenumberarea clearfix">
-				<li>
-                {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
-                </li>
-                <li>
-                {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
-                </li>
-                </ul>
-            </div>
-            </form>
-        </div>
+    </div>
 
-        <!-- ▼item_list▼ -->
-        <div id="item_list">
-            <div class="row no-padding">
-                {% for Product in pagination %}
-                <div class="col-sm-3 col-xs-6">
-                    <div class="product_item">
-                        <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                            <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_product }}">{#<button type="button" class="btn_circle" data-toggle="modal" data-target="#myModal"><svg class="cb cb-ellipsis"><use xlink:href="#cb-ellipsis" /></svg></button>#}</div>
-                            <dl>
-                                <dt class="item_name">{{ Product.name }}</dt>
-                                {% if Product.hasProductClass %}
-                                <dd class="item_price">\{{ Product.getPrice02IncTaxMin|number_format }}～\{{ Product.getPrice02IncTaxMax|number_format }}</dd>
-                                {% else %}
-                                <dd class="item_price">\{{ Product.getPrice02IncTaxMin|number_format }}</dd>
-                                {% endif %}
-                            </dl>
-                        </a>
-                    </div>
+    <!-- ▼item_list▼ -->
+    <div id="item_list">
+        <div class="row no-padding">
+            {% for Product in pagination %}
+            <div class="col-sm-3 col-xs-6">
+                <div class="product_item">
+                    <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                        <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}{{ Product.main_list_image|no_image_product }}">{#<button type="button" class="btn_circle" data-toggle="modal" data-target="#myModal"><svg class="cb cb-ellipsis"><use xlink:href="#cb-ellipsis" /></svg></button>#}</div>
+                        <dl>
+                            <dt class="item_name">{{ Product.name }}</dt>
+                            {% if Product.hasProductClass %}
+                            <dd class="item_price">\{{ Product.getPrice02IncTaxMin|number_format }}～\{{ Product.getPrice02IncTaxMax|number_format }}</dd>
+                            {% else %}
+                            <dd class="item_price">\{{ Product.getPrice02IncTaxMin|number_format }}</dd>
+                            {% endif %}
+                        </dl>
+                    </a>
                 </div>
-                {% endfor %}
             </div>
-
+            {% endfor %}
         </div>
-        <!-- ▲item_list▲ -->
-        {% if pagination.totalItemCount > 0 %}
-            {% include "pagination.twig" with { 'pages' : pagination.paginationData } %}
-        {% endif %}
-    </div><!-- /#main -->
 
+    </div>
+    <!-- ▲item_list▲ -->
+    {% if pagination.totalItemCount > 0 %}
+        {% include "pagination.twig" with { 'pages' : pagination.paginationData } %}
+    {% endif %}
 {% endblock %}

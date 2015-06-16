@@ -36,8 +36,8 @@ Eccube\Entity\Block:
         update_date:
             type: datetime
             nullable: false
-            options:
-                default: '0000-00-00 00:00:00'
+#            options:
+#                default: '0000-00-00 00:00:00'
         php_path:
             type: text
             nullable: true
@@ -48,7 +48,7 @@ Eccube\Entity\Block:
             options:
                 default: '1'
     oneToMany:
-        BlocPositions:
+        BlockPositions:
             targetEntity: Eccube\Entity\BlockPosition
             cascade: ["persist", "remove"]
             mappedBy: Block

@@ -19,11 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block main %}
     <div id="undercolumn">
-        <h2 class="title">{{ title }}</h2>
         <div id="undercolumn_contact">
             <div id="complete_area">
                 <p class="message">お問い合わせ内容の送信が完了いたしました。</p>
@@ -35,7 +34,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <p class="name">{{ app.config.shop_name }}<br />
                 <p>TEL：00-0000-0000
                     E-mail：<a href="mailto:sample@example.com">sample@example.com</a></p>
-                </p>
                 </div>
 
                 <div class="btn_area">

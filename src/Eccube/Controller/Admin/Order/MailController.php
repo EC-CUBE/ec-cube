@@ -92,14 +92,8 @@ class MailController
                         $data = $form->getData();
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
-                        // TODO: 後でEventとして実装する
-                        $message = $app['mail.message']
-                            ->setSubject($data['subject'])
-                            ->setFrom(array('sample@example.com'))
-                            ->setCc($app['config']['mail_cc'])
-                            ->setTo(array($Order->getEmail()))
-                            ->setBody($body);
-                        $app['mailer']->send($message);
+                        // メール送信
+                        $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
 
                         // 送信履歴を保存.
                         $MailTemplate = $form->get('template')->getData();
@@ -115,6 +109,7 @@ class MailController
                             ->setOrder($Order);
                         $app['orm.em']->persist($MailHistory);
                         $app['orm.em']->flush($MailHistory);
+
 
                         return $app->redirect($app['url_generator']->generate('admin_order'));
                         break;

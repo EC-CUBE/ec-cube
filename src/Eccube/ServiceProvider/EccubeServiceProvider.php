@@ -88,6 +88,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.order_status'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         });
+        $app['eccube.repository.master.device_type'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\DeviceType');
+        });
 
         $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
@@ -164,7 +167,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $pageLayoutRepository;
         });
         $app['eccube.repository.block'] = $app->share(function () use ($app) {
-            $blockRepository = $app['orm.em']->getRepository('Eccube\Entity\Bloc');
+            $blockRepository = $app['orm.em']->getRepository('Eccube\Entity\Block');
             $blockRepository->setApp($app);
 
             return $blockRepository;

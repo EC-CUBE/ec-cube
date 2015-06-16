@@ -52,7 +52,7 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $BlocPositions;
+    private $BlockPositions;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
@@ -64,7 +64,7 @@ class Block extends \Eccube\Entity\AbstractEntity
      */
     public function __construct()
     {
-        $this->BlocPositions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -244,31 +244,31 @@ class Block extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\BlockPosition $blocPositions
      * @return Block
      */
-    public function addBlocPosition(\Eccube\Entity\BlockPosition $blocPositions)
+    public function addBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
     {
-        $this->BlocPositions[] = $blocPositions;
+        $this->BlockPositions[] = $blockPositions;
 
         return $this;
     }
 
     /**
-     * Remove BlocPositions
+     * Remove BlockPositions
      *
-     * @param \Eccube\Entity\BlockPosition $blocPositions
+     * @param \Eccube\Entity\BlockPosition $blockPositions
      */
-    public function removeBlocPosition(\Eccube\Entity\BlockPosition $blocPositions)
+    public function removeBlockPosition(\Eccube\Entity\BlockPosition $blockPositions)
     {
-        $this->BlocPositions->removeElement($blocPositions);
+        $this->BlockPositions->removeElement($blockPositions);
     }
 
     /**
-     * Get BlocPositions
+     * Get BlockPositions
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getBlocPositions()
+    public function getBlockPositions()
     {
-        return $this->BlocPositions;
+        return $this->BlockPositions;
     }
 
     /**
