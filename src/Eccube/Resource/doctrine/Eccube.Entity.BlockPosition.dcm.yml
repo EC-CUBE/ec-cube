@@ -13,13 +13,13 @@ Eccube\Entity\BlockPosition:
             nullable: false
             unsigned: false
             id: true
-        bloc_id:
+        block_id:
             type: integer
             nullable: false
             unsigned: false
             id: true
     fields:
-        bloc_row:
+        block_row:
             type: integer
             nullable: true
             unsigned: false
