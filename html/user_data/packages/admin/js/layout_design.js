@@ -24,7 +24,7 @@
         $('div:not(.ui-sortable-helper)', sortable)
             .removeClass('first')
             .filter(':first').addClass('first').end()
-            .children('input.target-id').val(sortable.id).end()
+            .children('input.target-id').val(sortable.id.replace('position_', '')).end()
             .each(function(){
                 var top = $(this).prevAll().length + 1;
                 $(this).children('input.top').val(top);
@@ -38,7 +38,18 @@
     };
 
     $(document).ready(function(){
-        var els = ['#MainHead', '#MainFoot', '#LeftNavi', '#RightNavi', '#TopNavi', '#BottomNavi', '#HeadNavi', '#HeaderTopNavi', '#FooterBottomNavi', '#HeaderInternalNavi', '#Unused'];
+        var els = [
+            '#position_0',
+            '#position_1',
+            '#position_2',
+            '#position_3',
+            '#position_4',
+            '#position_5',
+            '#position_6',
+            '#position_7',
+            '#position_8',
+            '#position_9'
+        ];
         var $els = $(els.toString());
 
         $els.each(function(){
@@ -47,13 +58,8 @@
 
         $els.sortable({
             items: '> div',
-            //handle: 'dt',
             cursor: 'move',
-            //cursorAt: { top: 2, left: 2 },
-            //opacity: 0.8,
-            //helper: 'clone',
             appendTo: 'body',
-            //placeholder: 'clone',
             placeholder: 'placeholder',
             connectWith: els,
             start: function(e,ui) {
@@ -64,7 +70,7 @@
         });
     });
 
-    $(window).bind('load',function(){
+    $(window).on('load',function(){
         setTimeout(function(){
             $('#overlay').fadeOut(function(){
                 $('body').css('overflow', 'auto');

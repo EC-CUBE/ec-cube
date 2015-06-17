@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -44,38 +45,93 @@ class PageLayoutRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id OR bp.anywhere = 1')
-            ->innerJoin('bp.Block', 'b')
+            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND p.id = :pageId')
             ->addOrderBy('bp.target_id', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 
-        return $qb
+        $ownResult = $qb
             ->getQuery()
             ->setParameters(array(
                 'DeviceType'  => $DeviceType,
                 'pageId'        => $pageId,
             ))
             ->getSingleResult();
+
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, bp, b')
+            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('bp.Block', 'b')
+            ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
+            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.block_row', 'ASC');
+
+        $anyResults = $qb
+            ->getQuery()
+            ->setParameters(array(
+                'DeviceType' => $DeviceType,
+            ))
+            ->getResult();
+
+        $OwnBlockPosition = $ownResult->getBlockPositions();
+        foreach ($anyResults as $anyResult) {
+            $BlockPositions = $anyResult->getBlockPositions();
+            foreach ($BlockPositions as $BlockPosition) {
+                if (!$OwnBlockPosition->contains($BlockPosition)) {
+                    $ownResult->addBlockPosition($BlockPosition);
+                }
+            }
+        }
+
+        return $ownResult;
+
     }
 
     public function getByUrl($DeviceType, $url)
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
-            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id OR bp.anywhere = 1')
-            ->innerJoin('bp.Block', 'b')
+            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('bp.Block', 'b')
             ->andWhere('p.DeviceType = :DeviceType AND p.url = :url')
             ->addOrderBy('bp.target_id', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 
-        return $qb
+        $ownResult = $qb
             ->getQuery()
             ->setParameters(array(
                 'DeviceType' => $DeviceType,
                 'url'  => $url,
             ))
             ->getSingleResult();
+
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, bp, b')
+            ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
+            ->leftJoin('bp.Block', 'b')
+            ->andWhere('p.DeviceType = :DeviceType AND bp.anywhere = 1')
+            ->addOrderBy('bp.target_id', 'ASC')
+            ->addOrderBy('bp.block_row', 'ASC');
+
+        $anyResults = $qb
+            ->getQuery()
+            ->setParameters(array(
+                'DeviceType' => $DeviceType,
+            ))
+            ->getResult();
+
+        $OwnBlockPosition = $ownResult->getBlockPositions();
+        foreach ($anyResults as $anyResult) {
+            $BlockPositions = $anyResult->getBlockPositions();
+            foreach ($BlockPositions as $BlockPosition) {
+                if (!$OwnBlockPosition->contains($BlockPosition)) {
+                    $ownResult->addBlockPosition($BlockPosition);
+                }
+            }
+        }
+
+        return $ownResult;
     }
 
     public function getByRoutingName($DeviceType, $routingName)
@@ -127,36 +183,34 @@ class PageLayoutRepository extends EntityRepository
         return $this->getByUrl($DeviceType, $routingName);
     }
 
-    public function newPageLayout($deviceTypeId)
+    public function newPageLayout(\Eccube\Entity\Master\DeviceType $DeviceType)
     {
         $PageLayout = new \Eccube\Entity\PageLayout();
         $PageLayout
-            ->setDeviceTypeId($deviceTypeId);
+            ->setDeviceType($DeviceType);
 
         return $PageLayout;
     }
 
-    public function findOrCreate($page_id, $deviceTypeId)
+    public function findOrCreate($page_id, \Eccube\Entity\Master\DeviceType $DeviceType)
     {
 
         if ($page_id == null) {
-            $PageLayout = $this->newPageLayout($deviceTypeId);
-            $page_id = $this->getNewPageId($deviceTypeId);
-            $PageLayout->setPageId($page_id);
+            $PageLayout = $this->newPageLayout($DeviceType);
 
             return $PageLayout;
         } else {
-            return $this->get($deviceTypeId, $page_id);
+            return $this->get($DeviceType, $page_id);
         }
 
     }
 
-    private function getNewPageId($deviceTypeId)
+    private function getNewPageId(\Eccube\Entity\Master\DeviceType $DeviceType)
     {
         $qb = $this->createQueryBuilder('l')
             ->select('max(l.id) +1 as page_id')
-            ->where('l.device_type_id = :device_type_id')
-            ->setParameter('device_type_id', $deviceTypeId);
+            ->where('l.DeviceType = :DeviceType')
+            ->setParameter('DeviceType', $DeviceType);
         $result = $qb->getQuery()->getSingleResult();
 
         return $result['page_id'];
@@ -169,18 +223,18 @@ class PageLayoutRepository extends EntityRepository
      * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
      *
      * @access public
-     * @param  integer  $deviceTypeId 端末種別ID
+     * @param  \Eccube\Entity\Master\DeviceType  $DeviceType 端末種別ID
      * @param  string   $where          追加の検索条件
      * @param  string[] $parameters     追加の検索パラメーター
      * @return array    ページ属性の配列
      */
-    public function getPageList($deviceTypeId, $where = '', $parameters = array())
+    public function getPageList(\Eccube\Entity\Master\DeviceType $DeviceType, $where = '', $parameters = array())
     {
 
         $qb = $this->createQueryBuilder('l')
             ->orderBy('l.id', 'DESC')
-            ->where('l.device_type_id = :device_type_id')
-            ->setParameter('device_type_id', $deviceTypeId)
+            ->where('l.DeviceType = :DeviceType')
+            ->setParameter('DeviceType', $DeviceType)
             ->andWhere('l.id <> 0');
         if ($where != '') {
             $qb->andWhere($where);
@@ -200,26 +254,26 @@ class PageLayoutRepository extends EntityRepository
      * テンプレートのパスを取得する.
      *
      * @access public
-     * @param  integer $deviceTypeId 端末種別ID
+     * @param  \Eccube\Entity\Master\DeviceType  $DeviceType 端末種別ID
      * @param  boolean $isUser         USER_REALDIR 以下のパスを返す場合 true
      * @return string  テンプレートのパス
      */
-    public function getTemplatePath($deviceTypeId, $isUser = false)
+    public function getTemplatePath(\Eccube\Entity\Master\DeviceType $DeviceType, $isUser = false)
     {
         $app = $this->app;
         $templateName = '';
-        switch ($deviceTypeId) {
-            case $app['config']['device_type_mobile']:
+        switch ($DeviceType->getId()) {
+            case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_MB:
                 $dir = $app['config']['mobile_template_realdir'];
                 $templateName =  $app['config']['mobile_template_name'];
                 break;
 
-            case $app['config']['device_type_smartphone']:
+            case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP:
                 $dir = $app['config']['smartphone_template_realdir'];
                 $templateName =  $app['config']['smartphone_template_name'];
                 break;
 
-            case $app['config']['device_type_pc'];
+            case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC;
                 $dir = $app['config']['template_realdir'];
                 $templateName =  $app['config']['template_name'];
                 break;
@@ -251,7 +305,7 @@ class PageLayoutRepository extends EntityRepository
             $templatePath .= $arrDir[$index] . '/';
         }
         // TODO: .tpl, .twig が混在するためひとまず*。元の$filenameから拡張子込で持ちたい。
-        $finder->in($templatePath)->name($arrDir[$index].'.*');
+        $finder->in($templatePath)->name($arrDir[$index].'.twig');
 
         $data = null;
         if ($finder->count() === 1) {

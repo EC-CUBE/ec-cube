@@ -158,6 +158,7 @@ class TradelawType extends AbstractType
             ->add('law_term06', 'textarea', array(
                 'required' => true
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 }

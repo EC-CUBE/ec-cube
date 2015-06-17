@@ -123,7 +123,8 @@ class ShoppingShippingType extends AbstractType
                         new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                     ),
                 ),
-            ));
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

@@ -27,18 +27,8 @@ namespace Eccube\Tests\Service;
 use Eccube\Application;
 use Eccube\Service\CartService;
 
-class CartServiceTest extends \PHPUnit_Framework_TestCase
+class CartServiceTest extends AbstractServiceTestCase
 {
-    private $app;
-
-    public function setUp()
-    {
-        $this->app = new Application(array(
-            'env' => 'test'
-        ));
-        $this->app->boot();
-    }
-
     public function testUnlock()
     {
         $cartService = $this->app['eccube.service.cart'];

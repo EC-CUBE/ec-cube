@@ -57,12 +57,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     }
 {% endblock %}
 
-{% form_theme searchForm 'Form/bootstrap_3_layout.html.twig' %}
+{% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
             <!--検索条件設定テーブルここから-->
             <div class="search-box">
                 <form name="search_form" id="search_form" method="post" action="{{ url('admin_product') }}">
+                	{{ form_widget(searchForm._token) }}
                     <div class="row">
                         <div class="col-md-12 accordion">
 
@@ -72,13 +73,56 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg>
                             </a>
                             <div class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
-                                {{ form_rest(searchForm, { attr : { class : 'search' } }) }}
-
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
+                                    <div class="col-sm-12 col-lg-10 col-lg-offset-1 search">
+                                
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>カテゴリ</label>
+                                                    {{ form_widget(searchForm.category_id) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>種別</label>
+                                                <div class="form-group">
+                                                    {{ form_widget(searchForm.status) }}
+                                                </div>
+                                            </div>
+                                        </div><!-- /.row -->
+                                
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group range">
+                                                    <label>登録日</label>
+                                                    {{ form_widget(searchForm.create_date_start) }} ～ {{ form_widget(searchForm.create_date_end) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group range">
+                                                    <label>更新日</label>
+                                                    {{ form_widget(searchForm.update_date_start) }} ～ {{ form_widget(searchForm.update_date_end) }}
+                                                </div>
+                                            </div>
+                                        </div><!-- /.row -->
+                                
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label>商品ステータス</label>
+                                                    {{ form_widget(searchForm.product_status) }}
+                                                </div>
+                                            </div>
+                                        </div><!-- /.row -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                            </div>
+                                        </div><!-- /.row --> 
+                                
                                     </div>
-                                </div><!-- /.row --> 
+                                </div>                            
+
                             </div>
                         </div>
                         <!-- /.col --> 
