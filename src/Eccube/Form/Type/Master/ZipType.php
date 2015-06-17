@@ -60,6 +60,7 @@ class ZipType extends AbstractType
 
         $builder->setAttribute('zip01_name', $options['zip01_name']);
         $builder->setAttribute('zip02_name', $options['zip02_name']);
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
