@@ -236,13 +236,13 @@ class Application extends \Silex\Application
         });
 
         // EventSubscriber
-        if ($app['env'] !== 'cli') { // cliモードではテーブルがない場合があるのでロードしない
+        if (isset($app['env'] ) and $app['env'] !== 'cli') { // cliモードではテーブルがない場合があるのでロードしない
             // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
             $priorities = array();
             $em = $app['orm.em'];
             $handlers = $em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers();
             foreach ($handlers as $handler) {
-                if (!$handler->getPlugin()->getDelFlg() and 
+                if (!$handler->getPlugin()->getDelFlg() and
                      $handler->getPlugin()->getEnable()){ // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
                     $priority = $handler->getPriority();
                 } else {
