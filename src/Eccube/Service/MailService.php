@@ -133,7 +133,7 @@ class MailService
         // 管理者へメール送信
         $message = \Swift_Message::newInstance()
             ->setSubject('[EC-CUBE3] お問い合わせがあります。')
-            ->setFrom(array('ztanakn@gmail.com'))
+            ->setFrom(array('sample@example.com'))
             ->setTo($this->app['config']['mail_cc'])
             ->setBody($formData['contents']);
 
