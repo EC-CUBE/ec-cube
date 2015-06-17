@@ -49,7 +49,8 @@ class CustomerAgreementType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank()),
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

@@ -109,6 +109,7 @@ class SearchProductType extends AbstractType
             ))
             ->add('page_no', 'hidden', array(
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

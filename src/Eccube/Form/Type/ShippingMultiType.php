@@ -76,7 +76,8 @@ class ShippingMultiType extends AbstractType
                                 ->orderBy("od.id", "ASC")
                                 ->setParameter('Customer', $Customer);
                     },
-                ));
+                ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

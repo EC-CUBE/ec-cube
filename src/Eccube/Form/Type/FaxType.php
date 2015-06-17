@@ -66,6 +66,7 @@ class FaxType extends AbstractType
         $builder->setAttribute('fax01_name', $options['fax01_name']);
         $builder->setAttribute('fax02_name', $options['fax02_name']);
         $builder->setAttribute('fax03_name', $options['fax03_name']);
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

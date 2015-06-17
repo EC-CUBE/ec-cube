@@ -143,7 +143,8 @@ class MainEditType extends AbstractType
                 if (count($PageLayout) > 0) {
                     $form['filename']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
-            });
+            })
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
