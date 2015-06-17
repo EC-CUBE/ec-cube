@@ -25,7 +25,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Application;
 
-class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
+class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
 {
 
     /**

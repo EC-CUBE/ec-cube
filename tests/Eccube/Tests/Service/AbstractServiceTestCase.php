@@ -26,7 +26,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 
-class AbstractServiceTest extends \PHPUnit_Framework_TestCase
+class AbstractServiceTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $app;
 
