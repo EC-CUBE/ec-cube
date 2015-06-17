@@ -276,18 +276,6 @@ INSERT INTO mtb_status_image (id, name, rank) VALUES (3, 'img/icon/ico_03.gif', 
 INSERT INTO mtb_status_image (id, name, rank) VALUES (4, 'img/icon/ico_04.gif', 3);
 INSERT INTO mtb_status_image (id, name, rank) VALUES (5, 'img/icon/ico_05.gif', 4);
 
-INSERT INTO mtb_target (id, name, rank) VALUES (0, 'Unused', 0);
-INSERT INTO mtb_target (id, name, rank) VALUES (1, 'LeftNavi', 1);
-INSERT INTO mtb_target (id, name, rank) VALUES (2, 'MainHead', 2);
-INSERT INTO mtb_target (id, name, rank) VALUES (3, 'RightNavi', 3);
-INSERT INTO mtb_target (id, name, rank) VALUES (4, 'MainFoot', 4);
-INSERT INTO mtb_target (id, name, rank) VALUES (5, 'TopNavi', 5);
-INSERT INTO mtb_target (id, name, rank) VALUES (6, 'BottomNavi', 6);
-INSERT INTO mtb_target (id, name, rank) VALUES (7, 'HeadNavi', 7);
-INSERT INTO mtb_target (id, name, rank) VALUES (8, 'HeaderTopNavi', 8);
-INSERT INTO mtb_target (id, name, rank) VALUES (9, 'FooterBottomNavi', 9);
-INSERT INTO mtb_target (id, name, rank) VALUES (10, 'HeaderInternalNavi', 10);
-
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (1, '四捨五入', 0);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (2, '切り捨て', 1);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (3, '切り上げ', 2);

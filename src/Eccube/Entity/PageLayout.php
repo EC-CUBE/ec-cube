@@ -50,6 +50,74 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Get BlockPositionByTargetId
+     *
+     * @param integer $target_id
+     * @return \Eccube\Entity\BlockPosition
+     */
+    public function getBlocksPositionByTargetId($target_id)
+    {
+        $BlockPositions = array();
+        foreach ($this->getBlockPositions() as $BlockPosition) {
+            if ($BlockPosition->getTargetId() === $target_id) {
+                $BlockPositions[] = $BlockPosition;
+            }
+        }
+
+        return $BlockPositions;
+    }
+
+    public function getUnusedPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_UNUSED);
+    }
+
+    public function getHeadPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEAD);
+    }
+
+    public function getHeaderPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEADER);
+    }
+
+    public function getContentsTopPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_TOP);
+    }
+
+    public function getSideLeftPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_LEFT);
+    }
+
+    public function getMainTopPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_TOP);
+    }
+
+    public function getMainBottomPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_BOTTOM);
+    }
+
+    public function getSideRightPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_RIGHT);
+    }
+
+    public function getContentsBottomPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
+    }
+
+    public function getFooterPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_FOOTER);
+    }
+
+    /**
      * Get BlocsByTargetId
      *
      * @param integer $target_id
@@ -186,23 +254,6 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\Master\DeviceType
      */
     private $DeviceType;
-
-    public function setDeviceTypeId($device_type_id)
-    {
-        $this->device_type_id = $device_type_id;
-
-        return $this;
-    }
-
-    /**
-     * Get device_type_id
-     *
-     * @return integer
-     */
-    public function getDeviceTypeId()
-    {
-        return $this->device_type_id;
-    }
 
     /**
      * Constructor

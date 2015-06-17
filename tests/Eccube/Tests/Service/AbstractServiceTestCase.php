@@ -21,17 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+
 namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 
-class SystemServiceTest extends AbstractServiceTestCase
+class AbstractServiceTestCase extends \PHPUnit_Framework_TestCase
 {
-    private $system;
+    protected $app;
 
-    public function testgetDbversion()
+    public function setUp()
     {
-        $system = $this->app['eccube.service.system'];
-        $this->assertNotNull($system->getDbversion());
+        parent::setUp();
+        $this->app = new Application();
+
+        $this->app['session.test'] = true;
+        $this->app['exception_handler']->disable();
+
+        $this->app->boot();
     }
 }

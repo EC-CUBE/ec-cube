@@ -58,7 +58,7 @@ class BlockType extends AbstractType
                     ))
                 )
             ))
-            ->add('filename', 'text', array(
+            ->add('file_name', 'text', array(
                 'label' => 'ファイル名',
                 'required' => true,
                 'constraints' => array(
@@ -74,22 +74,22 @@ class BlockType extends AbstractType
                 'required' => true,
                 'constraints' => array()
             ))
-            ->add('device_type_id', 'hidden')
-            ->add('bloc_id', 'hidden')
-            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->add('DeviceType', 'hidden')
+            ->add('id', 'hidden')
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
-                $filename = $form['filename']->getData();
-                $device_type_id = $form['device_type_id']->getData();
-                $block_id = $form['bloc_id']->getData();
+                $file_name = $form['filename']->getData();
+                $DeviceType = $form['DeviceType']->getData();
+                $block_id = $form['id']->getData();
+
                 $qb = $this->app['orm.em']->createQueryBuilder();
                 $qb->select('b')
-                    ->from('Eccube\\Entity\\Bloc', 'b')
-                    ->where('b.filename = :filename')
-                    ->setParameter('filename', $filename)
-                    ->andWhere('b.device_type_id = :device_type_id')
-                    ->setParameter('device_type_id', $device_type_id)
-                    ->andWhere('b.bloc_id <> :block_id')
+                    ->from('Eccube\\Entity\\Block', 'b')
+                    ->where('b.file_name = :file_name')
+                    ->setParameter('file_name', $file_name)
+                    ->andWhere('b.DeviceType = :DeviceType')
+                    ->setParameter('DeviceType', $DeviceType)
+                    ->andWhere('b.id <> :block_id')
                     ->setParameter('block_id', $block_id)
                 ;
 
@@ -109,7 +109,7 @@ class BlockType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Bloc',
+            'data_class' => 'Eccube\Entity\Block',
         ));
     }
 
