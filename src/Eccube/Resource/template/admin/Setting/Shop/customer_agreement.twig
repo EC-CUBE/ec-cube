@@ -22,6 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% extends 'default_frame.twig' %}
 
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% set menus = ['setting', 'shop', 'customer-agreement'] %}
+
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}会員規約管理{% endblock %}
 
@@ -36,10 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="admin_product_product_image">
-                                    {{ form_label(form.customer_agreement) }}
-                                </label>
-
+                                {{ form_label(form.customer_agreement) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {{ form_widget(form.customer_agreement) }}
                                     {{ form_errors(form.customer_agreement) }}
