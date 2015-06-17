@@ -34,6 +34,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class BlockRepository extends EntityRepository
 {
+    private $app;
 
     public function setApp($app)
     {
@@ -55,10 +56,8 @@ class BlockRepository extends EntityRepository
     {
         $Block = new \Eccube\Entity\Block();
         $Block
-            ->setDeviceType($DeviceType);
-        $block_id = $this->getNewBlockId($DeviceType);
-        $Block->setBlockId($block_id);
-        $Block->setDeletableFlg(1);
+            ->setDeviceType($DeviceType)
+            ->setDeletableFlg(1);
 
         return $Block;
     }
@@ -102,7 +101,7 @@ class BlockRepository extends EntityRepository
     public function getList($DeviceType)
     {
         $qb = $this->createQueryBuilder('b')
-            ->orderBy('b.block_id', 'DESC')
+            ->orderBy('b.id', 'DESC')
             ->where('b.DeviceType = :DeviceType')
             ->setParameter('DeviceType', $DeviceType)
         ;

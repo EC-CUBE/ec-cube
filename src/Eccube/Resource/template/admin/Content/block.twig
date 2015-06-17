@@ -21,23 +21,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-
-
 {% extends 'default_frame.twig' %}
-
 
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ブロック管理{% endblock %}
 
-
 {% block main %}
 
-<form name="tax_rule_form" id="tax_rule_form" method="post" action="
+<form name="content_block_form" id="content_block_form" method="post" action="
 {%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block')}}{% endif -%}">
 
     {{ form_widget(form._token) }}
-    {{ form_widget(form.bloc_id) }}
-    {{ form_widget(form.device_type_id) }}
+    {{ form_widget(form.id) }}
+    {{ form_widget(form.DeviceType) }}
     <table>
         <tr>
             <th>{{ form_label(form.name) }}</th>
@@ -49,11 +45,11 @@
             </td>
         </tr>
         <tr>
-            <th>{{ form_label(form.filename) }}</th>
+            <th>{{ form_label(form.file_name) }}</th>
             <td>
-                {{ form_widget(form.filename) }}
+                {{ form_widget(form.file_name) }}
                 <div class="attention">
-                    <span class="attention">{{ form_errors(form.filename) }}</span>
+                    <span class="attention">{{ form_errors(form.file_name) }}</span>
                 </div>
             </td>
         </tr>
@@ -61,18 +57,12 @@
             <td colspan="2">
                 <div>
                     {{ form_widget(form.bloc_html) }}
-                    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
+                    <input type="hidden" name="html_area_row" value="" /><br />
                     <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
                 </div>
             </td>
         </tr>
     </table>
-
-    <div class="btn-area">
-        <ul>
-            <li>{{ form_widget(form.save)}}</li>
-        </ul>
-    </div>
 </form>
 
 
@@ -90,16 +80,16 @@
             <th>削除</th>
         </tr>
         {% for Block in Blocks %}
-            <tr style="{%  if Block.bloc_id == block_id %}background-color: {{ app.config.select_rgb }};{% endif %}">
+            <tr>
                 <td>
                     {{ Block.name }}
                 </td>
                 <td class="center">
-                        <a href="{{ url('admin_content_block_edit', {id: Block.bloc_id}) }}">編集</a>
+                        <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">編集</a>
                 </td>
                 <td class="center">
-                    {% if Block.deletable_flg > 0 %}
-                        <a href="{{ url('admin_content_block_delete', {id: Block.bloc_id}) }}">削除</a>
+                    {% if Block.deletable_flg == 1 %}
+                        <a href="{{ url('admin_content_block_delete', {id: Block.id}) }}">削除</a>
                     {% endif %}
                 </td>
             </tr>

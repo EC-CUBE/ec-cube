@@ -29,38 +29,43 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 class PageControllerTest extends AbstractAdminWebTestCase
 {
 
-    public function test_routeing_AdminContentPage_index()
+    public function test_routing_AdminContentPage_index()
     {
 
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_content_page'));
+        $this->client->request('GET', $this->app->url('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routeing_AdminContentPage_edit()
+    public function test_routing_AdminContentPage_edit()
     {
         // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
         self::markTestSkipped();
 
         $this->client->request('GET',
-            $this->app['url_generator']
-                ->generate('admin_content_page_edit',
-                    array('id' => 1)));
+            $this->app->url(
+                'admin_content_page_edit',
+                array('id' => 1)
+            )
+        );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routeing_AdminContentPage_delete()
+    public function test_routing_AdminContentPage_delete()
     {
 
-        $redirectUrl = $this->app['url_generator']->generate('admin_content_page');
+        $redirectUrl = $this->app->url(
+            'admin_content_page');
 
         $this->client->request('GET',
-            $this->app['url_generator']
-                ->generate('admin_content_page_delete',
-                    array('id' => 1)));
+            $this->app->url(
+                'admin_content_page_delete',
+                array('id' => 1)
+            )
+        );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
-        $this->assertSame(true, $actual);
+        $this->assertTrue($actual);
     }
 
 }

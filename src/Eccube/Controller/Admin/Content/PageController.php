@@ -89,24 +89,25 @@ class PageController
         // 登録されているページ一覧の取得
         $PageLayouts = $app['eccube.repository.page_layout']->getPageList($DeviceType);
 
-        return $app['view']->render('Content/page.twig', array(
+        return $app->render('Content/page.twig', array(
+            'form' => $form->createView(),
             'PageLayouts' => $PageLayouts,
             'page_id' => $id,
             'editable' => $editable,
-            'form' => $form->createView(),
         ));
     }
 
     public function delete(Application $app, $id = null)
     {
-        // TODO: 消したい
-        $device_type_id = 10;
-        $PageLayout = $app['eccube.repository.page_layout']->findOrCreate($id, $device_type_id);
+        $DeviceType = $app['eccube.repository.master.device_type']
+            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+
+        $PageLayout = $app['eccube.repository.page_layout']->findOrCreate($id, $DeviceType);
 
         // ユーザーが作ったページのみ削除する
         if ($PageLayout->getEditFlg() == null) {
             $templatePath = $app['eccube.repository.page_layout']
-                ->getTemplatePath($device_type_id, true);
+                ->getTemplatePath($DeviceType, true);
             $file = $templatePath . $PageLayout->getFileName() . '.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
@@ -116,6 +117,6 @@ class PageController
             $app['orm.em']->flush();
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_content_page'));
+        return $app->redirect($app->url('admin_content_page'));
     }
 }

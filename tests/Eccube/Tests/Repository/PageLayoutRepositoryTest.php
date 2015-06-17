@@ -26,20 +26,8 @@ namespace Eccube\Tests\Repository;
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
 
-class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
+class PageLayoutRepositoryTest extends AbstractRepositoryTestCase
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
 /* privateなMethodにしたのでテストは別途考える
     public function test_getNewPageId()
@@ -83,7 +71,7 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
             ->findOrCreate(1, $DeviceType);
         $actual = array(
             'url' => $PageLayout->getUrl(),
-            'DeviceType' => $PageLayout->getDeviceType(),
+            'DeviceType' => $PageLayout->getDeviceType()->getId(),
         );
 
         $this->assertSame($actual, $expected);
@@ -127,7 +115,7 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
             ->findOrCreate(2, DeviceType::DEVICE_TYPE_SP);
         $actual = array(
             'url' => $PageLayout->getUrl(),
-            'DeviceType' => $PageLayout->getDeviceType(),
+            'DeviceType' => $PageLayout->getDeviceType()->getId(),
         );
 
         $this->assertSame($actual, $expected);
