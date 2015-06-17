@@ -59,7 +59,7 @@ class ContactController
             ));
         }
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -74,12 +74,11 @@ class ContactController
                         ));
 
                     case 'complete':
-                        $data = $form->getData();
-
                         // メール送信
                         $app['eccube.service.mail']->sendrContactMail($form->getData());
 
                         return $app->redirect($app->url('contact_complete'));
+                        break;
                 }
             }
         }
