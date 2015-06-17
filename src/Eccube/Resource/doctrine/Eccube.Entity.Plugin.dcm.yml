@@ -50,7 +50,7 @@ Eccube\Entity\Plugin:
         PluginEventHandlers:
             targetEntity: \Eccube\Entity\PluginEventHandler
             mappedBy: Plugin
-#            cascade: ["persist", "remove"]
+            cascade: ["persist", "remove"]
 
 
     lifecycleCallbacks: {  }
