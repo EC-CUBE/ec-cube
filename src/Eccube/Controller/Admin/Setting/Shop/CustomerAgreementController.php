@@ -36,20 +36,23 @@ class CustomerAgreementController extends AbstractController
 
     public function index(Application $app)
     {
-        $help = $app['eccube.repository.help']->get();
+        $Help = $app['eccube.repository.help']->get();
 
         $form = $app['form.factory']
-            ->createBuilder('customer_agreement', $help)
+            ->createBuilder('customer_agreement', $Help)
             ->getForm();
 
-        if ($app['request']->getMethod() === 'POST') {
+        if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                $app['orm.em']->persist($help);
+                $Help = $form->getData();
+                $app['orm.em']->persist($Help);
                 $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('customer_agreement.complete', 'admin.register.complete');
 
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop_customer_agreement'));
+                $app->addSuccess('admin.register.complete', 'admin');
+                return $app->redirect($app->url('admin_setting_shop_customer_agreement'));
+            } else {
+                $app->addError('admin.register.failed', 'admin');
             }
         }
 
