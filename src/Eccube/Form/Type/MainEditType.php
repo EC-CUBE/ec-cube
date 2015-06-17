@@ -58,7 +58,7 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('filename', 'text', array(
+            ->add('file_name', 'text', array(
                 'label' => 'URL',
                 'required' => true,
                 'constraints' => array(
@@ -67,14 +67,6 @@ class MainEditType extends AbstractType
                         'max' => $app['config']['stext_len'],
                     )),
                 )
-            ))
-            ->add('header_chk', 'checkbox', array(
-                'label' => 'ヘッダチェック',
-                'required' => false,
-            ))
-            ->add('footer_chk', 'checkbox', array(
-                'label' => 'フッタチェック',
-                'required' => false,
             ))
             ->add('tpl_data', 'textarea', array(
                 'label' => 'TPLデータ',
@@ -118,22 +110,22 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('device_type_id', 'hidden')
-            ->add('page_id', 'hidden')
-            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->add('DeviceType', 'hidden')
+            ->add('id', 'hidden')
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
-                $filename = $form['filename']->getData();
-                $device_type_id = $form['device_type_id']->getData();
+                $file_name = $form['file_name']->getData();
+                $DeviceType = $form['DeviceType']->getData();
                 $page_id = $form['page_id']->getData();
+
                 $qb = $this->app['orm.em']->createQueryBuilder();
                 $qb->select('p')
                     ->from('Eccube\\Entity\\PageLayout', 'p')
-                    ->where('p.filename = :filename')
-                    ->setParameter('filename', $filename)
-                    ->andWhere('p.device_type_id = :device_type_id')
-                    ->setParameter('device_type_id', $device_type_id)
-                    ->andWhere('p.page_id <> :page_id')
+                    ->where('p.file_name = :file_name')
+                    ->setParameter('file_name', $file_name)
+                    ->andWhere('p.DeviceType = :DeviceType')
+                    ->setParameter('DeviceType', $DeviceType)
+                    ->andWhere('p.id <> :page_id')
                     ->setParameter('page_id', $page_id)
                 ;
 
@@ -141,7 +133,7 @@ class MainEditType extends AbstractType
                     ->getQuery()
                     ->getResult();
                 if (count($PageLayout) > 0) {
-                    $form['filename']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
+                    $form['file_name']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
