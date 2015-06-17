@@ -42,17 +42,15 @@ Eccube\Entity\Plugin:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
 
     oneToMany:
         PluginEventHandlers:
-            targetEntity: Eccube\Entity\PluginEventHandler
+            targetEntity: \Eccube\Entity\PluginEventHandler
             mappedBy: Plugin
-            cascade: ["persist", "remove"]
+#            cascade: ["persist", "remove"]
 
 
     lifecycleCallbacks: {  }

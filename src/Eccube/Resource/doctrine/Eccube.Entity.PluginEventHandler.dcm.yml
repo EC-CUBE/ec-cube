@@ -50,6 +50,4 @@ Eccube\Entity\PluginEventHandler:
                 name: plugin_id
                 referencedColumnName: plugin_id
 
-
-
     lifecycleCallbacks: {  }

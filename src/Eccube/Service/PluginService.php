@@ -197,23 +197,25 @@ class PluginService
                ->setName($meta['name']);
 
         $rep=$em->getRepository('Eccube\Entity\PluginEventHandler');
-        foreach($event_yml as $event=>$handlers){
-            foreach($handlers as $handler){
-                if( !$this->checkSymbolName($handler[0]) ){
-                    throw new \Exception("Handler name format error");
-                }
-                $peh = $rep->findBy(array('del_flg'=>0,'plugin_id'=> $plugin->getId(),'event' => $event ,'handler' => $handler[0] ));
-                if(!$peh){ // 新規にevent.ymlに定義されたハンドラなのでinsertする
-                    $peh = new \Eccube\Entity\PluginEventHandler();
-                    $peh->setPlugin($plugin)
-                        ->setEvent($event)
-                        ->setdelFlg(0)
-                        ->setHandler($handler[0])
-                        ->setHandlerType($handler[1])
-                        ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
-                    $em->persist($peh);
-                    $em->flush(); 
+        if(is_array($event_yml)){
+            foreach($event_yml as $event=>$handlers){
+                foreach($handlers as $handler){
+                    if( !$this->checkSymbolName($handler[0]) ){
+                        throw new \Exception("Handler name format error");
+                    }
+                    $peh = $rep->findBy(array('del_flg'=>0,'plugin_id'=> $plugin->getId(),'event' => $event ,'handler' => $handler[0] ));
+                    if(!$peh){ // 新規にevent.ymlに定義されたハンドラなのでinsertする
+                        $peh = new \Eccube\Entity\PluginEventHandler();
+                        $peh->setPlugin($plugin)
+                            ->setEvent($event)
+                            ->setdelFlg(0)
+                            ->setHandler($handler[0])
+                            ->setHandlerType($handler[1])
+                            ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
+                        $em->persist($peh);
+                        $em->flush(); 
 
+                    }
                 }
             }
         }
@@ -239,20 +241,22 @@ class PluginService
         $em->persist($p); 
         $em->flush(); 
 
-        foreach($event_yml as $event=>$handlers){
-            foreach($handlers as $handler){
-                if( !$this->checkSymbolName($handler[0]) ){
-                    throw new \Exception("Handler name format error");
+        if(is_array($event_yml)){
+            foreach($event_yml as $event=>$handlers){
+                foreach($handlers as $handler){
+                    if( !$this->checkSymbolName($handler[0]) ){
+                        throw new \Exception("Handler name format error");
+                    }
+                    $peh = new \Eccube\Entity\PluginEventHandler();
+                    $peh->setPlugin($p)
+                        ->setEvent($event)
+                        ->setdelFlg(0)
+                        ->setHandler($handler[0])
+                        ->setHandlerType($handler[1])
+                        ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
+                    $em->persist($peh);
+                    $em->flush(); 
                 }
-                $peh = new \Eccube\Entity\PluginEventHandler();
-                $peh->setPlugin($p)
-                    ->setEvent($event)
-                    ->setdelFlg(0)
-                    ->setHandler($handler[0])
-                    ->setHandlerType($handler[1])
-                    ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
-                $em->persist($peh);
-                $em->flush(); 
             }
         }
 
@@ -268,13 +272,10 @@ class PluginService
 
         $p->setDelFlg(1)->setEnable(0);
 
-        $rep=$em->getRepository('Eccube\Entity\PluginEventHandler');
-        foreach($rep->findBy(array('plugin_id'=> $p->getId()  )) as $peh ) {
-            // Assosiationを経由して子エンティティが取れるはずなのだけどうまく動作していないので
-            // 一旦ベタな書き方で回避
+        foreach($p->getPluginEventHandlers()->toArray() as $peh){
             $peh->setDelFlg(1); 
             $em->persist($peh); 
-        }
+        }  
 
         $em->persist($p); 
         $em->flush(); 

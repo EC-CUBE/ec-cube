@@ -38,10 +38,10 @@ class PluginController extends AbstractController
         $service = $app['eccube.service.plugin'];
         $em = $app['orm.em'];
         $repo=$em->getRepository('Eccube\Entity\Plugin');
-
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             $data = $form->getData();
+
             if($form->get('install')->isClicked()){
                 $tempfile=sha1( openssl_random_pseudo_bytes(20) );
                 $form['plugin_archive']->getData()->move(sys_get_temp_dir() ,$tempfile )   ;

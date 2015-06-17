@@ -79,12 +79,16 @@ class Plugin
 
     private $update_date;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
     private $PluginEventHandlers;
 
 
-    public function __construct()
+    function __construct()
     {
         $this->PluginEventHandlers = new \Doctrine\Common\Collections\ArrayCollection();
+
     }
 
     /**
@@ -304,19 +308,16 @@ class Plugin
         return $this->source;
     }
 
-
-
-
     public function getPluginEventHandlers()
     {
         return $this->PluginEventHandlers;
     }
-    public function addPluginEventHandlers(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
+    public function addPluginEventHandler(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
     {
-        $this->PluginEventHandlers[] = $PluginEventHandlers;
+        $this->PluginEventHandlers[] = $PluginEventHandler;
         return $this;
     }
-    public function removePluginEventHandlers(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
+    public function removePluginEventHandler(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
     {
         $this->PluginEventHandlers->removeElement($PluginEventHandler);
         return $this;

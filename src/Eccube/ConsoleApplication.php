@@ -41,25 +41,6 @@ class ConsoleApplication extends \Silex\Application
     /** @var Application app */
     protected static $app;
 
-    /**
-     * Alias
-     *
-     * @return object
-     */
-/*
-    public static function alias($name)
-    {
-        $args = func_get_args();
-        array_shift($args);
-        $obj = static::$app[$name];
-
-        if (is_callable($obj)) {
-            return call_user_func_array($obj, $args);
-        } else {
-            return $obj;
-        }
-    }
-*/
     public function __construct(array $values = array())
     {
         $app = $this;
@@ -121,15 +102,6 @@ class ConsoleApplication extends \Silex\Application
                 ),
             ),
         ));
-
-
-       // EventDispatcher
-#        $app['eccube.event.dispatcher'] = $app->share(function () {
-#            return new EventDispatcher();
-#        });
-
-
-
 
         // Migration
         $app->register(
