@@ -64,8 +64,10 @@ abstract class AbstractWebTestCase extends WebTestCase
     public function createApplication()
     {
         $app = new Application();
+
         $app['session.test'] = true;
         $app['exception_handler']->disable();
+
         $app->boot();
 
         return $app;
