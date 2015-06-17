@@ -83,7 +83,7 @@ class ProductClassType extends AbstractType
                 'label' => '消費税率',
                 'mapped' => false,
             ))
-            ->add('deliv_fee', 'money', array(
+            ->add('delivery_fee', 'money', array(
                 'label' => '商品送料',
                 'currency' => 'JPY',
                 'precision' => 0,
@@ -94,6 +94,10 @@ class ProductClassType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
+            ))
+            ->add('del_flg', 'checkbox', array(
+                'label' => '追加',
+                'required' => false,
             ))
         ;
 

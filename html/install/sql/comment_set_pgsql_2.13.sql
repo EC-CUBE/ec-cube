@@ -586,7 +586,7 @@ COMMENT ON COLUMN dtb_products_class.stock_unlimited IS '在庫制限';
 COMMENT ON COLUMN dtb_products_class.sale_limit IS '販売制限数';
 COMMENT ON COLUMN dtb_products_class.price01 IS '価格';
 COMMENT ON COLUMN dtb_products_class.price02 IS '特別価格';
-COMMENT ON COLUMN dtb_products_class.deliv_fee IS '商品送料';
+COMMENT ON COLUMN dtb_products_class.delivery_fee IS '商品送料';
 COMMENT ON COLUMN dtb_products_class.point_rate IS 'ポイント付与率';
 COMMENT ON COLUMN dtb_products_class.creator_id IS '作成者ID';
 COMMENT ON COLUMN dtb_products_class.create_date IS '作成日時';

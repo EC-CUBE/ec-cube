@@ -164,7 +164,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $deliv_fee;
+    private $delivery_fee;
 
     /**
      * @var string
@@ -365,26 +365,26 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliv_fee
+     * Set delivery_fee
      *
-     * @param  string       $delivFee
+     * @param  string       $deliveryFee
      * @return ProductClass
      */
-    public function setDelivFee($delivFee)
+    public function setDeliveryFee($deliveryFee)
     {
-        $this->deliv_fee = $delivFee;
+        $this->delivery_fee = $deliveryFee;
 
         return $this;
     }
 
     /**
-     * Get deliv_fee
+     * Get delivery_fee
      *
      * @return string
      */
-    public function getDelivFee()
+    public function getDeliveryFee()
     {
-        return $this->deliv_fee;
+        return $this->delivery_fee;
     }
 
     /**

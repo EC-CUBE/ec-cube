@@ -319,7 +319,7 @@ CREATE TABLE dtb_products_class (
     sale_limit numeric,
     price01 numeric,
     price02 numeric NOT NULL,
-    deliv_fee numeric,
+    delivery_fee numeric,
     point_rate numeric NOT NULL DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

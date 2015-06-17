@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}商品マスター{% endblock %}
 
 {% block javascript %}
+<script>
     // URLの表示非表示切り替え
     function lfnDispChange(){
         inner_id = 'switch';
@@ -55,7 +56,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             }
         }
     }
-{% endblock %}
+</script>
+{% endblock javascript %}
 
 {% form_theme searchForm 'Form/bootstrap_3_layout.html.twig' %}
 
@@ -178,7 +180,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <div class="dropdown">
                                                     <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"></svg></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="{{ url('admin_product_product_class_edit', { id : Product.id }) }}">規格</a></li>
+                                                    <li><a href="{{ url('admin_product_product_class', { id : Product.id }) }}">規格</a></li>
                                                     <li><a href="">確認</a></li>
                                                     <li><a href="">複製</a></li>
                                                     <li><a href="">削除</a></li>

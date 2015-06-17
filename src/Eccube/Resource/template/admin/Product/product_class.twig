@@ -19,14 +19,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+
 {% extends 'default_frame.twig' %}
 
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% set menus = ['product', 'index'] %}
+
 {% block title %}商品管理{% endblock %}
-{% block sub_title %}商品規格管理{% endblock %}
+{% block sub_title %}商品登録(商品規格){% endblock %}
 
-{% block main %}
-
-<script type="text/javascript">//<![CDATA[
+{% block javascript %}
+<script>
     $(function() {
         // 無制限チェックボックスの初期化
         $('input[id^=chk_stock_unlimited_]').each(function() {
@@ -108,151 +112,161 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             $('input[id^=down_filename_]').val(down_filename);
         });
     });
-//]]></script>
-<h2>商品規格登録</h2>
-<form name="form1" id="form1" method="post" action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}" enctype="multipart/form-data">
-    <input type="hidden" name="mode" value=""/>
-    {{ form_widget(form._token) }}
-    <div id="products" class="contents-main">
-        <table>
-            <tr>
-                <th>商品名</th>
-                <td>{{ Product.name }}</td>
-            </tr>
-            <tr>
-                <th>規格1<span class="attention">*</span></th>
-                <td>
-                    {{ form_widget(form.class_name1) }}
-                    {{ form_errors(form.class_name1) }}
-                </td>
-            </tr>
-            <tr>
-                <th>規格2</th>
-                <td>
-                    {{ form_widget(form.class_name2) }}
-                    {{ form_errors(form.class_name2) }}
-                </td>
-            </tr>
-        </table>
-        <div class="btn-area">
-            <ul>
-                <li><a class="btn-action" href="{{ url('admin_product') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('disp','',''); return false;"><span class="btn-next">表示する</span></a></li>
-                {% if form.product_classes|length > 0 %}
-                    <li><a class="btn-action" href="javascript:;" onclick="eccube.setModeAndSubmit('delete','',''); return false;"><span class="btn-next">削除する</span></a></li>
-                {% endif %}
-            </ul>
-        </div>
-        {% if form.product_classes|length > 0 %}
-        <div class="list-info clearfix">
-            <div class="btn"><a class="btn-normal" href="javascript:;" id="copy_from_first"><span>一行目のデータをコピーする</span></a></div>
-            <p><span class="bold">アップロード可能な拡張子：</span>{{ app.config.download_extension }}(パラメーター DOWNLOAD_EXTENSION)</p>
-        </div>
+</script>
+{% endblock javascript %}
 
-        <table class="list">
-            <col width="5%" />
-            <col width="15%" />
-            <col width="15%" />
-            <col width="9%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="8%" />
-            <col width="8%" />
-            <tr>
-                <th>登録</th>
-                <th>規格1<br />({{ form.class_name1.vars.data is empty ? '--' : form.class_name1.vars.data}})</th>
-                <th>規格2<br />({{ form.class_name2.vars.data is empty ? '--' : form.class_name2.vars.data}})</th>
-                <th>商品コード</th>
-                <th>在庫数<span class="attention">*</span></th>
-                <th>{{ app.config.normal_price_title }}(円)</th>
-                <th>{{ app.config.sale_price_title }}(円)<span class="attention">*</span></th>
-                {% if app.config.option_product_tax_rule %}
-                <th>消費税率(%)<span class="attention">*</span></th>
-                {% endif %}
-                <th>ポイント付与率<span class="attention">*</span></th>
-                <th>商品種別<span class="attention">*</span></th>
-                <th>ダウンロード<br />ファイル名<span class="red"><br />上限{{ app.config.stext_len }}文字</span></th>
-                <th>ダウンロード商品用<br />ファイル</th>
-            </tr>
-            {% for product_class_form in form.product_classes %}
-            <tr>
-                <td class="center">
-                    <p onclick="$(this).parent().parent().remove()">x</p>
+
+{% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" method="post" action="{{ url('admin_product_product_class', { id : Product.id}) }}">
+            {{ form_widget(form._token) }}
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">{{ Product.name }}</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-horizontal">
+                            <div>
+                                {{ form_widget(form.class_name1) }}
+                                {{ form_errors(form.class_name1) }}
+                                {{ form_widget(form.class_name2) }}
+                                {{ form_errors(form.class_name2) }}
+                            </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+            <div class="row text-center">
+                <div>
+                    <button type="submit" class="btn btn-primary btn-lg" name="mode" value="disp">表示する</button>
+                </div>
+            </div>
+        </form>
+
+    </div><!-- /.col -->
+</div>
+
+
+{% if classForm is not null%}
+<form class="form-inline" method="post" action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
+{{ form_widget(classForm._token) }}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            {% if classForm.product_classes|length > 0 %}
+            <div class="box-header">
+                <h3 class="box-title">検索結果 <span class="normal"><strong>{{ classForm.product_classes|length }} 件</strong> が該当しました</span></h3>
+            </div><!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="table_list">
+                    <div class="table-responsive with-border">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>登録</th>
+                                    <th>規格1</th>
+                                    <th>規格2</th>
+                                    <th>商品コード</th>
+                                    <th>在庫数</th>
+                                    <th>販売制限数</th>
+                                    <th>通常価格(円)</th>
+                                    <th>販売価格(円)</th>
+                                    <th>送料</th>
+                                    <th>商品税率</th>
+                                    <th>商品種別</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        {% for product_class_form in classForm.product_classes %}
+                                <tr>
+                <td>
+                    {{ form_widget(product_class_form.del_flg) }}
                 </td>
-                <td class="center">
+                <td>
                     {{ product_class_form.vars.value.ClassCategory1 is empty ? '' : product_class_form.vars.value.ClassCategory1.name }}
                     {{ form_widget(product_class_form.ClassCategory1) }}
                 </td>
-                <td class="center">
+                <td>
                     {{ product_class_form.vars.value.ClassCategory2 is empty ? '' : product_class_form.vars.value.ClassCategory2.name }}
                     {{ form_widget(product_class_form.ClassCategory2) }}
                 </td>
                 <td class="center">
-                    {{ form_widget(product_class_form. code) }}
-                    {{ form_errors(product_class_form. code) }}
+                    {{ form_widget(product_class_form.code) }}
+                    {{ form_errors(product_class_form.code) }}
                 </td>
                 <td class="center">
                     {% if  product_class_form.vars.value.stock_unlimited %}
                         {# 在庫無制限時のdisable #}
                     {% endif %}
-                    {{ form_widget(product_class_form. stock) }}
-                    {{ form_errors(product_class_form. stock) }}
-                    無制限：{{ form_widget(product_class_form. stock_unlimited) }}
-                    {{ form_errors(product_class_form. stock_unlimited) }}
+                    {{ form_widget(product_class_form.stock) }}
+                    {{ form_errors(product_class_form.stock) }}
+                    無制限：{{ form_widget(product_class_form.stock_unlimited) }}
+                    {{ form_errors(product_class_form.stock_unlimited) }}
                 </td>
                 <td class="center">
-                    {{ form_widget(product_class_form. price01) }}
-                    {{ form_errors(product_class_form. price01) }}
+                    {{ form_widget(product_class_form.sale_limit) }}
+                    {{ form_errors(product_class_form.sale_limit) }}
                 </td>
                 <td class="center">
-                    {{ form_widget(product_class_form. price02) }}
-                    {{ form_errors(product_class_form. price02) }}
+                    {{ form_widget(product_class_form.price01) }}
+                    {{ form_errors(product_class_form.price01) }}
                 </td>
-                {% if app.config.option_product_tax_rule %}
                 <td class="center">
-                    {# form_widget(product_class_form. tax_rate) #}
-                    {# form_errors(product_class_form. tax_rate) #}
+                    {{ form_widget(product_class_form.price02) }}
+                    {{ form_errors(product_class_form.price02) }}
                 </td>
-                {% endif %}
                 <td class="center">
-                    {{ form_widget(product_class_form. point_rate) }}
-                    {{ form_errors(product_class_form. point_rate) }}
+                    {{ form_widget(product_class_form.delivery_fee) }}
+                    {{ form_errors(product_class_form.delivery_fee) }}
                 </td>
+
+                <td class="center">
+                    {{ form_widget(product_class_form.tax_rate) }}
+                    {{ form_errors(product_class_form.tax_rate) }}
+                </td>
+
                 <td class="class-product-type">
-                    {{ form_widget(product_class_form. product_type) }}
-                    {{ form_errors(product_class_form. product_type) }}
+                    {{ form_widget(product_class_form.product_type) }}
+                    {{ form_errors(product_class_form.product_type) }}
                 </td>
-                <td class="center">
-                    {{ form_widget(product_class_form. down_filename) }}
-                    {{ form_errors(product_class_form. down_filename) }}
-                </td>
-                <td>
-                    {# todo ファイルアップロード
-                   <!--{assign var=key value="down_realfilename"}-->
-                   <!--{if $arrErr[$key][$index]}-->
-                       <span class="attention"><!--{$arrErr[$key][$index]}--></span>
-                   <!--{/if}-->
-                   <!--{if $arrForm[$key].value[$index] != ""}-->
-                       <!--{$arrForm[$key].value[$index]|h}--><br />
-                       <input type="hidden" name="<!--{$key}-->[<!--{$index}-->]" value="<!--{$arrForm[$key].value[$index]|h}-->" />
-                       <a href="?" onclick="eccube.fnFormModeSubmit('form1', 'file_delete', 'upload_index', '<!--{$index}-->'); return false;">[ファイルの取り消し]</a>
-                   <!--{else}-->
-                   <input type="file" name="<!--{$key}-->[<!--{$index}-->]" size="10" style="<!--{$arrErr[$key]|sfGetErrorColor}-->" /><br />
-                   <a class="btn-normal" href="javascript:;" name="btn" onclick="eccube.fnFormModeSubmit('form1', 'file_upload', 'upload_index', '<!--{$index}-->'); return false;">アップロード</a>
-                   <!--{/if}-->
-                    #}
-               </td>
-        </tr>
-            {% endfor %}
-        </table>
-        <div class="btn-area">
-            <ul>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', 'edit', '', ''); return false;"><span class="btn-next">確認ページへ</span></a></li>
-            </ul>
-        </div>
-        {% endif%}
+
+
+
+                                </tr>
+                        {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- /.box-body --> 
+            {% else %}
+            <div class="box-header with-arrow">
+                <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
+            </div><!-- /.box-header -->
+            {% endif %}
+        </div><!-- /.box --> 
+    </div><!-- /.col --> 
+</div>
+
+{% if classForm.product_classes|length > 0 %}
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+        <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="edit">登録</button>
     </div>
+</div>
 </form>
+{% endif %}
+
+
+{% endif %}
+
+
+
+
+
+
+
 {% endblock %}
+
+
+ 

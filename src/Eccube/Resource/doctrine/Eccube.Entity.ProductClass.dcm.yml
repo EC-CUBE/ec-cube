@@ -67,7 +67,7 @@ Eccube\Entity\ProductClass:
             nullable: false
             precision: 10
             scale: 0
-        deliv_fee:
+        delivery_fee:
             type: decimal
             nullable: true
             precision: 10
