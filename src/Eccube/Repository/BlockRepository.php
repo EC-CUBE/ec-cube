@@ -53,9 +53,9 @@ class BlockRepository extends EntityRepository
 
     public function newBlock($DeviceType)
     {
-        $Block = new \Eccube\Entity\Bloc();
+        $Block = new \Eccube\Entity\Block();
         $Block
-            ->setDeviceTypeId($DeviceType);
+            ->setDeviceType($DeviceType);
         $block_id = $this->getNewBlockId($DeviceType);
         $Block->setBlockId($block_id);
         $Block->setDeletableFlg(1);
@@ -67,7 +67,7 @@ class BlockRepository extends EntityRepository
     {
 
         $qb = $this->createQueryBuilder('b')
-            ->select('max(b.block_id) +1 as block_id')
+            ->select('max(b.id) +1 as block_id')
             ->where('b.DeviceType = :DeviceType')
             ->setParameter('DeviceType', $DeviceType);
         $result = $qb->getQuery()->getSingleResult();
@@ -86,7 +86,7 @@ class BlockRepository extends EntityRepository
     public function getBlock($block_id, $DeviceType)
     {
         $Block = $this->findOneBy(array(
-            'block_id' => $block_id,
+            'id' => $block_id,
             'DeviceType' => $DeviceType,
         ));
 
