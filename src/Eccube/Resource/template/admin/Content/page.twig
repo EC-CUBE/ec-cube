@@ -75,7 +75,7 @@ function fnDelete(action) {
                                                         {% endif %}
                                                     </li>
                                                     <li>
-                                                        {% if PageLayout.edit_flg == 1 %}
+                                                        {% if PageLayout.edit_flg == constant('Eccube\\Entity\\PageLayout::EDIT_FLG_USER') %}
                                                             <a href="javascript:;" onclick="fnDelete('{{ url('admin_content_page_delete', { 'id': PageLayout.id}) }}');return false;">削除</a>
                                                         {% else %}
                                                             <a>削除</a>

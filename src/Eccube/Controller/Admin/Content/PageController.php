@@ -115,7 +115,7 @@ class PageController
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $PageLayout = $app['eccube.repository.page_layout']
-            ->findBy(array(
+            ->findOneBy(array(
                 'id' => $id,
                 'DeviceType' => $DeviceType
             ));
