@@ -21,9 +21,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
+namespace Eccube\Common;
 
-$app = new Eccube\Application();
-$entityManager = $app['orm.em'];
+class Constant {
 
-return ConsoleRunner::createHelperSet($entityManager);
+    /**
+     * EC-CUBE VERSION,
+     *
+     * @var
+     */
+    const VERSION = '3.0.0-dev';
+
+    /**
+     * True value.
+     */
+    const TRUE = 1;
+
+    /**
+     * False value,
+     */
+    const FALSE = 0;
+
+    /**
+     * Enable value.
+     */
+    const ENABLE = 1;
+
+    /**
+     * Disable value.
+     */
+    const DISABLE = 0;
+}

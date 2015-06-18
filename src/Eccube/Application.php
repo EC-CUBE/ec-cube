@@ -37,56 +37,56 @@ use Monolog\Logger;
 
 class Application extends \Silex\Application
 {
-    /** @var Application app */
-    protected static $app;
-
-    /**
-     * Alias
-     *
-     * @return object
-     */
-    public static function alias($name)
-    {
-        $args = func_get_args();
-        array_shift($args);
-        $obj = static::$app[$name];
-
-        if (is_callable($obj)) {
-            return call_user_func_array($obj, $args);
-        } else {
-            return $obj;
-        }
-    }
-
     public function __construct(array $values = array())
     {
         $app = $this;
-        static::$app = $this;
         ini_set('error_reporting', E_ALL | ~E_STRICT);
 
         parent::__construct($values);
 
         // load config
         $this['config'] = $app->share(function () {
-            $config_file = __DIR__ . '/../../app/config/eccube/config.yml';
-            if (file_exists($config_file)) {
-                $config = Yaml::parse($config_file);
-            } else {
-                $config = array();
+            $config = array();
+            $config_yml = __DIR__ . '/../../app/config/eccube/config.yml';
+            if (file_exists($config_yml)) {
+                $config = Yaml::parse($config_yml);
             }
 
-            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
-            $constant_dist = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
-
-            if (file_exists($constant_file)) {
-                $config_constant = Yaml::parse($constant_file);
-            } elseif (file_exists($constant_dist)) {
-                $config_constant = Yaml::parse($constant_dist);
-            } else {
-                $config_constant = array();
+            $config_path = array();
+            $path_yml = __DIR__ . '/../../app/config/eccube/path.yml';
+            if (file_exists($path_yml)) {
+                $config_path = Yaml::parse($path_yml);
             }
 
-            return array_merge($config_constant, $config);
+            $config_constant = array();
+            $constant_yml = __DIR__ . '/../../app/config/eccube/constant.yml';
+            if (file_exists($constant_yml)) {
+                $config_constant = Yaml::parse($constant_yml);
+                $config_constant = empty($config_constant) ? array() : $config_constant;
+            }
+
+            $config_constant_dist = array();
+            $constant_yml_dist = __DIR__ . '/../../src/Eccube/Resource/config/constant.yml.dist';
+            if (file_exists($constant_yml_dist)) {
+                $config_constant_dist = Yaml::parse($constant_yml_dist);
+            }
+
+            $configAll = array_replace_recursive($config_constant_dist, $config_constant, $config_path, $config);
+
+            $database = array();
+            $yml = __DIR__ . '/../../app/config/eccube/database.yml';
+            if (file_exists($yml)) {
+                $database = Yaml::parse($yml);
+            }
+
+            $mail = array();
+            $yml = __DIR__ . '/../../app/config/eccube/mail.yml';
+            if (file_exists($yml)) {
+                $mail = Yaml::parse($yml);
+            }
+
+            $configAll = array_replace_recursive($configAll, $database, $mail);
+            return $configAll;
         });
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
@@ -105,7 +105,7 @@ class Application extends \Silex\Application
             //
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
-                if (strpos($app['request']->getPathInfo(), $app['config']['admin_dir']) === 0) {
+                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
                     if (file_exists(__DIR__ . '/../../template/admin')) {
                         $paths[] = __DIR__ . '/../../template/admin';
                     }
@@ -113,12 +113,12 @@ class Application extends \Silex\Application
                     $paths[] = __DIR__ . '/../../app/plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/admin';
                 } else {
-                    if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_name'])) {
-                        $paths[] = __DIR__ . '/../../template/' . $app['config']['template_name'];
+                    if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_code'])) {
+                        $paths[] = __DIR__ . '/../../template/' . $app['config']['template_code'];
                     }
                     $paths[] = __DIR__ . '/Resource/template/default';
                     $paths[] = __DIR__ . '/../../app/plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_name'];
+                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
@@ -384,24 +384,8 @@ class Application extends \Silex\Application
     {
         parent::boot();
 
-        $app = $this;
-
-        // constant 上書き
-        $app['config'] = $app->share($app->extend("config", function ($config, \Silex\Application $app) {
-            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
-            if (is_readable($constant_file)) {
-                $config_constant = Yaml::parse($constant_file);
-            } else {
-                $config_constant = $app['eccube.repository.master.constant']->getAll($config);
-                if ($config_constant) {
-                    file_put_contents($constant_file, Yaml::dump($config_constant));
-                }
-            }
-            return array_merge($config_constant, $config);
-        }));
-
         // ログイン時のイベント
-        $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
+        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
     public function addSuccess($message, $namespace = 'front')
