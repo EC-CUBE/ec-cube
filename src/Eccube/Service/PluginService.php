@@ -51,7 +51,7 @@ class PluginService
        $event = $this->readYml($tmp.'/'.self::EVENT_YML);
        $this->deleteFile($tmp); // テンポラリのファイルを削除
 
-       $this->checkSamePlugin($config['code']);
+       $this->checkSamePlugin($config['code']); // 重複していないかチェック
 
        $pluginBaseDir =  $this->calcPluginDir($config['name'])  ;
        $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
@@ -107,7 +107,6 @@ class PluginService
 
        $pluginBaseDir =  $this->calcPluginDir($config['name'])  ;
        $this->deleteFile($tmp); // テンポラリのファイルを削除
-
 
        $this->unpackPluginArchive($path,$pluginBaseDir); // 問題なければ本当のplugindirへ
 
@@ -201,7 +200,9 @@ class PluginService
                     if( !$this->checkSymbolName($handler[0]) ){
                         throw new \Exception("Handler name format error");
                     }
+                    // 新しいハンドラかどうか調べる
                     $peh = $rep->findBy(array('del_flg'=>0,'plugin_id'=> $plugin->getId(),'event' => $event ,'handler' => $handler[0] ));
+
                     if(!$peh){ // 新規にevent.ymlに定義されたハンドラなのでinsertする
                         $peh = new \Eccube\Entity\PluginEventHandler();
                         $peh->setPlugin($plugin)
