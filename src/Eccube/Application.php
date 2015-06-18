@@ -117,7 +117,7 @@ class Application extends \Silex\Application
                         $paths[] = __DIR__ . '/../../template/' . $app['config']['template_code'];
                     }
                     $paths[] = __DIR__ . '/Resource/template/default';
-                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $paths[] = __DIR__ . '/../../app/Plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
                 }
                 $twig->setCache($cache);
