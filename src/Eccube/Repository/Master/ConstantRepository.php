@@ -49,7 +49,7 @@ class ConstantRepository extends EntityRepository
             define('HTML_REALDIR', $_SERVER['DOCUMENT_ROOT'] . $config['root']);
         }
         if (!defined('HTML2DATA_DIR')) {
-            define('HTML2DATA_DIR', '../data/');
+            define('HTML2DATA_DIR', '../app/');
         }
         if (!defined('DATA_REALDIR')) {
             define('DATA_REALDIR', HTML_REALDIR . HTML2DATA_DIR);

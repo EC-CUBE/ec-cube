@@ -22,6 +22,11 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     const TARGET_ID_CONTENTS_BOTTOM = 8;
     const TARGET_ID_FOOTER = 9;
 
+    // 編集可能フラグ
+    const EDIT_FLG_USER = 0;
+    const EDIT_FLG_PREVIEW = 1;
+    const EDIT_FLG_DEFAULT = 2;
+
     /**
      * Get ColumnNum
      *
@@ -263,6 +268,18 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
         $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Set id
+     *
+     * @param string $id
+     * @return PageLayout
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
     /**
      * Get id
      *
