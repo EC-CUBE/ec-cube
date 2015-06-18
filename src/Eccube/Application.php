@@ -204,7 +204,7 @@ class Application extends \Silex\Application
                 'orm.auto_generate_proxies' => true,
                 'metadata_cache' => 'apc',
                 'query_cache' => 'apc',
-                'result_cache' => 'apc'
+                //'result_cache' => 'apc'
             ),
         ));
 
