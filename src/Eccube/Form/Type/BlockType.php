@@ -68,17 +68,20 @@ class BlockType extends AbstractType
                     )),
                 )
             ))
-            ->add('bloc_html', 'textarea', array(
+            ->add('block_html', 'textarea', array(
                 'label' => 'ブロックデータ',
                 'mapped' => false,
                 'required' => true,
                 'constraints' => array()
             ))
-            ->add('DeviceType', 'hidden')
+            ->add('DeviceType', 'entity', array(
+                'class' => 'Eccube\Entity\Master\DeviceType',
+                'property' => 'id',
+            ))
             ->add('id', 'hidden')
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
-                $file_name = $form['filename']->getData();
+                $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
                 $block_id = $form['id']->getData();
 
@@ -97,7 +100,7 @@ class BlockType extends AbstractType
                     ->getQuery()
                     ->getResult();
                 if (count($Block) > 0) {
-                    $form['filename']->addError(new FormError('※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。'));
+                    $form['file_name']->addError(new FormError('※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。'));
                 }
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());

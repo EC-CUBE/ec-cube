@@ -25,51 +25,69 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Entity\Master\DeviceType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 
 class BlockController
 {
-    public function index(Application $app, $id = null)
+    public function index(Application $app)
     {
         $DeviceType = $app['eccube.repository.master.device_type']
-            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
+        // 登録されているブロック一覧の取得
+        $Blocks = $app['eccube.repository.block']->getList($DeviceType);
+
+        return $app->render('Content/block.twig', array(
+            'Blocks' => $Blocks,
+        ));
+    }
+
+    public function edit(Application $app, $id = null)
+    {
+        $DeviceType = $app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Block = $app['eccube.repository.block']
             ->findOrCreate($id, $DeviceType);
 
-        $builder = $app['form.factory']->createBuilder('block');
-        $bloc_html = '';
+        $form = $app['form.factory']
+            ->createBuilder('block', $Block)
+            ->getForm();
+
+        $html = '';
         $previous_filename = null;
+        $deletable = $Block->getDeletableFlg();
+
         if ($id) {
             // テンプレートファイルの取得
             $previous_filename = $Block->getTplPath();
-            $file = $this->getTplFile($app, $previous_filename, $DeviceType);
-            $bloc_html = $file['tpl_data'];
+            $file = $app['eccube.repository.block']
+                ->getReadTemplateFile($previous_filename, $deletable);
+            $html = $file['tpl_data'];
         }
 
-        $form = $builder->getForm();
-        $form->setData($Block);
-        $form->get('bloc_html')->setData($bloc_html);
+        $form->get('block_html')->setData($html);
 
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $Block = $form->getData();
-                $Block->setTplPath($form->get('filename')->getData() . '.twig');
+                $Block->setTplPath($form->get('file_name')->getData());
 
                 // DB登録
                 $app['orm.em']->persist($Block);
                 $app['orm.em']->flush();
 
                 // ファイル生成・更新
-                $tplDir = $app['eccube.repository.page_layout']
-                    ->getTemplatePath($DeviceType);
-                $tplDir .= $app['config']['bloc_dir'];
-                $filePath = $tplDir . $Block->getTplPath();
+                $tplDir = $app['eccube.repository.block']
+                    ->getWriteTemplatePath($deletable);
+
+                $filePath = $tplDir . '/' . $Block->getTplPath() . '.twig';
 
                 $fs = new Filesystem();
-                $fs->dumpFile($filePath, $form->get('bloc_html')->getData());
+                $fs->dumpFile($filePath, $form->get('block_html')->getData());
                 // 更新でファイル名を変更した場合、以前のファイルを削除
                 if ($Block->getTplPath() != $previous_filename && !is_null($previous_filename)) {
                     $oldFilePath = $tplDir . $previous_filename;
@@ -80,24 +98,21 @@ class BlockController
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
-                return $app->redirect($app->url('admin_content_block'));
+                return $app->redirect($app->url('admin_content_block_edit', array('id' => $Block->getId())));
             }
         }
 
-        // 登録されているブロック一覧の取得
-        $Blocks = $app['eccube.repository.block']->getList($DeviceType);
-
-        return $app->render('Content/block.twig', array(
+        return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),
-            'Blocks' => $Blocks,
             'block_id' => $id,
+            'deletable' => $deletable,
         ));
     }
 
     public function delete(Application $app, $id)
     {
         $DeviceType = $app['eccube.repository.master.device_type']
-            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+            ->find(DeviceType::DEVICE_TYPE_PC);
 
         $Block = $app['eccube.repository.block']->findOrCreate($id, $DeviceType);
 
@@ -105,7 +120,7 @@ class BlockController
         if ($Block->getDeletableFlg() > 0) {
             $tplDir = $app['eccube.repository.page_layout']
                 ->getTemplatePath($DeviceType);
-            $tplDir .= $app['config']['bloc_dir'];
+            $tplDir .= $app['config']['block_dir'];
             $file = $tplDir . $Block->getTplPath();
             $fs = new Filesystem();
             if ($fs->exists($file)) {
@@ -116,29 +131,5 @@ class BlockController
         }
 
         return $app->redirect($app->url('admin_content_block'));
-    }
-
-    private function getTplFile(Application $app, $tpl_path, $DeviceType)
-    {
-        $tplDir = $app['eccube.repository.page_layout']
-            ->getTemplatePath($DeviceType);
-        $tplDir .= $app['config']['bloc_dir'];
-
-        $finder = Finder::create();
-        $finder->followLinks();
-
-        $finder->in($tplDir)->name($tpl_path);
-
-        $data = null;
-        if ($finder->count() === 1) {
-            foreach ($finder as $file) {
-                $data = array(
-                    'file_name' => $file->getFileName(),
-                    'tpl_data' => file_get_contents($file->getPathName())
-                );
-            }
-        }
-
-        return $data;
     }
 }

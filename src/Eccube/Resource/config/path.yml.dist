@@ -4,19 +4,23 @@ admin_dir: ${ADMIN_ROUTE}/ # admin_route
 tpl: ${ROOT_URLPATH}/user_data/packages/default/ # front_urlpath
 admin_tpl: ${ROOT_URLPATH}/user_data/packages/admin/ # admin_urlpath
 image_path: ${ROOT_URLPATH}/upload/save_image/ # image_save_urlpath
+
 # base valiables
 root_dir: ${ROOT_DIR}
 root_urlpath: ${ROOT_URLPATH}
 template_code: ${TEMPLATE_CODE}
+
 # routing
 admin_route: ${ADMIN_ROUTE}
 user_data_route: ${USR_DATA_ROUTE}
+
 # realdir
 down_save_realdir: ${ROOT_DIR}/app/download/save
 down_temp_realdir: ${ROOT_DIR}/download/temp
 template_admin_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/admin
 template_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default
-template_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}
+block_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default/Block
+block_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}/Block
 csv_temp_realdir: ${ROOT_DIR}/app/upload/csv
 image_save_realdir: ${ROOT_DIR}/html/upload/save_image
 image_temp_realdir: ${ROOT_DIR}/html/upload/temp_image
@@ -24,6 +28,8 @@ template_admin_html_realdir: ${ROOT_DIR}/html/template/admin
 template_default_html_realdir: ${ROOT_DIR}/html/template/default
 template_html_realdir: ${ROOT_DIR}/html/template/${TEMPLATE_CODE}
 user_data_realdir: ${ROOT_DIR}/html/user_data
+user_block_realdir: ${ROOT_DIR}/html/user_data/block
+
 # urlpath
 admin_urlpath: ${ROOT_URLPATH}/template/admin
 front_urlpath: ${ROOT_URLPATH}/template/${TEMPLATE_CODE}
