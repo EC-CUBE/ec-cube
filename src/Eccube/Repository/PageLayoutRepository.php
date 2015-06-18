@@ -103,7 +103,6 @@ class PageLayoutRepository extends EntityRepository
             ->addOrderBy('bp.target_id', 'ASC')
             ->addOrderBy('bp.block_row', 'ASC');
 
-        var_dump($url);
         $ownResult = $qb
             ->getQuery()
             ->setParameters(array(
