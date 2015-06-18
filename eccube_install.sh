@@ -75,19 +75,19 @@ DBTYPE=$1;
 case "${DBTYPE}" in
 "pgsql" )
     #-- DB Seting Postgres
-    export PSQL=psql
-    export PGUSER=postgres
-    export DROPDB=dropdb
-    export CREATEDB=createdb
+    PSQL=psql
+    PGUSER=postgres
+    DROPDB=dropdb
+    CREATEDB=createdb
     export DBPORT=5432
     export DBDRIVER=pdo_pgsql
 ;;
 "mysql" )
     #-- DB Seting MySQL
-    export MYSQL=mysql
-    export ROOTUSER=root
-    export ROOTPASS=${DBPASS}
-    export DBSERVER=${DBSERVER}
+    MYSQL=mysql
+    ROOTUSER=root
+    ROOTPASS=${DBPASS}
+    DBSERVER=${DBSERVER}
     export DBPORT=3306
     export DBDRIVER=pdo_mysql
 ;;
@@ -110,11 +110,8 @@ adjust_directory_permissions()
     chmod -R go+w "./app/cache"
     chmod -R go+w "./app/config"
     chmod -R go+w "./app/download"
-    chmod -R go+w "./app/downloads"
     chmod go+w "./app/font"
-    chmod go+w "./app/fonts"
     chmod go+w "./app/log"
-    chmod go+w "./app/logs"
     chmod go+w "./app/upload"
     chmod go+w "./app/upload/csv"
 }
@@ -227,7 +224,7 @@ echo "creating  ${MAIL_YML}"
 render_config_template ${PATH_YML_DIST} > ${PATH_YML}
 
 #echo "creating  ${CONSTANT_YML}"
-#echo "# overwrite or define new cnstant. " > ${CONSTANT_YML}
+#echo "# overwrite or define new constant. " > ${CONSTANT_YML}
 #echo "# see also ${CONSTANT_YML_DIST} " >> ${CONSTANT_YML}
 
 # ---------------------------------
