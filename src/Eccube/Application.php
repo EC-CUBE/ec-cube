@@ -278,6 +278,12 @@ class Application extends \Silex\Application
                 }
 
             }
+            // const
+            if (isset($config['const'])) {
+                $app[$config['name']] = array(
+                    'const' => $config['const'],
+                );
+            }
             // Type: ServiceProvider
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
