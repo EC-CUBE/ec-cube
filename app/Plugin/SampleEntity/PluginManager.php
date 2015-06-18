@@ -14,25 +14,26 @@ class PluginManager extends AbstractPluginManager {
         echo "installed". date('r');
         echo "<hr>";
 
-        $config = new Configuration($app['db']);
-        $config->setMigrationsNamespace('DoctrineMigrations');
-        $migrationDir= __DIR__ . '/migration' ;
-        $config->setMigrationsDirectory($migrationDir);
-        $config->registerMigrationsFromDirectory($migrationDir );
-        $config->setMigrationsTableName("tomitadb_migration");
-        $migration = new Migration($config);
-                                  // nullã‚’æ¸¡ã™ã¨æœ€æ–°ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¾ã§ãƒã‚¤ã‚°ãƒ¬ãƒ¼ãƒˆã™ã‚‹
-        $migration->migrate(null, false); 
-
-        
+        $this->migrationSchema($app, __DIR__ . '/migration' ,$plugin['code']);
 
     }
 
-    public function uninstall($config,$app){}
+    public function uninstall($plugin,$app){
+      
+        echo "<hr>";
+        echo "uninstalled". date('r');
+        echo "<hr>";
 
-    public function enable($config,$app){}
+        $this->migrationSchema($app, __DIR__ . '/migration' ,$plugin['code'],0); // 0‚É‚·‚é‚Æƒvƒ‰ƒOƒCƒ“‚ğƒCƒ“ƒXƒg[ƒ‹‚·‚é‘O‚É–ß‚·
 
-    public function disable($config,$app){}
+    }
 
-    public function update($config,$app){}
+    public function enable($plugin,$app){}
+
+    public function disable($plugin,$app){}
+
+    public function update($plugin,$app){
+
+
+    }
 }

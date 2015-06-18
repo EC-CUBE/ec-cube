@@ -61,6 +61,7 @@ class PluginService
 
        $this->registerPlugin($config,$event); // dbにプラグイン登録
        $this->callPluginManagerMethod( $config,'install' ); 
+       $this->callPluginManagerMethod( $config,'enable' ); 
 
     }
 
@@ -68,6 +69,7 @@ class PluginService
     {
        $pluginDir = $this->calcPluginDir($plugin->getName());
 
+       $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'.self::CONFIG_YML ),'disable' ); 
        $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'.self::CONFIG_YML ),'uninstall' ); 
        $this->unregisterPlugin($plugin);
        $this->deleteFile($pluginDir); 
@@ -112,10 +114,6 @@ class PluginService
        $this->updatePlugin($plugin,$config,$event); // dbにプラグイン登録
        $this->callPluginManagerMethod( $config,'update' ); 
     }
-
-
-
-
 
 
     public function calcPluginDir($name)
@@ -274,7 +272,6 @@ class PluginService
 
         foreach($p->getPluginEventHandlers()->toArray() as $peh){
             $peh->setDelFlg(1); 
-            $em->persist($peh); 
         }  
 
         $em->persist($p); 

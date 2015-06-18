@@ -31,6 +31,6 @@ class Version20150611221936 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
+        $schema->dropTable("foo");
     }
 }
