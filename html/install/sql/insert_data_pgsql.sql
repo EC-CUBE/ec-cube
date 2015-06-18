@@ -1387,8 +1387,8 @@ INSERT INTO dtb_recommend_product (product_id, recommend_product_id, rank, comme
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (1, 0, 1, 2, NULL, 'たまには鍋でもどうでしょう。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (2, 0, 2, 1, NULL, 'お口直しに。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 COMMIT;
