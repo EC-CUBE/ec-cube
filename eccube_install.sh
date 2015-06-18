@@ -244,6 +244,9 @@ target_id_head: 7
 target_id_head_top: 8
 target_id_footer_bottom: 9
 target_id_header_internal: 10
+
+user_data_route: user_data
+
 __EOF__
 }
 

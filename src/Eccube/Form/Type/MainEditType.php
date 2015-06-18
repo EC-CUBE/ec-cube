@@ -69,13 +69,13 @@ class MainEditType extends AbstractType
                 )
             ))
             ->add('tpl_data', 'textarea', array(
-                'label' => 'TPLデータ',
+                'label' => false,
                 'mapped' => false,
                 'required' => true,
                 'constraints' => array()
             ))
             ->add('author', 'text', array(
-                'label' => 'meta タグ:author',
+                'label' => 'author',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -84,7 +84,7 @@ class MainEditType extends AbstractType
                 )
             ))
             ->add('description', 'text', array(
-                'label' => 'meta タグ:description',
+                'label' => 'description',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -93,7 +93,7 @@ class MainEditType extends AbstractType
                 )
             ))
             ->add('keyword', 'text', array(
-                'label' => 'meta タグ:keyword',
+                'label' => 'keyword',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -102,7 +102,7 @@ class MainEditType extends AbstractType
                 )
             ))
             ->add('meta_robots', 'text', array(
-                'label' => 'meta タグ:robots',
+                'label' => 'robots',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -110,13 +110,16 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('DeviceType', 'hidden')
+            ->add('DeviceType', 'entity', array(
+                'class' => 'Eccube\Entity\Master\DeviceType',
+                'property' => 'id',
+            ))
             ->add('id', 'hidden')
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
-                $page_id = $form['page_id']->getData();
+                $page_id = $form['id']->getData();
 
                 $qb = $this->app['orm.em']->createQueryBuilder();
                 $qb->select('p')
@@ -125,9 +128,16 @@ class MainEditType extends AbstractType
                     ->setParameter('file_name', $file_name)
                     ->andWhere('p.DeviceType = :DeviceType')
                     ->setParameter('DeviceType', $DeviceType)
-                    ->andWhere('p.id <> :page_id')
-                    ->setParameter('page_id', $page_id)
                 ;
+                if (is_null($page_id)) {
+                    $qb
+                        ->andWhere('p.id IS NOT NULL');
+                } else {
+                    $qb
+                        ->andWhere('p.id <> :page_id')
+                        ->setParameter('page_id', $page_id);
+                }
+var_dump($qb->getQuery()->getSQL(), $DeviceType->getId(), $page_id);
 
                 $PageLayout = $qb
                     ->getQuery()

@@ -26,6 +26,9 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\PageLayout;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -36,6 +39,8 @@ use Symfony\Component\Finder\Finder;
  */
 class PageLayoutRepository extends EntityRepository
 {
+    private $app;
+
     public function setApp($app)
     {
         $this->app = $app;
@@ -134,86 +139,25 @@ class PageLayoutRepository extends EntityRepository
         return $ownResult;
     }
 
-    public function getByRoutingName($DeviceType, $routingName)
-    {
-        $legacyUrls = array(
-            'preview' => 'preview',
-            'homepage' => 'index.php',
-
-            'product_list' => 'products/list.php',
-            'product_detail' => 'products/detail.php',
-
-            'mypage' => 'mypage/index.php',
-            'mypage_change' => 'mypage/change.php',
-            'mypage_change_complete' => 'mypage/change_complete.php',
-            'mypage_delivery' => 'mypage/delivery.php',
-            'mypage_favorite' => 'mypage/favorite.php',
-            'mypage_history' => 'mypage/history.php',
-            'mypage_login' => 'mypage/login.php',
-            'mypage_withdraw' => 'mypage/withdraw.php',
-            'mypage_withdraw_complete' => 'mypage/withdraw_complete.php',
-
-            'help_about' => 'abouts/index.php',
-            'cart' => 'cart/index.php',
-
-            'contact' => 'contact/index.php',
-            'contact_complete' => 'contact/complete.php',
-
-            'entry' => 'entry/index.php',
-//            'entry_kiyaku' => 'entry/kiyaku.php',
-            'entry_complete' => 'entry/complete.php',
-
-            'help_tradelaw' => 'order/index.php',
-            'regist_complete' => 'regist/complete.php',
-
-            'shopping' => 'shopping/index.php',
-            'shopping_delivery' => 'shopping/deliv.php',
-            'shopping_shipping_multiple' => 'shopping/multiple.php',
-            'shopping_payment' => 'shopping/payment.php',
-            'shopping_confirm' => 'shopping/confirm.php',
-            'shopping_complete' => 'shopping/complete.php',
-
-            'help_privacy' => 'guide/privacy.php',
-        );
-
-        if (!array_key_exists($routingName, $legacyUrls)) {
-            throw new \Doctrine\ORM\NoResultException();
-        }
-
-        return $this->getByUrl($DeviceType, $routingName);
-    }
-
-    public function newPageLayout(\Eccube\Entity\Master\DeviceType $DeviceType)
+    public function newPageLayout(DeviceType $DeviceType)
     {
         $PageLayout = new \Eccube\Entity\PageLayout();
         $PageLayout
-            ->setDeviceType($DeviceType);
+            ->setDeviceType($DeviceType)
+            ->setEditFlg(PageLayout::EDIT_FLG_USER);
 
         return $PageLayout;
     }
 
-    public function findOrCreate($page_id, \Eccube\Entity\Master\DeviceType $DeviceType)
+    public function findOrCreate($page_id, DeviceType $DeviceType)
     {
-
-        if ($page_id == null) {
-            $PageLayout = $this->newPageLayout($DeviceType);
-
+        if (is_null($page_id)) {
+            $PageLayout = $this
+                ->newPageLayout($DeviceType);
             return $PageLayout;
         } else {
             return $this->get($DeviceType, $page_id);
         }
-
-    }
-
-    private function getNewPageId(\Eccube\Entity\Master\DeviceType $DeviceType)
-    {
-        $qb = $this->createQueryBuilder('l')
-            ->select('max(l.id) +1 as page_id')
-            ->where('l.DeviceType = :DeviceType')
-            ->setParameter('DeviceType', $DeviceType);
-        $result = $qb->getQuery()->getSingleResult();
-
-        return $result['page_id'];
     }
 
     /**
@@ -224,19 +168,19 @@ class PageLayoutRepository extends EntityRepository
      *
      * @access public
      * @param  \Eccube\Entity\Master\DeviceType  $DeviceType 端末種別ID
-     * @param  string   $where          追加の検索条件
-     * @param  string[] $parameters     追加の検索パラメーター
-     * @return array    ページ属性の配列
+     * @param  string                            $where 追加の検索条件
+     * @param  string[]                          $parameters 追加の検索パラメーター
+     * @return array                             ページ属性の配列
      */
-    public function getPageList(\Eccube\Entity\Master\DeviceType $DeviceType, $where = '', $parameters = array())
+    public function getPageList(DeviceType $DeviceType, $where = null, $parameters = array())
     {
-
         $qb = $this->createQueryBuilder('l')
             ->orderBy('l.id', 'DESC')
             ->where('l.DeviceType = :DeviceType')
             ->setParameter('DeviceType', $DeviceType)
-            ->andWhere('l.id <> 0');
-        if ($where != '') {
+            ->andWhere('l.id <> 0')
+            ->orderBy('l.id', 'ASC');
+        if (!is_null($where)) {
             $qb->andWhere($where);
             foreach ($parameters as $key => $val) {
                 $qb->setParameter($key, $val);
@@ -251,72 +195,53 @@ class PageLayoutRepository extends EntityRepository
     }
 
     /**
-     * テンプレートのパスを取得する.
+     * 書き込みパスの取得
+     * User定義の場合： /html/user_data
+     * そうでない場合： /app/template/{template_code}
      *
-     * @access public
-     * @param  \Eccube\Entity\Master\DeviceType  $DeviceType 端末種別ID
-     * @param  boolean $isUser         USER_REALDIR 以下のパスを返す場合 true
-     * @return string  テンプレートのパス
+     * @param  boolean $isUser
+     * @return string
      */
-    public function getTemplatePath(\Eccube\Entity\Master\DeviceType $DeviceType, $isUser = false)
+    public function getWriteTemplatePath($isUser = false)
     {
-        $app = $this->app;
-        $templateName = '';
-        switch ($DeviceType->getId()) {
-            case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_MB:
-                $dir = $app['config']['mobile_template_realdir'];
-                $templateName =  $app['config']['mobile_template_name'];
-                break;
-
-            case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_SP:
-                $dir = $app['config']['smartphone_template_realdir'];
-                $templateName =  $app['config']['smartphone_template_name'];
-                break;
-
-            case \Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC;
-                $dir = $app['config']['template_realdir'];
-                $templateName =  $app['config']['template_name'];
-                break;
-        }
-        $userPath = $app['config']['user_realdir'];
-        if ($isUser) {
-            $dir = $userPath . $app['config']['user_package_dir'] . $templateName . '/';
-        }
-
-        return $dir;
+        return ($isUser) ? $this->app['config']['user_data_realdir'] : $this->app['config']['template_realdir'];
     }
 
     /**
-     * ページデータを取得する.
-     * @param  integer $filename       ファイル名
-     * @param  integer $deviceTypeId 端末種別ID
+     * 読み込みファイルの取得
+     *
+     * 1. template_realdir
+     *      app/template/{template_code}
+     * 2. template_default_readldir
+     *      src/Eccube/Resource/template/default
+     *
+     * @param string $fileName
      * @param  boolean $isUser
-     * @return mixed
+     *
+     * @return array
      */
-    public function getTemplateFile($filename, $deviceTypeId, $isUser = false)
+    public function getReadTemplateFile($fileName, $isUser = false)
     {
-        $templatePath = $this->getTemplatePath($deviceTypeId, $isUser);
-
-        $finder = Finder::create();
-        $finder->followLinks();
-        // TODO: ファイル名にディレクトリのパスが一部含まれるので/ディレクトと分ける処理。イケてない・・・
-        $arrDir = explode('/', $filename);
-        for ($index =0; $index < count($arrDir)-1; $index++) {
-            $templatePath .= $arrDir[$index] . '/';
+        if ($isUser) {
+            $readPaths = array(
+                $this->app['config']['user_data_realdir'],
+            );
+        } else {
+            $readPaths = array(
+                $this->app['config']['template_realdir'],
+                $this->app['config']['template_default_realdir'],
+            );
         }
-        // TODO: .tpl, .twig が混在するためひとまず*。元の$filenameから拡張子込で持ちたい。
-        $finder->in($templatePath)->name($arrDir[$index].'.twig');
 
-        $data = null;
-        if ($finder->count() === 1) {
-            foreach ($finder as $file) {
-                $data = array(
-                    'file_name' => $file->getFileName(),
-                    'tpl_data' => file_get_contents($file->getPathName())
+        foreach ($readPaths as $readPath) {
+            $filePath = $readPath . '/' . $fileName . '.twig';
+            $fs = new Filesystem();
+            if ($fs->exists($filePath)) {
+                return array(
+                    'file_name' => $fileName,
+                    'tpl_data' => file_get_contents($filePath),
                 );
             }
         }
-
-        return $data;
     }
 }
