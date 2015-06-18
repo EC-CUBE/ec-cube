@@ -25,74 +25,86 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\PageLayout;
 use Symfony\Component\Filesystem\Filesystem;
 
 class PageController
 {
-    public function index(Application $app, $id = null)
+    public function index(Application $app)
     {
         $DeviceType = $app['eccube.repository.master.device_type']
-            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
+        $PageLayouts = $app['eccube.repository.page_layout']->getPageList($DeviceType);
+
+        return $app->render('Content/page.twig', array(
+            'PageLayouts' => $PageLayouts,
+        ));
+    }
+
+    public function edit(Application $app, $id = null)
+    {
+        $DeviceType = $app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
 
         $PageLayout = $app['eccube.repository.page_layout']
             ->findOrCreate($id, $DeviceType);
 
-        $builder = $app['form.factory']->createBuilder('main_edit');
-
-        $tpl_data = '';
         $editable = true;
+        $form = $app['form.factory']
+            ->createBuilder('main_edit', $PageLayout)
+            ->getForm();
+
         // 更新時
         if ($id) {
             // 編集不可ページはURL、ページ名、ファイル名を保持
-            if ($PageLayout->getEditFlg() == 2) {
+            if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_DEFAULT) {
                 $editable = false;
-                $previous_url = $PageLayout->getUrl();
-                $previous_filename = $PageLayout->getFilename();
-                $previous_name = $PageLayout->getName();
+                $PrevPageLayout = clone $PageLayout;
             }
             // テンプレートファイルの取得
             $file = $app['eccube.repository.page_layout']
-                ->getTemplateFile($PageLayout->getFilename(), $DeviceType, $editable);
-            $tpl_data = $file['tpl_data'];
+                ->getReadTemplateFile($PageLayout->getFileName(), $editable);
+
+            $form->get('tpl_data')->setData($file['tpl_data']);
         }
 
-        $form = $builder->getForm();
-        $form->setData($PageLayout);
-        $form->get('tpl_data')->setData($tpl_data);
-
-        if ($app['request']->getMethod() === 'POST') {
+        if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $PageLayout = $form->getData();
-                $PageLayout->setUrl($form->get('filename')->getData());
+
+                $url = strtolower($form->get('file_name')->getData());
+                $url = str_replace('/', '_', $url);
+                $PageLayout->setUrl($url);
 
                 if (!$editable) {
-                    $PageLayout->setUrl($previous_url);
-                    $PageLayout->setFilename($previous_filename);
-                    $PageLayout->setName($previous_name);
+                    $PageLayout
+                        ->setUrl($PrevPageLayout->getUrl())
+                        ->setFileName($PrevPageLayout->getFileName())
+                        ->setName($PrevPageLayout->getName());
                 }
                 // DB登録
                 $app['orm.em']->persist($PageLayout);
                 $app['orm.em']->flush();
+
                 // ファイル生成・更新
-                $templatePath = $app['eccube.repository.page_layout']->getTemplatePath($DeviceType, $editable);
-                $filePath = $templatePath . $PageLayout->getFilename() . '.twig';
+                $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
+                $filePath = $templatePath . '/' . $PageLayout->getFileName() . '.twig';
+
                 $fs = new Filesystem();
                 $fs->dumpFile($filePath, $form->get('tpl_data')->getData());
-                // TODO:ルーティングの追加
-                $app['session']->getFlashBag()->add('page.complete', 'admin.register.complete');
 
-                return $app->redirect($app['url_generator']->generate('admin_content_page'));
+                $app->addSuccess('admin.register.complete', 'admin');
+
+                return $app->redirect($app->url('admin_content_page_edit', array('id' => $PageLayout->getId())));
             }
         }
 
-        // 登録されているページ一覧の取得
-        $PageLayouts = $app['eccube.repository.page_layout']->getPageList($DeviceType);
-
-        return $app->render('Content/page.twig', array(
+        return $app->render('Content/page_edit.twig', array(
             'form' => $form->createView(),
-            'PageLayouts' => $PageLayouts,
-            'page_id' => $id,
+            'page_id' => $PageLayout->getId(),
             'editable' => $editable,
         ));
     }
@@ -100,21 +112,27 @@ class PageController
     public function delete(Application $app, $id = null)
     {
         $DeviceType = $app['eccube.repository.master.device_type']
-            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+            ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $app['eccube.repository.page_layout']->findOrCreate($id, $DeviceType);
+        $PageLayout = $app['eccube.repository.page_layout']
+            ->findOneBy(array(
+                'id' => $id,
+                'DeviceType' => $DeviceType
+            ));
 
         // ユーザーが作ったページのみ削除する
-        if ($PageLayout->getEditFlg() == null) {
+        if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_USER) {
             $templatePath = $app['eccube.repository.page_layout']
-                ->getTemplatePath($DeviceType, true);
-            $file = $templatePath . $PageLayout->getFileName() . '.twig';
+                ->getWriteTemplatePath($DeviceType, true);
+            $file = $templatePath . '/' . $PageLayout->getFileName() . '.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
             }
             $app['orm.em']->remove($PageLayout);
             $app['orm.em']->flush();
+
+            $app->addSuccess('admin.delete.complete', 'admin');
         }
 
         return $app->redirect($app->url('admin_content_page'));
