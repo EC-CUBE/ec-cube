@@ -32,6 +32,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $price01_inc_tax = null;
     private $price02_inc_tax = null;
     private $point = null;
+    private $add = false;
 
     /**
      * Is Enable
@@ -125,6 +126,31 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
             return false;
         }
     }
+
+    /**
+     * Set add
+     *
+     * @param  string $add
+     * @return ProductClass
+     */
+    public function setAdd($add)
+    {
+        $this->add = $add;
+
+        return $this;
+    }
+
+    /**
+     * Get add
+     *
+     * @return bool
+     */
+    public function getAdd()
+    {
+        return $this->add;
+    }
+
+
 
     /**
      * @var integer

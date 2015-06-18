@@ -95,7 +95,12 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('del_flg', 'checkbox', array(
+            ->add('delivery_date', 'delivery_date', array(
+                'label' => 'お届け可能日',
+                'required' => false,
+                'empty_value' => '指定なし',
+            ))
+            ->add('add', 'checkbox', array(
                 'label' => '追加',
                 'required' => false,
             ))
