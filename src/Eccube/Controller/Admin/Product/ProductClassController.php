@@ -131,7 +131,7 @@ class ProductClassController
             // 既に登録されている商品規格を取得
             $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
 
-            // 設定されている規格分類1、2を取得
+            // 設定されている規格分類1、2を取得(商品規格の規格分類には必ず同じ値がセットされている)
             $ProductClass = $ProductClasses[0];
             $ClassName1 = $ProductClass->getClassCategory1()->getClassName();
             $ClassName2 = null;
@@ -155,7 +155,7 @@ class ProductClassController
                                 // チェックボックスを追加
                                 $productClass->setAdd(true);
                                 $flg = true;
-                                continue;
+                                break;
                     }
                 }
 
@@ -165,9 +165,11 @@ class ProductClassController
 
                 $flg = false;
             }
+
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
-                $this->setDefualtProductClass($mergeProductClass, $ProductClasses[0]);
+                // 空の商品規格にデフォルト値を設定
+                $this->setDefualtProductClass($mergeProductClass, $ProductClass);
                 $ProductClasses->add($mergeProductClass);
             }
 
@@ -207,16 +209,15 @@ class ProductClassController
             throw new NotFoundHttpException();
         }
 
-        $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
-
         $form = $app->form()
                 ->add('product_classes', 'collection', array(
                     'type' => 'admin_product_class',
                     'allow_add' => true,
                     'allow_delete' => true,
-          //          'data' => $ProductClasses,
             ))
             ->getForm();
+
+        $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
 
         if ('POST' === $request->getMethod()) {
 
@@ -225,6 +226,12 @@ class ProductClassController
             switch ($request->get('mode')) {
                 case 'edit':
                     // 新規登録
+
+                    if (count($ProductClasses) > 0) {
+                        // 既に登録されていれば最初の画面に戻す
+                        return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
+                    }
+
                     $addProductClasses = array();
 
                     $tmpProductClass = null;
@@ -251,14 +258,11 @@ class ProductClassController
                     // 選択された商品規格を登録
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
-                    // 商品規格のデフォルトを更新
+                    // デフォルトの商品規格を更新
                     $defaultProductClass = $app['eccube.repository.product_class']
-                            ->findOneBy(array('ClassCategory1' => null, 'ClassCategory2' => null));
+                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
 
                     $defaultProductClass->setDelFlg($app['config']['enabled']);
-
-                    // デフォルトの商品規格を更新
-                    $app['orm.em']->persist($defaultProductClass);
 
                     $app['orm.em']->flush();
 
@@ -267,6 +271,11 @@ class ProductClassController
                     break;
                 case 'update':
                     // 更新
+
+                    if (count($ProductClasses) == 0) {
+                        // 商品規格が0件であれば最初の画面に戻す
+                        return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
+                    }
 
                     $addProductClasses = array();
 
@@ -306,6 +315,11 @@ class ProductClassController
                 case 'delete':
                     // 削除
 
+                    if (count($ProductClasses) == 0) {
+                        // 既に商品が削除されていれば元の画面に戻す
+                        return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
+                    }
+
                     foreach ($ProductClasses as $ProductClass) {
                         // 登録されている商品規格を削除
                         $app['orm.em']->remove($ProductClass);
@@ -317,14 +331,12 @@ class ProductClassController
                         'Eccube\Entity\ProductClass'
                     ));
 
-                    // 商品規格のデフォルトを更新
+                    // デフォルトの商品規格を更新
                     $defaultProductClass = $app['eccube.repository.product_class']
-                            ->findOneBy(array('ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => $app['config']['enabled']));
+                            ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => $app['config']['enabled']));
 
                     $defaultProductClass->setDelFlg($app['config']['disabled']);
 
-                    // デフォルトの商品規格を更新
-                    $app['orm.em']->persist($defaultProductClass);
 
                     $app['orm.em']->flush();
 
@@ -435,7 +447,7 @@ class ProductClassController
      */
     private function newProductClass(Application $app)
     {
-        $ProductType = $app['eccube.repository.master.product_type']->find(1);
+        $ProductType = $app['eccube.repository.master.product_type']->find($app['config']['product_type_normal']);
 
         $ProductClass = new ProductClass();
         $ProductClass->setProductType($ProductType);
@@ -505,9 +517,6 @@ class ProductClassController
             $ProductClass->setProduct($Product);
             $app['orm.em']->persist($ProductClass);
 
-
-error_log($ProductClass->getId());
-
             // 在庫情報を作成
             $ProductStock = new \Eccube\Entity\ProductStock();
             $ProductClass->setProductStock($ProductStock);
@@ -538,8 +547,6 @@ error_log($ProductClass->getId());
             }
         }
 
-
     }
-
 
 }

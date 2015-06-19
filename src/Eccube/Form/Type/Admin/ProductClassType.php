@@ -102,7 +102,7 @@ class ProductClassType extends AbstractType
                 'empty_value' => '指定なし',
             ))
             ->add('add', 'checkbox', array(
-                'label' => '追加',
+                'label' => false,
                 'required' => false,
                 'value' => 1,
             ))

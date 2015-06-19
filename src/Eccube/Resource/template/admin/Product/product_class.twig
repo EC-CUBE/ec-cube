@@ -118,9 +118,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         $('#delete').click(function() {
             if (confirm('一度削除したデータは、元に戻せません。\n削除しても宜しいですか？')) {
-              //  $('#product-class-form').submit();
-                  $('#mode').val('delete');
-                 $('#product-class-form').attr({'mode': 'a', 'action': '{{ url("admin_product_product_class_edit", {id: Product.id}) }}'}).submit();
+                $('#mode').val('delete');
+                $('#product-class-form').submit();
                 return true;
             }
             return false;
@@ -167,7 +166,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 </div>
 
 
-{% if classForm is not null%}
+{% if classForm is not null %}
 <form id="product-class-form" class="form-inline" method="post" action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
 {{ form_widget(classForm._token) }}
 <div class="row">
@@ -211,11 +210,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ form_widget(product_class_form.add) }}
                 </td>
                 <td>
-                    {{ product_class_form.vars.value.ClassCategory1 is empty ? '' : product_class_form.vars.value.ClassCategory1.name }}
+                    {{ product_class_form.vars.value.ClassCategory1 }}
                     {{ form_widget(product_class_form.ClassCategory1) }}
                 </td>
                 <td>
-                    {{ product_class_form.vars.value.ClassCategory2 is empty ? '' : product_class_form.vars.value.ClassCategory2.name }}
+                    {{ product_class_form.vars.value.ClassCategory2 }}
                     {{ form_widget(product_class_form.ClassCategory2) }}
                 </td>
                 <td class="center">
@@ -228,7 +227,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {% endif %}
                     {{ form_widget(product_class_form.stock) }}
                     {{ form_errors(product_class_form.stock) }}
-                    無制限：{{ form_widget(product_class_form.stock_unlimited) }}
+                    {{ form_widget(product_class_form.stock_unlimited) }}
                     {{ form_errors(product_class_form.stock_unlimited) }}
                 </td>
                 <td class="center">
@@ -286,10 +285,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="row">
     <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
 {% if not_product_class  %}
-        <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="edit">登録</button>
+        <button type="submit" class="btn btn-primary btn-lg" name="mode" value="edit">登録</button>
 {% else %}
         <input id="mode" type="hidden" name="mode">
-        <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="update">更新</button>
+        <button type="submit" class="btn btn-primary btn-lg" name="mode" value="update">更新</button>
 {% endif %}
     </div>
 </div>
