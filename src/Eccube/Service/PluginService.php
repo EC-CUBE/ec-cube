@@ -147,10 +147,10 @@ class PluginService
        if(!$this->checkSymbolName($meta['name'])){
            throw new \Exception("config.yml name  has invalid_character(\W)");
        }
-       if(strlen($meta['event']) and !$this->checkSymbolName($meta['event'])){
+       if(isset($meta['event']) and !$this->checkSymbolName($meta['event'])){
            throw new \Exception("config.yml event has invalid_character(\W) ");
        }
-       if(!strlen($meta['version'])){
+       if(!isset($meta['version'])){
            throw new \Exception("config.yml version not defined. ");
        }
     }
@@ -242,7 +242,7 @@ class PluginService
         $p = new \Eccube\Entity\Plugin();
         $p->setName($meta['name'])
           ->setEnable(1)
-          ->setClassName($meta['event'])
+          ->setClassName(isset($meta['event']) ? $meta['event']: '')
           ->setVersion($meta['version'])
           ->setDelflg(0)
           ->setSource(0)

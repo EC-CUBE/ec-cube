@@ -48,18 +48,26 @@ class PluginServiceTest extends AbstractServiceTestCase
     private function createTempDir(){
         $t = sys_get_temp_dir()."/".sha1(mt_rand());
         if(!mkdir($t)){
-            throw new \Exception($php_errormsg);
+            throw new \Exception("$t ".$php_errormsg);
         }
         return $t;
     }
+    public function deleteFile($path)
+    {
+        $f=new Filesystem();
+        return $f->remove($path);
+    }
 
-    public function testInstallPlugin()
+
+    public function testInstallPluginMinimum()
     {
         self::markTestSkipped();
+
+        $tmpname="dummy".sha1(mt_rand());
         $config=array();
-        $config['name'] = "dummy";
-        $config['code'] = "dummy";
-        $config['version'] = "dumuy";
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
 
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
@@ -67,10 +75,82 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar = new \Archive_Tar($tmpfile, true);
         $tar->addString('config.yml',Yaml::dump($config));
         $service = $this->app['eccube.service.plugin']; 
+
+        // インストールできるか
         $this->assertTrue($service->install($tmpfile));
 
+        $this->setExpectedException(
+          'Exception', 'plugin already installed.'
+        );
+        // 同じプラグインの二重インストールが蹴られるか
+        $service->install($tmpfile);
+        
     }
 
+    public function testInstallPluginWithEvent()
+    {
+        self::markTestSkipped();
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        $config['event'] = 'DummyEvent';
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \Archive_Tar($tmpfile, true);
+        $tar->addString('config.yml',Yaml::dump($config));
+
+
+        $dummyEvent=<<<'EOD'
+<?php
+namespace Plugin\@@@@ ;
+
+
+class DummyEvent
+{
+    private $app;
+
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
+    public function dummyHandler()
+    {
+        echo "dummyHandler";
+    }
+
+}
+
+EOD;
+        $dummyEvent=str_replace('@@@@',$tmpname,$dummyEvent);
+        $tar->addString("DummyEvent.php" , $dummyEvent);
+
+        $event=array();
+        $event['eccube.event.app.before'] = array();
+        $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
+        $event['eccube.event.app.before'][] = array("dummyHandler",'FIRST');
+        $event['eccube.event.app.after'] = array();
+        $event['eccube.event.app.before'][] = array("dummyHandler",'LAST');
+        $tar->addString('event.yml',Yaml::dump($event));
+         
+
+        $service = $this->app['eccube.service.plugin']; 
+
+        // インストールできるか
+        $this->assertTrue($service->install($tmpfile));
+        $rep=$this->app['orm.em']->getRepository('Eccube\Entity\Plugin'); 
+        $plugin=$rep->findOneBy(array('name'=>$tmpname));
+
+        $this->assertTrue((boolean)$plugin);
+        $this->assertEquals($plugin->getClassName(),"DummyEvent");
+        
+    }
+
+
+/*
     public function testUnInstallPlugin()
     {
     }
@@ -82,5 +162,5 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testDisablePlugin()
     {
     }
-
+*/
 }

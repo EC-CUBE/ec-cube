@@ -75,7 +75,7 @@ class PluginEventHandlerRepository extends EntityRepository
            ->andWhere('e.event = :event')
            ->setParameter('event',$event)
            ->setMaxResults(1)
-           ->orderBy('e.priority','DESC');
+           ->orderBy('e.priority','ASC');
 
         $result=$qb->getQuery()->getResult();
         if(count($result)){
