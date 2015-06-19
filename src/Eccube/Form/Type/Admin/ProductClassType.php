@@ -28,6 +28,7 @@ use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -52,7 +53,7 @@ class ProductClassType extends AbstractType
                 'label' => '商品コード',
                 'required' => false,
             ))
-            ->add('stock', 'text', array(
+            ->add('stock', 'integer', array(
                 'label' => '在庫数',
                 'required' => false,
             ))
@@ -103,7 +104,14 @@ class ProductClassType extends AbstractType
             ->add('add', 'checkbox', array(
                 'label' => '追加',
                 'required' => false,
+                'value' => 1,
             ))
+            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) use($builder) {
+                $form = $event->getForm();
+                if ($form['add']->getData()) {
+                } else {
+                }
+            })
         ;
 
         $transformer = new DataTransformer\EntityToIdTransformer(
