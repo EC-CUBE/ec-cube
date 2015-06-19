@@ -180,7 +180,6 @@ class Application extends \Silex\Application
             $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
         }
 
-
         // ORM
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
@@ -262,27 +261,25 @@ class Application extends \Silex\Application
             if (isset($config['event'])) {
                 $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
                 $subscriber = new $class($app);
-                
+
                 if(file_exists($dir->getRealPath() . '/event.yml')){
 
-                foreach(Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
-                    foreach ($handlers as $handler) {
-                        if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
-                            $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
-                        } else {
-                            $priority = $priorities[$config['event']][$event][$handler[0]];
-                        }
-                        # 優先度0は登録しない
+                    foreach(Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                        foreach ($handlers as $handler) {
+                            if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
+                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
+                            } else {
+                                $priority = $priorities[$config['event']][$event][$handler[0]];
+                            }
+                             # 優先度0は登録しない
 
-                        if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
-                            $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                            if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
+                                $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                            }
                         }
                     }
+ 
                 }
-
-                }
-
-
             }
             // const
             if (isset($config['const'])) {
