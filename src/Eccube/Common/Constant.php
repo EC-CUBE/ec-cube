@@ -21,24 +21,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Common;
 
-namespace Eccube\Tests\Web;
+class Constant {
 
-class EntryControllerTest extends AbstractWebTestCase
-{
+    /**
+     * EC-CUBE VERSION,
+     *
+     * @var
+     */
+    const VERSION = '3.0.0-dev';
 
-    public function testRoutingIndex()
-    {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('entry'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
-    }
+    /**
+     * True value.
+     */
+    const TRUE = 1;
 
-    public function testRoutingComplete()
-    {
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('entry_complete'));
+    /**
+     * False value,
+     */
+    const FALSE = 0;
 
-        $this->assertTrue($client->getResponse()->isSuccessful());
-    }
+    /**
+     * Enable value.
+     */
+    const ENABLE = 1;
+
+    /**
+     * Disable value.
+     */
+    const DISABLE = 0;
 }
