@@ -137,7 +137,6 @@ class MainEditType extends AbstractType
                         ->andWhere('p.id <> :page_id')
                         ->setParameter('page_id', $page_id);
                 }
-var_dump($qb->getQuery()->getSQL(), $DeviceType->getId(), $page_id);
 
                 $PageLayout = $qb
                     ->getQuery()
