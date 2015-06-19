@@ -23,21 +23,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set mypageno = 'withdraw' %}
 
-{% block main %}
-<div id="mypagecolumn">
-    <div id="mycontents_area">
-        <div id="complete_area">
-            <div class="message">退会手続きが完了いたしました。<br />
-                {{ BaseInfo.shop_name }}をご利用いただき誠にありがとうございました。<br />
-                またのご利用を心よりお待ち申し上げます。
-            </div>
+{% block title %}会員退会{% endblock title %}
 
-            <div class="shop_information">
-                <p class="name">{{ BaseInfo.company_name }}</p>
-                <p>TEL：{{ BaseInfo.tel01 }}-{{ BaseInfo.tel02 }}-{{ BaseInfo.tel03 }} {% if BaseInfo.business_hour is not empty %}（受付時間/{{ BaseInfo.business_hour }}）{% endif %}<br />
-                E-mail：<a href="mailto:{{ BaseInfo.email02 }}">{{ BaseInfo.email02 }}</a></p>
+{% block main %}
+    <h2 class="heading01">退会手続き</h2>
+    <div class="unsubscribe_box">
+        <div class="row no-padding">
+            <div class="col-sm-6 col-sm-offset-3">
+                    <h3>退会が完了いたしました</h3>
+                    <p>ご利用いただき誠にありがとうございました。<br>
+                    またのご来店をお待ちしております。</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="btn_group col-sm-offset-4 col-sm-4">
+                <p><a href="{{ url('homepage') }}" class="btn btn-info btn-block">トップページへ</a></p>
             </div>
         </div>
     </div>
-</div>
+
 {% endblock %}
