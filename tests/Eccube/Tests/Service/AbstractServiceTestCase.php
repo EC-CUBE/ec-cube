@@ -35,6 +35,7 @@ class AbstractServiceTestCase extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->app = new Application();
 
+
         $this->app['session.test'] = true;
         $this->app['exception_handler']->disable();
 
