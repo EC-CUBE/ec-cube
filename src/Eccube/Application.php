@@ -205,6 +205,7 @@ class Application extends \Silex\Application
                 __DIR__ . '/Resource/doctrine/master',
             ),
         );
+
         foreach ($finder as $dir) {
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
 
@@ -261,8 +262,10 @@ class Application extends \Silex\Application
             if (isset($config['event'])) {
                 $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
                 $subscriber = new $class($app);
+                
+                if(file_exists($dir->getRealPath() . '/event.yml')){
 
-                foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                foreach(Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
                     foreach ($handlers as $handler) {
                         if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
                             $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
@@ -276,6 +279,9 @@ class Application extends \Silex\Application
                         }
                     }
                 }
+
+                }
+
 
             }
             // const
