@@ -353,7 +353,7 @@ class Application extends \Silex\Application
         ));
 
         $app->mount('', new ControllerProvider\FrontControllerProvider());
-        $app->mount($app['config']['admin_dir'], new ControllerProvider\AdminControllerProvider());
+        $app->mount('/' . trim($app['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
         $app->error(function (\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;
