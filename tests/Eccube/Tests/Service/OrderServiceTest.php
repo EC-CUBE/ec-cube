@@ -26,25 +26,26 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 
-class OrderServiceTest extends AbstractServiceTestCase
+class OrderServiceTest extends \PHPUnit_Framework_TestCase
 {
-    protected $app;
+    private $app;
 
     public function setUp()
     {
-        parent::setUp();
+        $this->app = new Application(array(
+            'env' => 'test'
+        ));
+        $this->app->boot();
     }
 
     public function testNewOrder()
     {
-        self::markTestSkipped();
         $Order = $this->app['eccube.service.order']->newOrder();
         $this->assertNotEmpty($Order);
     }
 
     public function testNewOrderDetail()
     {
-        self::markTestSkipped();
         $ProductClass = $this->app['orm.em']
             ->getRepository('Eccube\Entity\ProductClass')
             ->find(2);
@@ -55,7 +56,6 @@ class OrderServiceTest extends AbstractServiceTestCase
 
     public function testCopyToOrderFromCustomer()
     {
-        self::markTestSkipped();
         $orderService = $this->app['eccube.service.order'];
 
         $Order = new \Eccube\Entity\Order();
@@ -72,7 +72,6 @@ class OrderServiceTest extends AbstractServiceTestCase
     }
     public function testCopyToShippingFromCustomer()
     {
-        self::markTestSkipped();
         $orderService = $this->app['eccube.service.order'];
 
         $Shipping = new \Eccube\Entity\Shipping();
@@ -90,7 +89,6 @@ class OrderServiceTest extends AbstractServiceTestCase
 
     public function testRegisterPreOrderFromCart()
     {
-        self::markTestSkipped();
         $this->app['orm.em']->getConnection()->beginTransaction();
 
         // set up customer;
