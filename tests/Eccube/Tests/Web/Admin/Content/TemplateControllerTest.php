@@ -26,46 +26,18 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
-class BlockControllerTest extends AbstractAdminWebTestCase
+class TemplateControllerTest extends AbstractAdminWebTestCase
 {
 
-    public function test_routing_AdminContentBlock_index()
+    public function test_routing_AdminTemplate_index()
     {
-
-        $this->client->request('GET', $this->app->url('admin_content_block'));
+        $this->client->request('GET', $this->app->url('admin_content_template'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function test_routing_AdminContentBlock_edit()
+    public function test_routing_AdminTemplate_new()
     {
-        // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
-        //self::markTestSkipped();
-
-        $this->client->request('GET',
-            $this->app->url(
-                'admin_content_block_edit',
-                array('id' => 1)
-            )
-        );
+        $this->client->request('GET', $this->app->url('admin_content_template_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
-
-
-    public function test_routing_AdminContentBlock_defaultBlockDelete()
-    {
-
-        $redirectUrl = $this->app->url('admin_content_block');
-
-        $this->client->request('GET',
-            $this->app->url(
-                'admin_content_block_delete',
-                array('id' => 1)
-            )
-        );
-
-        $actual = $this->client->getResponse()->isRedirect($redirectUrl);
-
-        $this->assertSame(true, $actual);
-    }
-
 }
