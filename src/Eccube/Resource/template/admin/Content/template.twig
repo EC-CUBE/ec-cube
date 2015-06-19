@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% set menus = ['content', 'template'] %}
+
 {% block main %}
     <div class="row" id="aside_wrap">
         <form name="form1" id="form1" method="post" action="{{ url('admin_content_template') }}">
