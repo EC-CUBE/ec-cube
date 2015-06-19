@@ -72,8 +72,11 @@ class PluginController extends AbstractController
             
         }
 
+
+
         return $app['twig']->render('Setting/System/Plugin/install.twig', array(
             'form' => $form->createView(),
+            'plugins' => $repo->findAll() 
         ));
 
     }
