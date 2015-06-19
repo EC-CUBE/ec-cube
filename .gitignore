@@ -6,6 +6,9 @@ composer.phar
 /app/config/eccube/config.php
 /app/config/eccube/config.yml
 /app/config/eccube/constant.yml
+/app/config/mail.yml
+/app/config/path.yml
+/app/config/database.yml
 /app/log/*
 /app/logs/*
 /app/upload/csv/*

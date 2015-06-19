@@ -16,11 +16,10 @@ user_data_route: ${USR_DATA_ROUTE}
 
 # realdir
 down_save_realdir: ${ROOT_DIR}/app/download/save
-down_temp_realdir: ${ROOT_DIR}/download/temp
+down_temp_realdir: ${ROOT_DIR}/app/download/temp
 template_admin_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/admin
 template_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default
-block_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default/Block
-block_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}/Block
+template_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}
 csv_temp_realdir: ${ROOT_DIR}/app/upload/csv
 image_save_realdir: ${ROOT_DIR}/html/upload/save_image
 image_temp_realdir: ${ROOT_DIR}/html/upload/temp_image
@@ -28,6 +27,10 @@ template_admin_html_realdir: ${ROOT_DIR}/html/template/admin
 template_default_html_realdir: ${ROOT_DIR}/html/template/default
 template_html_realdir: ${ROOT_DIR}/html/template/${TEMPLATE_CODE}
 user_data_realdir: ${ROOT_DIR}/html/user_data
+
+# realdir::block
+block_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default/Block
+block_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}/Block
 user_block_realdir: ${ROOT_DIR}/html/user_data/block
 
 # urlpath

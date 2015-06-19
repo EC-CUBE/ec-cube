@@ -106,17 +106,17 @@ class Application extends \Silex\Application
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
                 if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__ . '/../../template/admin')) {
-                        $paths[] = __DIR__ . '/../../template/admin';
+                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
+                        $paths[] = __DIR__ . '/../../app/template/admin';
                     }
-                    $paths[] = __DIR__ . '/Resource/template/admin';
+                    $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__ . '/../../app/plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/admin';
                 } else {
-                    if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_code'])) {
-                        $paths[] = __DIR__ . '/../../template/' . $app['config']['template_code'];
+                    if (file_exists($app['config']['template_realdir'])) {
+                        $paths[] = $app['config']['template_realdir'];
                     }
-                    $paths[] = __DIR__ . '/Resource/template/default';
+                    $paths[] = $app['config']['template_default_realdir'];
                     $paths[] = __DIR__ . '/../../app/plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
                 }
