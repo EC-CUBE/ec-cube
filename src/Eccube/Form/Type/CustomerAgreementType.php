@@ -45,6 +45,7 @@ class CustomerAgreementType extends AbstractType
         $builder
             ->add('customer_agreement', 'textarea', array(
                 'required' => true,
+                'label' => '会員規約',
                 'constraints' => array(
                     new Assert\NotBlank()),
             ))

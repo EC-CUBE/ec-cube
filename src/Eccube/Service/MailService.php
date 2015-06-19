@@ -135,7 +135,7 @@ class MailService
             ->setSubject('[EC-CUBE3] お問い合わせがあります。')
             ->setFrom(array('sample@example.com'))
             ->setTo($this->app['config']['mail_cc'])
-            ->setBody($data['contents']);
+            ->setBody($formData['contents']);
 
         $this->app->mail($message);
 

@@ -162,7 +162,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/customer_agreement/', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
         // system/system
-        $c->match('/setting/system/system', '\Eccube\Controller\Admin\System\SystemController::index')->bind('admin_setting_system_system');
+        $c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');
 
         // system/member
         $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');
