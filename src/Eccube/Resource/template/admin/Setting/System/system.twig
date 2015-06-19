@@ -19,27 +19,52 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+
 {% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'system', 'system'] %}
 
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}システム情報{% endblock %}
 
+
+{% block assets %}
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="{{ app.config.root }}admin/file_upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+{% endblock %}
+
 {% block main %}
-<table border="0" cellspacing="1" cellpadding="8" summary=" ">
-   {% for key, item in arrSystemInfo %}
-  
-        <tr>
-            <th>
-           {{item.title}}
-            </th>
-            <td>
-           {{item.value}}
-            </td>
-        </tr>
-    {% endfor %}
-</table>
+    <div class="row" id="aside_wrap">
+        <div>
+            <div class="box form-horizontal">
+                <div class="box-header">
+                    <h3 class="box-title">システム情報</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                   {% for key, item in arrSystemInfo %}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                               {{item.title}}
+                            </label>
+                            <div class="col-sm-9 col-lg-10">
+                               {{item.value}}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+        <div>
+            <div class="box form-horizontal">
+                <div class="box-header">
+                    <h3 class="box-title">PHP情報</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <iframe src="?mode=info" height="500" frameborder="0" style="width: 100%;"></iframe>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
 
-<h2>PHP情報</h2>
-<iframe src="?mode=info" height="500" frameborder="0" style="width: 100%;"></iframe>
-
+    </div>
 {% endblock %}
