@@ -113,7 +113,7 @@ class TemplateController
         $fs->mirror($targetRealDir, $appDir);
         $fs->mirror($targetHtmlRealDir, $htmlDir);
 
-        // tar.gzファイルに圧縮する..
+        // tar.gzファイルに圧縮する.
         $phar = new \PharData($tarFile);
         $phar->buildFromDirectory($tmpDir);
         $phar->compress(\Phar::GZ);
@@ -172,7 +172,7 @@ class TemplateController
         $app['orm.em']->remove($Template);
         $app['orm.em']->flush();
 
-        $app->addSuccess('admin.content.template.delete..complete', 'admin');
+        $app->addSuccess('admin.content.template.delete.complete', 'admin');
         return $app->redirect($app->url('admin_content_template'));
     }
 
