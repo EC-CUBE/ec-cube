@@ -61,7 +61,10 @@ class ContactType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                    ),
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        )),
+                    )
                 ),
             ))
             ->add('zip', 'zip', array(

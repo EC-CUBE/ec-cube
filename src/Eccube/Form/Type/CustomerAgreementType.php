@@ -45,10 +45,12 @@ class CustomerAgreementType extends AbstractType
         $builder
             ->add('customer_agreement', 'textarea', array(
                 'required' => true,
+                'label' => '会員規約',
                 'constraints' => array(
                     new Assert\NotBlank()),
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

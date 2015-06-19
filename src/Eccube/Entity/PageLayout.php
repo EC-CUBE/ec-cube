@@ -22,6 +22,11 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     const TARGET_ID_CONTENTS_BOTTOM = 8;
     const TARGET_ID_FOOTER = 9;
 
+    // 編集可能フラグ
+    const EDIT_FLG_USER = 0;
+    const EDIT_FLG_PREVIEW = 1;
+    const EDIT_FLG_DEFAULT = 2;
+
     /**
      * Get ColumnNum
      *
@@ -47,6 +52,74 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
         }
 
         return $theme;
+    }
+
+    /**
+     * Get BlockPositionByTargetId
+     *
+     * @param integer $target_id
+     * @return \Eccube\Entity\BlockPosition
+     */
+    public function getBlocksPositionByTargetId($target_id)
+    {
+        $BlockPositions = array();
+        foreach ($this->getBlockPositions() as $BlockPosition) {
+            if ($BlockPosition->getTargetId() === $target_id) {
+                $BlockPositions[] = $BlockPosition;
+            }
+        }
+
+        return $BlockPositions;
+    }
+
+    public function getUnusedPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_UNUSED);
+    }
+
+    public function getHeadPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEAD);
+    }
+
+    public function getHeaderPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_HEADER);
+    }
+
+    public function getContentsTopPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_TOP);
+    }
+
+    public function getSideLeftPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_LEFT);
+    }
+
+    public function getMainTopPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_TOP);
+    }
+
+    public function getMainBottomPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_MAIN_BOTTOM);
+    }
+
+    public function getSideRightPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_SIDE_RIGHT);
+    }
+
+    public function getContentsBottomPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_CONTENTS_BOTTOM);
+    }
+
+    public function getFooterPosition()
+    {
+        return $this->getBlocksPositionByTargetId(self::TARGET_ID_FOOTER);
     }
 
     /**
@@ -187,23 +260,6 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
      */
     private $DeviceType;
 
-    public function setDeviceTypeId($device_type_id)
-    {
-        $this->device_type_id = $device_type_id;
-
-        return $this;
-    }
-
-    /**
-     * Get device_type_id
-     *
-     * @return integer
-     */
-    public function getDeviceTypeId()
-    {
-        return $this->device_type_id;
-    }
-
     /**
      * Constructor
      */
@@ -212,6 +268,18 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
         $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Set id
+     *
+     * @param string $id
+     * @return PageLayout
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
     /**
      * Get id
      *

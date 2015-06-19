@@ -68,6 +68,7 @@ class SearchProductType extends AbstractType
         $builder->add('orderby', 'product_list_order_by', array(
             'label' => '表示順',
         ));
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

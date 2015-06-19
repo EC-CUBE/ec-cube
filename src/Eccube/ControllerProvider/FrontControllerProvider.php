@@ -33,10 +33,13 @@ class FrontControllerProvider implements ControllerProviderInterface
     {
         $c = $app['controllers_factory'];
 
+        // user定義
+        $c->match('/' . $app['config']['user_data_route'] . '/{route}', '\Eccube\Controller\UserDataController::index')->bind('user_data');
+
         // root
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('homepage');
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('top');
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('index');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('homepage');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('top');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('index');
         $c->match('/input_zip', '\Eccube\Page\InputZip')->bind('input_zip');
         $c->match('/sitemap', '\Eccube\Page\Sitemap')->bind('sitemap');
         $c->match('/error', '\Eccube\Page\Error\SystemError')->bind('error');

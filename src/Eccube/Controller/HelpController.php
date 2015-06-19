@@ -36,9 +36,14 @@ class HelpController extends AbstractController
     {
         $title = '特定商取引法';
 
-        $baseInfo = $app['eccube.repository.base_info']->get();
+        $Help = $app['orm.em']->getRepository('Eccube\Entity\Help')->find(1);
 
-        return $app['twig']->render('Help/tradelaw.twig', compact('title', 'baseInfo'));
+        return $app['view']->render('Help/tradelaw.twig', array(
+                        'title' => $title,
+                        'help' => $Help,
+        ));
+
+//        return $app['twig']->render('Help/tradelaw.twig', compact('title', 'help'));
     }
 
     public function guide(Application $app)
@@ -68,11 +73,13 @@ class HelpController extends AbstractController
 
     public function agreement(Application $app)
     {
+        $title = '会員規約';
 
         $Help = $app['orm.em']->getRepository('Eccube\Entity\Help')->find(1);
 
         return $app['view']->render('Help/agreement.twig', array(
-            'help' => $Help,
+                        'title' => $title,
+                        'help' => $Help,
         ));
     }
 }

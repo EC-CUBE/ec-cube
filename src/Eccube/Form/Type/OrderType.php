@@ -171,6 +171,7 @@ class OrderType extends AbstractType
                     $this->app['orm.em'],
                     '\Eccube\Entity\Customer'
                 )));
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

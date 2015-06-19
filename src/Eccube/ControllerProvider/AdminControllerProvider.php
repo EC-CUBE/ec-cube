@@ -33,15 +33,6 @@ class AdminControllerProvider implements ControllerProviderInterface
     {
         $c = $app['controllers_factory'];
 
-        // 廃止
-        // $c->match('/basis/zip_install.php', '\Eccube\Page\Admin\Basis\ZipInstall')->bind('admin_basis_zip_install');
-        // $c->match('/basis/holiday.php', '\Eccube\Page\Admin\Basis\Holiday')->bind('admin_basis_holiday');
-        // $c->match('/extension/owners_store/module', '\Eccube\Page\Admin\OwnersStore\Module')->bind('admin_ownersstore_module');
-        // $c->match('/extension/owners_store/plugin_hookpoint_list', '\Eccube\Page\Admin\OwnersStore\PluginHookPointList')->bind('admin_ownersstore_plugin_hookpoint_list');
-        // $c->match('/setting/system/editdb', '\Eccube\Page\Admin\System\Editdb')->bind('admin_system_editdb');
-        // $c->match('/setting/system/bkup', '\Eccube\Page\Admin\System\Bkup')->bind('admin_system_bkup');
-
-
         // root
         $c->match('/', '\Eccube\Controller\Admin\AdminController::index')->bind('admin_homepage');
 
@@ -121,12 +112,14 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/layout/{id}/preview', '\Eccube\Controller\Admin\Content\LayoutController::preview')->assert('id', '\d+')->bind('admin_content_layout_preview');
 
         $c->match('/content/block', '\Eccube\Controller\Admin\Content\BlockController::index')->bind('admin_content_block');
-        $c->match('/content/block/{id}/edit', '\Eccube\Controller\Admin\Content\BlockController::index')->assert('id', '\d+')->bind('admin_content_block_edit');
+        $c->match('/content/block/new', '\Eccube\Controller\Admin\Content\BlockController::edit')->bind('admin_content_block_new');
+        $c->match('/content/block/{id}/edit', '\Eccube\Controller\Admin\Content\BlockController::edit')->assert('id', '\d+')->bind('admin_content_block_edit');
         $c->match('/content/block/{id}/delete', '\Eccube\Controller\Admin\Content\BlockController::delete')->assert('id', '\d+')->bind('admin_content_block_delete');
 
         $c->match('/content/page', '\Eccube\Controller\Admin\Content\PageController::index')->bind('admin_content_page');
-        $c->match('/content/page/{id}/edit', '\Eccube\Controller\Admin\Content\PageController::index')->assert('id', '\d+')->bind('admin_content_page_edit');
-        $c->match('/content/page/{id}/delete', '\Eccube\Controller\Admin\Content\PageController::delete')->assert('id', '\d+')->bind('admin_content_page_delete');
+        $c->match('/content/page/new', '\Eccube\Controller\Admin\Content\PageController::edit')->bind('admin_content_page_new');
+        $c->match('/content/page/{id}/edit', '\Eccube\Controller\Admin\Content\PageController::edit')->assert('id', '\d+')->bind('admin_content_page_edit');
+        $c->post('/content/page/{id}/delete', '\Eccube\Controller\Admin\Content\PageController::delete')->assert('id', '\d+')->bind('admin_content_page_delete');
 
         // shop
         $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
@@ -170,7 +163,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/customer_agreement/', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
         // system/system
-        $c->match('/setting/system/system', '\Eccube\Controller\Admin\System\SystemController::index')->bind('admin_setting_system_system');
+        $c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');
 
         // system/member
         $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');

@@ -106,12 +106,7 @@ class ProductClassType extends AbstractType
                 'required' => false,
                 'value' => 1,
             ))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) use($builder) {
-                $form = $event->getForm();
-                if ($form['add']->getData()) {
-                } else {
-                }
-            })
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
 
         $transformer = new DataTransformer\EntityToIdTransformer(
