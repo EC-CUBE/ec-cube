@@ -209,7 +209,7 @@ class Application extends \Silex\Application
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
 
             // Doctrine Extend
-            if (isset($config['orm.path'])) {
+            if (isset($config['orm.path']) and is_array( $config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
                     $paths[] = $basePath . '/' . $config['name'] . $path;
@@ -255,8 +255,11 @@ class Application extends \Silex\Application
 
         // Plugin events / service
         foreach ($finder as $dir) {
+            if(!file_exists($dir->getRealPath() . '/config.yml')){
+               continue;
+               //config.ymlのないディレクトリは無視する
+            }
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
-
                 // Type: Event
             if (isset($config['event'])) {
                 $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];

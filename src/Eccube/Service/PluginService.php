@@ -64,6 +64,7 @@ class PluginService
        $this->callPluginManagerMethod( $config,'install' ); 
        $this->callPluginManagerMethod( $config,'enable' ); 
 
+       return true;
     }
 
     public function uninstall(\Eccube\Entity\Plugin $plugin)
@@ -74,6 +75,7 @@ class PluginService
        $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'.self::CONFIG_YML ),'uninstall' ); 
        $this->unregisterPlugin($plugin);
        $this->deleteFile($pluginDir); 
+       return true;
 
     }
     public function enable(\Eccube\Entity\Plugin $plugin,$enable=true)
@@ -84,10 +86,11 @@ class PluginService
        $em->persist($plugin); 
        $em->flush(); 
        $this->callPluginManagerMethod( Yaml::Parse($pluginDir.'/'.self::CONFIG_YML ) ,$enable ? 'enable':'disable'    ); 
+       return true;
     }
     public function disable(\Eccube\Entity\Plugin $plugin)
     {
-       $this->enable($plugin,false);
+       return $this->enable($plugin,false);
     }
     public function update(\Eccube\Entity\Plugin $plugin,$path)
     {
@@ -113,6 +116,8 @@ class PluginService
 
        $this->updatePlugin($plugin,$config,$event); // dbにプラグイン登録
        $this->callPluginManagerMethod( $config,'update' ); 
+
+       return true;
     }
 
 
@@ -203,7 +208,7 @@ class PluginService
                     if( !$this->checkSymbolName($handler[0]) ){
                         throw new \Exception("Handler name format error");
                     }
-                    // 新しいハンドラかどうか調べる
+                    // updateで追加されたハンドラかどうか調べる
                     $peh = $rep->findBy(array('del_flg'=>0,'plugin_id'=> $plugin->getId(),'event' => $event ,'handler' => $handler[0] ));
 
                     if(!$peh){ // 新規にevent.ymlに定義されたハンドラなのでinsertする
@@ -220,6 +225,9 @@ class PluginService
                     }
                 }
             }
+
+            # TODO:updateで廃止されたハンドラの削除
+
         }
 
         $em->persist($plugin); 

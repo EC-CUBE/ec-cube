@@ -26,6 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}プラグイン管理{% endblock %}
 {% block main %}
+
+イベントハンドラの優先度を変更<br>
+↑↓で同じイベントの上下のハンドラと優先度をswap<br>
+TODO:swap対象がない場合(同一イベントのハンドラが一個のみの場合)でも矢印が出るので出さないようにする
+
 <p>ハンドラー設定
 
 
@@ -37,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <a href="{{ url('admin_setting_system_plugin_handler_down', {'handlerId': handler.id}) }}">↓</a></li>
 
         <li>{{ handler.plugin.name }}</li>
-        --------------------------------
+        <hr>
 
     {% endfor %}
 
