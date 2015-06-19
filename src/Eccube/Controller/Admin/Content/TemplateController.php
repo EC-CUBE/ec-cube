@@ -266,7 +266,7 @@ class TemplateController
         ));
     }
 
-    function isValid($form, $app)
+    protected function isValid($form, $app)
     {
         // FormTypeのバリデーション.
         if (!$form->isValid()) {
