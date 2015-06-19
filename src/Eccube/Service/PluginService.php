@@ -44,6 +44,7 @@ class PluginService
     {
        $tmp = $this->createTempDir();
 
+
        $this->unpackPluginArchive($path,$tmp); //一旦テンポラリに展開
        $this->checkPluginArchiveContent($tmp);
 
@@ -163,9 +164,11 @@ class PluginService
     }
     public function createTempDir()
     {
-        $d=(sys_get_temp_dir().'/'.sha1( openssl_random_pseudo_bytes(16) ));
-        $b=mkdir($d,0777);
-        if(!$b){
+
+        $base=__DIR__.'/../../../app/cache/plugin';
+        @mkdir($base);
+        $d=($base.'/'.sha1( openssl_random_pseudo_bytes(16) ));
+        if(!mkdir($d,0777)){
             throw new \Exception($php_errormsg);
         }
         return $d;

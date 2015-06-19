@@ -43,9 +43,13 @@ class PluginController extends AbstractController
             $data = $form->getData();
 
             if($form->get('install')->isClicked()){
-                $tempfile=sha1( openssl_random_pseudo_bytes(20) );
-                $form['plugin_archive']->getData()->move(sys_get_temp_dir() ,$tempfile )   ;
-                $service->install(sys_get_temp_dir().'/'.$tempfile );
+
+                $tmpdir = $service->createTempDir( ) ;
+                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
+
+                $form['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
+
+                $service->install($tmpdir . '/' . $tmpfile);
             }
             if($form->get('uninstall')->isClicked()){
                 $service->uninstall(  $repo->find((int)$data['plugin_id'] )     );
@@ -57,9 +61,13 @@ class PluginController extends AbstractController
                 $service->disable(  $repo->find((int)$data['plugin_id'] )     );
             }
             if($form->get('update')->isClicked()){
-                $tempfile=sha1( openssl_random_pseudo_bytes(20) );
-                $form['plugin_archive']->getData()->move(sys_get_temp_dir() ,$tempfile )   ;
-                $service->update( $repo->find((int)$data['plugin_id'] )  , sys_get_temp_dir().'/'.$tempfile );
+
+                $tmpdir = $service->createTempDir( ) ;
+                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
+
+                $form['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
+
+                $service->update( $repo->find((int)$data['plugin_id'] )  , $tmpdir.'/'.$tmpfile);
             }
             
         }
