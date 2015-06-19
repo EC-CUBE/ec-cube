@@ -27,7 +27,7 @@
 # ---------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------
-BASE_DIR=$(cd $(dirname $0) && pwd)
+BASE_DIR=${BASE_DIR:-$(cd $(dirname $0) && pwd)}
 CONFIG_DIR="${BASE_DIR}/app/config/eccube"
 DIST_DIR="${BASE_DIR}/src/Eccube/Resource/config"
 SQL_DIR="${BASE_DIR}/html/install/sql"
@@ -219,7 +219,7 @@ render_config_template ${DATABASE_YML_DIST} > ${DATABASE_YML}
 echo "creating  ${MAIL_YML}"
 render_config_template ${MAIL_YML_DIST} > ${MAIL_YML}
 
-echo "creating  ${MAIL_YML}"
+echo "creating  ${PATH_YML}"
 render_config_template ${PATH_YML_DIST} > ${PATH_YML}
 
 #echo "creating  ${CONSTANT_YML}"

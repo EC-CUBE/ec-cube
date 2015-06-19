@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * BlocRepository
@@ -111,5 +112,90 @@ class BlockRepository extends EntityRepository
             ->getResult();
 
         return $Blocks;
+    }
+
+    /**
+     * ページの属性を取得する.
+     *
+     * この関数は, dtb_pagelayout の情報を検索する.
+     * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
+     *
+     * @access public
+     * @param  \Eccube\Entity\Master\DeviceType  $DeviceType 端末種別ID
+     * @param  string                            $where 追加の検索条件
+     * @param  string[]                          $parameters 追加の検索パラメーター
+     * @return array                             ページ属性の配列
+     */
+    public function getPageList(DeviceType $DeviceType, $where = null, $parameters = array())
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->orderBy('l.id', 'DESC')
+            ->where('l.DeviceType = :DeviceType')
+            ->setParameter('DeviceType', $DeviceType)
+            ->andWhere('l.id <> 0')
+            ->orderBy('l.id', 'ASC');
+        if (!is_null($where)) {
+            $qb->andWhere($where);
+            foreach ($parameters as $key => $val) {
+                $qb->setParameter($key, $val);
+            }
+        }
+
+        $PageLayouts = $qb
+            ->getQuery()
+            ->getResult();
+
+        return $PageLayouts;
+    }
+
+    /**
+     * 書き込みパスの取得
+     * User定義の場合： /html/user_data
+     * そうでない場合： /app/template/{template_code}
+     *
+     * @param  boolean $isUser
+     * @return string
+     */
+    public function getWriteTemplatePath($isUser = false)
+    {
+        return ($isUser) ? $this->app['config']['user_block_realdir'] : $this->app['config']['block_realdir'];
+    }
+
+    /**
+     * 読み込みファイルの取得
+     *
+     * 1. block_realdir
+     *      app/template/{template_code}/block
+     * 2. block_default_readldir
+     *      src/Eccube/Resource/template/default/block
+     *
+     * @param string $fileName
+     * @param  boolean $isUser
+     *
+     * @return array
+     */
+    public function getReadTemplateFile($fileName, $isUser = false)
+    {
+        if ($isUser) {
+        // User定義
+            $readPaths = array(
+                $this->app['config']['user_block_realdir'],
+            );
+        } else {
+            $readPaths = array(
+                $this->app['config']['block_realdir'],
+                $this->app['config']['block_default_realdir'],
+            );
+        }
+        foreach ($readPaths as $readPath) {
+            $filePath = $readPath . '/' . $fileName . '.twig';
+            $fs = new Filesystem();
+            if ($fs->exists($filePath)) {
+                return array(
+                    'file_name' => $fileName,
+                    'tpl_data' => file_get_contents($filePath),
+                );
+            }
+        }
     }
 }
