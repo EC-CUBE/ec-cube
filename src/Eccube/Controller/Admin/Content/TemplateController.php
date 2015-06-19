@@ -27,6 +27,8 @@ use Eccube\Application;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -84,6 +86,53 @@ class TemplateController
             ->getRepository('Eccube\Entity\Template')
             ->find($id);
 
+        if (is_null($Template)) {
+            throw new NotFoundHttpException();
+        }
+
+        // 該当テンプレートのディレクトリ
+        $config = $app['config'];
+        $templateCode = $Template->getCode();
+        $targetRealDir =  $config['root_dir'] . '/app/template/' . $templateCode;
+        $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+
+        // 一時ディレクトリ
+        $uniqId = sha1(uniqid(mt_rand(), true));
+        $tmpDir = $config['down_temp_realdir'] . '/' . $uniqId; // todo template_temp_realdir
+        $appDir = $tmpDir . '/app';
+        $htmlDir = $tmpDir . '/html';
+
+        // ファイル名
+        $tarFile = $config['down_temp_realdir'] . '/' . $uniqId . '.tar';
+        $tarGzFile = $tarFile . '.gz';
+        $downloadFileName = $Template->getCode() . '.tar.gz';
+
+        // 該当テンプレートを一時ディレクトリへコピーする.
+        $fs = new Filesystem();
+        $fs->mkdir(array($appDir, $htmlDir));
+        $fs->mirror($targetRealDir, $appDir);
+        $fs->mirror($targetHtmlRealDir, $htmlDir);
+
+        // tar.gzファイルに圧縮する..
+        $phar = new \PharData($tarFile);
+        $phar->buildFromDirectory($tmpDir);
+        $phar->compress(\Phar::GZ);
+
+        // ダウンロード完了後にファイルを削除する.
+        // http://stackoverflow.com/questions/15238897/removing-file-after-delivering-response-with-silex-symfony
+        $app->finish(function (Request $request, Response $response, \Silex\Application $app) use ($tmpDir, $tarFile, $tarGzFile) {
+            $app['monolog']->addDebug('remove temp file: ' . $tmpDir);
+            $app['monolog']->addDebug('remove temp file: ' . $tarFile);
+            $app['monolog']->addDebug('remove temp file: ' . $tarGzFile);
+            $fs = new Filesystem();
+            $fs->remove($tmpDir);
+            $fs->remove($tarFile);
+            $fs->remove($tarGzFile);
+        });
+
+        return $app
+            ->sendFile($tarGzFile)
+            ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $downloadFileName);
     }
 
     public function delete(Application $app, Request $request, $id)
@@ -123,7 +172,7 @@ class TemplateController
         $app['orm.em']->remove($Template);
         $app['orm.em']->flush();
 
-        $app->addError('admin.content.template.delete..complete', 'admin');
+        $app->addSuccess('admin.content.template.delete..complete', 'admin');
         return $app->redirect($app->url('admin_content_template'));
     }
 
