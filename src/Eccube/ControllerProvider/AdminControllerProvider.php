@@ -101,6 +101,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/status/{statusId}', '\Eccube\Controller\Admin\Order\StatusController::index')->bind('admin_order_status');
 
         // content
+        $c->match('/content/', '\Eccube\Controller\Admin\Content\ContentsController::index')->bind('admin_content');
+        $c->match('/content/new', '\Eccube\Controller\Admin\Content\ContentsController::edit')->bind('admin_content_new');
+        $c->match('/content/{id}/edit', '\Eccube\Controller\Admin\Content\ContentsController::edit')->assert('id', '\d+')->bind('admin_content_edit');
+        $c->match('/content/{id}/delete', '\Eccube\Controller\Admin\Content\ContentsController::delete')->assert('id', '\d+')->bind('admin_content_delete');
+        $c->match('/content/{id}/up', '\Eccube\Controller\Admin\Content\ContentsController::up')->assert('id', '\d+')->bind('admin_content_up');
+        $c->match('/content/{id}/down', '\Eccube\Controller\Admin\Content\ContentsController::down')->assert('id', '\d+')->bind('admin_content_down');
+
         $c->match('/content/file_manager', '\Eccube\Controller\Admin\Content\FileController::index')->bind('admin_content_file');
         $c->match('/content/file_view', '\Eccube\Controller\Admin\Content\FileController::view')->bind('admin_content_file_view');
         $c->match('/content/css', '\Eccube\Controller\Admin\Content\CssController::index')->bind('admin_content_css');
@@ -190,7 +197,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/pdf', '\Eccube\Page\Admin\Order\Pdf')->bind('admin_order_pdf');
         $c->match('/order/product_select', '\Eccube\Page\Admin\Order\ProductSelect')->bind('admin_order_product_select');
 
-        $c->match('/content', '\Eccube\Page\Admin\Content\Index')->bind('admin_content');
         $c->match('/content/recommend', '\Eccube\Page\Admin\Content\Recommend')->bind('admin_content_recommend');
         $c->match('/content/recommend_search', '\Eccube\Page\Admin\Content\RecommendSearch')->bind('admin_content_recommend_search');
         $c->match('/content/header', '\Eccube\Page\Admin\Design\Header')->bind('admin_design_header');
