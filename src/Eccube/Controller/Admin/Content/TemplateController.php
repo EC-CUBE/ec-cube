@@ -98,12 +98,12 @@ class TemplateController
 
         // 一時ディレクトリ
         $uniqId = sha1(uniqid(mt_rand(), true));
-        $tmpDir = $config['down_temp_realdir'] . '/' . $uniqId; // todo template_temp_realdir
+        $tmpDir = $config['template_temp_realdir'] . '/' . $uniqId;
         $appDir = $tmpDir . '/app';
         $htmlDir = $tmpDir . '/html';
 
         // ファイル名
-        $tarFile = $config['down_temp_realdir'] . '/' . $uniqId . '.tar';
+        $tarFile = $config['template_temp_realdir'] . '/' . $uniqId . '.tar';
         $tarGzFile = $tarFile . '.gz';
         $downloadFileName = $Template->getCode() . '.tar.gz';
 
