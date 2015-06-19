@@ -54,6 +54,12 @@ class TemplateType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Regex(array(
+                        'pattern' => "/^[0-9a-zA-Z]+$/",
+                    )),
+                    new Assert\Length(array(
+                        'max' => $config['stext_len'],
+                    )),
                 ),
             ))
             ->add('name', 'text', array(
@@ -61,6 +67,9 @@ class TemplateType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['stext_len'],
+                    )),
                 ),
             ))
             ->add('file', 'file', array(
