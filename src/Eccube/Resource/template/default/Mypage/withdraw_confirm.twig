@@ -19,37 +19,32 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}}
+{% extends 'default_frame.twig' %}
 
 {% set mypageno = 'withdraw' %}
 
-{% block main %}
-<div id="mypagecolumn">
-    {% include 'Mypage/navi.twig' %}
-    <form name="form1" id="form1" method="post" action="?">
-        <input type="hidden" name="withdraw_transactionid" value="<!--{$withdraw_transactionid}-->" />
-        <input type="hidden" name="mode" value="complete" />
-        {{ form_widget(form) }}
+{% block title %}会員退会{% endblock title %}
 
-        <div id="mycontents_area">
-            <div id="complete_area">
-                <div class="message">退会手続きを実行してもよろしいでしょうか？</div>
-                <div class="message_area">
-                    <div class="btn_area">
-                        <p>退会手続きが完了した時点で、現在保存されている購入履歴や、<br />
-                        お届け先等の情報は全てなくなりますのでご注意ください。</p>
-                        <ul>
-                            <li>
-                                <a href="{{ path('mypage') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_withdraw_not.jpg" alt="いいえ、退会しません" /></a>
-                            </li>
-                            <li>
-                                <input type="image" src="{{ app.config.tpl }}img/button/btn_withdraw_do.jpg" alt="はい、退会します" class="hover_change_image" name="withdraw_do" id="withdraw_do" />
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+{% block main %}
+{% include 'Mypage/navi.twig' %}
+    <h2 class="heading01">退会手続き</h2>
+    <div class="unsubscribe_box">
+        <div class="row no-padding">
+            <div class="col-sm-6 col-sm-offset-3">
+                    <div class="icon"><svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg></div>
+                    <h3>退会手続きを実行してもよろしいでしょうか？</h3>
+                    <p>退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。</p>
             </div>
         </div>
-    </form>
-</div>
+        <form method="post" action="{{ url('mypage_withdraw') }}">
+            {{ form_widget(form._token) }}
+                <div class="row">
+                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                        <p><a href="{{ url('mypage') }}" class="btn btn-default btn-block">いいえ、退会しません</a></p>
+                        <p><button type="submit" class="btn btn-info btn-block" name="mode" value="complete">はい、退会します</button></p>
+                    </div>
+                </div>
+        </form>
+    </div>
+
 {% endblock %}
