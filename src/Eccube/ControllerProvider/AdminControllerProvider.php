@@ -121,7 +121,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         $c->match('/content/template', '\Eccube\Controller\Admin\Content\TemplateController::index')->bind('admin_content_template');
         $c->match('/content/template/new', '\Eccube\Controller\Admin\Content\TemplateController::add')->bind('admin_content_template_new');
-        $c->match('/content/template/{id}/download', '\Eccube\Controller\Admin\Content\TemplateController::delete')->assert('id', '\d+')->bind('admin_content_template_download');
+        $c->match('/content/template/{id}/download', '\Eccube\Controller\Admin\Content\TemplateController::download')->assert('id', '\d+')->bind('admin_content_template_download');
         $c->post('/content/template/{id}/delete', '\Eccube\Controller\Admin\Content\TemplateController::delete')->assert('id', '\d+')->bind('admin_content_template_delete');
 
         // shop
