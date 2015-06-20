@@ -24,7 +24,7 @@ env:
   - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
 
 before_script:
-  - composer self-update
+  - composer self-update || true
   - composer install --dev --no-interaction -o
   - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
   - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql none; fi"
