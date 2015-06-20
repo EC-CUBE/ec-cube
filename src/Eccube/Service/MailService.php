@@ -211,7 +211,7 @@ class MailService
 
         $message = \Swift_Message::newInstance()
             ->setSubject($formData['subject'])
-            ->setFrom(array($BaseInfo->getEmail03() => $BaseInfo->getShopName()))
+            ->setFrom(array('sample@example.com'))
             ->setTo(array($Order->getEmail()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->app['config']['mail_cc'])
