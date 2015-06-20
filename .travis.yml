@@ -12,6 +12,9 @@ php:
 
 matrix:
   fast_finish: true
+  exclude:
+    - php: hhvm
+      env: DB=pgsql  # driver currently unsupported by HHVM
   allow_failures:
     - php: hhvm
     - php: 7.0
@@ -21,10 +24,10 @@ env:
   - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
 
 before_script:
-  - composer self-update
-  - composer install --dev --no-interaction
-  - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql; fi"
-  - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql; fi"
+  #- composer self-update
+  - composer install --dev --no-interaction -o
+  - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
+  - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql none; fi"
 
 script:
   - phpunit --coverage-clover=coverage.clover
