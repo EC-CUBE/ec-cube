@@ -71,6 +71,7 @@ export DBUSER=${DBUSER:-"cube3_dev_user"}
 export DBPASS=${DBPASS:-"password"}
 
 DBTYPE=$1;
+GET_COMPOSER=$2;
 
 case "${DBTYPE}" in
 "pgsql" )
@@ -232,11 +233,18 @@ render_config_template ${PATH_YML_DIST} > ${PATH_YML}
 # Install Composer
 # ---------------------------------
 
+case "${GET_COMPOSER}" in
+"none" )
+echo "not get composer..."
+;;
+* )
 echo "get composer..."
 curl -sS https://getcomposer.org/installer | php
 
 echo "install composer..."
 php ./composer.phar install --dev --no-interaction
+;;
+esac
 
 # ---------------------------------
 # Setup Database
