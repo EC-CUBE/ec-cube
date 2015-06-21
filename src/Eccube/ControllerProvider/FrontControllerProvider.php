@@ -73,7 +73,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/entry/activate/{secret_key}', '\Eccube\Controller\EntryController::activate')->bind('entry_activate');
 
         // forgot
-        $c->match('/forgot', '\Eccube\Page\Forgot\Index')->bind('forgot');
+        $c->match('/forgot', '\Eccube\Controller\ForgotController::index')->bind('forgot');
+        $c->match('/forgot/reset/{reset_key}', '\Eccube\Controller\ForgotController::reset')->bind('forgot_reset');
 
         // frontparts
         $c->match('/frontparts/login_check', '\Eccube\Page\FrontParts\LoginCheck')->bind('frontparts_login_check');

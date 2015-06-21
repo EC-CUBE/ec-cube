@@ -221,5 +221,49 @@ class MailService
 
     }
 
+    /**
+     * Send password reset notification mail.
+     *
+     * @param $Customer 会員情報
+     */
+    public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
+    {
+        $body = $this->app['view']->render('Mail/forgot_mail.twig', array(
+            'Customer' => $Customer,
+            'reset_url' => $reset_url
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('[EC-CUBE3] パスワード変更の確認')
+            ->setFrom(array('sample@example.com'))
+            ->setTo(array($Customer->getEmail()))
+            ->setBcc($this->app['config']['mail_cc'])
+            ->setBody($body);
+
+        $this->app->mail($message);
+    }
+
+    /**
+     * Send password reset notification mail.
+     *
+     * @param $Customer 会員情報
+     */
+    public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
+    {
+        $body = $this->app['view']->render('Mail/reset_complete_mail.twig', array(
+                        'Customer' => $Customer,
+                        'password' => $password,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('[EC-CUBE3] パスワード変更のお知らせ')
+            ->setFrom(array('sample@example.com'))
+            ->setTo(array($Customer->getEmail()))
+            ->setBcc($this->app['config']['mail_cc'])
+            ->setBody($body);
+
+        $this->app->mail($message);
+    }
+
 
 }

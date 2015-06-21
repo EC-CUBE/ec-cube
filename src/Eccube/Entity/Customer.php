@@ -212,6 +212,16 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $note;
 
     /**
+     * @var string
+     */
+    private $reset_key;
+
+    /**
+     * @var \DateTime
+     */
+    private $reset_expire;
+
+    /**
      * @var \Eccube\Entity\Master\CustomerStatus
      */
     private $Status;
@@ -873,6 +883,52 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set resetKey
+     *
+     * @param  string   $resetKey
+     * @return Customer
+     */
+    public function setResetKey($resetKey)
+    {
+        $this->reset_key = $resetKey;
+
+        return $this;
+    }
+
+    /**
+     * Get resetKey
+     *
+     * @return string
+     */
+    public function getResetKey()
+    {
+        return $this->reset_key;
+    }
+
+    /**
+     * Set resetExpire
+     *
+     * @param  \DateTime   $resetExpire
+     * @return Customer
+     */
+    public function setResetExpire($resetExpire)
+    {
+        $this->reset_expire = $resetExpire;
+
+        return $this;
+    }
+
+    /**
+     * Get resetExpire
+     *
+     * @return \DateTime
+     */
+    public function getResetExpire()
+    {
+        return $this->reset_expire;
     }
 
     /**
