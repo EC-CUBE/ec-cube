@@ -444,7 +444,7 @@ CREATE TABLE dtb_news (
     news_comment text,
     news_url text,
     news_select smallint NOT NULL DEFAULT 0,
-    link_method text,
+    link_method smallint DEFAULT 0,
     creator_id int NOT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
