@@ -46,6 +46,7 @@ ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
 AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 
 DBTYPE=$1;
+GET_COMPOSER=$2;
 
 case "${DBTYPE}" in
 "pgsql" )
@@ -261,11 +262,18 @@ create_config_php
 echo "creating ${CONFIG_YML}..."
 create_config_yml
 
+case "${GET_COMPOSER}" in
+"none" )
+echo "not get composer..."
+;;
+* )
 echo "get composer..."
 curl -sS https://getcomposer.org/installer | php
 
 echo "install composer..."
 php ./composer.phar install --dev --no-interaction
+;;
+esac
 
 
 
