@@ -33,22 +33,13 @@ class Constant {
     const VERSION = '3.0.0-dev';
 
     /**
-     * True value.
-     */
-    const TRUE = 1;
-
-    /**
-     * False value,
-     */
-    const FALSE = 0;
-
-    /**
      * Enable value.
      */
-    const ENABLE = 1;
+    const ENABLED = 1;
 
     /**
      * Disable value.
      */
-    const DISABLE = 0;
+    const DISABLED = 0;
+
 }
