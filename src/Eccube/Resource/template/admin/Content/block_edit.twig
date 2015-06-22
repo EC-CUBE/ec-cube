@@ -23,10 +23,10 @@
 #}
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['content', 'block'] %}
+
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ブロック管理{% endblock %}
-
-{% set menus = ['content', 'block'] %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
