@@ -110,7 +110,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/withdraw_complete', '\Eccube\Controller\Mypage\WithdrawController::complete')->bind('mypage_withdraw_complete');
 
         // preview
-        $c->match('/preview', '\Eccube\Page\Preview\Index')->bind('preview');
+        $c->match('/preview', '\Eccube\Controller\PreviewController::index')->bind('preview');
 
         // products
         $c->match('/products/list', '\Eccube\Controller\ProductController::index')->bind('product_list');

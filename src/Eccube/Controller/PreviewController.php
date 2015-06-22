@@ -22,30 +22,16 @@
  */
 
 
-namespace Eccube\Service;
+namespace Eccube\Controller;
 
-use Eccube\Event\RenderEvent;
+use Eccube\Application;
+use Symfony\Component\HttpFoundation\Request;
 
-class ViewService
+class PreviewController
 {
-    private $app;
 
-    public function __construct($app)
+    public function index(Application $app)
     {
-        $this->app = $app;
-    }
-
-    public function render($name, array $context = array())
-    {
-        $compiledSource = $this->app['twig']->render($name, $context);
-
-        $event = new RenderEvent($compiledSource);
-
-        $route = $this->app['request']->attributes->get('_route');
-        $this->app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
-
-        $source = $event->getSource();
-
-        return $source;
+        return $app->render('preview.twig');
     }
 }
