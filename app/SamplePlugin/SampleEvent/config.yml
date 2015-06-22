@@ -1,3 +1,4 @@
 name: SampleEvent
-enable: false
 event: SamplePlugin
+code: SampleEvent
+version: 0.1

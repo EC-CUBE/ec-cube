@@ -34,15 +34,14 @@ class LayoutController
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
 
-        // 一覧表示用
-        $PageLayouts = $app['eccube.repository.page_layout']
-            ->findBy(array(
-                'DeviceType' => $DeviceType,
-            ));
-
         // 編集対象ページ
         /* @var $TargetPageLayout \Eccube\Entity\PageLayout */
         $TargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $id);
+
+        $listForm = $app['form.factory']
+            ->createBuilder('admin_page_layout')
+            ->getForm();
+        $listForm->get('layout')->setData($TargetPageLayout);
 
         // 未使用ブロックの取得
         $Blocks = $app['orm.em']->getRepository('Eccube\Entity\Block')
@@ -140,8 +139,8 @@ class LayoutController
 
         return $app->render('Content/layout.twig', array(
             'form' => $form->createView(),
+            'list_form' => $listForm->createView(),
             'TargetPageLayout' => $TargetPageLayout,
-            'PageLayouts' => $PageLayouts,
         ));
     }
 }
