@@ -123,6 +123,7 @@ class ProductClassController
                 'classForm' => $productClassForm,
                 'Product' => $Product,
                 'not_product_class' => true,
+                'error' => null,
             ));
 
         } else {
@@ -189,6 +190,7 @@ class ProductClassController
                 'class_name1' => $ClassName1,
                 'class_name2' => $ClassName2,
                 'not_product_class' => false,
+                'error' => null,
             ));
 
         }
@@ -252,7 +254,8 @@ class ProductClassController
 
                     if (count($addProductClasses) == 0) {
                         // 対象がなければエラー
-                        return $this->render($app, $Product, $tmpProductClass, true, $form);
+                        $error = array('message' => '商品規格が選択されていません。');
+                        return $this->render($app, $Product, $tmpProductClass, true, $form, $error);
                     }
 
                     // 選択された商品規格を登録
@@ -296,7 +299,8 @@ class ProductClassController
 
                     if (count($addProductClasses) == 0) {
                         // 対象がなければエラー
-                        return $this->render($app, $Product, $tempProductClass, false, $form);
+                        $error = array('message' => '商品規格が選択されていません。');
+                        return $this->render($app, $Product, $tempProductClass, false, $form, $error);
                     }
 
                     foreach ($ProductClasses as $ProductClass) {
@@ -358,7 +362,7 @@ class ProductClassController
      * 登録、更新時のエラー画面表示
      *
      */
-    protected function render($app, $Product, $ProductClass, $not_product_class, $classForm)
+    protected function render($app, $Product, $ProductClass, $not_product_class, $classForm, $error = null)
     {
 
         $ClassName1 = null;
@@ -398,7 +402,7 @@ class ProductClassController
             'class_name1' => $ClassName1,
             'class_name2' => $ClassName2,
             'not_product_class' => $not_product_class,
-           // 'error' => $error,
+            'error' => $error,
         ));
     }
 

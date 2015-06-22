@@ -53,7 +53,7 @@ class ProductClassType extends AbstractType
                 'label' => '商品コード',
                 'required' => false,
             ))
-            ->add('stock', 'integer', array(
+            ->add('stock', 'number', array(
                 'label' => '在庫数',
                 'required' => false,
             ))
@@ -62,7 +62,7 @@ class ProductClassType extends AbstractType
                 'value' => '1',
                 'required' => false,
             ))
-            ->add('sale_limit', 'integer', array(
+            ->add('sale_limit', 'number', array(
                 'label' => '販売制限数',
                 'required' => false,
             ))
@@ -80,7 +80,7 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('tax_rate', 'integer', array(
+            ->add('tax_rate', 'number', array(
                 'label' => '消費税率',
                 'mapped' => false,
             ))

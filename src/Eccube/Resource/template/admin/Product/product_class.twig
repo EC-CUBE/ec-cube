@@ -186,11 +186,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="box-header">
                 <button type="button" id="copy" class="btn btn-default pull-right btn-xs">1行目のデータをコピーする</button>
                 <h3 class="box-title">検索結果 <span class="normal"><strong>{{ classForm.product_classes|length }} 件</strong> が該当しました</span></h3>
-                {#
-    {% if error %}
-        <div class="text-danger">{{ error.message }}</div>
-    {% endif %}
-    #}
+                {% if error is not null %}
+                    <div class="text-danger">{{ error.message }}</div>
+                {% endif %}
             </div><!-- /.box-header -->
             <div class="box-body no-padding">
                 <div class="table_list">
