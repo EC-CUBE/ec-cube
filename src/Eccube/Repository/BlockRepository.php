@@ -121,7 +121,7 @@ class BlockRepository extends EntityRepository
      * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
      *
      * @access public
-     * @param  \Eccube\Entity\Master\DeviceType  $DeviceType 端末種別ID
+     * @param  DeviceType  $DeviceType 端末種別ID
      * @param  string                            $where 追加の検索条件
      * @param  string[]                          $parameters 追加の検索パラメーター
      * @return array                             ページ属性の配列
