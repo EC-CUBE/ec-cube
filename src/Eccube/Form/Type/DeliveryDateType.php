@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type\Master;
+namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,11 +44,12 @@ class DeliveryDateType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\DeliveryDate',
+            'class' => 'Eccube\Entity\DeliveryDate',
             'label' => false,
             'multiple'=> false,
             'expanded' => false,
             'required' => false,
+            'property' => 'name',
             'empty_value' => 'form.delivery_date.empty_value',
         ));
     }

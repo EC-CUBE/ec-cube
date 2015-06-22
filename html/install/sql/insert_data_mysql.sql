@@ -30,16 +30,6 @@ INSERT INTO mtb_auth_excludes (id, name, rank) VALUES (1, 'logout.php', 1);
 INSERT INTO mtb_db (id, name, rank) VALUES (1, 'PostgreSQL', 0);
 INSERT INTO mtb_db (id, name, rank) VALUES (2, 'MySQL', 1);
 
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (1, '即日', 0);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (2, '1～2日後', 1);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (3, '3～4日後', 2);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (4, '1週間以降', 3);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (5, '2週間以降', 4);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (6, '3週間以降', 5);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (7, '1ヶ月以降', 6);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (8, '2ヶ月以降', 7);
-INSERT INTO mtb_delivery_date (id, name, rank) VALUES (9, 'お取り寄せ(商品入荷後)', 8);
-
 INSERT INTO mtb_disable_logout (id, name, rank) VALUES (1, '/shopping/deliv.php', 0);
 INSERT INTO mtb_disable_logout (id, name, rank) VALUES (2, '/shopping/payment.php', 1);
 INSERT INTO mtb_disable_logout (id, name, rank) VALUES (3, '/shopping/confirm.php', 2);
@@ -1345,9 +1335,9 @@ INSERT INTO dtb_module (module_id, module_code, module_name, sub_data, auto_upda
 
 INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (1, 'アイスクリーム', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
-INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
-INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
+INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, delivery_date_id) VALUES (1, 'アイスクリーム', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
+INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, delivery_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
+INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, delivery_date_id) VALUES (3, 'おなべレシピ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (1, 5, 1);
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (2, 4, 2);

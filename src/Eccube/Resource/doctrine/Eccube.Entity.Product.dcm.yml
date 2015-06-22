@@ -59,10 +59,10 @@ Eccube\Entity\Product:
                 referencedColumnName: member_id
                 nullable: false
         DeliveryDate:
-            targetEntity: Eccube\Entity\Master\DeliveryDate
+            targetEntity: Eccube\Entity\DeliveryDate
             joinColumn:
-                name: deliv_date_id
-                referencedColumnName: id
+                name: delivery_date_id
+                referencedColumnName: date_id
         Status:
             targetEntity: Eccube\Entity\Master\Disp
             joinColumn:

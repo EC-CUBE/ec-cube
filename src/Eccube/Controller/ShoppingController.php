@@ -596,8 +596,7 @@ class ShoppingController extends AbstractController
             ->getForm();
 
         return $app['view']->render('Shopping/login.twig', array(
-//            'error' => $app['security.last_error']($app['request']),
-            'error'         => $error,
+            'error' => $app['security.last_error']($app['request']),
             'form'  => $form->createView(),
         ));
     }
