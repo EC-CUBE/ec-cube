@@ -38,6 +38,7 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         $client = $this->createClient();
         $client->request('GET', $this->app['url_generator']->generate('entry_complete'));
+
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 }

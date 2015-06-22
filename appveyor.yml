@@ -14,6 +14,8 @@ environment:
     DBNAME: "myapp_test"
     DBPASS: "Password12!"
     DBUSER: "root"
+    BASE_DIR: "C:/projects/ec-cube"
+
   matrix:
   - db: mysql
     provider: mysql

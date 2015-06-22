@@ -31,7 +31,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentPage_index()
     {
-
         $this->client->request('GET', $this->app->url('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -39,7 +38,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
     public function test_routing_AdminContentPage_edit()
     {
         // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
-        self::markTestSkipped();
+        //self::markTestSkipped();
 
         $this->client->request('GET',
             $this->app->url(
@@ -53,10 +52,9 @@ class PageControllerTest extends AbstractAdminWebTestCase
     public function test_routing_AdminContentPage_delete()
     {
 
-        $redirectUrl = $this->app->url(
-            'admin_content_page');
+        $redirectUrl = $this->app->url('admin_content_page');
 
-        $this->client->request('GET',
+        $this->client->request('POST',
             $this->app->url(
                 'admin_content_page_delete',
                 array('id' => 1)

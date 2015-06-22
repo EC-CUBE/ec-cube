@@ -21,7 +21,5 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
-$loader = require __DIR__ . '/../vendor/autoload.php';
-
+$loader = require __DIR__ . '/../autoload.php';
 $loader->add('Eccube\Tests', __DIR__);

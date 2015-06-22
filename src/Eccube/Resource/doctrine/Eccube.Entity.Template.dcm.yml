@@ -1,28 +1,35 @@
 Eccube\Entity\Template:
     type: entity
-    table: dtb_templates
+    table: dtb_template
     repositoryClass: Eccube\Repository\TemplateRepository
     id:
-        code:
-            type: string
-            length: 200
-            nullable: false
-            id: true
-            column: template_code
-    fields:
-        device_type_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
-        template_name:
+            id: true
+            column: template_id
+            generator:
+                strategy: AUTO
+    fields:
+        code:
             type: text
-            nullable: true
+            nullable: false
+            column: template_code
+        name:
+            type: text
+            nullable: false
+            column: template_name
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
+    manyToOne:
+        DeviceType:
+            targetEntity: Eccube\Entity\Master\DeviceType
+            joinColumn:
+                name: device_type_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

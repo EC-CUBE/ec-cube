@@ -28,6 +28,13 @@ use Eccube\Application;
 
 class OrderServiceTest extends AbstractServiceTestCase
 {
+    protected $app;
+
+    public function setUp()
+    {
+        parent::setUp();
+    }
+
     public function testNewOrder()
     {
         self::markTestSkipped();

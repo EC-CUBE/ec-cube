@@ -33,10 +33,13 @@ class FrontControllerProvider implements ControllerProviderInterface
     {
         $c = $app['controllers_factory'];
 
+        // user定義
+        $c->match('/' . $app['config']['user_data_route'] . '/{route}', '\Eccube\Controller\UserDataController::index')->bind('user_data');
+
         // root
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('homepage');
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('top');
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('index');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('homepage');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('top');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('index');
         $c->match('/input_zip', '\Eccube\Page\InputZip')->bind('input_zip');
         $c->match('/sitemap', '\Eccube\Page\Sitemap')->bind('sitemap');
         $c->match('/error', '\Eccube\Page\Error\SystemError')->bind('error');
@@ -70,7 +73,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/entry/activate/{secret_key}', '\Eccube\Controller\EntryController::activate')->bind('entry_activate');
 
         // forgot
-        $c->match('/forgot', '\Eccube\Page\Forgot\Index')->bind('forgot');
+        $c->match('/forgot', '\Eccube\Controller\ForgotController::index')->bind('forgot');
+        $c->match('/forgot/reset/{reset_key}', '\Eccube\Controller\ForgotController::reset')->bind('forgot_reset');
 
         // frontparts
         $c->match('/frontparts/login_check', '\Eccube\Page\FrontParts\LoginCheck')->bind('frontparts_login_check');
