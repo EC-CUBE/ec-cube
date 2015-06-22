@@ -158,8 +158,10 @@ class AdminController extends AbstractController
 
     protected function getSalesByMonth($em, $dateTime, array $excludes)
     {
+        // concat... for pgsql
+        // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
         $dql = 'SELECT
-                  SUBSTRING(o.order_date, 1, 7) AS order_month,
+                  SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) AS order_month,
                   SUM(o.payment_total) AS order_amount,
                   COUNT(o) AS order_count
                 FROM
@@ -167,7 +169,7 @@ class AdminController extends AbstractController
                 WHERE
                     o.del_flg = 0
                     AND o.OrderStatus NOT IN (:excludes)
-                    AND SUBSTRING(o.order_date, 1, 7) = SUBSTRING(:targetDate, 1, 7)
+                    AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 7) = SUBSTRING(:targetDate, 1, 7)
                 GROUP BY
                   order_month';
 
@@ -187,8 +189,10 @@ class AdminController extends AbstractController
 
     protected function getSalesByDay($em, $dateTime, array $excludes)
     {
+        // concat... for pgsql
+        // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
         $dql = 'SELECT
-                  SUBSTRING(o.order_date, 1, 10) AS order_day,
+                  SUBSTRING(CONCAT(o.order_date, \'\'), 1, 10) AS order_day,
                   SUM(o.payment_total) AS order_amount,
                   COUNT(o) AS order_count
                 FROM
@@ -196,7 +200,7 @@ class AdminController extends AbstractController
                 WHERE
                     o.del_flg = 0
                     AND o.OrderStatus NOT IN (:excludes)
-                    AND SUBSTRING(o.order_date, 1, 10) = SUBSTRING(:targetDate, 1, 10)
+                    AND SUBSTRING(CONCAT(o.order_date, \'\'), 1, 10) = SUBSTRING(:targetDate, 1, 10)
                 GROUP BY
                   order_day';
 
