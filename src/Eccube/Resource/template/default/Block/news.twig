@@ -20,34 +20,37 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 
-               <div class="row">
-                    <div class="col-sm-9">
-                        <!-- ▼news_area▼ -->
-                        <div id="news_area">
-                            <h2 class="heading01">新着情報</h2>
-                            <div class="news_contents accordion">
-                                <div class="newslist">
+{% extends 'default_frame.twig' %}
 
-                                    {% for News in NewsList %}
-                                    <dl>
-                                        <dt>
-                                            <span class="date">{{ News.date|date("Y.m.d") }}</span>
-                                            <span class="news_title">{{ News.title }}</span>
-                                            <span class="angle-circle"><svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg></span>
-                                        </dt>
+{% block main %}
+   <div class="row">
+        <div class="col-sm-9">
+            <!-- ▼news_area▼ -->
+            <div id="news_area">
+                <h2 class="heading01">新着情報</h2>
+                <div class="news_contents accordion">
+                    <div class="newslist">
 
-                                        <dd>{{ News.comment }}</dd>
-                                    </dl>
-                                    {% endfor %}
+                        {% for News in NewsList %}
+                        <dl>
+                            <dt>
+                                <span class="date">{{ News.date|date("Y.m.d") }}</span>
+                                <span class="news_title">
+                                    {% if News.url %}<a href="{{ News.url }}" {% if News.link_method == '2' %}target="_blank"{% endif %}>{% endif %}
+                                    {{ News.title }}
+                                    {% if News.url %}</a>{% endif %}
+                                </span>
+                                <span class="angle-circle"><svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg></span>
+                            </dt>
 
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ▲news_area▲ -->
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="txt_bnr">
-                            <strong>5,000以上の購入で<br><strong>配送料無料</strong></strong><br>一部地域は除く
-                        </div>
+                            <dd>{{ News.comment }}</dd>
+                        </dl>
+                        {% endfor %}
+
                     </div>
                 </div>
+            </div>
+            <!-- ▲news_area▲ -->
+        </div>
+    </div>
+{% endblock %}
