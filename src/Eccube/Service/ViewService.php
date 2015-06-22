@@ -41,7 +41,7 @@ class ViewService
 
         $event = new RenderEvent($compiledSource);
 
-        $route = str_replace('_', '.', $this->app['request']->attributes->get('_route'));
+        $route = $this->app['request']->attributes->get('_route');
         $this->app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
 
         $source = $event->getSource();
