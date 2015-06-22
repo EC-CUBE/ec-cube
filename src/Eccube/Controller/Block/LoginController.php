@@ -40,7 +40,7 @@ class LoginController
 
         $disableLogout = $this->isDisableLogoutPage($app);
 
-        return $app['view']->render('Block/login.twig', array(
+        return $app->render('Block/login.twig', array(
             'error' => $app['security.last_error']($request),
             'disableLogout' => $disableLogout,
             'email' => $email,
@@ -55,11 +55,7 @@ class LoginController
             ->findBy(array(
                 'name' => $uri,
             ));
-        $disableLogout = false;
-        if (count($disableLogout) > 0) {
-            $disableLogout = true;
-        }
 
-        return $disableLogout;
+        return (count($disableLogout) > 0);
     }
 }

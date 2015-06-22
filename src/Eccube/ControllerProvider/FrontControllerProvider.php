@@ -76,16 +76,12 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/forgot', '\Eccube\Controller\ForgotController::index')->bind('forgot');
         $c->match('/forgot/reset/{reset_key}', '\Eccube\Controller\ForgotController::reset')->bind('forgot_reset');
 
-        // frontparts
-        $c->match('/block/login_check', '\Eccube\Page\FrontParts\LoginCheck')->bind('block_login_check');
+        // block
         $c->match('/block/category', '\Eccube\Controller\Block\CategoryController::index')->bind('block_category');
         $c->match('/block/cart', '\Eccube\Controller\Block\CartController::index')->bind('block_cart');
         $c->match('/block/search_product', '\Eccube\Controller\Block\SearchProductController::index')->bind('block_search_product');
         $c->match('/block/news', '\Eccube\Controller\Block\NewsController::index')->bind('block_news');
         $c->match('/block/login', '\Eccube\Controller\Block\LoginController::index')->bind('block_login');
-        $c->match('/block/recommend', '\Eccube\Controller\Block\RecommendController::index')->bind('block_recommend');
-        $c->match('/block/calendar', '\Eccube\Controller\Block\CalendarController::index')->bind('block_calendar');
-        $c->match('/block/login_header', '\Eccube\Controller\Block\LoginHeaderController::index')->bind('block_login_header');
 
         // 特定商取引 order -> help/traderaw
         $c->match('/help/about', '\Eccube\Controller\HelpController::about')->bind('help_about');
