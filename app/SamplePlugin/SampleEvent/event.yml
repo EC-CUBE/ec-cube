@@ -1,0 +1,11 @@
+eccube.event.app.before:
+    - [onCartIndexBefore, NORMAL]
+    - [onCartIndexBefore2, NORMAL]
+eccube.event.controller.cart.before:
+    - [onCartIndexBefore, LAST]
+eccube.event.controller.cart.after:
+    - [onCartIndexAfter, LAST]
+eccube.event.controller.cart.finish:
+    - [onCartIndexFinish, FIRST]
+eccube.event.render.cart.before:
+    - [onCartRenderBefore, FIRST]
