@@ -273,7 +273,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      * @param \Eccube\Entity\Master\Authority $authority
      * @return Member
      */
-    public function setAuthority(\Eccube\Entity\Master\Authority $Authority)
+    public function setAuthority(\Eccube\Entity\Master\Authority $Authority = null)
     {
         $this->Authority = $Authority;
 

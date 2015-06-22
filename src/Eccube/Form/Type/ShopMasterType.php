@@ -208,7 +208,7 @@ class ShopMasterType extends AbstractType
                 'label' => '送料無料条件(金額)',
                 'required' => false,
                 'currency' => 'JPY',
-                'precision' => '0',
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $config['price_len'],
@@ -306,7 +306,7 @@ class ShopMasterType extends AbstractType
             ->add('latitude', 'number', array(
                 'label' => '緯度',
                 'required' => false,
-                'precision' => 6,
+                'scale' => 6,
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => '/^-?([0-8]?[0-9]\.?[0-9]{0,6}|90\.?0{0,6})$/',
@@ -316,7 +316,7 @@ class ShopMasterType extends AbstractType
             ->add('longitude', 'number', array(
                 'label' => '経度',
                 'required' => false,
-                'precision' => 6,
+                'scale' => 6,
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => '/^-?((1?[0-7]?|[0-9]?)[0-9]\.?[0-9]{0,6}|180\.?0{0,6})$/',

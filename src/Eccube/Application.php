@@ -116,13 +116,16 @@ class Application extends \Silex\Application
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
+        $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
+            //'twig.options' => array('debug' => true), // if add {{ dump() }
         ));
         $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
+            //$twig->addExtension(new \Twig_Extension_Debug()); // debug
 
             return $twig;
         }));
@@ -623,7 +626,7 @@ class Application extends \Silex\Application
             if (null === $response) {
                 $response = new Response();
             }
-            $response->setContent($this['view']->render($view, $parameters));
+            $response->setContent($twig->render($view, $parameters));
         }
 
         return $response;
@@ -639,7 +642,7 @@ class Application extends \Silex\Application
      */
     public function renderView($view, array $parameters = array())
     {
-        return $this['view']->render($view, $parameters);
+        return $this['twig']->render($view, $parameters);
     }
 
     /** UrlGeneratorTrait */
