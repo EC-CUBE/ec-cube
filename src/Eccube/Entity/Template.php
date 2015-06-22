@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
@@ -21,8 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Template
@@ -30,12 +31,30 @@ namespace Eccube\Entity;
 class Template extends \Eccube\Entity\AbstractEntity
 {
     /**
+     *  初期テンプレートコード
+     */
+    const DEFAULT_TEMPLATE_CODE = 'default';
+
+    /**
+     * @return bool
+     */
+    public function isDefaultTemplate()
+    {
+        return (self::DEFAULT_TEMPLATE_CODE === $this->getCode());
+    }
+
+    /**
      * @return string
      */
     public function __toString()
     {
-        return $this->getTemplateName();
+        return $this->getName();
     }
+
+    /**
+     * @var integer
+     */
+    private $id;
 
     /**
      * @var string
@@ -43,14 +62,9 @@ class Template extends \Eccube\Entity\AbstractEntity
     private $code;
 
     /**
-     * @var integer
-     */
-    private $device_type_id;
-
-    /**
      * @var string
      */
-    private $template_name;
+    private $name;
 
     /**
      * @var \DateTime
@@ -63,6 +77,35 @@ class Template extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
+     * @var \Eccube\Entity\Master\DeviceType
+     */
+    private $DeviceType;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Template
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
      * Get code
      *
      * @return string
@@ -73,55 +116,32 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set device_type_id
+     * Set name
      *
-     * @param  integer  $deviceTypeId
+     * @param string $name
      * @return Template
      */
-    public function setDeviceTypeId($deviceTypeId)
+    public function setName($name)
     {
-        $this->device_type_id = $deviceTypeId;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get device_type_id
-     *
-     * @return integer
-     */
-    public function getDeviceTypeId()
-    {
-        return $this->device_type_id;
-    }
-
-    /**
-     * Set template_name
-     *
-     * @param  string   $templateName
-     * @return Template
-     */
-    public function setTemplateName($templateName)
-    {
-        $this->template_name = $templateName;
-
-        return $this;
-    }
-
-    /**
-     * Get template_name
+     * Get name
      *
      * @return string
      */
-    public function getTemplateName()
+    public function getName()
     {
-        return $this->template_name;
+        return $this->name;
     }
 
     /**
      * Set create_date
      *
-     * @param  \DateTime $createDate
+     * @param \DateTime $createDate
      * @return Template
      */
     public function setCreateDate($createDate)
@@ -144,7 +164,7 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param  \DateTime $updateDate
+     * @param \DateTime $updateDate
      * @return Template
      */
     public function setUpdateDate($updateDate)
@@ -165,15 +185,25 @@ class Template extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set code
+     * Set DeviceType
      *
-     * @param  string   $code
+     * @param \Eccube\Entity\Master\DeviceType $deviceType
      * @return Template
      */
-    public function setCode($code)
+    public function setDeviceType(\Eccube\Entity\Master\DeviceType $deviceType = null)
     {
-        $this->code = $code;
+        $this->DeviceType = $deviceType;
 
         return $this;
+    }
+
+    /**
+     * Get DeviceType
+     *
+     * @return \Eccube\Entity\Master\DeviceType
+     */
+    public function getDeviceType()
+    {
+        return $this->DeviceType;
     }
 }

@@ -514,6 +514,8 @@ CREATE TABLE dtb_customer (
     point numeric NOT NULL DEFAULT 0,
     note text,
     status smallint NOT NULL DEFAULT 1,
+    reset_key text DEFAULT NULL,
+    reset_expire timestamp DEFAULT NULL,
     create_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date timestamp NOT NULL,
     del_flg smallint NOT NULL DEFAULT 0,

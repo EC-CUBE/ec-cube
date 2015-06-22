@@ -1343,7 +1343,7 @@ INSERT INTO dtb_mailtemplate (template_id, subject, header, footer, creator_id, 
 
 INSERT INTO dtb_module (module_id, module_code, module_name, sub_data, auto_update_flg, del_flg, create_date, update_date) VALUES (0, '0', 'patch', NULL, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (1, 'アイスクリーム', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
 INSERT INTO dtb_product (product_id, name, maker_id, status, note, del_flg, creator_id, create_date, update_date, deliv_date_id) VALUES (2, 'おなべ', NULL, 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);
@@ -1389,6 +1389,6 @@ INSERT INTO dtb_recommend_product (product_id, recommend_product_id, rank, comme
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (1, 0, 1, 2, NULL, 'たまには鍋でもどうでしょう。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 INSERT INTO dtb_best_products (best_id, category_id, rank, product_id, title, comment, creator_id, create_date, update_date, del_flg) VALUES (2, 0, 2, 1, NULL, 'お口直しに。', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-INSERT INTO dtb_templates (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

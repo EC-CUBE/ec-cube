@@ -86,6 +86,15 @@ admin.customer.save.complete: 会員情報を保存しました。
 admin.customer.delete.complete: 会員情報を削除しました。
 admin.customer.resend.complete: 仮会員登録メールを送信しました。
 
+admin.news.up.complete: 新着情報を上へ移動しました。
+admin.news.up.error: 新着情報を上へ移動できませんでした。
+admin.news.down.complete: 新着情報を下へ移動しました。
+admin.news.down.error: 新着情報を下へ移動できませんでした。
+admin.news.save.complete: 新着情報を保存しました。
+admin.news.save.error: 新着情報を保存できませんでした。
+admin.news.delete.complete: 新着情報を削除しました。
+admin.news.delete.error: 新着情報を削除できませんでした。
+
 admin.member.up.complete: メンバーを上へ移動しました。
 admin.member.up.error: メンバーを上へ移動できませんでした。
 admin.member.down.complete: メンバーを下へ移動しました。
@@ -103,3 +112,9 @@ admin.shop.longitude.invalid: -180.000000～180.000000の範囲で指定して�
 
 admin.shop.tax.save.complete: 税率設定情報を保存しました。
 admin.shop.tax.delete.complete: 税率設定情報を削除しました。
+
+admin.content.template.save.complete: テンプレート設定を保存しました。
+admin.content.template.add.complete: テンプレートファイルをアップロードしました。
+admin.content.template.delete.complete: テンプレートを削除しました。
+admin.content.template.delete.default.error: デフォルトテンプレートは削除できません。
+admin.content.template.delete.current.error: 現在設定中のテンプレートは削除できません。
