@@ -820,16 +820,16 @@ INSERT INTO mtb_country (id, name, rank) VALUES (422,'レバノン',247);
 INSERT INTO mtb_country (id, name, rank) VALUES (638,'レユニオン',248);
 INSERT INTO mtb_country (id, name, rank) VALUES (643,'ロシア|ロシア連邦',249);
 
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 1, 'カテゴリ', 'category', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/category.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 2, '利用ガイド', 'guide', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 3, 'カゴの中', 'cart', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/cart.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 4, '商品検索', 'search_products', 'search_products', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/search_products.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 5, '新着情報', 'news', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/news.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 6, 'ログイン', 'login', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 7, 'おすすめ商品', 'recommend', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/recommend.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 8, 'カレンダー', 'calendar', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/calendar.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 9, '【ヘッダー】ログイン', 'login_header', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'frontparts/bloc/login_header.php', 0);
-INSERT INTO dtb_block (device_type_id, block_id, block_name, tpl_path, file_name, create_date, update_date, php_path, deletable_flg) VALUES (10, 10, 'ロゴ', 'logo', 'logo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 1, 'カテゴリ', 'category', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 2, '利用ガイド', 'guide', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 3, 'カゴの中', 'cart', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 4, '商品検索', 'search_product', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 5, '新着情報', 'news', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 6, 'ログイン', 'login', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 7, 'おすすめ商品', 'recommend', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 8, 'カレンダー', 'calendar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 9, '【ヘッダー】ログイン', 'login_header', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 0);
+INSERT INTO dtb_block (device_type_id, block_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg) VALUES (10, 10, 'ロゴ', 'logo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 0);
 
 INSERT INTO dtb_page_layout (device_type_id, page_id, page_name, url, file_name, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 0, 'プレビューデータ', 'preview', NULL, 1, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
 INSERT INTO dtb_page_layout (device_type_id, page_id, page_name, url, file_name, edit_flg, author, description, keyword, update_url, create_date, update_date, meta_robots) VALUES (10, 1, 'TOPページ', 'homepage', 'index', 2, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
