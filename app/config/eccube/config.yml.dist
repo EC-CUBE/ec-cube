@@ -41,3 +41,5 @@ target_id_footer_bottom: 9
 target_id_header_internal: 10
 
 user_data_route: user_data
+
+customer_reset_expire: 10

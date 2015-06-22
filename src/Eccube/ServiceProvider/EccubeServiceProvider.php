@@ -292,6 +292,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShoppingShippingType($app);
             $types[] = new \Eccube\Form\Type\ShipmentItemType();
             $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
+            $types[] = new \Eccube\Form\Type\ForgotType();
 
             // admin
             $types[] = new \Eccube\Form\Type\Admin\LoginType($app['session']);
@@ -306,6 +307,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\CategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\MemberType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
 

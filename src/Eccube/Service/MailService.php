@@ -45,7 +45,7 @@ class MailService
     public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
 
-        $body = $this->app['view']->render('Mail/entry_confirm.twig', array(
+        $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
         ));
@@ -70,7 +70,7 @@ class MailService
     public function sendCustomerCompleteMail(\Eccube\Entity\Customer $Customer)
     {
 
-        $body = $this->app['view']->render('Mail/entry_complete.twig', array(
+        $body = $this->app->renderView('Mail/entry_complete.twig', array(
             'Customer' => $Customer,
         ));
 
@@ -91,11 +91,12 @@ class MailService
      *
      * @param $Customer 会員情報
      * @param $BaseInfo baseinfo
+     * @param $email 会員email
      */
-    public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, \Eccube\Entity\BaseInfo $BaseInfo)
+    public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, \Eccube\Entity\BaseInfo $BaseInfo, $email)
     {
 
-        $body = $this->app['view']->render('Mail/customer_withdraw_mail.twig', array(
+        $body = $this->app->renderView('Mail/customer_withdraw_mail.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $BaseInfo,
         ));
@@ -103,7 +104,7 @@ class MailService
         $message = \Swift_Message::newInstance()
             ->setSubject('[EC-CUBE3] 退会手続きのご完了')
             ->setFrom(array('sample@example.com'))
-            ->setTo(array($Customer->getEmail()))
+            ->setTo(array($email))
             ->setBcc($this->app['config']['mail_cc'])
             ->setBody($body);
 
@@ -150,7 +151,7 @@ class MailService
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
 
-        $body = $this->app['view']->render('Mail/order.twig', array(
+        $body = $this->app->renderView('Mail/order.twig', array(
             'Order' => $Order,
         ));
 
@@ -176,7 +177,7 @@ class MailService
     public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, \Eccube\Entity\BaseInfo $BaseInfo, $activateUrl)
     {
 
-        $body = $this->app['view']->render('Mail/entry_confirm.twig', array(
+        $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
         ));
@@ -204,7 +205,7 @@ class MailService
     public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
     {
 
-        $body = $this->app['view']->render('Mail/order.twig', array(
+        $body = $this->app->renderView('Mail/order.twig', array(
             'Order' => $Order,
         ));
 
@@ -220,6 +221,49 @@ class MailService
 
     }
 
+    /**
+     * Send password reset notification mail.
+     *
+     * @param $Customer 会員情報
+     */
+    public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
+    {
+        $body = $this->app['view']->render('Mail/forgot_mail.twig', array(
+            'Customer' => $Customer,
+            'reset_url' => $reset_url
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('[EC-CUBE3] パスワード変更の確認')
+            ->setFrom(array('sample@example.com'))
+            ->setTo(array($Customer->getEmail()))
+            ->setBcc($this->app['config']['mail_cc'])
+            ->setBody($body);
+
+        $this->app->mail($message);
+    }
+
+    /**
+     * Send password reset notification mail.
+     *
+     * @param $Customer 会員情報
+     */
+    public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
+    {
+        $body = $this->app['view']->render('Mail/reset_complete_mail.twig', array(
+                        'Customer' => $Customer,
+                        'password' => $password,
+        ));
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('[EC-CUBE3] パスワード変更のお知らせ')
+            ->setFrom(array('sample@example.com'))
+            ->setTo(array($Customer->getEmail()))
+            ->setBcc($this->app['config']['mail_cc'])
+            ->setBody($body);
+
+        $this->app->mail($message);
+    }
 
 
 }
