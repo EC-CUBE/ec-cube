@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% for OrderStatus in OrderStatuses %}
                                 <a href="#" class="item_box tr" onclick="$('#admin_search_order_status').val({{ OrderStatus.id }});document.form1.submit();">
                                     <div class="td">{{ OrderStatus.name }}</div>
-                                    <div class="item_number text-right td">{{ Orders[OrderStatus.id] }}</div>
+                                    <div class="item_number text-right td">{{ Orders is empty ? 0 : Orders[OrderStatus.id] }}</div>
                                     <div class="icon_link td">
                                         <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
                                     </div>
