@@ -34,7 +34,7 @@ class SearchProductController
             ->createNamedBuilder('', 'search_product')
             ->getForm();
 
-        return $app['view']->render('Block/search_products.twig', array(
+        return $app['view']->render('Block/search_product.twig', array(
             'form' => $form->createView(),
         ));
     }
