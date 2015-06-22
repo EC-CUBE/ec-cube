@@ -93,6 +93,8 @@ class MemberType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'empty_value' => 'form.empty_value',
+                'mapped' => false,
+                'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
