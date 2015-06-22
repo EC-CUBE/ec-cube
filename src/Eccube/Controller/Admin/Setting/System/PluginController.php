@@ -72,8 +72,6 @@ class PluginController extends AbstractController
             
         }
 
-
-
         return $app['twig']->render('Setting/System/Plugin/install.twig', array(
             'form' => $form->createView(),
             'plugins' => $repo->findAll() 
@@ -86,8 +84,15 @@ class PluginController extends AbstractController
     {
         $em = $app['orm.em'];
         $handlers = $em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers();
+
+        // 一次元配列からイベント毎の二次元配列に変換する 
+        $HanlersPerEvent=array();
+        foreach($handlers as $handler){
+            $HanlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
+        }
+
         return $app->render('Setting/System/Plugin/handler.twig', array(
-            'handlers' => $handlers
+            'handlersPerEvent' => $HanlersPerEvent 
         ));
 
     }
