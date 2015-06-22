@@ -1,7 +1,0 @@
-name: SampleForm
-code: SampleForm
-version: 0.1
-
-form:
-    onPreSetData:
-        SampleForm
