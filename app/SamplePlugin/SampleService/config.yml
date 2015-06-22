@@ -1,4 +1,6 @@
 name: SampleService
-enable: false
+code: SampleService
+version: 0.1
+
 service: 
     - SamplePluginServiceProvider

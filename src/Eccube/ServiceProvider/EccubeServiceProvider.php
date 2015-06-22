@@ -56,6 +56,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.tax_rule'] = $app->share(function () use ($app) {
             return new \Eccube\Service\TaxRuleService($app['eccube.repository.tax_rule']);
         });
+        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
+            return new \Eccube\Service\PluginService( $app );
+        });
         $app['eccube.service.mail'] = $app->share(function () use ($app) {
             return new \Eccube\Service\MailService($app);
         });
@@ -310,6 +313,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\PageLayoutType();
             $types[] = new \Eccube\Form\Type\Admin\NewsType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
+
+            $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
 
             return $types;
         }));

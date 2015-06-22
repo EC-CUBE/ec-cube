@@ -27,7 +27,7 @@ namespace Plugin\SampleEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Eccube\Event\RenderEvent;
 
-class SamplePlugin implements EventSubscriberInterface
+class SamplePlugin 
 {
     private $app;
 
@@ -35,24 +35,6 @@ class SamplePlugin implements EventSubscriberInterface
     {
         $this->app = $app;
     }
-    
-    public static function getSubscribedEvents() {
-        return array(
-            'eccube.event.controller.cart.before' => array(
-                array('onCartIndexBefore', 10),
-            ),
-            'eccube.event.controller.cart.after' => array(
-                array('onCartIndexAfter', 10),
-            ),
-            'eccube.event.controller.cart.finish' => array(
-                array('onCartIndexFinish', 10),
-            ),
-            'eccube.event.render.cart.before' => array(
-                array('onCartRenderBefore', 10),
-            ),
-        );
-    }
-
     public function onCartIndexBefore()
     {
         echo 'Called method:: onCartIndexBefore()<br />';

@@ -24,10 +24,12 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Plugin
  */
-class Plugin extends \Eccube\Entity\AbstractEntity
+class Plugin
 {
     /**
      * @var integer
@@ -50,41 +52,6 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     private $class_name;
 
     /**
-     * @var string
-     */
-    private $author;
-
-    /**
-     * @var string
-     */
-    private $author_site_url;
-
-    /**
-     * @var string
-     */
-    private $plugin_site_url;
-
-    /**
-     * @var string
-     */
-    private $plugin_version;
-
-    /**
-     * @var string
-     */
-    private $compliant_version;
-
-    /**
-     * @var string
-     */
-    private $plugin_description;
-
-    /**
-     * @var integer
-     */
-    private $priority;
-
-    /**
      * @var integer
      */
     private $enable;
@@ -92,22 +59,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $free_field1;
-
-    /**
-     * @var string
-     */
-    private $free_field2;
-
-    /**
-     * @var string
-     */
-    private $free_field3;
-
-    /**
-     * @var string
-     */
-    private $free_field4;
+    private $version;
 
     /**
      * @var \DateTime
@@ -115,14 +67,34 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     private $create_date;
 
     /**
-     * @var \DateTime
+     * @var integer
      */
+    private $del_flg;
+
+    /**
+     * @var integer
+     */
+    private $source;
+
+
     private $update_date;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $PluginEventHandlers;
+
+
+    public function __construct()
+    {
+        $this->PluginEventHandlers = new \Doctrine\Common\Collections\ArrayCollection();
+
+    }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -132,7 +104,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param  string $name
+     * @param string $name
      * @return Plugin
      */
     public function setName($name)
@@ -145,7 +117,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -155,7 +127,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set code
      *
-     * @param  string $code
+     * @param string $code
      * @return Plugin
      */
     public function setCode($code)
@@ -168,7 +140,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get code
      *
-     * @return string
+     * @return string 
      */
     public function getCode()
     {
@@ -178,7 +150,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set class_name
      *
-     * @param  string $className
+     * @param string $className
      * @return Plugin
      */
     public function setClassName($className)
@@ -191,7 +163,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_name
      *
-     * @return string
+     * @return string 
      */
     public function getClassName()
     {
@@ -199,170 +171,9 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set author
-     *
-     * @param  string $author
-     * @return Plugin
-     */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * Get author
-     *
-     * @return string
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * Set author_site_url
-     *
-     * @param  string $authorSiteUrl
-     * @return Plugin
-     */
-    public function setAuthorSiteUrl($authorSiteUrl)
-    {
-        $this->author_site_url = $authorSiteUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get author_site_url
-     *
-     * @return string
-     */
-    public function getAuthorSiteUrl()
-    {
-        return $this->author_site_url;
-    }
-
-    /**
-     * Set plugin_site_url
-     *
-     * @param  string $pluginSiteUrl
-     * @return Plugin
-     */
-    public function setPluginSiteUrl($pluginSiteUrl)
-    {
-        $this->plugin_site_url = $pluginSiteUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get plugin_site_url
-     *
-     * @return string
-     */
-    public function getPluginSiteUrl()
-    {
-        return $this->plugin_site_url;
-    }
-
-    /**
-     * Set plugin_version
-     *
-     * @param  string $pluginVersion
-     * @return Plugin
-     */
-    public function setPluginVersion($pluginVersion)
-    {
-        $this->plugin_version = $pluginVersion;
-
-        return $this;
-    }
-
-    /**
-     * Get plugin_version
-     *
-     * @return string
-     */
-    public function getPluginVersion()
-    {
-        return $this->plugin_version;
-    }
-
-    /**
-     * Set compliant_version
-     *
-     * @param  string $compliantVersion
-     * @return Plugin
-     */
-    public function setCompliantVersion($compliantVersion)
-    {
-        $this->compliant_version = $compliantVersion;
-
-        return $this;
-    }
-
-    /**
-     * Get compliant_version
-     *
-     * @return string
-     */
-    public function getCompliantVersion()
-    {
-        return $this->compliant_version;
-    }
-
-    /**
-     * Set plugin_description
-     *
-     * @param  string $pluginDescription
-     * @return Plugin
-     */
-    public function setPluginDescription($pluginDescription)
-    {
-        $this->plugin_description = $pluginDescription;
-
-        return $this;
-    }
-
-    /**
-     * Get plugin_description
-     *
-     * @return string
-     */
-    public function getPluginDescription()
-    {
-        return $this->plugin_description;
-    }
-
-    /**
-     * Set priority
-     *
-     * @param  integer $priority
-     * @return Plugin
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    /**
-     * Get priority
-     *
-     * @return integer
-     */
-    public function getPriority()
-    {
-        return $this->priority;
-    }
-
-    /**
      * Set enable
      *
-     * @param  integer $enable
+     * @param integer $enable
      * @return Plugin
      */
     public function setEnable($enable)
@@ -375,7 +186,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get enable
      *
-     * @return integer
+     * @return integer 
      */
     public function getEnable()
     {
@@ -383,101 +194,32 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set free_field1
+     * Set version
      *
-     * @param  string $freeField1
+     * @param string $version
      * @return Plugin
      */
-    public function setFreeField1($freeField1)
+    public function setVersion($version)
     {
-        $this->free_field1 = $freeField1;
+        $this->version = $version;
 
         return $this;
     }
 
     /**
-     * Get free_field1
+     * Get version
      *
-     * @return string
+     * @return string 
      */
-    public function getFreeField1()
+    public function getVersion()
     {
-        return $this->free_field1;
-    }
-
-    /**
-     * Set free_field2
-     *
-     * @param  string $freeField2
-     * @return Plugin
-     */
-    public function setFreeField2($freeField2)
-    {
-        $this->free_field2 = $freeField2;
-
-        return $this;
-    }
-
-    /**
-     * Get free_field2
-     *
-     * @return string
-     */
-    public function getFreeField2()
-    {
-        return $this->free_field2;
-    }
-
-    /**
-     * Set free_field3
-     *
-     * @param  string $freeField3
-     * @return Plugin
-     */
-    public function setFreeField3($freeField3)
-    {
-        $this->free_field3 = $freeField3;
-
-        return $this;
-    }
-
-    /**
-     * Get free_field3
-     *
-     * @return string
-     */
-    public function getFreeField3()
-    {
-        return $this->free_field3;
-    }
-
-    /**
-     * Set free_field4
-     *
-     * @param  string $freeField4
-     * @return Plugin
-     */
-    public function setFreeField4($freeField4)
-    {
-        $this->free_field4 = $freeField4;
-
-        return $this;
-    }
-
-    /**
-     * Get free_field4
-     *
-     * @return string
-     */
-    public function getFreeField4()
-    {
-        return $this->free_field4;
+        return $this->version;
     }
 
     /**
      * Set create_date
      *
-     * @param  \DateTime $createDate
+     * @param \DateTime $createDate
      * @return Plugin
      */
     public function setCreateDate($createDate)
@@ -490,7 +232,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateDate()
     {
@@ -500,7 +242,7 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param  \DateTime $updateDate
+     * @param \DateTime $updateDate
      * @return Plugin
      */
     public function setUpdateDate($updateDate)
@@ -513,10 +255,71 @@ class Plugin extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set del_flg
+     *
+     * @param integer $delFlg
+     * @return PluginEventHandler
+     */
+    public function setDelFlg($delFlg)
+    {
+        $this->del_flg = $delFlg;
+
+        return $this;
+    }
+
+    /**
+     * Get del_flg
+     *
+     * @return integer
+     */
+    public function getDelFlg()
+    {
+        return $this->del_flg;
+    }
+
+    /**
+     * Set source
+     *
+     * @param integer $delFlg
+     * @return PluginEventHandler
+     */
+    public function setSource($delFlg)
+    {
+        $this->source = $delFlg;
+
+        return $this;
+    }
+
+    /**
+     * Get source
+     *
+     * @return integer
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    public function getPluginEventHandlers()
+    {
+        return $this->PluginEventHandlers;
+    }
+    public function addPluginEventHandler(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
+    {
+        $this->PluginEventHandlers[] = $PluginEventHandler;
+        return $this;
+    }
+    public function removePluginEventHandler(\Eccube\Entity\PluginEventHandler $PluginEventHandler)
+    {
+        $this->PluginEventHandlers->removeElement($PluginEventHandler);
+        return $this;
     }
 }
