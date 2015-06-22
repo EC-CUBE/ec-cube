@@ -21,25 +21,42 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Common;
 
-class Constant {
+namespace Eccube\Form\Type;
 
-    /**
-     * EC-CUBE VERSION,
-     *
-     * @var
-     */
-    const VERSION = '3.0.0-dev';
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\Form\Extension\Core\Type;
+use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Validator\Constraints as Assert;
 
-    /**
-     * Enable value.
-     */
-    const ENABLED = 1;
+class ForgotType extends AbstractType
+{
+    public function __construct()
+    {
+    }
 
     /**
-     * Disable value.
+     * {@inheritdoc}
      */
-    const DISABLED = 0;
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('login_email', 'text', array(
+            'attr' => array(
+                'max_length' => 50,
+            ),
+            'constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Email(),
+            ),
+        ))
+        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'forgot';
+    }
 }

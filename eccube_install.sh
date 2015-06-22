@@ -71,6 +71,7 @@ export DBUSER=${DBUSER:-"cube3_dev_user"}
 export DBPASS=${DBPASS:-"password"}
 
 DBTYPE=$1;
+GET_COMPOSER=$2;
 
 case "${DBTYPE}" in
 "pgsql" )
@@ -154,6 +155,7 @@ dtb_plugin_hookpoint_plugin_hookpoint_id_seq
 dtb_api_config_api_config_id_seq
 dtb_api_account_api_account_id_seq
 dtb_tax_rule_tax_rule_id_seq
+dtb_template_template_id_seq
 "
     comb_sql="";
     for S in $SEQUENCES; do
@@ -231,11 +233,18 @@ render_config_template ${PATH_YML_DIST} > ${PATH_YML}
 # Install Composer
 # ---------------------------------
 
+case "${GET_COMPOSER}" in
+"none" )
+echo "not get composer..."
+;;
+* )
 echo "get composer..."
 curl -sS https://getcomposer.org/installer | php
 
 echo "install composer..."
 php ./composer.phar install --dev --no-interaction
+;;
+esac
 
 # ---------------------------------
 # Setup Database
