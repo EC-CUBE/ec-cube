@@ -24,10 +24,12 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * Mailtemplate
+ * MailTemplate
  */
-class Mailtemplate extends \Eccube\Entity\AbstractEntity
+class MailTemplate extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @return string
@@ -41,6 +43,16 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      * @var integer
      */
     private $id;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $file_name;
 
     /**
      * @var string
@@ -77,10 +89,11 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
+
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -88,10 +101,56 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set name
+     *
+     * @param string $name
+     * @return MailTemplate
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set file_name
+     *
+     * @param string $fileName
+     * @return MailTemplate
+     */
+    public function setFileName($fileName)
+    {
+        $this->file_name = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * Get file_name
+     *
+     * @return string 
+     */
+    public function getFileName()
+    {
+        return $this->file_name;
+    }
+
+    /**
      * Set subject
      *
-     * @param  string       $subject
-     * @return Mailtemplate
+     * @param string $subject
+     * @return MailTemplate
      */
     public function setSubject($subject)
     {
@@ -103,7 +162,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get subject
      *
-     * @return string
+     * @return string 
      */
     public function getSubject()
     {
@@ -113,8 +172,8 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set header
      *
-     * @param  string       $header
-     * @return Mailtemplate
+     * @param string $header
+     * @return MailTemplate
      */
     public function setHeader($header)
     {
@@ -126,7 +185,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get header
      *
-     * @return string
+     * @return string 
      */
     public function getHeader()
     {
@@ -136,8 +195,8 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set footer
      *
-     * @param  string       $footer
-     * @return Mailtemplate
+     * @param string $footer
+     * @return MailTemplate
      */
     public function setFooter($footer)
     {
@@ -149,7 +208,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get footer
      *
-     * @return string
+     * @return string 
      */
     public function getFooter()
     {
@@ -159,8 +218,8 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set del_flg
      *
-     * @param  integer      $delFlg
-     * @return Mailtemplate
+     * @param integer $delFlg
+     * @return MailTemplate
      */
     public function setDelFlg($delFlg)
     {
@@ -172,7 +231,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer
+     * @return integer 
      */
     public function getDelFlg()
     {
@@ -182,8 +241,8 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param  \DateTime    $createDate
-     * @return Mailtemplate
+     * @param \DateTime $createDate
+     * @return MailTemplate
      */
     public function setCreateDate($createDate)
     {
@@ -195,7 +254,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreateDate()
     {
@@ -205,8 +264,8 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param  \DateTime    $updateDate
-     * @return Mailtemplate
+     * @param \DateTime $updateDate
+     * @return MailTemplate
      */
     public function setUpdateDate($updateDate)
     {
@@ -218,7 +277,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getUpdateDate()
     {
@@ -228,8 +287,8 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Set Creator
      *
-     * @param  \Eccube\Entity\Member $creator
-     * @return Mailtemplate
+     * @param \Eccube\Entity\Member $creator
+     * @return MailTemplate
      */
     public function setCreator(\Eccube\Entity\Member $creator)
     {
@@ -241,7 +300,7 @@ class Mailtemplate extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member
+     * @return \Eccube\Entity\Member 
      */
     public function getCreator()
     {

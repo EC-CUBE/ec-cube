@@ -45,8 +45,8 @@ class MailTemplateType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Mailtemplate',
-            'property' => 'subject',
+            'class' => 'Eccube\Entity\MailTemplate',
+            'property' => 'name',
             'label' => false,
             'multiple'=> false,
             'expanded' => false,

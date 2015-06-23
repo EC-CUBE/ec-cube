@@ -1,7 +1,7 @@
-Eccube\Entity\Mailtemplate:
+Eccube\Entity\MailTemplate:
     type: entity
-    table: dtb_mailtemplate
-    repositoryClass: Eccube\Repository\MailtemplateRepository
+    table: dtb_mail_template
+    repositoryClass: Eccube\Repository\MailTemplateRepository
     id:
         id:
             type: integer
@@ -12,6 +12,12 @@ Eccube\Entity\Mailtemplate:
             generator:
                 strategy: AUTO
     fields:
+        name:
+            type: text
+            nullable: true
+        file_name:
+            type: text
+            nullable: true
         subject:
             type: text
             nullable: true
