@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% set menus = ['Order', 'index'] %}
+{% set menus = ['order', 'index'] %}
 
 {% block title %}受注管理{% endblock %}
 {% block sub_title %}メール通知{% endblock %}
@@ -35,11 +35,33 @@ $(function() {
         $('#mode').val('change');
         $('#order-mail-form').submit();
     });
+
+
+    $('#mailModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var recipient = button.data('whatever');
+        var modal = $('#mailModal');
+
+        $.ajax({
+            url: "{{ url('admin_order_mail_view') }}",
+            cache: false,
+            data: {
+                'id' : recipient
+            },
+        }).done(function(data, textStatus, jqXHR){
+            modal.find('.modal-body').html(data);
+        }).fail(function(data, textStatus, errorThrown){
+            modal.find('.modal-body').text('取得に失敗しました。');
+        });
+    });
+
 });
 </script>
 {% endblock javascript %}
 
 {% block main %}
+
+{% if MailHistories %}
 <div class="row">
     <div class="col-md-9">
         <div class="box">
@@ -58,13 +80,13 @@ $(function() {
                                 </tr>
                             </thead>
                             <tbody>
-                        {% for MailHistory in MailHistories %}
+                            {% for MailHistory in MailHistories %}
                                 <tr>
                                     <td>{{ MailHistory.send_date|date_format }}</td>
-                                    <td>{{ MailHistory.template }}</td>
-                                    <td>{{ MailHistory.subject }}</td>
+                                    <td>{{ MailHistory.mail_template.subject }}</td>
+                                    <td><a href="#mailModal" data-toggle="modal" data-whatever="{{ MailHistory.id }}">{{ MailHistory.subject }}</a></td>
                                 </tr>
-                        {% endfor %}
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -73,6 +95,7 @@ $(function() {
         </div><!-- /.box --> 
     </div><!-- /.col --> 
 </div>
+{% endif %}
 <div class="row">
     <div class="col-md-9">
         <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
@@ -125,3 +148,19 @@ $(function() {
 </div>
 
 {% endblock %}
+
+{% block modal %}
+<!-- Modal -->
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modal %}

@@ -39,7 +39,6 @@ class MailType extends AbstractType
             ->add('template', 'mail_template', array(
                 'label' => 'テンプレート',
                 'required' => true,
-                'mapped' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

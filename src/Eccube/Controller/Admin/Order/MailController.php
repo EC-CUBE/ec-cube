@@ -132,18 +132,23 @@ class MailController
 
 
 
-    public function view(Application $app, $sendId)
+    public function view(Application $app, Request $request)
     {
-        $MailHistory = $app['eccube.repository.mail_history']->find($sendId);
 
-        if (is_null($MailHistory)) {
-            throw new HttpException('history not found.');
+        if ($request->isXmlHttpRequest()) {
+            $id = $request->get('id');
+            $MailHistory = $app['eccube.repository.mail_history']->find($id);
+
+            if (is_null($MailHistory)) {
+                throw new NotFoundHttpException('history not found.');
+            }
+
+            return $app->renderView('Order/mail_view.twig', array(
+                'subject' => $MailHistory->getSubject(),
+                'body' => $MailHistory->getMailBody()
+            ));
         }
 
-        return $app['view']->render('Order/mail_view.twig', array(
-            'subject' => $MailHistory->getSubject(),
-            'body' => $MailHistory->getMailBody()
-        ));
     }
 
     private function createBody($app, $header, $footer, $Order)
