@@ -1,7 +1,0 @@
-driver: pdo_pgsql
-host: localhost
-dbname: sample_dbname
-port: null
-user: sample_user
-password: sample_password
-charset: utf8

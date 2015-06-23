@@ -119,9 +119,9 @@ class Step3Type extends AbstractType
             ->add('mail_backend', 'choice', array(
                 'label' => 'メーラーバックエンド',
                 'choices' => array(
-                    '1' => 'mail（PHPの組み込み関数 mail() を使用してメールを送信）',
-                    '2' => 'SMTP（SMTPサーバに直接接続してメールを送信）',
-                    '3' => 'sendmail（sendmailプログラムによりメールを送信）',
+                    'mail' => 'mail（PHPの組み込み関数 mail() を使用してメールを送信）',
+                    'smtp' => 'SMTP（SMTPサーバに直接接続してメールを送信）',
+                    'sendmail' => 'sendmail（sendmailプログラムによりメールを送信）',
                 ),
                 'expanded' => true,
                 'multiple' => false,
@@ -141,7 +141,7 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
-            ->add('smtp_password', 'password', array(
+            ->add('smtp_password', 'text', array(
                 'label' => 'SMTPパスワード',
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,

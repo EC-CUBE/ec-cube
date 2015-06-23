@@ -70,6 +70,12 @@ export DBNAME=${DBNAME:-"cube3_dev"}
 export DBUSER=${DBUSER:-"cube3_dev_user"}
 export DBPASS=${DBPASS:-"password"}
 
+export MAIL_BACKEND=${MAILER_BACKEND:-"smtp"}
+export MAIL_HOST=${MAIL_HOST:-"localhost"}
+export MAIL_PORT=${MAIL_PORT:-"25"}
+export MAIL_USER=${MAIL_USER:-""}
+export MAIL_PASS=${MAIL_PASS:-""}
+
 DBTYPE=$1;
 GET_COMPOSER=$2;
 

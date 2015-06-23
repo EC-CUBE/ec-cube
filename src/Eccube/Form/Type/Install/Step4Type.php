@@ -66,7 +66,7 @@ class Step4Type extends AbstractType
             ->add('database_user', 'text', array(
                 'label' => 'DBユーザ名',
             ))
-            ->add('database_password', 'password', array(
+            ->add('database_password', 'text', array(
                 'label' => 'パスワード',
             ))
         ;
