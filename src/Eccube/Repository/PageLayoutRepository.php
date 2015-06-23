@@ -46,7 +46,25 @@ class PageLayoutRepository extends EntityRepository
         $this->app = $app;
     }
 
-    public function get($DeviceType, $pageId)
+    public function findUnusedBlocks(DeviceType $DeviceType, $pageId)
+    {
+        $em = $this
+            ->getEntityManager();
+        $blockRepo = $em->getRepository('Eccube\Entity\Block');
+        $ownBlockPositions = $this->get($DeviceType, $pageId)->getBlockPositions();
+        $ids = array();
+        foreach ($ownBlockPositions as $ownBlockPosition) {
+            $ids[] = $ownBlockPosition->getBlock()->getId();
+        }
+
+        return $blockRepo->createQueryBuilder('b')
+            ->where('b.id not in (:ids)')
+            ->setParameter(':ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function get(DeviceType $DeviceType, $pageId)
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
@@ -93,7 +111,7 @@ class PageLayoutRepository extends EntityRepository
 
     }
 
-    public function getByUrl($DeviceType, $url)
+    public function getByUrl(DeviceType $DeviceType, $url)
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
