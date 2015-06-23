@@ -39,16 +39,15 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 
 class InstallController
 {
-
     private $data;
 
     private $PDO;
 
-    private $progress;
-
     private $error;
 
     const SESSION_KEY = 'eccube.session.install';
+
+    const CONFIG_PATH = '/../../../../app/config/eccube';
 
     private function isValid(Request $request, Form $form)
     {
@@ -67,12 +66,27 @@ class InstallController
         return false;
     }
 
+    private function getSessionData(Request $request)
+    {
+        return $request->getSession()->get(self::SESSION_KEY);
+    }
+
+    // 最初からやり直す場合、SESSION情報をクリア
+    public function index(InstallApllication $app, Request $request)
+    {
+        $request->getSession()->remove(self::SESSION_KEY);
+
+        return $app->redirect($app->url('install_step1'));
+    }
+
     // ようこそ
     public function step1(InstallApplication $app, Request $request)
     {
         $form = $app['form.factory']
             ->createBuilder('install_step1')
             ->getForm();
+        $sessionData = $this->getSessionData($request);
+        $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
             return $app->redirect($app->url('install_step2'));
@@ -99,9 +113,12 @@ class InstallController
         $form = $app['form.factory']
             ->createBuilder('install_step3')
             ->getForm();
+        $sessionData = $this->getSessionData($request);
+        $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
             $this->createConfigYamlFile($form->getData());
+            $this->createMailYamlFile($form->getData());
             return $app->redirect($app->url('install_step4'));
         }
 
@@ -116,6 +133,8 @@ class InstallController
         $form = $app['form.factory']
             ->createBuilder('install_step4')
             ->getForm();
+        $sessionData = $this->getSessionData($request);
+        $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
             $this->createDatabaseYamlFile($form->getData());
@@ -133,6 +152,8 @@ class InstallController
         $form = $app['form.factory']
             ->createBuilder('install_step5')
             ->getForm();
+        $sessionData = $this->getSessionData($request);
+        $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
             if (!$form['no_update']->getData()) {
@@ -141,7 +162,6 @@ class InstallController
                         ->setPDO()
                         ->createTable()
                         ->insert()
-                        // TODO: migrationどうするか
 //                        ->doMigrate()
                     ;
                 } catch (\MigrationException $e) {
@@ -162,9 +182,11 @@ class InstallController
         return $app['twig']->render('complete.twig');
     }
 
+
+
     public function admin(InstallApplication $app, Request $request)
     {
-        $config_file = __DIR__ . '/../../../../app/config/eccube/config.yml';
+        $config_file = __DIR__ . self::CONFIG_PATH . '/config.yml';
         $config = Yaml::parse($config_file);
 
         return $app->redirect($config['root'] . $config['admin_dir']);
@@ -260,6 +282,7 @@ class InstallController
         $migration = new Migration($config);
         // nullを渡すと最新バージョンまでマイグレートする
         $migration->migrate(null, false);
+
         return $this;
     }
 
@@ -338,7 +361,7 @@ class InstallController
     private function createDatabaseYamlFile($data)
     {
         $fs = new Filesystem();
-        $config_file = __DIR__ . '/../../../../app/config/eccube/database.yml';
+        $config_file = __DIR__ . self::CONFIG_PATH . '/database.yml';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -374,21 +397,13 @@ class InstallController
     private function createConfigYamlFile($data)
     {
         $fs = new Filesystem();
-        $config_file = __DIR__ . '/../../../../app/config/eccube/config.yml';
+        $config_file = __DIR__ . self::CONFIG_PATH . '/config.yml';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
 
         $root = preg_replace('|^https?://[a-zA-Z0-9_:~=&\?\.\-]+|', '', $data['http_url']);
         $content = array(
-            'mail' => array(
-                'host' => $data['smtp_host'],
-                'port' => $data['smtp_port'],
-                'username' => $data['smtp_username'],
-                'password' => $data['smtp_password'],
-                'encryption' => '',
-                'auth_mode' => '',
-            ),
             'auth_magic' => 'droucliuijeanamiundpnoufrouphudrastiokec',
             'admin_dir' => '/' . $data['admin_dir'],
             'password_hash_alogs' => 'sha256',
@@ -403,6 +418,30 @@ class InstallController
             'sample_address2' => '',
             'ECCUBE_VERSION' => '3.0.0-beta2',
             'customer_confirm_mail' => false,
+        );
+        file_put_contents($config_file, Yaml::dump($content));
+
+        return $this;
+    }
+
+    private function createMailYamlFile($data)
+    {
+        $fs = new Filesystem();
+        $config_file = __DIR__ . self::CONFIG_PATH .'/mail.yml';
+        if ($fs->exists($config_file)) {
+            $fs->remove($config_file);
+        }
+
+        $root = preg_replace('|^https?://[a-zA-Z0-9_:~=&\?\.\-]+|', '', $data['http_url']);
+        $content = array(
+            'mail' => array(
+                'host' => $data['smtp_host'],
+                'port' => $data['smtp_port'],
+                'username' => $data['smtp_username'],
+                'password' => $data['smtp_password'],
+                'encryption' => '',
+                'auth_mode' => '',
+            ),
         );
         file_put_contents($config_file, Yaml::dump($content));
 

@@ -1,0 +1,61 @@
+Eccube\Entity\Block:
+    type: entity
+    table: dtb_block
+    repositoryClass: Eccube\Repository\BlockRepository
+    uniqueConstraints:
+        device_type_id:
+            columns:
+                - device_type_id
+                - file_name
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: block_id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            column: block_name
+            nullable: true
+        file_name:
+            type: string
+            length: 200
+            nullable: false
+        create_date:
+            type: datetime
+            nullable: false
+#            options:
+#                default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+#            options:
+#                default: '0000-00-00 00:00:00'
+        logic_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            options:
+                default: '1'
+        deletable_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            options:
+                default: '1'
+    oneToMany:
+        BlockPositions:
+            targetEntity: Eccube\Entity\BlockPosition
+            cascade: ["persist", "remove"]
+            mappedBy: Block
+    manyToOne:
+        DeviceType:
+            targetEntity: Eccube\Entity\Master\DeviceType
+            joinColumn:
+                name: device_type_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }

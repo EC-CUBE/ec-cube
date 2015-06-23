@@ -29,42 +29,41 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LayoutController
 {
+    private $isPreview = false;
+
     public function index(Application $app, Request $request, $id = 1)
     {
-        $device_type_id = $app['config']['device_type_pc'];
-
-        // 一覧表示用
-        $PageLayouts = $app['eccube.repository.page_layout']
-            ->findBy(array(
-                'device_type_id' => $device_type_id,
-            ));
-
-        $Targets = $app['eccube.repository.master.target']->getAll();
+        $DeviceType = $app['eccube.repository.master.device_type']
+            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
 
         // 編集対象ページ
         /* @var $TargetPageLayout \Eccube\Entity\PageLayout */
-        $TargetPageLayout = $app['eccube.repository.page_layout']->get($device_type_id, $id);
+        $TargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $id);
+        $Blocks = $app['orm.em']->getRepository('Eccube\Entity\Block')
+            ->findBy(array(
+                'DeviceType' => $DeviceType,
+            ));
+        $BlockPositions = $TargetPageLayout->getBlockPositions();
+
+
+        $listForm = $app['form.factory']
+            ->createBuilder('admin_page_layout')
+            ->getForm();
+        $listForm->get('layout')->setData($TargetPageLayout);
 
         // 未使用ブロックの取得
-        $Blocs = $app['orm.em']->getRepository('Eccube\Entity\Bloc')
-            ->findBy(array(
-                'device_type_id' => $device_type_id,
-            ));
-        $BlocPositions = $TargetPageLayout->getBlocPositions();
-        foreach ($Blocs as $Bloc) {
-            if (!$BlocPositions->containsKey($Bloc->getBlocId())) {
-                $UnuseBlocPosition = new \Eccube\Entity\BlocPosition();
-                $UnuseBlocPosition
-                    ->setDeviceTypeId($device_type_id)
-                    ->setPageId($id)
-                    ->setTargetId($app['config']['target_id_unused'])
-                    ->setAnywhere(0)
-                    ->setBlocRow(0)
-                    ->setBlocId($Bloc->getBlocId())
-                    ->setBloc($Bloc)
-                    ->setPageLayout($TargetPageLayout);
-                $TargetPageLayout->addBlocPosition($UnuseBlocPosition);
-            }
+        $unusedBlocks = $app['eccube.repository.page_layout']->findUnusedBlocks($DeviceType, $id);
+        foreach ($unusedBlocks as $unusedBlock) {
+            $UnusedBlockPosition = new \Eccube\Entity\BlockPosition();
+            $UnusedBlockPosition
+                ->setPageId($id)
+                ->setTargetId(\Eccube\Entity\PageLayout::TARGET_ID_UNUSED)
+                ->setAnywhere(0)
+                ->setBlockRow(0)
+                ->setBlockId($unusedBlock->getId())
+                ->setBlock($unusedBlock)
+                ->setPageLayout($TargetPageLayout);
+            $TargetPageLayout->addBlockPosition($UnusedBlockPosition);
         }
 
         $form = $app['form.factory']
@@ -76,89 +75,85 @@ class LayoutController
 
             if ($form->isValid()) {
                 // 消す
-                $blocCount = count($BlocPositions);
-
-                foreach ($BlocPositions as $BlocPosition) {
-                    if ($BlocPosition->getPageId() == $id || $BlocPosition->getAnywhere() == 0) {
-                        $TargetPageLayout->removeBlocPosition($BlocPosition);
-                        $app['orm.em']->remove($BlocPosition);
+                foreach ($BlockPositions as $BlockPosition) {
+                    if ($BlockPosition->getPageId() == $id || $BlockPosition->getAnywhere() == 0) {
+                        $TargetPageLayout->removeBlockPosition($BlockPosition);
+                        $app['orm.em']->remove($BlockPosition);
                     }
                 }
                 $app['orm.em']->flush();
 
-                $TargetHash = $this->getTragetHash($Targets);
-
                 // TODO: collection を利用
+
                 $data = $request->request->all();
-                for ($i = 1; $i <= $blocCount; $i++) {
-                    // bloc_id が取得できない場合は INSERT しない
+                for ($i = 0; $i < count($Blocks); $i++) {
+                    // block_id が取得できない場合は INSERT しない
                     if (!isset($data['id_' . $i])) {
                         continue;
                     }
                     // 未使用は INSERT しない
-                    if ($TargetHash[$data['target_id_' . $i]] === $app['config']['target_id_unused']) {
+                    if ($data['target_id_' . $i] == \Eccube\Entity\PageLayout::TARGET_ID_UNUSED) {
                         continue;
                     }
                     // 他のページに anywhere が存在する場合は INSERT しない
                     $anywhere = (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) ? 1 : 0;
                     if (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) {
-                        $Other = $app['orm.em']->getRepository('Eccube\Entity\BlocPosition')
+                        $Other = $app['orm.em']->getRepository('Eccube\Entity\BlockPosition')
                             ->findBy(array(
                                 'anywhere' => 1,
-                                'bloc_id' => $data['id_' . $i],
-                                'device_type_id' => $device_type_id,
+                                'block_id' => $data['id_' . $i],
                             ));
                         if (count($Other) > 0) {
                             continue;
                         }
                     }
 
-                    $BlocPosition = new \Eccube\Entity\BlocPosition();
-                    $Bloc = $app['orm.em']->getRepository('Eccube\Entity\Bloc')
+                    $BlockPosition = new \Eccube\Entity\BlockPosition();
+                    $Block = $app['orm.em']->getRepository('Eccube\Entity\Block')
                         ->findOneBy(array(
-                            'bloc_id' => $data['id_' . $i],
-                            'device_type_id' => $device_type_id,
+                            'id' => $data['id_' . $i],
+                            'DeviceType' => $DeviceType,
                         ));
-                    $BlocPosition
-                        ->setDeviceTypeId($device_type_id)
+                    $BlockPosition
                         ->setPageId($id)
-                        ->setBlocId($data['id_' . $i])
-                        ->setBlocRow($data['top_' . $i])
-                        ->setTargetId($TargetHash[$data['target_id_' . $i]])
-                        ->setBloc($Bloc)
+                        ->setBlockId($data['id_' . $i])
+                        ->setBlockRow($data['top_' . $i])
+                        ->setTargetId($data['target_id_' . $i])
+                        ->setBlock($Block)
                         ->setPageLayout($TargetPageLayout)
                         ->setAnywhere($anywhere);
                     if ($id == 0) {
-                        $BlocPosition->setAnywhere(0);
+                        $BlockPosition->setAnywhere(0);
                     }
-                    $TargetPageLayout->addBlocPosition($BlocPosition);
+                    $TargetPageLayout->addBlockPosition($BlockPosition);
+                    $app['orm.em']->persist($BlockPosition);
                 }
 
                 $app['orm.em']->persist($TargetPageLayout);
                 $app['orm.em']->flush();
 
-                $app['session']->getFlashBag()->add('admin.success', 'admin.register.complete');
+                if ($this->isPreview) {
+                    $app->addSuccess('admin.preview.register.complete', 'admin');
+                } else {
+                    $app->addSuccess('admin.register.complete', 'admin');
+                }
 
-                return $app->redirect($app['url_generator']->generate('admin_content_layout_edit', array('id' => $id)));
+                return $app->redirect($app->url('admin_content_layout_edit', array('id' => $id)));
             }
 
         }
 
-        return $app['view']->render('Content/layout.twig', array(
+        return $app->render('Content/layout.twig', array(
             'form' => $form->createView(),
+            'list_form' => $listForm->createView(),
             'TargetPageLayout' => $TargetPageLayout,
-            'Targets' => $Targets,
-            'PageLayouts' => $PageLayouts,
         ));
     }
 
-    public function getTragetHash($Targets)
+    public function preview(Application $app, Request $request, $id)
     {
-        $TargetHash = array();
-        foreach ($Targets as $key => $Target) {
-            $TargetHash[$Target->getName()] = $key;
-        }
-
-        return $TargetHash;
+        $this->isPreview = true;
+        return $this->index($app, $request, 0);
     }
+
 }

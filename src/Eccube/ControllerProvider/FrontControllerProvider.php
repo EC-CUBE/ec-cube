@@ -33,10 +33,13 @@ class FrontControllerProvider implements ControllerProviderInterface
     {
         $c = $app['controllers_factory'];
 
+        // user定義
+        $c->match('/' . $app['config']['user_data_route'] . '/{route}', '\Eccube\Controller\UserDataController::index')->bind('user_data');
+
         // root
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('homepage');
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('top');
-        $c->match('/', "\Eccube\Controller\TopController::index")->bind('index');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('homepage');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('top');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('index');
         $c->match('/input_zip', '\Eccube\Page\InputZip')->bind('input_zip');
         $c->match('/sitemap', '\Eccube\Page\Sitemap')->bind('sitemap');
         $c->match('/error', '\Eccube\Page\Error\SystemError')->bind('error');
@@ -67,21 +70,18 @@ class FrontControllerProvider implements ControllerProviderInterface
         // entry
         $c->match('/entry', '\Eccube\Controller\EntryController::index')->bind('entry');
         $c->match('/entry/complete', '\Eccube\Controller\EntryController::complete')->bind('entry_complete');
-        $c->match('/entry/activate', '\Eccube\Controller\EntryController::activate')->bind('entry_activate');
+        $c->match('/entry/activate/{secret_key}', '\Eccube\Controller\EntryController::activate')->bind('entry_activate');
 
         // forgot
-        $c->match('/forgot', '\Eccube\Page\Forgot\Index')->bind('forgot');
+        $c->match('/forgot', '\Eccube\Controller\ForgotController::index')->bind('forgot');
+        $c->match('/forgot/reset/{reset_key}', '\Eccube\Controller\ForgotController::reset')->bind('forgot_reset');
 
-        // frontparts
-        $c->match('/frontparts/login_check', '\Eccube\Page\FrontParts\LoginCheck')->bind('frontparts_login_check');
-        $c->match('/frontparts/block/category', '\Eccube\Controller\Block\CategoryController::index')->bind('block_category');
-        $c->match('/frontparts/block/cart', '\Eccube\Controller\Block\CartController::index')->bind('block_cart');
-        $c->match('/frontparts/block/search_product', '\Eccube\Controller\Block\SearchProductController::index')->bind('block_search_products');
-        $c->match('/frontparts/block/news', '\Eccube\Controller\Block\NewsController::index')->bind('block_news');
-        $c->match('/frontparts/block/login', '\Eccube\Controller\Block\LoginController::index')->bind('block_login');
-        $c->match('/frontparts/block/recommend', '\Eccube\Controller\Block\RecommendController::index')->bind('block_recommend');
-        $c->match('/frontparts/block/calendar', '\Eccube\Controller\Block\CalendarController::index')->bind('block_calendar');
-        $c->match('/frontparts/block/login_header', '\Eccube\Controller\Block\LoginHeaderController::index')->bind('block_login_header');
+        // block
+        $c->match('/block/category', '\Eccube\Controller\Block\CategoryController::index')->bind('block_category');
+        $c->match('/block/cart', '\Eccube\Controller\Block\CartController::index')->bind('block_cart');
+        $c->match('/block/search_product', '\Eccube\Controller\Block\SearchProductController::index')->bind('block_search_product');
+        $c->match('/block/news', '\Eccube\Controller\Block\NewsController::index')->bind('block_news');
+        $c->match('/block/login', '\Eccube\Controller\Block\LoginController::index')->bind('block_login');
 
         // 特定商取引 order -> help/traderaw
         $c->match('/help/about', '\Eccube\Controller\HelpController::about')->bind('help_about');
@@ -106,11 +106,8 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/history/{id}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('id', '\d+');
         $c->match('/mypage/mail_view/{id}', '\Eccube\Controller\Mypage\MypageController::mailView')->bind('mypage_mail_view')->assert('id', '\d+');
         $c->match('/mypage/order', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
-        $c->match('/mypage/refusal', '\Eccube\Controller\Mypage\RefusalController::index')->bind('mypage_refusal');
-        $c->match('/mypage/refusal_complete', '\Eccube\Controller\Mypage\RefusalController::complete')->bind('mypage_refusal_complete');
-
-        // preview
-        $c->match('/preview', '\Eccube\Page\Preview\Index')->bind('preview');
+        $c->match('/mypage/withdraw', '\Eccube\Controller\Mypage\WithdrawController::index')->bind('mypage_withdraw');
+        $c->match('/mypage/withdraw_complete', '\Eccube\Controller\Mypage\WithdrawController::complete')->bind('mypage_withdraw_complete');
 
         // products
         $c->match('/products/list', '\Eccube\Controller\ProductController::index')->bind('product_list');
@@ -135,9 +132,12 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/payment', '\Eccube\Controller\ShoppingController::payment')->bind('shopping_payment');
         $c->match('/shopping/shipping', '\Eccube\Controller\ShoppingController::shipping')->bind('shopping_shipping');
         $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
+        $c->match('/shopping/shipping_edit', '\Eccube\Controller\ShoppingController::shippingEdit')->bind('shopping_shipping_edit');
         $c->match('/shopping/complete', '\Eccube\Controller\ShoppingController::complete')->bind('shopping_complete');
         $c->match('/shopping/login', '\Eccube\Controller\ShoppingController::login')->bind('shopping_login');
         $c->match('/shopping/nonmember', '\Eccube\Controller\ShoppingController::nonmember')->bind('shopping_nonmember');
+        $c->match('/shopping/customer', '\Eccube\Controller\ShoppingController::customer')->bind('shopping_customer');
+        $c->match('/shopping/shopping_error', '\Eccube\Controller\ShoppingController::shoppingError')->bind('shopping_error');
         $c->match('/shopping/test', '\Eccube\Controller\ShoppingController::test')->bind('shopping_test'); // todo テスト用
 
         // unsupported

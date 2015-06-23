@@ -35,18 +35,15 @@ class InstallControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // installer
-        $controllers->match('/install/', function() use ($app) {
-            return $app->redirect($app['url_generator']->generate('install_step1'));
-        })->bind('install');
+        $controllers->match('', "\\Eccube\\Controller\\Install\\InstallController::index")->bind('install_step1');
+        $controllers->match('/step1', "\\Eccube\\Controller\\Install\\InstallController::step1")->bind('install_step1');
+        $controllers->match('/step2', "\\Eccube\\Controller\\Install\\InstallController::step2")->bind('install_step2');
+        $controllers->match('/step3', "\\Eccube\\Controller\\Install\\InstallController::step3")->bind('install_step3');
+        $controllers->match('/step4', "\\Eccube\\Controller\\Install\\InstallController::step4")->bind('install_step4');
+        $controllers->match('/step5', "\\Eccube\\Controller\\Install\\InstallController::step5")->bind('install_step5');
 
-        $controllers->match('/install/step1', "\\Eccube\\Controller\\Install\\InstallController::step1")->bind('install_step1');
-        $controllers->match('/install/step2', "\\Eccube\\Controller\\Install\\InstallController::step2")->bind('install_step2');
-        $controllers->match('/install/step3', "\\Eccube\\Controller\\Install\\InstallController::step3")->bind('install_step3');
-        $controllers->match('/install/step4', "\\Eccube\\Controller\\Install\\InstallController::step4")->bind('install_step4');
-        $controllers->match('/install/step5', "\\Eccube\\Controller\\Install\\InstallController::step5")->bind('install_step5');
-
-        $controllers->match('/install/complete', "\\Eccube\\Controller\\Install\\InstallController::complete")->bind('install_complete');
-        $controllers->match('/install/admin', "\\Eccube\\Controller\\Install\\InstallController::admin")->bind('install_admin');
+        $controllers->match('/complete', "\\Eccube\\Controller\\Install\\InstallController::complete")->bind('install_complete');
+        $controllers->match('/admin', "\\Eccube\\Controller\\Install\\InstallController::admin")->bind('install_admin');
 
         return $controllers;
     }

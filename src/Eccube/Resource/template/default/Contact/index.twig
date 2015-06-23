@@ -19,40 +19,73 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
-{% form_theme form _self %}
-
-{% block _contact_email_widget %}
-    {%- set attr = attr|merge({'class': 'box380', 'style': 'ime-mode: active;'}) -%}
-    {{ block('email_widget') }}
-{% endblock %}
-
-{% block _contact_contents_widget %}
-    {%- set attr = attr|merge({'class': 'box380', 'style': 'ime-mode: active;', 'cols': "60", 'rows': "20"}) -%}
-    {{ block('textarea_widget') }}
-{% endblock %}
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+  $('#zip-search').click(function(event) {
+    event.preventDefault();
+    AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
+  });
+});
+</script>
+{% endblock javascript %}
 
 {% block main %}
-    <div id="undercolumn">
-        <h2 class="title">{{ title }}</h2>
 
-        <div id="undercolumn_contact">
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">お問い合わせ</h1>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+                                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+                            <form name="form1" id="form1" method="post" action="?">
+                                {{ form_widget(form._token) }}
+                                <div class="dl_table">
+                                    {{ form_row(form.name, {attr : {class : 'middle'}}) }}
+                                    {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
+                                    <dl>
+                                        <dt>住所</dt>
+                                        <dd>
+                                            <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                            <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                            {{ form_widget(form.address) }}
+                                            {{ form_errors(form.address) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    {{ form_row(form.tel, {attr : {class : 'short'}}) }}
+                                    <dl>
+                                        <dt>メールアドレス<span class="required">必須</span></dt>
+                                        <dd>
+                                            <div class="form-group">
+                                                {{ form_widget(form.email) }}
+                                                {{ form_errors(form.email) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    {{ form_row(form.contents) }}
+                                </div>
+                                <input type="hidden" name="mode" value="confirm">
+                                <div class="row no-padding">
+                                <div class="btn_group col-sm-offset-4 col-sm-4">
+                                    <p><button type="submit" class="btn btn-primary btn-block">確認ページへ</button></p>
+                                </div>
+                                </div>
+                            </form>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
 
-            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
-                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
-
-            <form name="form1" id="form1" method="post" action="?"{{ form_enctype(form) }}>
-                {{ form_widget(form) }}
-
-                <div class="btn_area">
-                    <ul>
-                        <li>
-                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_confirm.jpg" alt="確認ページへ" name="mode" value="confirm" />
-                        </li>
-                    </ul>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+
 {% endblock %}
+
+

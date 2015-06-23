@@ -66,14 +66,6 @@ class InstallApplication extends \Silex\Application
         ini_set('error_reporting', E_ALL | ~E_STRICT);
         parent::__construct($values);
 
-        // set env
-        if (!isset($app['env']) || empty($app['env'])) {
-            $app['env'] = 'prod';
-        }
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            $app['debug'] = true;
-        }
-
         // load config
         $this['config'] = $app->share(function () {
             $config = array();
@@ -93,15 +85,6 @@ class InstallApplication extends \Silex\Application
         $app->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('bootstrap_3_horizontal_layout.html.twig'),
         ));
-        $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
-            $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
-
-            return $twig;
-        }));
-       // EventDispatcher
-        $app['eccube.event.dispatcher'] = $app->share(function () {
-            return new EventDispatcher();
-        });
 
         $this->before(function (Request $request, \Silex\Application $app) {
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
@@ -127,7 +110,8 @@ class InstallApplication extends \Silex\Application
         }));
 
         $app->mount('', new ControllerProvider\InstallControllerProvider());
-        $app->register(new ServiceProvider\EccubeServiceProvider());
+        $app->register(new ServiceProvider\InstallServiceProvider());
+
         $app->error(function (\Exception $e, $code) use ($app) {
             if ($code === 404) {
                 return $app->redirect($app['url_generator']->generate('install'));
@@ -135,32 +119,10 @@ class InstallApplication extends \Silex\Application
                 return;
             }
 
-            return $app['view']->render('error.twig', array(
+            return $app['twig']->render('error.twig', array(
                 'error' => 'エラーが発生しました.',
             ));
         });
-
-        $app->error(function (\Exception $e, $code) use ($app) {
-            if ($app['debug']) {
-                return;
-            }
-
-            switch ($code) {
-                case 404:
-                    break;
-                default:
-                    break;
-            }
-
-            return $app['view']->render('error.twig', array(
-                'error' => 'エラーが発生しました.',
-            ));
-        });
-
-        if ($app['env'] === 'test') {
-            $app['session.test'] = true;
-            $app['exception_handler']->disable();
-        }
     }
 
     public function boot()
@@ -352,7 +314,7 @@ class InstallApplication extends \Silex\Application
      */
     public function renderView($view, array $parameters = array())
     {
-        return $this['view']->render($view, $parameters);
+        return $this['twig']->render($view, $parameters);
     }
 
     /** UrlGeneratorTrait */

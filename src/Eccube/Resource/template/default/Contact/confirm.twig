@@ -19,34 +19,56 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block main %}
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">お問い合わせ</h1>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+                                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+                            <form name="form1" id="form1" method="post" action="?">
+                                {{ form_widget(form._token) }}
+                                <div class="dl_table">
+                                    {{ form_row(form.name, {attr : {class : 'middle'}}) }}
+                                    {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
+                                    <dl>
+                                        <dt>住所</dt>
+                                        <dd>
+                                            <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                            <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                            {{ form_widget(form.address) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    {{ form_row(form.tel, {attr : {class : 'short'}}) }}
+                                    <dl>
+                                        <dt>メールアドレス</dt>
+                                        <dd>
+                                            <div class="form-group">
+                                                {{ form_widget(form.email) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    {{ form_row(form.contents) }}
+                                </div>
+                                <div class="row no-padding">
+                                <div class="btn_group col-sm-offset-4 col-sm-4">
+                                    <p><button type="submit" class="btn btn-primary btn-block" name="mode" value="complete">送信をする</button></p>
+                                    <p><button type="submit" class="btn btn-info btn-block" name="mode" value="back">戻る</button></p>
+                                </div>
+                                </div>
+                            </form>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
 
-    <div id="undercolumn">
-        <h2 class="title">{{ title }}</h2>
-
-        <div id="undercolumn_contact">
-
-            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
-                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
-            <form name="form1" id="form1" method="post" action="?" {{ form_enctype(form) }}>
-                {{ form_widget(form) }}
-
-                <div class="btn_area">
-                    <ul>
-                        <li>
-                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="mode" value="back" />
-                        </li>
-                        <li>
-                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_complete.jpg" alt="送信" name="mode" value="complete" id="send" />
-                        </li>
-                    </ul>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-
-
-
 {% endblock %}
+

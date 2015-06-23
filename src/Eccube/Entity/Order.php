@@ -1033,7 +1033,7 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function setOrderDate($orderDate)
     {
-        $this->commit_date = $orderDate;
+        $this->order_date = $orderDate;
 
         return $this;
     }
@@ -1045,7 +1045,7 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getOrderDate()
     {
-        return $this->commit_date;
+        return $this->order_date;
     }
 
     /**

@@ -93,8 +93,8 @@ class InstallType extends AbstractType
             ->add('db_pass', 'password', array(
                 'label' => 'データベース：パスワード',
             ))
-            ->add('install', 'submit');
-
+            ->add('install', 'submit')
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

@@ -22,7 +22,7 @@
  */
 #}
 
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}会員登録・編集{% endblock %}
@@ -78,21 +78,21 @@
                     </div>
                     {# 住所：都道府県 #}
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9 col-lg-offset-2 col-lg-10 form-inline">
+                        <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
                             {{ form_widget(form.address.pref) }}
                             {{ form_errors(form.address.pref) }}
                         </div>
                     </div>
                     {# 住所：住所1 #}
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9 col-lg-offset-2 col-lg-10">
+                        <div class="col-sm-offset-2 col-sm-9 col-lg-10">
                             {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                             {{ form_errors(form.address.addr01) }}
                         </div>
                     </div>
                     {# 住所：住所2 #}
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9 col-lg-offset-2 col-lg-10">
+                        <div class="col-sm-offset-2 col-sm-9 col-lg-10">
                             {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                             {{ form_errors(form.address.addr02) }}
                         </div>
@@ -223,4 +223,12 @@
     </div><!-- /.col -->
     </form>
 </div>
+<script src="{{ app.config.root }}admin/assets/js/hideShowPassword.min.js"></script>
+<script>
+	$('#admin_customer_password').hideShowPassword({
+		show: true, // パスワード可視の有無
+		innerToggle: true, // トグルボタンを入力欄に設置するかの有無
+		hideToggleUntil: 'focus' // フォーカスされるまでトグルを隠す
+	});
+</script>
 {% endblock %}

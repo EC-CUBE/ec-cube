@@ -19,74 +19,62 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% block javascript %}
+    <script>
+    $(function(){
+        $('.main_visual').slick({
+            dots: true,
+            arrows: false,
+            autoplay: true,
+            speed: 300
+        });
+
+        $('.carousel').slick({
+            infinite: false,
+            speed: 300,
+            prevArrow:'<button type="button" class="slick-prev"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
+            nextArrow:'<button type="button" class="slick-next"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                }
+            ]
+        });
+
+        $('.slides').slick({
+            dots: true,
+            arrows: false,
+            speed: 300,
+            customPaging: function(slider, i) {
+                return '<button class="thumbnail">' + $(slider.$slides[i]).find('img').prop('outerHTML') + '</button>';
+            }
+        });
+    });
+    </script>
+{% endblock %}
 
 {% block main %}
-                <div class="row">
-                   <div class="col-sm-12">
-                        <div class="main_visual">
-                            <div class="item">
-                              <img src="{{ app.config.root }}img/top/mv01.jpg">
-                            </div>
-                            <div class="item">
-                              <img src="{{ app.config.root }}img/top/mv01.jpg">
-                            </div>
-                            <div class="item">
-                              <img src="{{ app.config.root }}img/top/mv01.jpg">
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+       <div class="col-sm-12">
+            <div class="main_visual">
+                <div class="item">
+                  <img src="{{ app.config.front_urlpath }}/img/top/mv01.jpg">
                 </div>
-                <div class="row no-padding">
-                    <div class="col-sm-6 col-xs-3">
-                        <div class="row">
-                            <div class="col-sm-6 col-xs-12">
-                                <div class="img"><a href="{{ url('product_detail', { id : 1}) }}"><img src="img/top/img01.jpg"></a></div>
-                            </div>
-                            <div class="col-sm-6 col-xs-12">
-                                <div class="img"><a href="{{ url('product_detail', { id : 1}) }}"><img src="img/top/img02.jpg"></a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xs-9 comment_area">
-                        <div class="txt_center">
-                            <h4>新入荷商品特集</h4>
-                            <h5>この季節にぴったりな商品をご用意しました</h5>
-                            <p>ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミダミーダミーダミー
-                    ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー</p>
-                            <p><a class="btn btn-success" href="{{ url('product_list') }}">一覧を見る<span class="fa fa-chevron-right"></span></a></p>
-                        </div>
-                    </div>
+                <div class="item">
+                  <img src="{{ app.config.front_urlpath }}/img/top/mv01.jpg">
                 </div>
-                <div class="row">
-                   <div class="col-sm-4 col-xs-12">
-                        <div class="product_item">
-                            <a href="{{ url('product_detail', { id : 1}) }}">
-                                <div class="item_photo"><img src="img/top/img03.jpg"></div>
-                            </a>
-                        </div>
-                   </div>
-                   <div class="col-sm-4 col-xs-12">
-                        <div class="product_item">
-                            <a href="{{ url('product_detail', { id : 2}) }}">
-                                <div class="item_photo"><img src="img/top/img04.jpg"></div>
-                                <dl>
-                                <dt class="item_name">ダミーダミーダミーダミーダミーダミー</dt>
-                                <dd class="item_comment">ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミ・・・</dd>
-                                </dl>
-                            </a>
-                        </div>
-                   </div>
-                   <div class="col-sm-4 col-xs-12">
-                        <div class="product_item">
-                            <a href="{{ url('product_detail', { id : 3}) }}">
-                                <div class="item_photo"><img src="img/top/img05.jpg"></div>
-                                <dl>
-                                <dt class="item_name">ダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミー</dt>
-                                <dd class="item_comment">ダミーダミーダミーダミーダミーダダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミーダミ・・・</dd>
-                                </dl>
-                            </a>
-                        </div>
-                   </div>
+                <div class="item">
+                  <img src="{{ app.config.front_urlpath }}/img/top/mv01.jpg">
                 </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
