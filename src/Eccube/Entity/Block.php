@@ -22,11 +22,6 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $tpl_path;
-
-    /**
-     * @var string
-     */
     private $file_name;
 
     /**
@@ -40,9 +35,9 @@ class Block extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
-     * @var string
+     * @var integer
      */
-    private $php_path;
+    private $logic_flg;
 
     /**
      * @var integer
@@ -83,7 +78,7 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -111,29 +106,6 @@ class Block extends \Eccube\Entity\AbstractEntity
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set tpl_path
-     *
-     * @param string $tplPath
-     * @return Block
-     */
-    public function setTplPath($tplPath)
-    {
-        $this->tpl_path = $tplPath;
-
-        return $this;
-    }
-
-    /**
-     * Get tpl_path
-     *
-     * @return string 
-     */
-    public function getTplPath()
-    {
-        return $this->tpl_path;
     }
 
     /**
@@ -208,24 +180,24 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * Set php_path
      *
-     * @param string $phpPath
+     * @param integer $logic_flg
      * @return Block
      */
-    public function setPhpPath($phpPath)
+    public function setLogicFlg($logic_flg)
     {
-        $this->php_path = $phpPath;
+        $this->logic_flg = $logic_flg;
 
         return $this;
     }
 
     /**
-     * Get php_path
+     * Get logic_flg
      *
-     * @return string 
+     * @return string
      */
-    public function getPhpPath()
+    public function getLogicFlg()
     {
-        return $this->php_path;
+        return $this->logic_flg;
     }
 
     /**

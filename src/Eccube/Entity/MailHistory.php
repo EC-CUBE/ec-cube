@@ -63,7 +63,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     private $Order;
 
     /**
-     * @var \Eccube\Entity\Master\MailTemplate
+     * @var \Eccube\Entity\MailTemplate
      */
     private $MailTemplate;
 
@@ -177,10 +177,10 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Set MailTemplate
      *
-     * @param  \Eccube\Entity\Master\MailTemplate $mailTemplate
+     * @param  \Eccube\Entity\MailTemplate $mailTemplate
      * @return MailHistory
      */
-    public function setMailTemplate(\Eccube\Entity\Master\MailTemplate $mailTemplate = null)
+    public function setMailTemplate(\Eccube\Entity\MailTemplate $mailTemplate = null)
     {
         $this->MailTemplate = $mailTemplate;
 
@@ -190,7 +190,7 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * Get MailTemplate
      *
-     * @return \Eccube\Entity\Master\MailTemplate
+     * @return \Eccube\Entity\MailTemplate
      */
     public function getMailTemplate()
     {

@@ -62,7 +62,7 @@ class BlockController
 
         if ($id) {
             // テンプレートファイルの取得
-            $previous_filename = $Block->getTplPath();
+            $previous_filename = $Block->getFileName();
             $file = $app['eccube.repository.block']
                 ->getReadTemplateFile($previous_filename, $deletable);
             $html = $file['tpl_data'];
@@ -74,7 +74,6 @@ class BlockController
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $Block = $form->getData();
-                $Block->setTplPath($form->get('file_name')->getData());
 
                 // DB登録
                 $app['orm.em']->persist($Block);
@@ -84,12 +83,12 @@ class BlockController
                 $tplDir = $app['eccube.repository.block']
                     ->getWriteTemplatePath($deletable);
 
-                $filePath = $tplDir . '/' . $Block->getTplPath() . '.twig';
+                $filePath = $tplDir . '/' . $Block->getFileName() . '.twig';
 
                 $fs = new Filesystem();
                 $fs->dumpFile($filePath, $form->get('block_html')->getData());
                 // 更新でファイル名を変更した場合、以前のファイルを削除
-                if ($Block->getTplPath() != $previous_filename && !is_null($previous_filename)) {
+                if ($Block->getFileName() != $previous_filename && !is_null($previous_filename)) {
                     $oldFilePath = $tplDir . $previous_filename;
                     if ($fs->exists($oldFilePath)) {
                         $fs->remove($oldFilePath);
@@ -121,7 +120,7 @@ class BlockController
             $tplDir = $app['eccube.repository.page_layout']
                 ->getTemplatePath($DeviceType);
             $tplDir .= $app['config']['block_dir'];
-            $file = $tplDir . $Block->getTplPath();
+            $file = $tplDir . $Block->getFileName();
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);

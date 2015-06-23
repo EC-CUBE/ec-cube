@@ -76,16 +76,12 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/forgot', '\Eccube\Controller\ForgotController::index')->bind('forgot');
         $c->match('/forgot/reset/{reset_key}', '\Eccube\Controller\ForgotController::reset')->bind('forgot_reset');
 
-        // frontparts
-        $c->match('/frontparts/login_check', '\Eccube\Page\FrontParts\LoginCheck')->bind('frontparts_login_check');
-        $c->match('/frontparts/block/category', '\Eccube\Controller\Block\CategoryController::index')->bind('block_category');
-        $c->match('/frontparts/block/cart', '\Eccube\Controller\Block\CartController::index')->bind('block_cart');
-        $c->match('/frontparts/block/search_product', '\Eccube\Controller\Block\SearchProductController::index')->bind('block_search_products');
-        $c->match('/frontparts/block/news', '\Eccube\Controller\Block\NewsController::index')->bind('block_news');
-        $c->match('/frontparts/block/login', '\Eccube\Controller\Block\LoginController::index')->bind('block_login');
-        $c->match('/frontparts/block/recommend', '\Eccube\Controller\Block\RecommendController::index')->bind('block_recommend');
-        $c->match('/frontparts/block/calendar', '\Eccube\Controller\Block\CalendarController::index')->bind('block_calendar');
-        $c->match('/frontparts/block/login_header', '\Eccube\Controller\Block\LoginHeaderController::index')->bind('block_login_header');
+        // block
+        $c->match('/block/category', '\Eccube\Controller\Block\CategoryController::index')->bind('block_category');
+        $c->match('/block/cart', '\Eccube\Controller\Block\CartController::index')->bind('block_cart');
+        $c->match('/block/search_product', '\Eccube\Controller\Block\SearchProductController::index')->bind('block_search_product');
+        $c->match('/block/news', '\Eccube\Controller\Block\NewsController::index')->bind('block_news');
+        $c->match('/block/login', '\Eccube\Controller\Block\LoginController::index')->bind('block_login');
 
         // 特定商取引 order -> help/traderaw
         $c->match('/help/about', '\Eccube\Controller\HelpController::about')->bind('help_about');
@@ -112,9 +108,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/order', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
         $c->match('/mypage/withdraw', '\Eccube\Controller\Mypage\WithdrawController::index')->bind('mypage_withdraw');
         $c->match('/mypage/withdraw_complete', '\Eccube\Controller\Mypage\WithdrawController::complete')->bind('mypage_withdraw_complete');
-
-        // preview
-        $c->match('/preview', '\Eccube\Page\Preview\Index')->bind('preview');
 
         // products
         $c->match('/products/list', '\Eccube\Controller\ProductController::index')->bind('product_list');

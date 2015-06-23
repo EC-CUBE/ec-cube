@@ -137,7 +137,11 @@ class Application extends \Silex\Application
             $request = $event->getRequest();
             try {
                 $DeviceType = $app['eccube.repository.master.device_type']->find(10);
-                $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $request->attributes->get('_route'));
+                if ($request->get('preview')) {
+                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
+                } else {
+                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $request->attributes->get('_route'));
+                }
             } catch (\Doctrine\ORM\NoResultException $e) {
                 $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
             }
