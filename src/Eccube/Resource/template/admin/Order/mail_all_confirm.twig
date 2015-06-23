@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['order', 'order_master'] %}
+{% set menus = ['order', 'index'] %}
 
 {% block title %}受注管理{% endblock %}
 {% block sub_title %}メール通知{% endblock %}
@@ -29,11 +29,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
 <div class="row">
     <div class="col-md-9">
-        <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
+        <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail_all') }}">
         {{ form_widget(form._token) }}
+        <input type="hidden" name="ids" value="{{ ids }}">
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title">メール配信</h3>
+                <span class="text-danger">※本文は1通分の例です。受注情報は各メールごとに異なります。</span>
             </div><!-- /.box-header -->
             <div class="box-body">
                 <div class="form-group">

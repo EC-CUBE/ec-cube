@@ -41,7 +41,7 @@ class MailController extends AbstractController
     public function index(Application $app, $id = 0)
     {
         $Mail = $app['orm.em']
-            ->getRepository('\Eccube\Entity\Mailtemplate')
+            ->getRepository('\Eccube\Entity\MailTemplate')
             ->findOrCreate($id);
         $form = $app['form.factory']
             ->createBuilder('mail', $Mail)
