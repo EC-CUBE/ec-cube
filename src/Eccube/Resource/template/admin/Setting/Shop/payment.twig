@@ -21,16 +21,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['setting', 'shop', 'shop_payment'] %}
+
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}支払方法管理{% endblock %}
 
+{% block javascript %}
+<script>
+    function fnDelete(action) {
+        document.delete_form.action = action;
+        document.delete_form.submit();
+    }
+</script>
+{% endblock javascript%}
+
 {% block main %}
-    <script>
-        function fnDelete(action) {
-            document.delete_form.action = action;
-            document.delete_form.submit();
-        }
-    </script>
     <div class="row">
         <div class="col-md-12">
             <div class="box">

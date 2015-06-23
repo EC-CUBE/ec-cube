@@ -22,17 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['setting', 'system', 'system'] %}
+{% set menus = ['setting', 'system', 'system_index'] %}
 
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}システム情報{% endblock %}
-
-
-{% block assets %}
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="{{ app.config.root }}admin/file_upload/js/vendor/jquery.ui.widget.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-{% endblock %}
 
 {% block main %}
     <div class="row" id="aside_wrap">
@@ -60,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="box-header">
                     <h3 class="box-title">PHP情報</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body no-padding">
                     <iframe src="?mode=info" height="500" frameborder="0" style="width: 100%;"></iframe>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->

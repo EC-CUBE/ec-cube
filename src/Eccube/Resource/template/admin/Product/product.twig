@@ -21,36 +21,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['product', 'product_edit'] %}
+
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品登録{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% set menus = ['product', 'product_edit'] %}
-
-{% block assets %}
-    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload.css" rel="stylesheet">
-    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload-ui.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-
-    <script src="{{ app.config.root }}admin/file_upload/js/vendor/jquery.ui.widget.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.iframe-transport.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-process.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-validate.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <style>
-        .ui-state-highlight {
-            height: 148px;
-            border: dashed 1px #ccc;
-            background: #fff;
-        }
-    </style>
-{% endblock %}
-
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload-ui.css">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<style>
+    .ui-state-highlight {
+        height: 148px;
+        border: dashed 1px #ccc;
+        background: #fff;
+    }
+</style>
+{% endblock stylesheet %}
 
 {% block javascript %}
-$(function(){
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/vendor/jquery.ui.widget.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.iframe-transport.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-process.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-validate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script>
+$(function() {
     $("#thumb").sortable({
         cursor: 'move',
         opacity: 0.7,
@@ -88,14 +87,14 @@ $(function(){
     var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
 
     {% for image in form.images %}
-        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}{{ image.vars.value }}'));
+        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}/{{ image.vars.value }}'));
         var $widget = $('{{ form_widget(image) }}');
         $widget.val('{{ image.vars.value }}');
         $("#thumb").append($img.append($widget));
     {% endfor %}
 
     {% for add_image in form.add_images %}
-        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}{{ add_image.vars.value }}'));
+        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}/{{ add_image.vars.value }}'));
         var $widget = $('{{ form_widget(add_image) }}');
         $widget.val('{{ add_image.vars.value }}');
         $("#thumb").append($img.append($widget));
@@ -149,7 +148,7 @@ $(function(){
         done: function(e, data) {
             $('#progress').hide();
             $.each(data.result.files, function(index, file) {
-                var path = '{{ app.config.image_temp_urlpath }}' + file;
+                var path = '{{ app.config.image_temp_urlpath }}/' + file;
                 var $img = $(proto_img.replace(/__path__/g, path));
                 var $new_img = $(proto_add.replace(/__name__/g, count_add));
                 $new_img.val(file);
@@ -194,7 +193,8 @@ $(function(){
     });
 });
 
-{% endblock %}
+</script>
+{% endblock javascript %}
 
 {% block main %}
             <form role="form" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">

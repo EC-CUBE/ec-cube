@@ -55,7 +55,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="tbody">
                                             <div class="tr">
                                                 <div class="item_photo td">
-                                                    <img src="{{ app.config.image_save_urlpath }}{{ OrderDetail.Product.mainFileName|no_image_main_list }}" />
+                                                    <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_main_list }}" />
                                                 </div>
                                                 <dl class="item_detail td">
                                                     <dt class="item_name">{{ OrderDetail.product_name }}</dt>
@@ -67,7 +67,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             / {{ OrderDetail.class_category_name2 }}
                                                         {% endif %}
                                                     </dd>
-                                                    <dd class="item_price">￥{{ OrderDetail.price }} ×{{ OrderDetail.quantity }}</dd>
+                                                    <dd class="item_price">{{ OrderDetail.price|price }} ×{{ OrderDetail.quantity }}</dd>
                                                 </dl>
                                             </div>
                                         </div>

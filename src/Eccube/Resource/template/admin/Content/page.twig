@@ -28,8 +28,6 @@
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ページ管理{% endblock %}
 
-{% set menus = ['content', 'page'] %}
-
 {% block javascript %}
 <script>
 function fnDelete(action) {
@@ -39,7 +37,7 @@ function fnDelete(action) {
     }
 }
 </script>
-{% endblock %}
+{% endblock javascript %}
 
 {% block main %}
 <form name="content_page_form" action="" method="post">
