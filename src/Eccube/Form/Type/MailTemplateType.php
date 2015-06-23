@@ -46,12 +46,12 @@ class MailTemplateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\MailTemplate',
-            'property' => 'subject',
+            'property' => 'name',
             'label' => false,
             'multiple'=> false,
             'expanded' => false,
             'required' => false,
-            'empty_value' => '選択してください',
+            'empty_value' => '-',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('mt')
                     ->orderBy('mt.id', 'ASC');

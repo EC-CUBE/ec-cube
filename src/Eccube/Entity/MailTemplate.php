@@ -24,6 +24,8 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * MailTemplate
  */
@@ -37,11 +39,20 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
         return $this->getSubject();
     }
 
-
     /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $file_name;
 
     /**
      * @var string
@@ -79,7 +90,6 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     private $Creator;
 
 
-
     /**
      * Get id
      *
@@ -88,6 +98,52 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return MailTemplate
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set file_name
+     *
+     * @param string $fileName
+     * @return MailTemplate
+     */
+    public function setFileName($fileName)
+    {
+        $this->file_name = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * Get file_name
+     *
+     * @return string 
+     */
+    public function getFileName()
+    {
+        return $this->file_name;
     }
 
     /**
