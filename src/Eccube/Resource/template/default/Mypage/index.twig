@@ -19,55 +19,72 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
+{% set mypageno = 'index' %}
 {% block main %}
-<div id="mypagecolumn">
-    <h2 class="title">{{ title }}</h2>
-    {% include 'Mypage/navi.twig' %}
-    <div id="mycontents_area">
-        <h3>{{ subtitle }}</h3>
+    <h1 class="page-heading">マイページ</h1>
+    <div class="container-fluid">
 
-        {% if pagination.totalItemCount > 0 %}
-            <p><span class="attention">{{ pagination.totalItemCount }}件</span>の購入履歴があります。</p>
-            <div class="pagenumber_area">
-                <!--▼ページナビ-->
-                {% include "pagination.twig" with {'pages': pagination.paginationData} %}
-                <!--▲ページナビ-->
-            </div>
+        {% include 'Mypage/navi.twig' %}
 
-            <table summary="購入履歴">
-                <tr>
-                    <th class="alignC">購入日時</th>
-                    <th class="alignC">注文番号</th>
-                    <th class="alignC">お支払い方法</th>
-                    <th class="alignC">合計金額</th>
-                    {% if app.config.mypage_order_status_disp_flag %}
-                        <th class="alignC">ご注文状況</th>
-                    {% endif %}
-                    <th class="alignC">詳細</th>
-                </tr>
-                {% for Order in pagination %}
-                    <tr>
-                        <td class="alignC">{{ Order.create_date|date("Y/m/d H:i:s") }}</td>
-                        <td>{{ Order.id }}</td>
-                        <td class="alignC">{{ Order.Payment }}</td>
-                        <td class="alignR">{{ Order.payment_total|number_format }}円</td>
+        <h2 class="heading01">ご注文履歴</h2>
+        <div class="row">
+            <div class="col-md-12">
 
-                        {% if app.config.mypage_order_status_disp_flag %}
-                            {% if Order.CustomerOrderStatus.id != app.config.order_pending %}
-                                <td class="alignC">{{ Order.CustomerOrderStatus }}</td>
-                            {% else %}
-                                <td class="alignC attention">{{ Order.CustomerOrderStatus }}</td>
-                            {% endif %}
-                        {% endif %}
-                        <td class="alignC"><a href="{{ path('mypage_history', {'orderId': Order.id}) }}">詳細</a></td>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <p>購入履歴はありません。</p>
-        {% endif %}
+                {% if pagination.totalItemCount > 0 %}
+                    <p class="intro"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
+
+                    {% for Order in pagination %}
+                        <div class="historylist_column row">
+                            <div class="col-sm-4">
+                                <h3 class="order_date">{{ Order.order_date|date("Y/m/d H:i:s") }}</h3>
+                                <dl class="order_detail">
+                                    <dt>ご注文番号：</dt>
+                                    <dd>{{ Order.id }}</dd>
+                                    {% if app.config.mypage_order_status_disp_flag %}
+                                        <dt>ご注文状況：</dt>
+                                        <dd>{{ Order.CustomerOrderStatus }}</dd>
+                                    {% endif %}
+                                </dl>
+                                <p><a class="btn btn-default btn-sm" href="{{ url('mypage_history', {'id': Order.id}) }}">詳細を見る</a></p>
+                            </div>
+                            <div class="col-sm-8">
+                                {% for OrderDetail in Order.OrderDetails %}
+                                    <div class="item_box table">
+                                        <div class="tbody">
+                                            <div class="tr">
+                                                <div class="item_photo td">
+                                                    <img src="{{ app.config.image_save_urlpath }}{{ OrderDetail.Product.mainFileName|no_image_main_list }}" />
+                                                </div>
+                                                <dl class="item_detail td">
+                                                    <dt class="item_name">{{ OrderDetail.product_name }}</dt>
+                                                    <dd class="item_pattern small">
+                                                        {% if OrderDetail.class_category_name1 is not empty %}
+                                                            {{ OrderDetail.class_category_name1 }}
+                                                        {% endif %}
+                                                        {% if OrderDetail.class_category_name1 is not empty %}
+                                                            / {{ OrderDetail.class_category_name2 }}
+                                                        {% endif %}
+                                                    </dd>
+                                                    <dd class="item_price">￥{{ OrderDetail.price }} ×{{ OrderDetail.quantity }}</dd>
+                                                </dl>
+                                            </div>
+                                        </div>
+                                    </div><!--/item_box-->
+                                {% endfor %}
+                            </div>
+                        </div><!--/historylist_column-->
+                    {% endfor %}
+
+                    {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+
+                {% else %}
+                    <p class="intro">ご注文履歴がありません。</p>
+                {% endif %}
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
     </div>
-</div>
 {% endblock %}

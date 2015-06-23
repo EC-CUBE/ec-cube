@@ -67,6 +67,7 @@ class EntryType extends AbstractType
                 ),
             ))
             ->add('company_name', 'text', array(
+                'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -161,7 +162,8 @@ class EntryType extends AbstractType
                 'label' => '職業',
                 'required' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

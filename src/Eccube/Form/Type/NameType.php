@@ -59,6 +59,7 @@ class NameType extends AbstractType
 
         $builder->setAttribute('lastname_name', $options['lastname_name']);
         $builder->setAttribute('firstname_name', $options['firstname_name']);
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

@@ -65,7 +65,7 @@ class ProductType extends AbstractType
                 'mapped' => false,
             ))
             ->add('description_detail', 'textarea', array(
-                'label' => '商品説明(詳細)',
+                'label' => '商品説明',
             ))
             ->add('description_list', 'textarea', array(
                 'label' => '商品説明(一覧)',
@@ -145,6 +145,7 @@ class ProductType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
 
     }

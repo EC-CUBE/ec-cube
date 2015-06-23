@@ -68,8 +68,7 @@ class ChangeController extends AbstractController
                         $app['orm.em']->persist($Customer);
                         $app['orm.em']->flush();
 
-                        return $app->redirect($app['url_generator']->generate('mypage_change_complete'));
-                        break;
+                        return $app->redirect($app->url('mypage_change_complete'));
                 }
             }
         }

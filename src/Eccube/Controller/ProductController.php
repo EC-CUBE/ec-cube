@@ -165,7 +165,11 @@ class ProductController
 
                     return $app->redirect($app->url('product_detail', array('productId' => $Product->getId())));
                 } else {
-                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
+                    try {
+                        $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
+                    } catch (\Exception $e) {
+                        $app->addRequestError('cart.product.type.kind');
+                    }
 
                     return $app->redirect($app->url('cart'));
                 }

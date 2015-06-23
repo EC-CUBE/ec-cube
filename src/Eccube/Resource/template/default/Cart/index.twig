@@ -19,146 +19,131 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block main %}
+    <h1 class="page-heading">ショッピングカート</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="flowline step4">
+                    <ul class="clearfix">
+                        <li class="active"><span class="flow_number">1</span><br>カートの商品</li>
+                        <li><span class="flow_number">2</span><br>お客様情報</li>
+                        <li><span class="flow_number">3</span><br>ご注文内容確認</li>
+                        <li><span class="flow_number">4</span><br>完了</li>
+                    </ul>
+                </div>
 
-<div id="undercolumn">
-    <div id="undercolumn_cart">
-        <h2 class="title">{{ title }}</h2>
-
-        {% if app.config.use_point %}
-            <!--★ポイント案内★-->
-            <div class="point_announce">
-                {% if is_granted('ROLE_USER') %}
-                    <span class="user_name">{{ app.user.name01 }} 様</span>の、現在の所持ポイントは「<span class="point">{{ app.user.point|number_format }} pt</span>」です。<br />
-                {% else %}
-                    ポイント制度をご利用になられる場合は、会員登録後ログインしてくださいますようお願い致します。<br />
-                {% endif %}
-                ポイントは商品購入時に<span class="price">1pt＝{{ app.config.point_value }}円</span>として使用することができます。<br />
-            </div>
-        {% endif %}
-
-        <p class="totalmoney_area">
-            {# カゴの中に商品がある場合にのみ表示 #}
-            {#{% if Carts|length > 1 %}
-                <span class="attentionSt"><!--{foreach from=$cartKeys item=key name=cartKey}--><!--{$arrProductType[$key]|h}--><!--{if !$smarty.foreach.cartKey.last}-->、<!--{/if}--><!--{/foreach}-->は同時購入できません。<br />
-                    お手数ですが、個別に購入手続きをお願い致します。
-                </span>
-            {% endif %}#}
-
-            {% for error in app.session.flashbag.get('errors')  %}
-                <p class="attention">{{ error|trans|nl2br }}<p>
-            {% endfor %}
-        </p>
-
-        {% if Cart.CartItems|length > 0 %}
-            <div class="form_area">
-                <form name="form" id="form_cart" method="post" action="{{ url('cart') }}">
-                    {#
-                    {% if Carts|length > 1 %}
-                        <h3>{{ arrProductType[key] }}</h3>
-                        {% set purchasing_goods_name = arrProductType[key] %}
-                    {% else %}
-                    #}
-                        {% set purchasing_goods_name = "カゴの中の商品" %}
-                    {#
-                    {% endif %}
-                    #}
-                    <p>
-                        {{ purchasing_goods_name }}の合計金額は「<span class="price">{{ Cart.total_price|number_format }}円</span>」です。
-                        {{ message.deliv_fee|default('') }}
-                    </p>
-
-                    <table summary="商品情報">
-                        <col width="10%" />
-                        <col width="15%" />
-                        <col width="30%" />
-                        <col width="15%" />
-                        <col width="15%" />
-                        <col width="15%" />
-                        <tr>
-                            <th class="alignC">削除</th>
-                            <th class="alignC">商品写真</th>
-                            <th class="alignC">商品名</th>
-                            <th class="alignC">単価</th>
-                            <th class="alignC">数量</th>
-                            <th class="alignC">小計</th>
-                        </tr>
-
-                        {% for CartItem in Cart.CartItems %}
-                            {% set ProductClass = CartItem.Object %}
-                            {% set Product = ProductClass.Product %}
-                            <tr>
-                                <td class="alignC">
-                                    <a href="{{ url('cart_remove', {'productClassId': ProductClass.id }) }}">削除</a>
-                                </td>
-                                <td class="alignC">
-                                    <a class="expansion" target="_blank" href="{{ app.config.image_save_urlpath }}{{ Product.main_image|no_image_main_list }}">
-                                       <img src="{{ app.config.image_save_urlpath }}{{ Product.main_image|no_image_main_list }}" style="max-width: 65px;max-height: 65px;" alt="{{ Product.name }}" />
-                                    </a>
-                                </td>
-                                <td>
-                                    {# 商品名 #}
-                                    <strong>{{ Product.name }}</strong>
-                                    {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
-                                        <div>{{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}</div>
-                                    {% endif %}
-                                    {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
-                                        <div>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}</div>
-                                    {% endif %}
-                                </td>
-                                <td class="alignR">
-                                    {{ CartItem.price|number_format }}円
-                                </td>
-                                <td class="alignC">
-                                    {{ CartItem.quantity|number_format }}
-                                    <ul id="quantity_level">
-                                        <li>
-                                            <a href="{{ url('cart_up', {'productClassId': ProductClass.id}) }}"><img src="{{ app.config.tpl }}img/button/btn_plus.jpg" width="16" height="16" alt="＋" /></a>
-                                        </li>
-                                        {% if CartItem.quantity > 1 %}
-                                            <li>
-                                                <a href="{{ url('cart_down', {'productClassId': ProductClass.id}) }}"><img src="{{ app.config.tpl }}img/button/btn_minus.jpg" width="16" height="16" alt="-" /></a>
-                                            </li>
-                                        {% endif %}
-                                    </ul>
-                                </td>
-                                <td class="alignR">{{ CartItem.total_price|number_format }}円</td>
-                            </tr>
-                            {% endfor %}
-                            <tr>
-                                <th colspan="5" class="alignR">合計</th>
-                                <td class="alignR">
-                                    <span class="price">{{ Cart.total_price|number_format }}円</span>
-                                </td>
-                            </tr>
-                        </table>
-                        <p class="alignC">上記内容でよろしければ「購入手続きへ」ボタンをクリックしてください。</p>
-                    <div class="btn_area">
-                        <ul>
-                            {# TODO: リファラが取得できないため一旦見送り
-                            <li>
-                                <a href="<!--{$tpl_prev_url|h}-->">
-                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" name="back" />
-                                </a>
-                            </li>
-                            #}
-                            <li>
-                                <a href="{{ path('cart_buystep') }}">
-                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_buystep.jpg" alt="購入手続きへ" name="buystep" />
-                                </a>
-                            </li>
-                        </ul>
+                {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
+                    <div class="message">
+                        <p class="errormsg bg-danger">
+                            <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
+                        </p>
                     </div>
-                </form>
-            </div>
-        {% else %}
-            <p class="empty">
-                <span class="attention">※ 現在カート内に商品はございません。</span>
-            </p>
-        {% endif %}
-    </div>
-</div>
+                {% endfor %}
 
+                {% if Cart.CartItems|length > 0 %}
+                <form name="form" id="form_cart" method="post" action="{{ url('cart') }}">
+                    <p class="message">
+                        商品の合計金額は「<strong>￥{{ Cart.total_price|number_format }}</strong>」です。
+                        {% if BaseInfo.option_product_delivery_fee == 1 %}
+                            あと「<strong>￥</strong>」のお買い上げで<strong class="text-primary">送料無料</strong>になります。
+                            {{ message.deliv_fee|default('') }}
+                        {% endif %}
+                    </p>
+                    <div class="cart_item table">
+                        <div class="thead">
+                            <ol>
+                                <li>削除</li>
+                                <li>商品内容</li>
+                                <li>数量</li>
+                                <li>小計</li>
+                            </ol>
+                        </div>
+                        <div class="tbody">
+
+                            {% for CartItem in Cart.CartItems %}
+                                {% set ProductClass = CartItem.Object %}
+                                {% set Product = ProductClass.Product %}
+
+                                <div class="item_box tr">
+                                    <div class="icon_edit td">
+                                        <a href="{{ url('cart_remove', {'productClassId': ProductClass.id }) }}">
+                                            <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
+                                        </a>
+                                    </div>
+                                    <div class="td table">
+                                        <div class="item_photo">
+                                            <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">
+                                                <img src="{{ app.config.image_save_urlpath }}{{ Product.MainListImage|no_image_main_list }}" alt="{{ Product.name }}" />
+                                            </a>
+                                        </div>
+                                        <dl class="item_detail">
+                                            <dt class="item_name text-default">
+                                                <a target="_blank" href="{{ url('product_detail', {id : Product.id} ) }}">{{ Product.name }}</a>
+                                            </dt>
+                                            <dd class="item_pattern small">
+                                                {% if ProductClass.ClassCategory1 and ProductClass.ClassCategory1.id %}
+                                                    {{ ProductClass.ClassCategory1.ClassName }}：{{ ProductClass.ClassCategory1 }}
+                                                {% endif %}
+                                                {% if ProductClass.ClassCategory2 and ProductClass.ClassCategory2.id %}
+                                                    <br>{{ ProductClass.ClassCategory2.ClassName }}：{{ ProductClass.ClassCategory2 }}
+                                                {% endif %}
+                                            </dd>
+                                            <dd class="item_price">￥{{ CartItem.price|number_format }}</dd>
+                                            <dd class="item_subtotal">小計：￥{{ CartItem.total_price|number_format }}</dd>
+                                        </dl>
+                                    </div>
+                                    <div class="item_quantity td">
+                                        {{ CartItem.quantity|number_format }}
+                                        <ul>
+                                            <li>
+                                                {% if CartItem.quantity > 1 %}
+                                                    <a href="{{ url('cart_down', {'productClassId': ProductClass.id}) }}"><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></a>
+                                                {% else %}
+                                                    <span><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></span>
+                                                {% endif %}
+                                            </li>
+                                            <li>
+                                                <a href="{{ url('cart_up', {'productClassId': ProductClass.id}) }}"><svg class="cb cb-plus"><use xlink:href="#cb-plus" /></svg></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="item_subtotal td">￥{{ CartItem.total_price|number_format }}</div>
+                                </div><!--/item_box-->
+                            {% endfor %}
+
+                        </div>
+                    </div><!--/cart_item-->
+
+                    <div class="total_box">
+                        <dl class="total_price">
+                            <dt>合計：</dt>
+                            <dd class="text-primary">￥{{ Cart.total_price|number_format }}</dd>
+                        </dl>
+                        <div class="btn_group">
+
+                            <p>
+                                <a href="{{ path('cart_buystep') }}" class="btn btn-primary btn-block">レジに進む</a>
+                            </p>
+                            <p>
+                                <a href="{{ url('top') }}" class="btn btn-info btn-block">お買い物を続ける</a>
+                            </p>
+                        </div>
+                    </div>
+
+                </form>
+                {% else %}
+                <div class="message">
+                    <p class="errormsg bg-danger">
+                        <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>※ 現在カート内に商品はございません。
+                    </p>
+                </div>
+                {% endif %}
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div>
 {% endblock %}

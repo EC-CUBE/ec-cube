@@ -19,7 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'class_name'] %}
 
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}カテゴリ編集{% endblock %}
@@ -31,22 +33,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-9">
             <div class="box">
                 <div class="box-header">
-                    <div class="form-inline">
-                        全カテゴリー
+                    <div class="box-title box-title-category">
+                        <a href="{{ url('admin_product_category') }}">全カテゴリー</a>
                         {% for ParentCategory in TargetCategory.path %}
                             {% if ParentCategory.id is not null %}
-                            &nbsp;>&nbsp;<a href="{{ url('admin_product_category_show', { parent_id : ParentCategory.id }) }}">{{ ParentCategory.name }}</a>
+                            &nbsp;<svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>&nbsp;<a href="{{ url('admin_product_category_show', { parent_id : ParentCategory.id }) }}">{{ ParentCategory.name }}</a>
                             {% endif %}
                         {% endfor %}
                     </div>
                 </div>
                 <div class="box-body">
                     <div class="form-inline">
-                        {% if TargetCategory.level < app.config.category_nest_level  < app.config.category_max %}
+                        {% if TargetCategory.level < app.config.category_nest_level %}
                         <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
                             {{ form_widget(form._token) }}
-                            {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
-                            <button class="btn btn-default btn-sm" type="submit" onclick="document.form1.submit(); return false;">規格作成</button>
+                            {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
+                            <button class="btn btn-default btn-sm" type="submit" onclick="document.form1.submit(); return false;">カテゴリ作成</button>
                         </form>
                         {% endif %}
 
@@ -143,7 +145,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="box no-header">
                     <div class="box-body">
                         <div class="tree">
-                            <p><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
+                            <p class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
                             <ul>
                                 {% for TopCategory in TopCategories %}
                                     {{ _self.tree(TopCategory, TargetCategory.Parent.id | default(null)) }}

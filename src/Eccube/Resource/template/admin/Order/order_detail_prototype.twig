@@ -1,0 +1,8 @@
+<div style="display: none">
+    {{ form_widget(orderDetailForm.new) }}
+    {{ form_widget(orderDetailForm.Product) }}
+    {{ form_widget(orderDetailForm.ProductClass) }}
+    {{ form_widget(orderDetailForm.price, { 'attr': {'type': 'hidden'} }) }}
+    {{ form_widget(orderDetailForm.quantity, { 'attr': {'type': 'hidden'} }) }}
+    {{ form_widget(orderDetailForm.tax_rate, { 'attr': {'type': 'hidden'} }) }}
+</div>

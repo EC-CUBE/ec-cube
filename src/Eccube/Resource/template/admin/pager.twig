@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="text-center">
         <ul class="pagination">
             {% for page in pages.pagesInRange %}
-                <li{% if page == pages.current %} class="active"{% endif %}><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page_no': page})) }}"><span>{{ page }}</span></a></li>
+                <li{% if page == pages.current %} class="active"{% endif %}><a href="{{ path(routes, app.request.query.all|merge({'page_no': page})) }}"><span>{{ page }}</span></a></li>
             {% endfor %}
         </ul>
     </div>

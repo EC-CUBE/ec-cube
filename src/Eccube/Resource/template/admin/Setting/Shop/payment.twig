@@ -19,88 +19,109 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}支払方法管理{% endblock %}
 
 {% block main %}
+    <script>
+        function fnDelete(action) {
+            document.delete_form.action = action;
+            document.delete_form.submit();
+        }
+    </script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-arrow">
+                    <h3 class="box-title">
+                        支払方法
+                    </h3>
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="table_list">
+                        <div class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>支払方法</th>
+                                    <th>手数料</th>
+                                    <th>利用条件</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <form name="delete_form" id="delete_form" action="" method="post">
+                                    </form>
+                                    {% for Payment in Payments %}
+                                    <tr>
 
-<div id="basis" class="contents-main">
-    <div class="btn">
-        <ul>
-            <li>
-                <a class="btn-action" href="{{ url('admin_setting_shop_payment_new') }}">
-                    <span class="btn-next">支払方法を新規入力</span>
-                </a>
-            </li>
-        </ul>
+                                        <td class="member_name">{{ Payment.method }}</td>
+                                        <td class="member_name">
+                                            {{ Payment.charge }}
+                                        </td>
+                                        <td class="member_name">
+                                            {% if Payment.rule_min > 0 %}
+                                                {{ Payment.rule_min }}
+                                            {% else %}
+                                                0
+                                            {% endif %}円
+
+                                            {% if Payment.rule_max > 0 %}
+                                                ～{{ Payment.rule_max }}円
+                                            {% elseif Payment.rule_max is null %}
+                                                ～無制限
+                                            {% endif %}
+                                        </td>
+                                        <td class="icon_edit">
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        {% if Payment.fix_flg == 1 %}
+                                                            <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
+                                                        {% else %}
+                                                            <a>編集</a>
+                                                        {% endif %}
+                                                    </li>
+                                                    <li>
+                                                        {% if Payment.fix_flg == 1 %}
+                                                            <a href="javascript:;" onclick="fnDelete('{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}'); return false;">削除</a>
+                                                        {% else %}
+                                                            <a>削除</a>
+                                                        {% endif %}
+                                                    </li>
+                                                    <li>
+                                                        {% if loop.first == false %}
+                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}">上へ</a></li>
+                                                        {% endif %}
+                                                        {% if loop.last == false %}
+                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}">下へ</a></li>
+                                                        {% endif %}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+
+            </div><!-- /.box -->
+        </div><!-- /.col -->
     </div>
-    <table class="list">
-        <col width="5%" />
-        <col width="30%" />
-        <col width="20%" />
-        <col width="20%" />
-        <col width="5%" />
-        <col width="5%" />
-        <col width="15%" />
-        <tr>
-            <th class="center">ID</th>
-            <th>支払方法</th>
-            <th>手数料（円）</th>
-            <th>利用条件</th>
-            <th>編集</th>
-            <th>削除</th>
-            <th>移動</th>
-        </tr>
-        {% for Payment in Payments %}
-        <tr>
-            <td class="center">{{ Payment.id }}</td>
-            <td class="center">{{ Payment.method }}</td>
-            {% if Payment.charge_flg == 2 %}
-                <td class="center">-</td>
-            {% else %}
-                <td class="right">{{ Payment.charge }}</td>
-            {% endif %}
-            <td class="center">
-                {% if Payment.rule_max > 0 %}
-                    {{ Payment.rule_max }}
-                {% else %}
-                    0
-                {% endif %}円
 
-                {% if Payment.upper_rule > 0 %}
-                    ～{{ Payment.upper_rule }}円
-                {% elseif Payment.upper_rule is null %}
-                    ～無制限
-                {% endif %}
-            </td>
-            <td class="center">
-                {% if Payment.fix != 1 %}
-                    <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-            <td class="center">
-                {% if Payment.fix != 1 %}
-                    <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}">削除</a>
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-            <td class="center">
-                {% if loop.first == false %}
-                    <a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}">上へ</a>
-                {% endif %}
-                {% if loop.last == false %}
-                    <a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}">下へ</a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
-
-
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
+            <a href="{{ url('admin_setting_shop_payment_new') }}">
+                <button class="btn btn-primary btn-block btn-lg">
+                    支払方法を新規入力
+                </button>
+            </a>
+        </div>
+    </div>
 {% endblock %}

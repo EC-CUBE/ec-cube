@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Controller\Admin\System;
+namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 

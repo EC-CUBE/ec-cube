@@ -53,6 +53,7 @@ class ProductListOrderByType extends AbstractType
                 $event->setData($data);
             }
         });
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

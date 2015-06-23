@@ -105,36 +105,36 @@ Eccube\Entity\ProductClass:
                 nullable: false
         ProductType:
             targetEntity: Eccube\Entity\Master\ProductType
-            inversedBy: ProductClasses
             joinColumn:
                 name: product_type_id
                 referencedColumnName: id
                 nullable: false
         ClassCategory1:
             targetEntity: Eccube\Entity\ClassCategory
-            inversedBy: ProductClasses1
             joinColumn:
                 name: class_category_id1
                 referencedColumnName: class_category_id
                 nullable: true
         ClassCategory2:
             targetEntity: Eccube\Entity\ClassCategory
-            inversedBy: ProductClasses2
             joinColumn:
                 name: class_category_id2
                 referencedColumnName: class_category_id
                 nullable: true
         DeliveryDate:
-            targetEntity: Eccube\Entity\Master\DeliveryDate
-            inversedBy: ProductClasses
+            targetEntity: Eccube\Entity\DeliveryDate
             joinColumn:
                 name: delivery_date_id
-                referencedColumnName: id
+                referencedColumnName: date_id
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: ProductClasses
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
                 nullable: false
+    oneToOne:
+        ProductStock:
+            targetEntity: Eccube\Entity\ProductStock
+            cascade: ["persist", "remove"]
+            mappedBy: ProductClass
     lifecycleCallbacks: {  }

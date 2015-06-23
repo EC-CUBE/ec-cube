@@ -1,0 +1,159 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block title %}ショップ設定{% endblock %}
+{% block sub_title %}配送先管理{% endblock %}
+
+{% block javascript %}
+    $(function(){
+        $("#set_fee_all").on("click", function() {
+            var fee = $("#{{ form.free_all.vars.id }}").val();
+            $("input[name$='[fee]']").val(fee);
+        });
+    });
+{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+
+    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
+        {{ form_widget(form._token) }}
+        <div class="row" id="aside_wrap">
+            <div class="col-md-9">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">基本情報</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.service_name) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.confirm_url) }}
+                        {{ form_row(form.product_type, { attr : { class : 'form-inline' } }) }}
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">支払方法設定</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-group form-inline">
+                            {% for child in form.payments %}
+                            <div class="col-sm-2">
+                                {{ form_widget(child) }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box accordion">
+                    <div class="box-header toggle">
+                        <h3 class="box-title">お届け時間設定<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body accpanel">
+                        {% for child in form.delivery_times %}
+                            {% if loop.first %}
+                                <div class="form-group">
+                            {% endif %}
+
+                            <label class="col-sm-2 control-label">
+                                お届け時間{{ loop.index }}
+                            </label>
+                            <div class="col-sm-4">
+                                {{ form_widget(child) }}
+                            </div>
+
+                            {% if loop.last == true %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="box accordion">
+                    <div class="box-header">
+                        <h3 class="box-title">都道府県別送料設定</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-inline">
+                            全国一律送料&nbsp; {{ form_widget(form.free_all) }}
+                            <a class="btn-normal" href="javascript:;" id="set_fee_all">
+                                <button class="btn btn-default btn-sm" type="button">設定</button>
+                            </a>
+                        </div>
+                    </div><!-- /.box-header -->
+                    <div class="box-body toggle" style="position:relative;">
+                        <h3 class="box-title">都道府県ごとに設定する<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                    </div>
+                    <div class="box-body accpanel">
+                        {% for child in form.delivery_fees %}
+                            {% if loop.first %}
+                                <div class="form-group">
+                            {% endif %}
+
+                                <label class="col-sm-2 control-label">
+                                    {{ child.vars.data.pref|default('') }}
+                                </label>
+                                <div class="col-sm-4">
+                                    {{ form_widget(child) }}
+                                </div>
+
+                            {% if loop.last == true %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row hidden-xs hidden-sm">
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                        <p><a href="{{ url('admin_setting_shop_delivery') }}">一覧に戻る</a></p>
+                    </div>
+                </div>
+
+            </div><!-- /.col -->
+            
+            <div class="col-md-3">
+                <div class="col_inner" id="aside_column">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div><!-- /.col --> 
+        
+
+        </div>
+    </form>
+
+{% endblock %}

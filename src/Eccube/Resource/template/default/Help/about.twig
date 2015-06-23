@@ -19,11 +19,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
-{% block main %}
+
+{% block javascript %}
+    {% if app.request.isSecure %}
+        <script src="//maps-api-ssl.google.com/maps/api/js?sensor=false"></script>
+    {% else %}
+        <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    {% endif %}
     {% if baseInfo.latitude is defined and baseInfo.longitude is defined %}
-        <script type="text/javascript">//<![CDATA[
+        <script>
             $(function() {
                 $("#maps").css({
                     'margin-top': '15px',
@@ -47,84 +53,93 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     $("#maps").remove();
                 }
             });
-        //]]></script>
+        </script>
     {% endif %}
+{% endblock %}
 
-    <div id="undercolumn">
-        <div id="undercolumn_aboutus">
-            <h2 class="title">{{ title }}</h2>
+{% block main %}
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">当サイトについて</h1>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="dl_table">
+                                {% if baseInfo.shop_name is defined %}
+                                    <dl>
+                                        <dt>店名</dt>
+                                        <dd>{{ baseInfo.shop_name }}</dd>
+                                    </dl>
+                                {% endif %}
 
-            <table summary="当サイトについて">
-                <col width="20%" />
-                <col width="80%" />
-                {% if baseInfo.shop_name is defined %}
-                    <tr>
-                        <th>店名</th>
-                        <td>{{ baseInfo.shop_name }}</td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.company_name is defined %}
+                                <dl>
+                                    <dt>会社名</dt>
+                                    <dd>{{ baseInfo.company_name }}</dd>
+                                </dl>
+                                {% endif %}
 
-                {% if baseInfo.company_name is defined %}
-                    <tr>
-                        <th>会社名</th>
-                        <td>{{ baseInfo.company_name }}</td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.zip01 is defined %}
+                                <dl>
+                                    <dt>所在地</dt>
+                                    <dd>〒{{ baseInfo.zip01 }}-{{ baseInfo.zip02 }}<br />
+                                        {{ baseInfo.pref }}{{ baseInfo.addr01 }}{{ baseInfo.addr02 }}
+                                    </dd>
+                                </dl>
+                                {% endif %}
 
-                {% if baseInfo.zip01 is defined %}
-                    <tr>
-                        <th>所在地</th>
-                        <td>
-                            〒{{ baseInfo.zip01 }}-{{ baseInfo.zip02 }}<br />
-                            {{ baseInfo.Pref }}{{ baseInfo.addr01 }}{{ baseInfo.addr02 }}
-                        </td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.tel01 is defined %}
+                                    <dl>
+                                        <dt>電話番号</dt>
+                                        <dd>{{ baseInfo.tel01 }}-{{ baseInfo.tel02 }}-{{ baseInfo.tel03 }}</dd>
+                                    </dl>
+                                {% endif %}
 
-                {% if baseInfo.tel01 is defined %}
-                    <tr>
-                        <th>電話番号</th>
-                        <td>{{ baseInfo.tel01 }}-{{ baseInfo.tel02 }}-{{ baseInfo.tel03 }}</td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.fax01 is defined %}
+                                    <dl>
+                                        <dt>FAX番号</dt>
+                                        <dd>{{ baseInfo.fax01 }}-{{ baseInfo.fax02 }}-{{ baseInfo.fax03 }}</dd>
+                                    </dl>
+                                {% endif %}
 
-                {% if baseInfo.fax01 is defined %}
-                    <tr>
-                        <th>FAX番号</th>
-                        <td>{{ baseInfo.fax01 }}-{{ baseInfo.fax02 }}-{{ baseInfo.fax03 }}</td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.email02 is defined %}
+                                    <dl>
+                                        <dt>メールアドレス</dt>
+                                        <dd><a href="mailto:{{ baseInfo.email02 }}">{{ baseInfo.email02 }}</a></dd>
+                                    </dl>
+                                {% endif %}
 
-                {% if baseInfo.email02 is defined %}
-                    <tr>
-                        <th>メールアドレス</th>
-                        <td><a href="mailto:{{ baseInfo.email02 }}">{{ baseInfo.email02 }}</a></td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.business_hour is defined %}
+                                    <dl>
+                                        <dt>営業時間</dt>
+                                        <dd>{{ baseInfo.business_hour }}</dd>
+                                    </dl>
+                                {% endif %}
 
-                {% if baseInfo.business_hour is defined %}
-                    <tr>
-                        <th>営業時間</th>
-                        <td>{{ baseInfo.business_hour }}</td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.good_traded is defined %}
+                                    <dl>
+                                        <dt>取扱商品</dt>
+                                        <dd>{{ baseInfo.good_traded|nl2br }}</dd>
+                                    </dl>
+                                {% endif %}
 
-                {% if baseInfo.good_traded is defined %}
-                    <tr>
-                        <th>取扱商品</th>
-                        <td>{{ baseInfo.good_traded|nl2br }}</td>
-                    </tr>
-                {% endif %}
+                                {% if baseInfo.message is defined %}
+                                    <dl>
+                                        <dt>メッセージ</dt>
+                                        <dd>{{ baseInfo.message|nl2br }}</dd>
+                                    </dl>
+                                {% endif %}
+                            </div>
 
-                {% if baseInfo.message is defined %}
-                    <tr>
-                        <th>メッセージ</th>
-                        <td>{{ baseInfo.message|nl2br }}</td>
-                    </tr>
-                {% endif %}
-            </table>
+                            <div id="maps"></div>
 
-            <div id="maps"></div>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
+

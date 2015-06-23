@@ -19,12 +19,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['customer', 'customer_master'] %}
 
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}会員マスター{% endblock %}
 
-{% form_theme searchForm 'Form/bootstrap_3_layout.html.twig' %}
+{% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
 function fnChangeActionSubmit(action) {
@@ -47,22 +49,138 @@ function fnReSendMail(action) {
 
 {% block main %}
 <form name="search_form" id="search_form" method="post" action="">
+    {{ form_widget(searchForm._token) }}
     <!--検索条件設定テーブルここから-->
     <div class="search-box">
             <div class="row">
                 <div class="col-md-12 accordion">
 
-                    {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前・お名前(フリガナ)', class : 'input_search' } } ) }}
+                    {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前', class : 'input_search' } } ) }}
 
-                    <a class="toggle fa-stack" href="#"><span class="fa fa-minus fa-stack-1x"></span> <span class="fa fa-minus fa-stack-1x"></span></a>
+                    <a class="toggle" href="#"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
                     <div class="search-box-inner accpanel">
-                        {{ form_rest(searchForm, { attr : { class : 'search' } }) }}
+                    	<div class="row">
+                            <div class="col-sm-12 col-lg-10 col-lg-offset-1 search">
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-4">
+                                        <div class="form-group">
+                                        <label>会員種別</label>
+                                        {{ form_widget(searchForm.customer_status) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-md-4">
+                                        <div class="form-group">
+                                            <label>性別</label>
+                                            {{ form_widget(searchForm.sex) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-4">
+                                        <div class="form-group">
+                                            <label>誕生月</label>
+                                            {{ form_widget(searchForm.birth_month) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>職業</label>
+                                            {{ form_widget(searchForm.job) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>誕生日</label>
+                                        <div class="form-group range">
+                                            {{ form_widget(searchForm.birth_start) }} ～ {{ form_widget(searchForm.birth_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                        <label>都道府県</label>
+                                        {{ form_widget(searchForm.pref) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>電話番号</label>
+                                            <div class="input_tel">
+                                            {{ form_widget(searchForm.tel) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>登録日</label>
+                                            {{ form_widget(searchForm.create_date_start) }} ～ {{ form_widget(searchForm.create_date_end) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>更新日</label>
+                                            {{ form_widget(searchForm.update_date_start) }} ～ {{ form_widget(searchForm.update_date_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>購入金額</label>
+                                            {{ form_widget(searchForm.buy_total_start) }} ～ {{ form_widget(searchForm.buy_total_end) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group range">
+                                            <label>購入回数</label>
+                                            {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row --> 
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>購入商品カテゴリー</label>
+                                            <select class="form-control">
+                                                <option>おなべ</option>
+                                                <option>アイス</option>
+                                                <option>立方体</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>購入商品名・コード</label>
+                                            {{ form_widget(searchForm.buy_product_code) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>最終購入日</label>
+                                            {{ form_widget(searchForm.last_buy_start) }} ～ {{ form_widget(searchForm.last_buy_end) }}
+                                        </div>
+                                    </div>
+                                </div><!-- /.row -->
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                    </div>
+                                </div><!-- /.row --> 
+
                             </div>
-                        </div><!-- /.row -->
+                        </div>
                     </div>
                 </div>
                 <!-- /.col -->
@@ -70,7 +188,7 @@ function fnReSendMail(action) {
             <div class="row btn_area">
                 <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                     <button class="btn btn-primary btn-block btn-lg" onclick="fnChangeActionSubmit('{{ url('admin_customer') }}'); return false;">
-                        検索する <span class="fa fa-chevron-right"></span>
+                        検索する <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
                     </button>
                 </div>
                 <!-- /.col -->
@@ -85,19 +203,19 @@ function fnReSendMail(action) {
                 <div class="box-header with-arrow">
                     <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body no-padding">
+                <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="sort-dd">
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown">20件<span class="fa fa-chevron-down icon_down"></span></a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown">20件<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                                     <ul class="dropdown-menu">
                                         <li><a>50件</a></li>
                                         <li><a>100件</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<span class="fa fa-chevron-down icon_down"></span></a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                                     <ul class="dropdown-menu">
                                         <li><a>ダウンロード</a></li>
                                         <li><a>出力項目設定</a></li>
@@ -132,7 +250,7 @@ function fnReSendMail(action) {
                                                 <li><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">編集</a></li>
                                                 <li><a href="#" onclick="fnDelete('{{ url('admin_customer_delete', { 'id': Customer.id}) }}');return false;">削除</a></li>
                                                 {% if Customer.Status.id == 1 %}
-                                                <li><a href="#" onclick="fnReSendMail('{{ url('admin_customer_delete', { 'id': Customer.id}) }}');return false;">仮会員メール再送</a></li>
+                                                <li><a href="#" onclick="fnReSendMail('{{ url('admin_customer_resend', { 'id': Customer.id}) }}');return false;">仮会員メール再送</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>
@@ -145,7 +263,7 @@ function fnReSendMail(action) {
                     </div>
                 </div><!-- /.box-body -->
                 {% if pagination.totalItemCount > 0 %}
-                    {% include "pager.twig" with { 'pages' : pagination.paginationData } %}
+                    {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
                 {% endif %}
             </div><!-- /.box -->
         </div><!-- /.col -->

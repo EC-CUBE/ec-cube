@@ -53,6 +53,7 @@ class ProductListMaxType extends AbstractType
                 $event->setData($data);
             }
         });
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

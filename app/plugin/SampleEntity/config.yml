@@ -1,5 +1,0 @@
-name: SampleEntity
-enable: false
-event: SampleEntity
-orm.path:
-    - /Resource/doctrine

@@ -55,7 +55,6 @@ Eccube\Entity\Category:
                 referencedColumnName: category_id
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Categories
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

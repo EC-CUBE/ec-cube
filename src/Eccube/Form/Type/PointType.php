@@ -57,7 +57,7 @@ class PointType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Range(array('min' => 0, 'max' => 999999999))),
             ))
-        ;
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

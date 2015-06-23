@@ -137,12 +137,12 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $classcategory_name1;
+    private $class_category_name1;
 
     /**
      * @var string
      */
-    private $classcategory_name2;
+    private $class_category_name2;
 
     /**
      * @var string
@@ -153,11 +153,6 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $quantity;
-
-    /**
-     * @var string
-     */
-    private $point_rate;
 
     /**
      * @var string
@@ -241,37 +236,37 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set classcategory_name1
+     * Set class_category_name1
      *
-     * @param  string      $classcategoryName1
+     * @param  string      $classCategoryName1
      * @return OrderDetail
      */
-    public function setClasscategoryName1($classcategoryName1)
+    public function setClassCategoryName1($classCategoryName1)
     {
-        $this->classcategory_name1 = $classcategoryName1;
+        $this->class_category_name1 = $classCategoryName1;
 
         return $this;
     }
 
     /**
-     * Get classcategory_name1
+     * Get class_category_name1
      *
      * @return string
      */
-    public function getClasscategoryName1()
+    public function getClassCategoryName1()
     {
-        return $this->classcategory_name1;
+        return $this->class_category_name1;
     }
 
     /**
-     * Set classcategory_name2
+     * Set class_category_name2
      *
-     * @param  string      $classcategoryName2
+     * @param  string      $classCategoryName2
      * @return OrderDetail
      */
-    public function setClasscategoryName2($classcategoryName2)
+    public function setClassCategoryName2($classCategoryName2)
     {
-        $this->classcategory_name2 = $classcategoryName2;
+        $this->class_category_name2 = $classCategoryName2;
 
         return $this;
     }
@@ -281,9 +276,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      *
      * @return string
      */
-    public function getClasscategoryName2()
+    public function getClassCategoryName2()
     {
-        return $this->classcategory_name2;
+        return $this->class_category_name2;
     }
 
     /**
@@ -330,29 +325,6 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     public function getQuantity()
     {
         return $this->quantity;
-    }
-
-    /**
-     * Set point_rate
-     *
-     * @param  string      $pointRate
-     * @return OrderDetail
-     */
-    public function setPointRate($pointRate)
-    {
-        $this->point_rate = $pointRate;
-
-        return $this;
-    }
-
-    /**
-     * Get point_rate
-     *
-     * @return string
-     */
-    public function getPointRate()
-    {
-        return $this->point_rate;
     }
 
     /**
@@ -468,5 +440,61 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     public function getProductClass()
     {
         return $this->ProductClass;
+    }
+    /**
+     * @var string
+     */
+    private $class_name1;
+
+    /**
+     * @var string
+     */
+    private $class_name2;
+
+
+    /**
+     * Set class_name1
+     *
+     * @param string $className1
+     * @return OrderDetail
+     */
+    public function setClassName1($className1)
+    {
+        $this->class_name1 = $className1;
+
+        return $this;
+    }
+
+    /**
+     * Get class_name1
+     *
+     * @return string 
+     */
+    public function getClassName1()
+    {
+        return $this->class_name1;
+    }
+
+    /**
+     * Set class_name2
+     *
+     * @param string $className2
+     * @return OrderDetail
+     */
+    public function setClassName2($className2)
+    {
+        $this->class_name2 = $className2;
+
+        return $this;
+    }
+
+    /**
+     * Get class_name2
+     *
+     * @return string 
+     */
+    public function getClassName2()
+    {
+        return $this->class_name2;
     }
 }

@@ -543,12 +543,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "67f02686c6c779ae50489728b91026bc8199720c"
+                "reference": "a4f14d3a3d397104e557ec65d1a4e43bb86e4ddf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/67f02686c6c779ae50489728b91026bc8199720c",
-                "reference": "67f02686c6c779ae50489728b91026bc8199720c",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/a4f14d3a3d397104e557ec65d1a4e43bb86e4ddf",
+                "reference": "a4f14d3a3d397104e557ec65d1a4e43bb86e4ddf",
                 "shasum": ""
             },
             "require": {

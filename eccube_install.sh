@@ -24,26 +24,51 @@
 #
 #######################################################################
 
-#######################################################################
+# ---------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------
+BASE_DIR=${BASE_DIR:-$(cd $(dirname $0) && pwd)}
+CONFIG_DIR="${BASE_DIR}/app/config/eccube"
+DIST_DIR="${BASE_DIR}/src/Eccube/Resource/config"
+SQL_DIR="${BASE_DIR}/html/install/sql"
+
+# config.yml
+CONFIG_YML="${CONFIG_DIR}/config.yml"
+CONFIG_YML_DIST="${DIST_DIR}/config.yml.dist"
+# db.yml
+DATABASE_YML="${CONFIG_DIR}/database.yml"
+DATABASE_YML_DIST="${DIST_DIR}/database.yml.dist"
+# mail.yml
+MAIL_YML="${CONFIG_DIR}/mail.yml"
+MAIL_YML_DIST="${DIST_DIR}/mail.yml.dist"
+# path.yml
+PATH_YML="${CONFIG_DIR}/path.yml"
+PATH_YML_DIST="${DIST_DIR}/path.yml.dist"
+# constant.yml
+CONSTANT_YML="${CONFIG_DIR}/constant.yml"
+CONSTANT_YML_DIST="${DIST_DIR}/constant.yml.dist"
+
+# ---------------------------------------------------------------------
 # Configuration
-#-- Shop Configuration
-CONFIG_PHP="app/config/eccube/config.php"
-CONFIG_YML="app/config/eccube/config.yml"
-ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
-SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-HTTP_URL=${HTTP_URL:-"http://test.local/"}
-HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
-ROOT_URLPATH=${ROOT_URLPATH:-"/"}
-DOMAIN_NAME=${DOMAIN_NAME:-""}
-ADMIN_DIR=${ADMIN_DIR:-"admin"}
+# ---------------------------------------------------------------------
+export ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
+export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
+export HTTP_URL=${HTTP_URL:-"http://localhost/ec-cube/html"}
+export HTTPS_URL=${HTTPS_URL:-"http://localhost/ec-cube/html"}
+export ROOT_DIR=${BASE_DIR}
+export ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html"}
+export DOMAIN_NAME=${DOMAIN_NAME:-""}
+export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
+export USR_DATA_ROUTE=${USR_DATA_ROUTE:-"user_data"}
+export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}
 
-DBSERVER=${DBSERVER-"127.0.0.1"}
-DBNAME=${DBNAME:-"cube3_dev"}
-DBUSER=${DBUSER:-"cube3_dev_user"}
-DBPASS=${DBPASS:-"password"}
+export ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
+export AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 
-ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
-AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
+export DBSERVER=${DBSERVER-"127.0.0.1"}
+export DBNAME=${DBNAME:-"cube3_dev"}
+export DBUSER=${DBUSER:-"cube3_dev_user"}
+export DBPASS=${DBPASS:-"password"}
 
 DBTYPE=$1;
 GET_COMPOSER=$2;
@@ -55,27 +80,29 @@ case "${DBTYPE}" in
     PGUSER=postgres
     DROPDB=dropdb
     CREATEDB=createdb
-    DBPORT=5432
-    DBDRIVER=pdo_pgsql
+    export DBPORT=5432
+    export DBDRIVER=pdo_pgsql
 ;;
 "mysql" )
     #-- DB Seting MySQL
     MYSQL=mysql
     ROOTUSER=root
-    ROOTPASS=$DBPASS
-    DBSERVER=$DBSERVER
-    DBPORT=3306
-    DBDRIVER=pdo_mysql
+    ROOTPASS=${DBPASS}
+    DBSERVER=${DBSERVER}
+    export DBPORT=3306
+    export DBDRIVER=pdo_mysql
 ;;
-* ) echo "ERROR:: argument is invaid"
-exit
-;;
+* )
+    echo "argument is invaid."
+    echo ""
+    echo "Usage: $0 [mysql|pgsql]"
+    exit
+    ;;
 esac
 
-
-#######################################################################
+# ---------------------------------------------------------------------
 # Functions
-
+# ---------------------------------------------------------------------
 adjust_directory_permissions()
 {
     chmod -R go+w "./html"
@@ -84,11 +111,8 @@ adjust_directory_permissions()
     chmod -R go+w "./app/cache"
     chmod -R go+w "./app/config"
     chmod -R go+w "./app/download"
-    chmod -R go+w "./app/downloads"
     chmod go+w "./app/font"
-    chmod go+w "./app/fonts"
     chmod go+w "./app/log"
-    chmod go+w "./app/logs"
     chmod go+w "./app/upload"
     chmod go+w "./app/upload/csv"
 }
@@ -97,13 +121,16 @@ create_sequence_tables()
 {
     SEQUENCES="
 dtb_best_products_best_id_seq
+dtb_block_block_id_seq
 dtb_category_category_id_seq
 dtb_class_name_class_name_id_seq
 dtb_class_category_class_category_id_seq
 dtb_csv_no_seq
 dtb_csv_sql_sql_id_seq
 dtb_customer_customer_id_seq
-dtb_deliv_deliv_id_seq
+dtb_delivery_delivery_id_seq
+dtb_delivery_fee_fee_id_seq
+dtb_delivery_time_time_id_seq
 dtb_holiday_holiday_id_seq
 dtb_kiyaku_kiyaku_id_seq
 dtb_mail_history_send_id_seq
@@ -114,19 +141,21 @@ dtb_news_news_id_seq
 dtb_order_order_id_seq
 dtb_order_detail_order_detail_id_seq
 dtb_other_deliv_other_deliv_id_seq
+dtb_page_layout_page_id_seq
 dtb_payment_payment_id_seq
 dtb_product_class_product_class_id_seq
-dtb_products_product_id_seq
+dtb_product_product_id_seq
 dtb_review_review_id_seq
 dtb_send_history_send_id_seq
+dtb_shipping_shipping_id_seq
+dtb_shipment_item_item_id_seq
 dtb_mailmaga_template_template_id_seq
 dtb_plugin_plugin_id_seq
-dtb_plugin_hookpoint_plugin_hookpoint_id_seq
 dtb_api_config_api_config_id_seq
 dtb_api_account_api_account_id_seq
 dtb_tax_rule_tax_rule_id_seq
+dtb_template_template_id_seq
 "
-
     comb_sql="";
     for S in $SEQUENCES; do
         case ${DBTYPE} in
@@ -160,107 +189,48 @@ dtb_tax_rule_tax_rule_id_seq
 get_optional_sql()
 {
     echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', 1, 0, 0, 1, 1, current_timestamp, current_timestamp);"
-    echo "INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, update_date, point_rate, welcome_point) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', current_timestamp, 0, 0);"
+    echo "INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, point_rate, welcome_point) VALUES (1, '${SHOP_NAME}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', '${ADMIN_MAIL}', current_timestamp, 0, 0);"
 }
 
-create_config_php()
+render_config_template()
 {
-    cat > "./${CONFIG_PHP}" <<__EOF__
-<?php
-define('ECCUBE_INSTALL', 'ON');
-define('HTTP_URL', '${HTTP_URL}');
-define('HTTPS_URL', '${HTTPS_URL}');
-define('ROOT_URLPATH', '${ROOT_URLPATH}');
-define('DOMAIN_NAME', '${DOMAIN_NAME}');
-define('DB_TYPE', '${DBTYPE}');
-define('DB_USER', '${DBUSER}');
-define('DB_PASSWORD', '${CONFIGPASS:-$DBPASS}');
-define('DB_SERVER', '${DBSERVER}');
-define('DB_NAME', '${DBNAME}');
-define('DB_PORT', '${DBPORT}');
-define('ADMIN_DIR', '${ADMIN_DIR}/');
-define('ADMIN_FORCE_SSL', FALSE);
-define('ADMIN_ALLOW_HOSTS', 'a:0:{}');
-define('AUTH_MAGIC', '${AUTH_MAGIC}');
-define('PASSWORD_HASH_ALGOS', 'sha256');
-define('MAIL_BACKEND', 'mail');
-define('SMTP_HOST', '');
-define('SMTP_PORT', '');
-define('SMTP_USER', '');
-define('SMTP_PASSWORD', '');
-
-__EOF__
+    printf "cat <<EOL\n`cat ${1}`\nEOL\n" | sh
 }
 
-create_config_yml()
-{
-    cat > "./${CONFIG_YML}" <<__EOF__
-database:
-    driver: ${DBDRIVER}
-    host: ${DBSERVER}
-    dbname: ${DBNAME}
-    port: ${DBPORT}
-    user: ${DBUSER}
-    password : ${CONFIGPASS:-$DBPASS}
-    charset: utf8
-mail:
-    host: localhost
-    port: 25
-    username: 
-    password: 
-    encryption: 
-    auth_mode: 
-delivery_address: 
-auth_magic: ${AUTH_MAGIC}
-password_hash_algos: sha256
-root: ${ROOT_URLPATH}
-admin_dir: /${ADMIN_DIR}
-tpl: ${ROOT_URLPATH}user_data/packages/default/
-admin_tpl: ${ROOT_URLPATH}user_data/packages/${ADMIN_DIR}/
-image_path: /upload/save_image/
-shop_name: ${SHOP_NAME}
-release_year: 2015
-mail_cc:
-    - ${ADMIN_MAIL}
-ECCUBE_VERSION: 3.0.0-dev
-customer_confirm_mail: false
-
-form_country_enable: false
-default_password: '******'
-
-target_id_unused: 0
-target_id_left: 1
-target_id_main_head: 2
-target_id_right: 3
-target_id_main_foot: 4
-target_id_top: 5
-target_id_bottom: 6
-target_id_head: 7
-target_id_head_top: 8
-target_id_footer_bottom: 9
-target_id_header_internal: 10
-__EOF__
-}
-
-
-#######################################################################
+# ---------------------------------------------------------------------
 # Install
+# ---------------------------------------------------------------------
 
-#-- Update Permissions
+# ---------------------------------
+# Update Permissions
+# ---------------------------------
+
 echo "update permissions..."
-adjust_directory_permissions
+#adjust_directory_permissions
 
+# ---------------------------------
+# Create Configs
+# ---------------------------------
 
+echo "creating  ${CONFIG_YML}"
+render_config_template ${CONFIG_YML_DIST} > ${CONFIG_YML}
 
-#-- Setup Initial Data
-echo "copy images..."
-cp -rv "./html/install/save_image" "./html/upload/"
+echo "creating  ${DATABASE_YML}"
+render_config_template ${DATABASE_YML_DIST} > ${DATABASE_YML}
 
-echo "creating ${CONFIG_PHP}..."
-create_config_php
+echo "creating  ${MAIL_YML}"
+render_config_template ${MAIL_YML_DIST} > ${MAIL_YML}
 
-echo "creating ${CONFIG_YML}..."
-create_config_yml
+echo "creating  ${PATH_YML}"
+render_config_template ${PATH_YML_DIST} > ${PATH_YML}
+
+#echo "creating  ${CONSTANT_YML}"
+#echo "# overwrite or define new constant. " > ${CONSTANT_YML}
+#echo "# see also ${CONSTANT_YML_DIST} " >> ${CONSTANT_YML}
+
+# ---------------------------------
+# Install Composer
+# ---------------------------------
 
 case "${GET_COMPOSER}" in
 "none" )
@@ -275,10 +245,9 @@ php ./composer.phar install --dev --no-interaction
 ;;
 esac
 
-
-
-#-- Setup Database
-SQL_DIR="./html/install/sql"
+# ---------------------------------
+# Setup Database
+# ---------------------------------
 
 case "${DBTYPE}" in
 "pgsql" )
@@ -316,7 +285,7 @@ case "${DBTYPE}" in
     ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "create database \`${DBNAME}\` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 
     #echo "grant user..."
-    #${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
+    ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
 
     echo "create table..."
     ./vendor/bin/doctrine orm:schema-tool:create

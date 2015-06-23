@@ -67,6 +67,7 @@ class NonMemberType extends AbstractType
                 ),
             ))
             ->add('company_name', 'text', array(
+                'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -75,38 +76,63 @@ class NonMemberType extends AbstractType
                 ),
             ))
             ->add('zip', 'zip', array(
-                'required' => false,
+                'zip01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 3, 'max' => 3))
+                    ),
+                ),
+                'zip02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 4, 'max' => 4))
+                    ),
+                ),
             ))
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
-                'required' => false,
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $app['config']['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('tel', 'tel', array(
-                'required' => false,
+                'tel01_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 3)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel02_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
+                'tel03_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
+                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    ),
+                ),
             ))
-            ->add('fax', 'tel', array(
-                'required' => false,
+            ->add('email', 'repeated', array(
+                'invalid_message' => 'form.member.email.invalid',
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Email(),
+                    ),
+                ),
             ))
-            ->add('email', 'email', array(
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Email(),
-                )
-            ))
-            ->add('sex', 'sex', array(
-                'required' => false,
-            ))
-            ->add('job', 'job', array(
-                'required' => false,
-            ))
-            ->add('birth', 'birthday', array(
-                'required' => false,
-                'input' => 'datetime',
-                'widget' => 'choice',
-                'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

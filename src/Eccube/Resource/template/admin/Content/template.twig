@@ -1,0 +1,109 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'ownersstore', 'template'] %}
+
+{% block title %}コンテンツ管理{% endblock %}
+{% block sub_title %}テンプレート管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <div class="row" id="aside_wrap">
+        <form name="form1" id="form1" method="post" action="{{ url('admin_content_template') }}">
+        {{ form_widget(form._token) }}
+        {{ form_widget(form.selected) }}
+        <div class="col-md-9">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">テンプレート一覧</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table_list">
+                        <div class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>選択</th>
+                                    <th>名前</th>
+                                    <th>保存先</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for Template in Templates %}
+                                <tr>
+                                    <td>
+                                        <input type="radio" name="template" value="{{ Template.id }}" {% if app.config.template_code == Template.code %}checked="checked"{% endif %}/>
+                                    </td>
+                                    <td>{{ Template.name }}</td>
+                                    <td>
+                                        <ul>
+                                            <li>app/template/{{Template.code }}</li>
+                                            <li>html/template/{{ Template.code }}</li>
+                                        </ul>
+                                    </td>
+                                    <td class="icon_edit">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="{{ url('admin_content_template_download', { 'id' : Template.id }) }}" >ダウンロード</a></li>
+                                                {% if Template.default_template %}
+                                                    <li>
+                                                        <a>削除</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li>
+                                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_content_template_delete', { id : Template.id}) }}'); document.form1.submit(); return false;">削除</a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.box -->
+        </div>
+        <div class="col-md-3" id="aside_column">
+            <div class="col_inner">
+                <div class="box no-header">
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                <button class="btn btn-primary btn-block btn-lg"
+                                        onclick="$('#form_selected').val($('input[name=template]:checked').val());document.form1.submit()">登録</button>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
+        </div><!-- /.col -->
+        </form>
+    </div>
+
+{% endblock %}

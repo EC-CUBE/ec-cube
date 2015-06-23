@@ -1,0 +1,43 @@
+Eccube\Entity\ProductStock:
+    type: entity
+    table: dtb_product_stock
+    repositoryClass: Eccube\Repository\ProductStockRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: product_stock_id
+            generator:
+                strategy: AUTO
+    fields:
+        stock:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    oneToOne:
+        ProductClass:
+            targetEntity: Eccube\Entity\ProductClass
+            inversedBy: ProductStock
+            joinColumn:
+                name: product_class_id
+                referencedColumnName: product_class_id
+    lifecycleCallbacks: {  }
+

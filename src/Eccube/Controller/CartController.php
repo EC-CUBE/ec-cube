@@ -34,7 +34,7 @@ class CartController
         $title = 'カゴの中';
         $Cart = $app['eccube.service.cart']->getCart();
 
-        return $app['view']->render(
+        return $app->render(
             'Cart/index.twig',
             compact('title', 'Cart')
         );
@@ -46,35 +46,35 @@ class CartController
         $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
         $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function up(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function down(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function remove(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->removeProduct($productClassId)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function setQuantity(Application $app, $productClassId, $quantity)
     {
         $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function buystep(Application $app)
@@ -82,6 +82,6 @@ class CartController
         $app['eccube.service.cart']->lock();
         $app['eccube.service.cart']->save();
 
-        return $app->redirect($app['url_generator']->generate('shopping'));
+        return $app->redirect($app->url('shopping'));
     }
 }
