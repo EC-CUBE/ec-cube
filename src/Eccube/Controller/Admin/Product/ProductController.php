@@ -269,7 +269,7 @@ class ProductController
                     $app['orm.em']->persist($ProductImage);
 
                     // 移動
-                    $file = new File($app['config']['image_temp_realdir'] . $add_image);
+                    $file = new File($app['config']['image_temp_realdir'] . '/' . $add_image);
                     $file->move($app['config']['image_save_realdir']);
                 }
 
@@ -287,7 +287,7 @@ class ProductController
 
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($app['config']['image_save_realdir'] . $delete_image);
+                    $fs->remove($app['config']['image_save_realdir'] . '/' . $delete_image);
                 }
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
