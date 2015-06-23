@@ -149,7 +149,7 @@ class ProductController
             foreach ($images as $img) {
                 foreach ($img as $image) {
                     $extension = $image->guessExtension();
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
@@ -252,7 +252,7 @@ class ProductController
                         ->setRank($count)
                     ;
                     $app['orm.em']->persist($ProductCategory);
-                    $count ++;
+                    $count++;
                     /* @var $Product \Eccube\Entity\Product */
                     $Product->addProductCategory($ProductCategory);
                 }
