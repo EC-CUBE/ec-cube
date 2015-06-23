@@ -56,7 +56,6 @@ class PluginController extends AbstractController
     public function manage(Application $app)
     {
 
-//        $installForm = $app['form.factory']->createBuilder('plugin_management')->getForm();
         $builder = $app['form.factory']->createNamedBuilder('', 'plugin_management', null, array(
             'plugin_id' => null, // placeHolder
             'enable' => null,
@@ -88,7 +87,7 @@ class PluginController extends AbstractController
                 $tmpdir = $service->createTempDir() ;
                 $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
 
-                $installForm['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
+                $form['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
 
                 $service->update($plugin,$tmpdir.'/'.$tmpfile);
             }
