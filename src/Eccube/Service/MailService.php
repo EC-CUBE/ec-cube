@@ -206,13 +206,14 @@ class MailService
     {
 
         $body = $this->app->renderView('Mail/order.twig', array(
+            'header' => $formData['header'],
+            'footer' => $formData['footer'],
             'Order' => $Order,
         ));
 
         $message = \Swift_Message::newInstance()
             ->setSubject($formData['subject'])
             ->setFrom(array('sample@example.com'))
-            ->setTo(array($Order->getEmail()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->app['config']['mail_cc'])
             ->setBody($body);
