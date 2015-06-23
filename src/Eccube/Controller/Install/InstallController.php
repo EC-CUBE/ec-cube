@@ -171,7 +171,6 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             if (!$form['no_update']->getData()) {
-                try {
                     $this
                         ->setPDO()
                         ->dropTables()
@@ -179,11 +178,8 @@ class InstallController
                         ->createTables()
                         ->insert()
                         ->doMigrate();
-                } catch (MigrationException $e) {
-
-                }
             }
-            if ($sessionData['agree']) {
+            if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $this->sendAppData($sessionData);
             }
 
@@ -203,7 +199,7 @@ class InstallController
 
     public function admin(InstallApplication $app, Request $request)
     {
-        $config_file = $this->config_path . '/config.yml';
+        $config_file = $this->config_path . '/path.yml';
         $config = Yaml::parse($config_file);
 
         return $app->redirect($config['root'] . $config['admin_dir']);
@@ -273,7 +269,6 @@ class InstallController
         $baseConfig = Yaml::parse($config_file);
         $config['config'] = $baseConfig;
 
-
         if ($config['database']['driver'] == 'pdo_pgsql') {
             $sqlFile = __DIR__ . '/../../../../html/install/sql/insert_data_pgsql.sql';
         } elseif ($config['database']['driver'] == 'pdo_mysql') {
@@ -329,17 +324,23 @@ class InstallController
 
     private function doMigrate()
     {
-        $migration = $this->getMigration();
-        // nullを渡すと最新バージョンまでマイグレートする
-        $migration->migrate(null, false);
+        try {
+            $migration = $this->getMigration();
+            // nullを渡すと最新バージョンまでマイグレートする
+            $migration->migrate(null, false);
+        } catch (MigrationException $e) {
+        }
 
         return $this;
     }
 
     private function revertMigrate()
     {
-        $migration = $this->getMigration();
-        $migration->migrate('first', false);
+        try {
+            $migration = $this->getMigration();
+            $migration->migrate('first', false);
+        } catch (MigrationException $e) {
+        }
 
         return $this;
     }
@@ -465,7 +466,7 @@ class InstallController
         $ADMIN_ROUTE = $data['admin_dir'];
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
-        $ROOT_DIR = realpath(__DIR__ . '/../../../');
+        $ROOT_DIR = realpath(__DIR__ . '/../../../../');
         $ROOT_URLPATH = str_replace(
             array($request->server->get('DOCUMENT_ROOT'), '/install.php'),
             array('', ''),
