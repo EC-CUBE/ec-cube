@@ -95,6 +95,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/search/product/id', '\Eccube\Controller\Admin\Order\EditController::searchProductById')->bind('admin_order_search_product_by_id');
 
         $c->match('/order/{id}/mail', '\Eccube\Controller\Admin\Order\MailController::index')->assert('id', '\d+')->bind('admin_order_mail');
+        $c->match('/order/mail/mail_all', '\Eccube\Controller\Admin\Order\MailController::mailAll')->bind('admin_order_mail_all');
         $c->match('/order/mail_complete', '\Eccube\Controller\Admin\Order\MailController::complete')->bind('admin_order_mail_complete');
         $c->match('/order/mail/view', '\Eccube\Controller\Admin\Order\MailController::view')->bind('admin_order_mail_view');
 

@@ -30,6 +30,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block javascript %}
 <script>
+$(function() {
+    // 登録チェックボックス
+    $('#check-all').click(function() {
+        var checkall = $('#check-all').prop('checked');
+        if (checkall) {
+            $('input[id^=check-]').prop('checked', true);
+        } else {
+            $('input[id^=check-]').prop('checked', false);
+        }
+    });
+
+    $('#dropmenu ul a').click(function(event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+        var isChecked = false;
+        $('input[id^=check-]').each(function() {
+            var check = $(this).prop('checked');
+            if (check) {
+                isChecked = true;
+            }
+        });
+        if (!isChecked) {
+            alert("チェックボックスが選択されていません");
+            return false;
+        }
+        $('#dropdown-form').attr('action', href).submit();
+    });
+
+});
 </script>
 {% endblock javascript %}
 
@@ -198,21 +227,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endfor %}
                                         </ul>
                                 </li>
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                <li id="dropmenu" class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown">その他<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                     <ul class="dropdown-menu">
+                                        {#
                                         <li><a>CSVダウンロード</a></li>
                                         <li><a>出力項目設定</a></li>
+                                        #}
+                                        <li><a href="{{ url('admin_order_mail_all') }}">メール一括通知</a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                     </div>
+                    <form id="dropdown-form">
                     <div class="table_list">
                         <div class="table-responsive with-border">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th class="text-center"><input type="checkbox" id="check-all"></th>
                                         <th>受注日</th>
                                         <th>注文番号</th>
                                         <th>お名前</th>
@@ -226,6 +260,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <tbody>
                             {% for Order in pagination %}
                                     <tr>
+                                        <td class="text-center"><input type="checkbox" id="check-{{ Order.id }}" data-id="{{ Order.id }}" name="ids{{ Order.id }}"></td>
                                         <td>{{ Order.order_date|date_format }}</td>
                                         <td>{{ Order.id }}</td>
                                         <td>{{ Order.name01 }} {{ Order.name02 }}</td>
@@ -247,6 +282,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% endfor %}
                                 </tbody>
                             </table>
+                                    </form>
                         </div>
                     </div>
                 </div><!-- /.box-body --> 
