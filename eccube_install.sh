@@ -50,7 +50,6 @@ CONSTANT_YML_DIST="${DIST_DIR}/constant.yml.dist"
 
 # ---------------------------------------------------------------------
 # Configuration
-
 # ---------------------------------------------------------------------
 export ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
