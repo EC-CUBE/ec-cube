@@ -29,19 +29,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 イベントハンドラの優先度を変更<br>
 ↑↓で同じイベントの上下のハンドラと優先度をswap<br>
-TODO:swap対象がない場合(同一イベントのハンドラが一個のみの場合)でも矢印が出るので出さないようにする
 
 <p>ハンドラー設定
 
 <hr>
     {% for event,handlersPerType in handlersPerEvent %}
         {% for type,handlers in handlersPerType %}
-            <b>{{event}}{{type}}<br></b>
+            <b>{{event|e}} {{type|e}}<br></b>
             {% for handler in handlers %}
 
-                <li><b>ID:{{ handler.id }}</b></li>
-                <li>HANDLER:{{ handler.handler }}</li>
-                <li>PRIORITY:{{ handler.priority }}
+                <li><b>ID:{{ handler.id|e }}</b></li>
+                <li>HANDLER:{{ handler.handler|e }}</li>
+                <li>PRIORITY:{{ handler.priority|e }}
                     {%if true != loop.first %}
                         <a href="{{ url('admin_setting_system_plugin_handler_up',   {'handlerId': handler.id}) }}">↑</a>
                     {%endif %}
@@ -49,7 +48,7 @@ TODO:swap対象がない場合(同一イベントのハンドラが一個のみ�
                         <a href="{{ url('admin_setting_system_plugin_handler_down', {'handlerId': handler.id}) }}">↓</a>
                     {%endif %}
                 </li>
-                <li>PLUGINNAME:{{ handler.plugin.name }}</li>
+                <li>PLUGINNAME:{{ handler.plugin.name|e }}</li>
             {% endfor %}
                 <hr>
                 <hr>

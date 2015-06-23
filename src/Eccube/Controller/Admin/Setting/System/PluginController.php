@@ -32,53 +32,92 @@ class PluginController extends AbstractController
     public function install(Application $app)
     {
 
-        $form = $app['form.factory']
+        $installForm = $app['form.factory']
             ->createBuilder('plugin_local_install')
             ->getForm();
+        $service = $app['eccube.service.plugin'];
+        if ('POST' === $app['request']->getMethod()) {
+            $installForm->handleRequest($app['request']);
+            $data = $installForm->getData();
+            if($installForm->get('install')->isClicked()){
+
+                $tmpdir = $service->createTempDir() ;
+                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
+
+                $installForm['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
+
+                $service->install($tmpdir . '/' . $tmpfile);
+            }
+            
+        }
+        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_index'));
+    }
+
+    public function manage(Application $app)
+    {
+
+//        $installForm = $app['form.factory']->createBuilder('plugin_management')->getForm();
+        $builder = $app['form.factory']->createNamedBuilder('', 'plugin_management', null, array(
+            'plugin_id' => null, // placeHolder
+            'enable' => null,
+        ));
+
+        $form = $builder->getForm();
+
         $service = $app['eccube.service.plugin'];
         $em = $app['orm.em'];
         $repo=$em->getRepository('Eccube\Entity\Plugin');
         if ('POST' === $app['request']->getMethod()) {
+
             $form->handleRequest($app['request']);
             $data = $form->getData();
 
-            if($form->get('install')->isClicked()){
+            $plugin = $repo->find((int)$data['plugin_id'] ) ; 
 
-                $tmpdir = $service->createTempDir( ) ;
-                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
-
-                $form['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
-
-                $service->install($tmpdir . '/' . $tmpfile);
-            }
             if($form->get('uninstall')->isClicked()){
-                $service->uninstall(  $repo->find((int)$data['plugin_id'] )     );
+                $service->uninstall($plugin);
             }
             if($form->get('enable')->isClicked()){
-                $service->enable(  $repo->find((int)$data['plugin_id'] )     );
+                $service->enable($plugin);
             }
             if($form->get('disable')->isClicked()){
-                $service->disable(  $repo->find((int)$data['plugin_id'] )     );
+                $service->disable($plugin);
             }
             if($form->get('update')->isClicked()){
 
-                $tmpdir = $service->createTempDir( ) ;
+                $tmpdir = $service->createTempDir() ;
                 $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
 
-                $form['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
+                $installForm['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
 
-                $service->update( $repo->find((int)$data['plugin_id'] )  , $tmpdir.'/'.$tmpfile);
+                $service->update($plugin,$tmpdir.'/'.$tmpfile);
             }
-            
         }
-
-        return $app['twig']->render('Setting/System/Plugin/install.twig', array(
-            'form' => $form->createView(),
-            'plugins' => $repo->findAll() 
-        ));
-
+        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_index'));
     }
 
+    public function index(Application $app){
+        $em = $app['orm.em'];
+        $repo=$em->getRepository('Eccube\Entity\Plugin');
+        //インストールされているプラグイン毎のフォームを作成
+        $installForm = $app['form.factory']
+            ->createBuilder('plugin_local_install')
+            ->getForm();
+        $pluginForms=array();
+        foreach($repo->findAll() as $plugin ){
+
+            $builder = $app['form.factory']->createNamedBuilder('', 'plugin_management', null, array(
+                'plugin_id' => $plugin->getId(),
+                'enable' => $plugin->getEnable() 
+            ));
+            $pluginForms[$plugin->getId()] = $builder->getForm()->createView();
+        }
+        return $app['twig']->render('Setting/System/Plugin/index.twig', array(
+            'install_form' => $installForm->createView(),
+            'plugin_forms' => $pluginForms,
+            'plugins' => $repo->findBy(array(),array('id'=>'ASC')) 
+        ));
+    }
 
     function handler(Application $app)
     {
@@ -113,15 +152,4 @@ class PluginController extends AbstractController
         return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_handler'));
     }
 
-    function disable(Application $app)
-    {
-    }
-
-    function enable(Application $app)
-    {
-    }
-
-    function edit(Application $app)
-    {
-    }
 }

@@ -26,7 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}プラグインインストール{% endblock %}
 {% block main %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 
 <p>仮プラグインインストール画面
@@ -34,14 +33,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <p>uninstall,enable,disable：dtb_pluginのプラグインIDを入力して、uninstall,enable,disableボタン
 <p>update：dtb_pluginのプラグインIDとアーカイブを指定してupdateボタン
 
-<form action="install" method="post"  {{ form_enctype(form) }}>
-{{ form_widget(form) }}
+<form action="plugin/install" method="post"  {{ form_enctype(install_form) }}>
+    {{ form_widget(install_form) }}
 </form>
 
 <hr>
 現在インストールされているプラグイン一覧
 <hr>
 {% for plugin in plugins %}
+    {% set form = plugin_forms[plugin.id] %}
     <li>id:{{ plugin.id|e }}</li>
     <li>name:{{ plugin.name|e }}</li>
     <li>code:{{ plugin.code|e }}</li>
@@ -49,10 +49,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <li>version:{{ plugin.version|e }}</li>
     <li>event:{{ plugin.className|e }}</li>
     <li>del_flg:{{ plugin.delFlg|e }}</li>
+        <form action="plugin/manage" method="post"  {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+        </form>
     <hr>
 {% endfor %}
 
 {% endblock %}
-
 
 

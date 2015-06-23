@@ -234,7 +234,7 @@ class PluginService
         $em->flush(); 
         $em->getConnection()->commit();
     }
-    public function registerPlugin( $meta ,$event_yml )
+    public function registerPlugin( $meta ,$event_yml ,$source=0)
     {
 
         $em = $this->app['orm.em'];
@@ -245,7 +245,7 @@ class PluginService
           ->setClassName(isset($meta['event']) ? $meta['event']: '')
           ->setVersion($meta['version'])
           ->setDelflg(0)
-          ->setSource(0)
+          ->setSource($source)
           ->setCode($meta['code']);
 
         $em->persist($p); 

@@ -315,6 +315,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
+            $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
 
             return $types;
         }));
