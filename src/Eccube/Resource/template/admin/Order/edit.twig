@@ -23,12 +23,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_edit'] %}
 
+{% block title %}受注管理{% endblock %}
+{% block sub_title %}受注登録・編集{% endblock %}
+
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% form_theme searchCustomerModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% form_theme searchProductModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
-
-{% block title %}受注管理{% endblock %}
-{% block sub_title %}受注登録・編集{% endblock %}
 
 {% block javascript %}
 <script>

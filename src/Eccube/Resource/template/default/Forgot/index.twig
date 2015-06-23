@@ -21,8 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% block title %}パスワードの再発行{% endblock title %}
-
 {% block main %}
     <div id="contents" class="main_only">
         <div class="container-fluid inner no-padding">
@@ -33,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="col-md-10 col-md-offset-1">
                             <p>ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。</p>
                             <p>※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</p>
-                            <form name="form1" id="form1" method="post" action="?">
+                            <form name="form1" id="form1" method="post" action="{{ url('forgot') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="dl_table">
                                     <dl>

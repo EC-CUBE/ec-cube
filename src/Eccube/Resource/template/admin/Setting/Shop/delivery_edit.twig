@@ -21,22 +21,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['setting', 'shop', 'shop_delivery'] %}
+
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}配送先管理{% endblock %}
 
-{% block javascript %}
-    $(function(){
-        $("#set_fee_all").on("click", function() {
-            var fee = $("#{{ form.free_all.vars.id }}").val();
-            $("input[name$='[fee]']").val(fee);
-        });
-    });
-{% endblock %}
-
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block main %}
+{% block javascript %}
+<script>
+$(function(){
+    $("#set_fee_all").on("click", function() {
+        var fee = $("#{{ form.free_all.vars.id }}").val();
+        $("input[name$='[fee]']").val(fee);
+    });
+});
+</script>
+{% endblock javascript %}
 
+{% block main %}
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
         {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
