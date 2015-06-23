@@ -82,12 +82,6 @@ INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (1, 'HTMLメール', 
 INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (2, 'テキストメール', 1);
 INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (3, '希望しない', 2);
 
-INSERT INTO mtb_mail_template (id, name, rank) VALUES (1, '注文受付メール', 0);
-INSERT INTO mtb_mail_template (id, name, rank) VALUES (2, '注文受付メール(携帯)', 1);
-INSERT INTO mtb_mail_template (id, name, rank) VALUES (3, '注文キャンセル受付メール', 2);
-INSERT INTO mtb_mail_template (id, name, rank) VALUES (4, '取り寄せ確認メール', 3);
-INSERT INTO mtb_mail_template (id, name, rank) VALUES (5, 'お問い合わせ受付メール', 4);
-
 INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (1, 'mail_templates/order_mail.tpl', 0);
 INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (2, 'mail_templates/order_mail.tpl', 1);
 INSERT INTO mtb_mail_tpl_path (id, name, rank) VALUES (3, 'mail_templates/order_mail.tpl', 2);
