@@ -21,8 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% block title %}ご注文内容の確認{% endblock %}
-
 {% block javascript %}
 <script>
 $(function(){
@@ -133,7 +131,7 @@ $(function(){
                             {% for orderDetail in Order.orderDetails %}
                             <div class="item_box tr">
                                 <div class="td table">
-                                    <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}{{ orderDetail.product.MainListImage|no_image_main_list }}" alt="{{ orderDetail.productName }}" /></div>
+                                    <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product.MainListImage|no_image_main_list }}" alt="{{ orderDetail.productName }}" /></div>
                                     <dl class="item_detail">
                                         <dt class="item_name text-default">{{ orderDetail.productName }}</dt>
                                         <dd class="item_pattern small">
@@ -185,7 +183,7 @@ $(function(){
                         {{ Order.shippings[0].tel01 }}-{{ Order.shippings[0].tel02 }}-{{ Order.shippings[0].tel03 }}</p>
                        <div class="form-inline form-group">
                            <label>配送方法</label>
-                           {{ form_widget(form.delivery, {id : 'delivery'}) }}
+                           {{ form_widget(form.delivery, {'id' : 'delivery'}) }}
                        </div>
 
                         <div class="form-inline form-group">
@@ -205,12 +203,12 @@ $(function(){
                    <div class="column">
                        <div class="form-inline form-group">
                            <label>支払方法</label>
-                           {{ form_widget(form.payment, {id : 'payment'}) }}
+                           {{ form_widget(form.payment, {'id' : 'payment'}) }}
                        </div>
                    </div>
                    <h2 class="heading02">お問い合わせ欄</h2>
                    <div class="column">
-                       {{ form_widget(form.message, {attr:{placeholder: 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', rows : 6}}) }}
+                       {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
                    </div>
                 </div><!-- /.col -->
 

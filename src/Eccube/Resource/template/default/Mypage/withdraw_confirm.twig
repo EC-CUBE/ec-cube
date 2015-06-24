@@ -23,8 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set mypageno = 'withdraw' %}
 
-{% block title %}会員退会{% endblock title %}
-
 {% block main %}
 {% include 'Mypage/navi.twig' %}
     <h2 class="heading01">退会手続き</h2>
@@ -40,8 +38,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {{ form_widget(form._token) }}
                 <div class="row">
                     <div class="btn_group col-sm-offset-4 col-sm-4">
-                        <p><a href="{{ url('mypage') }}" class="btn btn-default btn-block">いいえ、退会しません</a></p>
-                        <p><button type="submit" class="btn btn-info btn-block" name="mode" value="complete">はい、退会します</button></p>
+                        <p><a href="{{ url('mypage') }}" class="btn btn-info btn-block">いいえ、退会しません</a></p>
+                        <p><button type="submit" class="btn btn-default btn-block" name="mode" value="complete">はい、退会します</button></p>
                     </div>
                 </div>
         </form>

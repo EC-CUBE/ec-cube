@@ -23,14 +23,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% set menus = ['order', 'order_edit'] %}
 
+{% block title %}受注管理{% endblock %}
+{% block sub_title %}受注登録・編集{% endblock %}
+
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% form_theme searchCustomerModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 {% form_theme searchProductModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block title %}受注管理{% endblock %}
-{% block sub_title %}受注登録・編集{% endblock %}
-
-{% block onload %}
+{% block javascript %}
+<script>
+$(function() {
     // 注文者情報をコピー
     $('#copyCustomerToShippingButton').on('click', function() {
         $('#order_Shippings_0_name_name01').val($('#order_name_name01').val());
@@ -139,9 +141,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     // 受注明細行の行数カウンタ.
     // 受注登録・編集画面上でグローバルな変数.
     // search_product.twig/order_detail_prototype.twigで利用しています.
-    eccube.order_details_count = '{{ form.OrderDetails|length }}';
+    order_details_count = '{{ form.OrderDetails|length }}';
 
-{% endblock %}
+});
+
+</script>
+{% endblock javascript %}
 
 {% block main %}
 <div class="row" id="aside_wrap">
@@ -293,7 +298,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <span class="item_subtotal"><span class="small">小計</span> \ {{ orderDetailForm.vars.value.total_price|number_format }}</span>
                                     </div>
                                     <div class="icon_edit td">
-                                        <button class="btn btn-default btn-sm" onclick="$(this).parent().parent().remove(); eccube.order_details_count--;">削除</button>
+                                        <button class="btn btn-default btn-sm" onclick="$(this).parent().parent().remove(); order_details_count--;">削除</button>
                                     </div>
                                 </div><!-- /.item_box -->
                             {% endfor %}

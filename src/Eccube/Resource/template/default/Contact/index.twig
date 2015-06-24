@@ -44,7 +44,7 @@ $(function() {
                         <div class="col-md-10 col-md-offset-1">
                             <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
                                 また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
-                            <form name="form1" id="form1" method="post" action="?">
+                            <form name="form1" id="form1" method="post" action="{{ url('contact') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="dl_table">
                                     {{ form_row(form.name, {attr : {class : 'middle'}}) }}
@@ -69,7 +69,7 @@ $(function() {
                                             </div>
                                         </dd>
                                     </dl>
-                                    {{ form_row(form.contents) }}
+                                    {{ form_row(form.contents, {'attr': {'rows': '70'}}) }}
                                 </div>
                                 <input type="hidden" name="mode" value="confirm">
                                 <div class="row no-padding">

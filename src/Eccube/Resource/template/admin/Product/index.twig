@@ -26,39 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品マスター{% endblock %}
 
-{% block javascript %}
-<script>
-    // URLの表示非表示切り替え
-    function lfnDispChange(){
-        inner_id = 'switch';
-
-        cnt = document.form1.item_cnt.value;
-
-        if($('#disp_url1').css("display") == 'none'){
-            for (i = 1; i <= cnt; i++) {
-                disp_id = 'disp_url'+i;
-                $('#' + disp_id).css("display", "");
-
-                disp_id = 'disp_cat'+i;
-                $('#' + disp_id).css("display", "none");
-
-                $('#' + inner_id).html('    URL <a href="#" onclick="lfnDispChange();"> &gt;&gt; カテゴリ表示<\/a>');
-            }
-        } else {
-            for (i = 1; i <= cnt; i++) {
-                disp_id = 'disp_url'+i;
-                $('#' + disp_id).css("display", "none");
-
-                disp_id = 'disp_cat'+i;
-                $('#' + disp_id).css("display", "");
-
-                $('#' + inner_id).html('    カテゴリ <a href="#" onclick="lfnDispChange();"> &gt;&gt; URL表示<\/a>');
-            }
-        }
-    }
-</script>
-{% endblock javascript %}
-
 {% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
@@ -207,7 +174,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="item_box tr">
                                             <div class="item_photo td">
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
-                                                	<img src="{{ app.config.image_save_urlpath }}{{ Product.mainFileName|no_image_main_list }}" />
+                                                	<img src="{{ app.config.image_save_urlpath }}/{{ Product.mainFileName|no_image_main_list }}" />
                                                 </a>
                                             </div>
                                             <div class="item_detail td">

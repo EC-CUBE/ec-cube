@@ -22,43 +22,43 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block javascript %}
-    <script>
-    $(function(){
-        $('.main_visual').slick({
-            dots: true,
-            arrows: false,
-            autoplay: true,
-            speed: 300
-        });
-
-        $('.carousel').slick({
-            infinite: false,
-            speed: 300,
-            prevArrow:'<button type="button" class="slick-prev"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
-            nextArrow:'<button type="button" class="slick-next"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
-            slidesToShow: 4,
-            slidesToScroll: 4,
-            responsive: [
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3
-                    }
-                }
-            ]
-        });
-
-        $('.slides').slick({
-            dots: true,
-            arrows: false,
-            speed: 300,
-            customPaging: function(slider, i) {
-                return '<button class="thumbnail">' + $(slider.$slides[i]).find('img').prop('outerHTML') + '</button>';
-            }
-        });
+<script>
+$(function(){
+    $('.main_visual').slick({
+        dots: true,
+        arrows: false,
+        autoplay: true,
+        speed: 300
     });
-    </script>
+
+    $('.carousel').slick({
+        infinite: false,
+        speed: 300,
+        prevArrow:'<button type="button" class="slick-prev"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
+        nextArrow:'<button type="button" class="slick-next"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                }
+            }
+        ]
+    });
+
+    $('.slides').slick({
+        dots: true,
+        arrows: false,
+        speed: 300,
+        customPaging: function(slider, i) {
+            return '<button class="thumbnail">' + $(slider.$slides[i]).find('img').prop('outerHTML') + '</button>';
+        }
+    });
+});
+</script>
 {% endblock %}
 
 {% block main %}

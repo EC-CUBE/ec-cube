@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
+<script>
 function fnChangeActionSubmit(action) {
     document.search_form.action = action;
     document.search_form.submit();
@@ -45,7 +46,8 @@ function fnReSendMail(action) {
         document.search_form.submit();
     }
 }
-{% endblock %}
+</script>
+{% endblock javascript %}
 
 {% block main %}
 <form name="search_form" id="search_form" method="post" action="">
@@ -203,7 +205,7 @@ function fnReSendMail(action) {
                 <div class="box-header with-arrow">
                     <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body no-padding">
                     <div class="row">
                         <div class="col-md-12">
                             <ul class="sort-dd">

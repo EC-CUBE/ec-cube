@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <div class="td table">
                                     <div class="item_photo">
                                         <a href="{{ url('product_detail', { id : OrderDetail.ProductClass.id } ) }}">
-                                            <img src="{{ app.config.image_save_urlpath }}{{ OrderDetail.Product.mainFileName|no_image_main_list }}">
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_main_list }}">
                                         </a>
                                     </div>
                                     <dl class="item_detail">
@@ -73,8 +73,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 / {{ OrderDetail.classcategory_name2 }}
                                             {% endif %}
                                         </dd>
-                                        <dd class="item_price">￥{{ OrderDetail.price_inc_tax|number_format }} × {{ OrderDetail.quantity }}</dd>
-                                        <dd class="item_subtotal">小計：￥ {{ OrderDetail.total_price|number_format }}</dd>
+                                        <dd class="item_price">{{ OrderDetail.price_inc_tax|price }} × {{ OrderDetail.quantity }}</dd>
+                                        <dd class="item_subtotal">小計：{{ OrderDetail.total_price|price }}</dd>
                                     </dl>
                                 </div>
                             </div><!--/item_box-->
@@ -94,7 +94,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
                         </p>
                         <p>
-                            配送方法：　{{ Shipping.shipping_delivery_name }}（＋￥{{ Shipping.delivery_fee.fee|number_format }}）<br>
+                            配送方法：　{{ Shipping.shipping_delivery_name }}（＋{{ Shipping.delivery_fee.fee|price }}）<br>
                             お届け日：　{{ Shipping.shipping_date|default('指定なし') }}<br>
                             お届け時間：　{{ Shipping.shipping_time|default('指定なし') }}
                         </p>
@@ -150,27 +150,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="total_box">
                     <dl>
                         <dt>小計</dt>
-                        <dd class="text-primary">￥{{ Order.subtotal|number_format }}</dd>
+                        <dd class="text-primary">{{ Order.subtotal|price }}</dd>
                     </dl>
                     <dl>
                         <dt>手数料</dt>
-                        <dd>￥{{ Order.charge|number_format }}</dd>
+                        <dd>{{ Order.charge|price }}</dd>
                     </dl>
                     <dl>
                         <dt>送料合計</dt>
-                        <dd>￥{{ Order.delivery_fee_total|number_format }}</dd>
+                        <dd>{{ Order.delivery_fee_total|price }}</dd>
                     </dl>
                     <dl>
                         <dt>値引き</dt>
                         <dd>
                             {% if Order.discount > 0 %}
-                                &minus;￥{{ Order.discount|number_format }}
+                                &minus;{{ Order.discount|price }}
                             {% endif %}
                         </dd>
                     </dl>
 
                     <div class="total_amount">
-                        <p class="total_price">合計 <strong class="text-primary">￥{{ Order.payment_total|number_format }}<span class="small">税込</span></strong></p>
+                        <p class="total_price">合計 <strong class="text-primary">{{ Order.payment_total|price }}<span class="small">税込</span></strong></p>
                     </div>
                 </div>
 
