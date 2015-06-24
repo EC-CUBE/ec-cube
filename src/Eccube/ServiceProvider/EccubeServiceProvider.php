@@ -248,6 +248,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\AddressType();
             $types[] = new \Eccube\Form\Type\PaymentType();
             $types[] = new \Eccube\Form\Type\DeliveryType();
+            $types[] = new \Eccube\Form\Type\DeliveryDateType();
             $types[] = new \Eccube\Form\Type\DeliveryFeeType();
             $types[] = new \Eccube\Form\Type\DeliveryTimeType();
             $types[] = new \Eccube\Form\Type\ProductTypeType();
@@ -272,7 +273,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
             $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
             $types[] = new \Eccube\Form\Type\Master\PageMaxType();
-            $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
             $types[] = new \Eccube\Form\Type\CustomerType($app);

@@ -32,6 +32,8 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $price01_inc_tax = null;
     private $price02_inc_tax = null;
     private $point = null;
+    private $add = false;
+    private $tax_rate = false;
 
     /**
      * Is Enable
@@ -127,6 +129,55 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set add
+     *
+     * @param  bool $add
+     * @return ProductClass
+     */
+    public function setAdd($add)
+    {
+        $this->add = $add;
+
+        return $this;
+    }
+
+    /**
+     * Get add
+     *
+     * @return bool
+     */
+    public function getAdd()
+    {
+        return $this->add;
+    }
+
+
+    /**
+     * Set tax_rate
+     *
+     * @param  string $tax_rate
+     * @return ProductClass
+     */
+    public function setTaxRate($tax_rate)
+    {
+        $this->tax_rate = $tax_rate;
+
+        return $this;
+    }
+
+    /**
+     * Get tax_rate
+     *
+     * @return string
+     */
+    public function getTaxRate()
+    {
+        return $this->tax_rate;
+    }
+
+
+
+    /**
      * @var integer
      */
     private $id;
@@ -164,7 +215,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $deliv_fee;
+    private $delivery_fee;
 
     /**
      * @var string
@@ -365,26 +416,26 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set deliv_fee
+     * Set delivery_fee
      *
-     * @param  string       $delivFee
+     * @param  string       $deliveryFee
      * @return ProductClass
      */
-    public function setDelivFee($delivFee)
+    public function setDeliveryFee($deliveryFee)
     {
-        $this->deliv_fee = $delivFee;
+        $this->delivery_fee = $deliveryFee;
 
         return $this;
     }
 
     /**
-     * Get deliv_fee
+     * Get delivery_fee
      *
      * @return string
      */
-    public function getDelivFee()
+    public function getDeliveryFee()
     {
-        return $this->deliv_fee;
+        return $this->delivery_fee;
     }
 
     /**
@@ -664,5 +715,33 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getProductStock()
     {
         return $this->ProductStock;
+    }
+    /**
+     * @var \Eccube\Entity\TaxRule
+     */
+    private $TaxRule;
+
+
+    /**
+     * Set TaxRule
+     *
+     * @param \Eccube\Entity\TaxRule $taxRule
+     * @return ProductClass
+     */
+    public function setTaxRule(\Eccube\Entity\TaxRule $taxRule = null)
+    {
+        $this->TaxRule = $taxRule;
+
+        return $this;
+    }
+
+    /**
+     * Get TaxRule
+     *
+     * @return \Eccube\Entity\TaxRule 
+     */
+    public function getTaxRule()
+    {
+        return $this->TaxRule;
     }
 }
