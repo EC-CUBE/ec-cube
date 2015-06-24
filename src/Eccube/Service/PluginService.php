@@ -27,6 +27,7 @@ namespace Eccube\Service;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Eccube\Exception\PluginException;
 
 class PluginService
 {
@@ -103,10 +104,10 @@ class PluginService
        $event = $this->readYml($tmp."/event.yml");
 
        if($plugin->getCode() != $config['code']){
-           throw new \Exception("new/old plugin code is different.");
+           throw new PluginException("new/old plugin code is different.");
        }
        if($plugin->getName() != $config['name']){
-           throw new \Exception("new/old plugin name is different.");
+           throw new PluginException("new/old plugin name is different.");
        }
 
        $pluginBaseDir =  $this->calcPluginDir($config['name'])  ;
@@ -129,7 +130,7 @@ class PluginService
     {
         $repo = $this->app['eccube.repository.plugin'];
         if(count($repo->getPluginByCode($code,true))){
-            throw new \Exception('plugin already installed.');
+            throw new PluginException('plugin already installed.');
         }
 
     }
@@ -137,19 +138,19 @@ class PluginService
     {
        $meta = $this->readYml($dir."/config.yml");
        if(!is_array($meta)) {
-           throw new \Exception("config.yml not found or syntax error");
+           throw new PluginException("config.yml not found or syntax error");
        }
        if(!$this->checkSymbolName($meta['code'])){
-           throw new \Exception("config.yml code  has invalid_character(\W) ");
+           throw new PluginException("config.yml code  has invalid_character(\W) ");
        }
        if(!$this->checkSymbolName($meta['name'])){
-           throw new \Exception("config.yml name  has invalid_character(\W)");
+           throw new PluginException("config.yml name  has invalid_character(\W)");
        }
        if(isset($meta['event']) and !$this->checkSymbolName($meta['event'])){
-           throw new \Exception("config.yml event has invalid_character(\W) ");
+           throw new PluginException("config.yml event has invalid_character(\W) ");
        }
        if(!isset($meta['version'])){
-           throw new \Exception("config.yml version not defined. ");
+           throw new PluginException("config.yml version not defined. ");
        }
     }
 
@@ -172,7 +173,7 @@ class PluginService
         @mkdir($base);
         $d=($base.'/'.sha1( openssl_random_pseudo_bytes(16) ));
         if(!mkdir($d,0777)){
-            throw new \Exception($php_errormsg);
+            throw new PluginException($php_errormsg);
         }
         return $d;
         
@@ -181,7 +182,7 @@ class PluginService
     {
         $b=mkdir($d);
         if(!$b){
-            throw new \Exception($php_errormsg);
+            throw new PluginException($php_errormsg);
         }
     }
     public function unpackPluginArchive($archive,$dir)
@@ -205,7 +206,7 @@ class PluginService
             foreach($event_yml as $event=>$handlers){
                 foreach($handlers as $handler){
                     if( !$this->checkSymbolName($handler[0]) ){
-                        throw new \Exception("Handler name format error");
+                        throw new PluginException("Handler name format error");
                     }
                     // updateで追加されたハンドラかどうか調べる
                     $peh = $rep->findBy(array('del_flg'=>0,'plugin_id'=> $plugin->getId(),'event' => $event ,'handler' => $handler[0] ));
@@ -254,7 +255,7 @@ class PluginService
             foreach($event_yml as $event=>$handlers){
                 foreach($handlers as $handler){
                     if( !$this->checkSymbolName($handler[0]) ){
-                        throw new \Exception("Handler name format error");
+                        throw new PluginException("Handler name format error");
                     }
                     $peh = new \Eccube\Entity\PluginEventHandler();
                     $peh->setPlugin($p)

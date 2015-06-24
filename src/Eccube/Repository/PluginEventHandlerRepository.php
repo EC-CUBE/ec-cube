@@ -25,6 +25,8 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Entity\PluginEventHandler;
+use Eccube\Exception\PluginException;
+
 
 /**
  * PluginEventHandlerRepository
@@ -105,8 +107,6 @@ class PluginEventHandlerRepository extends EntityRepository
 
         $result=$qb->getQuery()->getResult();
 
-#        var_dump($result=$qb->getQuery()->getSQL());
-
         if(count($result)){
             $em =$this->getEntityManager();
             $em->getConnection()->beginTransaction();
@@ -121,7 +121,7 @@ class PluginEventHandlerRepository extends EntityRepository
             # 移動する
         }else{
             # 移動しない
-            throw new \Exception("移動先がありません");
+            throw new PluginException("Can't swap");
         }
 
 
