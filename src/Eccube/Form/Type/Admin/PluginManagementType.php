@@ -28,8 +28,10 @@ use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
+use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PluginLocalInstallType extends AbstractType
+
+class PluginManagementType extends AbstractType
 {
 
     public function __construct()
@@ -43,15 +45,30 @@ class PluginLocalInstallType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
+        $plugin_id=$options['plugin_id'];
+        $enable=$options['enable'];
+
         $builder
+            ->add('uninstall', 'submit') 
+            ->add('enable', 'submit',array(
+                'disabled'=>(boolean)$enable
+            )) 
+            ->add('disable', 'submit',array(
+                'disabled'=>!(boolean)$enable
+            )) 
+            ->add('plugin_id', 'hidden', array(
+                'data' => $plugin_id,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
             ->add('plugin_archive', 'file', array(
-                'label' => 'プラグイン(tar形式)',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
                 'required' => false
             ))
-            ->add('install', 'submit') 
+            ->add('update', 'submit') 
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -60,6 +77,14 @@ class PluginLocalInstallType extends AbstractType
      */
     public function getName()
     {
-        return 'plugin_local_install';
+        return 'plugin_management';
     }
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(array('plugin_id','enable'));
+    }
+
 }
