@@ -31,6 +31,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
@@ -146,6 +147,17 @@ class ProductClassController
             $flg = false;
 
             $mergeProductClasses = array();
+
+            // 商品税率が設定されている場合、商品税率を項目に設定
+            $BaseInfo = $app['eccube.repository.base_info']->get();
+            if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+                foreach ($ProductClasses as $class) {
+                    if ($class->getTaxRule()) {
+                        $class->setTaxRate($class->getTaxRule()->getTaxRate());
+                    }
+                }
+            }
+
 
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($createProductClasses as $createProductClass) {
@@ -265,7 +277,7 @@ class ProductClassController
                     $defaultProductClass = $app['eccube.repository.product_class']
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
 
-                    $defaultProductClass->setDelFlg($app['config']['enabled']);
+                    $defaultProductClass->setDelFlg(Constant::ENABLED);
 
                     $app['orm.em']->flush();
 
@@ -308,6 +320,8 @@ class ProductClassController
                         $app['orm.em']->remove($ProductClass);
                     }
 
+                    $app['orm.em']->flush();
+
                     // 選択された商品規格を登録
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
@@ -339,7 +353,7 @@ class ProductClassController
                     $defaultProductClass = $app['eccube.repository.product_class']
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => $app['config']['enabled']));
 
-                    $defaultProductClass->setDelFlg($app['config']['disabled']);
+                    $defaultProductClass->setDelFlg(Constant::DISABLED);
 
 
                     $app['orm.em']->flush();
@@ -431,14 +445,16 @@ class ProductClassController
                     $ProductClass->setProduct($Product);
                     $ProductClass->setClassCategory1($ClassCategory1);
                     $ProductClass->setClassCategory2($ClassCategory2);
-                    $ProductClass->setDelFlg($app['config']['disabled']);
+                    $ProductClass->setTaxRate(null);
+                    $ProductClass->setDelFlg(Constant::DISABLED);
                     $ProductClasses[] = $ProductClass;
                 }
             } else {
                 $ProductClass = $this->newProductClass($app);
                 $ProductClass->setProduct($Product);
                 $ProductClass->setClassCategory1($ClassCategory1);
-                $ProductClass->setDelFlg($app['config']['disabled']);
+                $ProductClass->setTaxRate(null);
+                $ProductClass->setDelFlg(Constant::DISABLED);
                 $ProductClasses[] = $ProductClass;
             }
 
@@ -517,7 +533,7 @@ class ProductClassController
 
         // 選択された商品を登録
         foreach ($ProductClasses as $ProductClass) {
-            $ProductClass->setDelFlg($app['config']['disabled']);
+            $ProductClass->setDelFlg(Constant::DISABLED);
             $ProductClass->setProduct($Product);
             $app['orm.em']->persist($ProductClass);
 
@@ -536,16 +552,21 @@ class ProductClassController
         }
 
         // 商品税率が設定されている場合、商品税率をセット
-        if ($BaseInfo->getOptionProductTaxRule()) {
-            // $CalcRule = $app['eccube.repository.master.taxrule']->get();
+        if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+            // 初期設定の税設定.
+            $TaxRule = $app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
+            // 初期税率設定の計算方法を設定する
+            $CalcRule = $TaxRule->getCalcRule();
             foreach ($ProductClasses as $ProductClass) {
-                // TODO 商品税率の取得方法
-                if ($ProductClass->getDelFlg()) {
+                if ($ProductClass->getTaxRate()) {
                     $TaxRule = new \Eccube\Entity\TaxRule();
                     $TaxRule->setProduct($Product);
                     $TaxRule->setProductClass($ProductClass);
-                    // $TaxRule->setCalcRule();
-                    // $TaxRule->setTaxRate();
+                    $TaxRule->setCalcRule($CalcRule);
+                    $TaxRule->setTaxRate($ProductClass->getTaxRate());
+                    $TaxRule->setTaxAdjust(0);
+                    $TaxRule->setApplyDate(new \DateTime());
+                    $TaxRule->setDelFlg(Constant::DISABLED);
                     $app['orm.em']->persist($TaxRule);
                 }
             }

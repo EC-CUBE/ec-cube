@@ -137,4 +137,8 @@ Eccube\Entity\ProductClass:
             targetEntity: Eccube\Entity\ProductStock
             cascade: ["persist", "remove"]
             mappedBy: ProductClass
+        TaxRule:
+            targetEntity: Eccube\Entity\TaxRule
+            cascade: ["persist", "remove"]
+            mappedBy: ProductClass
     lifecycleCallbacks: {  }

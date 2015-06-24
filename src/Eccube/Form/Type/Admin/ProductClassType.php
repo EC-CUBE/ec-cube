@@ -80,9 +80,11 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('tax_rate', 'number', array(
+            ->add('tax_rate', 'text', array(
                 'label' => '消費税率',
-                'mapped' => false,
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Range(array('min' => 0, 'max' => 100))),
             ))
             ->add('delivery_fee', 'money', array(
                 'label' => '商品送料',

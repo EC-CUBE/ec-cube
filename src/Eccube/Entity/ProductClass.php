@@ -33,6 +33,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $price02_inc_tax = null;
     private $point = null;
     private $add = false;
+    private $tax_rate = false;
 
     /**
      * Is Enable
@@ -130,7 +131,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set add
      *
-     * @param  string $add
+     * @param  bool $add
      * @return ProductClass
      */
     public function setAdd($add)
@@ -148,6 +149,30 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getAdd()
     {
         return $this->add;
+    }
+
+
+    /**
+     * Set tax_rate
+     *
+     * @param  string $tax_rate
+     * @return ProductClass
+     */
+    public function setTaxRate($tax_rate)
+    {
+        $this->tax_rate = $tax_rate;
+
+        return $this;
+    }
+
+    /**
+     * Get tax_rate
+     *
+     * @return string
+     */
+    public function getTaxRate()
+    {
+        return $this->tax_rate;
     }
 
 
@@ -690,5 +715,33 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getProductStock()
     {
         return $this->ProductStock;
+    }
+    /**
+     * @var \Eccube\Entity\TaxRule
+     */
+    private $TaxRule;
+
+
+    /**
+     * Set TaxRule
+     *
+     * @param \Eccube\Entity\TaxRule $taxRule
+     * @return ProductClass
+     */
+    public function setTaxRule(\Eccube\Entity\TaxRule $taxRule = null)
+    {
+        $this->TaxRule = $taxRule;
+
+        return $this;
+    }
+
+    /**
+     * Get TaxRule
+     *
+     * @return \Eccube\Entity\TaxRule 
+     */
+    public function getTaxRule()
+    {
+        return $this->TaxRule;
     }
 }
