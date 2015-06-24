@@ -52,14 +52,6 @@ class PluginLocalInstallType extends AbstractType
                 'required' => false
             ))
             ->add('install', 'submit') 
-            ->add('plugin_id', 'text', array(
-                'label' => 'プラグインID',
-                'required' => false
-            ))
-            ->add('uninstall', 'submit') 
-            ->add('enable', 'submit') 
-            ->add('disable', 'submit') 
-            ->add('update', 'submit') 
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 

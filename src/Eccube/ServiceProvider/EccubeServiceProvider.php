@@ -203,7 +203,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.help'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Help');
         });
-
+        $app['eccube.repository.plugin'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Plugin');
+        });
+        $app['eccube.repository.plugin_event_handler'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
+        });
         // em
         if (isset($app['orm.em'])) {
             $point_rule = $app['config']['point_rule'];
@@ -243,6 +248,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\AddressType();
             $types[] = new \Eccube\Form\Type\PaymentType();
             $types[] = new \Eccube\Form\Type\DeliveryType();
+            $types[] = new \Eccube\Form\Type\DeliveryDateType();
             $types[] = new \Eccube\Form\Type\DeliveryFeeType();
             $types[] = new \Eccube\Form\Type\DeliveryTimeType();
             $types[] = new \Eccube\Form\Type\ProductTypeType();
@@ -267,7 +273,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
             $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
             $types[] = new \Eccube\Form\Type\Master\PageMaxType();
-            $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
             $types[] = new \Eccube\Form\Type\CustomerType($app);
@@ -315,6 +320,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\SecurityType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
+            $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
 
             $types[] = new \Eccube\Form\Type\Install\Step1Type($app);
             $types[] = new \Eccube\Form\Type\Install\Step3Type($app);

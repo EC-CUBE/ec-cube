@@ -1,0 +1,155 @@
+
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+	#svgicon {
+		width: 0; height: 0; overflow: hidden;
+	}
+	body {
+		padding: 0;
+		margin: 0;
+		font-family: sans-serif;
+		font-size: 1em;
+		line-height: 1.5;
+		color: #444;
+		background: #fff;
+	}
+	ul {
+		font-size: 30px;
+		list-style-type: none;
+	}
+	.cb {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		vertical-align: middle;
+		fill: currentColor;
+	}
+	.cb-images {
+		width: 1.125em;
+	}
+	.icon-bg {
+		fill: #b6bcc2;
+	}
+	.icon-with-bg {
+		fill: #fff;
+	}
+</style>
+</head>
+<body>
+
+<header>
+	<h1>EC-CUBE SVG icons (for front)</h1>
+</header>
+
+<ul>
+    <li>
+        <svg class="cb cb-angle-down">
+          <use xlink:href="#cb-angle-down" />
+        </svg>
+        <span> cb-angle-down</span>
+    </li>
+    <li>
+        <svg class="cb cb-angle-right">
+          <use xlink:href="#cb-angle-right" />
+        </svg>
+        <span> cb-angle-right</span>
+    </li>
+    <li>
+        <svg class="cb cb-search">
+          <use xlink:href="#cb-search" />
+        </svg>
+        <span> cb-search</span>
+    </li>
+    <li>
+        <svg class="cb cb-shopping-cart">
+          <use xlink:href="#cb-shopping-cart" />
+        </svg>
+        <span> cb-shopping-cart</span>
+    </li>
+    <li>
+        <svg class="cb cb-heart">
+          <use xlink:href="#cb-heart" />
+        </svg>
+        <span> cb-heart</span>
+    </li>
+    <li>
+        <svg class="cb cb-user-circle">
+          <use xlink:href="#cb-user-circle" />
+        </svg>
+        <span> cb-user-circle</span>
+    </li>
+    <li>
+        <svg class="cb cb-heart-circle">
+          <use xlink:href="#cb-heart-circle" />
+        </svg>
+        <span> cb-heart-circle</span>
+    </li>
+    <li>
+        <svg class="cb cb-lock-circle icon-bg">
+          <use xlink:href="#cb-lock-circle" />
+        </svg>
+        <span> cb-lock-circle</span>
+    </li>
+    <li>
+        <svg class="cb cb-close">
+          <use xlink:href="#cb-close" />
+        </svg>
+        <span> cb-close</span>
+    </li>
+    <li>
+        <svg class="cb cb-question">
+          <use xlink:href="#cb-question" />
+        </svg>
+        <span> cb-question</span>
+    </li>
+    <li>
+        <svg class="cb cb-warning">
+          <use xlink:href="#cb-warning" />
+        </svg>
+        <span> cb-warning</span>
+    </li>
+    <li>
+        <svg class="cb cb-eye">
+          <use xlink:href="#cb-eye" />
+        </svg>
+        <span> cb-eye</span>
+    </li>
+    <li>
+		<svg class="cb cb-ellipsis">
+			<use xlink:href="#cb-ellipsis" />
+        </svg>
+        <span> cb-ellipsis</span>
+	</li>
+    <li>
+        <svg class="cb cb-logomark">
+          <use xlink:href="#cb-logomark" />
+        </svg>
+        <span> cb-logomark</span>
+    </li>
+    <li>
+        <svg class="cb cb-logotext">
+          <use xlink:href="#cb-logotext" />
+        </svg>
+        <span> cb-logotext</span>
+    </li>
+</ul>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $.ajax({
+          type: 'GET',
+          url: './svg.html',
+          dataType: 'html',
+          success: function(data){
+            $('body').prepend(data);
+            },
+          error: function() {
+            console.log('error');
+          }
+        });
+    });
+</script>
+</body>
+</html>

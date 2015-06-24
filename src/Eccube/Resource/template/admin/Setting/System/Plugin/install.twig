@@ -22,39 +22,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['setting', 'ownersstore', 'plugin'] %}
+{% set menus = ['setting', 'ownersstore', 'plugininstall'] %}
 
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}プラグインインストール{% endblock %}
 {% block main %}
 
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
-
+<a href="{{ url('admin_setting_system_plugin_index') }}">プラグイン一覧へ</a><br>
 
 <p>仮プラグインインストール画面
 <p>install：アーカイブを選択して、installボタン
-<p>uninstall,enable,disable：dtb_pluginのプラグインIDを入力して、uninstall,enable,disableボタン
-<p>update：dtb_pluginのプラグインIDとアーカイブを指定してupdateボタン
 
-<form action="install" method="post"  {{ form_enctype(form) }}>
-{{ form_widget(form) }}
+<form action="" method="post"  {{ form_enctype(install_form) }}>
+    {{ form_widget(install_form) }}
 </form>
 
-<hr>
-現在インストールされているプラグイン一覧
-<hr>
-{% for plugin in plugins %}
-    <li>id:{{ plugin.id|e }}</li>
-    <li>name:{{ plugin.name|e }}</li>
-    <li>code:{{ plugin.code|e }}</li>
-    <li>enable:{{ plugin.enable|e }}</li>
-    <li>version:{{ plugin.version|e }}</li>
-    <li>event:{{ plugin.className|e }}</li>
-    <li>del_flg:{{ plugin.delFlg|e }}</li>
-    <hr>
-{% endfor %}
 
 {% endblock %}
-
 
 
