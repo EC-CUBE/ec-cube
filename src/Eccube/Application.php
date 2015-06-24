@@ -67,11 +67,14 @@ class Application extends \Silex\Application
 
         // init mail
         $this->initMail();
-        // ORM
-        $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'db.options' => $this['config']['database']
-        ));
-        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
+
+        // init doctrine orm
+        $this->initDoctrine();
+
+        // EventDispatcher
+        $app['eccube.event.dispatcher'] = $app->share(function () {
+            return new EventDispatcher();
+        });
 
         // Plugin
         $basePath = __DIR__ . '/../../app/Plugin';
@@ -81,46 +84,6 @@ class Application extends \Silex\Application
             ->depth(0);
 
         $finder->sortByName();
-
-        // プラグインのmeta定義は先にやっておく必要がある
-        $orm_mappings[] = array(
-            'type' => 'yml',
-            'namespace' => 'Eccube\Entity',
-            'path' => array(
-                __DIR__ . '/Resource/doctrine',
-                __DIR__ . '/Resource/doctrine/master',
-            ),
-        );
-
-        foreach ($finder as $dir) {
-            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
-
-            // Doctrine Extend
-            if (isset($config['orm.path']) and is_array( $config['orm.path'])) {
-                $paths = array();
-                foreach ($config['orm.path'] as $path) {
-                    $paths[] = $basePath . '/' . $config['name'] . $path;
-                }
-                $orm_mappings[] = array(
-                    'type' => 'yml',
-                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
-                    'path' => $paths,
-                );
-            }
-        }
-
-        //Doctrine ORM
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => $orm_mappings,
-            ),
-        ));
-
-        // EventDispatcher
-        $app['eccube.event.dispatcher'] = $app->share(function () {
-            return new EventDispatcher();
-        });
 
         // EventSubscriber
         if (isset($app['env'] ) and $app['env'] !== 'cli') { // cliモードではテーブルがない場合があるのでロードしない
@@ -479,6 +442,56 @@ class Application extends \Silex\Application
             $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
         }
     }
+
+    public function initDoctrine()
+    {
+        $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+            'db.options' => $this['config']['database']
+        ));
+        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
+
+        // プ８ラグインのmetadata定義を合わせて行う.
+        $pluginBasePath = __DIR__ . '/../../app/Plugin';
+        $finder = Finder::create()
+            ->in($pluginBasePath)
+            ->directories()
+            ->depth(0);
+
+        $ormMppings = array();
+        $ormMppings[] = array(
+            'type' => 'yml',
+            'namespace' => 'Eccube\Entity',
+            'path' => array(
+                __DIR__ . '/Resource/doctrine',
+                __DIR__ . '/Resource/doctrine/master',
+            ),
+        );
+
+        foreach ($finder as $dir) {
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+
+            // Doctrine Extend
+            if (isset($config['orm.path']) and is_array( $config['orm.path'])) {
+                $paths = array();
+                foreach ($config['orm.path'] as $path) {
+                    $paths[] = $ormMppings . '/' . $config['name'] . $path;
+                }
+                $ormMppings[] = array(
+                    'type' => 'yml',
+                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'path' => $paths,
+                );
+            }
+        }
+
+        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.em.options' => array(
+                'mappings' => $ormMppings,
+            ),
+        ));
+    }
+
 
     public function addSuccess($message, $namespace = 'front')
     {
