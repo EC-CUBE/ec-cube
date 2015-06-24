@@ -50,41 +50,21 @@ class Application extends \Silex\Application
         // init monolog
         $this->initLogger();
 
-        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-
         // init session
         $this->initSession();
 
         // init twig.
         $this->initRendering();
 
+        // init locale
+        $this->initLocale();
+
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
-        // init locale
-        $this->initLocale();
-
-        // init mailer
-        $this->initMailer();
-
-        // init doctrine orm
-        $this->initDoctrine();
-
-        // set up event dispatcher
-        $this->initPluginEventDispatcher();
-
-        // load plugin
-        $this->loadPlugin();
-
-        // init security.
-        $this->initSecurity();
-
-        $this->register(new ServiceProvider\EccubeServiceProvider());
-
-        $app->mount('', new ControllerProvider\FrontControllerProvider());
-        $app->mount('/' . trim($app['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
-        $app->error(function (\Exception $e, $code) use ($app) {
+        $app = $this;
+        $this->error(function (\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;
             }
@@ -101,9 +81,31 @@ class Application extends \Silex\Application
             ));
         });
 
+        // init mailer
+        $this->initMailer();
+
+        // init doctrine orm
+        $this->initDoctrine();
+
+        // setup event dispatcher
+        $this->initPluginEventDispatcher();
+
+        // load plugin
+        $this->loadPlugin();
+
+        // init security.
+        $this->initSecurity();
+
+        // init ec-cube service provider
+        $this->register(new ServiceProvider\EccubeServiceProvider());
+
+        // mount controllers
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $app->mount('', new ControllerProvider\FrontControllerProvider());
+        $app->mount('/' . trim($app['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
     }
 
-    public function parseController(Request $request)
+    protected function parseController(Request $request)
     {
         $route = str_replace('_', '.', $request->attributes->get('_route'));
 
