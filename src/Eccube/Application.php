@@ -62,16 +62,8 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
-        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
-            'locale' => 'ja',
-        ));
-        $app['translator'] = $app->share($app->extend('translator', function ($translator, \Silex\Application $app) {
-            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
-            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', 'ja');
-
-            return $translator;
-        }));
-
+        // init locale
+        $this->initLocale();
 
         // Mail
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
@@ -402,6 +394,19 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\SessionServiceProvider());
     }
 
+    public function initLocale()
+    {
+        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
+            'locale' => 'ja',
+        ));
+        $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
+            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', 'ja');
+
+            return $translator;
+        }));
+    }
+
     public function initRendering()
     {
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
@@ -451,7 +456,6 @@ class Application extends \Silex\Application
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
-                echo 'hogehoge';
             // フロント画面
             } else {
                 try {
