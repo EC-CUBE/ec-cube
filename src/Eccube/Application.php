@@ -65,8 +65,8 @@ class Application extends \Silex\Application
         // init locale
         $this->initLocale();
 
-        // init mail
-        $this->initMail();
+        // init mailer
+        $this->initMailer();
 
         // init doctrine orm
         $this->initDoctrine();
@@ -322,7 +322,7 @@ class Application extends \Silex\Application
         }, self::LATE_EVENT);
     }
 
-    public function initMail()
+    public function initMailer()
     {
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
         $this['swiftmailer.options'] = $this['config']['mail'];
@@ -353,8 +353,8 @@ class Application extends \Silex\Application
             ->directories()
             ->depth(0);
 
-        $ormMppings = array();
-        $ormMppings[] = array(
+        $ormMappings = array();
+        $ormMappings[] = array(
             'type' => 'yml',
             'namespace' => 'Eccube\Entity',
             'path' => array(
@@ -370,7 +370,7 @@ class Application extends \Silex\Application
             if (isset($config['orm.path']) and is_array( $config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
-                    $paths[] = $ormMppings . '/' . $config['name'] . $path;
+                    $paths[] = $ormMappings . '/' . $config['name'] . $path;
                 }
                 $ormMppings[] = array(
                     'type' => 'yml',
@@ -383,7 +383,7 @@ class Application extends \Silex\Application
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
-                'mappings' => $ormMppings,
+                'mappings' => $ormMappings,
             ),
         ));
     }
@@ -491,6 +491,13 @@ class Application extends \Silex\Application
             }
         }
     }
+
+
+    /**
+     * Application Shortcut Methods
+     *
+     * 
+     */
 
     public function addSuccess($message, $namespace = 'front')
     {
