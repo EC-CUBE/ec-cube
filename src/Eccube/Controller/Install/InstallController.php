@@ -171,13 +171,13 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             if (!$form['no_update']->getData()) {
-                    $this
-                        ->setPDO()
-                        ->dropTables()
-                        ->revertMigrate()
-                        ->createTables()
-                        ->insert()
-                        ->doMigrate();
+                $this
+                    ->setPDO()
+                    ->dropTables()
+                    ->revertMigrate()
+                    ->createTables()
+                    ->insert()
+                    ->doMigrate();
             }
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $this->sendAppData($sessionData);
@@ -194,15 +194,14 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
-        return $app['twig']->render('complete.twig');
-    }
-
-    public function admin(InstallApplication $app, Request $request)
-    {
         $config_file = $this->config_path . '/path.yml';
         $config = Yaml::parse($config_file);
 
-        return $app->redirect($config['root'] . $config['admin_dir']);
+        $adminUrl = ($config['root'] . $config['admin_dir']);
+
+        return $app['twig']->render('complete.twig', array(
+            'admin_url' => $adminUrl,
+        ));
     }
 
     private function resetNatTimer()
@@ -219,10 +218,15 @@ class InstallController
         $config = Yaml::parse($config_file);
         $data = $config['database'];
 
-        $this->PDO = new \PDO(
-            str_replace('pdo_', '', $data['driver'])
+        $dsn = str_replace('pdo_', '', $data['driver'])
             . ':host=' . $data['host']
-            . ';dbname=' . $data['dbname'],
+            . ';dbname=' . $data['dbname'];
+        if (!empty($data['port'])) {
+            $dsn .= ';port=' . $data['port'];
+        }
+
+        $this->PDO = new \PDO(
+            $dsn,
             $data['user'],
             $data['password']
         );
@@ -296,7 +300,7 @@ class InstallController
         $salt = \Eccube\Util\Str::random();
 
         $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-        $sth = $this->PDO->prepare("INSERT INTO dtb_baseinfo (id, shop_name, email01, email02, email03, email04, top_tpl, product_tpl, detail_tpl, mypage_tpl, update_date, point_rate, welcome_point) VALUES (1, :shop_name, :admin_mail, :admin_mail, :admin_mail, :admin_mail, 'default1', 'default1', 'default1', 'default1', current_timestamp, 0, 0);");
+        $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, point_rate, welcome_point) VALUES (1, :shop_name, :admin_mail, :admin_mail, :admin_mail, :admin_mail, current_timestamp, 0, 0);");
         $sth->execute(array(':shop_name' => $this->session_data['shop_name'], ':admin_mail' => $this->session_data['email']));
 
         $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date) VALUES (2, 'admin', :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp);");

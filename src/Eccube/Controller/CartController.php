@@ -34,9 +34,31 @@ class CartController
         $title = 'カゴの中';
         $Cart = $app['eccube.service.cart']->getCart();
 
+        /* @var $BaseInfo \Eccube\Entity\BaseInfo */
+        /* @var $Cart \Eccube\Entity\Cart */
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        $isDeliveryFree = false;
+        $least = 0;
+        if ($BaseInfo->getUsePoint()) {
+            if ($BaseInfo->getDeliveryFreeAmount() <= $Cart->getTotalQuantity()) {
+                // 送料無料（個数）を超えている
+                $isDeliveryFree = true;
+            } elseif ($BaseInfo->getOptionDeliveryFee() <= $Cart->getTotalPrice()) {
+                // 送料無料（金額）を超えている
+                $isDeliveryFree = true;
+            } else {
+                $least = $BaseInfo->getOptionDeliveryFee() - $Cart->getTotalPrice();
+            }
+        }
+
         return $app->render(
             'Cart/index.twig',
-            compact('title', 'Cart')
+            array(
+                'Cart' => $Cart,
+                'least' => $least,
+                'is_delivery_free' => $isDeliveryFree,
+            )
         );
     }
 

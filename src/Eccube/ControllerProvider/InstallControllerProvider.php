@@ -43,7 +43,6 @@ class InstallControllerProvider implements ControllerProviderInterface
         $controllers->match('/step5', "\\Eccube\\Controller\\Install\\InstallController::step5")->bind('install_step5');
 
         $controllers->match('/complete', "\\Eccube\\Controller\\Install\\InstallController::complete")->bind('install_complete');
-        $controllers->match('/admin', "\\Eccube\\Controller\\Install\\InstallController::admin")->bind('install_admin');
 
         return $controllers;
     }

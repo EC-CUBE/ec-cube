@@ -67,6 +67,8 @@ class SearchCustomerType extends AbstractType
             ->add('sex', 'sex', array(
                 'label' => '性別',
                 'required' => false,
+                'expanded' => true,
+                'multiple' => true,
             ))
             ->add('birth_month', 'choice', array(
                 'label' => '誕生月',
@@ -197,7 +199,7 @@ class SearchCustomerType extends AbstractType
                     '2' => '本会員',
                 ),
                 'expanded' => true,
-                'multiple' => false,
+                'multiple' => true,
                 'empty_value' => false,
             ))
             ->add('pageno', 'hidden', array(
