@@ -21,9 +21,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'login_frame.twig' %}
 
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script>
+$(function() {
+    $('#login_id').focus();
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
 
-    <div class="login-logo"> <a href="#"><img src="{{ app.config.admin_urlpath }}/assets/img/logo.png" width="172"></a> </div>
     <div class="login-box">
         <div class="login-box-body">
             <p class="login-logo2"><img src="{{ app.config.admin_urlpath }}/assets/img/logo2.png" width="106"></p>
@@ -32,7 +41,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <span class="attention">{{ error }}</span>
                 {% endif %}
                 <div class="form-group has-feedback">
-                    {{ form_widget(form.login_id, {'attr': {'size': 20, 'class': "box25"}}) }}
+                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'size': 20, 'class': "box25"}}) }}
+                </div>
                 <div class="form-group has-feedback">
                     {{ form_widget(form.password, {'attr': {'size': 20, 'class': "box25"}}) }}
                 </div>
@@ -44,14 +54,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <p class="text-center"><small class="copyright">Copyright &copy; 2000-{{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</small></p>
     </div><!-- /.login-box -->
 
-
-<script type="text/javascript">//<![CDATA[
-document.form1.login_id.focus();
-$(function() {
-    $('<input type="submit" />')
-        .css({'position' : 'absolute',
-            'top' : '-1000px'})
-        .appendTo('form');
-});
-//]]></script>
 {% endblock %}

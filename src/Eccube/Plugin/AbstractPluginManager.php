@@ -19,7 +19,6 @@ class AbstractPluginManager {
         $migration = new Migration($config);
                                   // null 又は 'last' を渡すと最新バージョンまでマイグレートする
                                   // 0か'first'を渡すと最初に戻る
-        #throw new \Exception("$version");
         $migration->migrate($version, false); 
 
 

@@ -10,7 +10,7 @@ html {
 body {
     font-size: 16px;
     font-size: 1.6rem;
-    font-family: Arial, "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+    font-family: Roboto, "Droid Sans", "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Helvetica, "メイリオ", Meiryo, sans-serif;
     line-height: 1.3;
     color: #444;
     -webkit-text-size-adjust: 100%;

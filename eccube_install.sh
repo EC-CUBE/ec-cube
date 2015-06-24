@@ -30,7 +30,7 @@
 BASE_DIR=${BASE_DIR:-$(cd $(dirname $0) && pwd)}
 CONFIG_DIR="${BASE_DIR}/app/config/eccube"
 DIST_DIR="${BASE_DIR}/src/Eccube/Resource/config"
-SQL_DIR="${BASE_DIR}/html/install/sql"
+SQL_DIR="${BASE_DIR}/src/Eccube/Resource/sql"
 
 # config.yml
 CONFIG_YML="${CONFIG_DIR}/config.yml"
@@ -69,6 +69,12 @@ export DBSERVER=${DBSERVER-"127.0.0.1"}
 export DBNAME=${DBNAME:-"cube3_dev"}
 export DBUSER=${DBUSER:-"cube3_dev_user"}
 export DBPASS=${DBPASS:-"password"}
+
+export MAIL_BACKEND=${MAILER_BACKEND:-"smtp"}
+export MAIL_HOST=${MAIL_HOST:-"localhost"}
+export MAIL_PORT=${MAIL_PORT:-"25"}
+export MAIL_USER=${MAIL_USER:-""}
+export MAIL_PASS=${MAIL_PASS:-""}
 
 DBTYPE=$1;
 GET_COMPOSER=$2;
