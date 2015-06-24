@@ -39,9 +39,6 @@ class Application extends \Silex\Application
 {
     public function __construct(array $values = array())
     {
-        $app = $this;
-        ini_set('error_reporting', E_ALL | ~E_STRICT);
-
         parent::__construct($values);
 
         // load config
@@ -49,16 +46,27 @@ class Application extends \Silex\Application
 
         // init monolog
         $this->initLogger();
+    }
+
+    protected function parseController(Request $request)
+    {
+        $route = str_replace('_', '.', $request->attributes->get('_route'));
+
+        return 'eccube.event.controller.' . $route;
+    }
+
+    public function initialize()
+    {
+        // init locale
+        $this->initLocale();
 
         // init session
         $this->initSession();
 
-        // init twig.
+        // init twig
         $this->initRendering();
 
-        // init locale
-        $this->initLocale();
-
+        // init provider
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
@@ -87,13 +95,7 @@ class Application extends \Silex\Application
         // init doctrine orm
         $this->initDoctrine();
 
-        // setup event dispatcher
-        $this->initPluginEventDispatcher();
-
-        // load plugin
-        $this->loadPlugin();
-
-        // init security.
+        // init security
         $this->initSecurity();
 
         // init ec-cube service provider
@@ -105,11 +107,13 @@ class Application extends \Silex\Application
         $app->mount('/' . trim($app['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
     }
 
-    protected function parseController(Request $request)
+    public function initializePlugin()
     {
-        $route = str_replace('_', '.', $request->attributes->get('_route'));
+        // setup event dispatcher
+        $this->initPluginEventDispatcher();
 
-        return 'eccube.event.controller.' . $route;
+        // load plugin
+        $this->loadPlugin();
     }
 
     public function initConfig()

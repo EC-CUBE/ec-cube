@@ -48,6 +48,8 @@ require_once __DIR__.'/../vendor/autoload.php';
 Debug::enable();
 
 $app = new Eccube\Application();
+$app->initialize();
+$app->initializePlugin();
 
 // debug
 $app['debug'] = true;

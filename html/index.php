@@ -24,5 +24,6 @@
 require __DIR__ . '/../autoload.php';
 
 $app = new Eccube\Application();
-
+$app->initialize();
+$app->initializePlugin();
 $app->run();

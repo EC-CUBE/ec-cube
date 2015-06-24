@@ -24,6 +24,6 @@
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 $app = new Eccube\Application();
-$entityManager = $app['orm.em'];
+$app->initialize();
 
-return ConsoleRunner::createHelperSet($entityManager);
+return ConsoleRunner::createHelperSet($app['orm.em']);
