@@ -65,21 +65,8 @@ class Application extends \Silex\Application
         // init locale
         $this->initLocale();
 
-        // Mail
-        $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
-        $this['swiftmailer.options'] = $this['config']['mail'];
-
-        if (isset($this['config']['mail']['spool']) && is_bool($this['config']['mail']['spool'])) {
-            $this['swiftmailer.use_spool'] = $this['config']['mail']['spool'];
-        }
-        // デフォルトはsmtpを使用
-        $transport = $this['config']['mail']['transport'];
-        if ($transport == 'sendmail') {
-            $this['swiftmailer.transport'] = \Swift_SendmailTransport::newInstance();
-        } else if ($transport == 'mail') {
-            $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
-        }
-
+        // init mail
+        $this->initMail();
         // ORM
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
@@ -474,6 +461,23 @@ class Application extends \Silex\Application
                 $app["twig"]->addGlobal("title", $PageLayout->getName());
             }
         }, self::LATE_EVENT);
+    }
+
+    public function initMail()
+    {
+        $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
+        $this['swiftmailer.options'] = $this['config']['mail'];
+
+        if (isset($this['config']['mail']['spool']) && is_bool($this['config']['mail']['spool'])) {
+            $this['swiftmailer.use_spool'] = $this['config']['mail']['spool'];
+        }
+        // デフォルトはsmtpを使用
+        $transport = $this['config']['mail']['transport'];
+        if ($transport == 'sendmail') {
+            $this['swiftmailer.transport'] = \Swift_SendmailTransport::newInstance();
+        } else if ($transport == 'mail') {
+            $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
+        }
     }
 
     public function addSuccess($message, $namespace = 'front')
