@@ -25,8 +25,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set menus = ['setting', 'ownersstore', 'pluginhandler'] %}
 
 {% block title %}システム設定{% endblock %}
-{% block sub_title %}プラグイン管理{% endblock %}
+{% block sub_title %}プラグインハンドラ管理{% endblock %}
 {% block main %}
+
+<a href="{{ url('admin_setting_system_plugin_index') }}">プラグイン一覧へ</a>
 
 イベントハンドラの優先度を変更<br>
 ↑↓で同じイベントの上下のハンドラと優先度をswap<br>
