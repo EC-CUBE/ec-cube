@@ -77,69 +77,8 @@ class Application extends \Silex\Application
         // load plugin
         $this->loadPlugin();
 
-        // Security
-        $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'admin' => array(
-                    'pattern' => '^/admin',
-                    'form' => array(
-                        'login_path' => '/admin/login',
-                        'check_path' => '/admin/login_check',
-                        'username_parameter' => 'login_id',
-                        'password_parameter' => 'password',
-                        'with_csrf' => true,
-                        'use_forward' => true,
-                    ),
-                    'logout' => array(
-                        'logout_path' => '/admin/logout',
-                        'target_url' => '/admin/',
-                    ),
-                    'users' => $app['orm.em']->getRepository('Eccube\Entity\Member'),
-                    'anonymous' => true,
-                ),
-                'customer' => array(
-                    'pattern' => '^/',
-                    'form' => array(
-                        'login_path' => '/mypage/login',
-                        'check_path' => '/login_check',
-                        'username_parameter' => 'login_email',
-                        'password_parameter' => 'login_pass',
-                        'with_csrf' => true,
-                        'use_forward' => true,
-                    ),
-                    'logout' => array(
-                        'logout_path' => '/logout',
-                        'target_url' => '/',
-                    ),
-                    'users' => $app['orm.em']->getRepository('Eccube\Entity\Customer'),
-                    'anonymous' => true,
-                ),
-            ),
-        ));
-        $app['security.access_rules'] = array(
-            array('^/admin/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/admin', 'ROLE_ADMIN'),
-            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage', 'ROLE_USER'),
-        );
-        $app['eccube.password_encoder'] = $app->share(function ($app) {
-            return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
-        });
-        $app['security.encoder_factory'] = $app->share(function ($app) {
-            return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
-                'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
-                'Eccube\Entity\Member' => $app['eccube.password_encoder'],
-            ));
-        });
-        $app['eccube.event_listner.security'] = $app->share(function ($app) {
-            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
-        });
-        $app['user'] = $app->share(function ($app) {
-            $token = $app['security']->getToken();
-
-            return ($token !== null) ? $token->getUser() : null;
-        });
+        // init security.
+        $this->initSecurity();
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
@@ -169,14 +108,6 @@ class Application extends \Silex\Application
         $route = str_replace('_', '.', $request->attributes->get('_route'));
 
         return 'eccube.event.controller.' . $route;
-    }
-
-    public function boot()
-    {
-        parent::boot();
-
-        // ログイン時のイベント
-        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
     public function initConfig()
@@ -492,11 +423,80 @@ class Application extends \Silex\Application
         }
     }
 
+    public function initSecurity()
+    {
+        $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'admin' => array(
+                    'pattern' => '^/admin',
+                    'form' => array(
+                        'login_path' => '/admin/login',
+                        'check_path' => '/admin/login_check',
+                        'username_parameter' => 'login_id',
+                        'password_parameter' => 'password',
+                        'with_csrf' => true,
+                        'use_forward' => true,
+                    ),
+                    'logout' => array(
+                        'logout_path' => '/admin/logout',
+                        'target_url' => '/admin/',
+                    ),
+                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
+                    'anonymous' => true,
+                ),
+                'customer' => array(
+                    'pattern' => '^/',
+                    'form' => array(
+                        'login_path' => '/mypage/login',
+                        'check_path' => '/login_check',
+                        'username_parameter' => 'login_email',
+                        'password_parameter' => 'login_pass',
+                        'with_csrf' => true,
+                        'use_forward' => true,
+                    ),
+                    'logout' => array(
+                        'logout_path' => '/logout',
+                        'target_url' => '/',
+                    ),
+                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
+                    'anonymous' => true,
+                ),
+            ),
+        ));
+        $this['security.access_rules'] = array(
+            array('^/admin/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/admin', 'ROLE_ADMIN'),
+            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage', 'ROLE_USER'),
+        );
+        $this['eccube.password_encoder'] = $this->share(function ($app) {
+            return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
+        });
+        $this['security.encoder_factory'] = $this->share(function ($app) {
+            return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
+                'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
+                'Eccube\Entity\Member' => $app['eccube.password_encoder'],
+            ));
+        });
+        $this['eccube.event_listner.security'] = $this->share(function ($app) {
+            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
+        });
+        $this['user'] = $this->share(function ($app) {
+            $token = $app['security']->getToken();
+
+            return ($token !== null) ? $token->getUser() : null;
+        });
+
+        // ログイン時のイベントを設定.
+        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+    }
+
 
     /**
      * Application Shortcut Methods
      *
-     * 
+     *
      */
 
     public function addSuccess($message, $namespace = 'front')
