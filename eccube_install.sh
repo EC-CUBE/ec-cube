@@ -30,7 +30,7 @@
 BASE_DIR=${BASE_DIR:-$(cd $(dirname $0) && pwd)}
 CONFIG_DIR="${BASE_DIR}/app/config/eccube"
 DIST_DIR="${BASE_DIR}/src/Eccube/Resource/config"
-SQL_DIR="${BASE_DIR}/html/install/sql"
+SQL_DIR="${BASE_DIR}/src/Eccube/Resource/sql"
 
 # config.yml
 CONFIG_YML="${CONFIG_DIR}/config.yml"
