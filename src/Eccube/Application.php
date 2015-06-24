@@ -47,72 +47,17 @@ class Application extends \Silex\Application
         // load config
         $this->initConfig();
 
+        // init monolog
         $this->initLogger();
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
-        $this->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.form.templates' => array('Form/form_layout.twig'),
-        ));
-        $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
-            $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
-            $twig->addExtension(new \Twig_Extension_StringLoader());
+        // init twig.
+        $this->initRendering();
 
-            return $twig;
-        }));
-        $this->before(function (Request $request, \Silex\Application $app) {
-            //
-            $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
-                $paths = array();
-                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
-                        $paths[] = __DIR__ . '/../../app/template/admin';
-                    }
-                    $paths[] = $app['config']['template_admin_realdir'];
-                    $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/admin';
-                } else {
-                    if (file_exists($app['config']['template_realdir'])) {
-                        $paths[] = $app['config']['template_realdir'];
-                    }
-                    $paths[] = $app['config']['template_default_realdir'];
-                    $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
-                }
-                $twig->setCache($cache);
-                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
-                return $twig;
-            }));
 
-            //
-            $BaseInfo = $app['eccube.repository.base_info']->get();
-            $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
-            $menus = array('', '', '');
-            $app['twig']->addGlobal('menus', $menus);
-        }, self::EARLY_EVENT);
-
-        $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-            $request = $event->getRequest();
-            try {
-                $DeviceType = $app['eccube.repository.master.device_type']->find(10);
-                if ($request->get('preview')) {
-                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
-                } else {
-                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $request->attributes->get('_route'));
-                }
-            } catch (\Doctrine\ORM\NoResultException $e) {
-                $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
-            }
-
-            $app["twig"]->addGlobal("PageLayout", $PageLayout);
-            $app["twig"]->addGlobal("title", $PageLayout->getName());
-
-            if (!$event->isMasterRequest()) {
-                return;
-            }
-        });
 
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
@@ -451,6 +396,76 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\MonologServiceProvider(), array(
             'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
         ));
+    }
+
+    public function initRendering()
+    {
+        $this->register(new \Silex\Provider\TwigServiceProvider(), array(
+            'twig.form.templates' => array('Form/form_layout.twig'),
+        ));
+        $this['twig'] = $this->share($this->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+            $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
+            $twig->addExtension(new \Twig_Extension_StringLoader());
+
+            return $twig;
+        }));
+
+        // フロント or 管理画面ごとにtwigの探索パスを切り替える.
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+                $paths = array();
+                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
+                        $paths[] = __DIR__ . '/../../app/template/admin';
+                    }
+                    $paths[] = $app['config']['template_admin_realdir'];
+                    $paths[] = __DIR__ . '/../../app/Plugin';
+                    $cache = __DIR__ . '/../../app/cache/twig/admin';
+                } else {
+                    if (file_exists($app['config']['template_realdir'])) {
+                        $paths[] = $app['config']['template_realdir'];
+                    }
+                    $paths[] = $app['config']['template_default_realdir'];
+                    $paths[] = __DIR__ . '/../../app/Plugin';
+                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
+                }
+                $twig->setCache($cache);
+                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+
+                return $twig;
+            }));
+        }, self::EARLY_EVENT);
+
+        // twigのグローバル変数を定義.
+        $this->before(function (Request $request,\Silex\Application $app) {
+            // ショップ基本情報
+            $BaseInfo = $app['eccube.repository.base_info']->get();
+            $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
+
+            // 管理画面
+            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                // 管理画面メニュー
+                $menus = array('', '', '');
+                $app['twig']->addGlobal('menus', $menus);
+                echo 'hogehoge';
+            // フロント画面
+            } else {
+                try {
+                    $DeviceType = $app['eccube.repository.master.device_type']->find(10);
+                    if ($request->get('preview')) {
+                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
+                    } else {
+                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType,
+                            $request->attributes->get('_route'));
+                    }
+                } catch (\Doctrine\ORM\NoResultException $e) {
+                    $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
+                }
+
+                $app["twig"]->addGlobal("PageLayout", $PageLayout);
+                $app["twig"]->addGlobal("title", $PageLayout->getName());
+            }
+        }, self::LATE_EVENT);
     }
 
     public function addSuccess($message, $namespace = 'front')
