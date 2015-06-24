@@ -103,8 +103,8 @@ class Application extends \Silex\Application
 
         // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $app->mount('', new ControllerProvider\FrontControllerProvider());
-        $app->mount('/' . trim($app['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+        $this->mount('', new ControllerProvider\FrontControllerProvider());
+        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
     }
 
     public function initializePlugin()
