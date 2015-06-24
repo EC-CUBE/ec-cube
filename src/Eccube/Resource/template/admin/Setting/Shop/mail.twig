@@ -26,20 +26,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block main %}
+{% block javascript %}
+    <script type="text/javascript">
+        $(function(){
+            $("#mail_template").on("change", function(){
+                var id = $(this).val()
+                if (id) {
+                    location.href= '{{ url('admin_setting_shop_mail') }}/' + id;
+                } else {
+                    location.href= '{{ url('admin_setting_shop_mail') }}';
+                }
+            });
+        });
+    </script>
+{% endblock javascript%}
 
-<script type="text/javascript">
-$(function(){
-    $("#mail_template").on("change", function(){
-        var id = $(this).val()
-        if (id) {
-            location.href= '{{ url('admin_setting_shop_mail') }}/' + id;
-        } else {
-            location.href= '{{ url('admin_setting_shop_mail') }}';
-        }
-    });
-});
-</script>
+{% block main %}
 
     <div class="row" id="aside_wrap">
         <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="">
