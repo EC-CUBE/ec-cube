@@ -28,58 +28,37 @@ use Eccube\Application;
 
 class HelpController extends AbstractController
 {
-    public function __construct()
-    {
-    }
 
     public function tradelaw(Application $app)
     {
-        $title = '特定商取引法';
+        $Help = $app['eccube.repository.help']->get();
 
-        $Help = $app['orm.em']->getRepository('Eccube\Entity\Help')->find(1);
-
-        return $app['view']->render('Help/tradelaw.twig', array(
-                        'title' => $title,
-                        'help' => $Help,
+        return $app->renderView('Help/tradelaw.twig', array(
+            'help' => $Help,
         ));
-
-//        return $app['twig']->render('Help/tradelaw.twig', compact('title', 'help'));
     }
 
     public function guide(Application $app)
     {
-        $title = 'ご利用ガイド';
-
-        return $app['twig']->render('Help/guide.twig', compact('title'));
+        return $app->renderView('Help/guide.twig');
     }
 
     public function about(Application $app)
     {
-        $title = '当サイトについて';
-
-        $baseInfo = $app['eccube.repository.base_info']->get();
-
-        return $app['twig']->render('Help/about.twig', compact('title', 'baseInfo'));
+        return $app->renderView('Help/about.twig');
     }
 
     public function privacy(Application $app)
     {
-        $title = 'プライバシーポリシー';
-
-        $baseInfo = $app['eccube.repository.base_info']->get();
-
-        return $app['twig']->render('Help/privacy.twig', compact('title', 'baseInfo'));
+        return $app->renderView('Help/privacy.twig');
     }
 
     public function agreement(Application $app)
     {
-        $title = '会員規約';
+        $Help = $app['eccube.repository.help']->get();
 
-        $Help = $app['orm.em']->getRepository('Eccube\Entity\Help')->find(1);
-
-        return $app['view']->render('Help/agreement.twig', array(
-                        'title' => $title,
-                        'help' => $Help,
+        return $app->renderView('Help/agreement.twig', array(
+            'help' => $Help,
         ));
     }
 }

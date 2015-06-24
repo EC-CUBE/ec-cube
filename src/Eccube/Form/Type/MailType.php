@@ -42,9 +42,10 @@ class MailType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
+                'mapped' => false,
             ))
             ->add('subject', 'text', array(
-                'label' => 'タイトル',
+                'label' => '件名',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),

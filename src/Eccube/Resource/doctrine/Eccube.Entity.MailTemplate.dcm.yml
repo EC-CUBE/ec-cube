@@ -12,6 +12,12 @@ Eccube\Entity\MailTemplate:
             generator:
                 strategy: AUTO
     fields:
+        name:
+            type: text
+            nullable: true
+        file_name:
+            type: text
+            nullable: true
         subject:
             type: text
             nullable: true

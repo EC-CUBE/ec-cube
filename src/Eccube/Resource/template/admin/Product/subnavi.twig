@@ -25,6 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <li id="navi-products-index" class="{% if active_menus(menus)[1] == 'product_master' %}active{% endif %}"><a href="{{ url('admin_product') }}">商品マスター</a></li>
                     <li id="navi-products-product" class="{% if active_menus(menus)[1] == 'product_edit' %}active{% endif %}"><a href="{{ url('admin_product_product_new') }}">商品登録</a></li>
                     <li id="navi-products-class" class="{% if active_menus(menus)[1] == 'class_name' %}active{% endif %}"><a href="{{ url('admin_product_class_name') }}">規格管理</a></li>
-                    <li id="navi-products-category" class="{% if active_menus(menus)[1] == 'category' %}active{% endif %}"><a href="{{ url('admin_product_category') }}">カテゴリ登録</a></li>
+                    <li id="navi-products-category" class="{% if active_menus(menus)[1] == 'class_category' %}active{% endif %}"><a href="{{ url('admin_product_category') }}">カテゴリ登録</a></li>
                 </ul>
             </li>

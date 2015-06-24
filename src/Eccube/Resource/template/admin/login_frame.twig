@@ -1,3 +1,4 @@
+<!doctype html>
 {#
 This file is part of EC-CUBE
 
@@ -19,43 +20,51 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<html lang="ja">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=<!--{$smarty.const.CHAR_CODE}-->">
-<meta http-equiv="content-script-type" content="text/javascript">
-<meta http-equiv="content-style-type" content="text/css">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ BaseInfo.shop_name }} - EC-CUBE管理画面</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow" />
-<link rel="stylesheet" href="{{ app.config.admin_tpl }}css/reset.css" type="text/css" media="all" />
-<link rel="stylesheet" href="{{ app.config.admin_tpl }}css/admin_contents.css" type="text/css" media="all" />
+<link rel="icon" href="{{ app.config.admin_urlpath }}/assets/img/favicon.ico">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/dashboard.css">
 <!--[if lt IE 9]>
-<script src="{{ app.config.root }}js/jquery-1.11.1.min.js"></script>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-<!--[if gte IE 9]><!-->
-<script src="{{ app.config.root }}js/jquery-2.1.1.min.js"></script>
-<!--<![endif]-->
-<script type="text/javascript" src="{{ app.config.root }}js/eccube.js"></script>
-<!-- #2342 次期メジャーバージョン(2.14)にてeccube.legacy.jsは削除予定.モジュール、プラグインの互換性を考慮して2.13では残します. -->
-<script type="text/javascript" src="{{ app.config.root }}js/eccube.legacy.js"></script>
-<title>管理機能</title>
-<link rel="shortcut icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
-<link rel="icon" type="image/vnd.microsoft.icon" href="{{ app.config.admin_tpl }}img/common/favicon.ico" />
-<script type="text/javascript">//<![CDATA[
-    {{ block('javascript') }}
-    $(function(){
-        {{ block('onload') }}
-    });
-//]]></script>
-
 </head>
-
-<body>
+<body id="login-page">
 <!--{$GLOBAL_ERR}-->
 <noscript>
     <p>JavaScript を有効にしてご利用下さい.</p>
 </noscript>
-<div id="login">
+<div id="wrapper">
     {% block main %}{% endblock %}
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/ie10-viewport-bug-workaround.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/function.js"></script>
+<script>
+$(function () {
+    $.ajax({
+        url: '{{ app.config.admin_urlpath }}/assets/img/svg.html',
+        type: 'GET',
+        dataType: 'html',
+    }).done(function(data){
+        $('body').prepend(data);
+    }).fail(function(data){
+    });
+});
+</script>
+{% block javascript %}{% endblock %}
 </body>
 </html>

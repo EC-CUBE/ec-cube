@@ -26,7 +26,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}レイアウト管理{% endblock %}
 
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme list_form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
 {% block javascript %}
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.core.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.widget.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/layout_design.js"></script>
     <script>
         $(function() {
             var page_id = '{{ TargetPageLayout.id }}';
@@ -55,15 +63,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             document.form1.submit();
         }
     </script>
-    <script src="{{ app.config.admin_urlpath }}/assets/js/jquery.ui/jquery.ui.core.min.js"></script>
-    <script src="{{ app.config.admin_urlpath }}/assets/js/jquery.ui/jquery.ui.widget.min.js"></script>
-    <script src="{{ app.config.admin_urlpath }}/assets/js/jquery.ui/jquery.ui.mouse.min.js"></script>
-    <script src="{{ app.config.admin_urlpath }}/assets/js/jquery.ui/jquery.ui.sortable.min.js"></script>
-    <script src="{{ app.config.admin_urlpath }}/assets/js/layout_design.js"></script>
-{% endblock %}
-
-{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
-{% form_theme list_form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{% endblock javascript %}
 
 {% block main %}
     <form name="form1" id="form1" method="post" action="{{ url('admin_content_layout_edit', {id: TargetPageLayout.id}) }}">
