@@ -171,13 +171,13 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             if (!$form['no_update']->getData()) {
-                    $this
-                        ->setPDO()
-                        ->dropTables()
-                        ->revertMigrate()
-                        ->createTables()
-                        ->insert()
-                        ->doMigrate();
+                $this
+                    ->setPDO()
+                    ->dropTables()
+                    ->revertMigrate()
+                    ->createTables()
+                    ->insert()
+                    ->doMigrate();
             }
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $this->sendAppData($sessionData);
@@ -194,15 +194,14 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
-        return $app['twig']->render('complete.twig');
-    }
-
-    public function admin(InstallApplication $app, Request $request)
-    {
         $config_file = $this->config_path . '/path.yml';
         $config = Yaml::parse($config_file);
 
-        return $app->redirect($config['root'] . $config['admin_dir']);
+        $adminUrl = ($config['root'] . $config['admin_dir']);
+
+        return $app['twig']->render('complete.twig', array(
+            'admin_url' => $adminUrl,
+        ));
     }
 
     private function resetNatTimer()
@@ -219,10 +218,15 @@ class InstallController
         $config = Yaml::parse($config_file);
         $data = $config['database'];
 
-        $this->PDO = new \PDO(
-            str_replace('pdo_', '', $data['driver'])
+        $dsn = str_replace('pdo_', '', $data['driver'])
             . ':host=' . $data['host']
-            . ';dbname=' . $data['dbname'],
+            . ';dbname=' . $data['dbname'];
+        if (!empty($data['port'])) {
+            $dsn .= ';port=' . $data['port'];
+        }
+
+        $this->PDO = new \PDO(
+            $dsn,
             $data['user'],
             $data['password']
         );

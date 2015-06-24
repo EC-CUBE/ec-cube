@@ -152,10 +152,15 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // sex
-        if (!empty($searchData['sex']) && $searchData['sex']) {
+        if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
+            $sexs = array();
+            foreach ($searchData['sex'] as $sex) {
+                $sexs[] = $sex->getId();
+            }
+
             $qb
-                ->andWhere('c.Sex = :sex')
-                ->setParameter('sex', $searchData['sex']);
+                ->andWhere($qb->expr()->in('c.Sex', ':sexs'))
+                ->setParameter('sexs', $sexs);
         }
 
         // birth_month
@@ -286,12 +291,12 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->andWhere('c.last_buy_date < :last_buy_end')
                 ->setParameter('last_buy_end', $date);
         }
+
         // status
-        if (!empty($searchData['customer_status']) && $searchData['customer_status']) {
+        if (!empty($searchData['customer_status']) && count($searchData['customer_status']) > 0) {
             $qb
-                ->leftJoin('c.Status', 's')
-                ->andWhere('s.id = :status')
-                ->setParameter('status', $searchData['customer_status']);
+                ->andWhere($qb->expr()->in('c.Status', ':statuses'))
+                ->setParameter('statuses', $searchData['customer_status']);
         }
 
         $joinedOrder = false;
