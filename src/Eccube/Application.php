@@ -47,6 +47,8 @@ class Application extends \Silex\Application
         // load config
         $this->initConfig();
 
+        $this->initLogger();
+
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
@@ -357,9 +359,7 @@ class Application extends \Silex\Application
             return new \Symfony\Component\Filesystem\Filesystem();
         };
 
-        $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
-        ));
+
 
         $app->mount('', new ControllerProvider\FrontControllerProvider());
         $app->mount('/' . trim($app['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
@@ -444,6 +444,13 @@ class Application extends \Silex\Application
             $configAll = array_replace_recursive($configAll, $database, $mail);
             return $configAll;
         });
+    }
+
+    public function initLogger()
+    {
+        $this->register(new \Silex\Provider\MonologServiceProvider(), array(
+            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
+        ));
     }
 
     public function addSuccess($message, $namespace = 'front')
