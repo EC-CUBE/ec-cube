@@ -22,33 +22,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['setting', 'ownersstore', 'plugin'] %}
+{% set menus = ['setting', 'ownersstore', 'plugininstall'] %}
 
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}プラグインインストール{% endblock %}
 {% block main %}
 
 
-<p>仮プラグイン管理画面
+<p>仮プラグインインストール画面
+<p>install：アーカイブを選択して、installボタン
 
+<form action="" method="post"  {{ form_enctype(install_form) }}>
+    {{ form_widget(install_form) }}
+</form>
 
-<hr>
-現在インストールされているプラグイン一覧
-<hr>
-{% for plugin in plugins %}
-    {% set form = plugin_forms[plugin.id] %}
-    <li>id:{{ plugin.id|e }}</li>
-    <li>name:{{ plugin.name|e }}</li>
-    <li>code:{{ plugin.code|e }}</li>
-    <li>enable:{{ plugin.enable|e }}</li>
-    <li>version:{{ plugin.version|e }}</li>
-    <li>event:{{ plugin.className|e }}</li>
-    <li>del_flg:{{ plugin.delFlg|e }}</li>
-        <form action="plugin/manage" method="post"  {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
-        </form>
-    <hr>
-{% endfor %}
 
 {% endblock %}
 

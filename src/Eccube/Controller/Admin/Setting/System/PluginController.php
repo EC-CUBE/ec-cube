@@ -50,7 +50,10 @@ class PluginController extends AbstractController
             }
             
         }
-        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_index'));
+        return $app['twig']->render('Setting/System/Plugin/install.twig', array(
+            'install_form' => $installForm->createView(),
+        ));
+
     }
 
     public function manage(Application $app)
@@ -99,9 +102,11 @@ class PluginController extends AbstractController
         $em = $app['orm.em'];
         $repo=$em->getRepository('Eccube\Entity\Plugin');
         //インストールされているプラグイン毎のフォームを作成
-        $installForm = $app['form.factory']
-            ->createBuilder('plugin_local_install')
-            ->getForm();
+
+#        $installForm = $app['form.factory']
+#            ->createBuilder('plugin_local_install')
+#            ->getForm();
+
         $pluginForms=array();
         foreach($repo->findAll() as $plugin ){
 
@@ -112,7 +117,7 @@ class PluginController extends AbstractController
             $pluginForms[$plugin->getId()] = $builder->getForm()->createView();
         }
         return $app['twig']->render('Setting/System/Plugin/index.twig', array(
-            'install_form' => $installForm->createView(),
+        #    'install_form' => $installForm->createView(),
             'plugin_forms' => $pluginForms,
             'plugins' => $repo->findBy(array(),array('id'=>'ASC')) 
         ));
