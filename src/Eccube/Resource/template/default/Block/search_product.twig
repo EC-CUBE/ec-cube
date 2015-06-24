@@ -19,7 +19,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-                <div id="search" class="search drawer_block header_bottom_area pc">
+			<div class="drawer_block pc header_bottom_area">
+                <div id="search" class="search">
                     <form method="get" id="searchform" action="{{ path('product_list') }}">
                         <div class="search_inner">
                             {{ form_widget(form.category_id) }}
@@ -30,3 +31,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </form>
                 </div>
+			</div>
