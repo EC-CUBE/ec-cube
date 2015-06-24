@@ -1,0 +1,75 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'frame.twig' %}
+
+{% set current = 4 %}
+
+{% form_theme form _self %}
+{% block form_row %}
+    <div class="form-group{% if not valid %} has-error{% endif %}">
+        <label>{{ label }}
+            {% if required %}<span class="required">*</span>{% endif %}
+            {% if help %}<br><span class="small">{{ help }}</span>{% endif %}
+        </label>
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block checkbox_row %}
+    <div class="form-group{% if not valid %} has-error{% endif %}">
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div id="main" class="step5">
+        <div class="main_inner">
+            <div class="main_content">
+                <div class="page-header">
+                    <h1>データベースの設定</h1>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <form name="form1" id="form1" method="post" action="{{ url('install_step4') }}">
+                                {{ form_widget(form._token) }}
+                                {{ form_row(form.database) }}
+                                {{ form_row(form.database_host) }}
+                                {{ form_row(form.database_port) }}
+                                {{ form_row(form.database_name) }}
+                                {{ form_row(form.database_user) }}
+                                {{ form_row(form.database_password) }}
+                                <ul class="btn_area">
+                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
+                                    <li><a href="{{ url('install_step3') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                </ul>
+                            </form>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
