@@ -1,0 +1,62 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'frame.twig' %}
+
+{% set current = 2 %}
+
+{% block main %}
+    <div id="main" class="step2">
+        <div class="main_inner">
+            <div class="main_content">
+                <div class="page-header">
+                    <h1>権限チェック</h1>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea class="form-control disp_area" name="disp_area">
+                                {% if protectedDirs|length == 0 %}
+                                    &gt;&gt;○：アクセス権限は正常です。
+                                {% else %}
+                                    以下のディレクトリのアクセス制限を変更してください。
+                                    {% for dir in protectedDirs %}
+                                        &gt;&gt;☓：{{ dir }}
+                                    {% endfor %}
+                                {% endif %}
+                            </textarea>
+                            <ul class="btn_area">
+                                <li>
+                                    {% if protectedDirs|length > 0 %}
+                                        <a href="{{ url('install_step2') }}" class="btn btn-primary btn-block btn-lg">更新する</a>
+                                    {% else %}
+                                        <a href="{{ url('install_step3') }}" class="btn btn-primary btn-block btn-lg">次へ進む</a>
+                                    {% endif %}
+                                </li>
+                                <li><a href="{{ url('install_step1') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                            </ul>
+                        </div><!-- /.col -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

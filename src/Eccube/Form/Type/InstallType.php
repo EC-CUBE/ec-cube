@@ -33,7 +33,7 @@ class InstallType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }
@@ -46,8 +46,24 @@ class InstallType extends AbstractType
         $app = $this->app;
 
         $builder
+            ->add('shop_name', 'text', array(
+                'label' => 'ECサイト名',
+                'data' => 'EC-CUBE SHOP',
+            ))
+            ->add('admin_mail', 'text', array(
+                'label' => '管理者メールアドレス',
+                'data'  =>  'admin@example.com',
+            ))
+            ->add('admin_pass', 'text', array(
+                'label' => '管理者パスワード',
+                'data' =>  'f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c',
+            ))
+            ->add('auth_magic', 'text', array(
+                'label' => 'authmagic',
+                'data' =>  'droucliuijeanamiundpnoufrouphudrastiokec',
+            ))
             ->add('http_url', 'text', array(
-                'label' => '設置URL',
+                'label' => 'ドメイン',
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
@@ -64,6 +80,9 @@ class InstallType extends AbstractType
             ))
             ->add('db_server', 'text', array(
                 'label' => 'データベース：IPアドレス',
+            ))
+            ->add('db_port', 'text', array(
+                'label' => 'データベース：ポート番号',
             ))
             ->add('db_name', 'text', array(
                 'label' => 'データベース：データベース名',

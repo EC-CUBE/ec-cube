@@ -19,6 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+
 {% extends 'default_frame.twig' %}
 
 {% block main %}
@@ -29,17 +30,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <p class="error">{{ error }}</p>
             </div>
 
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        {% if return_top is defined and return_top %}
-                            <a href="{{ path('homepage') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_toppage.jpg" alt="トップページへ" /></a>
-                        {% else %}
-                            <a href="javascript:history.back()"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
+        <div class="btn_area">
+            <ul>
+                <li>
+                    {% if return_top is defined and return_top %}
+                        <a href="{{ path('homepage') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_toppage.jpg" alt="トップページへ" /></a>
+                    {% else %}
+                        <a href="javascript:history.back()"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
+                    {% endif %}
+                </li>
+            </ul>
         </div>
     </div>
+</div>
 {% endblock %}
