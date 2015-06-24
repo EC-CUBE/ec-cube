@@ -71,109 +71,11 @@ class Application extends \Silex\Application
         // init doctrine orm
         $this->initDoctrine();
 
-        // EventDispatcher
-        $app['eccube.event.dispatcher'] = $app->share(function () {
-            return new EventDispatcher();
-        });
+        // set up event dispatcher
+        $this->initPluginEventDispatcher();
 
-        // Plugin
-        $basePath = __DIR__ . '/../../app/Plugin';
-        $finder = Finder::create()
-            ->in($basePath)
-            ->directories()
-            ->depth(0);
-
-        $finder->sortByName();
-
-        // EventSubscriber
-        if (isset($app['env'] ) and $app['env'] !== 'cli') { // cliモードではテーブルがない場合があるのでロードしない
-            // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
-            $priorities = array();
-            $em = $app['orm.em'];
-            $handlers = $em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers();
-            foreach ($handlers as $handler) {
-                if (!$handler->getPlugin()->getDelFlg() and
-                     $handler->getPlugin()->getEnable()){ // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
-                    $priority = $handler->getPriority();
-                } else {
-                    $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
-                }
-                $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
-
-            }
-        }
-
-        // Plugin events / service
-        foreach ($finder as $dir) {
-            if(!file_exists($dir->getRealPath() . '/config.yml')){
-               continue;
-               //config.ymlのないディレクトリは無視する
-            }
-            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
-                // Type: Event
-            if (isset($config['event'])) {
-                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
-                $subscriber = new $class($app);
-
-                if(file_exists($dir->getRealPath() . '/event.yml')){
-
-                    foreach(Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
-                        foreach ($handlers as $handler) {
-                            if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
-                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
-                            } else {
-                                $priority = $priorities[$config['event']][$event][$handler[0]];
-                            }
-                             # 優先度0は登録しない
-
-                            if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
-                                $app['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
-                            }
-                        }
-                    }
- 
-                }
-            }
-            // const
-            if (isset($config['const'])) {
-                $app[$config['name']] = array(
-                    'const' => $config['const'],
-                );
-            }
-            // Type: ServiceProvider
-            if (isset($config['service'])) {
-                foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
-                    $app->register(new $class($app));
-                }
-            }
-        }
-
-
-        // hook point
-        $this->before(function (Request $request, Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
-        }, self::EARLY_EVENT);
-
-        $this->before(function (Request $request, \Silex\Application $app) {
-            $event = $app->parseController($request) . '.before';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function (Request $request, Response $response) use ($app) {
-            $event = $app->parseController($request) . '.after';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function (Request $request, Response $response) use ($app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
-        }, \Silex\Application::LATE_EVENT);
-
-        $this->finish(function (Request $request, Response $response) use ($app) {
-            $event = $app->parseController($request) . '.finish';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
+        // load plugin
+        $this->loadPlugin();
 
         // Security
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
@@ -492,6 +394,109 @@ class Application extends \Silex\Application
         ));
     }
 
+    public function initPluginEventDispatcher()
+    {
+        // EventDispatcher
+        $this['eccube.event.dispatcher'] = $this->share(function () {
+            return new EventDispatcher();
+        });
+
+        // hook point
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+        }, self::EARLY_EVENT);
+
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $event = $app->parseController($request) . '.before';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
+            $event = $app->parseController($request) . '.after';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+        }, self::LATE_EVENT);
+
+        $this->finish(function (Request $request, Response $response, \Silex\Application $app) {
+            $event = $app->parseController($request) . '.finish';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+    }
+
+    public function loadPlugin()
+    {
+        // プラグインディレクトリを探索.
+        $basePath = __DIR__ . '/../../app/Plugin';
+        $finder = Finder::create()
+            ->in($basePath)
+            ->directories()
+            ->depth(0);
+
+        $finder->sortByName();
+
+        // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
+        $priorities = array();
+        $handlers = $this['orm.em']
+            ->getRepository('Eccube\Entity\PluginEventHandler')
+            ->getHandlers();
+        foreach ($handlers as $handler) {
+            if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
+                $priority = $handler->getPriority();
+            } else {
+                // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
+                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
+            }
+            $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
+        }
+
+        // プラグインをロードする.
+        // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
+        foreach ($finder as $dir) {
+            //config.ymlのないディレクトリは無視する
+            if (!file_exists($dir->getRealPath() . '/config.yml')) {
+                continue;
+            }
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+            // Type: Event
+            if (isset($config['event'])) {
+                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
+                $subscriber = new $class($this);
+
+                if (file_exists($dir->getRealPath() . '/event.yml')) {
+
+                    foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                        foreach ($handlers as $handler) {
+                            if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
+                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
+                            } else {
+                                $priority = $priorities[$config['event']][$event][$handler[0]];
+                            }
+                            // 優先度が0のプラグインは登録しない
+                            if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
+                                $this['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                            }
+                        }
+                    }
+                }
+            }
+            // const
+            if (isset($config['const'])) {
+                $app[$config['name']] = array(
+                    'const' => $config['const'],
+                );
+            }
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
+                    $this->register(new $class($this));
+                }
+            }
+        }
+    }
 
     public function addSuccess($message, $namespace = 'front')
     {
