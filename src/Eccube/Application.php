@@ -45,52 +45,9 @@ class Application extends \Silex\Application
         parent::__construct($values);
 
         // load config
-        $this['config'] = $app->share(function () {
-            $config = array();
-            $config_yml = __DIR__ . '/../../app/config/eccube/config.yml';
-            if (file_exists($config_yml)) {
-                $config = Yaml::parse($config_yml);
-            }
+        $this->initConfig();
 
-            $config_path = array();
-            $path_yml = __DIR__ . '/../../app/config/eccube/path.yml';
-            if (file_exists($path_yml)) {
-                $config_path = Yaml::parse($path_yml);
-            }
-
-            $config_constant = array();
-            $constant_yml = __DIR__ . '/../../app/config/eccube/constant.yml';
-            if (file_exists($constant_yml)) {
-                $config_constant = Yaml::parse($constant_yml);
-                $config_constant = empty($config_constant) ? array() : $config_constant;
-            }
-
-
-            $config_constant_dist = array();
-            $constant_yml_dist = __DIR__ . '/../../src/Eccube/Resource/config/constant.yml.dist';
-            if (file_exists($constant_yml_dist)) {
-                $config_constant_dist = Yaml::parse($constant_yml_dist);
-            }
-
-            $configAll = array_replace_recursive($config_constant_dist, $config_constant, $config_path, $config);
-
-            $database = array();
-            $yml = __DIR__ . '/../../app/config/eccube/database.yml';
-            if (file_exists($yml)) {
-                $database = Yaml::parse($yml);
-            }
-
-            $mail = array();
-            $yml = __DIR__ . '/../../app/config/eccube/mail.yml';
-            if (file_exists($yml)) {
-                $mail = Yaml::parse($yml);
-            }
-
-            $configAll = array_replace_recursive($configAll, $database, $mail);
-            return $configAll;
-        });
-
-       $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
@@ -438,6 +395,55 @@ class Application extends \Silex\Application
 
         // ログイン時のイベント
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+    }
+
+    public function initConfig()
+    {
+        // load config
+        $this['config'] = $this->share(function () {
+            $config = array();
+            $config_yml = __DIR__ . '/../../app/config/eccube/config.yml';
+            if (file_exists($config_yml)) {
+                $config = Yaml::parse($config_yml);
+            }
+
+            $config_path = array();
+            $path_yml = __DIR__ . '/../../app/config/eccube/path.yml';
+            if (file_exists($path_yml)) {
+                $config_path = Yaml::parse($path_yml);
+            }
+
+            $config_constant = array();
+            $constant_yml = __DIR__ . '/../../app/config/eccube/constant.yml';
+            if (file_exists($constant_yml)) {
+                $config_constant = Yaml::parse($constant_yml);
+                $config_constant = empty($config_constant) ? array() : $config_constant;
+            }
+
+
+            $config_constant_dist = array();
+            $constant_yml_dist = __DIR__ . '/../../src/Eccube/Resource/config/constant.yml.dist';
+            if (file_exists($constant_yml_dist)) {
+                $config_constant_dist = Yaml::parse($constant_yml_dist);
+            }
+
+            $configAll = array_replace_recursive($config_constant_dist, $config_constant, $config_path, $config);
+
+            $database = array();
+            $yml = __DIR__ . '/../../app/config/eccube/database.yml';
+            if (file_exists($yml)) {
+                $database = Yaml::parse($yml);
+            }
+
+            $mail = array();
+            $yml = __DIR__ . '/../../app/config/eccube/mail.yml';
+            if (file_exists($yml)) {
+                $mail = Yaml::parse($yml);
+            }
+
+            $configAll = array_replace_recursive($configAll, $database, $mail);
+            return $configAll;
+        });
     }
 
     public function addSuccess($message, $namespace = 'front')
