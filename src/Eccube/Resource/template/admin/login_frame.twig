@@ -1,3 +1,4 @@
+<!doctype html>
 {#
 This file is part of EC-CUBE
 
@@ -19,42 +20,24 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="robots" content="noindex,nofollow" />
-    <link rel="shortcut icon" href="{{ app.config.admin_urlpath }}/assets/img/favicon.ico" />
-    <link rel="icon" href="{{ app.config.admin_urlpath }}/assets/img/favicon.ico">
-    <title>管理機能</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{ app.config.admin_urlpath }}/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{{ app.config.admin_urlpath }}/assets/css/dashboard.css" rel="stylesheet">
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="{{ app.config.admin_urlpath }}/assets/js/ie10-viewport-bug-workaround.js"></script>
-
-    <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script type="text/javascript">//<![CDATA[
-        {{ block('javascript') }}
-        $(function(){
-            {{ block('onload') }}
-        });
-        //]]></script>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ BaseInfo.shop_name }} - EC-CUBE管理画面</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow" />
+<link rel="icon" href="{{ app.config.admin_urlpath }}/assets/img/favicon.ico">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/dashboard.css">
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
-
-
 <body id="login-page">
 <!--{$GLOBAL_ERR}-->
 <noscript>
@@ -63,20 +46,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div id="wrapper">
     {% block main %}{% endblock %}
 </div>
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="dist/js/bootstrap.min.js"></script>
-<script src="assets/js/function.js"></script>
-<script src="assets/js/hideShowPassword.min.js"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/ie10-viewport-bug-workaround.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/function.js"></script>
 <script>
-    $('#password').hideShowPassword({
-        show: true, // パスワード可視の有無
-        innerToggle: true, // トグルボタンを入力欄に設置するかの有無
-        hideToggleUntil: 'focus', // フォーカスされるまでトグルを隠す
-        //touchSupport: Modernizr.touch タッチデバイスのサポート
+$(function () {
+    $.ajax({
+        url: '{{ app.config.admin_urlpath }}/assets/img/svg.html',
+        type: 'GET',
+        dataType: 'html',
+    }).done(function(data){
+        $('body').prepend(data);
+    }).fail(function(data){
     });
+});
 </script>
+{% block javascript %}{% endblock %}
 </body>
 </html>
