@@ -59,6 +59,11 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->persist($TestProductClass);
         $this->app['orm.em']->flush();
 
+        $TestProductStock = $this->newTestProductStock($TestCreator, $TestProduct, $TestProductClass);
+        $this->app['orm.em']->persist($TestProductStock);
+        $this->app['orm.em']->flush();
+
+
         // main
         $this->client->request('GET',
             $this->app->url('admin_product_product_class_edit', array('id' => $TestProduct->getId()))
@@ -144,4 +149,19 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
             ->setDelFlg(0);
         return $TestClassCategory;
     }
+
+
+    private function newTestProductStock($TestCreator, $TestProduct, $TestProductClass)
+    {
+        $TestProductStock = new \Eccube\Entity\ProductStock();
+        $TestProductStock->setProductStock($ProductStock);
+        $TestProductStock->setProductClass($ProductClass);
+        $TestProductStock->setStock($ProductClass->getStock());
+        $TestProductStock->setDelFlg(0);
+
+
+
+        return $TestProductStock;
+    }
+
 }
