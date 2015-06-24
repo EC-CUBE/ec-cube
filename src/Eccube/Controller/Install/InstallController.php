@@ -270,11 +270,11 @@ class InstallController
         $config['config'] = $baseConfig;
 
         if ($config['database']['driver'] == 'pdo_pgsql') {
-            $sqlFile = __DIR__ . '/../../../../html/install/sql/insert_data_pgsql.sql';
+            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data_pgsql.sql';
         } elseif ($config['database']['driver'] == 'pdo_mysql') {
-            $sqlFile = __DIR__ . '/../../../../html/install/sql/insert_data_mysql.sql';
+            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data_mysql.sql';
         } else {
-            $sqlFile = __DIR__ . '/../../../../html/install/sql/insert_data.sql';
+            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data.sql';
         }
 
         $fp = fopen($sqlFile, 'r');
