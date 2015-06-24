@@ -447,6 +447,7 @@ class Application extends \Silex\Application
             } else {
                 try {
                     $DeviceType = $app['eccube.repository.master.device_type']->find(10);
+                    $DeviceType = $app['eccube.repository.master.device_type']->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
                     if ($request->get('preview')) {
                         $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
                     } else {
