@@ -51,13 +51,12 @@ class Application extends \Silex\Application
         $this->initLogger();
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $this->register(new \Silex\Provider\SessionServiceProvider());
+
+        // init session
+        $this->initSession();
 
         // init twig.
         $this->initRendering();
-
-
-
 
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
@@ -396,6 +395,11 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\MonologServiceProvider(), array(
             'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
         ));
+    }
+
+    public function initSession()
+    {
+        $this->register(new \Silex\Provider\SessionServiceProvider());
     }
 
     public function initRendering()
