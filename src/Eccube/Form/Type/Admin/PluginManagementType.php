@@ -85,15 +85,6 @@ class PluginManagementType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('plugin_id','enable'));
-#        $resolver->setRequired('enable');
-/*
-        $resolver->setDefaults(array(
-            'id_add_product_id' => true,
-            'constraints' => array(
-                new Assert\Callback(array($this, 'validate')),
-            ),
-        ));
-*/
     }
 
 }
