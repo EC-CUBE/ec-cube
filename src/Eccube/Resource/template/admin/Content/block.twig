@@ -23,10 +23,10 @@
 #}
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['content', 'block'] %}
+
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ブロック管理{% endblock %}
-
-{% set menus = ['content', 'page'] %}
 
 {% block javascript %}
     <script>
@@ -37,7 +37,7 @@
             }
         }
     </script>
-{% endblock %}
+{% endblock javascript %}
 
 {% block main %}
     <div class="container-fluid">

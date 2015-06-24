@@ -24,15 +24,14 @@
 
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['customer', 'customer_edit'] %}
+
 {% block title %}会員管理{% endblock %}
 {% block sub_title %}会員登録・編集{% endblock %}
-
-{% set menus = ['customer', 'edit'] %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
-
 <div class="row" id="aside_wrap">
     <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}">
     {{ form_widget(form._token) }}
@@ -223,12 +222,4 @@
     </div><!-- /.col -->
     </form>
 </div>
-<script src="{{ app.config.root }}admin/assets/js/hideShowPassword.min.js"></script>
-<script>
-	$('#admin_customer_password').hideShowPassword({
-		show: true, // パスワード可視の有無
-		innerToggle: true, // トグルボタンを入力欄に設置するかの有無
-		hideToggleUntil: 'focus' // フォーカスされるまでトグルを隠す
-	});
-</script>
 {% endblock %}

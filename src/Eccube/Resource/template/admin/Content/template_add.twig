@@ -21,12 +21,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['setting', 'ownersstore', 'template'] %}
+
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}テンプレート管理{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
-
-{% set menus = ['content', 'template'] %}
 
 {% block main %}
     <div class="row" id="aside_wrap">

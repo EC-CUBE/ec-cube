@@ -19,24 +19,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'default_frame.twig' %}
-
-{% block title %}受注管理{% endblock %}
-{% block sub_title %}メール確認{% endblock %}
-
-{% block main %}
-    <table class="form">
-        <tr>
-            <td>{{ subject }}</td>
-        </tr>
-        <tr>
-            <td>{{ body|nl2br }}</td>
-        </tr>
-    </table>
-
-    <div class="btn-area">
-        <ul>
-            <li><a class="btn-action" href="javascript:;" onclick="window.close(); return false;"><span class="btn-next">ウインドウを閉じる</span></a></li>
-        </ul>
-    </div>
-{% endblock %}
+<strong>{{ subject }}</strong>
+<br><br>
+<small>{{ body|raw|nl2br }}</small>

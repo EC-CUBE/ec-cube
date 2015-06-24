@@ -21,73 +21,146 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set menus = ['order', 'order_master'] %}
+
 {% block title %}受注管理{% endblock %}
 {% block sub_title %}メール通知{% endblock %}
 
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script>
+$(function() {
+    $('#template-change').on('change', function() {
+        $('#mode').val('change');
+        $('#order-mail-form').submit();
+    });
+
+
+    $('#mailModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var recipient = button.data('whatever');
+        var modal = $('#mailModal');
+
+        $.ajax({
+            url: "{{ url('admin_order_mail_view') }}",
+            cache: false,
+            data: {
+                'id' : recipient
+            },
+        }).done(function(data, textStatus, jqXHR){
+            modal.find('.modal-body').html(data);
+        }).fail(function(data, textStatus, errorThrown){
+            modal.find('.modal-body').text('取得に失敗しました。');
+        });
+    });
+
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
 
-<form name="form1" id="form1" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
-    <input type="hidden" name="mode" value="" />
-    {{ form_widget(form._token) }}
-    <div id="order" class="contents-main">
-        <h2>メール配信</h2>
-        <table class="list">
-            <tr>
-                <th>処理日</th>
-                <th>通知メール</th>
-                <th>件名</th>
-            </tr>
-            {% for MailHistory in MailHistories %}
-            <tr class="center">
-                <td>{{ MailHistory.send_date|date('Y/m/d H:i:s') }}</td>
-                <td>{{ MailHistory.MailTemplate }}</td>
-                <td><a href="{{ url('admin_order_mail_view', {id : MailHistory.id}) }}" target="_blank">{{ MailHistory.subject }}</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-
-        <table class="form">
-            <tr>
-                <th>テンプレート<span class="attention"> *</span></th>
-                <td>
-                    {{ form_errors(form.template) }}
-                    {{ form_widget(form.template, { 'attr': {'onchange': "eccube.setModeAndSubmit('change', '', '')"}}) }}
-                </td>
-            </tr>
-            <tr>
-                <th>メールタイトル<span class="attention"> *</span></th>
-                <td>
-                    {{ form_errors(form.subject) }}
-                    {{ form_widget(form.subject) }}
-                </td>
-            </tr>
-            <tr>
-                <th>ヘッダー</th>
-                <td>
-                    {{ form_errors(form.header) }}
-                    {{ form_widget(form.header) }}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="center">動的データ挿入部分</td>
-            </tr>
-            <tr>
-                <th>フッター</th>
-                <td>
-                    {{ form_errors(form.footer) }}
-                    {{ form_widget(form.footer) }}
-                </td>
-            </tr>
-        </table>
-        <div class="btn-area">
-            <ul>{#
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.changeAction('<!--{$smarty.const.ADMIN_ORDER_URLPATH}-->'); eccube.setModeAndSubmit('search','',''); return false;"><span class="btn-prev">検索結果へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
-                #}
-                <li><a class="btn-action" href="{{ url('admin_order') }}"><span class="btn-prev">検索結果へ戻る</span></a></li>
-                <li><a class="btn-action" href="javascript:;" onclick="eccube.fnFormModeSubmit('form1', '', 'mode', 'confirm'); return false;"><span class="btn-next">送信内容を確認</span></a></li>
-            </ul>
+{% if MailHistories %}
+<div class="row">
+    <div class="col-md-9">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">メール配信履歴</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="table_list">
+                    <div class="table-responsive with-border">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>処理日</th>
+                                    <th>通知メール</th>
+                                    <th>件名</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for MailHistory in MailHistories %}
+                                <tr>
+                                    <td>{{ MailHistory.send_date|date_format }}</td>
+                                    <td>{{ MailHistory.mail_template.subject }}</td>
+                                    <td><a href="#mailModal" data-toggle="modal" data-whatever="{{ MailHistory.id }}">{{ MailHistory.subject }}</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- /.box-body --> 
+        </div><!-- /.box --> 
+    </div><!-- /.col --> 
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-md-9">
+        <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
+        {{ form_widget(form._token) }}
+        <input id="mode" type="hidden" name="mode">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">メール配信</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <div class="form-group">
+                    {{ form_label(form.template) }}
+                    <div class="col-sm-9 col-lg-10">
+                        {{ form_widget(form.template, {'id': 'template-change'}) }}
+                        {{ form_errors(form.template) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.subject) }}
+                    <div class="col-sm-9 col-lg-10">
+                        {{ form_widget(form.subject) }}
+                        {{ form_errors(form.subject) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.header) }}
+                    <div class="col-sm-9 col-lg-10">
+                        {{ form_widget(form.header, {'attr': {'rows': '7'}}) }}
+                        {{ form_errors(form.header) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.footer) }}
+                    <div class="col-sm-9 col-lg-10">
+                        {{ form_widget(form.footer, {'attr': {'rows': '7'}}) }}
+                        {{ form_errors(form.footer) }}
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                <button type="submit" class="btn btn-primary btn-lg" name="mode" value="confirm">送信内容を確認</button>
+                <p><a href="#">検索結果へ戻る</a></p>
+            </div>
         </div>
-    </div>
-</form>
+        </form>
+
+    </div><!-- /.col -->
+</div>
+
 {% endblock %}
+
+{% block modal %}
+<!-- Modal -->
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modal %}

@@ -27,36 +27,31 @@ namespace Eccube\Controller\Admin\Order;
 use Eccube\Application;
 use Eccube\Entity\MailHistory;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 
 class MailController
 {
-    public function __construct()
+    public function index(Application $app, Request $request, $id)
     {
-    }
-
-    public function index(Application $app, $id)
-    {
-        $Order =  $app['orm.em']
-            ->getRepository('\Eccube\Entity\Order')
-            ->find($id);
+        $Order = $app['eccube.repository.order']->find($id);
 
         if (is_null($Order)) {
             throw new NotFoundHttpException('order not found.');
         }
 
-        $MailHistories = $app['orm.em']
-            ->getRepository('\Eccube\Entity\MailHistory')
-            ->findBy(array('Order' => $id));
+        $MailHistories = $app['eccube.repository.mail_history']->findBy(array('Order' => $id));
 
         $builder = $app['form.factory']->createBuilder('mail');
         $form = $builder->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-            $mode = $app['request']->get('mode');
+        if ('POST' === $request->getMethod()) {
+
+            $form->handleRequest($request);
+
+            $mode = $request->get('mode');
 
             // テンプレート変更の場合は. バリデーション前に内容差し替え.
-            if ('change' === $mode) {
+            if ($mode == 'change') {
                 if ($form->get('template')->isValid()) {
                     /** @var $data \Eccube\Entity\MailTemplate */
                     $MailTemplate = $form->get('template')->getData();
@@ -66,29 +61,28 @@ class MailController
                     $form->get('header')->setData($MailTemplate->getHeader());
                     $form->get('footer')->setData($MailTemplate->getFooter());
                 }
-            }
-
-            if ($form->isValid()) {
+            } else if ($form->isValid()) {
                 switch ($mode) {
                     case 'confirm':
                         // フォームをFreezeして再生成.
+
                         $builder->setAttribute('freeze', true);
-                        $builder->setAttribute('freeze_display_text', false);
-                        $form = $builder->getForm();
-                        $form->handleRequest($app['request']);
+                        $builder->setAttribute('freeze_display_text', true);
 
                         $data = $form->getData();
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
-                        return $app['view']->render('Order/mail_confirm.twig', array(
+                        $form = $builder->getForm();
+                        $form->setData($data);
+
+                        return $app->renderView('Order/mail_confirm.twig', array(
                             'form' => $form->createView(),
-                            'title' => $this->title,
-                            'subtitle' => $this->subtitle,
                             'body' => $body,
                             'Order' => $Order,
                         ));
                         break;
-                    case 'send':
+                    case 'complete':
+
                         $data = $form->getData();
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
@@ -97,21 +91,18 @@ class MailController
 
                         // 送信履歴を保存.
                         $MailTemplate = $form->get('template')->getData();
-                        $MailTemplateMaster = $app['orm.em']
-                            ->getRepository('\Eccube\Entity\Master\MailTemplate')
-                            ->find($MailTemplate->getId());
                         $MailHistory = new MailHistory();
                         $MailHistory
                             ->setSubject($data['subject'])
                             ->setMailBody($body)
-                            ->setMailTemplate($MailTemplateMaster) // fixme mtb/dtb
+                            ->setMailTemplate($MailTemplate)
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
                         $app['orm.em']->persist($MailHistory);
                         $app['orm.em']->flush($MailHistory);
 
 
-                        return $app->redirect($app['url_generator']->generate('admin_order'));
+                        return $app->redirect($app->url('admin_order_mail_complete'));
                         break;
                     default:
                         break;
@@ -119,32 +110,151 @@ class MailController
             }
         }
 
-        return $app['view']->render('Order/mail.twig', array(
+        return $app->renderView('Order/mail.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories
         ));
     }
 
-    public function view(Application $app, $sendId)
-    {
-        $MailHistory = $app['orm.em']
-            ->getRepository('\Eccube\Entity\MailHistory')
-            ->find($sendId);
 
-        if (is_null($MailHistory)) {
-            throw new HttpException('history not found.');
+    public function complete(Application $app)
+    {
+        return $app->renderView('Order/mail_complete.twig');
+    }
+
+
+    public function view(Application $app, Request $request)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+            $id = $request->get('id');
+            $MailHistory = $app['eccube.repository.mail_history']->find($id);
+
+            if (is_null($MailHistory)) {
+                throw new NotFoundHttpException('history not found.');
+            }
+
+            return $app->renderView('Order/mail_view.twig', array(
+                'subject' => $MailHistory->getSubject(),
+                'body' => $MailHistory->getMailBody()
+            ));
         }
 
-        return $app['view']->render('Order/mail_view.twig', array(
-            'subject' => $MailHistory->getSubject(),
-            'body' => $MailHistory->getMailBody()
+    }
+
+
+
+    public function mailAll(Application $app, Request $request)
+    {
+
+        $builder = $app['form.factory']->createBuilder('mail');
+
+        $form = $builder->getForm();
+
+        $ids = '';
+        if ('POST' === $request->getMethod()) {
+
+            $form->handleRequest($request);
+
+            $mode = $request->get('mode');
+
+            $ids = $request->get('ids');
+
+            // テンプレート変更の場合は. バリデーション前に内容差し替え.
+            if ($mode == 'change') {
+                if ($form->get('template')->isValid()) {
+                    /** @var $data \Eccube\Entity\MailTemplate */
+                    $MailTemplate = $form->get('template')->getData();
+                    $form = $builder->getForm();
+                    $form->get('template')->setData($MailTemplate);
+                    $form->get('subject')->setData($MailTemplate->getSubject());
+                    $form->get('header')->setData($MailTemplate->getHeader());
+                    $form->get('footer')->setData($MailTemplate->getFooter());
+                }
+            } else if ($form->isValid()) {
+                switch ($mode) {
+                    case 'confirm':
+                        // フォームをFreezeして再生成.
+
+                        $builder->setAttribute('freeze', true);
+                        $builder->setAttribute('freeze_display_text', true);
+
+                        $data = $form->getData();
+
+                        $tmp = explode(',', $ids);
+
+                        $Order = $app['eccube.repository.order']->find($tmp[0]);
+
+                        if (is_null($Order)) {
+                            throw new NotFoundHttpException('order not found.');
+                        }
+
+                        $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+
+                        $form = $builder->getForm();
+                        $form->setData($data);
+
+                        return $app->renderView('Order/mail_all_confirm.twig', array(
+                            'form' => $form->createView(),
+                            'body' => $body,
+                            'ids' => $ids,
+                        ));
+                        break;
+
+                    case 'complete':
+
+                        $data = $form->getData();
+
+                        $ids = explode(',', $ids);
+
+                        foreach ($ids as $value) {
+
+                            $Order = $app['eccube.repository.order']->find($value);
+
+                            $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
+
+                            // メール送信
+                            $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
+
+                            // 送信履歴を保存.
+                            $MailTemplate = $form->get('template')->getData();
+                            $MailHistory = new MailHistory();
+                            $MailHistory
+                                ->setSubject($data['subject'])
+                                ->setMailBody($body)
+                                ->setMailTemplate($MailTemplate)
+                                ->setSendDate(new \DateTime())
+                                ->setOrder($Order);
+                            $app['orm.em']->persist($MailHistory);
+                        }
+
+                        $app['orm.em']->flush($MailHistory);
+
+
+                        return $app->redirect($app->url('admin_order_mail_complete'));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } else {
+            foreach ($_GET as $key => $value) {
+                $ids = str_replace('ids', '', $key) . ',' . $ids;
+            }
+            $ids = substr($ids, 0, -1);
+        }
+
+        return $app->renderView('Order/mail_all.twig', array(
+            'form' => $form->createView(),
+            'ids' => $ids,
         ));
     }
 
-    protected function createBody($app, $header, $footer, $Order)
+
+    private function createBody($app, $header, $footer, $Order)
     {
-        return $app['view']->render('Mail/order.twig', array(
+        return $app->renderView('Mail/order.twig', array(
             'header' => $header,
             'footer' => $footer,
             'Order' => $Order,
