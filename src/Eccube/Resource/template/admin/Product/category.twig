@@ -79,6 +79,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% endif %}
 
                                                 {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
+                                                    <li><a title="子カテゴリが存在するため削除できません。">削除</a></li>
                                                 {% else %}
                                                     {% set delete_action = url('admin_product_category_delete', {id: Category.id}) %}
                                                     <li>
