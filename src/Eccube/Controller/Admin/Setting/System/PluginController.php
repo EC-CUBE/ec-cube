@@ -50,7 +50,7 @@ class PluginController extends AbstractController
             }
             
         }
-        return $app['twig']->render('Setting/System/Plugin/install.twig', array(
+        return $app->render('Setting/System/Plugin/install.twig', array(
             'install_form' => $installForm->createView(),
         ));
 
@@ -67,8 +67,7 @@ class PluginController extends AbstractController
         $form = $builder->getForm();
 
         $service = $app['eccube.service.plugin'];
-        $em = $app['orm.em'];
-        $repo=$em->getRepository('Eccube\Entity\Plugin');
+        $repo = $app['eccube.repository.plugin'];
         if ('POST' === $app['request']->getMethod()) {
 
             $form->handleRequest($app['request']);
@@ -95,17 +94,11 @@ class PluginController extends AbstractController
                 $service->update($plugin,$tmpdir.'/'.$tmpfile);
             }
         }
-        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_index'));
+        return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
 
     public function index(Application $app){
-        $em = $app['orm.em'];
-        $repo=$em->getRepository('Eccube\Entity\Plugin');
-        //インストールされているプラグイン毎のフォームを作成
-
-#        $installForm = $app['form.factory']
-#            ->createBuilder('plugin_local_install')
-#            ->getForm();
+        $repo = $app['eccube.repository.plugin'];
 
         $pluginForms=array();
         foreach($repo->findAll() as $plugin ){
@@ -116,8 +109,7 @@ class PluginController extends AbstractController
             ));
             $pluginForms[$plugin->getId()] = $builder->getForm()->createView();
         }
-        return $app['twig']->render('Setting/System/Plugin/index.twig', array(
-        #    'install_form' => $installForm->createView(),
+        return $app->render('Setting/System/Plugin/index.twig', array(
             'plugin_forms' => $pluginForms,
             'plugins' => $repo->findBy(array(),array('id'=>'ASC')) 
         ));
@@ -125,8 +117,7 @@ class PluginController extends AbstractController
 
     function handler(Application $app)
     {
-        $em = $app['orm.em'];
-        $handlers = $em->getRepository('Eccube\Entity\PluginEventHandler')->getHandlers();
+        $handlers = $app['eccube.repository.plugin_event_handler']->getHandlers();
 
         // 一次元配列からイベント毎の二次元配列に変換する 
         $HanlersPerEvent=array();
@@ -141,19 +132,18 @@ class PluginController extends AbstractController
     }
     function handler_up(Application $app,$handlerId)
     {
-        $em = $app['orm.em'];
-        $repo = $em->getRepository('Eccube\Entity\PluginEventHandler');
+        $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority(  $repo->find( $handlerId )  );
 
-        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_handler'));
+        return $app->redirect($app->url('admin_setting_system_plugin_handler'));
     }
 
     function handler_down(Application $app,$handlerId)
     {
-        $em = $app['orm.em'];
-        $repo = $em->getRepository('Eccube\Entity\PluginEventHandler');
+        $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority(  $repo->find( $handlerId ),false  );
-        return $app->redirect($app['url_generator']->generate('admin_setting_system_plugin_handler'));
+
+        return $app->redirect($app->url('admin_setting_system_plugin_handler'));
     }
 
 }

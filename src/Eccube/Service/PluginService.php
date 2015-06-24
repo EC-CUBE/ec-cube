@@ -127,10 +127,8 @@ class PluginService
     }
     public function checkSamePlugin($code)
     {
-        $em = $this->app['orm.em'];
-
-        $rep=$em->getRepository('Eccube\Entity\Plugin') ;
-        if(count($rep->getPluginByCode($code,true))){
+        $repo = $this->app['eccube.repository.plugin'];
+        if(count($repo->getPluginByCode($code,true))){
             throw new \Exception('plugin already installed.');
         }
 
@@ -201,7 +199,8 @@ class PluginService
                ->setClassName($meta['event'])
                ->setName($meta['name']);
 
-        $rep=$em->getRepository('Eccube\Entity\PluginEventHandler');
+        $rep = $this->app['eccube.repository.plugin_event_handler'];
+
         if(is_array($event_yml)){
             foreach($event_yml as $event=>$handlers){
                 foreach($handlers as $handler){
@@ -218,7 +217,7 @@ class PluginService
                             ->setdelFlg(0)
                             ->setHandler($handler[0])
                             ->setHandlerType($handler[1])
-                            ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
+                            ->setPriority($rep->calcNewPriority( $event,$handler[1]) );
                         $em->persist($peh);
                         $em->flush(); 
 
@@ -263,7 +262,7 @@ class PluginService
                         ->setdelFlg(0)
                         ->setHandler($handler[0])
                         ->setHandlerType($handler[1])
-                        ->setPriority($em->getRepository('Eccube\Entity\PluginEventHandler')->calcNewPriority( $event,$handler[1]) );
+                        ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority( $event,$handler[1]) );
                     $em->persist($peh);
                     $em->flush(); 
                 }
