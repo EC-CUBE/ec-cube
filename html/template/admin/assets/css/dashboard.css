@@ -10,7 +10,7 @@ html {
 body {
     font-size: 16px;
     font-size: 1.6rem;
-    font-family: Arial, "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+    font-family: Roboto, "Droid Sans", "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Helvetica, "メイリオ", Meiryo, sans-serif;
     line-height: 1.3;
     color: #444;
     -webkit-text-size-adjust: 100%;
@@ -2434,6 +2434,21 @@ ul.link-with-bar li:last-child::after {
 	margin-right: 0;
 }
 
+#product-class-form .table-menu input[type=text].form-control {
+    width: 70px;
+}
+#product-class-form .table-menu input[type=number].form-control {
+    width: 70px;
+}
+#product-class-form .table-menu select.form-control {
+    width: 100px;
+}
+#product-class-form .table-menu .radio-inline {
+    padding-left: 0;
+    width: 150px;
+}
+
+
 /* each area style */
 
 .box-title-category {
@@ -2564,6 +2579,62 @@ ul.link-with-bar li:last-child::after {
 }
 
 
+
+/*	design-layout ====== */
+
+.design-layout {
+	border-collapse: collapse !important;
+}
+.design-layout td {
+	height: 50px;
+	padding: 15px 10px !important;
+	border: 1px solid #ccc !important;
+	background: #d0d0d0;
+}
+.design-layout td[rowspan] {
+	width: 33%;
+}
+.design-layout td[id^="position"]  {
+	background: #fff;
+	padding-top: 25px !important;
+}
+.design-layout td[id^="position"]:before {
+	text-align: left;
+	float: left;
+	background: #666;
+	color: #fff;
+	font-size: 10px;
+	font-weight: normal;
+	display: inline-block;
+	position: relative;
+	margin-top: -25px;
+	margin-left: -10px;
+	padding: 3px 5px;
+}
+.design-layout td#position_0:before {content: "未使用ブロック"; background: #ccc;}
+.design-layout td#position_1:before {content: "head"}
+.design-layout td#position_2:before {content: "#header"}
+.design-layout td#position_3:before {content: "#contents_top"}
+.design-layout td#position_4:before {content: "#side_left"}
+.design-layout td#position_5:before {content: "#main_top"}
+.design-layout td#position_6:before {content: "#main_bottom"}
+.design-layout td#position_7:before {content: "#side_right"}
+.design-layout td#position_8:before {content: "#contents_bottom"}
+.design-layout td#position_9:before {content: "#footer"}
+
+.design-layout td div.sort {
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	background: rgba(153,153,153,0.2);
+	margin: 5px 0;
+	padding: 5px;
+}
+.design-layout .placeholder {
+    border: 1px dashed #aaa;
+    height: 40px;
+	margin: 0;
+}
+
 @media print {
     .no-print, #header, #side {
         display:none!important
@@ -2627,6 +2698,12 @@ ul.link-with-bar li:last-child::after {
 .w160 { width: 160px !important;}
 .w200 { width: 200px !important;}
 .w300 { width: 300px !important;}
+
+@media (min-width: 320px) {
+	.max_w160 { max_width: 160px !important;}
+	.max_w200 { max_width: 200px !important;}
+	.max_w300 { max_width: 300px !important;}
+}
 
 /* !Floats ------------------------------------------------------------------ */
 .flL    { float: left;}

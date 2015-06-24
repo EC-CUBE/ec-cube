@@ -58,11 +58,22 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $TestProduct = $this->newTestProduct($TestCreator);
         $this->app['orm.em']->persist($TestProduct);
         $this->app['orm.em']->flush();
+
+        $TestProductClass = $this->newTestProductClass($TestCreator, $TestProduct);
+        $this->app['orm.em']->persist($TestProductClass);
+        $this->app['orm.em']->flush();
+
+        $TestProductStock = $this->newTestProductStock($TestCreator, $TestProduct, $TestProductClass);
+        $this->app['orm.em']->persist($TestProductStock);
+        $this->app['orm.em']->flush();
+
+
         $test_product_id = $this->app['eccube.repository.product']
             ->findOneBy(array(
                 'name' => $TestProduct->getName()
             ))
             ->getId();
+
 
         // main
         $this->client->request('GET',
@@ -71,6 +82,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // after
+        $this->app['orm.em']->remove($TestProductClass);
+        $this->app['orm.em']->flush();
         $this->app['orm.em']->remove($TestProduct);
         $this->app['orm.em']->flush();
     }
@@ -90,4 +103,41 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         return $TestProduct;
     }
+
+
+
+    private function newTestProductClass($TestCreator, $TestProduct)
+    {
+        $TestClassCategory = new \Eccube\Entity\ProductClass();
+        $ProductType = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Master\ProductType')
+            ->find(1);
+        $TestClassCategory->setProduct($TestProduct)
+            ->setProductType($ProductType)
+            ->setCode('test code')
+            ->setStock(100)
+            ->setStockUnlimited(0)
+//            ->setDeliveryDateId(1)
+            ->setSaleLimit(10)
+            ->setPrice01(10000)
+            ->setPrice02(5000)
+            ->setDeliveryFee(1000)
+            ->setPointRate(5)
+            ->setCreator($TestCreator)
+            ->setDelFlg(0);
+        return $TestClassCategory;
+    }
+
+
+    private function newTestProductStock($TestCreator, $TestProduct, $TestProductClass)
+    {
+        $TestProductStock = new \Eccube\Entity\ProductStock();
+        $TestProductClass->setProductStock($TestProductStock);
+        $TestProductStock->setProductClass($TestProductClass);
+        $TestProductStock->setStock($TestProductClass->getStock());
+        $TestProductStock->setCreator($TestCreator);
+        return $TestProductStock;
+    }
+
+
 }

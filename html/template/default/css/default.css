@@ -10,7 +10,7 @@
 -------------------------------- */
 
 body {
-	font-family: "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+	font-family: Roboto, "Droid Sans", "游ゴシック", YuGothic, "Yu Gothic", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", Helvetica, "メイリオ", Meiryo, sans-serif;
 	line-height: 1.4;
 	background-color: #f2f2f2;
 	color: #525263;
@@ -34,7 +34,7 @@ body {
 /****** Header Setting ********/
 
 
-.header_logo_area .header_logo{
+.header_logo_area {
 	margin-right: 100px;
 }
 .header_logo_area .header_logo a:link,
@@ -63,13 +63,13 @@ body {
 #cart_area {
 	width: 100%;
 	position: absolute;
-	right: 0; top: -15px;
+	right: 0; top: 0;
 	z-index: 11;
 }
 #cart_area p {
 	margin: 0;
 }
-#cart_area .cart-trigger {
+#cart_area p.cart-trigger {
 	position: absolute;
 	right: 65px;
 }
@@ -78,15 +78,15 @@ body {
 	background: #f3f3f3;
 }
 
-#btn_menu {
-	 top: -15px;
-}
 
 /* search area */
 
 #search {
 	background: #EBEBEB;
 	padding: 16px 8px;
+}
+#search select {
+	width: 100%;
 }
 
 /* snsbtn_area */
@@ -113,13 +113,13 @@ body {
 /* Comment Area */
 
 .front_page .comment_area h4 {
-	font-size: 16px;
-	font-size: 1.6rem;
+	font-size: 24px;
+	font-size: 2.4rem;
 	margin: 0 0 2px;
 }
 .front_page .comment_area h5 {
-	font-size: 10px;
-	font-size: 1rem;
+	font-size: 16px;
+	font-size: 1.6rem;
 	margin: 0;
 }
 .front_page .comment_area p {
@@ -129,8 +129,7 @@ body {
 /* Item List */
 
 .front_page .item_comment {
-	color: #9A947E;
-	font-weight: bold;
+	color: #444;
 }
 .front_page .item a {
 	padding-bottom: 0;
@@ -147,17 +146,23 @@ body {
 	font-size: 14px;
 	font-size: 1.4rem;
 }
-.front_page #contents_top .item_name {
-	color: #9A947E;
+.front_page #contents_top .item_comment.text-warning, 
+.front_page #contents_top .item_name.text-warning {
+	color: #9a947e;
 	font-weight: bold;
+	font-size: 16px;
+	font-size: 1.6rem;
 }
-.front_page #contents_top .item .more_link {
+.front_page .more_link.text-warning {
 	font-weight: bold;
 	color: #9A947E;
 }
 
 /* news_area */
 
+.news_contents {
+	padding: 0;
+}
 #news_area {
 	background: #F8F8F8;
 }
@@ -167,8 +172,11 @@ body {
 	margin: 0;
 }
 
-
 /* txt_bnr */
+
+.txt_bnr_area {
+	padding: 0 0 16px;
+}
 
 .txt_bnr {
 	background: #f8f8f8;
@@ -188,6 +196,9 @@ body {
 	font-size: 3.2rem;
 }
 
+.item_gallery {
+	clear: both;
+}
 
 /* -------------------------------- 
 	Detail Page
@@ -331,6 +342,7 @@ body {
 
 	#header .header_logo_area {
 		float: left;
+		margin-right: 265px; 
 	}
 	#header #drawer #search {
 		position: relative;
@@ -355,23 +367,31 @@ body {
 
 	/****** Each BlockParts Setting ********/
 	
+	/* search area */
+	
+	#search select {
+		width: auto;
+	}
 	/* cart */
 	
 	#cart .inner {
 		position: absolute;
 		right: 0; top: 0;
 	}
+	#cart_area {
+		top: 0; right: 16px;
+	}
 	#cart_area p {
 		border: 1px solid #D9D9D9;
 		float: right;
 		min-width: 256px;
 	}
-	#cart_area {
-		top: 0;
-	}
-	#cart_area .cart-trigger {
+	#cart_area p.cart-trigger {
 		position: relative;
 		right: 0;
+	}
+	#cart_area .inner {
+		min-width: 256px;
 	}
 	#cart_area .cart_price {
 		font-size: 12px;
@@ -379,7 +399,8 @@ body {
 	#cart_area .cart_price .price {
 		font-size: 16px;
 	}
-
+	
+	
 	/* -------------------------------- 
 		Top Page
 	-------------------------------- */
@@ -406,6 +427,10 @@ body {
 	
 	/* news_area */
 	
+	.news_contents {
+		padding: 0 16px 0 0;
+	}
+	
 	#news_area .heading01 {
 		padding: 16px;
 		text-align: left;
@@ -414,8 +439,13 @@ body {
 		margin-bottom: 16px;
 	}
 	
-	/* txt_bnr */
 
+	/* txt_bnr */
+	
+	.txt_bnr_area {
+		padding-left: 16px;
+	}
+	
 	.txt_bnr {
 		margin:0 0 16px;
 	}
