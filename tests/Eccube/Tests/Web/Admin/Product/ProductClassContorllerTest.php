@@ -65,10 +65,12 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
 
 
         // main
-        $this->client->request('GET',
+        $redirectUrl = $this->app->url('admin_product_product_class', array('id' => $TestProduct->getId()));
+        $this->client->request('POST',
             $this->app->url('admin_product_product_class_edit', array('id' => $TestProduct->getId()))
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
 
         // after
         $this->app['orm.em']->remove($TestProductClass);
@@ -154,13 +156,10 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
     private function newTestProductStock($TestCreator, $TestProduct, $TestProductClass)
     {
         $TestProductStock = new \Eccube\Entity\ProductStock();
-        $TestProductStock->setProductStock($ProductStock);
-        $TestProductStock->setProductClass($ProductClass);
-        $TestProductStock->setStock($ProductClass->getStock());
-        $TestProductStock->setDelFlg(0);
-
-
-
+        $TestProductClass->setProductStock($TestProductStock);
+        $TestProductStock->setProductClass($TestProductClass);
+        $TestProductStock->setStock($TestProductClass->getStock());
+        $TestProductStock->setCreator($TestCreator);
         return $TestProductStock;
     }
 
