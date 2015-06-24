@@ -143,12 +143,6 @@ class Application extends \Silex\Application
 
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
-        $app['filesystem'] = function () {
-            return new \Symfony\Component\Filesystem\Filesystem();
-        };
-
-
-
         $app->mount('', new ControllerProvider\FrontControllerProvider());
         $app->mount('/' . trim($app['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
         $app->error(function (\Exception $e, $code) use ($app) {
