@@ -29,20 +29,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datepicker3.min.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.css">
 {% endblock stylesheet %}
 
 {% block javascript %}
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datepicker.min.js"></script>
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datepicker.ja.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment-ja.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
 <script>
 $(function() {
 
-    $('#admin_news_date').datepicker({
-        'autoclose': true,
-        'language': 'ja',
-        'todayBtn': 'linked',
-        'todayHighlight' : true
+    $('#admin_news_date').datetimepicker({
+        locale: 'ja',
+        format: 'YYYY-MM-DD',
+        useCurrent: false,
+        showTodayButton: true
     });
 
 });

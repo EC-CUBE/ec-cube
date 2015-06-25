@@ -28,16 +28,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.css">
+{% endblock stylesheet %}
+
 {% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment-ja.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
 <script>
+$(function() {
+
+    $('#tax_rule_apply_date').datetimepicker({
+        locale: 'ja',
+        format: 'YYYY-MM-DD hh:mm',
+        useCurrent: false,
+        showTodayButton: true
+    });
+
+});
+
     function fnChange(action) {
         document.form1.action = action;
         document.form1.submit();
     }
 </script>
 {% endblock javascript%}
-
-
 
 {% block main %}
     <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="
