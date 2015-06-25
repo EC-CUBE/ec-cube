@@ -283,7 +283,7 @@ class Application extends \Silex\Application
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
-        // プ８ラグインのmetadata定義を合わせて行う.
+        // プラグインのmetadata定義を合わせて行う.
         $pluginBasePath = __DIR__ . '/../../app/Plugin';
         $finder = Finder::create()
             ->in($pluginBasePath)
