@@ -44,8 +44,7 @@ class CustomerController
         }
 
         if ('POST' === $request->getMethod()) {
-            $qb = $app['orm.em']
-                ->getRepository('Eccube\Entity\Customer')
+            $qb = $app['eccube.repository.customer']
                 ->getQueryBuilderBySearchData($searchData);
 
             $pagination = $app['paginator']()->paginate(
