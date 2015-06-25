@@ -343,4 +343,30 @@ class ProductController
             'id' => $id,
         ));
     }
+
+    public function delete(Application $app, Request $request, $id = null)
+    {
+        if (!is_null($id)) {
+            /* @var $Product \Eccube\Entity\Product */
+            $Product = $app['eccube.repository.product']->find($id);
+            if ($Product instanceof \Eccube\Entity\Product) {
+                $Product->setDelFlg(1);
+                $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+                $app->addSuccess('admin.delete.complete', 'admin');
+            } else {
+                $app->addError('admin.delete.failed', 'admin');
+            }
+        } else {
+            $app->addError('admin.delete.failed', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_product'));
+    }
+
+    public function copy(Application $app, Request $request, $id = null)
+    {
+
+    }
 }
