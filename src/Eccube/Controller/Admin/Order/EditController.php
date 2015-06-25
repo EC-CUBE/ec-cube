@@ -191,6 +191,7 @@ class EditController extends AbstractController
                 'fax01' => $Customer->getFax01(),
                 'fax02' => $Customer->getFax02(),
                 'fax03' => $Customer->getFax03(),
+                'company_name' => $Customer->getCompanyName(),
             );
 
             return $app->json($data);

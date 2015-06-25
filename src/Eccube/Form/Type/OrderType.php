@@ -123,6 +123,15 @@ class OrderType extends AbstractType
                 'label' => 'FAX番号',
                 'required' => false,
             ))
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['stext_len'],
+                    ))
+                ),
+            ))
             ->add('message', 'textarea', array(
                 'label' => '備考',
                 'required' => false,

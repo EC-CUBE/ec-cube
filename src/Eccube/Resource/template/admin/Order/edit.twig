@@ -51,6 +51,7 @@ $(function() {
         $('#order_Shippings_0_fax_fax01').val($('#order_fax_fax01').val());
         $('#order_Shippings_0_fax_fax02').val($('#order_fax_fax02').val());
         $('#order_Shippings_0_fax_fax03').val($('#order_fax_fax03').val());
+        $('#order_Shippings_0_company_name').val($('#order_company_name').val());
     });
     // 会員検索
     $('#searchCustomerModalButton').on('click', function() {
@@ -100,6 +101,7 @@ $(function() {
                                 $('#order_fax_fax01').val(data['fax01']);
                                 $('#order_fax_fax02').val(data['fax02']);
                                 $('#order_fax_fax03').val(data['fax03']);
+                                $('#order_company_name').val(data['company_name']);
                                 // モーダルを閉じる.
                                 $('#searchCustomerModal').modal('hide');
                             },
@@ -249,6 +251,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                 {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}-{{ form_widget(form.fax.fax03) }}
                                 {{ form_errors(form.fax) }}
+                            </div>
+                        </div>
+                        {# 会社名 #}
+                        <div class="form-group">
+                            {{ form_label(form.company_name) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.company_name) }}
+                                {{ form_errors(form.company_name) }}
                             </div>
                         </div>
                         {# 注文時お問い合わせ #}
