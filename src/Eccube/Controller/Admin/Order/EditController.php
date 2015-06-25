@@ -116,35 +116,37 @@ class EditController extends AbstractController
      */
     public function searchCustomer(Application $app, Request $request)
     {
-        $app['monolog']->addDebug('search customer start.');
+        if ($request->isXmlHttpRequest()) {
+            $app['monolog']->addDebug('search customer start.');
 
-        $searchData = array(
-            'multi' => $request->get('search_word'),
-        );
-
-        $Customers = $app['eccube.repository.customer']
-            ->getQueryBuilderBySearchData($searchData)
-            ->getQuery()
-            ->getResult();
-
-        if (empty($Customers)) {
-            $app['monolog']->addDebug('search customer not found.');
-        }
-
-        $data = array();
-
-        $formatTel = '%s-%s-%s';
-        $formatName = '%s%s(%s%s)';
-        foreach ($Customers as $Customer) {
-            $data[] = array(
-                'id' => $Customer->getId(),
-                'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(), $Customer->getKana01(),
-                    $Customer->getKana02()),
-                'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+            $searchData = array(
+                'multi' => $request->get('search_word'),
             );
-        }
 
-        return $app->json($data);
+            $Customers = $app['eccube.repository.customer']
+                ->getQueryBuilderBySearchData($searchData)
+                ->getQuery()
+                ->getResult();
+
+            if (empty($Customers)) {
+                $app['monolog']->addDebug('search customer not found.');
+            }
+
+            $data = array();
+
+            $formatTel = '%s-%s-%s';
+            $formatName = '%s%s(%s%s)';
+            foreach ($Customers as $Customer) {
+                $data[] = array(
+                    'id' => $Customer->getId(),
+                    'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(), $Customer->getKana01(),
+                        $Customer->getKana02()),
+                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                );
+            }
+
+            return $app->json($data);
+        }
     }
 
     /**
@@ -156,76 +158,81 @@ class EditController extends AbstractController
      */
     public function searchCustomerById(Application $app, Request $request)
     {
-        $app['monolog']->addDebug('search customer by id start.');
+        if ($request->isXmlHttpRequest()) {
+            $app['monolog']->addDebug('search customer by id start.');
 
-        /** @var $Customer \Eccube\Entity\Customer */
-        $Customer = $app['eccube.repository.customer']
-            ->find($request->get('id'));
+            /** @var $Customer \Eccube\Entity\Customer */
+            $Customer = $app['eccube.repository.customer']
+                ->find($request->get('id'));
 
-        if (is_null($Customer)) {
-            $app['monolog']->addDebug('search customer by id not found.');
+            if (is_null($Customer)) {
+                $app['monolog']->addDebug('search customer by id not found.');
 
-            return $app->json(array(), 404);
+                return $app->json(array(), 404);
+            }
+
+            $app['monolog']->addDebug('search customer by id found.');
+
+            $data = array(
+                'id' => $Customer->getId(),
+                'name01' => $Customer->getName01(),
+                'name02' => $Customer->getName02(),
+                'kana01' => $Customer->getKana01(),
+                'kana02' => $Customer->getKana02(),
+                'zip01' => $Customer->getZip01(),
+                'zip02' => $Customer->getZip02(),
+                'pref' => is_null($Customer->getPref()) ? null : $Customer->getPref()->getId(),
+                'addr01' => $Customer->getAddr01(),
+                'addr02' => $Customer->getAddr02(),
+                'email' => $Customer->getEmail(),
+                'tel01' => $Customer->getTel01(),
+                'tel02' => $Customer->getTel02(),
+                'tel03' => $Customer->getTel03(),
+                'fax01' => $Customer->getFax01(),
+                'fax02' => $Customer->getFax02(),
+                'fax03' => $Customer->getFax03(),
+                'company_name' => $Customer->getCompanyName(),
+            );
+
+            return $app->json($data);
         }
-
-        $app['monolog']->addDebug('search customer by id found.');
-
-        $data = array(
-            'id' => $Customer->getId(),
-            'name01' => $Customer->getName01(),
-            'name02' => $Customer->getName02(),
-            'kana01' => $Customer->getKana01(),
-            'kana02' => $Customer->getKana02(),
-            'zip01' => $Customer->getZip01(),
-            'zip02' => $Customer->getZip02(),
-            'pref' => is_null($Customer->getPref()) ? null : $Customer->getPref()->getId(),
-            'addr01' => $Customer->getAddr01(),
-            'addr02' => $Customer->getAddr02(),
-            'email' => $Customer->getEmail(),
-            'tel01' => $Customer->getTel01(),
-            'tel02' => $Customer->getTel02(),
-            'tel03' => $Customer->getTel03(),
-            'fax01' => $Customer->getFax01(),
-            'fax02' => $Customer->getFax02(),
-            'fax03' => $Customer->getFax03(),
-        );
-
-        return $app->json($data);
     }
 
     public function searchProduct(Application $app, Request $request)
     {
-        $app['monolog']->addDebug('search product start.');
+        if ($request->isXmlHttpRequest()) {
+            $app['monolog']->addDebug('search product start.');
 
-        $searchData = array(
-            'id' => $request->get('id'),
-            'category_id' => $request->get('category_id'),
-        );
+            $searchData = array(
+                'id' => $request->get('id'),
+                'category_id' => $request->get('category_id'),
+            );
 
-        /** @var $Products \Eccube\Entity\Product[] */
-        $Products = $app['eccube.repository.product']
-            ->getQueryBuilderBySearchData($searchData)
-            ->getQuery()
-            ->getResult();
+            /** @var $Products \Eccube\Entity\Product[] */
+            $Products = $app['eccube.repository.product']
+                ->getQueryBuilderBySearchData($searchData)
+                ->getQuery()
+                ->getResult();
 
-        if (empty($Products)) {
-            $app['monolog']->addDebug('search product not found.');
-        }
+            if (empty($Products)) {
+                $app['monolog']->addDebug('search product not found.');
+            }
 
-        $forms = array();
-        foreach ($Products as $Product) {
-            /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-            $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
-                'product' => $Product,
+            $forms = array();
+            foreach ($Products as $Product) {
+                /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
+                $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
+                    'product' => $Product,
+                ));
+                $addCartForm = $builder->getForm();
+                $forms[$Product->getId()] = $addCartForm->createView();
+            }
+
+            return $app->render('Order/search_product.twig', array(
+                'forms' => $forms,
+                'Products' => $Products,
             ));
-            $addCartForm = $builder->getForm();
-            $forms[$Product->getId()] = $addCartForm->createView();
         }
-
-        return $app->render('Order/search_product.twig', array(
-            'forms' => $forms,
-            'Products' => $Products,
-        ));
     }
 
     // todo serviceを利用する.

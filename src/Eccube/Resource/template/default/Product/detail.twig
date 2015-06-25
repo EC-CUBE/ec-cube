@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set body_class = 'product_page' %}
+
 {% block javascript %}
 <script>
     eccube.classCategories = {{ Product.class_categories|json_encode|raw }};

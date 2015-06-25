@@ -10,3 +10,5 @@ ECCUBE_VERSION: 3.0.0-dev
 customer_confirm_mail: false
 form_country_enable: false
 default_password: '******'
+force_ssl: 0
+admin_allow_host: 
