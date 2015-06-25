@@ -69,7 +69,7 @@ class ContactController
                         $form = $builder->getForm();
                         $form->handleRequest($request);
 
-                        return $app['twig']->render('Contact/confirm.twig', array(
+                        return $app->render('Contact/confirm.twig', array(
                             'form' => $form->createView(),
                         ));
 
@@ -83,13 +83,13 @@ class ContactController
             }
         }
 
-        return $app['twig']->render('Contact/index.twig', array(
+        return $app->render('Contact/index.twig', array(
             'form' => $form->createView(),
         ));
     }
 
     public function complete(Application $app)
     {
-        return $app['twig']->render('Contact/complete.twig');
+        return $app->render('Contact/complete.twig');
     }
 }
