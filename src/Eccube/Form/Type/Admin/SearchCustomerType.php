@@ -79,7 +79,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '誕生日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -87,7 +87,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '誕生日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -133,7 +133,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '登録日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -141,7 +141,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '登録日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -149,7 +149,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '更新日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -157,7 +157,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '更新日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -165,7 +165,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '最終購入日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -173,7 +173,7 @@ class SearchCustomerType extends AbstractType
                 'label' => '最終購入日',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))

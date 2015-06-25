@@ -21,12 +21,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['content', 'index'] %}
+{% set menus = ['content', 'news'] %}
 
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}新着情報管理{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datepicker3.min.css">
+{% endblock stylesheet %}
+
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datepicker.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datepicker.ja.min.js"></script>
+<script>
+$(function() {
+
+    $('#admin_news_date').datepicker({
+        'autoclose': true,
+        'language': 'ja',
+        'todayBtn': 'linked',
+        'todayHighlight' : true
+    });
+
+});
+</script>
+{% endblock javascript %}
 
 {% block main %}
     <div class="row" id="aside_wrap">
