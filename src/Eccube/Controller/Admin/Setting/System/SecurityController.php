@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Util\Str;
 use Eccube\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,9 @@ class SecurityController extends AbstractController
 {
     public function index(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder('admin_security')->getForm();
+
+        $builder = $app['form.factory']->createBuilder('admin_security');
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
 
@@ -45,30 +48,56 @@ class SecurityController extends AbstractController
 
             if ($form->isValid()) {
                 $data = $form->getData();
+
                 // 現在のセキュリティ情報を更新
-                $pathFile = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
-                $config = Yaml::parse(file_get_contents($pathFile));
-                $config['admin_route'] = $data['admin_route_dir'];
-                file_put_contents($pathFile, Yaml::dump($config));
+                $adminRoot = $app['config']['admin_route'];
 
                 $configFile = $app['config']['root_dir'] . '/app/config/eccube/config.yml';
                 $config = Yaml::parse(file_get_contents($configFile));
                 // trim処理
-                $config['admin_allow_host'] = explode("\n", $data['admin_allow_host']);
-
-                $url = 'https://' . $request->getHost();
-                // $response = $app->render($view)
+                $allowHost = Str::convertLineFeed($data['admin_allow_host']);
+                if (empty($allowHost)) {
+                    $config['admin_allow_host'] = null;
+                } else {
+                    $config['admin_allow_host'] = explode("\n", $allowHost);
+                }
 
                 if ($data['force_ssl']) {
-                    // SSL制限にチェックをいれた場合、サーバがSSLを使用可能か確認
-                    if (!$request->isSecure()) {
-                        // httpでアクセスされたらsslの有効かどうかのチェックを行う
+                    // SSL制限にチェックをいれた場合、https経由で接続されたか確認
+                    if ($request->isSecure()) {
+                        // httpsでアクセスされたらSSL制限をチェック
+                        $config['force_ssl'] = Constant::ENABLED;
+                    } else {
+                        // httpから変更されたらfalseのまま
+                        $config['force_ssl'] = Constant::DISABLED;
+                        $data['force_ssl'] = (bool) Constant::DISABLED;
                     }
+                } else {
+                    $config['force_ssl'] = Constant::DISABLED;
                 }
-                $config['force_ssl'] = $data['force_ssl'] ? Constant::ENABLED : Constant::DISABLED;
+                $form = $builder->getForm();
+                $form->setData($data);
 
                 file_put_contents($configFile, Yaml::dump($config));
-                $app->addSuccess('admin.sysmte.security.save.complete', 'admin'); 
+
+                if ($adminRoot != $data['admin_route_dir']) {
+                    // admin_routeが変更されればpath.ymlを更新
+                    $pathFile = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
+                    $config = Yaml::parse(file_get_contents($pathFile));
+                    $config['admin_route'] = $data['admin_route_dir'];
+
+                    file_put_contents($pathFile, Yaml::dump($config));
+
+                    $app->addSuccess('admin.sysmte.security.route.dir.complete', 'admin');
+
+                    // ログアウト
+                    $this->getSecurity($app)->setToken(null);
+
+                    // 管理者画面へ再ログイン
+                    return $app->redirect('/' . $config['admin_route']);
+                }
+
+                $app->addSuccess('admin.sysmte.security.save.complete', 'admin');
 
             }
         } else {
@@ -76,7 +105,8 @@ class SecurityController extends AbstractController
             $form->get('admin_route_dir')->setData($app['config']['admin_route']);
             $allowHost = $app['config']['admin_allow_host'];
             if (count($allowHost) > 0) {
-                $form->get('admin_allow_host')->setData(implode("\n", $allowHost));
+                // $form->get('admin_allow_host')->setData(implode("\n", $allowHost));
+                $form->get('admin_allow_host')->setData(Str::convertLineFeed(implode("\n", $allowHost)));
             }
             $form->get('force_ssl')->setData((bool)$app['config']['force_ssl']);
         }

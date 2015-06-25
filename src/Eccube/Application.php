@@ -90,7 +90,7 @@ class Application extends \Silex\Application
             return $configAll;
         });
 
-       $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
@@ -132,6 +132,17 @@ class Application extends \Silex\Application
             $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
             $menus = array('', '', '');
             $app['twig']->addGlobal('menus', $menus);
+
+            // IP制限チェック
+            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                $allowHost = $app['config']['admin_allow_host'];
+                if (count($allowHost) > 0) {
+                    if (array_search($app['request']->getClientIp(), $allowHost) === false) {
+                        throw new \Exception();
+                    }
+                }
+            }
+
         }, self::EARLY_EVENT);
 
         $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
@@ -334,18 +345,18 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
             'security.firewalls' => array(
                 'admin' => array(
-                    'pattern' => '^/admin',
+                    'pattern' => "^/{$app['config']['admin_route']}",
                     'form' => array(
-                        'login_path' => '/admin/login',
-                        'check_path' => '/admin/login_check',
+                        'login_path' => "/{$app['config']['admin_route']}/login",
+                        'check_path' => "/{$app['config']['admin_route']}/login_check",
                         'username_parameter' => 'login_id',
                         'password_parameter' => 'password',
                         'with_csrf' => true,
                         'use_forward' => true,
                     ),
                     'logout' => array(
-                        'logout_path' => '/admin/logout',
-                        'target_url' => '/admin/',
+                        'logout_path' => "/{$app['config']['admin_route']}/logout",
+                        'target_url' => "/{$app['config']['admin_route']}/",
                     ),
                     'users' => $app['orm.em']->getRepository('Eccube\Entity\Member'),
                     'anonymous' => true,
@@ -370,8 +381,8 @@ class Application extends \Silex\Application
             ),
         ));
         $app['security.access_rules'] = array(
-            array('^/admin/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/admin', 'ROLE_ADMIN'),
+            array("^/{$app['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array("^/{$app['config']['admin_route']}", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage', 'ROLE_USER'),

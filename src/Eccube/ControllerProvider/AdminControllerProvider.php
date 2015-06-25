@@ -33,6 +33,11 @@ class AdminControllerProvider implements ControllerProviderInterface
     {
         $c = $app['controllers_factory'];
 
+        // 強制SSL
+        if ($app['config']['force_ssl'] == \Eccube\Common\Constant::ENABLED) {
+            $c->requireHttps();
+        }
+
         // root
         $c->match('/', '\Eccube\Controller\Admin\AdminController::index')->bind('admin_homepage');
 

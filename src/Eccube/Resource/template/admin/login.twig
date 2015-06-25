@@ -34,9 +34,10 @@ $(function() {
 {% block main %}
 
     <div class="login-box">
+        {{ include('alert.twig') }}
         <div class="login-box-body">
             <p class="login-logo2"><img src="{{ app.config.admin_urlpath }}/assets/img/logo2.png" width="106"></p>
-            <form name="form1" id="form1" method="post" action="{{ path('admin_login_check') }}">
+            <form name="form1" id="form1" method="post" action="{{ path(app.config.admin_route ~ '_login_check') }}">
                 {% if error %}
                     <span class="attention">{{ error }}</span>
                 {% endif %}
