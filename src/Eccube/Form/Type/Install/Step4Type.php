@@ -24,10 +24,12 @@
 
 namespace Eccube\Form\Type\Install;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Step4Type extends AbstractType
 {
@@ -66,10 +68,28 @@ class Step4Type extends AbstractType
             ->add('database_user', 'text', array(
                 'label' => 'DBユーザ名',
             ))
-            ->add('database_password', 'text', array(
+            ->add('database_password', 'password', array(
                 'label' => 'パスワード',
             ))
-        ;
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+                $form = $event->getForm();
+                $data = $form->getData();
+                try {
+                    $dsn = $data['database']
+                        . ':host=' . $data['database_host']
+                        . ';dbname=' . $data['database_name'];
+                    if (!empty($data['port'])) {
+                        $dsn .= ';port=' . $data['database_port'];
+                    }
+                    new \PDO(
+                        $dsn,
+                        $data['database_user'],
+                        $data['database_password']
+                    );
+                } catch (\PDOException $e) {
+                    $form['database_name']->addError(new FormError('データベースに接続できませんでした。'));
+                }
+            });
 
     }
 

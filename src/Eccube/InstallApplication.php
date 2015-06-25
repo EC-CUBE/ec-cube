@@ -66,16 +66,6 @@ class InstallApplication extends \Silex\Application
         ini_set('error_reporting', E_ALL | ~E_STRICT);
         parent::__construct($values);
 
-        // load config
-        $this['config'] = $app->share(function () {
-            $config = array();
-            $constant_dist = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
-
-           $config_constant = Yaml::parse($constant_dist);
-
-            return array_merge($config_constant, $config);
-        });
-
         $app->register(new \Silex\Provider\MonologServiceProvider(), array(
             'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
         ));
