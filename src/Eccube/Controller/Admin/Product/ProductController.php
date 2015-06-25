@@ -149,7 +149,7 @@ class ProductController
             foreach ($images as $img) {
                 foreach ($img as $image) {
                     $extension = $image->guessExtension();
-                    $filename = date('mdHis').uniqid('_').'.'.$extension;
+                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
@@ -232,16 +232,16 @@ class ProductController
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
                     $app['orm.em']->persist($ProductClass);
-                }
 
-                // 在庫情報を作成
-                if (!$ProductClass->getStockUnlimited()) {
-                    $ProductStock->setStock($ProductClass->getStock());
-                } else {
-                    // 在庫無制限時はnullを設定
-                    $ProductStock->setStock(null);
+                    // 在庫情報を作成
+                    if (!$ProductClass->getStockUnlimited()) {
+                        $ProductStock->setStock($ProductClass->getStock());
+                    } else {
+                        // 在庫無制限時はnullを設定
+                        $ProductStock->setStock(null);
+                    }
+                    $app['orm.em']->persist($ProductStock);
                 }
-                $app['orm.em']->persist($ProductStock);
 
                 // カテゴリの登録
                 // 一度クリア
@@ -262,8 +262,7 @@ class ProductController
                         ->setProductId($Product->getId())
                         ->setCategory($Category)
                         ->setCategoryId($Category->getId())
-                        ->setRank($count)
-                    ;
+                        ->setRank($count);
                     $app['orm.em']->persist($ProductCategory);
                     $count++;
                     /* @var $Product \Eccube\Entity\Product */
@@ -307,15 +306,17 @@ class ProductController
 
 
                 $ranks = $request->get('rank_images');
-                foreach ($ranks as $rank) {
-                    list($filename, $rank_val) = explode('//', $rank);
-                    $ProductImage = $app['eccube.repository.product_image']
-                        ->findOneBy(array(
-                            'file_name' => $filename,
-                            'Product' => $Product,
-                        ));
-                    $ProductImage->setRank($rank_val);
-                    $app['orm.em']->persist($ProductImage);
+                if ($ranks) {
+                    foreach ($ranks as $rank) {
+                        list($filename, $rank_val) = explode('//', $rank);
+                        $ProductImage = $app['eccube.repository.product_image']
+                            ->findOneBy(array(
+                                'file_name' => $filename,
+                                'Product' => $Product,
+                            ));
+                        $ProductImage->setRank($rank_val);
+                        $app['orm.em']->persist($ProductImage);
+                    }
                 }
                 $app['orm.em']->flush();
 
