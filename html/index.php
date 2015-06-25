@@ -25,4 +25,13 @@ require __DIR__ . '/../autoload.php';
 
 $app = new Eccube\Application();
 
-$app->run();
+// インストールされてなければインストーラにリダイレクト
+if ($app['config']['eccube_install']) {
+    $app->initialize();
+    $app->initializePlugin();
+    $app->run();
+} else {
+    $location = str_replace('index.php', 'install.php', $_SERVER['SCRIPT_NAME']);
+    header('Location:' . $location);
+    exit;
+}

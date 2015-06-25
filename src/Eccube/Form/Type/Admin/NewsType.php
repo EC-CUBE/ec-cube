@@ -74,7 +74,7 @@ class NewsType extends AbstractType
                 'required' => false,
                 'label' => '別ウィンドウを開く',
                 'value' => '2',
-                'data' => true,
+                'data' => false,
             ))
             ->add('comment', 'textarea', array(
                 'label' => '本文',
