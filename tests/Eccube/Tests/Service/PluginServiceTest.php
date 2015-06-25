@@ -45,6 +45,7 @@ class PluginServiceTest extends AbstractServiceTestCase
  
      */
 
+    // テスト用のダミープラグインを配置する
     private function createTempDir(){
         $t = sys_get_temp_dir()."/".sha1(mt_rand());
         if(!mkdir($t)){
@@ -59,10 +60,13 @@ class PluginServiceTest extends AbstractServiceTestCase
     }
 
 
+    // 必要最小限のファイルのプラグインのインストールとアンインストールを検証
     public function testInstallPluginMinimum()
     {
-        self::markTestSkipped();
+        #self::markTestSkipped();
 
+
+        // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
         $config['name'] = $tmpname;
@@ -80,16 +84,23 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->assertTrue($service->install($tmpfile));
 
         $this->setExpectedException(
-          'Exception', 'plugin already installed.'
+          '\Eccube\Exception\PluginException', 'plugin already installed.'
         );
         // 同じプラグインの二重インストールが蹴られるか
         $service->install($tmpfile);
+
+        // アンインストールできるか
+        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertTrue($service->uninstall($plugin));
         
     }
 
+    // イベント定義を含むプラグインのインストールとアンインストールを検証
     public function testInstallPluginWithEvent()
     {
-        self::markTestSkipped();
+        #self::markTestSkipped();
+
+        // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
         $config['name'] = $tmpname;
@@ -119,48 +130,172 @@ class DummyEvent
     }
     public function dummyHandler()
     {
-        echo "dummyHandler";
+        echo "dummyHandler\n";
+    }
+    public function dummyHandlerFirst()
+    {
+        echo "dummyHandlerFirst\n";
+    }
+    public function dummyHandlerLast()
+    {
+        echo "dummyHandlerLast\n";
     }
 
 }
 
 EOD;
-        $dummyEvent=str_replace('@@@@',$tmpname,$dummyEvent);
+        $dummyEvent=str_replace('@@@@',$tmpname,$dummyEvent); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addString("DummyEvent.php" , $dummyEvent);
 
+        // イベント定義を作成する
         $event=array();
         $event['eccube.event.app.before'] = array();
         $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
-        $event['eccube.event.app.before'][] = array("dummyHandler",'FIRST');
+        $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
+        $event['eccube.event.app.before'][] = array("dummyHandlerFirst",'FIRST');
         $event['eccube.event.app.after'] = array();
-        $event['eccube.event.app.before'][] = array("dummyHandler",'LAST');
+        $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
         $tar->addString('event.yml',Yaml::dump($event));
-         
 
         $service = $this->app['eccube.service.plugin']; 
 
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
-        $rep=$this->app['orm.em']->getRepository('Eccube\Entity\Plugin'); 
-        $plugin=$rep->findOneBy(array('name'=>$tmpname));
+        $rep= $this->app['eccube.repository.plugin'];
 
-        $this->assertTrue((boolean)$plugin);
+        $plugin=$rep->findOneBy(array('name'=>$tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
+        $this->app['orm.em']->detach($plugin); 
+
+
+        // インストールした内容は正しいか
+        // config.ymlとdtb_pluginの内容を照合
+        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('name'=>$tmpname)));
         $this->assertEquals($plugin->getClassName(),"DummyEvent");
-        
+        $this->assertEquals($plugin->getCode(),$tmpname);
+        $this->assertEquals($plugin->getVersion(),$tmpname);
+
+        // event.ymlとdtb_plugin_event_handlerの内容を照合(優先度、ハンドラメソッド名、イベント名)
+        $this->assertEquals(4,count($plugin->getPluginEventHandlers()->toArray()));
+
+        foreach($plugin->getPluginEventHandlers() as $handler){
+            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL){
+                $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_END,$handler->getPriority() );
+                $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_START,$handler->getPriority() );
+                $this->assertEquals('dummyHandler',$handler->getHandler());
+                $this->assertEquals('eccube.event.app.before',$handler->getEvent());
+            }
+            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_FIRST){
+                $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_FIRST_END,$handler->getPriority() );
+                $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_FIRST_START,$handler->getPriority() );
+                $this->assertEquals('dummyHandlerFirst',$handler->getHandler());
+                $this->assertEquals('eccube.event.app.before',$handler->getEvent());
+
+            }
+            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST){
+                $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_END,$handler->getPriority() );
+                $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_START,$handler->getPriority() );
+                $this->assertEquals('dummyHandlerLast',$handler->getHandler());
+                $this->assertEquals('eccube.event.app.after',$handler->getEvent());
+            }
+        }
+
+        // ちゃんとファイルが展開されているか
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/config.yml");
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/event.yml");
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
+
+        // enable/disableできるか
+        $this->assertTrue($service->disable($plugin));
+        $this->assertTrue($service->enable($plugin));
+
+        // アンインストールできるか
+        $this->assertTrue($service->uninstall($plugin));
+        // 正しくアンインストールされているか
+        $this->assertFalse((boolean)$rep->findOneBy(array('name'=>$tmpname,'enable'=>1)));
+        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/config.yml");
+        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/event.yml");
+        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
     }
 
 
-/*
-    public function testUnInstallPlugin()
+
+     // インストーラを含むプラグインが正しくインストールできるか 
+    public function testInstallPluginWithManager()
     {
+        #self::markTestSkipped();
+
+
+        // インストールするプラグインを作成する
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \Archive_Tar($tmpfile, true);
+        $tar->addString('config.yml',Yaml::dump($config));
+        $dummyManager=<<<'EOD'
+<?php
+namespace Plugin\@@@@ ;
+
+use Eccube\Plugin\AbstractPluginManager;
+class PluginManager extends AbstractPluginManager
+{
+    public function install($plugin,$app)
+    {
+        echo "Installed";
     }
 
-    public function testEnablePlugin()
+    public function uninstall($config,$app)
     {
+        echo "Uninstalled";
     }
 
-    public function testDisablePlugin()
+    public function enable($config,$app)
     {
+        echo "Enabled";
     }
-*/
+
+    public function disable($config,$app)
+    {
+        echo "Disabled";
+    }
+
+    public function update($config,$app)
+    {
+        echo "Updated";
+    }
+}
+
+EOD;
+        $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addString("PluginManager.php" , $dummyManager);
+        $service = $this->app['eccube.service.plugin']; 
+
+        // インストールできるか、インストーラが呼ばれるか
+        ob_start();
+        $this->assertTrue($service->install($tmpfile));
+        $this->assertRegexp('/InstalledEnabled/',ob_get_contents()); ob_end_clean();
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
+
+
+        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+
+        ob_start();
+        $service->enable($plugin);
+        $this->assertRegexp('/Enabled/',ob_get_contents()); ob_end_clean();
+        ob_start();
+        $service->disable($plugin);
+        $this->assertRegexp('/Disabled/',ob_get_contents()); ob_end_clean();
+
+
+        // アンインストールできるか、アンインストーラが呼ばれるか
+        ob_start();
+        $service->disable($plugin);
+        $this->assertTrue($service->uninstall($plugin));
+        $this->assertRegexp('/DisabledUninstalled/',ob_get_contents()); ob_end_clean();
+    }
 }
