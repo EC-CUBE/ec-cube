@@ -195,8 +195,8 @@ class Application extends \Silex\Application
             return $twig;
         }));
 
-        // フロント or 管理画面ごとにtwigの探索パスを切り替える.
         $this->before(function (Request $request, \Silex\Application $app) {
+            // フロント or 管理画面ごとにtwigの探索パスを切り替える.
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
                 if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
@@ -219,10 +219,22 @@ class Application extends \Silex\Application
 
                 return $twig;
             }));
+
+            // 管理画面のIP制限チェック.
+            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                // IP制限チェック
+                $allowHost = $app['config']['admin_allow_host'];
+                if (count($allowHost) > 0) {
+                    if (array_search($app['request']->getClientIp(), $allowHost) === false) {
+                        throw new \Exception();
+                    }
+                }
+            }
         }, self::EARLY_EVENT);
 
         // twigのグローバル変数を定義.
-        $this->before(function (Request $request,\Silex\Application $app) {
+        $app = $this;
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
             // ショップ基本情報
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
@@ -232,17 +244,9 @@ class Application extends \Silex\Application
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
-
-                // IP制限チェック
-                $allowHost = $app['config']['admin_allow_host'];
-                if (count($allowHost) > 0) {
-                    if (array_search($app['request']->getClientIp(), $allowHost) === false) {
-                        throw new \Exception();
-                    }
-                }
-
             // フロント画面
             } else {
+                $request = $event->getRequest();
                 try {
                     $DeviceType = $app['eccube.repository.master.device_type']->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
                     if ($request->get('preview')) {
@@ -258,7 +262,7 @@ class Application extends \Silex\Application
                 $app["twig"]->addGlobal("PageLayout", $PageLayout);
                 $app["twig"]->addGlobal("title", $PageLayout->getName());
             }
-        }, self::LATE_EVENT);
+        });
     }
 
     public function initMailer()
@@ -471,7 +475,7 @@ class Application extends \Silex\Application
                 ),
             ),
         ));
-        $app['security.access_rules'] = array(
+        $this['security.access_rules'] = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
