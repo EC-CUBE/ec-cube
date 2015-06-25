@@ -70,11 +70,11 @@ class ForgotController extends AbstractController
                         );
                 }
 
-                return $app['view']->render('Forgot/complete.twig');
+                return $app->render('Forgot/complete.twig');
             }
         }
 
-        return $app['view']->render('Forgot/index.twig', array(
+        return $app->render('Forgot/index.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -122,7 +122,7 @@ class ForgotController extends AbstractController
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }
 
-        return $app['view']->render('Forgot/reset.twig');
+        return $app->render('Forgot/reset.twig');
     }
 
 }

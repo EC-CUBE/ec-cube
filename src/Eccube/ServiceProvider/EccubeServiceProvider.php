@@ -211,14 +211,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         // em
         if (isset($app['orm.em'])) {
-            $point_rule = $app['config']['point_rule'];
-            $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) use ($point_rule) {
+            $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
                 // tax_rule
                 $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
                 $taxRuleRepository->setApp($app);
                 $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
                 $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
-                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\PointEventSubscriber($point_rule, $taxRuleService));
 
                 // save
                 $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
