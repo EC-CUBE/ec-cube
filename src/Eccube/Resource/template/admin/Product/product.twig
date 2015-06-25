@@ -1,20 +1,15 @@
 {#
 This file is part of EC-CUBE
-
 Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
-
 http://www.lockon.co.jp/
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -58,7 +53,6 @@ $(function() {
             updateRank();
         }
     });
-
     {% if has_class == false %}
     if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
         $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
@@ -73,7 +67,6 @@ $(function() {
         }
     });
     {% endif %}
-
     var proto_img =''
         + '<li class="ui-state-default">'
         +     '<img src="__path__" />'
@@ -85,25 +78,21 @@ $(function() {
         + '</li>';
     var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
     var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
-
     {% for image in form.images %}
         var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}/{{ image.vars.value }}'));
         var $widget = $('{{ form_widget(image) }}');
         $widget.val('{{ image.vars.value }}');
         $("#thumb").append($img.append($widget));
     {% endfor %}
-
     {% for add_image in form.add_images %}
         var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}/{{ add_image.vars.value }}'));
         var $widget = $('{{ form_widget(add_image) }}');
         $widget.val('{{ add_image.vars.value }}');
         $("#thumb").append($img.append($widget));
     {% endfor %}
-
     {% for delete_image in form.delete_images %}
         $("#thumb").append('{{ form_widget(delete_image) }}');
     {% endfor %}
-
     var hideSvg = function(){
         if ($("#thumb li").length > 0) {
             $("#icon_no_image").css("display", "none");
@@ -111,7 +100,6 @@ $(function() {
             $("#icon_no_image").css("display", "");
         }
     };
-
     var updateRank = function() {
         $("#thumb li").each(function(index){
             $(this).find(".rank_images").remove();
@@ -121,10 +109,8 @@ $(function() {
             $(this).append($rank);
         });
     }
-
     hideSvg();
     updateRank();
-
     // 画像削除時
     var count_del = 0;
     $("#thumb").on("click", ".delete-image", function(){
@@ -137,7 +123,6 @@ $(function() {
         $(this).parent("li").remove();
         hideSvg();
         updateRank();
-
         count_del ++;
     });
     var count_add = {{ form.add_images|length|default(0) }};
@@ -153,7 +138,6 @@ $(function() {
                 var $new_img = $(proto_add.replace(/__name__/g, count_add));
                 $new_img.val(file);
                 $child = $img.append($new_img);
-
                 $('#thumb').append($child);
                 count_add ++;
             });
@@ -186,13 +170,11 @@ $(function() {
             }
         }
     });
-
     // 画像アップロード
     $('#file_upload').on('click', function() {
         $('#{{ form.product_image.vars.id }}').click();
     });
 });
-
 </script>
 {% endblock javascript %}
 
@@ -313,9 +295,9 @@ $(function() {
                             {{ form_row(form.DeliveryDate) }}
                             {% if has_class == false %}
                                 <div class="form-group">
-                                    {{ form_label(form.class.deliv_fee) }}
+                                    {{ form_label(form.class.delivery_fee) }}
                                     <div class="col-sm-3 col-lg-3">
-                                        {{ form_widget(form.class.deliv_fee) }}
+                                        {{ form_widget(form.class.delivery_fee) }}
                                     </div>
                                 </div>
                             {% endif %}

@@ -128,7 +128,7 @@ class ProductController
             }
         }
 
-        return $app->render('Product/index.twig', array(
+        return $app->renderView('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,
@@ -178,6 +178,9 @@ class ProductController
                 ->setDelFlg(0)
                 ->setStockUnlimited(true)
                 ->setProduct($Product);
+            $ProductStock = new \Eccube\Entity\ProductStock();
+            $ProductClass->setProductStock($ProductStock);
+            $ProductStock->setProductClass($ProductClass);
         } else {
             $Product = $app['eccube.repository.product']->find($id);
             if (!$Product) {
@@ -188,6 +191,7 @@ class ProductController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
+                $ProductStock = $ProductClasses[0]->getProductStock();
             }
         }
 
@@ -229,6 +233,15 @@ class ProductController
                     $ProductClass = $form['class']->getData();
                     $app['orm.em']->persist($ProductClass);
                 }
+
+                // 在庫情報を作成
+                if (!$ProductClass->getStockUnlimited()) {
+                    $ProductStock->setStock($ProductClass->getStock());
+                } else {
+                    // 在庫無制限時はnullを設定
+                    $ProductStock->setStock(null);
+                }
+                $app['orm.em']->persist($ProductStock);
 
                 // カテゴリの登録
                 // 一度クリア

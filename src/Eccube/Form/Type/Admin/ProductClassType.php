@@ -28,6 +28,7 @@ use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -52,7 +53,7 @@ class ProductClassType extends AbstractType
                 'label' => '商品コード',
                 'required' => false,
             ))
-            ->add('stock', 'text', array(
+            ->add('stock', 'number', array(
                 'label' => '在庫数',
                 'required' => false,
             ))
@@ -61,7 +62,7 @@ class ProductClassType extends AbstractType
                 'value' => '1',
                 'required' => false,
             ))
-            ->add('sale_limit', 'integer', array(
+            ->add('sale_limit', 'number', array(
                 'label' => '販売制限数',
                 'required' => false,
             ))
@@ -79,11 +80,13 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('tax_rate', 'integer', array(
+            ->add('tax_rate', 'text', array(
                 'label' => '消費税率',
-                'mapped' => false,
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Range(array('min' => 0, 'max' => 100))),
             ))
-            ->add('deliv_fee', 'money', array(
+            ->add('delivery_fee', 'money', array(
                 'label' => '商品送料',
                 'currency' => 'JPY',
                 'precision' => 0,
@@ -94,6 +97,16 @@ class ProductClassType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
+            ))
+            ->add('delivery_date', 'delivery_date', array(
+                'label' => 'お届け可能日',
+                'required' => false,
+                'empty_value' => '指定なし',
+            ))
+            ->add('add', 'checkbox', array(
+                'label' => false,
+                'required' => false,
+                'value' => 1,
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;

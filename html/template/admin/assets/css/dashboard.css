@@ -2434,6 +2434,21 @@ ul.link-with-bar li:last-child::after {
 	margin-right: 0;
 }
 
+#product-class-form .table-menu input[type=text].form-control {
+    width: 70px;
+}
+#product-class-form .table-menu input[type=number].form-control {
+    width: 70px;
+}
+#product-class-form .table-menu select.form-control {
+    width: 100px;
+}
+#product-class-form .table-menu .radio-inline {
+    padding-left: 0;
+    width: 150px;
+}
+
+
 /* each area style */
 
 .box-title-category {

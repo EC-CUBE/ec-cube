@@ -66,7 +66,7 @@ class Step3Type extends AbstractType
                     )),
                 ),
             ))
-            ->add('login_pass', 'text', array(
+            ->add('login_pass', 'password', array(
                 'label' => '管理画面パスワード（半角英数字4～50文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -125,6 +125,7 @@ class Step3Type extends AbstractType
                 ),
                 'expanded' => true,
                 'multiple' => false,
+                'data' => 'mail',
             ))
             ->add('smtp_host', 'text', array(
                 'label' => 'SMTPホスト',
@@ -141,7 +142,7 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
-            ->add('smtp_password', 'text', array(
+            ->add('smtp_password', 'password', array(
                 'label' => 'SMTPパスワード',
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,

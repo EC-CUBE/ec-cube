@@ -63,14 +63,17 @@ Eccube\Entity\TaxRule:
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
-        ProductClass:
-            targetEntity: Eccube\Entity\ProductClass
-            joinColumn:
-                name: product_class_id
-                referencedColumnName: product_class_id
         CalcRule:
             targetEntity: Eccube\Entity\Master\Taxrule
             joinColumn:
                 name: calc_rule
                 referencedColumnName: id
+    oneToOne:
+        ProductClass:
+            targetEntity: Eccube\Entity\ProductClass
+            inversedBy: TaxRule
+            joinColumn:
+                name: product_class_id
+                referencedColumnName: product_class_id
+
     lifecycleCallbacks: {  }
