@@ -48,13 +48,6 @@ class Application extends \Silex\Application
         $this->initLogger();
     }
 
-    public function parseController(Request $request)
-    {
-        $route = str_replace('_', '.', $request->attributes->get('_route'));
-
-        return 'eccube.event.controller.' . $route;
-    }
-
     public function initialize()
     {
         // init locale
@@ -338,12 +331,12 @@ class Application extends \Silex\Application
         }, self::EARLY_EVENT);
 
         $this->before(function (Request $request, \Silex\Application $app) {
-            $event = $app->parseController($request) . '.before';
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.before';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
         $this->after(function (Request $request, Response $response, \Silex\Application $app) {
-            $event = $app->parseController($request) . '.after';
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.after';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
@@ -352,7 +345,7 @@ class Application extends \Silex\Application
         }, self::LATE_EVENT);
 
         $this->finish(function (Request $request, Response $response, \Silex\Application $app) {
-            $event = $app->parseController($request) . '.finish';
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
     }

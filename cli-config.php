@@ -23,7 +23,7 @@
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
-$app = new Eccube\Application();
+$app = new \Eccube\Application();
 $app->initialize();
 
 return ConsoleRunner::createHelperSet($app['orm.em']);
