@@ -51,6 +51,7 @@ class TelTypeTest extends TypeTestCase
         $this->app = new \Eccube\Application(array(
             'env' => 'test',
         ));
+        $this->app->initialize();
         $this->app->boot();
 
         // CSRF tokenを無効にしてFormを作成

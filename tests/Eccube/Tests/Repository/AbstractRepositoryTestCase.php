@@ -34,7 +34,7 @@ class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
     public function createApplication()
     {
         $app = new Application();
-
+        $app->initialize();
         $app['session.test'] = true;
         $app['exception_handler']->disable();
 
