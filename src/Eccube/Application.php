@@ -48,7 +48,7 @@ class Application extends \Silex\Application
         $this->initLogger();
     }
 
-    protected function parseController(Request $request)
+    public function parseController(Request $request)
     {
         $route = str_replace('_', '.', $request->attributes->get('_route'));
 
