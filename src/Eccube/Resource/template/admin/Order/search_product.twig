@@ -1,6 +1,6 @@
 <script>
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
-    eccube.productsClassCategories = {
+    var productsClassCategories = {
         {% for Product in Products %}
             "{{ Product.id|escape('js') }}": {{ Product.class_categories|json_encode|raw }}{% if loop.last == false %},{% endif %}
         {% endfor %}
@@ -34,7 +34,7 @@
         }
     }
     // 受注明細行を追加する.
-    // 受注明細行のレコード数カウンタ(eccube.order_details_count)は, edit.twig側で定義している.
+    // 受注明細行のレコード数カウンタ(order_details_count)は, edit.twig側で定義している.
     function fnAddOrderDetail($row, product_id) {
         // 規格1の要素を取得
         var $sele1 = $row.find('select[name=classcategory_id1]');
@@ -49,7 +49,7 @@
 
         // 規格なし商品の場合
         if (!$sele1.length && !$sele2.length) {
-            var product = eccube.productsClassCategories[product_id]['__unselected2']['#'];
+            var product = productsClassCategories[product_id]['__unselected2']['#'];
             product_class_id = product['product_class_id'];
             price = product['price02'];
             product_code = product['product_code'];
@@ -58,7 +58,7 @@
         } else if ($sele1.length && $sele2.length) {
             var class_category_id1 = $sele1.val();
             var class_cateogry_id2 = $sele2.val();
-            var product = eccube.productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
+            var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
 
             product_class_id = product['product_class_id'];
             price = product['price02'];
@@ -70,26 +70,26 @@
         // prototype templateを取得.
         var newWidget = list.attr('data-prototype');
         // レコード数カウンタで置換.
-        newWidget = newWidget.replace(/__name__/g, eccube.order_details_count);
+        newWidget = newWidget.replace(/__name__/g, order_details_count);
         // フォーム入力値をセットm
         $newWidget = $(newWidget);
-        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_Product').val(product_id);
-        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_ProductClass').val(product_class_id);
-        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_price').val(price);
-        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
-        $newWidget.find('#order_OrderDetails_' + eccube.order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
+        $newWidget.find('#order_OrderDetails_' + order_details_count + '_Product').val(product_id);
+        $newWidget.find('#order_OrderDetails_' + order_details_count + '_ProductClass').val(product_class_id);
+        $newWidget.find('#order_OrderDetails_' + order_details_count + '_price').val(price);
+        $newWidget.find('#order_OrderDetails_' + order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
+        $newWidget.find('#order_OrderDetails_' + order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
 
         // 明細行に追加.
         list.append($newWidget);
 
         // カウンタを更新.
-        eccube.order_details_count++;
+        order_details_count++;
 
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');
 
         // 再計算のためsubmit.
-        eccube.setModeAndSubmit('motal');
+        setModeAndSubmit('motal');
 
         return false;
     }
