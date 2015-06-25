@@ -51,13 +51,14 @@ $(function() {
         $('#order_Shippings_0_fax_fax01').val($('#order_fax_fax01').val());
         $('#order_Shippings_0_fax_fax02').val($('#order_fax_fax02').val());
         $('#order_Shippings_0_fax_fax03').val($('#order_fax_fax03').val());
+        $('#order_Shippings_0_company_name').val($('#order_company_name').val());
     });
     // 会員検索
     $('#searchCustomerModalButton').on('click', function() {
         var tbody = $('#searchCustomerModalList tbody');
         tbody.children().remove();
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             data: { 'search_word' : $('#admin_search_customer_multi').val() },
             url: '{{ url('admin_order_search_customer') }}',
             success: function(data) {
@@ -67,7 +68,7 @@ $(function() {
                     var id = $('<td>' + data[i]['id'] + '</td>');
                     var name = $('<td>' + data[i]['name'] + '</td>');
                     var tel = $('<td>' + data[i]['tel'] + '</td>');
-                    var select = $('<td>決定</td>');
+                    var select = $('<td data-customer="' + data[i]['id'] + '">決定</td>');
                     tr.append(id);
                     tr.append(name);
                     tr.append(tel);
@@ -75,11 +76,10 @@ $(function() {
                     tbody.append(tr);
 
                     // 決定ボタンに検索イベントを設定.
-                    var customer_id = data[i]['id'];
                     select.on('click', function() {
                         $.ajax({
-                            type: 'GET',
-                            data: { 'id' : customer_id },
+                            type: 'POST',
+                            data: { 'id' : this.dataset.customer },
                             url: '{{ url('admin_order_search_customer_by_id') }}',
                             success: function(data) {
                                 // 顧客情報をフォームにセットする.
@@ -101,6 +101,7 @@ $(function() {
                                 $('#order_fax_fax01').val(data['fax01']);
                                 $('#order_fax_fax02').val(data['fax02']);
                                 $('#order_fax_fax03').val(data['fax03']);
+                                $('#order_company_name').val(data['company_name']);
                                 // モーダルを閉じる.
                                 $('#searchCustomerModal').modal('hide');
                             },
@@ -144,6 +145,13 @@ $(function() {
     order_details_count = '{{ form.OrderDetails|length }}';
 
 });
+var setModeAndSubmit = function(mode, keyname, keyid) {
+    document.form1.mode.value = mode;
+    if(keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
+        document.form1[keyname].value = keyid;
+    }
+    document.form1.submit();
+};
 
 </script>
 {% endblock javascript %}
@@ -245,6 +253,14 @@ $(function() {
                                 {{ form_errors(form.fax) }}
                             </div>
                         </div>
+                        {# 会社名 #}
+                        <div class="form-group">
+                            {{ form_label(form.company_name) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.company_name) }}
+                                {{ form_errors(form.company_name) }}
+                            </div>
+                        </div>
                         {# 注文時お問い合わせ #}
                         <div class="form-group">
                             {{ form_label(form.message) }}
@@ -266,7 +282,7 @@ $(function() {
                         <div class="btn_area">
                             <ul>
                                 <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchProductModal">商品の追加</a></li>
-                                <li><a class="btn btn-default btn-block btn-sm" onclick="eccube.setModeAndSubmit('')">計算結果の更新</a></li>
+                                <li><a class="btn btn-default btn-block btn-sm" onclick="setModeAndSubmit('')">計算結果の更新</a></li>
                             </ul>
                         </div>
                         <div class="tableish"
@@ -468,7 +484,7 @@ $(function() {
 
             <div class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <button class="btn btn-primary btn-block btn-lg" onclick="eccube.setModeAndSubmit('register')">登録</button>
+                    <button class="btn btn-primary btn-block btn-lg" onclick="setModeAndSubmit('register')">登録</button>
                     <p><a href="#">戻る</a></p>
                 </div>
             </div>
@@ -491,7 +507,7 @@ $(function() {
                         </div>
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" onclick="eccube.setModeAndSubmit('register')">受注情報を登録</button>
+                                <button class="btn btn-primary btn-block btn-lg" onclick="setModeAndSubmit('register')">受注情報を登録</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->
