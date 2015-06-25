@@ -247,4 +247,4 @@ default_page_count: 10
 admin_product_stock_status: 3
 enabled: 1
 disabled: 0
-eccube_info_url: 'http://www.ec-cube.net/info/index.php'
+eccube_info_url: 'https://www.ec-cube.net/info/3/'

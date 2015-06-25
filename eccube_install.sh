@@ -222,6 +222,8 @@ echo "update permissions..."
 echo "creating  ${CONFIG_YML}"
 render_config_template ${CONFIG_YML_DIST} > ${CONFIG_YML}
 
+echo  "eccube_install: 1" >> ${CONFIG_YML}
+
 echo "creating  ${DATABASE_YML}"
 render_config_template ${DATABASE_YML_DIST} > ${DATABASE_YML}
 
