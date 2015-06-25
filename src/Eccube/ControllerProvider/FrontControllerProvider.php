@@ -33,6 +33,11 @@ class FrontControllerProvider implements ControllerProviderInterface
     {
         $c = $app['controllers_factory'];
 
+        // 強制SSL
+        if ($app['config']['force_ssl'] == \Eccube\Common\Constant::ENABLED) {
+            $c->requireHttps();
+        }
+
         // user定義
         $c->match('/' . $app['config']['user_data_route'] . '/{route}', '\Eccube\Controller\UserDataController::index')->bind('user_data');
 

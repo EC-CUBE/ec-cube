@@ -66,4 +66,11 @@ class Str {
     }
 
 
+    public static function convertLineFeed($value, $lf = "\n") {
+        if (empty($value)) {
+            return '';
+        }
+        return strtr($value, array_fill_keys(array("\r\n", "\r", "\n"), $lf));
+    }
+
 }
