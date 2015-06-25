@@ -34,6 +34,7 @@ abstract class AbstractTypeTestCase extends TypeTestCase
         parent::setUp();
 
         $this->app = new \Eccube\Application();
+        $this->app->initialize();
         $this->app['session.test'] = true;
         $this->app['exception_handler']->disable();
 
