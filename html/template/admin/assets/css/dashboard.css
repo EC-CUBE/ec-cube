@@ -2670,6 +2670,22 @@ ul.link-with-bar li:last-child::after {
     margin: 8px;
 }
 
+/* error */
+
+.message_box {
+    padding: 1.5em;
+    text-align: center;
+}
+.message_box .cb {
+    font-size: 70px;
+    font-size: 7rem;
+    color: #d0d0d0;
+    margin: 8px;
+}
+.message_box .btn_group {
+	padding: 30px 0;
+}
+
 
 
 /* !Inline Align ------------------------------------------------------------ */
