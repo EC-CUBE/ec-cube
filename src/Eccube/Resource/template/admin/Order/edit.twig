@@ -57,7 +57,7 @@ $(function() {
         var tbody = $('#searchCustomerModalList tbody');
         tbody.children().remove();
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             data: { 'search_word' : $('#admin_search_customer_multi').val() },
             url: '{{ url('admin_order_search_customer') }}',
             success: function(data) {
@@ -67,7 +67,7 @@ $(function() {
                     var id = $('<td>' + data[i]['id'] + '</td>');
                     var name = $('<td>' + data[i]['name'] + '</td>');
                     var tel = $('<td>' + data[i]['tel'] + '</td>');
-                    var select = $('<td>決定</td>');
+                    var select = $('<td data-customer="' + data[i]['id'] + '">決定</td>');
                     tr.append(id);
                     tr.append(name);
                     tr.append(tel);
@@ -75,11 +75,10 @@ $(function() {
                     tbody.append(tr);
 
                     // 決定ボタンに検索イベントを設定.
-                    var customer_id = data[i]['id'];
                     select.on('click', function() {
                         $.ajax({
-                            type: 'GET',
-                            data: { 'id' : customer_id },
+                            type: 'POST',
+                            data: { 'id' : this.dataset.customer },
                             url: '{{ url('admin_order_search_customer_by_id') }}',
                             success: function(data) {
                                 // 顧客情報をフォームにセットする.
