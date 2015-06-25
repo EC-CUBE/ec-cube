@@ -182,6 +182,7 @@ class InstallController
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $this->sendAppData($sessionData);
             }
+            $this->addInstallStatus();
 
             return $app->redirect($app->url('install_complete'));
         }
@@ -314,6 +315,7 @@ class InstallController
     private function getMigration()
     {
         $app = new \Eccube\Application();
+        $app->initDoctrine();
         $config = new Configuration($app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
@@ -387,8 +389,8 @@ class InstallController
         }
 
         $auth_magic = \Eccube\Util\Str::random();
-        $target = array('${HTTP_URL}', '${HTTPS_URL}', '${AUTH_MAGIC}', '${SHOP_NAME}');
-        $replace = array($data['http_url'], $data['https_url'], $auth_magic, $data['shop_name']);
+        $target = array('${HTTP_URL}', '${HTTPS_URL}', '${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}');
+        $replace = array($data['http_url'], $data['https_url'], $auth_magic, $data['shop_name'], '0');
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -397,6 +399,16 @@ class InstallController
             file_get_contents($this->dist_path . '/config.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
+
+        return $this;
+    }
+
+    private function addInstallStatus(){
+        $config_file = $this->config_path . '/config.yml';
+        $config = Yaml::parse($config_file);
+        $config['eccube_install'] = 1;
+        $yml = Yaml::dump($config);
+        file_put_contents($config_file, $yml);
 
         return $this;
     }
