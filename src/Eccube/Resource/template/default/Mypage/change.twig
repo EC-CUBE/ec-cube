@@ -19,16 +19,15 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  #}
+{% extends 'default_frame.twig' %}
 
-{% extends 'site_main.twig' %}
-
-{% block title %}MYページ{% endblock title %}
+{% set mypageno = 'change' %}
 
 {% block javascript %}
 <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
 $(function() {
-  $('#zip-search').click(function() {
+  $('#zip-search').click(function(event) {
     event.preventDefault();
     AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
   });
@@ -37,81 +36,75 @@ $(function() {
 {% endblock javascript %}
 
 {% block main %}
+    <h1 class="page-heading">マイページ</h1>
+    <div class="container-fluid">
+    {% include 'Mypage/navi.twig' %}
+        <h2 class="heading01">会員情報編集</h2>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <form method="post" action="{{ url('mypage_change') }}">
+                    {{ form_widget(form._token) }}
+                    <div class="dl_table">
+                        {{ form_row(form.name, {attr : {class : 'middle'}}) }}
+                        {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
+                        {{ form_row(form.company_name) }}
+                        <dl>
+                            <dt>住所<span class="required">必須</span></dt>
+                            <dd>
+                                <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        {{ form_row(form.tel, {attr : {class : 'short'}}) }}
+                        {{ form_row(form.fax, {attr : {class : 'short'}}) }}
+                        <dl>
+                            <dt>メールアドレス<span class="required">必須</span></dt>
+                            <dd>
+                                <div class="form-group {% if form.email.first.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.first) }}</div>
+                                <div class="form-group {% if form.email.second.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.second, {attr: {placeholder: '確認のためもう一度入力してください'}}) }}
+                                    {{ form_errors(form.email.first) }}
+                                    {{ form_errors(form.email.second) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>パスワード<span class="required">必須</span></dt>
+                            <dd>
+                                <div class="form-group {% if form.password.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.password, {type: 'password', attr: {placeholder: '半角英数字4～50文字（記号不可）'}}) }}
+                                    {{ form_errors(form.password) }}
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="dl_table not_required">
+                        {{ form_row(form.birth, {attr : { class : 'short'}}) }}
+                        <dl>
+                            <dt>性別</dt>
+                            <dd><div class="form-group form-inline">
+                                {{ form_widget(form.sex) }}
+                            </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>職業</dt>
+                            <dd><div class="form-group form-inline">
+                                    {{ form_widget(form.job) }}
+                            </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <input type="hidden" name="mode" value="complete">
+                    <div class="row no-padding">
+                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                        <p><button type="submit" class="btn btn-info btn-block">変更する</button></p>
+                    </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
 
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">マイページ</h1>
-                <div class="container-fluid">
-                {% include 'Mypage/navi.twig' %}
-                    <h2 class="heading01">会員情報編集</h2>
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <form method="post" action="{{ url('mypage_change') }}">
-                                {{ form_widget(form._token) }}
-                                <div class="dl_table">
-                                    {{ form_row(form.name, {attr : {class : 'middle'}}) }}
-                                    {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
-                                    <dl>
-                                        <dt>住所<span class="required">必須</span></dt>
-                                        <dd>
-                                            <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                                            <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                                            {{ form_widget(form.address) }}
-                                            {{ form_errors(form.address) }}
-                                            </div>
-                                        </dd>
-                                    </dl>
-                                    {{ form_row(form.tel, {attr : {class : 'short'}}) }}
-                                    {{ form_row(form.fax, {attr : {class : 'short'}}) }}
-                                    <dl>
-                                        <dt>メールアドレス<span class="required">必須</span></dt>
-                                        <dd>
-                                            <div class="form-group {% if form.email.first.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.first) }}</div>
-                                            <div class="form-group {% if form.email.second.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.second, {attr: {placeholder: '確認のためもう一度入力してください'}}) }}
-                                                {{ form_errors(form.email.first) }}
-                                                {{ form_errors(form.email.second) }}
-                                            </div>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>パスワード<span class="required">必須</span></dt>
-                                        <dd>
-                                            <div class="form-group {% if form.password.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.password, {type: 'password', attr: {placeholder: '半角英数字4～50文字（記号不可）'}}) }}
-                                                {{ form_errors(form.password) }}
-                                            </div>
-                                        </dd>
-                                    </dl>
-                                </div>
-                                <div class="dl_table not_required">
-                                    {{ form_row(form.birth, {attr : { class : 'short'}}) }}
-                                    <dl>
-                                        <dt>性別</dt>
-                                        <dd><div class="form-group form-inline">
-                                            {{ form_widget(form.sex) }}
-                                        </div>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>職業</dt>
-                                        <dd><div class="form-group form-inline">
-                                                {{ form_widget(form.job) }}
-                                        </div>
-                                        </dd>
-                                    </dl>
-                                </div>
-                                <input type="hidden" name="mode" value="complete">
-                                <div class="row no-padding">
-                                <div class="btn_group col-sm-offset-4 col-sm-4">
-                                    <p><button type="submit" class="btn btn-info btn-block">変更する</button></p>
-                                </div>
-                                </div>
-                            </form>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-
-                </div>
-            </div>
-        </div>
     </div>
 {% endblock %}

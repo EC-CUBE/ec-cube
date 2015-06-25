@@ -66,6 +66,7 @@ class TelType extends AbstractType
         $builder->setAttribute('tel01_name', $options['tel01_name']);
         $builder->setAttribute('tel02_name', $options['tel02_name']);
         $builder->setAttribute('tel03_name', $options['tel03_name']);
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

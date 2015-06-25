@@ -1,0 +1,67 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'ownersstore', 'template'] %}
+
+{% block title %}コンテンツ管理{% endblock %}
+{% block sub_title %}テンプレート管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <div class="row" id="aside_wrap">
+        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{{ url('admin_content_template_new') }}" enctype="multipart/form-data">
+        {{ form_widget(form._token) }}
+        <div class="col-md-9">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">テンプレート登録</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+
+                    {{ form_row(form.code) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.file) }}
+
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+        
+        <div class="col-md-3">
+            <div class="col_inner" id="aside_column">
+                <div class="box no-header">
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
+        </div><!-- /.col -->
+
+        </form>
+    </div>
+
+{% endblock %}

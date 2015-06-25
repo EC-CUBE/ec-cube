@@ -1,6 +1,6 @@
 Eccube\Entity\Product:
     type: entity
-    table: dtb_products
+    table: dtb_product
     repositoryClass: Eccube\Repository\ProductRepository
     id:
         id:
@@ -54,20 +54,17 @@ Eccube\Entity\Product:
                 referencedColumnName: maker_id
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Products
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
                 nullable: false
         DeliveryDate:
-            targetEntity: Eccube\Entity\Master\DeliveryDate
-            inversedBy: Products
+            targetEntity: Eccube\Entity\DeliveryDate
             joinColumn:
-                name: deliv_date_id
-                referencedColumnName: id
+                name: delivery_date_id
+                referencedColumnName: date_id
         Status:
             targetEntity: Eccube\Entity\Master\Disp
-            inversedBy: Products
             joinColumn:
                 name: status
                 referencedColumnName: id

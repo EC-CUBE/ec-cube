@@ -59,11 +59,18 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->persist($TestProductClass);
         $this->app['orm.em']->flush();
 
+        $TestProductStock = $this->newTestProductStock($TestCreator, $TestProduct, $TestProductClass);
+        $this->app['orm.em']->persist($TestProductStock);
+        $this->app['orm.em']->flush();
+
+
         // main
-        $this->client->request('GET',
+        $redirectUrl = $this->app->url('admin_product_product_class', array('id' => $TestProduct->getId()));
+        $this->client->request('POST',
             $this->app->url('admin_product_product_class_edit', array('id' => $TestProduct->getId()))
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
 
         // after
         $this->app['orm.em']->remove($TestProductClass);
@@ -138,10 +145,22 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
             ->setSaleLimit(10)
             ->setPrice01(10000)
             ->setPrice02(5000)
-            ->setDelivFee(1000)
+            ->setDeliveryFee(1000)
             ->setPointRate(5)
             ->setCreator($TestCreator)
             ->setDelFlg(0);
         return $TestClassCategory;
     }
+
+
+    private function newTestProductStock($TestCreator, $TestProduct, $TestProductClass)
+    {
+        $TestProductStock = new \Eccube\Entity\ProductStock();
+        $TestProductClass->setProductStock($TestProductStock);
+        $TestProductStock->setProductClass($TestProductClass);
+        $TestProductStock->setStock($TestProductClass->getStock());
+        $TestProductStock->setCreator($TestCreator);
+        return $TestProductStock;
+    }
+
 }

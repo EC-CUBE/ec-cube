@@ -19,223 +19,220 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% block javascript %}
+<script>
+$(function(){
+
+    $('#delivery').on('change', function() {
+        $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
+    });
+
+    $('#payment').on('change', function() {
+        $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
+    });
+
+    {% if is_granted('ROLE_USER') == false %}
+    var ref = new Array();
+    var name = new Array();
+    var input = new Array();
+    var customerin = new Array();
+    $('#customer').click(function() {
+        // ref = $('.customer-name01');
+        var edit = $('.customer-edit');
+        var hidden = $('.customer-in');
+
+        $(edit).each(function(index) {
+            ref[index] = $(this);
+        });
+        $(hidden).each(function(index) {
+            customerin[index] = $(this);
+        });
+        $(ref).each(function(index) {
+            name[index] = $(this).text();
+        });
+        $(name).each(function(index) {
+            input[index] = $('<input id="edit' + index + '" type="text" />').val(name[index]);
+        });
+        $(input).each(function(index) {
+            ref[index].empty().append(input[index]);
+        });
+
+        $('#customer').prop("disabled", true);
+        $('.mod-button').show();
+    });
+
+    $('#customer-ok').click(function() {
+
+        var data;
+        $(ref).each(function(index) {
+            var nameAfter = input[index].val();
+            ref[index].empty().text(nameAfter);
+            customerin[index].val(nameAfter);
+            input[index].remove();
+        });
+
+
+        var postData = {};
+        $('.customer-in').each(function() {
+          postData[$(this).attr('name')] = $(this).val();
+        });
+
+        $.ajax({
+            url: "{{ url('shopping_customer') }}",
+            type: 'POST',
+            data: postData,
+            dataType: 'json',
+            success: function(data){
+            }
+        });
+
+        $('#customer').prop("disabled", false);
+        $('.mod-button').hide();
+    });
+
+    $('#customer-cancel').click(function() {
+
+        $(ref).each(function(index) {
+            ref[index].empty().text(name[index]);
+            input[index].remove();
+        });
+
+        $('#customer').prop("disabled", false);
+        $('.mod-button').hide();
+    });
+    {% endif %}
+
+});
+</script>
+{% endblock javascript %}
 
 {% block main %}
-
-<script type="text/javascript">//<![CDATA[
-var sent = false;
-$(document).ready(function(){
-    $('#form1').on('submit', function () {
-        $(this).find('input:image').attr('disabled', 'disabled');
-    });
-
-    $("#shopping_delivery").on('change', function () {
-        $("#form1").attr("action", "{{ path('shopping_delivery') }}" )
-                   .submit();
-    });
-
-    $("#shopping_payment").on('change', function () {
-        $("#form1").attr("action", "{{ path('shopping_payment') }}" )
-                   .submit();
-    });
-});
-
-//]]></script>
-
-<!--CONTENTS-->
-<div id="undercolumn">
-    <div id="undercolumn_shopping">
-        <p class="flow_area"><img src="{{ app.config.tpl }}img/picture/img_flow_03.jpg" alt="購入手続きの流れ" /></p>
-        <h2 class="title">{{ title }}</h2>
-
-        <p class="information">下記ご注文内容で送信してもよろしいでしょうか？<br />よろしければ、「ご注文完了ページへ」ボタンをクリックしてください。</p>
-
-        <form name="form1" id="form1" method="post" action="{{ path('shopping_confirm') }}">
-            {{ form_widget(form._token) }}
-
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <a href="{{ path('cart') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
-                    </li>
-                    <li>
-                        <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-top" id="next-top" />
-                    </li>
-                </ul>
-            </div>
-
-            <table summary="ご注文内容確認">
-                <col width="10%" />
-                <col width="40%" />
-                <col width="20%" />
-                <col width="10%" />
-                <col width="20%" />
-                <tr>
-                    <th scope="col">商品写真</th>
-                    <th scope="col">商品名</th>
-                    <th scope="col">単価</th>
-                    <th scope="col">数量</th>
-                    <th scope="col">小計</th>
-                </tr>
-                {% for detail in order.OrderDetails %}
-                <tr>
-                    <td class="alignC">
-                        <img src="{{ app.config.image_save_urlpath }}{{ detail.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ detail.Product.name }}" />
-                    </td>
-                    <td>
-                        <ul>
-                            <li><strong>{{ detail.Product.name }}</strong></li>
-                            {% if detail.classcategory_name1 %}
-                            <li>{{ detail.ProductClass.ClassCategory1.ClassName.name }}：{{ detail.ProductClass.ClassCategory1.name }}</li>
-                            {% endif %}
-                            {% if detail.classcategory_name2 %}
-                                <li>{{ detail.ProductClass.ClassCategory2.ClassName.name }}：{{ detail.ProductClass.ClassCategory2.name }}</li>
-                            {% endif %}
-                        </ul>
-                    </td>
-                    <td class="alignR">{# todo 税込金額 #}{{ detail.price }}円
-                    </td>
-                    <td class="alignR">{{ detail.quantity }}</td>
-                    <td class="alignR">{# todo 税計算 #}{{ detail.price * detail.quantity * 1.08 }}円</td>
-                </tr>
-                {% endfor %}
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">小計</th>
-                    <td class="alignR">{{ order.subtotal }}円</td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">送料</th>
-                    <td class="alignR">{{ order.deliv_fee }}円</td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">手数料</th>
-                    <td class="alignR">{{ order.charge }}円</td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="alignR" scope="row">合計</th>
-                    <td class="alignR"><span class="price">{{ order.payment_total }}円</span></td>
-                </tr>
-            </table>
-
-            {# ポイント todo 画面遷移へ変更する #}
-            {% if app.config.use_point and is_granted('ROLE_USER') %}
-            <table summary="ポイント利用">
-                <col width="20%" />
-                <col width="80%" />
-                <tr>
-                <th>ポイントのご利用</th>
-                <td>
-                    <span class="user_name">{{ app.user.name01 }}{{ app.user.name02 }}様</span>の、現在の所持ポイントは「<span class="point">{{ app.user.point }}Pt</span>」です。1ポイントを{{ app.config.point_value }}円</span>として使用する事ができます。<br />
-                    {% if order.use_point > 0 %}
-                        ポイントを{{ order.use_point }}Pt使用する&nbsp;
-                    {%  else %}
-                        ポイントを使用しない&nbsp;
-                    {% endif %}
-                    <a href="{{ path('shopping_point') }}">変更する</a>
+    <h1 class="page-heading">ご注文内容のご確認</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="flowline step3">
+                    <ul class="clearfix">
+                    <li><span class="flow_number">1</span><br>カートの商品</li>
+                    <li class="active"><span class="flow_number">2</span><br>ご注文内容確認</li>
+                    <li><span class="flow_number">3</span><br>完了</li>
+                    </ul>
                 </div>
-                </tr>
-            </table>
-            {% endif %}
-            {# ポイント #}
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
+            {{ form_widget(form._token) }}
+            <div id="shopping_confirm" class="row">
+                <div id="confirm_main" class="col-sm-8">
+                    <div class="cart_item table">
+                        <div class="tbody">
+                            {% for orderDetail in Order.orderDetails %}
+                            <div class="item_box tr">
+                                <div class="td table">
+                                    <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product.MainListImage|no_image_main_list }}" alt="{{ orderDetail.productName }}" /></div>
+                                    <dl class="item_detail">
+                                        <dt class="item_name text-default">{{ orderDetail.productName }}</dt>
+                                        <dd class="item_pattern small">
+                                            {% if orderDetail.productClass.classCategory1 %}
+                                                {{ orderDetail.productClass.classCategory1.className }}：{{ orderDetail.productClass.classCategory1 }}
+                                            {% endif %}
+                                            {% if orderDetail.productClass.classCategory2 %}
+                                                <br>{{ orderDetail.productClass.classCategory2.className }}：{{ orderDetail.productClass.classCategory2 }}
+                                            {% endif %}
+                                        </dd>
+                                        <dd class="item_price">{{ orderDetail.priceIncTax|price }} ×{{ orderDetail.quantity }}</dd>
+                                        <dd class="item_subtotal">小計：{{ orderDetail.totalPrice|price }}</dd>
+                                    </dl>
+                                </div>
+                            </div><!--/item_box-->
+                            {% endfor %}
+                        </div>
+                    </div><!--/cart_item-->
+                    <p><a href="{{ url('cart') }}" class="btn btn-default btn-sm">数量を変更または削除する</a></p>
+                    <h2 class="heading02">お客様情報</h2>
+                    <div class="column is-edit">
+                        <p class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様<br>
+                        〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
+                        <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
+                        {% if is_granted('ROLE_USER') == false %}
+                        <div class="mod-button" style="display:none;">
+                            <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
+                            <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
+                        </div>
+                        <p class="btn_edit"><button type="button" id="customer" class="btn btn-default btn-sm">変更</button></p>
+                        <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
+                        <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
+                        <input type="hidden" id="customer-zip01" class="customer-in" name="customer_zip01" value="{{ Order.zip01 }}">
+                        <input type="hidden" id="customer-zip02" class="customer-in" name="customer_zip02" value="{{ Order.zip02 }}">
+                        <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">
+                        <input type="hidden" id="customer-addr01" class="customer-in" name="customer_addr01" value="{{ Order.addr01 }}">
+                        <input type="hidden" id="customer-addr02" class="customer-in" name="customer_addr02" value="{{ Order.addr02 }}">
+                        <input type="hidden" id="customer-tel01" class="customer-in" name="customer_tel01" value="{{ Order.tel01 }}">
+                        <input type="hidden" id="customer-tel02" class="customer-in" name="customer_tel02" value="{{ Order.tel02 }}">
+                        <input type="hidden" id="customer-tel03" class="customer-in" name="customer_tel03" value="{{ Order.tel03 }}">
+                        {% endif %}
+                   </div>
 
-    <h3>配送方法・お支払方法</h3>
-    <table summary="配送方法・お支払方法" class="delivname">
-        <col width="20%" />
-        <col width="80%" />
-        <tbody>
-        <tr>
-            <th scope="row">配送方法</th>
-            <td>
-                {{ form_widget(form.delivery) }}
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">お支払方法</th>
-            <td>
-                {{ form_widget(form.payment) }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                   <h2 class="heading02">お届け先情報</h2>
+                   <div class="column is-edit">
+                       {# 複数配送を実装する場合、for文で制御 #}
+                       <p class="address">{{ Order.shippings[0].name01 }} {{ Order.shippings[0].name02 }} 様<br>
+                        〒{{ Order.shippings[0].zip01 }}-{{ Order.shippings[0].zip02 }} {{ Order.shippings[0].pref }}{{ Order.shippings[0].addr01 }}{{ Order.shippings[0].addr02 }}<br>
+                        {{ Order.shippings[0].tel01 }}-{{ Order.shippings[0].tel02 }}-{{ Order.shippings[0].tel03 }}</p>
+                       <div class="form-inline form-group">
+                           <label>配送方法</label>
+                           {{ form_widget(form.delivery, {'id' : 'delivery'}) }}
+                       </div>
 
-    <h3>お届け先情報&nbsp;
-        <a href="{{ path('shopping_shipping') }}">変更する</a>&nbsp;
-        <a href="{{ path('shopping_shipping_multiple') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_several_address.jpg" alt="お届け先を複数指定する" /></a>
-    </h3>
+                        <div class="form-inline form-group">
+                            <label>お届け日</label>
+                            {{ form_widget(form.deliveryDate) }}<br class="sp">
+                            <label>お届け時間</label>
+                            {{ form_widget(form.deliveryTime) }}
+                        </div>
+                        {% if is_granted('ROLE_USER') %}
+                        <p class="btn_edit"><a href="{{ url('shopping_shipping') }}" class="btn btn-default btn-sm">変更</a></p>
+                        {% else %}
+                        <p class="btn_edit"><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">変更</a></p>
+                        {% endif %}
+                   </div>
 
-{% for shipping in order.Shippings %}
-    <h2>お届け先</h2>
-    <table summary="ご注文内容確認">
-        <col width="10%" />
-        <col width="70%" />
-        <col width="20%" />
-        <tr>
-            <th scope="col">商品写真</th>
-            <th scope="col">商品名</th>
-            <th scope="col">数量</th>
-        </tr>
-        {% for item in shipping.ShipmentItems %}
-        <tr>
-            <td class="alignC">
-                <img src="{{ app.config.image_save_urlpath }}{{ item.ProductClass.Product.main_list_image }}" style="max-width: 65px;max-height: 65px;" alt="{{ item.product_name }}" />
-            </td>
-            <td><strong>{{ item.product_name }}</strong><br />{# 商品規格 #}</td>
-            <td class="alignC">{{ item.quantity }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+                   <h2 class="heading02">お支払方法</h2>
+                   <div class="column">
+                       <div class="form-inline form-group">
+                           <label>支払方法</label>
+                           {{ form_widget(form.payment, {'id' : 'payment'}) }}
+                       </div>
+                   </div>
+                   <h2 class="heading02">お問い合わせ欄</h2>
+                   <div class="column">
+                       {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
+                   </div>
+                </div><!-- /.col -->
 
-    <table summary="お届け先確認" class="delivname">
-        <col width="20%" />
-        <col width="80%" />
-        <tbody>
-        <tr>
-            <th scope="row">お届け先</th>
-            <td>
-                {% if shipping.company_name %}{{ shipping.company_name }}<br />{% endif %}
-                {{ shipping.name01 }} {{ shipping.name02 }} {% if shipping.kana01 %}({{ shipping.kana01 }}{{ shipping.kana02 }}){% endif %}<br />
-                〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.Pref }} {{ shipping.addr01 }}{{ shipping.addr02 }}<br />
-                TEL:{{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}<br />
-                FAX:{{ shipping.fax01 }}-{{ shipping.fax02 }}-{{ shipping.fax03 }}
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">お届け日</th>
-            <td>
-                お届け日：
-                {{ form_widget(form.delivery_date) }}
-                お届け時間：
-                {{ form_widget(form.delivery_time) }}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-{% endfor %}
-    <div class="pay_area01">
-        <h3>お問い合わせ</h3>
-        <table summary="お問い合わせ">
-            <col width="20%" />
-            <col width="80%" />
-            <tr>
-                <th>お問い合わせ</th>
-                <td>{{ form_widget(form.message) }}</td>
-            </tr>
-        </table>
+                <div id="confirm_side" class="col-sm-4">
+                    <div class="total_box">
+                        <dl>
+                        <dt>小計</dt>
+                        <dd class="text-primary">{{ Order.subtotal|price }}</dd>
+                        </dl>
+                        <dl>
+                        <dt>手数料</dt>
+                        <dd>{{ Order.charge|price }}</dd>
+                        </dl>
+                        <dl>
+                        <dt>送料</dt>
+                        <dd>{{ Order.deliveryFeeTotal|price }}</dd>
+                        </dl>
+                        <div class="total_amount">
+                            <p class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
+                            <p><button type="submit" class="btn btn-primary btn-block">注文する</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row -->
+        </form>
     </div>
-
-    <div class="btn_area">
-        <ul>
-            <li>
-                <a href="{{ path('cart') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る"  /></a>
-            </li>
-            <li>
-                <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_order_complete.jpg" alt="ご注文完了ページへ" name="next-bottom" id="next-bottom" />
-            </li>
-        </ul>
-    </div>
-    </form>
-    </div>
-    </div>
-
 {% endblock %}

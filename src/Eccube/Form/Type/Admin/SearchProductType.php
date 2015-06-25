@@ -33,7 +33,7 @@ class SearchProductType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }
@@ -109,6 +109,7 @@ class SearchProductType extends AbstractType
             ))
             ->add('page_no', 'hidden', array(
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

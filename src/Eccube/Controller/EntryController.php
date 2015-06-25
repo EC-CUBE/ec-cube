@@ -85,9 +85,11 @@ class EntryController extends AbstractController
                             ->setName02($Customer->getName02())
                             ->setKana01($Customer->getKana01())
                             ->setKana02($Customer->getKana02())
+                            ->setCompanyName($Customer->getCompanyName())
                             ->setZip01($Customer->getZip01())
                             ->setZip02($Customer->getZip02())
                             ->setZipcode($Customer->getZip01() . $Customer->getZip02())
+                            ->setPref($Customer->getPref())
                             ->setAddr01($Customer->getAddr01())
                             ->setAddr02($Customer->getAddr02())
                             ->setTel01($Customer->getTel01())
@@ -103,32 +105,18 @@ class EntryController extends AbstractController
                         $app['orm.em']->persist($CustomerAddress);
                         $app['orm.em']->flush();
 
-                        $activateUrl = $app->url('entry_activate', array(
-                                'id' => $Customer->getSecretKey()
-                            ), true);
-
+                        $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
                         if ($app['config']['customer_confirm_mail']) {
-                            // TODO: 後でEventとして実装する、送信元アドレス、BCCを調整する
-                            // $app['eccube.event.dispatcher']->dispatch('customer.regist::after');
-                            $message = $app['mailer']->createMessage()
-                                ->setSubject('[EC-CUBE3] 会員登録のご確認')
-                                ->setBody($app['view']->render('Mail/entry_confirm.twig', array(
-                                    'customer' => $Customer,
-                                    'activateUrl' => $activateUrl,
-                                )))
-                                ->setFrom(array('sample@example.com'))
-                                ->setBcc($app['config']['mail_cc'])
-                                ->setTo(array($Customer->getEmail()));
-                            $app['mailer']->send($message);
+
+                            // メール送信
+                            $app['eccube.service.mail']->sendCustomerConfirmMail($Customer, $activateUrl);
 
                             return $app->redirect($app->url('entry_complete'));
 
                         } else {
                             return $app->redirect($activateUrl);
                         }
-
-                        break;
                 }
             }
         }
@@ -156,9 +144,8 @@ class EntryController extends AbstractController
      * @param  Application $app
      * @return mixed
      */
-    public function activate(Application $app, Request $request)
+    public function activate(Application $app, Request $request, $secret_key)
     {
-        $secret_key = $request->get('id');
         $errors = $app['validator']->validateValue($secret_key, array(
                 new Assert\NotBlank(),
                 new Assert\Regex(array(
@@ -183,19 +170,12 @@ class EntryController extends AbstractController
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
 
-            $message = $app['mail.message']
-                ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-                ->setBody($app['view']->render('Mail/entry_complete.twig', array(
-                    'customer' => $Customer,
-                )))
-                ->setFrom(array('sample@example.com'))
-                ->setBcc($app['config']['mail_cc'])
-                ->setTo(array($Customer->getEmail()));
-            $app['mailer']->send($message);
+            // メール送信
+            $app['eccube.service.mail']->sendCustomerCompleteMail($Customer);
 
-            // 本会員登録
+            // 本会員登録してログイン状態にする
             $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
-            $app['security']->setToken($token);
+            $this->getSecurity($app)->setToken($token);
 
             return $app['view']->render('Entry/activate.twig');
         } else {

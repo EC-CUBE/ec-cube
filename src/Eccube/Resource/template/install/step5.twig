@@ -1,0 +1,78 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'frame.twig' %}
+
+{% set current = 4 %}
+
+{% form_theme form _self %}
+{% block form_row %}
+    <div class="form-group{% if not valid %} has-error{% endif %}">
+        <label>{{ label }}
+            {% if required %}<span class="required">*</span>{% endif %}
+            {% if help %}<br><span class="small">{{ help }}</span>{% endif %}
+        </label>
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block checkbox_row %}
+    <div class="form-group{% if not valid %} has-error{% endif %}">
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div id="main" class="step6">
+        <div class="main_inner">
+            <div class="main_content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <h1>データベースの初期化</h1>
+                                <p>データベースの初期化を行います。初期化には少し時間がかかる場合があります。<br>
+                                    すでにテーブル等が作成されている場合は中断されます。</p>
+                            </div>
+                            <form name="form1" id="form1" method="post" action="{{ url('install_step5') }}">
+                                {{ form_widget(form._token) }}
+                                <div class="note_box">
+                                    <p>旧バージョンをインストールしていて、既存の情報を削除したくない場合はチェックをいれてください。</p>
+                                    <p>
+                                        {{ form_widget(form.no_update) }}
+                                    </p>
+                                </div>
+
+                                <ul class="btn_area">
+                                    <li><button type="submit"class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
+                                    <li><a href="{{ url('install_step4') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                </ul>
+                            </form>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

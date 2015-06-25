@@ -42,14 +42,12 @@ Eccube\Entity\MailHistory:
                 referencedColumnName: order_id
                 nullable: false
         MailTemplate:
-            targetEntity: Eccube\Entity\Master\MailTemplate
-            inversedBy: MailHistories
+            targetEntity: Eccube\Entity\MailTemplate
             joinColumn:
                 name: template_id
-                referencedColumnName: id
+                referencedColumnName: template_id
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: MailHistories
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

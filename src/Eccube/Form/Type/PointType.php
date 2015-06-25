@@ -32,7 +32,7 @@ class PointType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }
@@ -57,7 +57,7 @@ class PointType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Range(array('min' => 0, 'max' => 999999999))),
             ))
-        ;
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

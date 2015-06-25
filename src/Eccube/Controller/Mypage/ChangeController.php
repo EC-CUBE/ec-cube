@@ -39,7 +39,7 @@ class ChangeController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $Customer = $app['user'];
+        $Customer = $app->user();
 
         $previous_password = $Customer->getPassword();
         $Customer->setPassword($app['config']['default_password']);
@@ -68,15 +68,12 @@ class ChangeController extends AbstractController
                         $app['orm.em']->persist($Customer);
                         $app['orm.em']->flush();
 
-                        return $app->redirect($app['url_generator']->generate('mypage_change_complete'));
-                        break;
+                        return $app->redirect($app->url('mypage_change_complete'));
                 }
             }
         }
 
-        return $app['twig']->render('Mypage/change.twig', array(
-            'subtitle' => '会員登録内容変更(入力ページ)',
-            'mypageno' => 'change',
+        return $app->renderView('Mypage/change.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -89,9 +86,6 @@ class ChangeController extends AbstractController
      */
     public function complete(Application $app, Request $request)
     {
-        return $app['view']->render('Mypage/change_complete.twig', array(
-            'subtitle' => '会員登録内容変更(完了ページ)',
-            'mypageno' => 'change',
-        ));
+        return $app->renderView('Mypage/change_complete.twig');
     }
 }

@@ -1,0 +1,70 @@
+Eccube\Entity\Delivery:
+    type: entity
+    table: dtb_delivery
+    repositoryClass: Eccube\Repository\DeliveryRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: delivery_id
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+            nullable: true
+        service_name:
+            type: text
+            nullable: true
+        description:
+            type: text
+            nullable: true
+        confirm_url:
+            type: text
+            nullable: true
+        rank:
+            type: integer
+            nullable: true
+            unsigned: false
+        del_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+        create_date:
+            type: datetime
+            nullable: false
+            default: CURRENT_TIMESTAMP
+        update_date:
+            type: datetime
+            nullable: false
+            default: '0000-00-00 00:00:00'
+    manyToOne:
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+        ProductType:
+            targetEntity: Eccube\Entity\Master\ProductType
+            joinColumn:
+                name: product_type_id
+                referencedColumnName: id
+                nullable: false
+    oneToMany:
+        PaymentOptions:
+            targetEntity: Eccube\Entity\PaymentOption
+            cascade: ["persist", "remove"]
+            mappedBy: Delivery
+        DeliveryFees:
+            targetEntity: Eccube\Entity\DeliveryFee
+            cascade: ["persist", "remove"]
+            mappedBy: Delivery
+        DeliveryTimes:
+            targetEntity: Eccube\Entity\DeliveryTime
+            cascade: ["persist", "remove"]
+            mappedBy: Delivery
+    lifecycleCallbacks: {  }

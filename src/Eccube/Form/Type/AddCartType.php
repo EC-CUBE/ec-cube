@@ -74,7 +74,8 @@ class AddCartType extends AbstractType
             ))
             ->add('product_class_id', 'hidden', array(
                 'data' => count($ProductClasses) === 1 ? $ProductClasses[0]->getId() : '',
-            ));
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 
         if ($Product->getStockFind()) {
             $builder

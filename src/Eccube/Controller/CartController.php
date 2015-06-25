@@ -34,9 +34,31 @@ class CartController
         $title = 'カゴの中';
         $Cart = $app['eccube.service.cart']->getCart();
 
-        return $app['view']->render(
+        /* @var $BaseInfo \Eccube\Entity\BaseInfo */
+        /* @var $Cart \Eccube\Entity\Cart */
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        $isDeliveryFree = false;
+        $least = 0;
+        if ($BaseInfo->getUsePoint()) {
+            if ($BaseInfo->getDeliveryFreeAmount() <= $Cart->getTotalQuantity()) {
+                // 送料無料（個数）を超えている
+                $isDeliveryFree = true;
+            } elseif ($BaseInfo->getOptionDeliveryFee() <= $Cart->getTotalPrice()) {
+                // 送料無料（金額）を超えている
+                $isDeliveryFree = true;
+            } else {
+                $least = $BaseInfo->getOptionDeliveryFee() - $Cart->getTotalPrice();
+            }
+        }
+
+        return $app->render(
             'Cart/index.twig',
-            compact('title', 'Cart')
+            array(
+                'Cart' => $Cart,
+                'least' => $least,
+                'is_delivery_free' => $isDeliveryFree,
+            )
         );
     }
 
@@ -46,35 +68,35 @@ class CartController
         $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
         $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function up(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function down(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function remove(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->removeProduct($productClassId)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function setQuantity(Application $app, $productClassId, $quantity)
     {
         $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity)->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     public function buystep(Application $app)
@@ -82,6 +104,6 @@ class CartController
         $app['eccube.service.cart']->lock();
         $app['eccube.service.cart']->save();
 
-        return $app->redirect($app['url_generator']->generate('shopping'));
+        return $app->redirect($app->url('shopping'));
     }
 }

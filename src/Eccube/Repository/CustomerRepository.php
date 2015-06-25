@@ -152,10 +152,15 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // sex
-        if (!empty($searchData['sex']) && $searchData['sex']) {
+        if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
+            $sexs = array();
+            foreach ($searchData['sex'] as $sex) {
+                $sexs[] = $sex->getId();
+            }
+
             $qb
-                ->andWhere('c.Sex = :sex')
-                ->setParameter('sex', $searchData['sex']);
+                ->andWhere($qb->expr()->in('c.Sex', ':sexs'))
+                ->setParameter('sexs', $sexs);
         }
 
         // birth_month
@@ -286,12 +291,12 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->andWhere('c.last_buy_date < :last_buy_end')
                 ->setParameter('last_buy_end', $date);
         }
+
         // status
-        if (!empty($searchData['customer_status']) && $searchData['customer_status']) {
+        if (!empty($searchData['customer_status']) && count($searchData['customer_status']) > 0) {
             $qb
-                ->leftJoin('c.Status', 's')
-                ->andWhere('s.id = :status')
-                ->setParameter('status', $searchData['customer_status']);
+                ->andWhere($qb->expr()->in('c.Status', ':statuses'))
+                ->setParameter('statuses', $searchData['customer_status']);
         }
 
         $joinedOrder = false;
@@ -342,6 +347,24 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     }
 
     /**
+     * ユニークなパスワードリセットキーを返す
+     * @param $app
+     * @return string
+     */
+    public function getUniqueResetKey($app)
+    {
+        $unique = md5(uniqid(rand(), 1));
+        $Customer = $app['eccube.repository.customer']->findBy(array(
+                        'reset_key' => $unique,
+        ));
+        if (count($Customer) == 0) {
+            return $unique;
+        } else {
+            return $this->getUniqueResetKey($app);
+        }
+    }
+
+    /**
      * saltを生成する
      *
      * @param $byte
@@ -380,4 +403,40 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         return $query->getSingleResult();
     }
+
+    public function getActiveCustomerByEmail($email)
+    {
+        // TODO:Customer.Status -> 先頭小文字では？
+        $query = $this->createQueryBuilder('c')
+            ->where('c.email = :email AND c.Status = :status')
+            ->setParameter('email', $email)
+            ->setParameter('status', 2)
+            ->getQuery();
+
+        $Customer = $query->getOneOrNullResult();
+
+        return $Customer;
+    }
+
+    public function getActiveCustomerByResetKey($reset_key)
+    {
+        // TODO:Customer.Status -> 先頭小文字では？
+        $query = $this->createQueryBuilder('c')
+            ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
+            ->setParameter('reset_key', $reset_key)
+            ->setParameter('status', 2)
+            ->setParameter('reset_expire', new \DateTime())
+            ->getQuery();
+
+        $Customer = $query->getSingleResult();
+
+        return $Customer;
+    }
+
+    public function getResetPassword()
+    {
+        // TODO : これで良いか？(大文字込みならもうちょっと別のやりかたで）
+        return substr(base_convert(md5(uniqid()), 16, 36), 0, 8);
+    }
+
 }

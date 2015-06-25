@@ -51,6 +51,7 @@ class ShipmentItemType extends AbstractType
         $builder->add('classcategory_name2');
         $builder->add('price');
         $builder->add('quantity');
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

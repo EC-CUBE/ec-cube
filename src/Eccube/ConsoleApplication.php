@@ -23,90 +23,33 @@
 
 namespace Eccube;
 
+use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Monolog\Logger;
-use Knp\Provider\ConsoleServiceProvider;
 
 class ConsoleApplication extends \Silex\Application
 {
-    /** @var Application app */
-    protected static $app;
-
-    /**
-     * Alias
-     *
-     * @return object
-     */
-/*
-    public static function alias($name)
-    {
-        $args = func_get_args();
-        array_shift($args);
-        $obj = static::$app[$name];
-
-        if (is_callable($obj)) {
-            return call_user_func_array($obj, $args);
-        } else {
-            return $obj;
-        }
-    }
-*/
     public function __construct(array $values = array())
     {
-        $app = $this;
-        static::$app = $this;
-        ini_set('error_reporting', E_ALL | ~E_STRICT);
-
         parent::__construct($values);
 
-        // set env
-        if (!isset($app['env']) || empty($app['env'])) {
-            $app['env'] = 'prod';
+        $app = $this;
+
+        // load databtase config
+        $config = array();
+        $file = __DIR__ . '/../../app/config/eccube/database.yml';
+        if (file_exists($file)) {
+            $config = Yaml::parse($file);
         }
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            $app['debug'] = true;
-        }
 
-        // load config
-        $this['config'] = $app->share(function () {
-            $config_file = __DIR__ . '/../../app/config/eccube/config.yml';
-            if (file_exists($config_file)) {
-                $config = Yaml::parse($config_file);
-            } else {
-                $config = array();
-            }
-
-            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
-            $constant_dist = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
-
-            if (file_exists($constant_file)) {
-                $config_constant = Yaml::parse($constant_file);
-            } elseif (file_exists($constant_dist)) {
-                $config_constant = Yaml::parse($constant_dist);
-            } else {
-                $config_constant = array();
-            }
-
-            return array_merge($config_constant, $config);
-        });
-
-        // ORM
-        $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'db.options' => $this['config']['database']
+        // Doctrine ORM
+        $app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+            'db.options' => $config['database']
         ));
-        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
-        //Doctrine ORM
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+        $app->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
+
+        $app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => array(
@@ -121,15 +64,6 @@ class ConsoleApplication extends \Silex\Application
                 ),
             ),
         ));
-
-
-       // EventDispatcher
-#        $app['eccube.event.dispatcher'] = $app->share(function () {
-#            return new EventDispatcher();
-#        });
-
-
-
 
         // Migration
         $app->register(
@@ -146,37 +80,7 @@ class ConsoleApplication extends \Silex\Application
         ));
 
         $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
+            'monolog.logfile' => __DIR__ . '/../../app/log/miglation.log',
         ));
-
-
-        $app->error(function (\Exception $e, $code) use ($app) {
-            if ($app['debug']) {
-                return;
-            }
-
-            switch ($code) {
-                case 404:
-                    break;
-                default:
-                    break;
-            }
-
-            return $app['view']->render('error.twig', array(
-                'error' => 'エラーが発生しました.',
-            ));
-        });
-
-        if ($app['env'] === 'test') {
-            $app['session.test'] = true;
-            $app['exception_handler']->disable();
-        }
-    }
-
-    public function boot()
-    {
-        parent::boot();
-
-        $app = $this;
     }
 }

@@ -34,4 +34,139 @@ use Doctrine\ORM\EntityRepository;
  */
 class NewsRepository extends EntityRepository
 {
+
+    /**
+     * @param  \Eccube\Entity\News $News
+     *
+     * @return void
+     */
+    public function up(\Eccube\Entity\News $News)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            $rank = $News->getRank();
+
+            $News2 = $this->findOneBy(array('rank' => $rank + 1));
+            if (!$News2) {
+                throw new \Exception();
+            }
+            $News2->setRank($rank);
+            $em->persist($News2);
+
+            // News更新
+            $News->setRank($rank + 1);
+
+            $em->persist($News);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\News $News
+     * @return bool
+     */
+    public function down(\Eccube\Entity\News $News)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            $rank = $News->getRank();
+            $News2 = $this->findOneBy(array('rank' => $rank - 1));
+            if (!$News2) {
+                throw new \Exception();
+            }
+            $News2->setRank($rank);
+            $em->persist($News2);
+
+            // News更新
+            $News->setRank($rank - 1);
+
+            $em->persist($News);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\Member $Member
+     * @return bool
+     */
+    public function save(\Eccube\Entity\News $News)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            if (!$News->getId()) {
+                $rank = $this->createQueryBuilder('n')
+                ->select('MAX(n.rank)')
+                ->getQuery()
+                ->getSingleScalarResult();
+                if (!$rank) {
+                    $rank = 0;
+                }
+                $News
+                    ->setRank($rank + 1)
+                    ->setDelFlg(0);
+            }
+
+            $em->persist($News);
+            $em->flush();
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  \Eccube\Entity\Member $Member
+     * @return bool
+     */
+    public function delete(\Eccube\Entity\News $News)
+    {
+        $em = $this->getEntityManager();
+        $em->getConnection()->beginTransaction();
+        try {
+            $rank = $News->getRank();
+            $em->createQueryBuilder()
+            ->update('Eccube\Entity\News', 'n')
+            ->set('n.rank', 'n.rank - 1')
+            ->where('n.rank > :rank')->setParameter('rank', $rank)
+            ->getQuery()
+            ->execute();
+
+            $News
+                ->setDelFlg(1)
+                ->setRank(0);
+
+            $em->persist($News);
+            $em->flush();
+
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            return false;
+        }
+
+        return true;
+    }
+
 }

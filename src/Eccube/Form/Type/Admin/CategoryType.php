@@ -53,7 +53,7 @@ class CategoryType extends AbstractType
                     )),
                 ),
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

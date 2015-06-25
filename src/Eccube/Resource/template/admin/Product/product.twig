@@ -1,47 +1,64 @@
 {#
 This file is part of EC-CUBE
-
 Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
-
 http://www.lockon.co.jp/
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'product_edit'] %}
 
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品登録{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-
-{% block assets %}
-    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload.css" rel="stylesheet">
-    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload-ui.css" rel="stylesheet">
-
-    <script src="{{ app.config.root }}admin/file_upload/js/vendor/jquery.ui.widget.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.iframe-transport.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-process.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-validate.js"></script>
-{% endblock %}
-
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload-ui.css">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<style>
+    .ui-state-highlight {
+        height: 148px;
+        border: dashed 1px #ccc;
+        background: #fff;
+    }
+</style>
+{% endblock stylesheet %}
 
 {% block javascript %}
-$(function(){
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/vendor/jquery.ui.widget.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.iframe-transport.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-process.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-validate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    $("#thumb").sortable({
+        cursor: 'move',
+        opacity: 0.7,
+        placeholder: 'ui-state-highlight',
+        update: function( event, ui ) {
+            updateRank();
+        }
+    });
     {% if has_class == false %}
+    if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
+        $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
+    } else {
+        $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
+    }
     $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function(){
         if ($(this).prop("checked")) {
             $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
@@ -50,29 +67,50 @@ $(function(){
         }
     });
     {% endif %}
-
-    var proto_img = '<li><img src="__path__" /><a class="delete-image"><svg class="cb cb-close"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use></svg></a></li>';
+    var proto_img =''
+        + '<li class="ui-state-default">'
+        +     '<img src="__path__" />'
+        +     '<a class="delete-image">'
+        +         '<svg class="cb cb-close">'
+        +             '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
+        +         '</svg>'
+        +     '</a>'
+        + '</li>';
     var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
     var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
-
     {% for image in form.images %}
-        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}{{ image.vars.value }}'));
+        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}/{{ image.vars.value }}'));
         var $widget = $('{{ form_widget(image) }}');
         $widget.val('{{ image.vars.value }}');
         $("#thumb").append($img.append($widget));
     {% endfor %}
-
     {% for add_image in form.add_images %}
-        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}{{ add_image.vars.value }}'));
+        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}/{{ add_image.vars.value }}'));
         var $widget = $('{{ form_widget(add_image) }}');
         $widget.val('{{ add_image.vars.value }}');
         $("#thumb").append($img.append($widget));
     {% endfor %}
-
     {% for delete_image in form.delete_images %}
         $("#thumb").append('{{ form_widget(delete_image) }}');
     {% endfor %}
-
+    var hideSvg = function(){
+        if ($("#thumb li").length > 0) {
+            $("#icon_no_image").css("display", "none");
+        } else {
+            $("#icon_no_image").css("display", "");
+        }
+    };
+    var updateRank = function() {
+        $("#thumb li").each(function(index){
+            $(this).find(".rank_images").remove();
+            filename = $(this).find("input[type='hidden']").val();
+            $rank = $('<input type="hidden" class="rank_images" name="rank_images[]" />');
+            $rank.val(filename + '//' + parseInt(index + 1));
+            $(this).append($rank);
+        });
+    }
+    hideSvg();
+    updateRank();
     // 画像削除時
     var count_del = 0;
     $("#thumb").on("click", ".delete-image", function(){
@@ -83,6 +121,8 @@ $(function(){
         $new_delete_image.val(src);
         $("#thumb").append($new_delete_image);
         $(this).parent("li").remove();
+        hideSvg();
+        updateRank();
         count_del ++;
     });
     var count_add = {{ form.add_images|length|default(0) }};
@@ -93,15 +133,16 @@ $(function(){
         done: function(e, data) {
             $('#progress').hide();
             $.each(data.result.files, function(index, file) {
-                var path = '{{ app.config.image_temp_urlpath }}' + file;
+                var path = '{{ app.config.image_temp_urlpath }}/' + file;
                 var $img = $(proto_img.replace(/__path__/g, path));
                 var $new_img = $(proto_add.replace(/__name__/g, count_add));
                 $new_img.val(file);
                 $child = $img.append($new_img);
-
                 $('#thumb').append($child);
                 count_add ++;
             });
+            hideSvg();
+            updateRank();
         },
         fail: function(e, data) {
             alert('アップロードに失敗しました。');
@@ -129,21 +170,20 @@ $(function(){
             }
         }
     });
-
     // 画像アップロード
     $('#file_upload').on('click', function() {
         $('#{{ form.product_image.vars.id }}').click();
     });
 });
-
-{% endblock %}
+</script>
+{% endblock javascript %}
 
 {% block main %}
-            <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+            <form role="form" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
             {{ form_widget(form._token) }}
-            <div class="row">
+            <div class="row" id="aside_wrap">
                 <div class="col-md-9">
-                    <div class="box">
+                    <div class="box form-horizontal">
                         <div class="box-header">
                             <h3 class="box-title">基本情報</h3>
                         </div><!-- /.box-header -->
@@ -155,16 +195,19 @@ $(function(){
                             {% endif %}
 
                             <div class="form-group">
-                                {{ form_label(form.product_image) }}
+                                <label class="col-sm-2 control-label" for="admin_product_product_image">
+                                    {{ form.product_image.vars.label }}<br>
+                                    <span class="small">620px以上推奨</span>
+                                </label>
                                 <div class="col-sm-9 col-lg-10">
-                                    {#<div class="photo_files" draggable="true">#}
-                                    <div class="photo_files">
+                                    <div class="photo_files" id="drag-drop-area">
+                                        <svg id="icon_no_image" class="cb cb-photo no-image"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-photo"></use></svg>
                                         <ul id="thumb" class="clearfix"></ul>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-3 col-sm-9 col-lg-offset-2 col-lg-10 ">
+                            <div class="form-group marB30">
+                                <div class="col-sm-offset-2 col-sm-9 col-lg-10 ">
 
                                     <div id="progress" class="progress progress-striped active" style="display:none;">
                                         <div class="progress-bar progress-bar-info"></div>
@@ -172,7 +215,7 @@ $(function(){
 
                                     {{ form_widget(form.product_image, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
                                     <a id="file_upload" class="with-icon">
-                                        <svg class="cb cb-plus"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-plus"></use></svg>ファイルをアップロード
+                                        <svg class="cb cb-plus"> <use xlink:href="#cb-plus" /></svg>ファイルをアップロード
                                     </a>
 
                                 </div>
@@ -182,8 +225,8 @@ $(function(){
                                 {{ form_label(form.description_detail) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {{ form_widget(form.description_detail) }}
-                                    <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
-                                        <div class="accpanel">
+                                    <div class="accordion marT15 marB20"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
+                                        <div class="accpanel padT08">
                                             {{ form_widget(form.description_list) }}
                                         </div>
                                     </div>
@@ -193,11 +236,11 @@ $(function(){
                             {% if has_class == false %}
                             <div class="form-group">
                                 {{ form_label(form.class.price02) }}
-                                <div class="col-sm-9 col-lg-10">
+                                <div class="col-sm-3 col-lg-3">
                                     {{ form_widget(form.class.price02) }}
                                     {{ form_errors(form.class.price02) }}
-                                    <div class="accordion"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
-                                        <div class="accpanel">
+                                    <div class="accordion marT15 marB20"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
+                                        <div class="accpanel padT08">
                                             {{ form_widget(form.class.price01) }}
                                             {{ form_errors(form.class.price01) }}
                                         </div>
@@ -224,9 +267,9 @@ $(function(){
                             <div class="form-group">
                                 {{ form_label(form.Category) }}
                                 <div class="col-sm-9 col-lg-10">
-                                    <div class="accordion">
+                                    <div class="accordion marT05">
                                         <a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>カテゴリを選択</a>
-                                        <div class="accpanel form-group{% if form.Category.vars.valid == false %} has-error{% endif %}">
+                                        <div class="accpanel padT08{% if form.Category.vars.valid == false %} has-error{% endif %}">
                                             {{ form_widget(form.Category) }}
                                             {{ form_errors(form.Category) }}
                                         </div>
@@ -237,9 +280,9 @@ $(function(){
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
 
-                    <div class="box accordion">
+                    <div class="box accordion form-horizontal">
                         <div class="box-header toggle">
-                            <h3 class="box-title">詳細な設定<span class="fa fa-chevron-down icon_down"></span></h3>
+                            <h3 class="box-title">詳細な設定<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                         </div><!-- /.box-header -->
                         <div class="box-body accpanel">
 
@@ -251,8 +294,12 @@ $(function(){
                             {{ form_row(form.search_word) }}
                             {{ form_row(form.DeliveryDate) }}
                             {% if has_class == false %}
-                                {{ form_row(form.class.deliv_fee) }}
-                                {{ form_row(form.class.point_rate) }}
+                                <div class="form-group">
+                                    {{ form_label(form.class.delivery_fee) }}
+                                    <div class="col-sm-3 col-lg-3">
+                                        {{ form_widget(form.class.delivery_fee) }}
+                                    </div>
+                                </div>
                             {% endif %}
 
                         </div>
@@ -260,7 +307,7 @@ $(function(){
                     
                     <div class="box accordion">
                         <div class="box-header toggle">
-                            <h3 class="box-title">サブ情報<span class="fa fa-chevron-down icon_down"></span></h3>
+                            <h3 class="box-title">サブ情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                         </div><!-- /.box-header -->
                         <div class="box-body accpanel">
                             {{ form_widget(form.free_area, { attr : { id : 'wysiwyg-area' } } ) }}
@@ -269,7 +316,6 @@ $(function(){
                     
                     <div class="row hidden-xs hidden-sm">
                         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                            <p><a href="#">商品一覧に戻る</a></p>
                             <p><a href="{{ url('admin_product') }}">検索画面に戻る</a></p>
                         </div>
                     </div>
@@ -283,10 +329,8 @@ $(function(){
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
-                                            <div class="radio">
-                                                {{ form_widget(form.Status, { attr : { class : 'form-inline' } }) }}
-                                                {{ form_errors(form.Status) }}
-                                            </div>
+                                            {{ form_widget(form.Status) }}
+                                            {{ form_errors(form.Status) }}
                                         </div>
                                     </div>
                                 </div>

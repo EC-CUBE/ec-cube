@@ -3,16 +3,14 @@ Eccube\Entity\Shipping:
     table: dtb_shipping
     repositoryClass: Eccube\Repository\ShippingRepository
     id:
-        shipping_id:
+        id:
             type: integer
             nullable: false
             unsigned: false
             id: true
-        order_id:
-            type: integer
-            nullable: false
-            unsigned: false
-            id: true
+            column: shipping_id
+            generator:
+                strategy: AUTO
     fields:
         name01:
             type: text
@@ -58,16 +56,6 @@ Eccube\Entity\Shipping:
             type: text
             nullable: true
             column: shipping_fax03
-#        country_id:
-#            type: integer
-#            nullable: true
-#            unsigned: false
-#            column: shipping_country_id
-#        pref:
-#            type: smallint
-#            nullable: true
-#            unsigned: false
-#            column: shipping_pref
         zip01:
             type: text
             nullable: true
@@ -88,16 +76,20 @@ Eccube\Entity\Shipping:
             type: text
             nullable: true
             column: shipping_addr02
-        time_id:
-            type: integer
-            nullable: true
-            unsigned: false
-        shipping_time:
+        shipping_delivery_name:
             type: text
             nullable: true
-        shipping_date:
+        shipping_delivery_time:
+            type: text
+            nullable: true
+        shipping_delivery_date:
             type: datetime
             nullable: true
+        shipping_delivery_fee:
+            type: decimal
+            nullable: true
+            precision: 10
+            scale: 0
         shipping_commit_date:
             type: datetime
             nullable: true
@@ -125,13 +117,11 @@ Eccube\Entity\Shipping:
     manyToOne:
         Country:
             targetEntity: Eccube\Entity\Master\Country
-            inversedBy: Shippings
             joinColumn:
                 name: shipping_country_id
                 referencedColumnName: id
         Pref:
             targetEntity: Eccube\Entity\Master\Pref
-            inversedBy: Shippings
             joinColumn:
                 name: shipping_pref
                 referencedColumnName: id
@@ -141,4 +131,19 @@ Eccube\Entity\Shipping:
             joinColumn:
                 name: order_id
                 referencedColumnName: order_id
+        Delivery:
+            targetEntity: Eccube\Entity\Delivery
+            joinColumn:
+                name: delivery_id
+                referencedColumnName: delivery_id
+        DeliveryTime:
+            targetEntity: Eccube\Entity\DeliveryTime
+            joinColumn:
+                name: time_id
+                referencedColumnName: time_id
+        DeliveryFee:
+            targetEntity: Eccube\Entity\DeliveryFee
+            joinColumn:
+                name: fee_id
+                referencedColumnName: fee_id
     lifecycleCallbacks: {  }

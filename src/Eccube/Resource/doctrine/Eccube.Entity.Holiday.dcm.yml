@@ -48,7 +48,6 @@ Eccube\Entity\Holiday:
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
-            inversedBy: Holidays
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id

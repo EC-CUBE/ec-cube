@@ -32,29 +32,27 @@ class ShoppingType extends AbstractType
 {
     public $app;
 
+    public function __construct(\Eccube\Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $app = $this->app;
+
         $builder
-            ->add('delivery', 'entity', array(
-                    'class' => 'Eccube\Entity\Deliv',
-                    'property' => "name"))
-            ->add('payment', 'entity', array(
-                'class' => 'Eccube\Entity\Payment',
-                'property' => "method"))
-            ->add('delivery_date', 'entity', array(
-                    'class' => 'Eccube\Entity\Master\DeliveryDate',
-                    'property' => "name"))
-            ->add('delivery_time', 'entity', array(
-                    'class' => 'Eccube\Entity\DelivTime',
-                    'property' => "deliv_time"))
             ->add('message', 'textarea', array(
                     'required' => false,
                     'constraints' => array(
-                        new Assert\Length(array('min' => 0, 'max' => 500))),
-            ));
+                        new Assert\Length(array('min' => 0, 'max' => 3000))),
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+
     }
 
     /**

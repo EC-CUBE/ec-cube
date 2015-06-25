@@ -19,261 +19,164 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
+{% set mypageno = 'index' %}
 {% block main %}
-<div id="mypagecolumn">
-    <h2 class="title">{{ title }}</h2>
-    {% include 'Mypage/navi.twig' %}
-    <div id="mycontents_area">
-        <h3>{{ subtitle }}</h3>
-        <div class="mycondition_area clearfix">
-            <p>
-                <span class="st">購入日時：&nbsp;</span>{{ Order.create_date|date("Y/m/d H:i:s") }}<br />
-                <span class="st">注文番号：&nbsp;</span>{{ Order.id }}<br />
-                <span class="st">お支払い方法：&nbsp;</span>{{ Order.Payment }}<br />
-                {% if app.config.mypage_order_status_disp_flag %}
-                    <span class="st">ご注文状況：&nbsp;</span>
-                    {% if Order.CustomerOrderStatus.id != app.config.order_pending %}
-                        {{ Order.CustomerOrderStatus }}
+    <h1 class="page-heading">マイページ</h1>
+    <div class="container-fluid">
+
+        {% include 'Mypage/navi.twig' %}
+
+        <h2 class="heading01">ご注文履歴詳細</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <dl class="order_detail">
+                    <dt>ご注文日時：</dt><dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
+                    <dt>ご注文番号：</dt><dd>{{ Order.id }}</dd>
+                    {% if app.config.mypage_order_status_disp_flag %}
+                        <dt>ご注文状況：</dt>
+                        <dd>{{ Order.CustomerOrderStatus }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+
+        <div id="shopping_confirm" class="row">
+            <div id="confirm_main" class="col-sm-8">
+                <div class="cart_item table">
+                    <div class="tbody">
+
+                        {% for OrderDetail in Order.OrderDetails %}
+                            <div class="item_box tr">
+                                <div class="td table">
+                                    <div class="item_photo">
+                                        <a href="{{ url('product_detail', { id : OrderDetail.ProductClass.id } ) }}">
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_main_list }}">
+                                        </a>
+                                    </div>
+                                    <dl class="item_detail">
+                                        <dt class="item_name text-default">
+                                            {% if OrderDetail.enable %}
+                                                <a href="{{ url('product_detail', {'productId': OrderDetail.Product.id}) }}">
+                                            {% endif %}
+                                                    {{ OrderDetail.product_name }}
+                                            {% if OrderDetail.enable %}
+                                                </a>
+                                            {% endif %}
+                                        </dt>
+                                        <dd class="item_pattern small">
+                                            {% if OrderDetail.classcategory_name1 is not empty %}
+                                                {{ OrderDetail.classcategory_name1 }}
+                                            {% endif %}
+                                            {% if OrderDetail.classcategory_name2 is not empty %}
+                                                / {{ OrderDetail.classcategory_name2 }}
+                                            {% endif %}
+                                        </dd>
+                                        <dd class="item_price">{{ OrderDetail.price_inc_tax|price }} × {{ OrderDetail.quantity }}</dd>
+                                        <dd class="item_subtotal">小計：{{ OrderDetail.total_price|price }}</dd>
+                                    </dl>
+                                </div>
+                            </div><!--/item_box-->
+                        {% endfor %}
+
+                    </div>
+                </div><!--/cart_item-->
+
+                <h2 class="heading02">お客様情報</h2>
+                {% set OrderDetail = Order.OrderDetails.0 %}
+                {% for Shipping in Order.Shippings %}
+                    <div class="column">
+                        <p class="address">
+                            {{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
+                            ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})&nbsp;様<br>
+                            〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}　{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}<br>
+                            {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
+                        </p>
+                        <p>
+                            配送方法：　{{ Shipping.shipping_delivery_name }}（＋{{ Shipping.delivery_fee.fee|price }}）<br>
+                            お届け日：　{{ Shipping.shipping_date|default('指定なし') }}<br>
+                            お届け時間：　{{ Shipping.shipping_time|default('指定なし') }}
+                        </p>
+                    </div>
+                {% endfor %}
+                <h2 class="heading02">お支払方法</h2>
+                <div class="column">
+                    <p>
+                        支払方法：　{{ Order.Payment }}
+                    </p>
+                </div>
+
+                <h2 class="heading02">メール配信履歴一覧</h2>
+                <div class="column mail_list">
+                    {% for MailHistory in Order.MailHistories %}
+                        <dl>
+                            <dt>
+                                <span class="date">{{ MailHistory.send_date|date("Y/m/d H:i:s") }}</span>
+                            </dt>
+                            <dd>
+                                <span class="title">
+                                    <a data-toggle="modal" data-target="#myModal{{ loop.index }}">{{ MailHistory.subject }}</a>
+                                </span>
+                            </dd>
+                        </dl>
+
+                        <!-- Modal -->
+                        <div class="modal" id="myModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <form>
+                                        <div class="modal-header">
+                                            <button type="button" class="close no-style" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><svg class="cb cb-close"><use xlink:href="#cb-close" /></svg></span></button>
+                                            <h4 class="modal-title" id="myModalLabel">{{ MailHistory.subject }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>{{ MailHistory.MailTemplate }}</p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal -->
                     {% else %}
-                        <span class="attention">{{ Order.CustomerOrderStatus }}</span>
-                    {% endif %}
-                {% endif %}
-                {% if Order.price_change %}
-                    <div class="attention" align="right">※金額が変更されている商品があるため、再注文時はご注意ください。</div>
-                {% endif %}
-            </p>
-            <form action="{{ path('mypage_order') }}" method="post">
-                <p class="btn">
-                    <input type="hidden" name="order_id" value="{{ Order.id }}" />
-                    <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_order_re.jpg" alt="この購入内容で再注文する" name="submit" value="この購入内容で再注文する" />
-                </p>
-            </form>
-        </div>
-
-        <table summary="購入商品詳細">
-            <col width="15%" />
-            <col width="25%" />
-            <col width="20%" />
-            <col width="15%" />
-            <col width="10%" />
-            <col width="15%" />
-            <tr>
-                <th class="alignC">商品コード</th>
-                <th class="alignC">商品名</th>
-                <th class="alignC">商品種別</th>
-                <th class="alignC">単価</th>
-                <th class="alignC">数量</th>
-                <th class="alignC">小計</th>
-            </tr>
-            {% for OrderDetail in Order.OrderDetails %}
-                <tr>
-                    <td>{{ OrderDetail.product_code }}</td>
-                    <td>{% if OrderDetail.enable %}<a href="{{ path('product_detail', {'productId': OrderDetail.Product.id}) }}">{% endif %}{{ OrderDetail.product_name }}{% if OrderDetail.enable %}</a>{% endif %}<br />
-                        {% if OrderDetail.classcategory_name1 is not empty %}
-                            {{ OrderDetail.classcategory_name1 }}<br />
-                        {% endif %}
-                        {% if OrderDetail.classcategory_name2 is not empty %}
-                            {{ OrderDetail.classcategory_name2 }}<br />
-                        {% endif %}
-                    </td>
-                    <td class="alignC">
-                        {% if OrderDetail.ProductClass %}
-                            {% if OrderDetail.ProductClass.ProductType.id == app.config.product_type_download %}
-                                {% if OrderDetail.downloadable %}
-                                    <a target="_self" href="{{ path('mypage_download', {'order_id': Order.id, 'product_class_id': OrderDetail.ProductClass.id}) }}">ダウンロード</a>
-                                {% elseif OrderDetail.payment_date is empty and OrderDetail.effective == 0 %}
-                                    {{ OrderDetail.ProductClass.ProductType }}<BR />（入金確認中）
-                                {% else %}
-                                    {{ OrderDetail.ProductClass.ProductType }}<BR />（期限切れ）
-                                {% endif %}
-                            {% else %}
-                                {{ OrderDetail.ProductClass.ProductType }}
-                            {% endif %}
-                        {% endif %}
-                    </td>
-                    <td class="alignR">{{ OrderDetail.price_inc_tax|number_format }}円
-                    {% if OrderDetail.price_change %}
-                        <div class="attention">【現在価格】</div><span class="attention">{{ OrderDetail.ProductClass.price02_inc_tax|number_format }}円</span>
-                    {% endif %}
-                    </td>
-                    <td class="alignR">{{ OrderDetail.quantity }}</td>
-                    <td class="alignR">{{ OrderDetail.total_price|number_format }}円</td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <th colspan="5" class="alignR">小計</th>
-                <td class="alignR">{{ Order.subtotal|number_format }}円</td>
-            </tr>
-            {% set point_discount = Order.use_point*app.config.point_value %}
-            {% if point_discount > 0 %}
-            <tr>
-                <th colspan="5" class="alignR">ポイント値引き</th>
-                <td class="alignR">&minus;{{ point_discount|number_format }}円</td>
-            </tr>
-            {% endif %}
-            {% if Order.discount > 0 %}
-            <tr>
-                <th colspan="5" class="alignR">値引き</th>
-                <td class="alignR">&minus;{{ Order.discount|number_format }}円</td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th colspan="5" class="alignR">送料</th>
-                <td class="alignR">{{ Order.deliv_fee|number_format }}円</td>
-            </tr>
-            <tr>
-                <th colspan="5" class="alignR">手数料</th>
-                <td class="alignR">{{ Order.charge|number_format }}円</td>
-            </tr>
-            <tr>
-                <th colspan="5" class="alignR">合計</th>
-                <td class="alignR"><span class="price">{{ Order.payment_total|number_format }}円</span></td>
-            </tr>
-        </table>
-
-        <!-- 使用ポイントここから -->
-        {% if app.config.use_point %}
-            <table summary="使用ポイント">
-                <col width="30%" />
-                <col width="70%" />
-                <tr>
-                    <th class="alignL">ご使用ポイント</th>
-                    <td>{{ Order.use_point|number_format }} pt</td>
-                </tr>
-                <tr>
-                    <th class="alignL">今回加算されるポイント</th>
-                    <td>{{ Order.add_point|number_format }} pt</td>
-                </tr>
-            </table>
-        {% endif %}
-        <!-- 使用ポイントここまで -->
-
-        {% set OrderDetail = Order.OrderDetails.0 %}
-        {% for Shipping in Order.Shippings %}
-            <h3>お届け先{% if Order.isMultiple %}{{ loop.index }}{% endif %}</h3>
-            {% if Order.isMultiple %}
-                <table summary="お届け内容確認">
-                    <col width="30%" />
-                    <col width="40%" />
-                    <col width="20%" />
-                    <col width="10%" />
-                    <tr>
-                        <th class="alignC">商品コード</th>
-                        <th class="alignC">商品名</th>
-                        <th class="alignC">単価</th>
-                        <th class="alignC">数量</th>
-                        {# XXX 購入小計と誤差が出るためコメントアウト
-                        <th>小計</th>
-                        #}
-                    </tr>
-                    {% for ShipmentItem in Shipping.ShipmentItems %}
-                        <tr>
-                            <td>{{ ShipmentItem.product_code }}</td>
-                            <td>{# 商品名 #}{{ ShipmentItem.product_name }}<br />
-                                {% if ShipmentItem.ProductClass.ClassCategory1 is not empty %}
-                                    {{ ShipmentItem.ProductClass.ClassCategory1.ClassName }}：{{ ShipmentItem.ProductClass.ClassCategory1 }}<br />
-                                {% endif %}
-                                {% if ShipmentItem.ProductClass.ClassCategory2 is not empty %}
-                                    {{ ShipmentItem.ProductClass.ClassCategory2.ClassName }}：{{ ShipmentItem.ProductClass.ClassCategory2 }}
-                                {% endif %}
-                            </td>
-                            <td class="alignR">
-                                {{ calc_inc_tax(ShipmentItem.price, OrderDetail.tax_rate, OrderDetail.tax_rule)|number_format }}円
-                            </td>
-                            <td class="alignC">{{ ShipmentItem.quantity }}</td>
-                            {# XXX 購入小計と誤差が出るためコメントアウト
-                            <td class="alignR">{{ ShipmentItem.total_price_inc_tax|number_format }}円</td>
-                            #}
-                        </tr>
+                        メール履歴がありません。
                     {% endfor %}
-                </table>
-            {% endif %}
-            <table summary="お届け先" class="delivname">
-                <col width="30%" />
-                <col width="70%" />
-                <tbody>
-                    <tr>
-                        <th class="alignL">お名前</th>
-                        <td>{{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}</td>
-                    </tr>
-                    <tr>
-                        <th class="alignL">お名前(フリガナ)</th>
-                        <td>{{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }}</td>
-                    </tr>
-                    <tr>
-                        <th class="alignL">会社名</th>
-                        <td>{{ Shipping.company_name }}</td>
-                    </tr>
-                    {% if app.config.form_country_enable %}
-                        <tr>
-                            <th class="alignL">国</th>
-                            <td>{{ Shipping.Country }}</td>
-                        </tr>
-                        <tr>
-                            <th class="alignL">ZIPCODE</th>
-                            <td>{{ Shipping.zipcode }}</td>
-                        </tr>
-                    {% endif %}
-                    <tr>
-                        <th class="alignL">郵便番号</th>
-                        <td>〒{{ Shipping.zip01 }}-{{ Shipping.zip02 }}</td>
-                    </tr>
-                    <tr>
-                        <th class="alignL">住所</th>
-                        <td>{{ Shipping.Pref }}{{ Shipping.addr01 }}{{ Shipping.addr02 }}</td>
-                    </tr>
-                    <tr>
-                        <th class="alignL">電話番号</th>
-                        <td>{{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}</td>
-                    </tr>
-                    <tr>
-                        <th class="alignL">FAX番号</th>
-                        <td>
-                            {% if Shipping.fax01 is not empty and Shipping.fax02 is not empty and Shipping.fax03 is not empty %}
-                                {{ Shipping.fax01 }}-{{ Shipping.fax02 }}-{{ Shipping.fax03 }}
+                </div>
+
+
+            </div><!-- /.col -->
+
+            <div id="confirm_side" class="col-sm-4">
+                <div class="total_box">
+                    <dl>
+                        <dt>小計</dt>
+                        <dd class="text-primary">{{ Order.subtotal|price }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>手数料</dt>
+                        <dd>{{ Order.charge|price }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>送料合計</dt>
+                        <dd>{{ Order.delivery_fee_total|price }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>値引き</dt>
+                        <dd>
+                            {% if Order.discount > 0 %}
+                                &minus;{{ Order.discount|price }}
                             {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="alignL">お届け日</th>
-                        <td>{{ Shipping.shipping_date|default('指定なし') }}</td>
-                    </tr>
-                    <tr>
-                        <th class="alignL">お届け時間</th>
-                        <td>{{ Shipping.shipping_time|default('指定なし') }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        {% endfor %}
+                        </dd>
+                    </dl>
 
-        <br />
+                    <div class="total_amount">
+                        <p class="total_price">合計 <strong class="text-primary">{{ Order.payment_total|price }}<span class="small">税込</span></strong></p>
+                    </div>
+                </div>
 
-        <h3>メール配信履歴一覧</h3>
-        <table>
-            <tr>
-                <th class="alignC">処理日</th>
-                <th class="alignC">通知メール</th>
-                <th class="alignC">件名</th>
-            </tr>
-            {% for MailHistory in Order.MailHistories %}
-                <tr class="center">
-                    <td class="alignC">{{ MailHistory.send_date|date("Y/m/d H:i:s") }}
-                    <td class="alignC">{{ MailHistory.MailTemplate }}</td>
-                    <td><a href="#" onclick="eccube.openWindow('{{ path('mypage_mail_view', {'sendId': MailHistory.id}) }}','mail_view','650','800'); return false;">{{ MailHistory.subject }}</a></td>
-                </tr>
-            {% endfor %}
-        </table>
+            </div>
 
-        <div class="btn_area">
-            <ul>
-                <li>
-                    <a href="{{ path('mypage') }}"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_back.jpg" alt="戻る" /></a>
-                </li>
-            </ul>
-        </div>
+        </div><!-- /.row -->
 
     </div>
-</div>
 {% endblock %}

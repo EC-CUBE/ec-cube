@@ -19,54 +19,22 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-    <div class="block_outer">
-        <div id="login_area">
-            <h2><img src="{{ app.config.tpl }}img/title/tit_bloc_login.gif" alt="ログイン" /></h2>
-            <form name="login_form" id="login_form" method="post" action="{{ path('login_check') }}" 
-                {% if is_granted('ROLE_USER') %}
-                    onsubmit="return eccube.checkLoginFormInputted('login_form')"
-                {% endif %}
-            >
-                <div class="block_body">
-                    {% if is_granted('ROLE_USER') %}
-                        <p>ようこそ<br />
-                            <span class="user_name">{{ app.user.name01 }} {{ app.user.name02 }} 様</span><br />
-                            {% if app.config.use_point %}
-                                所持ポイント：<span class="point"> {{ app.user.point|number_format }} pt</span>
-                            {% endif %}
-                        </p>
-                        {% if disableLogout %}
-                            <p class="btn">
-                                <a href="{{ path('logout') }}">
-                                    <img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_logout.jpg" alt="ログアウト" />
-                                </a>
-                            </p>
-                        {% endif %}
-                    {% else %}
-                        <dl class="formlist">
-                            <dt>{{ form_label(form.login_email) }}</dt>
-                            <dd>
-                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                                {{ form_widget(form.login_email, {'attr': {'class': "box150", 'style': 'ime-mode: disabled;'}}) }}
-                            </dd>
-                            <dd class="mini">
-                                {{ form_widget(form.login_memory) }}
-                            </dd>
-                        </dl>
-                        <dl class="formlist">
-                            <dt class="password">{{ form_label(form.login_pass) }}</dt>
-                            <dd>
-                                {{ form_widget(form.login_pass, {'attr': {'class': 'box100'}}) }}
-                            </dd>
-                            <dd class="mini">
-                                <a href="{{ path('forgot') }}" onclick="eccube.openWindow('{{ path('forgot') }}','forget','600','400',{scrollbars:'no',resizable:'no'}); return false;" target="_blank">パスワードを忘れた方はこちら</a>
-                            </dd>
-                        </dl>
-                        <p class="btn">
-                            <input type="image" class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_bloc_login.jpg" alt="ログイン" />
-                        </p>
-                    {% endif %}
+                <div id="member" class="member drawer_block pc">
+                    <ul class="member_link">
+                        <li>
+                            <a href="{{ url('mypage') }}">
+                                <svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg>マイページ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('mypage_favorite') }}">
+                                <svg class="cb cb-heart-circle"><use xlink:href="#cb-heart-circle" /></svg>お気に入り
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('mypage_login') }}">
+                                <svg class="cb cb-lock-circle"><use xlink:href="#cb-lock-circle" /></svg>ログイン
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            </form>
-        </div>
-    </div>

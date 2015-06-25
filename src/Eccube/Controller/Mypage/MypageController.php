@@ -31,15 +31,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MypageController extends AbstractController
 {
-    private $title;
-
-    public $form;
-
-    public function __construct()
-    {
-        $this->title = 'マイページ';
-    }
-
     public function login(Application $app, Request $request)
     {
         if ($app['security']->isGranted('ROLE_USER')) {
@@ -51,8 +42,7 @@ class MypageController extends AbstractController
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
-        return $app['twig']->render('Mypage/login.twig', array(
-            'title' => $this->title,
+        return $app->render('Mypage/login.twig', array(
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
         ));
@@ -75,10 +65,7 @@ class MypageController extends AbstractController
             $app['config']['search_pmax']
         );
 
-        return $app['twig']->render('Mypage/index.twig', array(
-            'title' => $this->title,
-            'subtitle' => '購入履歴一覧',
-            'mypageno' => 'index',
+        return $app->render('Mypage/index.twig', array(
             'pagination' => $pagination,
         ));
     }
@@ -88,26 +75,20 @@ class MypageController extends AbstractController
      * @param  Request     $request
      * @return string
      */
-    public function history(Application $app, Request $request, $orderId)
+    public function history(Application $app, Request $request, $id)
     {
         $Customer = $app['user'];
 
         $Order = $app['eccube.repository.order']->findOneBy(array(
-            'id' => $orderId,
+            'id' => $id,
             'Customer' => $Customer,
         ));
         if (!$Order) {
             throw new NotFoundHttpException();
         }
 
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-
-        return $app['twig']->render('Mypage/history.twig', array(
-            'title' => $this->title,
-            'subtitle' => '購入履歴一覧',
-            'mypageno' => 'index',
+        return $app->render('Mypage/history.twig', array(
             'Order' => $Order,
-            'BaseInfo' => $BaseInfo,
         ));
     }
 
@@ -139,7 +120,7 @@ class MypageController extends AbstractController
         }
         $app['eccube.service.cart']->save();
 
-        return $app->redirect($app['url_generator']->generate('cart'));
+        return $app->redirect($app->url('cart'));
     }
 
     /**
@@ -147,24 +128,19 @@ class MypageController extends AbstractController
      * @param  Request     $request
      * @return string
      */
-    public function mailView(Application $app, Request $request, $sendId)
+    public function mailView(Application $app, Request $request, $id)
     {
         $Customer = $app['user'];
 
         /* @var $MailHistory \Eccube\Entity\MailHistory */
         try {
-            $MailHistory = $app['eccube.repository.mail_history']->getByCustomerAndId($Customer, $sendId);
+            $MailHistory = $app['eccube.repository.mail_history']->getByCustomerAndId($Customer, $id);
         } catch (\Exception $e) {
             throw new NotFoundHttpException();
         }
 
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-
-        return $app['twig']->render('Mypage/mail_view.twig', array(
-            'title' => $this->title,
-            'subtitle' => 'MYページ/メール履歴詳細',
+        return $app->render('Mypage/mail_view.twig', array(
             'MailHistory' => $MailHistory,
-            'BaseInfo' => $BaseInfo,
         ));
     }
 
@@ -177,13 +153,13 @@ class MypageController extends AbstractController
     {
         $Customer = $app['user'];
 
-        if ($request->getMethod() === 'POST' && $request->get('mode') === 'delete_favorite') {
+        if ('POST' === $request->getMethod() && 'delete_favorite' === $request->get('mode')) {
             $Product = $app['eccube.repository.product']->get($request->get('product_id'));
             if ($Product) {
                 $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
             }
 
-            return $app->redirect($app['url_generator']->generate('mypage_favorite', array('page' => $request->get('pageno', 1))));
+            return $app->redirect($app->url('mypage_favorite', array('page' => $request->get('pageno', 1))));
         }
 
         // paginator
@@ -194,10 +170,7 @@ class MypageController extends AbstractController
             $app['config']['search_pmax']
         );
 
-        return $app['twig']->render('Mypage/favorite.twig', array(
-            'title' => $this->title,
-            'subtitle' => 'お気に入り一覧',
-            'mypageno' => 'favorite',
+        return $app->render('Mypage/favorite.twig', array(
             'pagination' => $pagination,
         ));
     }

@@ -1,0 +1,63 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+    <div id="contents" class="main_only">
+        <div class="container-fluid inner no-padding">
+            <div id="main">
+                <h1 class="page-heading">パスワードの再発行</h1>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <p>ご登録時のメールアドレスを入力して「次へ」ボタンをクリックしてください。</p>
+                            <p>※新しくパスワードを発行いたしますので、お忘れになったパスワードはご利用できなくなります。</p>
+                            <form name="form1" id="form1" method="post" action="{{ url('forgot') }}">
+                                {{ form_widget(form._token) }}
+                                <div class="dl_table">
+                                    <dl>
+                                        <dt>{{ form_label(form.login_email) }}</dt>
+                                        <dd>
+                                            <div class="form-group">
+                                                {{ form_widget(form.login_email) }}
+                                                {{ form_errors(form.login_email) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="row no-padding">
+                                <div class="btn_group col-sm-offset-4 col-sm-4">
+                                    <p><button type="submit" class="btn btn-primary btn-block">次のページへ</button></p>
+                                </div>
+                                </div>
+                            </form>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

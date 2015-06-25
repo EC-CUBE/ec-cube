@@ -1,0 +1,56 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'ownersstore', 'plugin'] %}
+
+{% block title %}システム設定{% endblock %}
+{% block sub_title %}プラグイン一覧{% endblock %}
+{% block main %}
+
+
+
+<a href="{{ url('admin_setting_system_plugin_install') }}">プラグインインストールへ</a><br>
+<a href="{{ url('admin_setting_system_plugin_handler') }}">プラグインハンドラ設定へ</a>
+
+<hr>
+現在インストールされているプラグイン一覧
+<hr>
+{% for plugin in plugins %}
+    {% set form = plugin_forms[plugin.id] %}
+    <li>id:{{ plugin.id|e }}</li>
+    <li>name:{{ plugin.name|e }}</li>
+    <li>code:{{ plugin.code|e }}</li>
+    <li>enable:{{ plugin.enable|e }}</li>
+    <li>version:{{ plugin.version|e }}</li>
+    <li>event:{{ plugin.className|e }}</li>
+    <li>del_flg:{{ plugin.delFlg|e }}</li>
+        <form action="plugin/manage" method="post"  {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+        </form>
+    <hr>
+{% endfor %}
+
+{% endblock %}
+
+
