@@ -2012,6 +2012,31 @@ div.table .tbody .addr_box .column {
     margin: 0 0 16px;
 }
 
+/* Error Page */
+
+.message_box {
+	text-align: center;
+	padding-bottom: 50px;
+}
+.message_box .icon {
+	font-size: 100px;
+	font-size: 10rem;
+	color: #ccc;
+}
+.message_box h1 {
+	font-size: 16px;
+	font-size: 1.6rem;
+	margin: 0 0 16px;
+}
+.message_box .btn_group {
+	margin-top: 30px;
+}
+.error_page #contents {
+	background: inherit;
+	
+}
+
+
 /****** Effect Setting ********/
 
 /* Overlay */
@@ -4032,6 +4057,10 @@ fieldset[disabled] .btn-link:focus {
         font-size: 24px;
         font-size: 2.4rem;
     }
+	.message_box h1 {
+		font-size: 24px;
+		font-size: 2.4rem;
+	}
 
     /****** Footer Setting ********/
 
@@ -4264,5 +4293,10 @@ fieldset[disabled] .btn-link:focus {
         margin-bottom: 16px;
     }
 
-
+	/* Error Page */
+	
+	.error_page .footer_logo_area {
+		margin-top: 0;
+		
+	}
 }

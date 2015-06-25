@@ -40,6 +40,7 @@
 {% endblock javascript %}
 
 {% block main %}
+<form name="content_block_form" id="content_block_form" method="post" action="">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -52,33 +53,31 @@
                     <div class="box-body no-padding no-border">
                         <div class="sortable_list">
                             <div class="tableish">
-                                <form name="content_block_form" id="content_block_form" method="post" action="">
-                                    {% for Block in Blocks %}
-                                        <div class="item_box tr">
-                                            <div class="icon_sortable td"><svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg></div>
-                                            <div class="item_pattern td">
-                                                {{ Block.name }}
+                                {% for Block in Blocks %}
+                                    <div class="item_box tr">
+                                        <div class="icon_sortable td"><svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg></div>
+                                        <div class="item_pattern td">
+                                            {{ Block.name }}
+                                        </div>
+                                        <div class="icon_edit td">
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">編集</a>
+                                                    </li>
+                                                    <li>
+                                                        {% if Block.deletable_flg == 1 %}
+                                                            <a href="javascript:;" onclick="fnDelete('{{ url('admin_content_block_delete', { 'id': Block.id}) }}');return false;">削除</a>
+                                                        {% else %}
+                                                            <a>削除</a>
+                                                        {% endif %}
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <div class="icon_edit td">
-                                                <div class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">編集</a>
-                                                        </li>
-                                                        <li>
-                                                            {% if Block.deletable_flg == 1 %}
-                                                                <a href="javascript:;" onclick="fnDelete('{{ url('admin_content_block_delete', { 'id': Block.id}) }}');return false;">削除</a>
-                                                            {% else %}
-                                                                <a>削除</a>
-                                                            {% endif %}
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.item_box -->
-                                    {% endfor %}
-                                </form>
+                                        </div>
+                                    </div><!-- /.item_box -->
+                                {% endfor %}
                             </div>
                         </div>
                     </div><!-- /.box-body -->
@@ -95,4 +94,5 @@
 
         </div>
     </div>
+</form>
 {% endblock %}
