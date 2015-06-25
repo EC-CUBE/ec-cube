@@ -47,7 +47,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     // テスト用のダミープラグインを配置する
     private function createTempDir(){
-        $t = sys_get_temp_dir()."/".sha1(mt_rand());
+        $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
         if(!mkdir($t)){
             throw new \Exception("$t ".$php_errormsg);
         }
@@ -64,7 +64,6 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginMinimum()
     {
         #self::markTestSkipped();
-
 
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
@@ -93,6 +92,135 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
         $this->assertTrue($service->uninstall($plugin));
         
+    }
+
+    // 必須ファイルがないプラグインがインストール出来ないこと
+    public function testInstallPluginEmptyError()
+    {
+        #self::markTestSkipped();
+
+        $this->setExpectedException(
+          '\Eccube\Exception\PluginException', 'config.yml not found or syntax error'
+        );
+        $service = $this->app['eccube.service.plugin']; 
+
+        // インストールするプラグインを作成する
+        $tmpname="dummy".sha1(mt_rand());
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \Archive_Tar($tmpfile, true);
+        $tar->addString('dmyy','dummy');
+        // インストールできるか
+        $service->install($tmpfile);
+        
+    }
+
+    // config.ymlのフォーマット確認
+    public function testConfigYmlFormat()
+    {
+#        self::markTestSkipped();
+        $service = $this->app['eccube.service.plugin']; 
+        $tmpname='dummy'.mt_rand();
+        $tmpfile=sys_get_temp_dir().'/dummy'.mt_rand();
+        
+
+        // 必須項目のチェック
+        $config=array();
+        #$config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        try{
+            file_put_contents($tmpfile,Yaml::dump($config));
+            $service->checkPluginArchiveContent($tmpfile);
+            $this->fail("testConfigYmlFormat dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){ } 
+
+        $config=array();
+        $config['name'] = $tmpname;
+        #$config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        try{
+            file_put_contents($tmpfile,Yaml::dump($config));
+            $service->checkPluginArchiveContent($tmpfile);
+            $this->fail("testConfigYmlFormat dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){ }
+
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        #$config['version'] = $tmpname;
+        try{
+            file_put_contents($tmpfile,Yaml::dump($config));
+            $service->checkPluginArchiveContent($tmpfile);
+            $this->fail("testConfigYmlFormat dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){ }
+
+        // 禁止文字のチェック
+
+        $config['name'] = $tmpname."@";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        try{
+            file_put_contents($tmpfile,Yaml::dump($config));
+            $service->checkPluginArchiveContent($tmpfile);
+            $this->fail("testConfigYmlFormat dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){ } 
+
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname."#";
+        $config['version'] = $tmpname;
+        try{
+            file_put_contents($tmpfile,Yaml::dump($config));
+            $service->checkPluginArchiveContent($tmpfile);
+            $this->fail("testConfigYmlFormat dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){ }
+
+        // 長さのチェック
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = str_repeat('a',256);
+        try{
+            file_put_contents($tmpfile,Yaml::dump($config));
+            $service->checkPluginArchiveContent($tmpfile);
+            $this->fail("testConfigYmlFormat dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){ }
+
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        $config['event'] = "&".$tmpname;
+        try{
+            file_put_contents($tmpfile,Yaml::dump($config));
+            $service->checkPluginArchiveContent($tmpfile);
+            $this->fail("testConfigYmlFormat dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){ }
+    }
+
+    // config.ymlに異常な項目がある場合
+    public function testnstallPluginMalformedConfigError()
+    {
+        #self::markTestSkipped();
+        $service = $this->app['eccube.service.plugin']; 
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+        $tar = new \Archive_Tar($tmpfile, true);
+
+        // インストールするプラグインを作成する
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+        $tar->addString('config.yml',Yaml::dump($config));
+
+        $this->setExpectedException(
+          '\Eccube\Exception\PluginException', 'config.yml name  empty or invalid_character(\W)'
+        );
+        // インストールできないはず
+        $this->assertNull($service->install($tmpfile));
     }
 
     // イベント定義を含むプラグインのインストールとアンインストールを検証
@@ -298,4 +426,8 @@ EOD;
         $this->assertTrue($service->uninstall($plugin));
         $this->assertRegexp('/DisabledUninstalled/',ob_get_contents()); ob_end_clean();
     }
+
+
+
+
 }
