@@ -121,3 +121,6 @@ admin.content.template.add.complete: テンプレートファイルをアップ�
 admin.content.template.delete.complete: テンプレートを削除しました。
 admin.content.template.delete.default.error: デフォルトテンプレートは削除できません。
 admin.content.template.delete.current.error: 現在設定中のテンプレートは削除できません。
+
+admin.sysmte.security.save.complete: セキュリティ設定を保存しました。
+admin.sysmte.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
