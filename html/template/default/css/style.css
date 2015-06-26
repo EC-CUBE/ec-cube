@@ -292,8 +292,8 @@ h2 {
 }
 .heading02,
 .heading03 {
-    font-size: 12px;
-    font-size: 1.2rem;
+    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: bold;
 }
 .heading04 {
@@ -2424,6 +2424,12 @@ div.table .tbody .addr_box .column {
 }
 #forgot_page .column h2 {
     margin: 0 0 8px;
+}
+
+/* Contact Page */
+
+#contact_contents {
+	height: 100px;
 }
 
 
