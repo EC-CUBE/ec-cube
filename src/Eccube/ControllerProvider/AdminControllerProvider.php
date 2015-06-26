@@ -63,18 +63,21 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/product/category/{id}/up', '\Eccube\Controller\Admin\Product\CategoryController::up')->assert('id', '\d+')->bind('admin_product_category_up');
         $c->post('/product/category/{id}/down', '\Eccube\Controller\Admin\Product\CategoryController::down')->assert('id', '\d+')->bind('admin_product_category_down');
         $c->post('/product/category/{id}/delete', '\Eccube\Controller\Admin\Product\CategoryController::delete')->assert('id', '\d+')->bind('admin_product_category_delete');
+        $c->post('/product/category/rank/move', '\Eccube\Controller\Admin\Product\CategoryController::moveRank')->bind('admin_product_category_rank_move');
 
         $c->match('/product/class_name', '\Eccube\Controller\Admin\Product\ClassNameController::index')->bind('admin_product_class_name');
         $c->match('/product/class_name/{id}/edit', '\Eccube\Controller\Admin\Product\ClassNameController::index')->assert('id', '\d+')->bind('admin_product_class_name_edit');
         $c->post('/product/class_name/{id}/up', '\Eccube\Controller\Admin\Product\ClassNameController::up')->assert('id', '\d+')->bind('admin_product_class_name_up');
         $c->post('/product/class_name/{id}/down', '\Eccube\Controller\Admin\Product\ClassNameController::down')->assert('id', '\d+')->bind('admin_product_class_name_down');
         $c->post('/product/class_name/{id}/delete', '\Eccube\Controller\Admin\Product\ClassNameController::delete')->assert('id', '\d+')->bind('admin_product_class_name_delete');
+        $c->post('/product/class_name/rank/move', '\Eccube\Controller\Admin\Product\ClassNameController::moveRank')->bind('admin_product_class_name_rank_move');
 
         $c->match('/product/class_category/{class_name_id}', '\Eccube\Controller\Admin\Product\ClassCategoryController::index')->assert('class_name_id', '\d+')->bind('admin_product_class_category');
         $c->match('/product/class_category/{class_name_id}/{id}/edit', '\Eccube\Controller\Admin\Product\ClassCategoryController::index')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_edit');
         $c->post('/product/class_category/{class_name_id}/{id}/up', '\Eccube\Controller\Admin\Product\ClassCategoryController::up')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_up');
         $c->post('/product/class_category/{class_name_id}/{id}/down', '\Eccube\Controller\Admin\Product\ClassCategoryController::down')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_down');
         $c->post('/product/class_category/{class_name_id}/{id}/delete', '\Eccube\Controller\Admin\Product\ClassCategoryController::delete')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_delete');
+        $c->post('/product/class_category/rank/move', '\Eccube\Controller\Admin\Product\ClassCategoryController::moveRank')->bind('admin_product_class_category_rank_move');
 
         // customer
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');
@@ -83,8 +86,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/customer/{id}/edit', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->assert('id', '\d+')->bind('admin_customer_edit');
         $c->post('/customer/{id}/delete', '\Eccube\Controller\Admin\Customer\CustomerController::delete')->assert('id', '\d+')->bind('admin_customer_delete');
         $c->post('/customer/{id}/resend', '\Eccube\Controller\Admin\Customer\CustomerController::resend')->assert('id', '\d+')->bind('admin_customer_resend');
-
-
 
         // order
         $c->match('/order', '\Eccube\Controller\Admin\Order\OrderController::index')->bind('admin_order');

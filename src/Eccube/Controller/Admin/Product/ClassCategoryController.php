@@ -187,4 +187,19 @@ class ClassCategoryController
 
         return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
     }
+
+    public function moveRank(Application $app, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $ranks = $request->request->all();
+            foreach ($ranks as $categoryId => $rank) {
+                $ClassCategory = $app['eccube.repository.class_category']
+                    ->find($categoryId);
+                $ClassCategory->setRank($rank);
+                $app['orm.em']->persist($ClassCategory);
+            }
+            $app['orm.em']->flush();
+        }
+        return true;
+    }
 }
