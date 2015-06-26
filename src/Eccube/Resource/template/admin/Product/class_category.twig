@@ -28,6 +28,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+    <script>
+        function changeAction(action) {
+            document.form1.action = action;
+        }
+    </script>
+{% endblock %}
+
 {% block main %}
     <div class="row">
         <div class="col-md-12">
@@ -74,20 +82,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                                     {% set delete_action = url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) %}
                                                     <li>
-                                                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ eccube.changeAction('{{ delete_action }}'); document.form1.submit(); } return false;">削除</a>
+                                                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ changeAction('{{ delete_action }}'); document.form1.submit(); } return false;">削除</a>
                                                     </li>
 
                                                     {% if loop.first == false %}
                                                         {% set up_action = url('admin_product_class_category_up', {class_name_id: ClassName.id, id: ClassCategory.id }) %}
                                                         <li>
-                                                            <a href="?" onclick="eccube.changeAction('{{ up_action }}'); document.form1.submit(); return false;">上へ</a>
+                                                            <a href="?" onclick="changeAction('{{ up_action }}'); document.form1.submit(); return false;">上へ</a>
                                                         </li>
                                                     {% endif %}
 
                                                     {% if loop.last == false %}
                                                         {% set down_action = url('admin_product_class_category_down', {class_name_id: ClassName.id, id: ClassCategory.id }) %}
                                                         <li>
-                                                            <a href="?" onclick="eccube.changeAction('{{ down_action }}'); document.form1.submit(); return false;">下へ</a>
+                                                            <a href="?" onclick="changeAction('{{ down_action }}'); document.form1.submit(); return false;">下へ</a>
                                                         </li>
                                                     {% endif %}
                                                 </ul>
