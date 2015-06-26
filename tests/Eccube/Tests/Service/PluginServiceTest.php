@@ -75,8 +75,8 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
 
-        $tar = new \Archive_Tar($tmpfile, true);
-        $tar->addString('config.yml',Yaml::dump($config));
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
         $service = $this->app['eccube.service.plugin']; 
 
         // インストールできるか
@@ -109,8 +109,8 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
 
-        $tar = new \Archive_Tar($tmpfile, true);
-        $tar->addString('dmyy','dummy');
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('dmyy','dummy');
         // インストールできるか
         $service->install($tmpfile);
         
@@ -207,14 +207,14 @@ class PluginServiceTest extends AbstractServiceTestCase
         $service = $this->app['eccube.service.plugin']; 
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
-        $tar = new \Archive_Tar($tmpfile, true);
+        $tar = new \PharData($tmpfile);
 
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
-        $tar->addString('config.yml',Yaml::dump($config));
+        $tar->addFromString('config.yml',Yaml::dump($config));
 
         $this->setExpectedException(
           '\Eccube\Exception\PluginException', 'config.yml name  empty or invalid_character(\W)'
@@ -239,8 +239,8 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
 
-        $tar = new \Archive_Tar($tmpfile, true);
-        $tar->addString('config.yml',Yaml::dump($config));
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
 
 
         $dummyEvent=<<<'EOD'
@@ -273,7 +273,7 @@ class DummyEvent
 
 EOD;
         $dummyEvent=str_replace('@@@@',$tmpname,$dummyEvent); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
-        $tar->addString("DummyEvent.php" , $dummyEvent);
+        $tar->addFromString("DummyEvent.php" , $dummyEvent);
 
         // イベント定義を作成する
         $event=array();
@@ -283,7 +283,7 @@ EOD;
         $event['eccube.event.app.before'][] = array("dummyHandlerFirst",'FIRST');
         $event['eccube.event.app.after'] = array();
         $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
-        $tar->addString('event.yml',Yaml::dump($event));
+        $tar->addFromString('event.yml',Yaml::dump($event));
 
         $service = $this->app['eccube.service.plugin']; 
 
@@ -363,8 +363,8 @@ EOD;
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
 
-        $tar = new \Archive_Tar($tmpfile, true);
-        $tar->addString('config.yml',Yaml::dump($config));
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
         $dummyManager=<<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -400,7 +400,7 @@ class PluginManager extends AbstractPluginManager
 
 EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
-        $tar->addString("PluginManager.php" , $dummyManager);
+        $tar->addFromString("PluginManager.php" , $dummyManager);
         $service = $this->app['eccube.service.plugin']; 
 
         // インストールできるか、インストーラが呼ばれるか

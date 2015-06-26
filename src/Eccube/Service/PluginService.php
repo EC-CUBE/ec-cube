@@ -186,9 +186,12 @@ class PluginService
     }
     public function unpackPluginArchive($archive,$dir)
     {
-        $tar = new \Archive_Tar($archive, true);
-        $tar->setErrorHandling(PEAR_ERROR_EXCEPTION);
-        $result = $tar->extractModify($dir . '/', '');
+#        $tar = new \Archive_Tar($archive, true);
+#        $tar->setErrorHandling(PEAR_ERROR_EXCEPTION);
+#        $result = $tar->extractModify($dir . '/', '');
+
+          $phar = new \PharData($archive);
+          $phar->extractTo($dir); 
     }
 
     public function updatePlugin(\Eccube\Entity\Plugin $plugin,$meta,$event_yml)
