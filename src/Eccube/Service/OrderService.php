@@ -235,6 +235,7 @@ class OrderService
         $Shipping->setDeliveryFee($deliveryFee);
 
 
+        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
         $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 配送料無料条件(合計金額)
         $freeRule = $baseInfo->getFreeRule();
@@ -254,7 +255,6 @@ class OrderService
             }
         }
 
-
         // 初期選択の支払い方法をセット
         $paymentOptions = $delivery->getPaymentOptions();
         $payment = $paymentOptions[0]->getPayment();
@@ -263,7 +263,6 @@ class OrderService
         $Order->setPayment($payment);
         $Order->setPaymentMethod($payment->getMethod());
         $Order->setCharge($payment->getCharge());
-        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
 
         $total = $subTotal + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
