@@ -28,6 +28,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script>
+    function changeAction(action) {
+        document.form1.action = action;
+    }
+</script>
+{% endblock %}
+
 {% block main %}
     <div class="row">
         <div class="col-md-9">
@@ -83,7 +91,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% else %}
                                                     {% set delete_action = url('admin_product_category_delete', {id: Category.id}) %}
                                                     <li>
-                                                        <a href="?" onclick="eccube.changeAction('{{ delete_action }}'); document.form1.submit(); return false;">
+                                                        <a href="?" onclick="changeAction('{{ delete_action }}'); document.form1.submit(); return false;">
                                                             削除
                                                         </a>
                                                     </li>
@@ -92,7 +100,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% if loop.first == false %}
                                                     {% set up_action = url('admin_product_category_up', {id: Category.id}) %}
                                                     <li>
-                                                        <a href="?" onclick="eccube.changeAction('{{ up_action }}'); document.form1.submit(); return false;">
+                                                        <a href="?" onclick="changeAction('{{ up_action }}'); document.form1.submit(); return false;">
                                                             上へ
                                                         </a>
                                                     </li>
@@ -101,7 +109,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% if loop.last == false %}
                                                     {% set down_action = url('admin_product_category_down', {id: Category.id}) %}
                                                     <li>
-                                                        <a href="?" onclick="eccube.changeAction('{{ down_action }}'); document.form1.submit(); return false;">
+                                                        <a href="?" onclick="changeAction('{{ down_action }}'); document.form1.submit(); return false;">
                                                             下へ
                                                         </a>
                                                     </li>
