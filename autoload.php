@@ -4,7 +4,6 @@ $loader = require __DIR__ . '/vendor/autoload.php';
 
 // APC autoloader cache
 if (extension_loaded('apc') && ini_get('apc.enabled')) {
-    require __DIR__ . '/vendor/symfony/class-loader/Symfony/Component/ClassLoader/ApcClassLoader.php';
     $apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader('autoloader.', $loader);
     $apcLoader->register();
     $loader->unregister();
