@@ -25,48 +25,43 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class FileController
 {
-    private $app;
+    private $error = null;
 
-    private $form;
-
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
-        $this->app = $app;
-        $mainTitle = 'コンテンツ管理';
-        $subTitle = 'ファイル管理';
-
-        $this->form = $app['form.factory']->createBuilder('form')
+        $form = $app['form.factory']->createBuilder('form')
             ->add('file', 'file')
             ->getForm();
 
-        $htmlDir = $app['request']->server->get('DOCUMENT_ROOT') . $app['config']['root'];
-        $topDir = $htmlDir . 'user_data';
-        $nowDir = $app['request']->get('tree_select_file') ?: $topDir;
+        // $htmlDir = $request->server->get('DOCUMENT_ROOT') . '/' . $app['config']['root_urlpath'];
+        $htmlDir = realpath(str_replace($app['config']['user_data_route'], '', $app['config']['user_data_realdir']));
+        $topDir = realpath($app['config']['user_data_realdir']);
+        $nowDir = $request->get('tree_select_file') ?: $topDir;
 
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
 
         $isTopDir = ($topDir === $nowDir);
         $parentDir = substr($nowDir, 0, strrpos($nowDir, '/'));
 
-        // jsとの結合が強い＋RWD対応でどうせ変えるため、一旦mode残す
-        switch ($app['request']->get('mode')) {
+        switch ($request->get('mode')) {
             case 'create':
-                $this->create($app);
+                $this->create($app, $request);
                 break;
             case 'delete':
-                $this->delete($app);
+                $this->delete($app, $request);
                 break;
             case 'upload':
-                $this->upload($app);
+                $this->upload($app, $request);
                 break;
             case 'download':
-                if ($res = $this->download($app)) {
+                if ($res = $this->download($app, $request)) {
                     return $res;
                 }
                 break;
@@ -74,16 +69,14 @@ class FileController
                 break;
         }
 
-        $tree = $this->getTree($topDir);
+        $tree = $this->getTree($topDir, $request);
         $arrFileList = $this->getFileList($nowDir);
 
         $javascript = $this->getJsArrayList($tree);
         $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
 
-        return $app['view']->render('Content/file.twig', array(
-            'form' => $this->form->createView(),
-            'tpl_maintitle' => $mainTitle,
-            'tpl_subtitle' => $subTitle,
+        return $app->render('Content/file.twig', array(
+            'form' => $form->createView(),
             'tpl_onload' => $onload,
             'tpl_javascript' => $javascript,
             'top_dir' => $topDir,
@@ -93,31 +86,41 @@ class FileController
             'now_dir_list' => $nowDirList,
             'tpl_parent_dir' => $parentDir,
             'arrFileList' => $arrFileList,
+            'error' => $this->error,
         ));
     }
 
-    public function view(Application $app)
+    public function view(Application $app, Request $request)
     {
-        return $app->sendFile($app['request']->get('file'));
+        return $app->sendFile($request->get('file'));
     }
 
-    public function create(Application $app)
+    public function create(Application $app, Request $request)
     {
         $fs = new Filesystem();
-        $fs->mkdir($app['request']->get('now_dir') . '/' . $app['request']->get('create_file'));
-    }
+        $filename = $request->get('create_file');
 
-    public function delete(Application $app)
-    {
-        $fs = new Filesystem();
-        if ($fs->exists($app['request']->get('select_file'))) {
-            $fs->remove($app['request']->get('select_file'));
+        $pattern = "/[^[:alnum:]_.\\-]/";
+        if (empty($filename)) {
+            $this->error = array('message' => 'フォルダ作成名が入力されていません。');
+        } else if (strlen($filename) > 0 && preg_match($pattern, $filename)) {
+            $this->error = array('message' => 'ファイル名には、英数字、記号（_ - .）のみを入力して下さい。');
+        } else  {
+            $fs->mkdir($request->get('now_dir') . '/' . $filename);
         }
     }
 
-    public function download(Application $app)
+    public function delete(Application $app, Request $request)
     {
-        if ($file = $app['request']->get('select_file')) {
+        $fs = new Filesystem();
+        if ($fs->exists($request->get('select_file'))) {
+            $fs->remove($request->get('select_file'));
+        }
+    }
+
+    public function download(Application $app, Request $request)
+    {
+        if ($file = $request->get('select_file')) {
             if (!is_dir($file)) {
                 return $app->sendFile($file)
                     ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
@@ -127,13 +130,22 @@ class FileController
         return;
     }
 
-    public function upload(Application $app)
+    public function upload(Application $app, Request $request)
     {
-        $this->form->handleRequest($app['request']);
-        if ($this->form->isValid()) {
-            $data = $this->form->getData();
-            $filename = $data['file']->getClientOriginalName();
-            $data['file']->move($app['request']->get('now_dir'), $filename);
+        $form = $app['form.factory']->createBuilder('form')
+            ->add('file', 'file')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            if (!empty($data['file'])) {
+                $filename = $data['file']->getClientOriginalName();
+                $data['file']->move($request->get('now_dir'), $filename);
+            } else {
+                $this->error = array('message' => 'ファイルが選択されていません。');
+            }
         }
     }
 
@@ -152,7 +164,7 @@ class FileController
         return $str;
     }
 
-    private function getTree($topDir)
+    private function getTree($topDir, $request)
     {
         $finder = Finder::create()->in($topDir)
             ->directories()
@@ -170,8 +182,8 @@ class FileController
         $defaultRank = count(explode('/', $topDir));
 
         $openDirs = array();
-        if ($this->app['request']->get('tree_status')) {
-            $openDirs = explode('|', $this->app['request']->get('tree_status'));
+        if ($request->get('tree_status')) {
+            $openDirs = explode('|', $request->get('tree_status'));
         }
 
         foreach ($finder as $dirs) {
