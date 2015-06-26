@@ -71,6 +71,11 @@ class ProductClassType extends AbstractType
                 'currency' => 'JPY',
                 'precision' => 0,
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => 10,
+                    )),
+                ),
             ))
             ->add('price02', 'money', array(
                 'label' => '販売価格',
@@ -78,6 +83,9 @@ class ProductClassType extends AbstractType
                 'precision' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => 10,
+                    )),
                 ),
             ))
             ->add('tax_rate', 'text', array(

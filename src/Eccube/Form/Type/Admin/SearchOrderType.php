@@ -84,7 +84,7 @@ class SearchOrderType extends AbstractType
                 'label' => '受注日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -92,7 +92,7 @@ class SearchOrderType extends AbstractType
                 'label' => '受注日(TO)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -100,7 +100,7 @@ class SearchOrderType extends AbstractType
                 'label' => '入金日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -108,7 +108,7 @@ class SearchOrderType extends AbstractType
                 'label' => '入金日(TO)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -116,7 +116,7 @@ class SearchOrderType extends AbstractType
                 'label' => '発送日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -124,7 +124,7 @@ class SearchOrderType extends AbstractType
                 'label' => '発送日(TO)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -132,7 +132,7 @@ class SearchOrderType extends AbstractType
                 'label' => '更新日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -140,7 +140,7 @@ class SearchOrderType extends AbstractType
                 'label' => '更新日(TO)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))

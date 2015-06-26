@@ -363,7 +363,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      * Set Creator
      *
      * @param  \Eccube\Entity\Member $Creator
-     * @return Maker
+     * @return \Eccube\Entity\Member
      */
     public function setCreator(\Eccube\Entity\Member $Creator)
     {

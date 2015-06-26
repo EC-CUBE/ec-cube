@@ -343,4 +343,51 @@ class ProductController
             'id' => $id,
         ));
     }
+
+    public function delete(Application $app, Request $request, $id = null)
+    {
+        if (!is_null($id)) {
+            /* @var $Product \Eccube\Entity\Product */
+            $Product = $app['eccube.repository.product']->find($id);
+            if ($Product instanceof \Eccube\Entity\Product) {
+                $Product->setDelFlg(1);
+                $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+                $app->addSuccess('admin.delete.complete', 'admin');
+            } else {
+                $app->addError('admin.delete.failed', 'admin');
+            }
+        } else {
+            $app->addError('admin.delete.failed', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_product'));
+    }
+
+    public function copy(Application $app, Request $request, $id = null)
+    {
+        if (!is_null($id)) {
+            $Product = $app['eccube.repository.product']->find($id);
+            if ($Product instanceof \Eccube\Entity\Product) {
+                $CopyProduct = clone $Product;
+                $CopyProduct->copy();
+                $Disp = $app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
+                $CopyProduct->setStatus($Disp);
+
+                $app['orm.em']->persist($CopyProduct);
+                $app['orm.em']->flush();
+
+                $app->addSuccess('admin.product.copy.complete', 'admin');
+
+                return $app->redirect($app->url('admin_product_product_edit', array('id' => $CopyProduct->getId())));
+            } else {
+                $app->addError('admin.product.copy.failed', 'admin');
+            }
+        } else {
+            $app->addError('admin.product.copy.failed', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_product'));
+    }
 }

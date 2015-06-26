@@ -1,5 +1,8 @@
 # for travis-ci
 # see also. https://travis-ci.org
+git:
+  submodules: false
+
 language: php
 sudo: required
 php:

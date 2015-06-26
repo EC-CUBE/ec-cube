@@ -34,6 +34,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Monolog\Logger;
+use Monolog\Handler\FingersCrossedHandler;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 
 class Application extends \Silex\Application
 {
@@ -72,13 +75,18 @@ class Application extends \Silex\Application
 
             switch ($code) {
                 case 404:
+                    $title = 'ページがみつかりません。';
+                    $message = 'URLに間違いがないかご確認ください。';
                     break;
                 default:
+                    $title = 'システムエラーが発生しました。';
+                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
                     break;
             }
 
-            return $app['view']->render('error.twig', array(
-                'error' => 'エラーが発生しました.',
+            return $app['twig']->render('error.twig', array(
+                'error_title' => $title,
+                'error_message' => $message,
             ));
         });
 
@@ -154,15 +162,46 @@ class Application extends \Silex\Application
             }
 
             $configAll = array_replace_recursive($configAll, $database, $mail);
+
+            $log = array();
+            $yml = __DIR__ . '/../../app/config/eccube/log.yml';
+            if (file_exists($yml)) {
+                $log = array(
+                    'log' => Yaml::parse($yml)
+                );
+            }
+
+            $configAll = array_replace_recursive($configAll, $log);
+
             return $configAll;
         });
     }
 
     public function initLogger()
     {
+        $file = __DIR__ . '/../../app/log/site.log';
         $this->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
+            'monolog.logfile' => $file,
         ));
+
+        $levels = Logger::getLevels();
+        $this['monolog'] = $this->extend('monolog', function($monolog, $this) use ($levels, $file) {
+
+            $RotateHandler = new RotatingFileHandler($file, $this['config']['log']['max_files'], $this['config']['log']['log_level']);
+            $RotateHandler->setFilenameFormat(
+                $this['config']['log']['prefix'] . '{date}' . $this['config']['log']['suffix'],
+                $this['config']['log']['format']
+            );
+
+            $FingerCrossedHandler = new FingersCrossedHandler(
+                $RotateHandler,
+                new ErrorLevelActivationStrategy($levels[$this['config']['log']['action_level']])
+            );
+            $monolog->popHandler();
+            $monolog->pushHandler($FingerCrossedHandler);
+
+            return $monolog;
+        });
     }
 
     public function initSession()

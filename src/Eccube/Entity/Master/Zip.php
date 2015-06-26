@@ -163,4 +163,17 @@ class Zip extends \Eccube\Entity\AbstractEntity
     {
         return $this->town;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Zip
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

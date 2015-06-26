@@ -107,4 +107,17 @@ class Pref extends \Eccube\Entity\AbstractEntity
     {
         return $this->rank;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Pref
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }
