@@ -839,21 +839,6 @@ INSERT INTO dtb_mail_template (template_id, name, file_name, subject, header, fo
 ご質問やご不明な点がございましたら、こちらからお願いいたします。
 
 ', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-INSERT INTO dtb_mail_template (template_id, name, file_name, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (1, '注文受付メール', 'Mail/order.twig', 'ご注文ありがとうございます', 'この度はご注文いただき誠にありがとうございます。
-下記ご注文内容にお間違えがないかご確認下さい。
-
-', '
-============================================
-
-
-このメッセージはお客様へのお知らせ専用ですので、
-このメッセージへの返信としてご質問をお送りいただいても回答できません。
-ご了承ください。
-
-ご質問やご不明な点がございましたら、こちらからお願いいたします。
-
-', 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_mail_template (template_id, name, file_name, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (5, '問合受付メール', 'Mail/contact.twig', 'お問い合わせを受け付けました', NULL, NULL, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 SELECT setval('dtb_mail_template_template_id_seq', 5);
 
