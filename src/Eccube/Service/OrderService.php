@@ -67,10 +67,12 @@ class OrderService
         $ClassCategory1 = $ProductClass->getClassCategory1();
         if (!is_null($ClassCategory1)) {
             $OrderDetail->setClasscategoryName1($ClassCategory1->getName());
+            $OrderDetail->setClassName1($ClassCategory1->getClassName()->getName());
         }
         $ClassCategory2 = $ProductClass->getClassCategory2();
         if (!is_null($ClassCategory2)) {
             $OrderDetail->setClasscategoryName2($ClassCategory2->getName());
+            $OrderDetail->setClassName2($ClassCategory2->getClassName()->getName());
         }
 
         return $OrderDetail;
@@ -161,6 +163,7 @@ class OrderService
 
         $subTotal = 0;
         $tax = 0;
+        $totalQuantity = 0;
         $productTypes = array();
 
         // 受注詳細, 配送商品
@@ -172,6 +175,7 @@ class OrderService
 
             $quantity = $item->getQuantity();
             $productTypes[] = $ProductClass->getProductType();
+            $totalQuantity += $quantity;
 
             // 受注詳細
             $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
@@ -199,10 +203,12 @@ class OrderService
             $ClassCategory1 = $ProductClass->getClassCategory1();
             if (!is_null($ClassCategory1)) {
                 $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
+                $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
             }
             $ClassCategory2 = $ProductClass->getClassCategory2();
             if (!is_null($ClassCategory2)) {
                 $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
+                $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
             }
             $Shipping->addShipmentItem($ShipmentItem);
             $em->persist($ShipmentItem);
@@ -225,6 +231,27 @@ class OrderService
         $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $delivery, 'Pref' => $Shipping->getPref()));
         $Shipping->setDelivery($delivery);
         $Shipping->setDeliveryFee($deliveryFee);
+
+
+        $baseInfo = $this->app['eccube.repository.base_info']->get();
+        // 配送料無料条件(合計金額)
+        $freeRule = $baseInfo->getFreeRule();
+        if (!is_null($freeRule)) {
+            // 合計金額が設定金額以上であれば送料無料
+            if ($subTotal > $freeRule) {
+                $Order->setDeliveryFeeTotal(0);
+            }
+        }
+
+        // 配送料無料条件(合計数量)
+        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
+        if (!is_null($deliveryFreeAmount)) {
+            // 合計数量が設定数量以上であれば送料無料
+            if ($totalQuantity > $deliveryFreeAmount) {
+                $Order->setDeliveryFeeTotal(0);
+            }
+        }
+
 
         // 初期選択の支払い方法をセット
         $paymentOptions = $delivery->getPaymentOptions();
@@ -251,7 +278,7 @@ class OrderService
     /**
      * 住所などの情報が変更された時に金額の再計算を行う
      */
-    public function getAmount(\Eccube\Entity\Order $Order)
+    public function getAmount(\Eccube\Entity\Order $Order, \Eccube\Entity\Cart $Cart)
     {
 
         // 初期選択の配送業者をセット
@@ -268,6 +295,27 @@ class OrderService
         $Order->setCharge($payment->getCharge());
         $Order->setDeliveryFeeTotal($deliveryFee->getFee());
 
+        $baseInfo = $this->app['eccube.repository.base_info']->get();
+        // 配送料無料条件(合計金額)
+        $freeRule = $baseInfo->getFreeRule();
+        if (!is_null($freeRule)) {
+            // 合計金額が設定金額以上であれば送料無料
+            if ($Order->getSubTotal() > $freeRule) {
+                $Order->setDeliveryFeeTotal(0);
+            }
+        }
+
+        // 配送料無料条件(合計数量)
+        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
+        if (!is_null($deliveryFreeAmount)) {
+            // 合計数量が設定数量以上であれば送料無料
+            if ($Cart->getTotalQuantity() > $deliveryFreeAmount) {
+                $Order->setDeliveryFeeTotal(0);
+            }
+        }
+
+
+
         $total = $Order->getSubTotal()  + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
         $Order->setTotal($total);
@@ -282,7 +330,7 @@ class OrderService
 
 
     /**
-     * 商品公開ステータスチェック、在庫チェックを行い、購入制限数チェック、在庫情報をロックする
+     * 商品公開ステータスチェック、在庫チェック、購入制限数チェックを行い、在庫情報をロックする
      *
      * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
@@ -393,7 +441,7 @@ class OrderService
 
 
     /**
-     * 顧客情報の更新
+     * 会員情報の更新
      *
      * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
@@ -402,7 +450,6 @@ class OrderService
     public function setCustomerUpdate($em, \Eccube\Entity\Order $Order, \Eccube\Entity\Customer $user)
     {
 
-        // 商品公開ステータスチェック
         $orderDetails = $Order->getOrderDetails();
 
         // 顧客情報を更新
