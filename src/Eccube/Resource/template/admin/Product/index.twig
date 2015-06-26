@@ -28,26 +28,52 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.min.css">
+{% endblock stylesheet %}
+
 {% block javascript %}
-    <script>
-        function fnConfirm(action) {
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment-ja.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
+<script>
+$(function() {
+
+    $('input[id$=_date_start]').datetimepicker({
+        locale: 'ja',
+        format: 'YYYY-MM-DD',
+        useCurrent: false,
+        showTodayButton: true
+    });
+
+    $('input[id$=_date_end]').datetimepicker({
+        locale: 'ja',
+        format: 'YYYY-MM-DD',
+        useCurrent: false,
+        showTodayButton: true
+    });
+
+});
+</script>
+<script>
+    function fnConfirm(action) {
+        document.search_form.action = action;
+        document.search_form.submit();
+    }
+    function fnDelete(action) {
+        if (confirm('この商品情報を削除しても宜しいですか？')) {
             document.search_form.action = action;
             document.search_form.submit();
         }
-        function fnDelete(action) {
-            if (confirm('この商品情報を削除しても宜しいですか？')) {
-                document.search_form.action = action;
-                document.search_form.submit();
-            }
+    }
+    function fnCopy(action) {
+        if (confirm('この商品情報を複製しても宜しいですか？')) {
+            document.search_form.action = action;
+            document.search_form.submit();
         }
-        function fnCopy(action) {
-            if (confirm('この商品情報を複製しても宜しいですか？')) {
-                document.search_form.action = action;
-                document.search_form.submit();
-            }
-        }
-    </script>
-{% endblock %}
+    }
+</script>
+{% endblock javascript %}
 
 {% block main %}
             <!--検索条件設定テーブルここから-->

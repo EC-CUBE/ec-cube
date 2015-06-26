@@ -63,8 +63,8 @@ class TaxRuleType extends AbstractType
                 'label' => '適用日時',
                 'required' => 'false',
                 'input' => 'datetime',
-                'widget' => 'choice',
-                'format' => 'yyyy-MM-dd h:i',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm',
                 'years' => range(date('Y'), date('Y') + 2),
                 'empty_value' => array(
                     'year' => '----',

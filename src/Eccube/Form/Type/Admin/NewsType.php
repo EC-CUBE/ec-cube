@@ -50,7 +50,7 @@ class NewsType extends AbstractType
                 'label' => '日付',
                 'required' => true,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))

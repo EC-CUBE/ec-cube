@@ -134,6 +134,7 @@ class CustomerType extends AbstractType
                 'label' => '生年月日',
                 'required' => false,
                 'input' => 'datetime',
+                'years' => range(date('Y')-100, date('Y')),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
