@@ -205,8 +205,11 @@ class EditController extends AbstractController
 
             $searchData = array(
                 'id' => $request->get('id'),
-                'category_id' => $request->get('category_id'),
             );
+            if ($categoryId = $request->get('category_id')) {
+                $Category = $app['eccube.repository.category']->find($categoryId);
+                $searchData['category_id'] = $Category;
+            }
 
             /** @var $Products \Eccube\Entity\Product[] */
             $Products = $app['eccube.repository.product']

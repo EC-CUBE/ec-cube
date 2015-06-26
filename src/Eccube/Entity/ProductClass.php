@@ -48,7 +48,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set price01 IncTax
      *
-     * @param  string       $price01
+     * @param  string       $price01_inc_tax
      * @return ProductClass
      */
     public function setPrice01IncTax($price01_inc_tax)
@@ -266,6 +266,11 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\Member
      */
     private $Creator;
+
+    public function __clone()
+    {
+        $this->id = null;
+    }
 
     /**
      * Get id

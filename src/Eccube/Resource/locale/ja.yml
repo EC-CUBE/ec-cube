@@ -19,25 +19,25 @@ form.job.empty_value: 選択してください
 form.reminder.empty_value: 選択してください
 
 form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
-form.contact.contents.help: ※ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
+form.contact.contents.help: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 form.member.email.invalid: 同じメールアドレスを入力してください。
 
 cart.over.stock: |-
-    ※ 選択された商品の在庫が不足しております。
+    選択された商品の在庫が不足しております。
     一度に在庫数を超える購入はできません。
 cart.over.sale_limit: |-
-    ※ 選択された商品は販売制限しております。
+    選択された商品は販売制限しております。
     一度に販売制限数を超える購入はできません。
 cart.product.type.kind: この商品は同時に購入することはできません。
 
-admin.register.complete: ※ 登録が完了しました。
-admin.register.failed: ※ 登録できませんでした。
-admin.delete.complete: ※ 削除が完了しました。
-admin.delete.failed: ※ 削除できませんでした。
-admin.rank.move.complete: ※ ランクの移動が完了しました。
+admin.register.complete: 登録が完了しました。
+admin.register.failed: 登録できませんでした。
+admin.delete.complete: 削除が完了しました。
+admin.delete.failed: 削除できませんでした。
+admin.rank.move.complete: ランクの移動が完了しました。
 
 admin.order.save.complete: 受注情報を保存しました。
-admin.order.delete.complete: ※ 登録が完了しました。
+admin.order.delete.complete: 登録が完了しました。
 
 Quantity: 数量
 
@@ -81,6 +81,8 @@ admin.product.search.stock: 在庫なし
 admin.product.product_class.save.complete: 商品規格を登録しました。
 admin.product.product_class.update.complete: 商品規格を更新しました。
 admin.product.product_class.delete.complete: 商品規格を削除しました。
+admin.product.copy.complete: 商品を複製しました。
+admin.product.copy.failed: 商品の複製に失敗しました。
 
 admin.customer.save.complete: 会員情報を保存しました。
 admin.customer.delete.complete: 会員情報を削除しました。

@@ -125,4 +125,17 @@ class Tag extends \Eccube\Entity\AbstractEntity
     {
         return $this->ProductTag;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Tag
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

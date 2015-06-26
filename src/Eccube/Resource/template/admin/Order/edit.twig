@@ -144,6 +144,14 @@ $(function() {
     // search_product.twig/order_detail_prototype.twigで利用しています.
     order_details_count = '{{ form.OrderDetails|length }}';
 
+    // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
+    $("input").on("keydown", function(e) {
+        if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+            return false;
+        } else {
+            return true;
+        }
+    });
 });
 var setModeAndSubmit = function(mode, keyname, keyid) {
     document.form1.mode.value = mode;
@@ -313,7 +321,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                         </div>
                                         <span class="item_subtotal"><span class="small">小計</span> \ {{ orderDetailForm.vars.value.total_price|number_format }}</span>
                                     </div>
-                                    <div class="icon_edit td">
+                                    <div class="td">
                                         <button class="btn btn-default btn-sm" onclick="$(this).parent().parent().remove(); order_details_count--;">削除</button>
                                     </div>
                                 </div><!-- /.item_box -->
