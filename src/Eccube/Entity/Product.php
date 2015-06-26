@@ -527,11 +527,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $CustomerFavoriteProducts;
 
     /**
-     * @var \Eccube\Entity\Maker
-     */
-    private $Maker;
-
-    /**
      * @var \Eccube\Entity\Member
      */
     private $Creator;
@@ -1101,29 +1096,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getCustomerFavoriteProducts()
     {
         return $this->CustomerFavoriteProducts;
-    }
-
-    /**
-     * Set Maker
-     *
-     * @param  \Eccube\Entity\Maker $maker
-     * @return Product
-     */
-    public function setMaker(\Eccube\Entity\Maker $maker = null)
-    {
-        $this->Maker = $maker;
-
-        return $this;
-    }
-
-    /**
-     * Get Maker
-     *
-     * @return \Eccube\Entity\Maker
-     */
-    public function getMaker()
-    {
-        return $this->Maker;
     }
 
     /**

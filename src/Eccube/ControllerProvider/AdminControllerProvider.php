@@ -76,12 +76,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/product/class_category/{class_name_id}/{id}/down', '\Eccube\Controller\Admin\Product\ClassCategoryController::down')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_down');
         $c->post('/product/class_category/{class_name_id}/{id}/delete', '\Eccube\Controller\Admin\Product\ClassCategoryController::delete')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_delete');
 
-        $c->match('/product/maker', '\Eccube\Controller\Admin\Product\MakerController::index')->bind('admin_product_maker');
-        $c->match('/product/maker/{id}/edit', '\Eccube\Controller\Admin\Product\MakerController::index')->assert('id', '\d+')->bind('admin_product_maker_edit');
-        $c->post('/product/maker/{id}/up', '\Eccube\Controller\Admin\Product\MakerController::up')->assert('id', '\d+')->bind('admin_product_maker_up');
-        $c->post('/product/maker/{id}/down', '\Eccube\Controller\Admin\Product\MakerController::down')->assert('id', '\d+')->bind('admin_product_maker_down');
-        $c->post('/product/maker/{id}/delete', '\Eccube\Controller\Admin\Product\MakerController::delete')->assert('id', '\d+')->bind('admin_product_maker_delete');
-
         // customer
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');
         $c->match('/customer/page/{page_no}', '\Eccube\Controller\Admin\Customer\CustomerController::index')->assert('page_no', '\d+')->bind('admin_customer_page');
