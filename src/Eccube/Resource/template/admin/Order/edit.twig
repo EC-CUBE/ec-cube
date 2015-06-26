@@ -68,7 +68,7 @@ $(function() {
                     var id = $('<td>' + data[i]['id'] + '</td>');
                     var name = $('<td>' + data[i]['name'] + '</td>');
                     var tel = $('<td>' + data[i]['tel'] + '</td>');
-                    var select = $('<td data-customer="' + data[i]['id'] + '">決定</td>');
+                    var select = $('<td data-customer="' + data[i]['id'] + '"><button type="button" class="btn btn-default btn-sm">決定</button></td>');
                     tr.append(id);
                     tr.append(name);
                     tr.append(tel);
