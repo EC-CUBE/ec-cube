@@ -194,6 +194,11 @@ function fnCopy(action) {
     }
 }
 
+function fnClass(action) {
+    document.form1.action = action;
+    document.form1.submit();
+}
+
 </script>
 {% endblock javascript %}
 
@@ -360,7 +365,15 @@ function fnCopy(action) {
                                 </div>
                                 <div class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                        <button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>規格設定</button>
+                                        {% if id is null %}
+                                            <button class="btn btn-default btn-block btn-sm" disabled>
+                                                規格設定
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-default btn-block btn-sm" onclick="fnClass('{{ url('admin_product_product_class', { 'id' : id }) }}');return false;">
+                                                規格設定
+                                            </button>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="row text-center with-border">
@@ -384,9 +397,9 @@ function fnCopy(action) {
                                                 </li>
                                             {% else %}
                                                 <li>
-                                                    <button class="btn btn-default btn-block btn-sm" onclick="fnConfirm('{{ url('admin_product_product_display', {'id' : id}) }}');return false;">
+                                                    <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_display', {'id' : id}) }}" target="_blank">
                                                         確認
-                                                    </button>
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <button class="btn btn-default btn-block btn-sm" onclick="fnCopy('{{ url('admin_product_product_copy', {'id' : id}) }}');return false;">

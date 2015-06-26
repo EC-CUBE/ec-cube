@@ -37,7 +37,7 @@ Eccube\Entity\Plugin:
             type: string
             nullable: false
         source:
-            type: integer
+            type: text
             nullable: false
         create_date:
             type: datetime

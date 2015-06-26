@@ -390,4 +390,13 @@ class ProductController
 
         return $app->redirect($app->url('admin_product'));
     }
+
+    public function display(Application $app, Request $request, $id = null)
+    {
+        if (!is_null($id)) {
+            return $app->redirect($app->url('product_detail', array('id' => $id, 'admin' => '1')));
+        }
+
+        return $app->redirect($app->url('admin_product'));
+    }
 }
