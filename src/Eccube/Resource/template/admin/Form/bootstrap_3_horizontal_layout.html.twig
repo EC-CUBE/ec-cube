@@ -36,7 +36,11 @@
     </div>
 {%- endblock radio_widget %}
 
-
+{% block checkbox_widget -%}
+    <div class="checkbox-inline">
+        {{ parent() }}
+    </div>
+{%- endblock checkbox_widget %}
 
 {% block money_widget -%}
     {% set attr = attr|merge({class: attr.class|default('')}) %}

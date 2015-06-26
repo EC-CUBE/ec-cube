@@ -205,18 +205,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('tel03', $searchData['tel03']);
         }
 
-        // job
-        if (!empty($searchData['job']) && count($searchData['job']) > 0) {
-            $jobs = array();
-            foreach ($searchData['job'] as $job) {
-                $jobs[] = $job->getId();
-            }
-
-            $qb
-                ->andWhere($qb->expr()->in('c.Job', ':jobs'))
-                ->setParameter('jobs', $jobs);
-        }
-
         // buy_total
         if (!empty($searchData['buy_total_start']) && $searchData['buy_total_start']) {
             $qb

@@ -2,12 +2,11 @@
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
         {% for Product in Products %}
-            "{{ Product.id|escape('js') }}": {{ Product.class_categories|json_encode|raw }}{% if loop.last == false %},{% endif %}
+        "{{ Product.id|escape('js') }}": {{ Product.class_categories|json_encode|raw }}{% if loop.last == false %}, {% endif %}
         {% endfor %}
     };
     // 規格1が選択された際に, 規格2のプルダウンリストを設定する,
-    function fnSetClassCategory2(select, product_id)
-    {
+    function fnSetClassCategory2(select, product_id) {
         // 規格1の要素を取得
         var $sele1 = $(select);
         // 規格2の要素を取得
@@ -54,7 +53,7 @@
             price = product['price02'];
             product_code = product['product_code'];
             //console.log('noclass');
-        // 規格が登録されている商品の場合
+            // 規格が登録されている商品の場合
         } else if ($sele1.length && $sele2.length) {
             var class_category_id1 = $sele1.val();
             var class_cateogry_id2 = $sele2.val();
@@ -95,40 +94,39 @@
     }
 </script>
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>コード</th>
-            <th>商品名</th>
-            <th>商品規格</th>
-            <th>決定</th>
-        </tr>
-        </thead>
+    <table class="table">
         <tbody>
+
         {% for Product in Products %}
-         <form name="product_form{{ Product.id }}">
-            {% set form = forms[Product.id] %}
-            <tr>
-                <td>
-                    {% if Product.hasProductClass %}
-                        {{ Product.code_min }}～{{ Product.code_max }}
-                    {% else %}
-                        {{ Product.code_min }}
-                    {% endif %}
-                </td>
-                <td>{{ Product.name }}</td>
-                <td>
-                    {% if form.classcategory_id1 is defined %}
-                        {{ form_label(form.classcategory_id1) }}：{{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
-                        {% if form.classcategory_id2 is defined %}
-                            <br/>{{ form_label(form.classcategory_id2) }}：{{ form_widget(form.classcategory_id2, {'id': ''}) }}
+            <form name="product_form{{ Product.id }}">
+                {% set form = forms[Product.id] %}
+
+                <tr>
+                    <td>
+                        {{ Product.name }}
+                        {% if Product.hasProductClass %}
+                            <span><br/>{{ Product.code_min }}～{{ Product.code_max }}</span>
+                        {% else %}
+                            <span><br/>{{ Product.code_min }}</span>
                         {% endif %}
-                    {% endif %}
-                </td>
-                <td onclick="fnAddOrderDetail($(this).parent(), {{  Product.id }})">決定</td>
-            </tr>
-         </form>
+                    </td>
+                    <td>
+                        {% if form.classcategory_id1 is defined %}
+                            {{ form_label(form.classcategory_id1) }}：{{ form_widget(form.classcategory_id1, { attr : { 'onchange' : "fnSetClassCategory2(this," ~ Product.id ~ ")" } } ) }}
+                            {% if form.classcategory_id2 is defined %}
+                                <br/>{{ form_label(form.classcategory_id2) }}：{{ form_widget(form.classcategory_id2, {'id': ''}) }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td class="text-right">
+                        <button onclick="fnAddOrderDetail($(this).parent(), {{ Product.id }})" type="button" class="btn btn-default btn-sm">
+                            決定
+                        </button>
+                    </td>
+                </tr>
+            </form>
         {% endfor %}
+
         </tbody>
     </table>
 </div>
