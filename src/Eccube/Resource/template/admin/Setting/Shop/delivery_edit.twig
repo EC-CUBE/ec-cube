@@ -103,11 +103,9 @@ $(function(){
                         <h3 class="box-title">都道府県別送料設定</h3>
                     </div>
                     <div class="box-body">
-                        <div class="form-inline">
+                        <div class="form-inline fees_area">
                             全国一律送料&nbsp; {{ form_widget(form.free_all) }}
-                            <a class="btn-normal" href="javascript:;" id="set_fee_all">
-                                <button class="btn btn-default btn-sm" type="button">各都道府県に反映</button>
-                            </a>
+                            <a class="btn btn-normal btn-default btn-sm" href="javascript:;" id="set_fee_all">各都道府県に反映</a>
                         </div>
                     </div><!-- /.box-header -->
                     <div class="box-body toggle active" style="position:relative;">
@@ -122,7 +120,7 @@ $(function(){
                                 <label class="col-sm-2 control-label">
                                     {{ child.vars.data.pref|default('') }}
                                 </label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 fees_area">
                                     {{ form_widget(child) }}
                                 </div>
 

@@ -219,10 +219,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
                 $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
 
-                //
+                // filters
                 $config = $em->getConfiguration();
-                $config->addFilter("soft_delete", "\Eccube\Doctrine\Filter\SoftDeleteFilter");
-                $config->addFilter("nostock_hidden", "\Eccube\Doctrine\Filter\NoStockHiddenFilter");
+                $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
+                $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
+                $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
                 $em->getFilters()->enable('soft_delete');
 
                 return $em;
@@ -314,11 +315,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
-
-            $types[] = new \Eccube\Form\Type\Install\Step1Type($app);
-            $types[] = new \Eccube\Form\Type\Install\Step3Type($app);
-            $types[] = new \Eccube\Form\Type\Install\Step4Type($app);
-            $types[] = new \Eccube\Form\Type\Install\Step5Type($app);
 
             return $types;
         }));
