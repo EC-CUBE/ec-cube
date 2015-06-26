@@ -41,15 +41,6 @@ admin.order.delete.complete: 登録が完了しました。
 
 Quantity: 数量
 
-admin.maker.up.complete: メーカーを上へ移動しました。
-admin.maker.up.error: メーカーを上へ移動できませんでした。
-admin.maker.down.complete: メーカーを下へ移動しました。
-admin.maker.down.error: メーカーを下へ移動できませんでした。
-admin.maker.save.complete: メーカーを保存しました。
-admin.maker.save.error: メーカーを保存できませんでした。
-admin.maker.delete.complete: メーカーを削除しました。
-admin.maker.delete.error: メーカーを削除できませんでした。
-
 admin.class_name.up.complete: 規格を上へ移動しました。
 admin.class_name.up.error: 規格を上へ移動できませんでした。
 admin.class_name.down.complete: 規格を下へ移動しました。

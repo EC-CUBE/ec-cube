@@ -46,12 +46,6 @@ Eccube\Entity\Product:
             nullable: false
             default: '0000-00-00 00:00:00'
     manyToOne:
-        Maker:
-            targetEntity: Eccube\Entity\Maker
-            inversedBy: Products
-            joinColumn:
-                name: maker_id
-                referencedColumnName: maker_id
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:
