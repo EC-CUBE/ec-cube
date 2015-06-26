@@ -158,4 +158,19 @@ class ClassNameController
 
         return $app->redirect($app->url('admin_product_class_name'));
     }
+
+    public function moveRank(Application $app, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $ranks = $request->request->all();
+            foreach ($ranks as $classNameId => $rank) {
+                $ClassName = $app['eccube.repository.class_name']
+                    ->find($classNameId);
+                $ClassName->setRank($rank);
+                $app['orm.em']->persist($ClassName);
+            }
+            $app['orm.em']->flush();
+        }
+        return true;
+    }
 }
