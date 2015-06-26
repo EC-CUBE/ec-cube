@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Form\Type\ShippingMultiType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -464,7 +465,7 @@ class ShoppingController extends AbstractController
                         ->setPref($data['pref'])
                         ->setAddr01($data['addr01'])
                         ->setAddr02($data['addr02'])
-                        ->setDelFlg($app['config']['disabled']);
+                        ->setDelFlg(Constant::DISABLED);
 
                     $app['orm.em']->persist($customerAddress);
 
@@ -637,7 +638,7 @@ class ShoppingController extends AbstractController
                     $preOrderId = sha1(uniqid(mt_rand(), true));
 
                     // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-                    $Order = $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer, $preOrderId);
+                    $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer, $preOrderId);
 
                     $cartService->setPreOrderId($preOrderId);
                     $cartService->save();
@@ -680,7 +681,7 @@ class ShoppingController extends AbstractController
             ->where($qb->expr()->in('d.ProductType', ':productTypes'))
             ->setParameter('productTypes', $productTypes)
             ->andWhere("d.del_flg = :delFlg")
-            ->setParameter('delFlg', $app['config']['disabled'])
+            ->setParameter('delFlg', Constant::DISABLED)
             ->orderBy("d.rank", "ASC")
             ->getQuery()
             ->getResult();
