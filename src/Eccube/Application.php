@@ -70,9 +70,6 @@ class Application extends \Silex\Application
                 return;
             }
 
-            $title = '';
-            $message = '';
-
             switch ($code) {
                 case 404:
                     $title = 'ページがみつかりません。';
