@@ -514,11 +514,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $Reviews;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $BestProducts;
 
     /**
@@ -556,7 +551,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductStatuses = new ArrayCollection();
         $this->RecommendProducts = new ArrayCollection();
         $this->RecommendedProducts = new ArrayCollection();
-        $this->Reviews = new ArrayCollection();
         $this->BestProducts = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
         $this->ProductImage = new ArrayCollection();
@@ -997,39 +991,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getRecommendedProducts()
     {
         return $this->RecommendedProducts;
-    }
-
-    /**
-     * Add Reviews
-     *
-     * @param  \Eccube\Entity\Review $reviews
-     * @return Product
-     */
-    public function addReview(\Eccube\Entity\Review $reviews)
-    {
-        $this->Reviews[] = $reviews;
-
-        return $this;
-    }
-
-    /**
-     * Remove Reviews
-     *
-     * @param \Eccube\Entity\Review $reviews
-     */
-    public function removeReview(\Eccube\Entity\Review $reviews)
-    {
-        $this->Reviews->removeElement($reviews);
-    }
-
-    /**
-     * Get Reviews
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getReviews()
-    {
-        return $this->Reviews;
     }
 
     /**

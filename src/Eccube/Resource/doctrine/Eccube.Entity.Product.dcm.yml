@@ -83,11 +83,6 @@ Eccube\Entity\Product:
         RecommendedProducts:
             targetEntity: Eccube\Entity\RecommendProduct
             mappedBy: Product
-        Reviews:
-            targetEntity: Eccube\Entity\Review
-            mappedBy: Product
-            orderBy:
-                create_date: DESC
         BestProducts:
             targetEntity: Eccube\Entity\BestProduct
             mappedBy: Product
