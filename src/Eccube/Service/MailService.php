@@ -30,9 +30,14 @@ class MailService
     /** @var \Eccube\Application */
     public $app;
 
+
+    /** @var \Eccube\Entity\BaseInfo */
+    public $BaseInfo;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->BaseInfo = $app['eccube.repository.base_info']->get();
     }
 
 
@@ -51,10 +56,12 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] 会員登録のご確認')
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
@@ -75,13 +82,16 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] 会員登録が完了しました。')
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録が完了しました。')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
+
     }
 
 
@@ -90,22 +100,23 @@ class MailService
      * Send withdraw mail.
      *
      * @param $Customer 会員情報
-     * @param $BaseInfo baseinfo
      * @param $email 会員email
      */
-    public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, \Eccube\Entity\BaseInfo $BaseInfo, $email)
+    public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, $email)
     {
 
         $body = $this->app->renderView('Mail/customer_withdraw_mail.twig', array(
             'Customer' => $Customer,
-            'BaseInfo' => $BaseInfo,
+            'BaseInfo' => $this->BaseInfo,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] 退会手続きのご完了')
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 退会手続きのご完了')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($email))
-            ->setBcc($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
@@ -123,19 +134,12 @@ class MailService
 
         // 問い合わせ者にメール送信
         $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] お問い合わせを受け付けました。')
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($formData['email']))
-            ->setBcc($this->app['config']['mail_cc'])
-            ->setBody($formData['contents']);
-
-        $this->app->mail($message);
-
-        // 管理者へメール送信
-        $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] お問い合わせがあります。')
-            ->setFrom(array('sample@example.com'))
-            ->setTo($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($formData['contents']);
 
         $this->app->mail($message);
@@ -156,10 +160,12 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] 購入が完了しました。')
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 購入が完了しました。')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
-            ->setBcc($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
@@ -171,10 +177,9 @@ class MailService
      * Send admin customer confirm mail.
      *
      * @param $Customer 会員情報
-     * @param $BaseInfo baseinfo
      * @param $activateUrl アクティベート用url
      */
-    public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, \Eccube\Entity\BaseInfo $BaseInfo, $activateUrl)
+    public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
 
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
@@ -183,12 +188,12 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('会員登録のご確認')
-            ->setFrom(array($BaseInfo->getEmail03() => $BaseInfo->getShopName()))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setFrom(array($this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($BaseInfo->getEmail01())
-            ->setReplyTo($BaseInfo->getEmail03())
-            ->setReturnPath($BaseInfo->getEmail04())
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
@@ -212,10 +217,12 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject($formData['subject'])
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . $formData['subject'])
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
-            ->setBcc($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
@@ -235,13 +242,16 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] パスワード変更の確認')
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更の確認')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
+
     }
 
     /**
@@ -257,13 +267,16 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[EC-CUBE3] パスワード変更のお知らせ')
-            ->setFrom(array('sample@example.com'))
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ')
+            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
-            ->setBcc($this->app['config']['mail_cc'])
+            ->setBcc($this->BaseInfo->getEmail01())
+            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
         $this->app->mail($message);
+
     }
 
 
