@@ -205,4 +205,20 @@ class CategoryController
             return $app->redirect($app->url('admin_product_category'));
         }
     }
+
+    public function moveRank(Application $app, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $ranks = $request->request->all();
+            foreach ($ranks as $categoryId => $rank) {
+                /* @var $Category \Eccube\Entity\Category */
+                $Category = $app['eccube.repository.category']
+                    ->find($categoryId);
+                $Category->setRank($rank);
+                $app['orm.em']->persist($Category);
+            }
+            $app['orm.em']->flush();
+        }
+        return true;
+    }
 }
