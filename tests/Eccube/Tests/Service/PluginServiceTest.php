@@ -110,7 +110,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tmpfile=$tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('dmyy','dummy');
+        $tar->addFromString('dummy','dummy');
         // インストールできるか
         $service->install($tmpfile);
         

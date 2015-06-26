@@ -191,7 +191,7 @@ class PluginService
 #        $result = $tar->extractModify($dir . '/', '');
 
           $phar = new \PharData($archive);
-          $phar->extractTo($dir); 
+          $phar->extractTo($dir,null,true); 
     }
 
     public function updatePlugin(\Eccube\Entity\Plugin $plugin,$meta,$event_yml)
