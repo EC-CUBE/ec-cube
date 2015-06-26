@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         var $node = $('#bread');
         var total = bread_crumbs.length;
         for (var i in bread_crumbs) {
-            file_path += bread_crumbs[i] + '/';
+            file_path += '/' + bread_crumbs[i];
             $('<a href="javascript:;" onclick="eccube.fileManager.openFolder(\'' + file_path + '\'); return false;" />')
                 .text(bread_crumbs[i])
                 .appendTo($node);
@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     eccube.fileManager.IMG_PLUS           = "<svg class='cb cb-plus-square'><use xlink:href='#cb-plus-square' /></svg>";          // プラスライン
     eccube.fileManager.IMG_MINUS          = "<svg class='cb cb-minus-square'><use xlink:href='#cb-minus-square' /></svg>";         // マイナスライン
     eccube.fileManager.IMG_NORMAL         = "　";         // スペース
-{{ tpl_onload|raw }}
+    {{ tpl_onload|raw }}
 </script>
 
 {% endblock javascript %}
@@ -135,30 +135,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% endif %}
                             {{ file.file_name }}
                         </td>
-                        <td class="right">
+                        <td class="text-right">
                             {{ file.file_size }}
                         </td>
-                        <td class="center">
+                        <td class="text-center">
                             {{ file.file_time }}
                         </td>
-                        {% if file.is_dir %}
-                            <td class="center">
+                        <td class="text-center">
+                            {% if file.is_dir %}
                                 <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">表示</a>
-                            </td>
-                        {% else %}
-                            <td class="center">
-                                <a href="javascript:;" onclick="eccube.openWindow('{{ file.file_path|e('url') }}', 'user_data', '600', '400');return false;">表示</a>
-                            </td>
-                        {% endif %}
+                            {% else %}
+                                <a href="{{ url('admin_content_file_view') }}?file={{ file.file_path|e('url') }}" target="_blank">表示</a>
+                            {% endif %}
+                        </td>
                         {% if file.is_dir %}
                             {# ディレクトリはダウンロード不可 #}
-                            <td class="center">-</td>
+                            <td class="text-center">-</td>
                         {% else %}
-                            <td class="center">
-                                <a href="javascript:;" onclick="eccube.setValue('select_file', '{{ file.file_path }}', 'form1');eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('download','',''); return false;">ダウンロード</a>
+                            <td class="text-center">
+                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path }}" target="_blank">ダウンロード</a>
                             </td>
                         {% endif %}
-                        <td class="center">
+                        <td class="text-center">
                             <a href="javascript:;" onclick="eccube.setValue('select_file', '{{ file.file_path }}', 'form1');eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('delete','',''); return false;">削除</a>
                         </td>
                     </tr>

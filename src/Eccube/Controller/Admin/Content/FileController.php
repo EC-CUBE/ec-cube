@@ -40,10 +40,9 @@ class FileController
             ->add('file', 'file')
             ->getForm();
 
-        // $htmlDir = $request->server->get('DOCUMENT_ROOT') . '/' . $app['config']['root_urlpath'];
         $htmlDir = realpath(str_replace($app['config']['user_data_route'], '', $app['config']['user_data_realdir']));
         $topDir = realpath($app['config']['user_data_realdir']);
-        $nowDir = $request->get('tree_select_file') ?: $topDir;
+        $nowDir = $request->get('tree_select_file') ?: $topDir . '/';
 
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
 
@@ -70,7 +69,7 @@ class FileController
         }
 
         $tree = $this->getTree($topDir, $request);
-        $arrFileList = $this->getFileList($nowDir);
+        $arrFileList = $this->getFileList($app, $nowDir);
 
         $javascript = $this->getJsArrayList($tree);
         $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
@@ -122,8 +121,21 @@ class FileController
     {
         if ($file = $request->get('select_file')) {
             if (!is_dir($file)) {
-                return $app->sendFile($file)
-                    ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+                $pathParts = pathinfo($file);
+
+                $patterns = array(
+                        '/[a-zA-Z0-9!"#$%&()=~^|@`:*;+{}]/',
+                        '/[- ,.<>?_[\]\/\\\\]/',
+                        "/['\r\n\t\v\f]/",
+                    );
+
+                $str = preg_replace($patterns, '', $pathParts['basename']);
+                if (strlen($str) === 0) {
+                    return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+                } else {
+                    return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, ord($pathParts['basename']));
+                }
+
             }
         }
 
@@ -202,7 +214,7 @@ class FileController
         return $tree;
     }
 
-    private function getFileList($nowDir)
+    private function getFileList($app, $nowDir)
     {
         $dirFinder = Finder::create()
             ->in($nowDir)

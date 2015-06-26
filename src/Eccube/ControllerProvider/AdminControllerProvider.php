@@ -121,6 +121,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         $c->match('/content/file_manager', '\Eccube\Controller\Admin\Content\FileController::index')->bind('admin_content_file');
         $c->match('/content/file_view', '\Eccube\Controller\Admin\Content\FileController::view')->bind('admin_content_file_view');
+        $c->match('/content/file_download', '\Eccube\Controller\Admin\Content\FileController::download')->bind('admin_content_file_download');
         $c->match('/content/css', '\Eccube\Controller\Admin\Content\CssController::index')->bind('admin_content_css');
         $c->match('/content/css/delete', '\Eccube\Controller\Admin\Content\CssController::delete')->bind('admin_content_css_delete');
 

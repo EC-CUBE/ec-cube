@@ -269,16 +269,16 @@
 
             // 階層画像に子供がいたらオンクリック処理をつける
             if(rank_img !== eccube.fileManager.IMG_NORMAL) {
-                // eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.toggleTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')"><img src="'+ rank_img +'" border="0" name="rank_img'+ i +'" id="rank_img'+ i +'">';
-                eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.toggleTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')">'+ rank_img;
+                eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.toggleTreeMenu(\'tree'+ i +'\',\'rank_img'+ i +'\',\''+ arrTree[i][2] +'\')"><span id="rank_img'+ i +'">' + rank_img + '</span>';
             } else {
-                eccube.fileManager.tree += rank_img;
+                eccube.fileManager.tree += '<span id="rank_img'+ i +'">' + rank_img + '</span>';
+
             }
-            eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.openFolder(\''+ arrTree[i][2] +'\')">'+ folder_img + '&nbsp;'+ file_name +'</a><br/>';
+            eccube.fileManager.tree += '<a href="javascript:eccube.fileManager.openFolder(\''+ arrTree[i][2] +'\')"><span id="tree_img'+ i +'">' + folder_img + '&nbsp;'+ file_name +'</span></a><br/>';
             eccube.fileManager.tree += '<div id="tree'+ i +'" style="display:'+ display +'">';
+
         }
         document.getElementById(view_id).innerHTML = eccube.fileManager.tree;
-        //document.tree_form.tree_test2.focus();
     };
 
     // Tree状態をhiddenにセット
@@ -298,12 +298,12 @@
         var tMenu = $("#" + tName);
 
         if(tMenu.css("display") === 'none') {
-            $("#" +imgName).attr("src", eccube.fileManager.IMG_MINUS);
+            $("#" +imgName).html(eccube.fileManager.IMG_MINUS);
             tMenu.show();
             // 階層の開いた状態を保持
             eccube.fileManager.arrTreeStatus.push(path);
         } else {
-            $("#" +imgName).attr("src", eccube.fileManager.IMG_PLUS);
+            $("#" +imgName).html(eccube.fileManager.IMG_PLUS);
             tMenu.hide();
             // 閉じ状態を保持
             eccube.fileManager.fnDelTreeStatus(path);
@@ -501,6 +501,9 @@
         }
     };
 
+    eccube.fileManager.fnDelTreeStatus = function (path) {
+        eccube.fileManager.deleteTreeStatus(path);
+    };
 
 
     /**
