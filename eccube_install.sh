@@ -61,6 +61,7 @@ export DOMAIN_NAME=${DOMAIN_NAME:-""}
 export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
 export USR_DATA_ROUTE=${USR_DATA_ROUTE:-"user_data"}
 export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}
+export FORCE_SSL=${FORCE_SSL:-"0"}
 
 export ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
 export AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"

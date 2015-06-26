@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Install;
 
 use Eccube\InstallApplication;
+use Eccube\Util\Str;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -389,8 +390,15 @@ class InstallController
         }
 
         $auth_magic = \Eccube\Util\Str::random();
-        $target = array('${HTTP_URL}', '${HTTPS_URL}', '${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}');
-        $replace = array($data['http_url'], $data['https_url'], $auth_magic, $data['shop_name'], '0');
+        $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
+        if (empty($allowHost)) {
+            $adminAllowHosts = array();
+        } else {
+            $adminAllowHosts = explode("\n", $allowHost);
+        }
+
+        $target = array('${HTTP_URL}', '${HTTPS_URL}', '${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
+        $replace = array($data['http_url'], $data['https_url'], $auth_magic, $data['shop_name'], '0', $data['force_ssl']);
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -399,6 +407,11 @@ class InstallController
             file_get_contents($this->dist_path . '/config.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
+
+        $config = Yaml::Parse($config_file);
+        $config['admin_allow_host'] = $adminAllowHosts;
+        $yml = Yaml::dump($config);
+        file_put_contents($config_file, $yml);
 
         return $this;
     }

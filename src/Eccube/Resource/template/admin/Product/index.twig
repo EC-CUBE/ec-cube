@@ -55,6 +55,24 @@ $(function() {
 
 });
 </script>
+<script>
+    function fnConfirm(action) {
+        document.search_form.action = action;
+        document.search_form.submit();
+    }
+    function fnDelete(action) {
+        if (confirm('この商品情報を削除しても宜しいですか？')) {
+            document.search_form.action = action;
+            document.search_form.submit();
+        }
+    }
+    function fnCopy(action) {
+        if (confirm('この商品情報を複製しても宜しいですか？')) {
+            document.search_form.action = action;
+            document.search_form.submit();
+        }
+    }
+</script>
 {% endblock javascript %}
 
 {% block main %}
@@ -213,9 +231,9 @@ $(function() {
                                                     <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"></svg></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_product_product_class', { id : Product.id }) }}">規格</a></li>
-                                                    <li><a href="">確認</a></li>
-                                                    <li><a href="">複製</a></li>
-                                                    <li><a href="">削除</a></li>
+                                                    <li><a href="#" onclick="fnConfirm('{{ url('admin_product_product_display', {'id' : Product.id}) }}');return false;">確認</a></li>
+                                                    <li><a href="#" onclick="fnCopy('{{ url('admin_product_product_copy', {'id' : Product.id}) }}');return false;">複製</a></li>
+                                                    <li><a href="#" onclick="fnDelete('{{ url('admin_product_product_delete', {'id' : Product.id}) }}');return false;">削除</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
