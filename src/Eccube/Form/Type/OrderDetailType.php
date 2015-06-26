@@ -68,16 +68,17 @@ class OrderDetailType extends AbstractType
                     '\Eccube\Entity\ProductClass'
                 )));
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $app = $this->app;
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app){
             // モーダルからのPOST時に、金額等をセットする.
-            if ('motal' === $this->app['request']->get('mode')) {
+            if ('motal' === $app['request']->get('mode')) {
                 $data = $event->getData();
                 // 新規明細行の場合にセット.
                 if (isset($data['new'])) {
-                    $ProductClass = $this->app['eccube.repository.product_class']
+                    $ProductClass = $app['eccube.repository.product_class']
                         ->find($data['ProductClass']);
                     $Product = $ProductClass->getProduct();
-                    $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
+                    $TaxRule = $app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
 
                     $data['price'] = $ProductClass->getPrice02();
                     $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
