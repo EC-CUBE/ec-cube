@@ -375,6 +375,23 @@ class ProductController
                 $Disp = $app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
                 $CopyProduct->setStatus($Disp);
 
+                $CopyProductCategories = $CopyProduct->getProductCategories();
+                foreach ($CopyProductCategories as $Category) {
+                    $app['orm.em']->persist($Category);
+                }
+                $CopyProductClasses = $CopyProduct->getProductClasses();
+                foreach ($CopyProductClasses as $Class) {
+                    $app['orm.em']->persist($Class);
+                }
+                $Images = $CopyProduct->getProductImage();
+                foreach ($Images as $Image) {
+                    $app['orm.em']->persist($Image);
+                }
+                $Tags = $CopyProduct->getProductTag();
+                foreach ($Tags as $Tag) {
+                    $app['orm.em']->persist($Tag);
+                }
+
                 $app['orm.em']->persist($CopyProduct);
                 $app['orm.em']->flush();
 

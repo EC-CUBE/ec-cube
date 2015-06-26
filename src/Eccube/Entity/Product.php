@@ -546,6 +546,9 @@ class Product extends \Eccube\Entity\AbstractEntity
 
     public function copy()
     {
+        // コピー対象外
+        $this->CustomerFavoriteProducts = new ArrayCollection();
+
         $Categories = $this->getProductCategories();
         $this->ProductCategories = new ArrayCollection();
         foreach ($Categories as $Category) {
@@ -560,14 +563,6 @@ class Product extends \Eccube\Entity\AbstractEntity
             $CopyClass = clone $Class;
             $this->addProductClass($CopyClass);
             $CopyClass->setProduct($this);
-        }
-
-        $Favorites = $this->getCustomerFavoriteProducts();
-        $this->CustomerFavoriteProducts = new ArrayCollection();
-        foreach ($Favorites as $Favorite) {
-            $CloneFavorite = clone $Favorite;
-            $this->addCustomerFavoriteProduct($CloneFavorite);
-            $CloneFavorite->setProduct($this);
         }
 
         $Images = $this->getProductImage();

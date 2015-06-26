@@ -70,12 +70,10 @@ class CustomerController
             throw new NotFoundHttpException();
         }
 
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-
         $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
         // メール送信
-        $app['eccube.service.mail']->sendAdminCustomerConfirmMail($Customer, $BaseInfo, $activateUrl);
+        $app['eccube.service.mail']->sendAdminCustomerConfirmMail($Customer, $activateUrl);
 
         $app->addSuccess('admin.customer.resend.complete', 'admin');
 
