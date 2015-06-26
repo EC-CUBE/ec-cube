@@ -34,6 +34,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Monolog\Logger;
+use Monolog\Handler\FingersCrossedHandler;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 
 class Application extends \Silex\Application
 {
@@ -154,15 +157,46 @@ class Application extends \Silex\Application
             }
 
             $configAll = array_replace_recursive($configAll, $database, $mail);
+
+            $log = array();
+            $yml = __DIR__ . '/../../app/config/eccube/log.yml';
+            if (file_exists($yml)) {
+                $log = array(
+                    'log' => Yaml::parse($yml)
+                );
+            }
+
+            $configAll = array_replace_recursive($configAll, $log);
+
             return $configAll;
         });
     }
 
     public function initLogger()
     {
+        $file = __DIR__ . '/../../app/log/site.log';
         $this->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
+            'monolog.logfile' => $file,
         ));
+
+        $levels = Logger::getLevels();
+        $this['monolog'] = $this->extend('monolog', function($monolog, $this) use ($levels, $file) {
+
+            $RotateHandler = new RotatingFileHandler($file, $this['config']['log']['max_files'], $this['config']['log']['log_level']);
+            $RotateHandler->setFilenameFormat(
+                $this['config']['log']['prefix'] . '{date}' . $this['config']['log']['suffix'],
+                $this['config']['log']['format']
+            );
+
+            $FingerCrossedHandler = new FingersCrossedHandler(
+                $RotateHandler,
+                new ErrorLevelActivationStrategy($levels[$this['config']['log']['action_level']])
+            );
+            $monolog->popHandler();
+            $monolog->pushHandler($FingerCrossedHandler);
+
+            return $monolog;
+        });
     }
 
     public function initSession()
