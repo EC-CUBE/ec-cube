@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.min.css">
 {% endblock stylesheet %}
 
 {% block javascript %}
@@ -41,7 +41,7 @@ $(function() {
 
     $('#tax_rule_apply_date').datetimepicker({
         locale: 'ja',
-        format: 'YYYY-MM-DD hh:mm',
+        format: 'YYYY-MM-DD HH:mm',
         useCurrent: false,
         showTodayButton: true
     });
