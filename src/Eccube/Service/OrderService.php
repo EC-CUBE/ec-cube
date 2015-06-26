@@ -25,6 +25,8 @@ namespace Eccube\Service;
 
 use Doctrine\DBAL\LockMode;
 use Eccube\Application;
+use Eccube\Common\Constant;
+
 
 class OrderService
 {
@@ -46,7 +48,7 @@ class OrderService
             ->setCharge(0)
             ->setTax(0)
             ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
-            ->setDelFlg($this->app['config']['disabled']);
+            ->setDelFlg(Constant::DISABLED);
 
         return $Order;
     }
@@ -156,7 +158,7 @@ class OrderService
 
         $this->copyToShippingFromCustomer($Shipping, $Customer)
             ->setOrder($Order)
-            ->setDelFlg($this->app['config']['disabled']);
+            ->setDelFlg(Constant::DISABLED);
         $em->persist($Shipping);
 
         $Order->addShipping($Shipping);
@@ -221,7 +223,7 @@ class OrderService
             ->where($qb->expr()->in('d.ProductType', ':productTypes'))
             ->setParameter('productTypes', $productTypes)
             ->andWhere("d.del_flg = :delFlg")
-            ->setParameter('delFlg', $this->app['config']['disabled'])
+            ->setParameter('delFlg', Constant::DISABLED)
             ->orderBy("d.rank", "ASC")
             ->setMaxResults(1)
             ->getQuery()
@@ -233,6 +235,7 @@ class OrderService
         $Shipping->setDeliveryFee($deliveryFee);
 
 
+        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
         $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 配送料無料条件(合計金額)
         $freeRule = $baseInfo->getFreeRule();
@@ -252,7 +255,6 @@ class OrderService
             }
         }
 
-
         // 初期選択の支払い方法をセット
         $paymentOptions = $delivery->getPaymentOptions();
         $payment = $paymentOptions[0]->getPayment();
@@ -261,7 +263,6 @@ class OrderService
         $Order->setPayment($payment);
         $Order->setPaymentMethod($payment->getMethod());
         $Order->setCharge($payment->getCharge());
-        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
 
         $total = $subTotal + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
@@ -359,7 +360,7 @@ class OrderService
         // 在庫チェック
         foreach ($orderDetails as $orderDetail) {
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
-            if ($orderDetail->getProductClass()->getStockUnlimited() == $this->app['config']['enabled']) {
+            if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
                 // 在庫チェックあり
                 // 在庫に対してロック(select ... for update)を実行
                 $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
@@ -421,7 +422,7 @@ class OrderService
         // 在庫情報更新
         foreach ($orderDetails as $orderDetail) {
             // 在庫が無制限かチェックし、制限ありなら在庫数を更新
-            if ($orderDetail->getProductClass()->getStockUnlimited() == $this->app['config']['enabled']) {
+            if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
 
                 $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
                         $orderDetail->getProductClass()->getProductStock()->getId()
