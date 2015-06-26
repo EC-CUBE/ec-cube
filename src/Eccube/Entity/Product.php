@@ -514,11 +514,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $BestProducts;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $CustomerFavoriteProducts;
 
     /**
@@ -551,7 +546,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductStatuses = new ArrayCollection();
         $this->RecommendProducts = new ArrayCollection();
         $this->RecommendedProducts = new ArrayCollection();
-        $this->BestProducts = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
         $this->ProductImage = new ArrayCollection();
         $this->ProductTag = new ArrayCollection();
@@ -586,14 +580,6 @@ class Product extends \Eccube\Entity\AbstractEntity
             $CopyRecommend = clone $Recommend;
             $this->addRecommendProduct($CopyRecommend);
             $CopyRecommend->setProduct($this);
-        }
-
-        $Bests = $this->getBestProducts();
-        $this->BestProducts = new ArrayCollection();
-        foreach ($Bests as $Best) {
-            $CloneBest = clone $Best;
-            $this->addBestProduct($CloneBest);
-            $CloneBest->setProduct($this);
         }
 
         $Favorites = $this->getCustomerFavoriteProducts();
@@ -991,39 +977,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getRecommendedProducts()
     {
         return $this->RecommendedProducts;
-    }
-
-    /**
-     * Add BestProducts
-     *
-     * @param  \Eccube\Entity\BestProduct $bestProducts
-     * @return Product
-     */
-    public function addBestProduct(\Eccube\Entity\BestProduct $bestProducts)
-    {
-        $this->BestProducts[] = $bestProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove BestProducts
-     *
-     * @param \Eccube\Entity\BestProduct $bestProducts
-     */
-    public function removeBestProduct(\Eccube\Entity\BestProduct $bestProducts)
-    {
-        $this->BestProducts->removeElement($bestProducts);
-    }
-
-    /**
-     * Get BestProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBestProducts()
-    {
-        return $this->BestProducts;
     }
 
     /**

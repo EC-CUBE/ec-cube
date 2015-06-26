@@ -83,9 +83,6 @@ Eccube\Entity\Product:
         RecommendedProducts:
             targetEntity: Eccube\Entity\RecommendProduct
             mappedBy: Product
-        BestProducts:
-            targetEntity: Eccube\Entity\BestProduct
-            mappedBy: Product
         ProductImage:
             targetEntity: Eccube\Entity\ProductImage
             mappedBy: Product
