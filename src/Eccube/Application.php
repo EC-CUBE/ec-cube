@@ -70,15 +70,23 @@ class Application extends \Silex\Application
                 return;
             }
 
+            $title = '';
+            $message = '';
+
             switch ($code) {
                 case 404:
+                    $title = 'ページがみつかりません。';
+                    $message = 'URLに間違いがないかご確認ください。';
                     break;
                 default:
+                    $title = 'システムエラーが発生しました。';
+                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
                     break;
             }
 
-            return $app['view']->render('error.twig', array(
-                'error' => 'エラーが発生しました.',
+            return $app['twig']->render('error.twig', array(
+                'error_title' => $title,
+                'error_message' => $message,
             ));
         });
 
