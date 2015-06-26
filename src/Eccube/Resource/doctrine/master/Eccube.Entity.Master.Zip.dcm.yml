@@ -7,7 +7,6 @@ Eccube\Entity\Master\Zip:
             type: integer
             nullable: false
             unsigned: false
-            default: '0'
             id: true
             column: zip_id
     fields:

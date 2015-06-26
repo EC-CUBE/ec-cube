@@ -7,7 +7,6 @@ Eccube\Entity\Master\MailTplPath:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
             id: true
     fields:
         name:
