@@ -570,6 +570,12 @@ class Product extends \Eccube\Entity\AbstractEntity
 
     public function copy()
     {
+        // コピー対象外
+        $this->RecommendProducts = new ArrayCollection();
+        $this->BestProducts = new ArrayCollection();
+        $this->CustomerFavoriteProducts = new ArrayCollection();
+
+
         $Categories = $this->getProductCategories();
         $this->ProductCategories = new ArrayCollection();
         foreach ($Categories as $Category) {
@@ -584,30 +590,6 @@ class Product extends \Eccube\Entity\AbstractEntity
             $CopyClass = clone $Class;
             $this->addProductClass($CopyClass);
             $CopyClass->setProduct($this);
-        }
-
-        $Recommends = $this->getRecommendProducts();
-        $this->RecommendProducts = new ArrayCollection();
-        foreach ($Recommends as $Recommend) {
-            $CopyRecommend = clone $Recommend;
-            $this->addRecommendProduct($CopyRecommend);
-            $CopyRecommend->setProduct($this);
-        }
-
-        $Bests = $this->getBestProducts();
-        $this->BestProducts = new ArrayCollection();
-        foreach ($Bests as $Best) {
-            $CloneBest = clone $Best;
-            $this->addBestProduct($CloneBest);
-            $CloneBest->setProduct($this);
-        }
-
-        $Favorites = $this->getCustomerFavoriteProducts();
-        $this->CustomerFavoriteProducts = new ArrayCollection();
-        foreach ($Favorites as $Favorite) {
-            $CloneFavorite = clone $Favorite;
-            $this->addCustomerFavoriteProduct($CloneFavorite);
-            $CloneFavorite->setProduct($this);
         }
 
         $Images = $this->getProductImage();
