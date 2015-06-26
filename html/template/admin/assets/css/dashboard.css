@@ -1239,6 +1239,10 @@ dd.form-group .errormsg {
     width: 98px;
 	padding-right: 0;
 }
+.item_list .item_box .item_detail {
+	font-size: 14px;
+	font-size: 1.4rem;
+}
 .item_list .item_box .icon_edit {
     position: static;
     right: auto;top: auto;
@@ -2359,6 +2363,8 @@ ul.link-with-bar {
 ul.link-with-bar li {
     display: inline-block;
     vertical-align: middle;
+	font-size: 14px;
+	font-size: 1.4rem;
 }
 ul.link-with-bar li::after {
     content: "|";
@@ -2378,6 +2384,8 @@ ul.link-with-bar li:last-child::after {
 .sort-dd > li {
     display: inline-block;
     margin-left: 16px;
+	font-size: 14px;
+	font-size: 1.4rem;
 }
 .sort-dd li a {
     cursor: pointer;
