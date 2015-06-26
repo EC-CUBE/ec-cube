@@ -64,7 +64,6 @@ class DeliveryController extends AbstractController
         $allowdParents = array(
             $app->url('mypage_delivery'),
             $app->url('shopping_delivery'),
-            $app->url('shopping_shipping_multiple'),
         );
 
         // 遷移が正しくない場合、デフォルトであるマイページの配送先追加の画面を設定する
