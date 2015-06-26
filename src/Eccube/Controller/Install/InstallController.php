@@ -364,6 +364,7 @@ class InstallController
             '/app/config',
             '/app/config/eccube',
             '/app/log',
+            '/app/Plugin',
         );
 
         foreach ($dirs as $dir) {
