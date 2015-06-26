@@ -67,10 +67,8 @@ class WithdrawController extends AbstractController
 
                         $app['orm.em']->flush();
 
-                        $BaseInfo = $app['eccube.repository.base_info']->get();
-
                         // メール送信
-                        $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $BaseInfo, $email);
+                        $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);
 
                         // ログアウト
                         $this->getSecurity($app)->setToken(null);
