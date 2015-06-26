@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -97,7 +98,7 @@ class CustomerAddressType extends AbstractType
                 'help' => 'form.contact.address.help',
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $this->config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
