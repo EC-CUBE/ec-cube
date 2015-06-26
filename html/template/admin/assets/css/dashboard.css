@@ -2241,11 +2241,11 @@ dl.accordion {
 }
 #main h1.page-header {
     margin: 0 0 16px;
-    padding: 24px 16px;
+    padding: 16px;
     background: #fff;
     border-bottom: 1px solid #e6e6e6;
-	font-size: 28px;
-	font-size: 2.8rem;
+	font-size: 20px;
+	font-size: 2.0rem;
 	font-weight: normal;
 }
 #main h1.page-header span {
@@ -2254,7 +2254,7 @@ dl.accordion {
     margin-left: 16px;
 	vertical-align: middle;
 	position: relative;
-	top: -2px;
+	top: -1px;
 }
 
 
@@ -2324,10 +2324,13 @@ dl.accordion {
     padding: 32px 0 16px;
     position: relative;
     top: -1px;
-    z-index: 0;
 }
 .search-box .search-box-inner .row {
     margin: 0;
+}
+.search-box .search-box-inner > .row {
+	position: relative;
+	z-index: 1;
 }
 .search-box .btn_area {
     padding: 16px 0 48px;
@@ -2496,6 +2499,15 @@ ul.link-with-bar li:last-child::after {
 	top: -1px;
 	fill:#b8bec4;
 }
+
+/* datetimepicker */
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+	z-index: 100;
+}
+
+
+
 
 /*	Fixed Column
 ============================ */
