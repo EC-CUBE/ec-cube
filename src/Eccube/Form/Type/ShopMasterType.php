@@ -217,9 +217,7 @@ class ShopMasterType extends AbstractType
             ))
             ->add('delivery_free_amount', 'integer', array(
                 'label' => '送料無料条件(数量)',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
+                'required' => false,
             ))
             ->add('option_product_delivery_fee', 'choice', array(
                 'label' => '商品ごとの送料設定を有効にする',

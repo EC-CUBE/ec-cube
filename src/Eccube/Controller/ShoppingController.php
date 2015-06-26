@@ -38,29 +38,6 @@ class ShoppingController extends AbstractController
     /** @var \Eccube\Service\OrderService */
     protected $orderService;
 
-    public function test(Application $app)
-    {
-        // カートに商品追加(テスト用)
-        $app['eccube.service.cart']->clear();
-        $app['eccube.service.cart']->addProduct(9);
-        $app['eccube.service.cart']->addProduct(9);
-        $app['eccube.service.cart']->addProduct(10);
-        $app['eccube.service.cart']->addProduct(10);
-        $app['eccube.service.cart']->addProduct(2);
-        $app['eccube.service.cart']->lock();
-        $app['eccube.service.cart']->save();
-
-        return $app->redirect($app->url('shopping'));
-
-    }
-
-    protected function init($app)
-    {
-        $this->cartService = $app['eccube.service.cart'];
-        $this->orderRepository = $app['eccube.repository.order'];
-        $this->orderService = $app['eccube.service.order'];
-    }
-
     public function index(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
@@ -88,13 +65,14 @@ class ShoppingController extends AbstractController
             $preOrderId = sha1(uniqid(mt_rand(), true));
 
             // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $this->getUser($app), $preOrderId);
+            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $app->user(), $preOrderId);
 
             $cartService->setPreOrderId($preOrderId);
             $cartService->save();
+
         } else {
             // 計算処理
-            $Order = $orderService->getAmount($Order);
+            $Order = $orderService->getAmount($Order, $cartService->getCart());
         }
 
         // 受注関連情報を最新状態に更新
@@ -119,7 +97,7 @@ class ShoppingController extends AbstractController
         // 支払い方法選択
         $this->setFormPayment($form, $delivery, $Order->getPayment());
 
-        return $app['view']->render('Shopping/index.twig', array(
+        return $app->render('Shopping/index.twig', array(
                 'form' => $form->createView(),
                 'Order' => $Order,
         ));
@@ -190,7 +168,7 @@ class ShoppingController extends AbstractController
 
                     if ($this->isGranted($app)) {
                         // 会員の場合、購入金額を更新
-                        $orderService->setCustomerUpdate($em, $Order, $this->getUser($app));
+                        $orderService->setCustomerUpdate($em, $Order, $app->user());
                     }
 
                     $em->getConnection()->commit();
@@ -224,7 +202,7 @@ class ShoppingController extends AbstractController
      */
     public function complete(Application $app)
     {
-        return $app['view']->render('Shopping/complete.twig');
+        return $app->render('Shopping/complete.twig');
     }
 
 
@@ -233,10 +211,11 @@ class ShoppingController extends AbstractController
      */
     public function delivery(Application $app, Request $request)
     {
-        $this->init($app);
+        $cartService = $app['eccube.service.cart'];
+        $orderRepository = $app['eccube.repository.order'];
 
         // カートチェック
-        if (!$this->cartService->isLocked()) {
+        if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
         }
@@ -244,7 +223,7 @@ class ShoppingController extends AbstractController
 
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
-        $Order = $this->orderRepository->findOneBy(array('pre_order_id' => $this->cartService->getPreOrderId()));
+        $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
 
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
@@ -297,12 +276,10 @@ class ShoppingController extends AbstractController
                 // 受注関連情報を最新状態に更新
                 $app['orm.em']->flush();
 
-                return $app->redirect($app->url('shopping'));
-
             }
-        } else {
-            return $app->redirect($app->url('shopping'));
         }
+
+        return $app->redirect($app->url('shopping'));
 
     }
 
@@ -312,11 +289,12 @@ class ShoppingController extends AbstractController
     public function payment(Application $app, Request $request)
     {
 
-        $this->init($app);
+        $cartService = $app['eccube.service.cart'];
+        $orderRepository = $app['eccube.repository.order'];
 
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
-        $Order = $this->orderRepository->findOneBy(array('pre_order_id' => $this->cartService->getPreOrderId()));
+        $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
 
         $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
@@ -356,13 +334,10 @@ class ShoppingController extends AbstractController
                 // 受注関連情報を最新状態に更新
                 $app['orm.em']->flush();
 
-                return $app->redirect($app->url('shopping'));
-
             }
-        } else {
-            return $app->redirect($app->url('shopping'));
         }
 
+        return $app->redirect($app->url('shopping'));
 
     }
 
@@ -371,10 +346,10 @@ class ShoppingController extends AbstractController
      */
     public function shipping(Application $app, Request $request)
     {
-        $this->init($app);
+        $cartService = $app['eccube.service.cart'];
 
         // カートチェック
-        if (!$this->cartService->isLocked()) {
+        if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
         }
@@ -384,10 +359,10 @@ class ShoppingController extends AbstractController
 
             if (is_null($address)) {
                 // 選択されていなければエラー
-                return $app['view']->render(
+                return $app->render(
                     'Shopping/shipping.twig',
                     array(
-                        'Customer' => $this->getUser($app),
+                        'Customer' => $app->user(),
                     )
                 );
             }
@@ -426,10 +401,10 @@ class ShoppingController extends AbstractController
 
         }
 
-        return $app['view']->render(
+        return $app->render(
             'Shopping/shipping.twig',
             array(
-                'Customer' => $this->getUser($app),
+                'Customer' => $app->user(),
             )
         );
     }
@@ -474,7 +449,7 @@ class ShoppingController extends AbstractController
                 if ($this->isGranted($app)) {
                     $customerAddress = new \Eccube\Entity\CustomerAddress();
                     $customerAddress
-                        ->setCustomer($this->getUser($app))
+                        ->setCustomer($app->user())
                         ->setName01($data['name01'])
                         ->setName02($data['name02'])
                         ->setKana01($data['kana01'])
@@ -520,7 +495,7 @@ class ShoppingController extends AbstractController
             }
         }
 
-        return $app['view']->render('Shopping/shipping_edit.twig', array(
+        return $app->render('Shopping/shipping_edit.twig', array(
             'form'  => $form->createView(),
         ));
 
@@ -572,7 +547,10 @@ class ShoppingController extends AbstractController
      */
     public function login(Application $app, Request $request)
     {
-        if (!$app['eccube.service.cart']->isLocked()) {
+
+        $cartService = $app['eccube.service.cart'];
+
+        if (!$cartService->isLocked()) {
             return $app->redirect($app['url_generator']->generate('cart'));
         }
 
@@ -598,7 +576,7 @@ class ShoppingController extends AbstractController
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
-        return $app['view']->render('Shopping/login.twig', array(
+        return $app->render('Shopping/login.twig', array(
             'error' => $app['security.last_error']($app['request']),
             'form'  => $form->createView(),
         ));
@@ -670,7 +648,7 @@ class ShoppingController extends AbstractController
             }
         }
 
-        return $app['view']->render('Shopping/nonmember.twig', array(
+        return $app->render('Shopping/nonmember.twig', array(
             'form'  => $form->createView(),
         ));
     }
@@ -681,7 +659,7 @@ class ShoppingController extends AbstractController
      */
     public function shoppingError(Application $app)
     {
-        return $app['view']->render('Shopping/shopping_error.twig');
+        return $app->render('Shopping/shopping_error.twig');
     }
 
 
