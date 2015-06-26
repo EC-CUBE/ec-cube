@@ -519,30 +519,6 @@ INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ADMIN_PRODUCT_STOCK
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('ENABLED', 1, 1423, null);
 INSERT INTO mtb_constants (id, name, rank, remarks) VALUES ('DISABLED', 0, 1424, null);
 
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'email_mobile', 0, '会員数増加時のログイン処理速度を向上させたいときに試してみてください');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product', 'name', 2, '商品名検索速度を向上させたいときに試してみてください');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order_temp', 'order_temp_id', 0, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'status', 2, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_email', 2, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_name01', 2, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_name02', 0, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_tel01', 0, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_tel02', 0, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order', 'order_tel03', 0, '注文数が多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_customer', 'mobile_phone_id', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product_class', 'product_id', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_order_detail', 'product_id', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_send_customer', 'customer_id', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_ext_session_id', 'param_key', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_ext_session_id', 'param_value', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_ext_session_id', 'url', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_ext_session_id', 'create_date', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_kara_mail', 'token', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_kara_mail', 'create_date', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_mobile_kara_mail', 'receive_date', 1, '');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('dtb_product_category', 'category_id', 2, 'カテゴリが多いときに試してみてください。');
-INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('mtb_zip', 'zipcode', 2, '郵便番号検索が遅いときに試してみてください。郵便番号データの更新時には無効にしていることをおすすめします。');
-
 INSERT INTO dtb_member (member_id, name, department, login_id, password, salt, authority, rank, work, del_flg, creator_id, update_date, create_date, login_date) VALUES (1, 'dummy', NULL, 'dummy', 'dummy', 'dummy', 0, 0, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
 SELECT setval('dtb_member_member_id_seq', 2);
 
