@@ -544,7 +544,7 @@ INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_co
 INSERT INTO dtb_index_list (table_name, column_name, recommend_flg, recommend_comment) VALUES ('mtb_zip', 'zipcode', 2, '郵便番号検索が遅いときに試してみてください。郵便番号データの更新時には無効にしていることをおすすめします。');
 
 INSERT INTO dtb_member (member_id, name, department, login_id, password, salt, authority, rank, work, del_flg, creator_id, update_date, create_date, login_date) VALUES (1, 'dummy', NULL, 'dummy', 'dummy', 'dummy', 0, 0, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL);
-SELECT setval('dtb_member_member_id_seq', 1);
+SELECT setval('dtb_member_member_id_seq', 2);
 
 INSERT INTO dtb_tax_rule (tax_rule_id, apply_date, calc_rule, tax_rate, tax_adjust, creator_id, del_flg, create_date, update_date) VALUES (1, CURRENT_TIMESTAMP, 1, 8, 0, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 SELECT setval('dtb_tax_rule_tax_rule_id_seq', 1);
