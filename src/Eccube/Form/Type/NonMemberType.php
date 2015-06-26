@@ -131,7 +131,8 @@ class NonMemberType extends AbstractType
                         new Assert\Email(),
                     ),
                 ),
-            ));
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

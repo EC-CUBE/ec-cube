@@ -21,37 +21,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'login_frame.twig' %}
 
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script>
+$(function() {
+    $('#login_id').focus();
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
-<div id="login-wrap">
-    <div id="login-form" class="clearfix">
-        <h1><img src="{{ app.config.admin_tpl }}img/contents/admin_login_logo.jpg" width="140" height="150" alt="EC-CUBE管理画面" /></h1>
-        <div id="input-form">
-            <form name="form1" id="form1" method="post" action="{{ path('admin_login_check') }}">
+
+    <div class="login-box">
+        {{ include('alert.twig') }}
+        <div class="login-box-body">
+            <p class="login-logo2"><img src="{{ app.config.admin_urlpath }}/assets/img/logo2.png" width="106"></p>
+            <form name="form1" id="form1" method="post" action="{{ path(app.config.admin_route ~ '_login_check') }}">
                 {% if error %}
                     <span class="attention">{{ error }}</span>
                 {% endif %}
-
-                <p><label for="login_id">ID</label></p>
-                {{ form_widget(form.login_id, {'attr': {'size': 20, 'class': "box25"}}) }}
-                <p><label for="password">PASSWORD</label></p>
-                {{ form_widget(form.password, {'attr': {'size': 20, 'class': "box25"}}) }}
-
-                <p><a class="btn-tool-format" href="javascript:;" onclick="document.form1.submit(); return false;"><span>LOGIN</span></a></p>
+                <div class="form-group has-feedback">
+                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'size': 20, 'class': "box25"}}) }}
+                </div>
+                <div class="form-group has-feedback">
+                    {{ form_widget(form.password, {'attr': {'size': 20, 'class': "box25"}}) }}
+                </div>
+                <p class="btn_area"><button type="submit" class="btn btn-primary btn-block btn-lg">ログイン</button></p>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 {{ form_rest(form) }}
             </form>
-        </div>
-    </div>
-</div>
-<div id="copyright">Copyright &copy; 2000-{{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</div>
+        </div><!-- /.login-box-body -->
+        <p class="text-center"><small class="copyright">Copyright &copy; 2000-{{ "now"|date("Y") }} LOCKON CO.,LTD. All Rights Reserved.</small></p>
+    </div><!-- /.login-box -->
 
-<script type="text/javascript">//<![CDATA[
-document.form1.login_id.focus();
-$(function() {
-    $('<input type="submit" />')
-        .css({'position' : 'absolute',
-            'top' : '-1000px'})
-        .appendTo('form');
-});
-//]]></script>
 {% endblock %}

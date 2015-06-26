@@ -34,116 +34,224 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Monolog\Logger;
-use Knp\Provider\ConsoleServiceProvider;
+use Monolog\Handler\FingersCrossedHandler;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 
 class Application extends \Silex\Application
 {
-    /** @var Application app */
-    protected static $app;
-
-    /**
-     * Alias
-     *
-     * @return object
-     */
-    public static function alias($name)
-    {
-        $args = func_get_args();
-        array_shift($args);
-        $obj = static::$app[$name];
-
-        if (is_callable($obj)) {
-            return call_user_func_array($obj, $args);
-        } else {
-            return $obj;
-        }
-    }
-
     public function __construct(array $values = array())
     {
-        $app = $this;
-        static::$app = $this;
-        ini_set('error_reporting', E_ALL | ~E_STRICT);
-
         parent::__construct($values);
 
-        // set env
-        if (!isset($app['env']) || empty($app['env'])) {
-            $app['env'] = 'prod';
-        }
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            $app['debug'] = true;
-        }
-
         // load config
-        $this['config'] = $app->share(function () {
-            $config_file = __DIR__ . '/../../app/config/eccube/config.yml';
-            if (file_exists($config_file)) {
-                $config = Yaml::parse($config_file);
-            } else {
-                $config = array();
+        $this->initConfig();
+
+        // init monolog
+        $this->initLogger();
+    }
+
+    public function initialize()
+    {
+        // init locale
+        $this->initLocale();
+
+        // init session
+        $this->initSession();
+
+        // init twig
+        $this->initRendering();
+
+        // init provider
+        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        $this->register(new \Silex\Provider\FormServiceProvider());
+        $this->register(new \Silex\Provider\ValidatorServiceProvider());
+
+        $app = $this;
+        $this->error(function (\Exception $e, $code) use ($app) {
+            if ($app['debug']) {
+                return;
             }
 
-            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
-            $constant_dist = __DIR__ . '/../../app/config/eccube/constant.yml.dist';
-
-            if (file_exists($constant_file)) {
-                $config_constant = Yaml::parse($constant_file);
-            } elseif (file_exists($constant_dist)) {
-                $config_constant = Yaml::parse($constant_dist);
-            } else {
-                $config_constant = array();
+            switch ($code) {
+                case 404:
+                    $title = 'ページがみつかりません。';
+                    $message = 'URLに間違いがないかご確認ください。';
+                    break;
+                default:
+                    $title = 'システムエラーが発生しました。';
+                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+                    break;
             }
 
-            return array_merge($config_constant, $config);
+            return $app['twig']->render('error.twig', array(
+                'error_title' => $title,
+                'error_message' => $message,
+            ));
         });
 
-        // load config dev
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            $conf = $this['config'];
-            $this['config'] = $app->share(function () use($conf) {
-                $confarray = array();
-                $config_dev_file = __DIR__ . '/../../app/config/eccube/config_dev.yml';
-                if (file_exists($config_dev_file)) {
-                    $config_dev = Yaml::parse($config_dev_file);
-                    if (isset($config_dev)) {
-                        $confarray = array_replace_recursive($confarray, $config_dev);
-                    }
-                }
-                return array_replace_recursive($conf, $confarray);
-            });
-        }
+        // init mailer
+        $this->initMailer();
 
+        // init doctrine orm
+        $this->initDoctrine();
+
+        // init security
+        $this->initSecurity();
+
+        // init ec-cube service provider
+        $this->register(new ServiceProvider\EccubeServiceProvider());
+
+        // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $this->register(new \Silex\Provider\SessionServiceProvider());
+        $this->mount('', new ControllerProvider\FrontControllerProvider());
+        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+    }
 
+    public function initializePlugin()
+    {
+        // setup event dispatcher
+        $this->initPluginEventDispatcher();
+
+        // load plugin
+        $this->loadPlugin();
+    }
+
+    public function initConfig()
+    {
+        // load config
+        $this['config'] = $this->share(function () {
+            $config = array();
+            $config_yml = __DIR__ . '/../../app/config/eccube/config.yml';
+            if (file_exists($config_yml)) {
+                $config = Yaml::parse($config_yml);
+            }
+
+            $config_path = array();
+            $path_yml = __DIR__ . '/../../app/config/eccube/path.yml';
+            if (file_exists($path_yml)) {
+                $config_path = Yaml::parse($path_yml);
+            }
+
+            $config_constant = array();
+            $constant_yml = __DIR__ . '/../../app/config/eccube/constant.yml';
+            if (file_exists($constant_yml)) {
+                $config_constant = Yaml::parse($constant_yml);
+                $config_constant = empty($config_constant) ? array() : $config_constant;
+            }
+
+
+            $config_constant_dist = array();
+            $constant_yml_dist = __DIR__ . '/../../src/Eccube/Resource/config/constant.yml.dist';
+            if (file_exists($constant_yml_dist)) {
+                $config_constant_dist = Yaml::parse($constant_yml_dist);
+            }
+
+            $configAll = array_replace_recursive($config_constant_dist, $config_constant, $config_path, $config);
+
+            $database = array();
+            $yml = __DIR__ . '/../../app/config/eccube/database.yml';
+            if (file_exists($yml)) {
+                $database = Yaml::parse($yml);
+            }
+
+            $mail = array();
+            $yml = __DIR__ . '/../../app/config/eccube/mail.yml';
+            if (file_exists($yml)) {
+                $mail = Yaml::parse($yml);
+            }
+
+            $configAll = array_replace_recursive($configAll, $database, $mail);
+
+            $log = array();
+            $yml = __DIR__ . '/../../app/config/eccube/log.yml';
+            if (file_exists($yml)) {
+                $log = array(
+                    'log' => Yaml::parse($yml)
+                );
+            }
+
+            $configAll = array_replace_recursive($configAll, $log);
+
+            return $configAll;
+        });
+    }
+
+    public function initLogger()
+    {
+        $file = __DIR__ . '/../../app/log/site.log';
+        $this->register(new \Silex\Provider\MonologServiceProvider(), array(
+            'monolog.logfile' => $file,
+        ));
+
+        $levels = Logger::getLevels();
+        $this['monolog'] = $this->extend('monolog', function($monolog, $this) use ($levels, $file) {
+
+            $RotateHandler = new RotatingFileHandler($file, $this['config']['log']['max_files'], $this['config']['log']['log_level']);
+            $RotateHandler->setFilenameFormat(
+                $this['config']['log']['prefix'] . '{date}' . $this['config']['log']['suffix'],
+                $this['config']['log']['format']
+            );
+
+            $FingerCrossedHandler = new FingersCrossedHandler(
+                $RotateHandler,
+                new ErrorLevelActivationStrategy($levels[$this['config']['log']['action_level']])
+            );
+            $monolog->popHandler();
+            $monolog->pushHandler($FingerCrossedHandler);
+
+            return $monolog;
+        });
+    }
+
+    public function initSession()
+    {
+        $this->register(new \Silex\Provider\SessionServiceProvider());
+    }
+
+    public function initLocale()
+    {
+        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
+            'locale' => 'ja',
+        ));
+        $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
+            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', 'ja');
+
+            return $translator;
+        }));
+    }
+
+    public function initRendering()
+    {
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
-        $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+        $this['twig'] = $this->share($this->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
             return $twig;
         }));
+
         $this->before(function (Request $request, \Silex\Application $app) {
-            //
+            // フロント or 管理画面ごとにtwigの探索パスを切り替える.
             $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
-                if (strpos($app['request']->getPathInfo(), $app['config']['admin_dir']) === 0) {
-                    if (file_exists(__DIR__ . '/../../template/admin')) {
-                        $paths[] = __DIR__ . '/../../template/admin';
+                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
+                        $paths[] = __DIR__ . '/../../app/template/admin';
                     }
-                    $paths[] = __DIR__ . '/Resource/template/admin';
-                    $paths[] = __DIR__ . '/../../app/plugin';
+                    $paths[] = $app['config']['template_admin_realdir'];
+                    $paths[] = __DIR__ . '/../../app/Plugin';
                     $cache = __DIR__ . '/../../app/cache/twig/admin';
                 } else {
-                    if (file_exists(__DIR__ . '/../../template/' . $app['config']['template_name'])) {
-                        $paths[] = __DIR__ . '/../../template/' . $app['config']['template_name'];
+                    if (file_exists($app['config']['template_realdir'])) {
+                        $paths[] = $app['config']['template_realdir'];
                     }
-                    $paths[] = __DIR__ . '/Resource/template/default';
-                    $paths[] = __DIR__ . '/../../app/plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_name'];
+                    $paths[] = $app['config']['template_default_realdir'];
+                    $paths[] = __DIR__ . '/../../app/Plugin';
+                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
@@ -151,190 +259,240 @@ class Application extends \Silex\Application
                 return $twig;
             }));
 
-            //
-            $BaseInfo = $app['eccube.repository.base_info']->get();
-            $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
-            $menus = array('', '', '');
-            $app['twig']->addGlobal('menus', $menus);
+            // 管理画面のIP制限チェック.
+            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                // IP制限チェック
+                $allowHost = $app['config']['admin_allow_host'];
+                if (count($allowHost) > 0) {
+                    if (array_search($app['request']->getClientIp(), $allowHost) === false) {
+                        throw new \Exception();
+                    }
+                }
+            }
         }, self::EARLY_EVENT);
 
-        $app->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-            $request = $event->getRequest();
-            try {
-                $PageLayout = $app['eccube.repository.page_layout']->getByRoutingName(10, $request->attributes->get('_route'));
-            } catch (\Doctrine\ORM\NoResultException $e) {
-                $PageLayout = $app['eccube.repository.page_layout']->newPageLayout(10);
-            }
-            $app["twig"]->addGlobal("PageLayout", $PageLayout);
-            $app["twig"]->addGlobal("title", $PageLayout->getName());
+        // twigのグローバル変数を定義.
+        $app = $this;
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+            // ショップ基本情報
+            $BaseInfo = $app['eccube.repository.base_info']->get();
+            $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
 
-            if (!$event->isMasterRequest()) {
-                return;
-            }
-        });
-
-        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-        $this->register(new \Silex\Provider\FormServiceProvider());
-        $this->register(new \Silex\Provider\ValidatorServiceProvider());
-
-        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
-            'locale' => 'ja',
-        ));
-        $app['translator'] = $app->share($app->extend('translator', function ($translator, \Silex\Application $app) {
-            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
-            $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', 'ja');
-
-            return $translator;
-        }));
-
-        // インストールされてなければこれこまで読み込む
-        if (!file_exists(__DIR__ . '/../../app/config/eccube/config.yml')) {
-            $app->mount('', new ControllerProvider\InstallControllerProvider());
-            $app->register(new ServiceProvider\EccubeServiceProvider());
-            $app->error(function (\Exception $e, $code) use ($app) {
-                if ($code === 404) {
-                    return $app->redirect($app['url_generator']->generate('install'));
-                } elseif ($app['debug']) {
-                    return;
+            // 管理画面
+            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                // 管理画面メニュー
+                $menus = array('', '', '');
+                $app['twig']->addGlobal('menus', $menus);
+            // フロント画面
+            } else {
+                $request = $event->getRequest();
+                try {
+                    $DeviceType = $app['eccube.repository.master.device_type']->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                    if ($request->get('preview')) {
+                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
+                    } else {
+                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType,
+                            $request->attributes->get('_route'));
+                    }
+                } catch (\Doctrine\ORM\NoResultException $e) {
+                    $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
 
-                return $app['view']->render('error.twig', array(
-                    'error' => 'エラーが発生しました.',
-                ));
-            });
-
-            return;
-        }
-
-        // Mail
-        $this['swiftmailer.option'] = $this['config']['mail'];
-        // $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
-        if ($app['env'] === 'dev' || $app['env'] === 'test') {
-            if (isset($this['config']['delivery_address'])) {
-                $this['delivery_address'] = $this['config']['delivery_address'];
+                $app["twig"]->addGlobal("PageLayout", $PageLayout);
+                $app["twig"]->addGlobal("title", $PageLayout->getName());
             }
+        });
+    }
+
+    public function initMailer()
+    {
+        $this->register(new \Silex\Provider\SwiftmailerServiceProvider());
+        $this['swiftmailer.options'] = $this['config']['mail'];
+
+        if (isset($this['config']['mail']['spool']) && is_bool($this['config']['mail']['spool'])) {
+            $this['swiftmailer.use_spool'] = $this['config']['mail']['spool'];
         }
-        $this->register(new ServiceProvider\EccubeSwiftmailerServiceProvider());
+        // デフォルトはsmtpを使用
+        $transport = $this['config']['mail']['transport'];
+        if ($transport == 'sendmail') {
+            $this['swiftmailer.transport'] = \Swift_SendmailTransport::newInstance();
+        } else if ($transport == 'mail') {
+            $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
+        }
+    }
 
-        $this['mail.message'] = function () {
-            return \Swift_Message::newInstance();
-        };
-
-        // ORM
+    public function initDoctrine()
+    {
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $this['config']['database']
         ));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
-        //Doctrine ORM
+        // プラグインのmetadata定義を合わせて行う.
+        $pluginBasePath = __DIR__ . '/../../app/Plugin';
+        $finder = Finder::create()
+            ->in($pluginBasePath)
+            ->directories()
+            ->depth(0);
+
+        $ormMappings = array();
+        $ormMappings[] = array(
+            'type' => 'yml',
+            'namespace' => 'Eccube\Entity',
+            'path' => array(
+                __DIR__ . '/Resource/doctrine',
+                __DIR__ . '/Resource/doctrine/master',
+            ),
+        );
+
+        foreach ($finder as $dir) {
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+
+            // Doctrine Extend
+            if (isset($config['orm.path']) and is_array( $config['orm.path'])) {
+                $paths = array();
+                foreach ($config['orm.path'] as $path) {
+                    $paths[] = $ormMappings . '/' . $config['name'] . $path;
+                }
+                $ormMppings[] = array(
+                    'type' => 'yml',
+                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'path' => $paths,
+                );
+            }
+        }
+
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/Resource/doctrine',
-                            __DIR__ . '/Resource/doctrine/master',
-                        ),
-                    ),
-                ),
+                'mappings' => $ormMappings,
             ),
         ));
+    }
 
-       // EventDispatcher
-        $app['eccube.event.dispatcher'] = $app->share(function () {
+    public function initPluginEventDispatcher()
+    {
+        // EventDispatcher
+        $this['eccube.event.dispatcher'] = $this->share(function () {
             return new EventDispatcher();
         });
 
-        // EventSubscriber
-        $basePath = __DIR__ . '/../../app/plugin';
+        // hook point
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+        }, self::EARLY_EVENT);
+
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.before';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.after';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+        }, self::LATE_EVENT);
+
+        $this->finish(function (Request $request, Response $response, \Silex\Application $app) {
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.finish';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+    }
+
+    public function loadPlugin()
+    {
+        // プラグインディレクトリを探索.
+        $basePath = __DIR__ . '/../../app/Plugin';
         $finder = Finder::create()
             ->in($basePath)
             ->directories()
             ->depth(0);
 
-        // Plugin events / service
+        $finder->sortByName();
+
+        // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
+        $priorities = array();
+        $handlers = $this['orm.em']
+            ->getRepository('Eccube\Entity\PluginEventHandler')
+            ->getHandlers();
+        foreach ($handlers as $handler) {
+            if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
+                $priority = $handler->getPriority();
+            } else {
+                // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
+                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
+            }
+            $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
+        }
+
+        // プラグインをロードする.
+        // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
         foreach ($finder as $dir) {
+            //config.ymlのないディレクトリは無視する
+            if (!file_exists($dir->getRealPath() . '/config.yml')) {
+                continue;
+            }
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+            // Type: Event
+            if (isset($config['event'])) {
+                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
+                $subscriber = new $class($this);
 
-            if ($config['enable'] === true) {
-                // Type: Event
-                if (isset($config['event'])) {
-                    $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
-                    $subscriber = new $class($app);
-                    $app['eccube.event.dispatcher']->addSubscriber($subscriber);
-                }
+                if (file_exists($dir->getRealPath() . '/event.yml')) {
 
-                // Type: ServiceProvider
-                if (isset($config['service'])) {
-                    foreach ($config['service'] as $service) {
-                        $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
-                        $app->register(new $class($app));
+                    foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                        foreach ($handlers as $handler) {
+                            if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
+                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
+                            } else {
+                                $priority = $priorities[$config['event']][$event][$handler[0]];
+                            }
+                            // 優先度が0のプラグインは登録しない
+                            if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
+                                $this['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                            }
+                        }
                     }
                 }
-
-                // Doctrine Extend
-                if (isset($config['orm.path'])) {
-                    $pathes = array();
-                    foreach ($config['orm.path'] as $path) {
-                        $pathes[] = $basePath . '/' . $config['name'] . $path;
-                    }
-                    $app['orm.em.options'] = $app->extend('orm.em.options', function ($options) use ($config, $pathes) {
-                        $options['mappings'][] = array(
-                            'type' => 'yml',
-                            'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
-                            'path' => $pathes,
-                        );
-                    });
+            }
+            // const
+            if (isset($config['const'])) {
+                $app[$config['name']] = array(
+                    'const' => $config['const'],
+                );
+            }
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
+                    $this->register(new $class($this));
                 }
             }
         }
+    }
 
-        // hook point
-        $this->before(function (Request $request, Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
-        }, self::EARLY_EVENT);
-
-        $this->before(function (Request $request, \Silex\Application $app) {
-            $event = $app->parseController($request) . '.before';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function (Request $request, Response $response) use ($app) {
-            $event = $app->parseController($request) . '.after';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function (Request $request, Response $response) use ($app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
-        }, \Silex\Application::LATE_EVENT);
-
-        $this->finish(function (Request $request, Response $response) use ($app) {
-            $event = $app->parseController($request) . '.finish';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-
-        // Security
+    public function initSecurity()
+    {
         $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
-             'security.firewalls' => array(
+            'security.firewalls' => array(
                 'admin' => array(
-                    'pattern' => '^/admin',
+                    'pattern' => "^/{$this['config']['admin_route']}",
                     'form' => array(
-                        'login_path' => '/admin/login',
-                        'check_path' => '/admin/login_check',
-                        'username_parameter' =>  'login_id',
+                        'login_path' => "/{$this['config']['admin_route']}/login",
+                        'check_path' => "/{$this['config']['admin_route']}/login_check",
+                        'username_parameter' => 'login_id',
                         'password_parameter' => 'password',
                         'with_csrf' => true,
                         'use_forward' => true,
                     ),
                     'logout' => array(
-                        'logout_path' => '/admin/logout',
-                        'target_url' => '/admin/',
+                        'logout_path' => "/{$this['config']['admin_route']}/logout",
+                        'target_url' => "/{$this['config']['admin_route']}/",
                     ),
-                    'users' => $app['orm.em']->getRepository('Eccube\Entity\Member'),
+                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
                     'anonymous' => true,
                 ),
                 'customer' => array(
@@ -342,7 +500,7 @@ class Application extends \Silex\Application
                     'form' => array(
                         'login_path' => '/mypage/login',
                         'check_path' => '/login_check',
-                        'username_parameter' =>  'login_email',
+                        'username_parameter' => 'login_email',
                         'password_parameter' => 'login_pass',
                         'with_csrf' => true,
                         'use_forward' => true,
@@ -351,111 +509,46 @@ class Application extends \Silex\Application
                         'logout_path' => '/logout',
                         'target_url' => '/',
                     ),
-                    'users' => $app['orm.em']->getRepository('Eccube\Entity\Customer'),
+                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
                     'anonymous' => true,
                 ),
-             ),
+            ),
         ));
-        $app['security.access_rules'] = array(
-            array('^/admin/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/admin', 'ROLE_ADMIN'),
+        $this['security.access_rules'] = array(
+            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/refusal_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage', 'ROLE_USER'),
         );
-        $app['eccube.password_encoder'] = $app->share(function ($app) {
+        $this['eccube.password_encoder'] = $this->share(function ($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
         });
-        $app['security.encoder_factory'] = $app->share(function ($app) {
+        $this['security.encoder_factory'] = $this->share(function ($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
                 'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
                 'Eccube\Entity\Member' => $app['eccube.password_encoder'],
             ));
         });
-        $app['eccube.event_listner.security'] = $app->share(function ($app) {
+        $this['eccube.event_listner.security'] = $this->share(function ($app) {
             return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
         });
-        $app['user'] = $app->share(function ($app) {
+        $this['user'] = $this->share(function ($app) {
             $token = $app['security']->getToken();
 
             return ($token !== null) ? $token->getUser() : null;
         });
 
-        $this->register(new ServiceProvider\EccubeServiceProvider());
-
-        $app['filesystem'] = function () {
-            return new \Symfony\Component\Filesystem\Filesystem();
-        };
-
-        $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__ . '/../../app/log/site.log',
-        ));
-
-
-        // Silex Web Profiler
-        if ($app['env'] === 'dev') {
-            $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-                'profiler.cache_dir' => __DIR__ . '/../../app/cache/profiler',
-                'profiler.mount_prefix' => '/_profiler',
-            ));
-            $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
-        }
-
-        $app->mount('', new ControllerProvider\FrontControllerProvider());
-        $app->mount($app['config']['admin_dir'], new ControllerProvider\AdminControllerProvider());
-        $app->error(function (\Exception $e, $code) use ($app) {
-            if ($app['debug']) {
-                return;
-            }
-
-            switch ($code) {
-                case 404:
-                    break;
-                default:
-                    break;
-            }
-
-            return $app['view']->render('error.twig', array(
-                'error' => 'エラーが発生しました.',
-            ));
-        });
-
-        if ($app['env'] === 'test') {
-            $app['session.test'] = true;
-            $app['exception_handler']->disable();
-        }
+        // ログイン時のイベントを設定.
+        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
-    public function parseController(Request $request)
-    {
-        $route = str_replace('_', '.', $request->attributes->get('_route'));
 
-        return 'eccube.event.controller.' . $route;
-    }
-
-    public function boot()
-    {
-        parent::boot();
-
-        $app = $this;
-
-        // constant 上書き
-        $app['config'] = $app->share($app->extend("config", function ($config, \Silex\Application $app) {
-            $constant_file = __DIR__ . '/../../app/config/eccube/constant.yml';
-            if (is_readable($constant_file)) {
-                $config_constant = Yaml::parse($constant_file);
-            } else {
-                $config_constant = $app['eccube.repository.master.constant']->getAll($config);
-                if ($config_constant) {
-                    file_put_contents($constant_file, Yaml::dump($config_constant));
-                }
-            }
-            return array_merge($config_constant, $config);
-        }));
-
-        // ログイン時のイベント
-        $app['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($app['eccube.event_listner.security'], 'onInteractiveLogin'));
-    }
+    /**
+     * Application Shortcut Methods
+     *
+     *
+     */
 
     public function addSuccess($message, $namespace = 'front')
     {
@@ -500,7 +593,7 @@ class Application extends \Silex\Application
     /**
      * Creates and returns a form builder instance
      *
-     * @param mixed $data    The initial data for the form
+     * @param mixed $data The initial data for the form
      * @param array $options Options for the form
      *
      * @return FormBuilder
@@ -515,8 +608,8 @@ class Application extends \Silex\Application
      * Adds a log record.
      *
      * @param string $message The log message
-     * @param array  $context The log context
-     * @param int    $level   The logging level
+     * @param array $context The log context
+     * @param int $level The logging level
      *
      * @return bool Whether the record has been processed
      */
@@ -549,8 +642,8 @@ class Application extends \Silex\Application
     /**
      * Encodes the raw password.
      *
-     * @param UserInterface $user     A UserInterface instance
-     * @param string        $password The password to encode
+     * @param UserInterface $user A UserInterface instance
+     * @param string $password The password to encode
      *
      * @return string The encoded password
      *
@@ -565,8 +658,8 @@ class Application extends \Silex\Application
     /**
      * Sends an email.
      *
-     * @param \Swift_Message $message          A \Swift_Message instance
-     * @param array          $failedRecipients An array of failures by-reference
+     * @param \Swift_Message $message A \Swift_Message instance
+     * @param array $failedRecipients An array of failures by-reference
      *
      * @return int The number of sent messages
      */
@@ -579,10 +672,10 @@ class Application extends \Silex\Application
     /**
      * Translates the given message.
      *
-     * @param string $id         The message id
-     * @param array  $parameters An array of parameters for the message
-     * @param string $domain     The domain for the message
-     * @param string $locale     The locale
+     * @param string $id The message id
+     * @param array $parameters An array of parameters for the message
+     * @param string $domain The domain for the message
+     * @param string $locale The locale
      *
      * @return string The translated string
      */
@@ -594,11 +687,11 @@ class Application extends \Silex\Application
     /**
      * Translates the given choice message by choosing a translation according to a number.
      *
-     * @param string $id         The message id
-     * @param int    $number     The number to use to find the indice of the message
-     * @param array  $parameters An array of parameters for the message
-     * @param string $domain     The domain for the message
-     * @param string $locale     The locale
+     * @param string $id The message id
+     * @param int $number The number to use to find the indice of the message
+     * @param array $parameters An array of parameters for the message
+     * @param string $domain The domain for the message
+     * @param string $locale The locale
      *
      * @return string The translated string
      */
@@ -613,9 +706,9 @@ class Application extends \Silex\Application
      *
      * To stream a view, pass an instance of StreamedResponse as a third argument.
      *
-     * @param string   $view       The view name
-     * @param array    $parameters An array of parameters to pass to the view
-     * @param Response $response   A Response instance
+     * @param string $view The view name
+     * @param array $parameters An array of parameters to pass to the view
+     * @param Response $response A Response instance
      *
      * @return Response A Response instance
      */
@@ -640,8 +733,8 @@ class Application extends \Silex\Application
     /**
      * Renders a view.
      *
-     * @param string $view       The view name
-     * @param array  $parameters An array of parameters to pass to the view
+     * @param string $view The view name
+     * @param array $parameters An array of parameters to pass to the view
      *
      * @return Response A Response instance
      */
@@ -654,8 +747,8 @@ class Application extends \Silex\Application
     /**
      * Generates a path from the given parameters.
      *
-     * @param string $route      The name of the route
-     * @param mixed  $parameters An array of parameters
+     * @param string $route The name of the route
+     * @param mixed $parameters An array of parameters
      *
      * @return string The generated path
      */
@@ -667,8 +760,8 @@ class Application extends \Silex\Application
     /**
      * Generates an absolute URL from the given parameters.
      *
-     * @param string $route      The name of the route
-     * @param mixed  $parameters An array of parameters
+     * @param string $route The name of the route
+     * @param mixed $parameters An array of parameters
      *
      * @return string The generated URL
      */

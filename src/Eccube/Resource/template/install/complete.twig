@@ -1,0 +1,44 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'frame.twig' %}
+
+{% set current = 6 %}
+
+{% block main %}
+<div id="main" class="step7">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1>インストールが完了しました！</h1>
+                </div>
+                <div class="column">
+                    <h2>管理画面にアクセスしてみましょう</h2>
+                    <p>先ほど登録したログインID・パスワードで、管理画面にログインすることができます。デザインの編集や商品を登録してみましょう！</p>
+                    <div class="btn_area"><a href="{{ admin_url }}" class="btn btn-primary btn-block btn-lg">管理画面を表示</a></div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+    </div>
+</div>
+{% endblock %}

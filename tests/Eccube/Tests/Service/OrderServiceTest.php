@@ -26,16 +26,13 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 
-class OrderServiceTest extends \PHPUnit_Framework_TestCase
+class OrderServiceTest extends AbstractServiceTestCase
 {
-    private $app;
+    protected $app;
 
     public function setUp()
     {
-        $this->app = new Application(array(
-            'env' => 'test'
-        ));
-        $this->app->boot();
+        parent::setUp();
     }
 
     public function testNewOrder()

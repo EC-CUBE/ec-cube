@@ -214,13 +214,6 @@ class ProductRepository extends EntityRepository
                 ->setParameter('ProductStatues', $searchData['product_status']->toArray());
         }
 
-        // maker_id
-        if (!empty($searchData['maker_id']) && $searchData['maker_id']->toArray()) {
-            $qb
-                ->andWhere('p.Maker = :Maker')
-                ->setParameter('Maker', $searchData['maker_id']->toArray());
-        }
-
         // crate_date
         if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
             $date = $searchData['create_date_start']

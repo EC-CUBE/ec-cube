@@ -33,7 +33,7 @@ class OrderSearchType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }
@@ -151,6 +151,7 @@ class OrderSearchType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

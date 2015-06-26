@@ -1,0 +1,134 @@
+<!doctype html>
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ BaseInfo.shop_name }} - EC-CUBE管理画面</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="{{ app.config.admin_urlpath }}/assets/img/favicon.ico">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/dashboard.css">
+{% block stylesheet %}{% endblock %}
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+<div id="wrapper" class="sidebar-open">
+    <!-- ▼ #header ▼ -->
+    <header id="header" role="navigation">
+        <div class="navbar navbar-static-top">
+            <div class="logo" href="./"><img src="{{ app.config.admin_urlpath }}/assets/img/logo.png" width="172"></div>
+            <!-- Sidebar toggle button-->
+
+            <div class="bt_toggle">
+                <a role="button" data-toggle="offcanvas" class="bt_drawermenu" href="#"> <span class="sr-only">Toggle navigation</span>
+                    <svg class="cb cb-bars">
+                        <use xlink:href="#cb-bars"/>
+                    </svg>
+                </a>
+            </div>
+            <a href="{{ url('homepage') }}" id="sitename" target="_blank">{{ app.config.shop_name }}<span class="cb cb-external-link"></span></a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-menu">
+                <dl class="dropdown">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <dt class="dropdown-toggle" data-toggle="dropdown">
+                            <svg class="cb cb-user-circle">
+                                <use xlink:href="#cb-user-circle" />
+                            </svg>
+                            <span class="hidden-xs">{{ app.user.name }} 様</span>
+                            <svg class="cb cb-angle-down icon_down">
+                                <use xlink:href="#cb-angle-down" />
+                            </svg>
+                        </dt>
+                        <dd class="dropdown-menu">
+                            最終ログイン<br>
+                            {{ app.user.login_date.format('Y/m/d H:i')|default('') }} <a class="btn btn-primary btn-xs" href="{{ url(app.config.admin_route ~ '_logout') }}">ログアウト</a>
+                        </dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </header>
+    <!-- ▲ #header ▲ -->
+    <!-- ▼ #side ▼ -->
+    <aside id="side">
+        <ul class="nav nav-sidebar">
+            <li>
+                <a href="{{ url('admin_homepage') }}">
+                    <svg class="cb cb-home"><use xlink:href="#cb-home" /></svg>ホーム<svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg>
+                </a>
+            </li>
+            {{ include('Product/subnavi.twig') }}
+            {{ include('Order/subnavi.twig') }}
+            {{ include('Customer/subnavi.twig') }}
+            {{ include('Content/subnavi.twig') }}
+            {{ include('Setting/subnavi.twig') }}
+        </ul>
+    </aside>
+    <!-- ▲ #side ▲ -->
+    <!-- ▼ #main ▼ -->
+    <div id="main">
+        <h1 class="page-header">{{ block('title') }}<span>{{ block('sub_title') }}</span></h1>
+
+        <div class="container-fluid">
+
+            {{ include('alert.twig') }}
+
+            {% block main %}{% endblock %}
+
+        </div>
+    </div>
+    <!-- ▲ #main ▲ -->
+
+    <!-- ▼ #modal ▼ -->
+    {% block modal %}{% endblock %}
+    <!-- ▲ #modal ▲ -->
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/ie10-viewport-bug-workaround.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/function.js"></script>
+<script>
+$(function () {
+    $.ajax({
+        url: '{{ app.config.admin_urlpath }}/assets/img/svg.html',
+        type: 'GET',
+        dataType: 'html',
+    }).done(function(data){
+        $('body').prepend(data);
+    }).fail(function(data){
+    });
+});
+</script>
+{% block javascript %}{% endblock %}
+</body>
+</html>

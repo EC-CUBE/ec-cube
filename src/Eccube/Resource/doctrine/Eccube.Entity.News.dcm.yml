@@ -36,11 +36,13 @@ Eccube\Entity\News:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
             column: news_select
+            default: '0'
         link_method:
-            type: text
-            nullable: true
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
 #        creator_id:
 #            type: integer
 #            nullable: false

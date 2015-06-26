@@ -1,0 +1,70 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['order', 'order_master'] %}
+
+{% block title %}受注管理{% endblock %}
+{% block sub_title %}メール通知{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-9">
+        <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail_all') }}">
+        {{ form_widget(form._token) }}
+        <input type="hidden" name="ids" value="{{ ids }}">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">メール配信</h3>
+                <span class="text-danger">※本文は1通分の例です。受注情報は各メールごとに異なります。</span>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">タイトル</label>
+                    <div class="col-sm-9 col-lg-10">
+                        {{ form_widget(form.subject) }}
+                        {{ form_errors(form.subject) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">本文</label>
+                    <div class="col-sm-9 col-lg-10">
+                        {{ body|raw|nl2br }}
+                    </div>
+                </div>
+                {{ form_widget(form.template, {freeze_display_text: false}) }}
+                {{ form_widget(form.header, {freeze_display_text: false}) }}
+                {{ form_widget(form.footer, {freeze_display_text: false}) }}
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                <p><button type="submit" class="btn btn-info btn-lg" name="mode" value="back">戻る</button></p>
+                <p><button type="submit" class="btn btn-primary btn-lg" name="mode" value="complete">メール送信</button></p>
+            </div>
+        </div>
+        </form>
+
+    </div><!-- /.col -->
+</div>
+
+{% endblock %}

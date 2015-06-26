@@ -101,6 +101,12 @@ Eccube\Entity\Customer:
         note:
             type: text
             nullable: true
+        reset_key:
+            type: text
+            nullable: true
+        reset_expire:
+            type: datetime
+            nullable: true
         create_date:
             type: datetime
             nullable: false

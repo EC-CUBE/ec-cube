@@ -107,4 +107,17 @@ class ReviewDenyUrl extends \Eccube\Entity\AbstractEntity
     {
         return $this->rank;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return ReviewDenyUrl
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

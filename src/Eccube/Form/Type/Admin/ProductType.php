@@ -34,7 +34,7 @@ class ProductType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }
@@ -145,6 +145,7 @@ class ProductType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
 
     }

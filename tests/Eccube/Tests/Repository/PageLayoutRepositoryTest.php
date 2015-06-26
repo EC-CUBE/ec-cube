@@ -24,21 +24,10 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Application;
+use Eccube\Entity\Master\DeviceType;
 
-class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
+class PageLayoutRepositoryTest extends AbstractRepositoryTestCase
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application(array(
-            'env' => 'test',
-        ));
-
-        return $app;
-    }
 
 /* privateなMethodにしたのでテストは別途考える
     public function test_getNewPageId()
@@ -58,9 +47,10 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
         $app = $this->createApplication();
 
         $expected = null;
-
+        $DeviceType = $app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
         $PageLayout = $app['eccube.repository.page_layout']
-            ->findOrCreate(null, $app['config']['device_type_pc']);
+            ->findOrCreate(null, $DeviceType);
         $actual = $PageLayout->getUrl();
 
         $this->assertSame($actual, $expected);
@@ -72,14 +62,16 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $expected = array(
             'url' => 'homepage',
-            'device_type_id' => $app['config']['device_type_pc'],
+            'DeviceType' => DeviceType::DEVICE_TYPE_PC,
         );
 
+        $DeviceType = $app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
         $PageLayout = $app['eccube.repository.page_layout']
-            ->findOrCreate(1, $app['config']['device_type_pc']);
+            ->findOrCreate(1, $DeviceType);
         $actual = array(
             'url' => $PageLayout->getUrl(),
-            'device_type_id' => $PageLayout->getDeviceTypeId(),
+            'DeviceType' => $PageLayout->getDeviceType()->getId(),
         );
 
         $this->assertSame($actual, $expected);
@@ -116,14 +108,14 @@ class PageLayoutRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $expected = array(
             'url' => 'products/list.php',
-            'device_type_id' => $app['config']['device_type_smartphone'],
+            'DeviceType' => DeviceType::DEVICE_TYPE_SP,
         );
 
         $PageLayout = $app['eccube.repository.page_layout']
-            ->findOrCreate(2,  $app['config']['device_type_smartphone']);
+            ->findOrCreate(2, DeviceType::DEVICE_TYPE_SP);
         $actual = array(
             'url' => $PageLayout->getUrl(),
-            'device_type_id' => $PageLayout->getDeviceTypeId(),
+            'DeviceType' => $PageLayout->getDeviceType()->getId(),
         );
 
         $this->assertSame($actual, $expected);

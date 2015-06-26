@@ -21,7 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_index'] %}
 
 {% block title %}基本情報設定{% endblock %}
 {% block sub_title %}SHOPマスター{% endblock %}
@@ -30,11 +32,11 @@
 
 {% block main %}
 
-    <div class="row">
-        <div class="col-md-12">
-            <form name="form1" role="form" class="form-horizontal" id="point_form" method="post" action="">
-            {{ form_widget(form._token) }}
+    <div class="row" id="aside_wrap">
+        <form name="form1" role="form" class="form-horizontal" id="point_form" method="post" action="">
+        {{ form_widget(form._token) }}
 
+            <div class="col-md-9">
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">基本情報編集</h3>
@@ -112,14 +114,23 @@
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+            </div>
+            
+            <div class="col-md-3" id="aside_column">
+                <div class="col_inner">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                         <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
-                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
                 </div>
+            </div><!-- /.col -->
 
-            </form>
-        </div>
+        </form>
     </div>
 
 {% endblock %}

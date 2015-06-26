@@ -138,7 +138,8 @@ class ShippingType extends AbstractType
             ))
             ->add('shipping_delivery_date', null, array(
                 'label' => 'お届け日'
-            ));
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

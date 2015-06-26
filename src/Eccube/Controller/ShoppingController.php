@@ -197,7 +197,7 @@ class ShoppingController extends AbstractController
                     $em->flush();
                     $em->close();
 
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $em->getConnection()->rollback();
                     $em->close();
                     return $app->redirect($app->url('shopping_error'));
@@ -599,8 +599,7 @@ class ShoppingController extends AbstractController
             ->getForm();
 
         return $app['view']->render('Shopping/login.twig', array(
-//            'error' => $app['security.last_error']($app['request']),
-            'error'         => $error,
+            'error' => $app['security.last_error']($app['request']),
             'form'  => $form->createView(),
         ));
     }

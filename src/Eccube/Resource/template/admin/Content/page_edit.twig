@@ -1,0 +1,120 @@
+{#
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * http://www.lockon.co.jp/
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['content', 'page'] %}
+
+{% block title %}コンテンツ管理{% endblock %}
+{% block sub_title %}ページ管理{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <form role="form" name="content_page_form" id="content_page_form" method="post"
+          action="{%- if page_id is not null %}{{ url('admin_content_page_edit', {id: page_id}) }}{% else %}{{ url('admin_content_page_new') }}{% endif -%}">
+        {{ form_widget(form._token) }}
+        {{ form_widget(form.id) }}
+        {{ form_widget(form.DeviceType, { attr : { style : 'display: none;' } } ) }}
+        <div class="row" id="aside_wrap">
+            <div class="col-md-9">
+                <div class="box form-horizontal">
+                    <div class="box-header">
+                        <h3 class="box-title">ページ詳細編集</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            {{ form_label(form.name) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {% if editable %}
+                                    {{ form_widget(form.name) }}
+                                {% else %}
+                                    {{ form.name.vars.value }}
+                                    {{ form_widget(form.name, { type : 'hidden' } ) }}
+                                {% endif %}
+                                {{ form_errors(form.name) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.file_name) }}
+                            <div class="col-sm-9 col-lg-10 form-inline">
+                                {% if editable %}
+                                    {{ url('top') }}{{ app.config.user_data_route }}/{{ form_widget(form.file_name) }}.twig
+                                {% else %}
+                                    {{ url('top') }}{{ form.file_name.vars.value }}.twig
+                                    {{ form_widget(form.file_name, { type : 'hidden' } ) }}
+                                {% endif %}
+                                {{ form_errors(form.file_name) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.tpl_data) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.tpl_data, { attr : { 'rows' : 15, style : 'font-size:12px' } }) }}
+                                {{ form_errors(form.tpl_data) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box form-horizontal">
+                    <div class="box-header">
+                        <h3 class="box-title">
+                            meta設定
+                        </h3>
+                    </div>
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+                        {{ form_row(form.author) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.keyword) }}
+                        {{ form_row(form.meta_robots) }}
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-md-3">
+                <div class="col_inner" id="aside_column">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg"
+                                            onclick="document.content_page_form.submit();">登録
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+    </form>
+{% endblock %}

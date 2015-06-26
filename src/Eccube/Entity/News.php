@@ -73,7 +73,7 @@ class News extends \Eccube\Entity\AbstractEntity
     private $select;
 
     /**
-     * @var string
+     * @var integer
      */
     private $link_method;
 
@@ -248,7 +248,7 @@ class News extends \Eccube\Entity\AbstractEntity
     /**
      * Set link_method
      *
-     * @param  string $linkMethod
+     * @param  integer $linkMethod
      * @return News
      */
     public function setLinkMethod($linkMethod)
@@ -258,10 +258,10 @@ class News extends \Eccube\Entity\AbstractEntity
         return $this;
     }
 
-    /**
+    /*
      * Get link_method
      *
-     * @return string
+     * @return integer
      */
     public function getLinkMethod()
     {

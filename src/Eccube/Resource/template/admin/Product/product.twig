@@ -1,72 +1,65 @@
 {#
 This file is part of EC-CUBE
-
 Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
-
 http://www.lockon.co.jp/
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'product_edit'] %}
 
 {% block title %}商品管理{% endblock %}
 {% block sub_title %}商品登録{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% set menus = ['product', 'edit'] %}
-
-{% block assets %}
-    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload.css" rel="stylesheet">
-    <link href="{{ app.config.root }}admin/file_upload/css/jquery.fileupload-ui.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-
-    <script src="{{ app.config.root }}admin/file_upload/js/vendor/jquery.ui.widget.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.iframe-transport.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-process.js"></script>
-    <script src="{{ app.config.root }}admin/file_upload/js/jquery.fileupload-validate.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <style>
-        .ui-state-highlight {
-            height: 148px;
-            border: dashed 1px #ccc;
-            background: #fff;
-        }
-    </style>
-{% endblock %}
-
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload.css">
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload-ui.css">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<style>
+    .ui-state-highlight {
+        height: 148px;
+        border: dashed 1px #ccc;
+        background: #fff;
+    }
+</style>
+{% endblock stylesheet %}
 
 {% block javascript %}
-$(function(){
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/vendor/jquery.ui.widget.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.iframe-transport.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-process.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-validate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script>
+$(function() {
     $("#thumb").sortable({
         cursor: 'move',
         opacity: 0.7,
         placeholder: 'ui-state-highlight',
-        update: function( event, ui ) {
+        update: function (event, ui) {
             updateRank();
         }
     });
-
     {% if has_class == false %}
     if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
         $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
     } else {
         $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
     }
-    $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function(){
+    $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function () {
         if ($(this).prop("checked")) {
             $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
         } else {
@@ -74,47 +67,41 @@ $(function(){
         }
     });
     {% endif %}
-
-    var proto_img =''
-        + '<li class="ui-state-default">'
-        +     '<img src="__path__" />'
-        +     '<a class="delete-image">'
-        +         '<svg class="cb cb-close">'
-        +             '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
-        +         '</svg>'
-        +     '</a>'
-        + '</li>';
+    var proto_img = ''
+            + '<li class="ui-state-default">'
+            + '<img src="__path__" />'
+            + '<a class="delete-image">'
+            + '<svg class="cb cb-close">'
+            + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
+            + '</svg>'
+            + '</a>'
+            + '</li>';
     var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
     var proto_del = '{{ form_widget(form.delete_images.vars.prototype) }}';
-
     {% for image in form.images %}
-        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}{{ image.vars.value }}'));
-        var $widget = $('{{ form_widget(image) }}');
-        $widget.val('{{ image.vars.value }}');
-        $("#thumb").append($img.append($widget));
+    var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_save_urlpath }}/{{ image.vars.value }}'));
+    var $widget = $('{{ form_widget(image) }}');
+    $widget.val('{{ image.vars.value }}');
+    $("#thumb").append($img.append($widget));
     {% endfor %}
-
     {% for add_image in form.add_images %}
-        var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}{{ add_image.vars.value }}'));
-        var $widget = $('{{ form_widget(add_image) }}');
-        $widget.val('{{ add_image.vars.value }}');
-        $("#thumb").append($img.append($widget));
+    var $img = $(proto_img.replace(/__path__/g, '{{ app.config.image_temp_urlpath }}/{{ add_image.vars.value }}'));
+    var $widget = $('{{ form_widget(add_image) }}');
+    $widget.val('{{ add_image.vars.value }}');
+    $("#thumb").append($img.append($widget));
     {% endfor %}
-
     {% for delete_image in form.delete_images %}
-        $("#thumb").append('{{ form_widget(delete_image) }}');
+    $("#thumb").append('{{ form_widget(delete_image) }}');
     {% endfor %}
-
-    var hideSvg = function(){
+    var hideSvg = function () {
         if ($("#thumb li").length > 0) {
             $("#icon_no_image").css("display", "none");
         } else {
             $("#icon_no_image").css("display", "");
         }
     };
-
-    var updateRank = function() {
-        $("#thumb li").each(function(index){
+    var updateRank = function () {
+        $("#thumb li").each(function (index) {
             $(this).find(".rank_images").remove();
             filename = $(this).find("input[type='hidden']").val();
             $rank = $('<input type="hidden" class="rank_images" name="rank_images[]" />');
@@ -122,53 +109,49 @@ $(function(){
             $(this).append($rank);
         });
     }
-
     hideSvg();
     updateRank();
-
     // 画像削除時
     var count_del = 0;
-    $("#thumb").on("click", ".delete-image", function(){
+    $("#thumb").on("click", ".delete-image", function () {
         var $new_delete_image = $(proto_del.replace(/__name__/g, count_del));
         var src = $(this).prev().attr('src')
-            .replace('{{ app.config.image_temp_urlpath }}', '')
-            .replace('{{ app.config.image_save_urlpath }}', '');
+                .replace('{{ app.config.image_temp_urlpath }}', '')
+                .replace('{{ app.config.image_save_urlpath }}', '');
         $new_delete_image.val(src);
         $("#thumb").append($new_delete_image);
         $(this).parent("li").remove();
         hideSvg();
         updateRank();
-
-        count_del ++;
+        count_del++;
     });
     var count_add = {{ form.add_images|length|default(0) }};
     $('#{{ form.product_image.vars.id }}').fileupload({
         url: "{{ url('admin_product_image_add') }}",
         type: "post",
         dataType: 'json',
-        done: function(e, data) {
+        done: function (e, data) {
             $('#progress').hide();
-            $.each(data.result.files, function(index, file) {
-                var path = '{{ app.config.image_temp_urlpath }}' + file;
+            $.each(data.result.files, function (index, file) {
+                var path = '{{ app.config.image_temp_urlpath }}/' + file;
                 var $img = $(proto_img.replace(/__path__/g, path));
                 var $new_img = $(proto_add.replace(/__name__/g, count_add));
                 $new_img.val(file);
                 $child = $img.append($new_img);
-
                 $('#thumb').append($child);
-                count_add ++;
+                count_add++;
             });
             hideSvg();
             updateRank();
         },
-        fail: function(e, data) {
+        fail: function (e, data) {
             alert('アップロードに失敗しました。');
         },
-        always: function(e, data) {
+        always: function (e, data) {
             $('#progress').hide();
             $('#progress .progress-bar').width('0%');
         },
-        start: function(e, data) {
+        start: function (e, data) {
             $('#progress').show();
         },
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -177,27 +160,45 @@ $(function(){
         progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $('#progress .progress-bar').css(
-                'width',
-                progress + '%'
+                    'width',
+                    progress + '%'
             );
         },
-        processalways: function(e, data){
+        processalways: function (e, data) {
             if (data.files.error) {
                 alert("画像ファイルサイズが大きいか画像ファイルではありません。");
             }
         }
     });
-
     // 画像アップロード
-    $('#file_upload').on('click', function() {
+    $('#file_upload').on('click', function () {
         $('#{{ form.product_image.vars.id }}').click();
     });
 });
+function fnConfirm(action) {
+    document.form1.action = action;
+    document.form1.submit();
+}
 
-{% endblock %}
+function fnDelete(action) {
+    if (confirm('この商品情報を削除しても宜しいですか？')) {
+        document.form1.action = action;
+        document.form1.submit();
+    }
+}
+
+function fnCopy(action) {
+    if (confirm('この商品情報を複製しても宜しいですか？')) {
+        document.form1.action = action;
+        document.form1.submit();
+    }
+}
+
+</script>
+{% endblock javascript %}
 
 {% block main %}
-            <form role="form" name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+            <form role="form" name="form1" id="form1" method="post" action="" novalidate enctype="multipart/form-data">
             {{ form_widget(form._token) }}
             <div class="row" id="aside_wrap">
                 <div class="col-md-9">
@@ -313,9 +314,9 @@ $(function(){
                             {{ form_row(form.DeliveryDate) }}
                             {% if has_class == false %}
                                 <div class="form-group">
-                                    {{ form_label(form.class.deliv_fee) }}
+                                    {{ form_label(form.class.delivery_fee) }}
                                     <div class="col-sm-3 col-lg-3">
-                                        {{ form_widget(form.class.deliv_fee) }}
+                                        {{ form_widget(form.class.delivery_fee) }}
                                     </div>
                                 </div>
                             {% endif %}
@@ -365,9 +366,39 @@ $(function(){
                                 <div class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                         <ul class="col-3">
-                                            <li><button class="btn btn-default btn-block btn-sm">確認</button></li>
-                                            <li><button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>複製</button></li>
-                                            <li><button class="btn btn-default btn-block btn-sm" {% if id is null %}disabled{% endif %}>削除</button></li>
+                                            {% if id is null %}
+                                                <li>
+                                                    <button class="btn btn-default btn-block btn-sm" disabled>
+                                                        確認
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-default btn-block btn-sm" disabled>
+                                                        複製
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-default btn-block btn-sm" disabled>
+                                                        削除
+                                                    </button>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <button class="btn btn-default btn-block btn-sm" onclick="fnConfirm('{{ url('admin_product_product_display', {'id' : id}) }}');return false;">
+                                                        確認
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-default btn-block btn-sm" onclick="fnCopy('{{ url('admin_product_product_copy', {'id' : id}) }}');return false;">
+                                                        複製
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button class="btn btn-default btn-block btn-sm" onclick="fnDelete('{{ url('admin_product_product_delete', {'id' : id}) }}');return false;">
+                                                        削除
+                                                    </button>
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </div>

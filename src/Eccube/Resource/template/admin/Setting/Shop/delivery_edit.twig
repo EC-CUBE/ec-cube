@@ -19,28 +19,31 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_delivery'] %}
 
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}配送先管理{% endblock %}
 
-{% block javascript %}
-    $(function(){
-        $("#set_fee_all").on("click", function() {
-            var fee = $("#{{ form.free_all.vars.id }}").val();
-            $("input[name$='[fee]']").val(fee);
-        });
-    });
-{% endblock %}
-
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block main %}
+{% block javascript %}
+<script>
+$(function(){
+    $("#set_fee_all").on("click", function() {
+        var fee = $("#{{ form.free_all.vars.id }}").val();
+        $("input[name$='[fee]']").val(fee);
+    });
+});
+</script>
+{% endblock javascript %}
 
+{% block main %}
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
         {{ form_widget(form._token) }}
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row" id="aside_wrap">
+            <div class="col-md-9">
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">基本情報</h3>
@@ -73,7 +76,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 <div class="box accordion">
                     <div class="box-header toggle">
-                        <h3 class="box-title">お届け時間設定<span class="fa fa-chevron-down icon_down"></span></h3>
+                        <h3 class="box-title">お届け時間設定<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                     </div><!-- /.box-header -->
                     <div class="box-body accpanel">
                         {% for child in form.delivery_times %}
@@ -100,17 +103,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <h3 class="box-title">都道府県別送料設定</h3>
                     </div>
                     <div class="box-body">
-                        <div class="form-inline">
+                        <div class="form-inline fees_area">
                             全国一律送料&nbsp; {{ form_widget(form.free_all) }}
-                            <a class="btn-normal" href="javascript:;" id="set_fee_all">
-                                <button class="btn btn-default btn-sm" type="button">設定</button>
-                            </a>
+                            <a class="btn btn-normal btn-default btn-sm" href="javascript:;" id="set_fee_all">各都道府県に反映</a>
                         </div>
                     </div><!-- /.box-header -->
-                    <div class="box-body toggle" style="position:relative;">
-                        <h3 class="box-title">都道府県ごとに設定する<span class="fa fa-chevron-down icon_down"></span></h3>
+                    <div class="box-body toggle active" style="position:relative;">
+                        <h3 class="box-title">都道府県ごとに設定する<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                     </div>
-                    <div class="box-body accpanel">
+                    <div class="box-body accpanel" style="display: block;">
                         {% for child in form.delivery_fees %}
                             {% if loop.first %}
                                 <div class="form-group">
@@ -119,7 +120,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <label class="col-sm-2 control-label">
                                     {{ child.vars.data.pref|default('') }}
                                 </label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 fees_area">
                                     {{ form_widget(child) }}
                                 </div>
 
@@ -130,15 +131,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
 
-
-                <div class="row">
+                <div class="row hidden-xs hidden-sm">
                     <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                        <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
                         <p><a href="{{ url('admin_setting_shop_delivery') }}">一覧に戻る</a></p>
                     </div>
                 </div>
 
             </div><!-- /.col -->
+            
+            <div class="col-md-3">
+                <div class="col_inner" id="aside_column">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div><!-- /.col --> 
+        
 
         </div>
     </form>

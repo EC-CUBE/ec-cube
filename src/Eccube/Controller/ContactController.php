@@ -30,13 +30,6 @@ use Symfony\Component\HttpFoundation\Request;
 class ContactController
 {
 
-    private $title;
-
-    public function __construct()
-    {
-        $this->title = 'お問い合わせ';
-    }
-
     public function index(Application $app, Request $request)
     {
 
@@ -66,7 +59,7 @@ class ContactController
             ));
         }
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -76,39 +69,27 @@ class ContactController
                         $form = $builder->getForm();
                         $form->handleRequest($request);
 
-                        return $app['twig']->render('Contact/confirm.twig', array(
-                            'title' => $this->title,
+                        return $app->render('Contact/confirm.twig', array(
                             'form' => $form->createView(),
                         ));
-                        break;
+
                     case 'complete':
-                        $data = $form->getData();
+                        // メール送信
+                        $app['eccube.service.mail']->sendrContactMail($form->getData());
 
-                        // TODO: 後でEventとして実装する
-                        $message = $app['mail.message']
-                            ->setSubject('[EC-CUBE3] お問い合わせを受け付けました。')
-                            ->setFrom(array('sample@example.com'))
-                            ->setCc($app['config']['mail_cc'])
-                            ->setTo(array($data['email']))
-                            ->setBody($data['contents']);
-                        $app['mailer']->send($message);
-
-                        return $app->redirect($app['url_generator']->generate('contact_complete'));
+                        return $app->redirect($app->url('contact_complete'));
                         break;
                 }
             }
         }
 
-        return $app['twig']->render('Contact/index.twig', array(
-            'title' => $this->title,
+        return $app->render('Contact/index.twig', array(
             'form' => $form->createView(),
         ));
     }
 
     public function complete(Application $app)
     {
-        return $app['twig']->render('Contact/complete.twig', array(
-            'title' => $this->title,
-        ));
+        return $app->render('Contact/complete.twig');
     }
 }

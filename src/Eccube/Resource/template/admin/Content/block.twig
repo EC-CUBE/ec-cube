@@ -21,89 +21,76 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 #}
+{% extends 'default_frame.twig' %}
 
-
-{% extends 'main_frame.twig' %}
-
+{% set menus = ['content', 'block'] %}
 
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ブロック管理{% endblock %}
 
+{% block javascript %}
+    <script>
+        function fnDelete(action) {
+            if (confirm('このブロックを削除しても宜しいですか？')) {
+                document.content_block_form.action = action;
+                document.content_block_form.submit();
+            }
+        }
+    </script>
+{% endblock javascript %}
 
 {% block main %}
+<form name="content_block_form" id="content_block_form" method="post" action="">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-title">
+                            ブロック一覧
+                        </div>
+                    </div>
+                    <div class="box-body no-padding no-border">
+                        <div class="sortable_list">
+                            <div class="tableish">
+                                {% for Block in Blocks %}
+                                    <div class="item_box tr">
+                                        <div class="icon_sortable td"><svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg></div>
+                                        <div class="item_pattern td">
+                                            {{ Block.name }}
+                                        </div>
+                                        <div class="icon_edit td">
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="{{ url('admin_content_block_edit', {id: Block.id}) }}">編集</a>
+                                                    </li>
+                                                    <li>
+                                                        {% if Block.deletable_flg == 1 %}
+                                                            <a href="javascript:;" onclick="fnDelete('{{ url('admin_content_block_delete', { 'id': Block.id}) }}');return false;">削除</a>
+                                                        {% else %}
+                                                            <a>削除</a>
+                                                        {% endif %}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.item_box -->
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
 
-<form name="tax_rule_form" id="tax_rule_form" method="post" action="
-{%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block')}}{% endif -%}">
+            <div class="row btn_area2">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
+                    <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_block_new')}}">新規入力</a>
+                </div>
+            </div>
 
-    {{ form_widget(form._token) }}
-    {{ form_widget(form.bloc_id) }}
-    {{ form_widget(form.device_type_id) }}
-    <table>
-        <tr>
-            <th>{{ form_label(form.name) }}</th>
-            <td>
-                {{ form_widget(form.name) }}
-                <div class="message">
-                    <span class="attention">{{ form_errors(form.name) }}</span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>{{ form_label(form.filename) }}</th>
-            <td>
-                {{ form_widget(form.filename) }}
-                <div class="attention">
-                    <span class="attention">{{ form_errors(form.filename) }}</span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div>
-                    {{ form_widget(form.bloc_html) }}
-                    <input type="hidden" name="html_area_row" value="<!--{$text_row}-->" /><br />
-                    <a id="resize-btn" class="btn-normal" href="javascript:;" onclick="eccube.toggleRows('#resize-btn', '#tpl_data', 50, 13); return false;"><span>拡大</span></a>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <div class="btn-area">
-        <ul>
-            <li>{{ form_widget(form.save)}}</li>
-        </ul>
+        </div>
     </div>
 </form>
-
-
-    <h2>編集可能ブロック</h2>
-    <div class="btn addnew">
-        <a class="btn-normal" href="{{ url('admin_content_block')}}"><span>ブロックを新規入力</span></a>
-    </div>
-    <table class="list">
-        <col width="70%"/>
-        <col width="15%"/>
-        <col width="15%"/>
-        <tr>
-            <th>名称</th>
-            <th>編集</th>
-            <th>削除</th>
-        </tr>
-        {% for Block in Blocks %}
-            <tr style="{%  if Block.bloc_id == block_id %}background-color: {{ app.config.select_rgb }};{% endif %}">
-                <td>
-                    {{ Block.name }}
-                </td>
-                <td class="center">
-                        <a href="{{ url('admin_content_block_edit', {id: Block.bloc_id}) }}">編集</a>
-                </td>
-                <td class="center">
-                    {% if Block.deletable_flg > 0 %}
-                        <a href="{{ url('admin_content_block_delete', {id: Block.bloc_id}) }}">削除</a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-
 {% endblock %}

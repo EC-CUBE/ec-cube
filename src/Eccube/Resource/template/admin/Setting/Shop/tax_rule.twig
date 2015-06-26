@@ -19,12 +19,41 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_tax'] %}
 
 {% block title %}基本情報設定{% endblock %}
 {% block sub_title %}税率設定{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.min.css">
+{% endblock stylesheet %}
+
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment-ja.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
+<script>
+$(function() {
+
+    $('#tax_rule_apply_date').datetimepicker({
+        locale: 'ja',
+        format: 'YYYY-MM-DD HH:mm',
+        useCurrent: false,
+        showTodayButton: true
+    });
+
+});
+
+    function fnChange(action) {
+        document.form1.action = action;
+        document.form1.submit();
+    }
+</script>
+{% endblock javascript%}
 
 {% block main %}
     <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="
@@ -48,7 +77,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="row btn_area2">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
                     <button class="btn btn-primary btn-block btn-lg"
-                            onclick="eccube.changeAction('{{ url('admin_setting_shop_tax_edit_param') }}'); document.form1.submit(); return false;">登録</button>
+                            onclick="fnChange('{{ url('admin_setting_shop_tax_edit_param') }}'); return false;">登録</button>
+
                 </div>
             </div>
 
@@ -81,7 +111,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <td>ID</td>
+                                <th>ID</th>
                                 <th>消費税率</th>
                                 <th>課税規則</th>
                                 <th>適用日時</th>
@@ -97,18 +127,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <td>{{ TaxRule.default_tax_rule  ? '基本税率設定' : TaxRule.apply_date|date('Y/m/d') }}</td>
                                 <td class="icon_edit">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="fa fa-pencil"></span></a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li><a href="{{ url('admin_setting_shop_tax_edit', { id : TaxRule.id }) }}">編集</a></li>
                                             {% if TaxRule.default_tax_rule %}
                                                 <li><a>削除</a></li>
                                             {% else %}
-                                                <li><a href="#" onclick="eccube.changeAction('{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}'); document.form1.submit(); return false;">削除</a></li>
+                                                <li><a href="#" onclick="fnChange('{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}'); return false;">削除</a></li>
                                             {% endif %}
                                         </ul>
                                     </div>
-                                </td>
-                                <td>
                                 </td>
                             </tr>
                             {% endfor %}

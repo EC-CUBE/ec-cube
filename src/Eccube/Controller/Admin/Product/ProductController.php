@@ -128,7 +128,7 @@ class ProductController
             }
         }
 
-        return $app->render('Product/index.twig', array(
+        return $app->renderView('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,
@@ -178,6 +178,9 @@ class ProductController
                 ->setDelFlg(0)
                 ->setStockUnlimited(true)
                 ->setProduct($Product);
+            $ProductStock = new \Eccube\Entity\ProductStock();
+            $ProductClass->setProductStock($ProductStock);
+            $ProductStock->setProductClass($ProductClass);
         } else {
             $Product = $app['eccube.repository.product']->find($id);
             if (!$Product) {
@@ -188,6 +191,7 @@ class ProductController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
+                $ProductStock = $ProductClasses[0]->getProductStock();
             }
         }
 
@@ -228,6 +232,15 @@ class ProductController
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
                     $app['orm.em']->persist($ProductClass);
+
+                    // 在庫情報を作成
+                    if (!$ProductClass->getStockUnlimited()) {
+                        $ProductStock->setStock($ProductClass->getStock());
+                    } else {
+                        // 在庫無制限時はnullを設定
+                        $ProductStock->setStock(null);
+                    }
+                    $app['orm.em']->persist($ProductStock);
                 }
 
                 // カテゴリの登録
@@ -249,10 +262,9 @@ class ProductController
                         ->setProductId($Product->getId())
                         ->setCategory($Category)
                         ->setCategoryId($Category->getId())
-                        ->setRank($count)
-                    ;
+                        ->setRank($count);
                     $app['orm.em']->persist($ProductCategory);
-                    $count ++;
+                    $count++;
                     /* @var $Product \Eccube\Entity\Product */
                     $Product->addProductCategory($ProductCategory);
                 }
@@ -269,7 +281,7 @@ class ProductController
                     $app['orm.em']->persist($ProductImage);
 
                     // 移動
-                    $file = new File($app['config']['image_temp_realdir'] . $add_image);
+                    $file = new File($app['config']['image_temp_realdir'] . '/' . $add_image);
                     $file->move($app['config']['image_save_realdir']);
                 }
 
@@ -287,22 +299,24 @@ class ProductController
 
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($app['config']['image_save_realdir'] . $delete_image);
+                    $fs->remove($app['config']['image_save_realdir'] . '/' . $delete_image);
                 }
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
 
 
                 $ranks = $request->get('rank_images');
-                foreach ($ranks as $rank) {
-                    list($filename, $rank_val) = explode('//', $rank);
-                    $ProductImage = $app['eccube.repository.product_image']
-                        ->findOneBy(array(
-                            'file_name' => $filename,
-                            'Product' => $Product,
-                        ));
-                    $ProductImage->setRank($rank_val);
-                    $app['orm.em']->persist($ProductImage);
+                if ($ranks) {
+                    foreach ($ranks as $rank) {
+                        list($filename, $rank_val) = explode('//', $rank);
+                        $ProductImage = $app['eccube.repository.product_image']
+                            ->findOneBy(array(
+                                'file_name' => $filename,
+                                'Product' => $Product,
+                            ));
+                        $ProductImage->setRank($rank_val);
+                        $app['orm.em']->persist($ProductImage);
+                    }
                 }
                 $app['orm.em']->flush();
 
@@ -328,5 +342,52 @@ class ProductController
             'has_class' => $has_class,
             'id' => $id,
         ));
+    }
+
+    public function delete(Application $app, Request $request, $id = null)
+    {
+        if (!is_null($id)) {
+            /* @var $Product \Eccube\Entity\Product */
+            $Product = $app['eccube.repository.product']->find($id);
+            if ($Product instanceof \Eccube\Entity\Product) {
+                $Product->setDelFlg(1);
+                $app['orm.em']->persist($Product);
+                $app['orm.em']->flush();
+
+                $app->addSuccess('admin.delete.complete', 'admin');
+            } else {
+                $app->addError('admin.delete.failed', 'admin');
+            }
+        } else {
+            $app->addError('admin.delete.failed', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_product'));
+    }
+
+    public function copy(Application $app, Request $request, $id = null)
+    {
+        if (!is_null($id)) {
+            $Product = $app['eccube.repository.product']->find($id);
+            if ($Product instanceof \Eccube\Entity\Product) {
+                $CopyProduct = clone $Product;
+                $CopyProduct->copy();
+                $Disp = $app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
+                $CopyProduct->setStatus($Disp);
+
+                $app['orm.em']->persist($CopyProduct);
+                $app['orm.em']->flush();
+
+                $app->addSuccess('admin.product.copy.complete', 'admin');
+
+                return $app->redirect($app->url('admin_product_product_edit', array('id' => $CopyProduct->getId())));
+            } else {
+                $app->addError('admin.product.copy.failed', 'admin');
+            }
+        } else {
+            $app->addError('admin.product.copy.failed', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_product'));
     }
 }

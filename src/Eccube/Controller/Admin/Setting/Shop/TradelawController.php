@@ -29,42 +29,35 @@ use Eccube\Controller\AbstractController;
 
 class TradelawController extends AbstractController
 {
-    private $main_title;
-
-    private $title;
-
     public $form;
 
     public function __construct()
     {
-        $this->main_title = '基本情報管理';
-        $this->title = '特定商取引法';
     }
-    
+
     public function index(Application $app)
     {
+        $Help = $app['eccube.repository.help']->get();
 
-        $baseinfo = $app['eccube.repository.base_info']->findAll();
-        $baseinfo = $baseinfo[0];
-   
         $form = $app['form.factory']
-            ->createBuilder('tradelaw', $baseinfo)
+            ->createBuilder('tradelaw', $Help)
             ->getForm();
 
-        if ($app['request']->getMethod() === 'POST') {
+        if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
-                $app['orm.em']->persist($baseinfo);
+                $Help = $form->getData();
+                $app['orm.em']->persist($Help);
                 $app['orm.em']->flush();
-                $app['session']->getFlashBag()->add('tradelaw.complete', 'admin.register.complete');
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop_tradelaw'));
+                $app->addSuccess('admin.register.complete', 'admin');
+                return $app->redirect($app->url('admin_setting_shop_tradelaw'));
+            } else {
+                $app->addError('admin.register.failed', 'admin');
             }
         }
-        
-        return $app['view']->render('Setting/Shop/tradelaw.twig', array(
-            'main_title' => $this->main_title,
-            'title'      => $this->title,
-            'form'       => $form->createView(),
+
+        return $app->render('Setting/Shop/tradelaw.twig', array(
+                        'form' => $form->createView(),
         ));
     }
 }

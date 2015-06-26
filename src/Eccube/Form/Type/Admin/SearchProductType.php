@@ -33,7 +33,7 @@ class SearchProductType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }
@@ -79,7 +79,7 @@ class SearchProductType extends AbstractType
                 'label' => '登録日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -87,7 +87,7 @@ class SearchProductType extends AbstractType
                 'label' => '登録日(TO)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -95,7 +95,7 @@ class SearchProductType extends AbstractType
                 'label' => '更新日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
@@ -103,12 +103,13 @@ class SearchProductType extends AbstractType
                 'label' => '更新日(TO)',
                 'required' => false,
                 'input' => 'datetime',
-                'widget' => 'choice',
+                'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('page_no', 'hidden', array(
             ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

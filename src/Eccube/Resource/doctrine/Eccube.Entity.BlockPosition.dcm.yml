@@ -1,0 +1,47 @@
+Eccube\Entity\BlockPosition:
+    type: entity
+    table: dtb_block_position
+    repositoryClass: Eccube\Repository\BlockPositionRepository
+    id:
+        page_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        target_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+        block_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        block_row:
+            type: integer
+            nullable: true
+            unsigned: false
+        anywhere:
+            type: smallint
+            nullable: false
+            unsigned: false
+            options:
+                default: '0'
+    manyToOne:
+        Block:
+            targetEntity: Eccube\Entity\Block
+            inversedBy: BlockPositions
+            joinColumn:
+                name: block_id
+                referencedColumnName: block_id
+                nullable: false
+        PageLayout:
+            targetEntity: Eccube\Entity\PageLayout
+            inversedBy: BlockPositions
+            joinColumn:
+                name: page_id
+                referencedColumnName: page_id
+                nullable: false
+    lifecycleCallbacks: {  }

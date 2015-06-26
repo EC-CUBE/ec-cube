@@ -19,58 +19,49 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
-{% block title %}お届け先の追加・編集{% endblock %}
+{% set body_class = 'cart_page' %}
 
 {% block javascript %}
 <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
 $(function() {
-  $('#zip-search').click(function(event) {
-    event.preventDefault();
-    AjaxZip3.zip2addr('shopping_shipping[zip][zip01]', 'shopping_shipping[zip][zip02]', 'shopping_shipping[address][pref]', 'shopping_shipping[address][addr01]');
-  });
+    $('#zip-search').click(function(event) {
+        event.preventDefault();
+        AjaxZip3.zip2addr('shopping_shipping[zip][zip01]', 'shopping_shipping[zip][zip02]', 'shopping_shipping[address][pref]', 'shopping_shipping[address][addr01]');
+    });
 });
 </script>
 {% endblock javascript %}
 
 {% block main %}
-
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">お届け先の追加・編集</h1>
-                <div class="container-fluid">
-                    <form method="post" action="{{ url('shopping_shipping_edit') }}">
-                        {{ form_widget(form._token) }}
-                        <div class="dl_table">
-                            {{ form_row(form.name, {attr : {class : 'middle'}}) }}
-                            {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
-                            {{ form_row(form.company_name) }}
-                            <dl>
-                                <dt>住所<span class="required">必須</span></dt>
-                                <dd>
-                                    <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                                    <div class="form-group form-inline {% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                                    {{ form_widget(form.address) }}
-                                    {{ form_errors(form.address) }}
-                                    </div>
-                                </dd>
-                            </dl>
-                            {{ form_row(form.tel, {attr : {class : 'short'}}) }}
+    <h1 class="page-heading">お届け先の追加・編集</h1>
+    <div class="container-fluid">
+        <form method="post" action="{{ url('shopping_shipping_edit') }}">
+            {{ form_widget(form._token) }}
+            <div class="dl_table">
+                {{ form_row(form.name, {attr : {class : 'middle'}}) }}
+                {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
+                {{ form_row(form.company_name) }}
+                <dl>
+                    <dt>住所<span class="required">必須</span></dt>
+                    <dd>
+                        <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                        <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                        {{ form_widget(form.address) }}
+                        {{ form_errors(form.address) }}
                         </div>
-                        <div class="row no-padding">
-                            <div class="btn_group col-sm-offset-4 col-sm-4">
-                                <p><button type="submit" class="btn btn-primary btn-block">登録する</button></p>
-                                <p><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
-                            </div>
-                        </div>
-                    </form>
+                    </dd>
+                </dl>
+                {{ form_row(form.tel, {attr : {class : 'short'}}) }}
+            </div>
+            <div class="row no-padding">
+                <div class="btn_group col-sm-offset-4 col-sm-4">
+                    <p><button type="submit" class="btn btn-primary btn-block">登録する</button></p>
+                    <p><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-
-
 {% endblock %}

@@ -29,6 +29,11 @@ namespace Eccube\Entity\Master;
  */
 class DeviceType extends \Eccube\Entity\AbstractEntity
 {
+    const DEVICE_TYPE_MB = 1;
+    const DEVICE_TYPE_SP = 2;
+    const DEVICE_TYPE_PC = 10;
+    const DEVICE_TYPE_ADMIN = 99;
+
     /**
      * @return string
      */
@@ -106,5 +111,18 @@ class DeviceType extends \Eccube\Entity\AbstractEntity
     public function getRank()
     {
         return $this->rank;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return DeviceType
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

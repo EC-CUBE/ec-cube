@@ -107,4 +107,17 @@ class Db extends \Eccube\Entity\AbstractEntity
     {
         return $this->rank;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Db
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

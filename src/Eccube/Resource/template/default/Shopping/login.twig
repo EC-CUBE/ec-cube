@@ -19,60 +19,52 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'site_main.twig' %}
+{% extends 'default_frame.twig' %}
 
-{% block title %}ログイン{% endblock title %}
+{% set body_class = 'cart_page' %}
 
 {% block main %}
+    {% if error %}
+        <div>{{ error.message }}</div>
+    {% endif %}
+    <h1 class="page-heading">ログイン</h1>
+    <div class="container-fluid">
+        <form method="post" action="{{ url('login_check') }}">
+            <input type="hidden" name="_target_path" value="shopping" />
+            <input type="hidden" name="_failure_path" value="shopping_login" />
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner no-padding">
-            {% if error %}
-                <div>{{ error.message }}</div>
-            {% endif %}
-            <div id="main">
-                <h1 class="page-heading">ログイン</h1>
-                <div class="container-fluid">
-                    <form method="post" action="{{ url('login_check') }}">
-                        <input type="hidden" name="_target_path" value="shopping" />
-                        <input type="hidden" name="_failure_path" value="shopping_login" />
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                        <div id="login_box" class="login_cart row">
-                            <div class="col-sm-8" style="height: 330px;">
-                                <div class="column">
-                                    <div class="column_inner clearfix">
-                                        <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
-                                        <div class="form-group">
-                                            {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
-                                            <label><input type="checkbox">記憶</label></div>
-                                        <div class="form-group">
-                                            {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
-                                            </div>
-                                        <div class="btn_area">
-                                            <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
-                                            <ul>
-                                            <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
-                                            <li><a href="{{ url('entry') }}">新規会員登録</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+            <div id="login_box" class="login_cart row">
+                <div class="col-sm-8" style="height: 330px;">
+                    <div class="column">
+                        <div class="column_inner clearfix">
+                            <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
+                            <div class="form-group">
+                                {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
+                                <label><input type="checkbox">記憶</label></div>
+                            <div class="form-group">
+                                {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
                                 </div>
-                            </div><!-- /.col -->
-                            <div class="col-sm-4" style="height: 330px;">
-                                <div class="column">
-                                    <div class="column_inner">
-                                        <p class="message">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
-                                        <p class="btn_area">
-                                            <a href="{{ url('shopping_nonmember') }}" class="btn btn-info btn-block btn-lg">ゲスト購入</a></p>
-                                    </div>
-                                </div>
-                            </div><!-- /.col -->
-                        </div><!-- /.row -->
-                    </form>
-                </div>
-            </div>
-        </div>
+                            <div class="btn_area">
+                                <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
+                                <ul>
+                                <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
+                                <li><a href="{{ url('entry') }}">新規会員登録</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.col -->
+                <div class="col-sm-4" style="height: 330px;">
+                    <div class="column">
+                        <div class="column_inner">
+                            <p class="message">会員登録をせずに購入手続きをされたい方は、下記よりお進みください。
+                            <p class="btn_area">
+                                <a href="{{ url('shopping_nonmember') }}" class="btn btn-info btn-block btn-lg">ゲスト購入</a></p>
+                        </div>
+                    </div>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </form>
     </div>
-
 {% endblock %}

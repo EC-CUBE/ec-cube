@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
@@ -79,7 +80,7 @@ class FileController
         $javascript = $this->getJsArrayList($tree);
         $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
 
-        return $app['view']->render('Content/index.twig', array(
+        return $app['view']->render('Content/file.twig', array(
             'form' => $this->form->createView(),
             'tpl_maintitle' => $mainTitle,
             'tpl_subtitle' => $subTitle,
@@ -102,13 +103,15 @@ class FileController
 
     public function create(Application $app)
     {
-        $app['filesystem']->mkdir($app['request']->get('now_dir') . '/' . $app['request']->get('create_file'));
+        $fs = new Filesystem();
+        $fs->mkdir($app['request']->get('now_dir') . '/' . $app['request']->get('create_file'));
     }
 
     public function delete(Application $app)
     {
-        if ($app['filesystem']->exists($app['request']->get('select_file'))) {
-            $app['filesystem']->remove($app['request']->get('select_file'));
+        $fs = new Filesystem();
+        if ($fs->exists($app['request']->get('select_file'))) {
+            $fs->remove($app['request']->get('select_file'));
         }
     }
 

@@ -19,18 +19,23 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_payment'] %}
 
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}支払方法管理{% endblock %}
 
+{% block javascript %}
+<script>
+    function fnDelete(action) {
+        document.delete_form.action = action;
+        document.delete_form.submit();
+    }
+</script>
+{% endblock javascript%}
+
 {% block main %}
-    <script>
-        function fnDelete(action) {
-            document.delete_form.action = action;
-            document.delete_form.submit();
-        }
-    </script>
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -39,7 +44,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         支払方法
                     </h3>
                 </div><!-- /.box-header -->
-                <div class="box-body no-padding">
+                <div class="box-body">
                     <div class="table_list">
                         <div class="table-responsive with-border">
                             <table class="table table-striped">
@@ -117,11 +122,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_payment_new') }}">
-                <button class="btn btn-primary btn-block btn-lg">
-                    支払方法を新規入力
-                </button>
-            </a>
+            <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">支払方法を新規入力</a>
         </div>
     </div>
 {% endblock %}

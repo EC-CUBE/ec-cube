@@ -33,7 +33,7 @@ class EntryType extends AbstractType
 {
     public $app;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct(\Silex\Application $app)
     {
         $this->app = $app;
     }
@@ -162,7 +162,8 @@ class EntryType extends AbstractType
                 'label' => '職業',
                 'required' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

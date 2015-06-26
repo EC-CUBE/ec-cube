@@ -19,36 +19,27 @@ form.job.empty_value: 選択してください
 form.reminder.empty_value: 選択してください
 
 form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
-form.contact.contents.help: ※ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
+form.contact.contents.help: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 form.member.email.invalid: 同じメールアドレスを入力してください。
 
 cart.over.stock: |-
-    ※ 選択された商品の在庫が不足しております。
+    選択された商品の在庫が不足しております。
     一度に在庫数を超える購入はできません。
 cart.over.sale_limit: |-
-    ※ 選択された商品は販売制限しております。
+    選択された商品は販売制限しております。
     一度に販売制限数を超える購入はできません。
 cart.product.type.kind: この商品は同時に購入することはできません。
 
-admin.register.complete: ※ 登録が完了しました。
-admin.register.failed: ※ 登録できませんでした。
-admin.delete.complete: ※ 削除が完了しました。
-admin.delete.failed: ※ 削除できませんでした。
-admin.rank.move.complete: ※ ランクの移動が完了しました。
+admin.register.complete: 登録が完了しました。
+admin.register.failed: 登録できませんでした。
+admin.delete.complete: 削除が完了しました。
+admin.delete.failed: 削除できませんでした。
+admin.rank.move.complete: ランクの移動が完了しました。
 
 admin.order.save.complete: 受注情報を保存しました。
-admin.order.delete.complete: ※ 登録が完了しました。
+admin.order.delete.complete: 登録が完了しました。
 
 Quantity: 数量
-
-admin.maker.up.complete: メーカーを上へ移動しました。
-admin.maker.up.error: メーカーを上へ移動できませんでした。
-admin.maker.down.complete: メーカーを下へ移動しました。
-admin.maker.down.error: メーカーを下へ移動できませんでした。
-admin.maker.save.complete: メーカーを保存しました。
-admin.maker.save.error: メーカーを保存できませんでした。
-admin.maker.delete.complete: メーカーを削除しました。
-admin.maker.delete.error: メーカーを削除できませんでした。
 
 admin.class_name.up.complete: 規格を上へ移動しました。
 admin.class_name.up.error: 規格を上へ移動できませんでした。
@@ -79,11 +70,23 @@ admin.category.delete.error: カテゴリを削除できませんでした。
 
 admin.product.search.stock: 在庫なし
 admin.product.product_class.save.complete: 商品規格を登録しました。
+admin.product.product_class.update.complete: 商品規格を更新しました。
 admin.product.product_class.delete.complete: 商品規格を削除しました。
+admin.product.copy.complete: 商品を複製しました。
+admin.product.copy.failed: 商品の複製に失敗しました。
 
 admin.customer.save.complete: 会員情報を保存しました。
 admin.customer.delete.complete: 会員情報を削除しました。
 admin.customer.resend.complete: 仮会員登録メールを送信しました。
+
+admin.news.up.complete: 新着情報を上へ移動しました。
+admin.news.up.error: 新着情報を上へ移動できませんでした。
+admin.news.down.complete: 新着情報を下へ移動しました。
+admin.news.down.error: 新着情報を下へ移動できませんでした。
+admin.news.save.complete: 新着情報を保存しました。
+admin.news.save.error: 新着情報を保存できませんでした。
+admin.news.delete.complete: 新着情報を削除しました。
+admin.news.delete.error: 新着情報を削除できませんでした。
 
 admin.member.up.complete: メンバーを上へ移動しました。
 admin.member.up.error: メンバーを上へ移動できませんでした。
@@ -102,3 +105,15 @@ admin.shop.longitude.invalid: -180.000000～180.000000の範囲で指定して�
 
 admin.shop.tax.save.complete: 税率設定情報を保存しました。
 admin.shop.tax.delete.complete: 税率設定情報を削除しました。
+
+admin.shop.mail.save.complete: メールテンプレート情報を保存しました。
+admin.shop.mail.save.error: メールテンプレートの新規登録はできません。
+
+admin.content.template.save.complete: テンプレート設定を保存しました。
+admin.content.template.add.complete: テンプレートファイルをアップロードしました。
+admin.content.template.delete.complete: テンプレートを削除しました。
+admin.content.template.delete.default.error: デフォルトテンプレートは削除できません。
+admin.content.template.delete.current.error: 現在設定中のテンプレートは削除できません。
+
+admin.sysmte.security.save.complete: セキュリティ設定を保存しました。
+admin.sysmte.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。

@@ -67,7 +67,7 @@ Eccube\Entity\ProductClass:
             nullable: false
             precision: 10
             scale: 0
-        deliv_fee:
+        delivery_fee:
             type: decimal
             nullable: true
             precision: 10
@@ -135,6 +135,10 @@ Eccube\Entity\ProductClass:
     oneToOne:
         ProductStock:
             targetEntity: Eccube\Entity\ProductStock
+            cascade: ["persist", "remove"]
+            mappedBy: ProductClass
+        TaxRule:
+            targetEntity: Eccube\Entity\TaxRule
             cascade: ["persist", "remove"]
             mappedBy: ProductClass
     lifecycleCallbacks: {  }

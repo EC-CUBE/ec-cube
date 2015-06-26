@@ -26,47 +26,53 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MailController extends AbstractController
 {
-    private $main_title;
-    private $sub_title;
-
-    public $form;
-
-    public function __construct()
+    public function index(Application $app, Request $request, $id = null)
     {
-    }
+        $Mail = null;
 
-    public function index(Application $app, $id = 0)
-    {
-        $Mail = $app['orm.em']
-            ->getRepository('\Eccube\Entity\Mailtemplate')
-            ->findOrCreate($id);
-        $form = $app['form.factory']
-            ->createBuilder('mail', $Mail)
-            ->getForm();
         if ($id) {
-            $form->get('template')->setData($Mail);
-        }
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
-
-            if ($form->isValid()) {
-                $Mail = $form->getData();
-                $app['orm.em']->persist($Mail);
-                $app['orm.em']->flush();
-
-                $app['session']->getFlashBag()->add('admin.mail.complete', 'admin.register.complete');
-
-                return $app->redirect($app['url_generator']->generate('admin_setting_shop_mail'));
+            $Mail = $app['orm.em']
+                ->getRepository('\Eccube\Entity\MailTemplate')
+                ->find($id);
+            if (is_null($Mail)) {
+                throw new NotFoundHttpException();
             }
         }
 
-        return $app['view']->render('Setting/Shop/mail.twig', array(
-            'Mail' => $Mail,
-            'mail_id' => $id,
+        $form = $app['form.factory']
+            ->createBuilder('mail', $Mail)
+            ->getForm();
+
+        $form['template']->setData($Mail);
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            // 新規登録は現時点では未実装とする.
+            if (is_null($Mail)) {
+                $app->addError('admin.shop.mail.save.error', 'admin');
+
+                return $app->redirect($app->url('admin_setting_shop_mail'));
+            }
+
+            if ($form->isValid()) {
+
+                $app['orm.em']->flush();
+
+                $app->addSuccess('admin.shop.mail.save.complete', 'admin');
+
+                return $app->redirect($app->url('admin_setting_shop_mail_edit', array('id' => $id)));
+            }
+        }
+
+        return $app->render('Setting/Shop/mail.twig', array(
             'form' => $form->createView(),
+            'id' => $id,
         ));
     }
 }

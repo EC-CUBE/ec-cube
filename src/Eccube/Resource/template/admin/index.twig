@@ -19,120 +19,116 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% extends 'main_frame.twig' %}
+{% extends 'default_frame.twig' %}
 
 {% block title %}ホーム{% endblock %}
 
 {% block main %}
-<div id="home">
-    {# お知らせここから #}
-    <div id="home-info">
-        <!--{foreach item=info from=$arrInfo}-->
-            <dl class="home-info-item">
-                <dt class="date"><!--{$info.disp_date|sfDispDBDate:false|h}--></dt>
-                <dt class="title"><!--{$info.title}--></dt>
-                <dd class="body"><!--{$info.body}--></dd>
-            </dl>
-        <!--{/foreach}-->
-    </div>
-    {# お知らせここまで #}
 
-    {# メインエリア #}
-    <div id="home-main">
-        <form name="form1" id="form1" method="post" action="#">
-            <input type="hidden" name="<!--{$smarty.const.TRANSACTION_ID_NAME}-->" value="<!--{$transactionid}-->" />
+        <div class="row">
+            <div class="col-md-6">
+                <form id="form1" name="form1" action="{{ url('admin_order') }}" method="post">
+                {{ form_widget(searchOrderForm._token) }}
+                <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
+                <div class="box" id="order_info">
+                    <div class="box-header">
+                        <h3 class="box-title">受注状況<a href="{{ url('admin_order') }}" class="icon_wrap"><svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg></a></h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body no-padding no-border">
+                        <div class="link_list">
+                            <div class="tableish">
+                                {% for OrderStatus in OrderStatuses %}
+                                <a href="#" class="item_box tr" onclick="$('#admin_search_order_status').val({{ OrderStatus.id }});document.form1.submit();">
+                                    <div class="td">{{ OrderStatus.name }}</div>
+                                    <div class="item_number text-right td">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</div>
+                                    <div class="icon_link td">
+                                        <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
+                                    </div>
+                                </a><!-- /.item_box -->
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+                </form>
+            </div><!-- /.col -->
 
-            {# システム情報ここから #}
-            <h2>システム情報</h2>
-            <table summary="システム情報" class="shop-info">
-                <tr>
-                    <th>EC-CUBEバージョン</th>
-                    <td>{{ app.config.ECCUBE_VERSION }}</td>
-                </tr>
-                <tr>
-                    <th>PHPバージョン</th>
-                    <td><!--{$php_version}--></td>
-                </tr>
-                <tr>
-                    <th>DBバージョン</th>
-                    <td><!--{$db_version}--></td>
-                </tr>
-                <tr>
-                    <th>詳細</th>
-                    <td><a href="{{ path('admin_setting_system_system') }}">システム設定＞システム情報</a></td>
-                </tr>
-            </table>
-            {# システム情報ここまで #}
+            <div class="col-md-6">
+                <div class="box" id="cube_news">
+                    <div class="box-header">
+                        <h3 class="box-title">お知らせ<a href="{{ app.config.eccube_info_url }}" class="icon_wrap"><svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg></a></h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body no-padding no-border">
+                        <iframe class="link_list_wrap" src="{{ app.config.eccube_info_url }}"></iframe>
+                    </div><!-- /.box-body -->
 
-            {# ショップの状況ここから #}
-            <h2>ショップの状況</h2>
-            <table summary="ショップの状況" class="shop-info">
-                <tr>
-                    <th>現在の会員数</th>
-                    <td><!--{$customer_cnt|default:"0"|n2s}-->名</td>
-                </tr>
-                <tr>
-                    <th>昨日の売上高</th>
-                    <td><!--{$order_yesterday_amount|default:"0"|n2s}-->円</td>
-                </tr>
-                <tr>
-                    <th>昨日の売上件数</th>
-                    <td><!--{$order_yesterday_cnt|default:"0"|n2s}-->件</td>
-                </tr>
-                <tr>
-                    <th><span>今月の売上高</span><span>(昨日まで) </span></th>
-                    <td><!--{$order_month_amount|default:"0"|n2s}-->円</td>
-                </tr>
-                <tr>
-                    <th><span>今月の売上件数 </span><span>(昨日まで) </span></th>
-                    <td><!--{$order_month_cnt|default:"0"|n2s}-->件</td>
-                </tr>
-                <tr>
-                    <th>昨日のレビュー書き込み数</th>
-                    <td><!--{$review_yesterday_cnt|default:"0"}-->件</th>
-                </tr>
-                <tr>
-                    <th>会員の保持ポイント合計</th>
-                    <td><!--{$customer_point|default:"0"}-->pt</td>
-                </tr>
-                <tr>
-                    <th>レビュー書き込み非表示数</th>
-                    <td><!--{$review_nondisp_cnt|default:"0"}-->件</td>
-                </tr>
-                <tr>
-                    <th>品切れ商品</th>
-                    <td>
-                    <!--{section name=i loop=$arrSoldout}-->
-                    <!--{$arrSoldout[i].product_id}-->:<!--{$arrSoldout[i].name|h}--><br />
-                    <!--{/section}-->
-                    </td>
-                </tr>
-            </table>
-            {# ショップの状況ここまで #}
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div>
 
-            {# 新規受付一覧ここから #}
-            <h2>新規受付一覧</h2>
-            <table summary="新規受付一覧" id="home-order">
-                <tr>
-                    <th class="center">受注日</th>
-                    <th class="center">お名前</th>
-                    <th class="center">購入商品</th>
-                    <th class="center">支払方法</th>
-                    <th class="center">購入金額(円)</th>
-                </tr>
-                {% for Order in Orders %}
-                    <tr>
-                        <td>{{ Order.create_date.format('Y/m/d H:i:s') }}</td>
-                        <td>{{ Order.name01 }} {{ Order.name02 }}</td>
-                        <td>{% if Order.OrderDetails.0 is defined %}{{ Order.OrderDetails.0.Product.name }}{% endif %}</td>
-                        <td>{{ Order.PaymentMethod }}</td>
-                        <td class="right">{{ Order.total|number_format }}円</td>
-                    </tr>
-                {% endfor %}
-            </table>
-            {# 新規受付一覧ここまで #}
-        </form>
-    </div>
-    {# メインエリア #}
-</div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box" id="sale_info">
+                    <div class="box-header">
+                        <h3 class="box-title">売り上げ状況</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body no-padding no-border">
+                        <div class="sale_box clearfix">
+                            <div class="monthly_sale">
+                                <div class="item_number">
+                                    {{ salesThisMonth is empty ? '¥ 0' : salesThisMonth.order_amount|price }} / {{ salesThisMonth is empty ? 0 : salesThisMonth.order_count|number_format }} <span>件</span>
+                                    <div class="small">今月の売上高 / 売上件数</div>
+                                </div>
+                            </div>
+                            <div class="yesterday_sale">
+                                <div class="item_number">
+                                    {{ salesYesterday is empty ? '¥ 0' : salesYesterday.order_amount|price }} / {{ salesYesterday is empty ? 0 : salesYesterday.order_count|number_format }} <span>件</span>
+                                    <div class="small">昨日の売上高 / 売上件数</div>
+                                </div>
+                            </div>
+                            <div class="today_sale">
+                                <div class="item_number">
+                                    {{ salesToday is empty ? '¥ 0' : salesToday.order_amount|price }} / {{ salesToday is empty ? 0 : salesToday.order_count|number_format }}  <span>件</span>
+                                    <div class="small">今日の売上高 / 売上件数</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+            <div class="col-md-4">
+                <div class="box" id="shop_info">
+                    <div class="box-header">
+                        <h3 class="box-title">ショップ状況</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body no-padding no-border">
+                        <form id="form2" name="form2" action="{{ url('admin_product_page', { page_no : 1, status : 3}) }}" method="post">
+                            {{ form_widget(searchProductForm._token) }}
+                        </form>
+                        <form id="form3" name="form3" action="{{ url('admin_customer') }}" method="post">
+                            {{ form_widget(searchCustomerForm._token) }}
+                            <input type="hidden" id="admin_search_customer_status_1" name="admin_search_customer[customer_status]" value="2">
+                        </form>
+                        <div class="link_list">
+                            <div class="tableish">
+                                <a href="#" class="item_box tr" onclick="document.form2.submit();">
+                                    <div class="icon td"><svg class="cb cb-tag-slash"><use xlink:href="#cb-tag-slash" /></svg></div>
+                                    <div class="item_number td">{{ countNonStockProducts|number_format }}<div class="small">在庫切れ商品</div></div>
+                                    <div class="icon_link td">
+                                        <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
+                                    </div>
+                                </a><!-- /.item_box -->
+                                <a href="#" class="item_box tr" onclick="document.form3.submit();">
+                                    <div class="icon td"><svg class="cb cb-users"><use xlink:href="#cb-users" /></svg></div>
+                                    <div class="item_number text-left td">{{ countCustomers|number_format }}<div class="small">会員数</div></div>
+                                    <div class="icon_link td">
+                                        <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
+                                    </div>
+                                </a><!-- /.item_box -->
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div>
 {% endblock %}

@@ -24,6 +24,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Product
  */
@@ -526,17 +527,12 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $CustomerFavoriteProducts;
 
     /**
-     * @var \Eccube\Entity\Maker
-     */
-    private $Maker;
-
-    /**
      * @var \Eccube\Entity\Member
      */
     private $Creator;
 
     /**
-     * @var \Eccube\Entity\Master\DeliveryDate
+     * @var \Eccube\Entity\DeliveryDate
      */
     private $DeliveryDate;
 
@@ -555,16 +551,82 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function __construct()
     {
-        $this->ProductCategories = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ProductClasses = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ProductStatuses = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->RecommendProducts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->RecommendedProducts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->Reviews = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->BestProducts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ProductImage = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProductCategories = new ArrayCollection();
+        $this->ProductClasses = new ArrayCollection();
+        $this->ProductStatuses = new ArrayCollection();
+        $this->RecommendProducts = new ArrayCollection();
+        $this->RecommendedProducts = new ArrayCollection();
+        $this->Reviews = new ArrayCollection();
+        $this->BestProducts = new ArrayCollection();
+        $this->CustomerFavoriteProducts = new ArrayCollection();
+        $this->ProductImage = new ArrayCollection();
+        $this->ProductTag = new ArrayCollection();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+    }
+
+    public function copy()
+    {
+        $Categories = $this->getProductCategories();
+        $this->ProductCategories = new ArrayCollection();
+        foreach ($Categories as $Category) {
+            $CopyCategory = clone $Category;
+            $this->addProductCategory($CopyCategory);
+            $CopyCategory->setProduct($this);
+        }
+
+        $Classes = $this->getProductClasses();
+        $this->ProductClasses = new ArrayCollection();
+        foreach ($Classes as $Class) {
+            $CopyClass = clone $Class;
+            $this->addProductClass($CopyClass);
+            $CopyClass->setProduct($this);
+        }
+
+        $Recommends = $this->getRecommendProducts();
+        $this->RecommendProducts = new ArrayCollection();
+        foreach ($Recommends as $Recommend) {
+            $CopyRecommend = clone $Recommend;
+            $this->addRecommendProduct($CopyRecommend);
+            $CopyRecommend->setProduct($this);
+        }
+
+        $Bests = $this->getBestProducts();
+        $this->BestProducts = new ArrayCollection();
+        foreach ($Bests as $Best) {
+            $CloneBest = clone $Best;
+            $this->addBestProduct($CloneBest);
+            $CloneBest->setProduct($this);
+        }
+
+        $Favorites = $this->getCustomerFavoriteProducts();
+        $this->CustomerFavoriteProducts = new ArrayCollection();
+        foreach ($Favorites as $Favorite) {
+            $CloneFavorite = clone $Favorite;
+            $this->addCustomerFavoriteProduct($CloneFavorite);
+            $CloneFavorite->setProduct($this);
+        }
+
+        $Images = $this->getProductImage();
+        $this->ProductImage = new ArrayCollection();
+        foreach ($Images as $Image) {
+            $CloneImage = clone $Image;
+            $this->addProductImage($CloneImage);
+            $CloneImage->setProduct($this);
+        }
+
+        $Tags = $this->getProductTag();
+        $this->ProductTag = new ArrayCollection();
+        foreach ($Tags as $Tag) {
+            $CloneTag = clone $Tag;
+            $this->addProductTag($CloneTag);
+            $CloneTag->setProduct($this);
+        }
+
+        return $this;
     }
 
     /**
@@ -1037,29 +1099,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set Maker
-     *
-     * @param  \Eccube\Entity\Maker $maker
-     * @return Product
-     */
-    public function setMaker(\Eccube\Entity\Maker $maker = null)
-    {
-        $this->Maker = $maker;
-
-        return $this;
-    }
-
-    /**
-     * Get Maker
-     *
-     * @return \Eccube\Entity\Maker
-     */
-    public function getMaker()
-    {
-        return $this->Maker;
-    }
-
-    /**
      * Set Creator
      *
      * @param  \Eccube\Entity\Member $creator
@@ -1085,10 +1124,10 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Set DeliveryDate
      *
-     * @param  \Eccube\Entity\Master\DeliveryDate $deliveryDate
+     * @param  \Eccube\Entity\DeliveryDate $deliveryDate
      * @return Product
      */
-    public function setDeliveryDate(\Eccube\Entity\Master\DeliveryDate $deliveryDate = null)
+    public function setDeliveryDate(\Eccube\Entity\DeliveryDate $deliveryDate = null)
     {
         $this->DeliveryDate = $deliveryDate;
 
@@ -1098,7 +1137,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get DeliveryDate
      *
-     * @return \Eccube\Entity\Master\DeliveryDate
+     * @return \Eccube\Entity\DeliveryDate
      */
     public function getDeliveryDate()
     {
