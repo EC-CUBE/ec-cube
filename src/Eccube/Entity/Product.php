@@ -504,16 +504,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $RecommendProducts;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $RecommendedProducts;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $CustomerFavoriteProducts;
 
     /**
@@ -544,8 +534,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductCategories = new ArrayCollection();
         $this->ProductClasses = new ArrayCollection();
         $this->ProductStatuses = new ArrayCollection();
-        $this->RecommendProducts = new ArrayCollection();
-        $this->RecommendedProducts = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
         $this->ProductImage = new ArrayCollection();
         $this->ProductTag = new ArrayCollection();
@@ -572,14 +560,6 @@ class Product extends \Eccube\Entity\AbstractEntity
             $CopyClass = clone $Class;
             $this->addProductClass($CopyClass);
             $CopyClass->setProduct($this);
-        }
-
-        $Recommends = $this->getRecommendProducts();
-        $this->RecommendProducts = new ArrayCollection();
-        foreach ($Recommends as $Recommend) {
-            $CopyRecommend = clone $Recommend;
-            $this->addRecommendProduct($CopyRecommend);
-            $CopyRecommend->setProduct($this);
         }
 
         $Favorites = $this->getCustomerFavoriteProducts();
@@ -913,71 +893,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         return $this->ProductStatuses;
     }
 
-    /**
-     * Add RecommendProducts
-     *
-     * @param  \Eccube\Entity\RecommendProduct $recommendProducts
-     * @return Product
-     */
-    public function addRecommendProduct(\Eccube\Entity\RecommendProduct $recommendProducts)
-    {
-        $this->RecommendProducts[] = $recommendProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove RecommendProducts
-     *
-     * @param \Eccube\Entity\RecommendProduct $recommendProducts
-     */
-    public function removeRecommendProduct(\Eccube\Entity\RecommendProduct $recommendProducts)
-    {
-        $this->RecommendProducts->removeElement($recommendProducts);
-    }
-
-    /**
-     * Get RecommendProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRecommendProducts()
-    {
-        return $this->RecommendProducts;
-    }
-
-    /**
-     * Add RecommendedProducts
-     *
-     * @param  \Eccube\Entity\RecommendProduct $recommendedProducts
-     * @return Product
-     */
-    public function addRecommendedProduct(\Eccube\Entity\RecommendProduct $recommendedProducts)
-    {
-        $this->RecommendedProducts[] = $recommendedProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove RecommendedProducts
-     *
-     * @param \Eccube\Entity\RecommendProduct $recommendedProducts
-     */
-    public function removeRecommendedProduct(\Eccube\Entity\RecommendProduct $recommendedProducts)
-    {
-        $this->RecommendedProducts->removeElement($recommendedProducts);
-    }
-
-    /**
-     * Get RecommendedProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRecommendedProducts()
-    {
-        return $this->RecommendedProducts;
-    }
 
     /**
      * Add CustomerFavoriteProducts

@@ -75,14 +75,6 @@ Eccube\Entity\Product:
         ProductStatuses:
             targetEntity: Eccube\Entity\ProductStatus
             mappedBy: Product
-        RecommendProducts:
-            targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: Product
-            orderBy:
-                rank: ASC
-        RecommendedProducts:
-            targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: Product
         ProductImage:
             targetEntity: Eccube\Entity\ProductImage
             mappedBy: Product
