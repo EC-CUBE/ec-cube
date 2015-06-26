@@ -49,7 +49,7 @@ class PluginLocalInstallType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
-                'required' => false
+                'required' => true
             ))
             ->add('install', 'submit') 
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());

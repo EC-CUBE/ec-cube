@@ -42,7 +42,7 @@ class PluginController extends AbstractController
             if($installForm->get('install')->isClicked()){
 
                 $tmpdir = $service->createTempDir() ;
-                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
+                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ).".tar" ;
 
                 $installForm['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
 
@@ -87,7 +87,7 @@ class PluginController extends AbstractController
             if($form->get('update')->isClicked()){
 
                 $tmpdir = $service->createTempDir() ;
-                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ) ;
+                $tmpfile = sha1(openssl_random_pseudo_bytes(20) ).".tar" ;
 
                 $form['plugin_archive']->getData()->move( $tmpdir, $tmpfile);
 

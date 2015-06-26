@@ -21,6 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-$HOME = realpath(dirname(__FILE__)) . '/../';
-require_once "$HOME/html/require.php";
-require_once "$HOME/tests/class/Common_TestCase.php";
+
+namespace Eccube\Exception;
+
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+
+class PluginException extends \Exception
+{
+}

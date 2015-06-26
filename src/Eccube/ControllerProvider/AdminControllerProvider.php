@@ -200,45 +200,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         // system/security
         $c->match('/setting/system/security', '\Eccube\Controller\Admin\Setting\System\SecurityController::index')->bind('admin_setting_system_security');
 
-
-        // 未実装
-        $c->match('/product/rank', '\Eccube\Page\Admin\Products\ProductRank')->bind('admin_product_product_rank');
-        $c->match('/product/product_select', '\Eccube\Page\Admin\Products\ProductSelect')->bind('admin_product_product_select');
-        $c->match('/product/upload_csv', '\Eccube\Page\Admin\Products\UploadCSV')->bind('admin_product_upload_csv');
-        $c->match('/product/upload_csv_category', '\Eccube\Page\Admin\Products\UploadCSVCategory')->bind('admin_product_upload_csv_category');
-
-        $c->match('/customer/search_customer', '\Eccube\Page\Admin\Customer\SearchCustomer')->bind('admin_customer_seaech_customer');
-        $c->match('/customer/mail/', '\Eccube\Page\Admin\Mail\Index')->bind('admin_mail');
-        $c->match('/customer/mail/history', '\Eccube\Page\Admin\Mail\History')->bind('admin_mail_history');
-        $c->match('/customer/mail/preview', '\Eccube\Page\Admin\Mail\Preview')->bind('admin_mail_preview');
-        $c->match('/customer/mail/template', '\Eccube\Page\Admin\Mail\Template')->bind('admin_mail_template');
-        $c->match('/customer/mail/template_input', '\Eccube\Page\Admin\Mail\TemplateInput')->bind('admin_mail_template_input');
-
-        $c->match('/order/disp', '\Eccube\Page\Admin\Order\Disp')->bind('admin_order_disp');
-        $c->match('/order/multiple', '\Eccube\Page\Admin\Order\Multiple')->bind('admin_order_multiple');
-        $c->match('/order/pdf', '\Eccube\Page\Admin\Order\Pdf')->bind('admin_order_pdf');
-        $c->match('/order/product_select', '\Eccube\Page\Admin\Order\ProductSelect')->bind('admin_order_product_select');
-
-        $c->match('/content/recommend', '\Eccube\Page\Admin\Content\Recommend')->bind('admin_content_recommend');
-        $c->match('/content/recommend_search', '\Eccube\Page\Admin\Content\RecommendSearch')->bind('admin_content_recommend_search');
-        $c->match('/content/header', '\Eccube\Page\Admin\Design\Header')->bind('admin_design_header');
-        $c->match('/content/main_edit', '\Eccube\Page\Admin\Design\MainEdit')->bind('admin_design_main_edit');
-        $c->match('/content/up_down', '\Eccube\Page\Admin\Design\UpDown')->bind('admin_design_up_down');
-
-        $c->match('/setting/system/adminarea', '\Eccube\Page\Admin\System\AdminArea')->bind('admin_setting_system_adminarea');
-        $c->match('/setting/system/log', '\Eccube\Page\Admin\System\Log')->bind('admin_setting_system_log');
-        $c->match('/setting/system/masterdata', '\Eccube\Page\Admin\System\Masterdata')->bind('admin_setting_system_masterdata');
-        $c->match('/setting/system/parameter', '\Eccube\Page\Admin\System\Parameter')->bind('admin_setting_system_parameter');
-        $c->match('/setting/system/csv', '\Eccube\Page\Admin\Content\Csv')->bind('admin_setting_system_csv');
-        $c->match('/setting/system/csv_sql', '\Eccube\Page\Admin\Content\CsvSql')->bind('admin_setting_system_csv_sql');
-
-        $c->match('/extension/template', '\Eccube\Page\Admin\Design\Template')->bind('admin_extension_template');
-        $c->match('/extension/owners_store', '\Eccube\Page\Admin\OwnersStore\Index')->bind('admin_extension_ownersstore');
-        $c->match('/extension/owners_store/log', '\Eccube\Page\Admin\OwnersStore\Log')->bind('admin_extension_ownersstore_log');
-        $c->match('/extension/owners_store/settings', '\Eccube\Page\Admin\OwnersStore\Settings')->bind('admin_extension_ownersstore_settings');
-
-        $c->match('/report', '\Eccube\Page\Admin\Total\Index')->bind('admin_total');
-
         return $c;
     }
 }

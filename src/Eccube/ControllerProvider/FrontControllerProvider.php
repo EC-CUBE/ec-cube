@@ -117,36 +117,20 @@ class FrontControllerProvider implements ControllerProviderInterface
         // products
         $c->match('/products/list', '\Eccube\Controller\ProductController::index')->bind('product_list');
         $c->match('/products/detail/{id}', '\Eccube\Controller\ProductController::detail')->bind('product_detail')->assert('id', '\d+');
-        $c->match('/products/search', '\Eccube\Page\Products\Search')->bind('product_search');
-        $c->match('/products/category_list', '\Eccube\Page\Products\CategoryList')->bind('products_category_list');
-
-        // regist
-        $c->match('/regist', '\Eccube\Page\Regist\Index')->bind('regist');
-        $c->match('/regist/complete', '\Eccube\Page\Regist\Complete')->bind('regist_complete');
-
-        // rss
-        $c->match('/rss', '\Eccube\Page\Rss\Index')->bind('rss');
-        $c->match('/rss/product', '\Eccube\Page\Rss\Products')->bind('rss_product');
-        $c->match('/rss/products', '\Eccube\Page\Rss\Products')->bind('rss_products');
 
         // shopping
         $c->match('/shopping', '\Eccube\Controller\ShoppingController::index')->bind('shopping');
         $c->match('/shopping/confirm', '\Eccube\Controller\ShoppingController::confirm')->bind('shopping_confirm');
-        $c->match('/shopping/point', '\Eccube\Controller\ShoppingController::point')->bind('shopping_point');
         $c->match('/shopping/delivery', '\Eccube\Controller\ShoppingController::delivery')->bind('shopping_delivery');
         $c->match('/shopping/payment', '\Eccube\Controller\ShoppingController::payment')->bind('shopping_payment');
         $c->match('/shopping/shipping', '\Eccube\Controller\ShoppingController::shipping')->bind('shopping_shipping');
-        $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
         $c->match('/shopping/shipping_edit', '\Eccube\Controller\ShoppingController::shippingEdit')->bind('shopping_shipping_edit');
         $c->match('/shopping/complete', '\Eccube\Controller\ShoppingController::complete')->bind('shopping_complete');
         $c->match('/shopping/login', '\Eccube\Controller\ShoppingController::login')->bind('shopping_login');
         $c->match('/shopping/nonmember', '\Eccube\Controller\ShoppingController::nonmember')->bind('shopping_nonmember');
         $c->match('/shopping/customer', '\Eccube\Controller\ShoppingController::customer')->bind('shopping_customer');
         $c->match('/shopping/shopping_error', '\Eccube\Controller\ShoppingController::shoppingError')->bind('shopping_error');
-        $c->match('/shopping/test', '\Eccube\Controller\ShoppingController::test')->bind('shopping_test'); // todo テスト用
-
-        // unsupported
-        $c->match('/unsupported', '\Eccube\Page\Unsupported\Index')->bind('unsupported');
+        //$c->match('/shopping/test', '\Eccube\Controller\ShoppingController::test')->bind('shopping_test'); // todo テスト用
 
         return $c;
     }
