@@ -29,11 +29,56 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
-<script>
-    function changeAction(action) {
-        document.form1.action = action;
-    }
-</script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.core.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.widget.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
+    <script>
+        function changeAction(action) {
+            document.form1.action = action;
+        }
+
+        $(function() {
+            var oldRanks = [];
+            // 画面の中のrank一覧を保持
+            $("div.tableish > .item_box").each(function() {
+                oldRanks.push(this.dataset.rank);
+            });
+            // rsort
+            oldRanks.sort().reverse();
+
+            $("div.tableish").sortable({
+                items: '> .item_box',
+                cursor: 'move',
+                update: function(e, ui) {
+                    $("body").append($('<div class="modal-backdrop in"></div>'));
+                    updateRank();
+                }
+            });
+
+            var updateRank = function() {
+                // 並び替え後にrankを更新
+                var newRanks = {};
+                var i = 0;
+                $("div.tableish > .item_box").each(function() {
+                    newRanks[this.dataset.categoryId] = oldRanks[i];
+                    i++;
+                });
+
+                $.ajax({
+                    url: '{{ url('admin_product_category_rank_move') }}',
+                    type: 'POST',
+                    data: newRanks,
+                }).done(function(data) {
+                    console.log(data);
+                    $(".modal-backdrop").remove();
+                }).fail(function() {
+                    console.log('fail');
+                    $(".modal-backdrop").remove();
+                });
+            };
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
@@ -69,7 +114,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 {% for Category in Categories %}
 
-                                <div class="item_box tr">
+                                <div class="item_box tr" data-rank="{{ Category.rank }}" data-category-id="{{ Category.id }}">
                                     <div class="icon_sortable td">
                                         <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
                                     </div>

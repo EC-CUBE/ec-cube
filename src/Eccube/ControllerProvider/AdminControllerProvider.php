@@ -63,6 +63,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/product/category/{id}/up', '\Eccube\Controller\Admin\Product\CategoryController::up')->assert('id', '\d+')->bind('admin_product_category_up');
         $c->post('/product/category/{id}/down', '\Eccube\Controller\Admin\Product\CategoryController::down')->assert('id', '\d+')->bind('admin_product_category_down');
         $c->post('/product/category/{id}/delete', '\Eccube\Controller\Admin\Product\CategoryController::delete')->assert('id', '\d+')->bind('admin_product_category_delete');
+        $c->post('/product/category/rank/move', '\Eccube\Controller\Admin\Product\CategoryController::moveRank')->bind('admin_product_category_rank_move');
 
         $c->match('/product/class_name', '\Eccube\Controller\Admin\Product\ClassNameController::index')->bind('admin_product_class_name');
         $c->match('/product/class_name/{id}/edit', '\Eccube\Controller\Admin\Product\ClassNameController::index')->assert('id', '\d+')->bind('admin_product_class_name_edit');
