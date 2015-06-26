@@ -1302,7 +1302,7 @@ INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creato
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(10, 9, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(11, 10, 100, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(12, 11, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-SELECT setval('dtb_product_stock_product_stock_id_seq', 11);
+SELECT setval('dtb_product_stock_product_stock_id_seq', 12);
 
 INSERT INTO dtb_recommend_product (product_id, recommend_product_id, rank, comment, status, creator_id, create_date, update_date) VALUES (2, 1, 4, 'お口直しに。', 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
