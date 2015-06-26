@@ -72,8 +72,12 @@ class MailController
                         $data = $form->getData();
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
+                        $MailTemplate = $form->get('template')->getData();
+
                         $form = $builder->getForm();
                         $form->setData($data);
+                        $form->get('template')->setData($MailTemplate);
+
 
                         return $app->renderView('Order/mail_confirm.twig', array(
                             'form' => $form->createView(),
@@ -192,8 +196,11 @@ class MailController
 
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
+                        $MailTemplate = $form->get('template')->getData();
+
                         $form = $builder->getForm();
                         $form->setData($data);
+                        $form->get('template')->setData($MailTemplate);
 
                         return $app->renderView('Order/mail_all_confirm.twig', array(
                             'form' => $form->createView(),
