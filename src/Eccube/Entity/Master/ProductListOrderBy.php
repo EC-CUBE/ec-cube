@@ -106,4 +106,17 @@ class ProductListOrderBy extends \Eccube\Entity\AbstractEntity
     {
         return $this->rank;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return ProductListOrderBy
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

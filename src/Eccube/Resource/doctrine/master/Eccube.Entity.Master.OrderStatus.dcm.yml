@@ -9,8 +9,6 @@ Eccube\Entity\Master\OrderStatus:
             unsigned: false
             default: '0'
             id: true
-            generator:
-                strategy: AUTO
     fields:
         name:
             type: text

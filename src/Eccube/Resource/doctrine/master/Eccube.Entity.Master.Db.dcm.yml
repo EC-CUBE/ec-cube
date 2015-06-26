@@ -9,8 +9,6 @@ Eccube\Entity\Master\Db:
             unsigned: false
             default: '0'
             id: true
-            generator:
-                strategy: AUTO
     fields:
         name:
             type: text

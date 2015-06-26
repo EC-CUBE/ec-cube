@@ -107,4 +107,17 @@ class MagazineType extends \Eccube\Entity\AbstractEntity
     {
         return $this->rank;
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return MagazineType
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

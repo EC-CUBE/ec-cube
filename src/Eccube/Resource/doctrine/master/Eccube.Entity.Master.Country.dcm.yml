@@ -4,13 +4,11 @@ Eccube\Entity\Master\Country:
     repositoryClass: Eccube\Repository\Master\CountryRepository
     id:
         id:
-            type: integer
+            type: smallint
             nullable: false
             unsigned: false
             default: '0'
             id: true
-            generator:
-                strategy: AUTO
     fields:
         name:
             type: text

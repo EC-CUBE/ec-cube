@@ -10,8 +10,6 @@ Eccube\Entity\Master\Zip:
             default: '0'
             id: true
             column: zip_id
-            generator:
-                strategy: AUTO
     fields:
         zipcode:
             type: text
