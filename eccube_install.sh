@@ -120,76 +120,6 @@ adjust_directory_permissions()
     chmod go+w "./app/log"
 }
 
-create_sequence_tables()
-{
-    SEQUENCES="
-dtb_best_products_best_id_seq
-dtb_block_block_id_seq
-dtb_category_category_id_seq
-dtb_class_name_class_name_id_seq
-dtb_class_category_class_category_id_seq
-dtb_csv_no_seq
-dtb_csv_sql_sql_id_seq
-dtb_customer_customer_id_seq
-dtb_delivery_delivery_id_seq
-dtb_delivery_fee_fee_id_seq
-dtb_delivery_time_time_id_seq
-dtb_holiday_holiday_id_seq
-dtb_kiyaku_kiyaku_id_seq
-dtb_mail_history_send_id_seq
-dtb_maker_maker_id_seq
-dtb_member_member_id_seq
-dtb_module_update_logs_log_id_seq
-dtb_news_news_id_seq
-dtb_order_order_id_seq
-dtb_order_detail_order_detail_id_seq
-dtb_other_deliv_other_deliv_id_seq
-dtb_page_layout_page_id_seq
-dtb_payment_payment_id_seq
-dtb_product_class_product_class_id_seq
-dtb_product_product_id_seq
-dtb_product_stock_product_stock_id_seq
-dtb_review_review_id_seq
-dtb_send_history_send_id_seq
-dtb_shipping_shipping_id_seq
-dtb_shipment_item_item_id_seq
-dtb_mailmaga_template_template_id_seq
-dtb_plugin_plugin_id_seq
-dtb_api_config_api_config_id_seq
-dtb_api_account_api_account_id_seq
-dtb_tax_rule_tax_rule_id_seq
-dtb_template_template_id_seq
-"
-    comb_sql="";
-    for S in $SEQUENCES; do
-        case ${DBTYPE} in
-            pgsql)
-                sql=$(echo "SELECT SETVAL ('${S}', 10000);")
-            ;;
-            mysql)
-                sql=$(echo "CREATE TABLE ${S} (
-                        sequence int(11) NOT NULL AUTO_INCREMENT,
-                        PRIMARY KEY (sequence)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-                    LOCK TABLES ${S} WRITE;
-                    INSERT INTO ${S} VALUES (10000);
-                    UNLOCK TABLES;")
-            ;;
-        esac
-
-        comb_sql=${comb_sql}${sql}
-    done;
-
-    case ${DBTYPE} in
-        pgsql)
-            echo ${comb_sql} | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
-        ;;
-        mysql)
-            echo ${comb_sql} | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
-        ;;
-    esac
-}
-
 get_optional_sql()
 {
     echo "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date) VALUES (2, 'admin', '${ADMINPASS}', '${AUTH_MAGIC}', 1, 0, 0, 1, 1, current_timestamp, current_timestamp);"
@@ -210,7 +140,7 @@ render_config_template()
 # ---------------------------------
 
 echo "update permissions..."
-#adjust_directory_permissions
+adjust_directory_permissions
 
 # ---------------------------------
 # Create Configs
@@ -269,9 +199,6 @@ case "${DBTYPE}" in
 
     echo "insert data..."
     sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data_pgsql.sql ${DBNAME}
-
-    echo "create sequence..."
-    create_sequence_tables
 
     echo "execute optional SQL..."
     get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
