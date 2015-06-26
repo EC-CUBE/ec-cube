@@ -58,7 +58,6 @@ class PluginService
        $pluginBaseDir =  $this->calcPluginDir($config['name'])  ;
        $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
 
-
        $this->unpackPluginArchive($path,$pluginBaseDir); // 問題なければ本当のplugindirへ
 
        $this->registerPlugin($config,$event); // dbにプラグイン登録
@@ -140,16 +139,16 @@ class PluginService
        if(!is_array($meta)) {
            throw new PluginException("config.yml not found or syntax error");
        }
-       if(!$this->checkSymbolName($meta['code'])){
-           throw new PluginException("config.yml code  has invalid_character(\W) ");
+       if(!isset($meta['code']) or !$this->checkSymbolName($meta['code'])){
+           throw new PluginException("config.yml code  empty or invalid_character(\W) ");
        }
-       if(!$this->checkSymbolName($meta['name'])){
-           throw new PluginException("config.yml name  has invalid_character(\W)");
+       if(!isset($meta['name']) or !$this->checkSymbolName($meta['name'])){
+           throw new PluginException("config.yml name  empty or invalid_character(\W)");
        }
-       if(isset($meta['event']) and !$this->checkSymbolName($meta['event'])){
-           throw new PluginException("config.yml event has invalid_character(\W) ");
+       if(isset($meta['event']) and !$this->checkSymbolName($meta['event'])){ // eventだけは必須ではない
+           throw new PluginException("config.yml event empty or invalid_character(\W) ");
        }
-       if(!isset($meta['version'])){
+       if(!isset($meta['version'])  or !$this->checkSymbolName($meta['name'])){
            throw new PluginException("config.yml version not defined. ");
        }
     }
