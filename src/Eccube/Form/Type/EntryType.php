@@ -151,7 +151,7 @@ class EntryType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'choice',
-                'format' => 'yyyy-MM-dd',
+                'format' => 'yyyy/MM/dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('sex', 'sex', array(
