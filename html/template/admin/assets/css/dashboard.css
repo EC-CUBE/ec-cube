@@ -2725,6 +2725,11 @@ ul.link-with-bar li:last-child::after {
 	padding: 30px 0;
 }
 
+/* fees_area */
+
+.fees_area input {
+	text-align: right;
+}
 
 
 /* !Inline Align ------------------------------------------------------------ */
