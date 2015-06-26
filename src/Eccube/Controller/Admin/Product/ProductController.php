@@ -337,6 +337,7 @@ class ProductController
         }
 
         return $app->render('Product/product.twig', array(
+            'Product' => $Product,
             'form' => $form->createView(),
             'searchForm' => $searchForm->createView(),
             'has_class' => $has_class,
