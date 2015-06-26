@@ -57,6 +57,10 @@ class MypageController extends AbstractController
     {
         $Customer = $app['user'];
 
+        $app['orm.em']
+            ->getFilters()
+            ->enable('incomplete_order_status_hidden');
+
         // paginator
         $qb = $app['eccube.repository.order']->getQueryBuilderByCustomer($Customer);
         $pagination = $app['paginator']()->paginate(
