@@ -1462,15 +1462,10 @@ dl.quantity dd {
     font-weight: normal !important;
 }
 #item_detail_area .item_name {
-    font-size: 16px;
-    font-size: 1.6rem;
+    font-size: 20px;
+    font-size: 2rem;
     font-weight: normal;
     margin-bottom: 5px;
-}
-#item_detail_area .item_name {
-    font-size: 16px;
-    font-size: 1.6rem;
-    font-weight: normal;
 }
 #item_detail_area .item_detail p {
     margin: 0;
@@ -1708,6 +1703,10 @@ dl.quantity dd {
 /* Cart Page
 ------------------------------------------- */
 
+#form_cart > .message:first-child {
+	padding-top: 16px; 
+}
+
 .total_box {
     padding: 8px 0;
 }
@@ -1882,6 +1881,7 @@ div.table .tbody .addr_box .column {
 .addr_box > .td {
     border-top: 1px dotted #ccc;
 }
+
 
 /* MyPage
 ------------------------------------------- */
@@ -2390,6 +2390,9 @@ div.table .tbody .addr_box .column {
 }
 #login_box .column .btn_area {
     padding: 8px 10%;
+}
+#login_box .column .btn_area ul {
+    margin-top: 8px;
 }
 
 #login_box .column .message {
@@ -4249,6 +4252,9 @@ fieldset[disabled] .btn-link:focus {
         min-width: 195px;
         margin-right: 3%;
     }
+	#login_box .column .btn_area ul {
+		margin-top: 0;
+	}
     #login_box .column .btn_area button {
         width: 100%;
         -moz-box-sizing: border-box;
