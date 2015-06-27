@@ -213,6 +213,15 @@ function fnClass(action) {
                         </div><!-- /.box-header -->
                         <div class="box-body">
 
+                            {# 会員ID #}
+                            {% if Product.id %}
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">会員ID</label>
+                                    <div class="col-sm-9 col-lg-10">{{ Product.id }}</div>
+                                </div>
+                            {% endif %}
+
+
                             {{ form_row(form.name) }}
                             {% if has_class == false %}
                                 {{ form_row(form.class.product_type, { attr : { class : 'form-inline' } } ) }}
