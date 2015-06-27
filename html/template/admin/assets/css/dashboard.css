@@ -732,6 +732,18 @@ fieldset[disabled] .btn-link:focus {
 }
 
 
+/*	dl-horizontal
+============================ */
+
+.dl-horizontal dt {
+	text-align: left;
+	white-space: normal;
+	padding-bottom: 8px;
+}
+.dl-horizontal dd {
+	padding-bottom: 8px;
+}
+
 /*	icon
 ============================ */
 
@@ -793,6 +805,7 @@ fieldset[disabled] .btn-link:focus {
         display: table-cell
     }
 }
+
 
 
 /*	pagination
