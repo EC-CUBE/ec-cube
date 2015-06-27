@@ -95,12 +95,6 @@ class SearchCustomerType extends AbstractType
                 'label' => '電話番号',
                 'required' => false,
             ))
-            ->add('job', 'job', array(
-                'label' => '職業',
-                'required' => false,
-                'multiple' => true,
-                'expanded' => true,
-            ))
             ->add('buy_total_start', 'integer', array(
                 'label' => '購入金額',
                 'required' => false,
