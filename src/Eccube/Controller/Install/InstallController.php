@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Install;
 
+use Eccube\Common\Constant;
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -183,7 +184,15 @@ class InstallController
                     ->doMigrate();
             }
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
-                $this->sendAppData($sessionData);
+
+                $host = $request->getSchemeAndHttpHost();
+                $basePath = $request->getBasePath();
+                $params = array(
+                    'http_url' => $host . $basePath,
+                    'shop_name' => $sessionData['shop_name'],
+                );
+
+                $this->sendAppData($params);
             }
             $this->addInstallStatus();
 
@@ -201,7 +210,10 @@ class InstallController
         $config_file = $this->config_path . '/path.yml';
         $config = Yaml::parse($config_file);
 
-        $adminUrl = ($config['root'] . $config['admin_dir']);
+        $host = $request->getSchemeAndHttpHost();
+        $basePath = $request->getBasePath();
+
+        $adminUrl = $host . $basePath . '/' . $config['admin_dir'];
 
         return $app['twig']->render('complete.twig', array(
             'admin_url' => $adminUrl,
@@ -439,8 +451,8 @@ class InstallController
             $adminAllowHosts = explode("\n", $allowHost);
         }
 
-        $target = array('${HTTP_URL}', '${HTTPS_URL}', '${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
-        $replace = array($data['http_url'], $data['https_url'], $auth_magic, $data['shop_name'], '0', $data['force_ssl']);
+        $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
+        $replace = array($auth_magic, $data['shop_name'], '0', $data['force_ssl']);
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -560,7 +572,7 @@ class InstallController
         return $this;
     }
 
-    private function sendAppData($sessionData)
+    private function sendAppData($params)
     {
         $config_file = $this->config_path . '/config.yml';
         $config = Yaml::parse($config_file);
@@ -584,9 +596,9 @@ class InstallController
 
         $data = http_build_query(
             array(
-                'site_url' => $sessionData['http_url'],
-                'shop_name' => $sessionData['shop_name'],
-                'cube_ver' => $config['ECCUBE_VERSION'],
+                'site_url' => $params['http_url'],
+                'shop_name' => $params['shop_name'],
+                'cube_ver' => Constant::VERSION,
                 'php_ver' => phpversion(),
                 'db_ver' => $db_ver,
                 'os_type' => php_uname(),
