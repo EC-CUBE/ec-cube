@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Eccube\Common\Constant;
 
 /**
  * TaxRuleRepository
@@ -83,7 +84,9 @@ class TaxRuleRepository extends EntityRepository
         }
 
         // 商品単位税率設定がOFFの場合
-        if ($this->app['config']['option_product_tax_rule'] !== 1) {
+        /** @var $BaseInfo \Eccube\Entity\BaseInfo */
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        if ($BaseInfo->getOptionProductTaxRule() !== Constant::ENABLED) {
             $Product = null;
             $ProductClass = null;
         }
