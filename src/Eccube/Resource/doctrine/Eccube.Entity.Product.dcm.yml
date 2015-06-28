@@ -72,9 +72,6 @@ Eccube\Entity\Product:
             targetEntity: Eccube\Entity\ProductClass
             cascade: ["persist"]
             mappedBy: Product
-        ProductStatuses:
-            targetEntity: Eccube\Entity\ProductStatus
-            mappedBy: Product
         ProductImage:
             targetEntity: Eccube\Entity\ProductImage
             mappedBy: Product

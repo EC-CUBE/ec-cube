@@ -499,11 +499,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductStatuses;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $CustomerFavoriteProducts;
 
     /**
@@ -853,39 +848,6 @@ class Product extends \Eccube\Entity\AbstractEntity
             }
         }
         return false;
-    }
-
-    /**
-     * Add ProductStatuses
-     *
-     * @param  \Eccube\Entity\ProductStatus $productStatuses
-     * @return Product
-     */
-    public function addProductStatus(\Eccube\Entity\ProductStatus $productStatuses)
-    {
-        $this->ProductStatuses[] = $productStatuses;
-
-        return $this;
-    }
-
-    /**
-     * Remove ProductStatuses
-     *
-     * @param \Eccube\Entity\ProductStatus $productStatuses
-     */
-    public function removeProductStatus(\Eccube\Entity\ProductStatus $productStatuses)
-    {
-        $this->ProductStatuses->removeElement($productStatuses);
-    }
-
-    /**
-     * Get ProductStatuses
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProductStatuses()
-    {
-        return $this->ProductStatuses;
     }
 
 

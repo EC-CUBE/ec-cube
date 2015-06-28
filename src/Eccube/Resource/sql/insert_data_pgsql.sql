@@ -869,10 +869,6 @@ INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1,
 INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(11, 3, NULL, NULL, 'recipe-01', NULL, true, NULL, NULL, 100, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 2);
 SELECT setval('dtb_product_class_product_class_id_seq', 11);
 
-INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (4, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-INSERT INTO dtb_product_status (product_status_id, product_id, creator_id, create_date, update_date, del_flg) VALUES (5, 3, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
-
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(1, 0, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(2, 1, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(3, 2, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
