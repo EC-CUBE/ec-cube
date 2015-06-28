@@ -31,8 +31,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme searchProductModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
 $(function() {
+    $('#zip-search').click(function(event) {
+        AjaxZip3.zip2addr('order[zip][zip01]', 'order[zip][zip02]', 'order[address][pref]', 'order[address][addr01]');
+    });
+
     // 注文者情報をコピー
     $('#copyCustomerToShippingButton').on('click', function() {
         $('#order_Shippings_0_name_name01').val($('#order_name_name01').val());
@@ -231,6 +236,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip) }}
+                                <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>
                         {# 住所：都道府県 #}
@@ -537,7 +543,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             <div class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     <button class="btn btn-primary btn-block btn-lg" onclick="setModeAndSubmit('register')">登録</button>
-                    <p><a href="#">戻る</a></p>
+                    {% if id is not null %}
+                        <p><a href="{{ url('admin_order') }}">戻る</a></p>
+                    {% endif %}
                 </div>
             </div>
 

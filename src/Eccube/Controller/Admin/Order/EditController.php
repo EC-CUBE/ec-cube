@@ -138,6 +138,7 @@ class EditController extends AbstractController
             'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
+            'id' => $id,
         ));
     }
 
