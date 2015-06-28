@@ -203,7 +203,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <th>販売制限数</th>
                                     <th>通常価格(円)</th>
                                     <th>販売価格(円)</th>
+                                    {% if BaseInfo.option_product_delivery_fee %}
                                     <th>送料</th>
+                                    {% endif %}
                                     <th>お届け可能日</th>
                                     {% if BaseInfo.option_product_tax_rule %}
                                     <th>販売税率</th>
@@ -250,10 +252,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(product_class_form.price02, {'attr': {'class': 'notmoney'}}) }}
                                     {{ form_errors(product_class_form.price02) }}
                                 </td>
+                                {% if BaseInfo.option_product_delivery_fee %}
                                 <td>
                                     {{ form_widget(product_class_form.delivery_fee, {'attr': {'class': 'notmoney'}}) }}
                                     {{ form_errors(product_class_form.delivery_fee) }}
                                 </td>
+                                {% endif %}
                                 <td>
                                     {{ form_widget(product_class_form.delivery_date) }}
                                     {{ form_errors(product_class_form.delivery_date) }}
