@@ -241,7 +241,7 @@ class OrderService
         $freeRule = $baseInfo->getFreeRule();
         if (!is_null($freeRule)) {
             // 合計金額が設定金額以上であれば送料無料
-            if ($subTotal > $freeRule) {
+            if ($subTotal >= $freeRule) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }
@@ -250,7 +250,7 @@ class OrderService
         $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
         if (!is_null($deliveryFreeAmount)) {
             // 合計数量が設定数量以上であれば送料無料
-            if ($totalQuantity > $deliveryFreeAmount) {
+            if ($totalQuantity >= $deliveryFreeAmount) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }
@@ -301,7 +301,7 @@ class OrderService
         $freeRule = $baseInfo->getFreeRule();
         if (!is_null($freeRule)) {
             // 合計金額が設定金額以上であれば送料無料
-            if ($Order->getSubTotal() > $freeRule) {
+            if ($Order->getSubTotal() >= $freeRule) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }
@@ -310,7 +310,7 @@ class OrderService
         $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
         if (!is_null($deliveryFreeAmount)) {
             // 合計数量が設定数量以上であれば送料無料
-            if ($Cart->getTotalQuantity() > $deliveryFreeAmount) {
+            if ($Cart->getTotalQuantity() >= $deliveryFreeAmount) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }

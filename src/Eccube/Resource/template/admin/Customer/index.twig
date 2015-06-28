@@ -39,53 +39,51 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script>
 $(function() {
 
-    $('input[id$=_date_start]').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
+    var inputDate = document.createElement('input');
+    inputDate.setAttribute('type', 'date');
+    if (inputDate.type !== 'date') {
+        $('input[id$=_date_start]').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
 
-    $('input[id$=_date_end]').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
+        $('input[id$=_date_end]').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
 
+       $('#admin_search_customer_birth_start').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
 
-   $('#admin_search_customer_birth_start').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
+       $('#admin_search_customer_birth_end').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
 
+       $('#admin_search_customer_last_buy_start').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
 
-   $('#admin_search_customer_birth_end').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
-
-
-   $('#admin_search_customer_last_buy_start').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
-
-
-   $('#admin_search_customer_last_buy_end').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
-
-
+       $('#admin_search_customer_last_buy_end').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
+    }
 
 });
 
@@ -144,7 +142,7 @@ function fnReSendMail(action) {
                                     <div class="col-md-6">
                                         <label>誕生日</label>
                                         <div class="form-group range">
-                                            {{ form_widget(searchForm.birth_start) }} ～ {{ form_widget(searchForm.birth_end) }}
+                                            {{ form_widget(searchForm.birth_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.birth_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
                                     </div>
                                     <div class="col-xs-6">
@@ -162,15 +160,15 @@ function fnReSendMail(action) {
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
+                                        <label>登録日</label>
                                         <div class="form-group range">
-                                            <label>登録日</label>
-                                            {{ form_widget(searchForm.create_date_start) }} ～ {{ form_widget(searchForm.create_date_end) }}
+                                            {{ form_widget(searchForm.create_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.create_date_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
+                                        <label>更新日</label>
                                         <div class="form-group range">
-                                            <label>更新日</label>
-                                            {{ form_widget(searchForm.update_date_start) }} ～ {{ form_widget(searchForm.update_date_end) }}
+                                            {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -202,9 +200,9 @@ function fnReSendMail(action) {
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <label>最終購入日</label>
                                         <div class="form-group range">
-                                            <label>最終購入日</label>
-                                            {{ form_widget(searchForm.last_buy_start) }} ～ {{ form_widget(searchForm.last_buy_end) }}
+                                            {{ form_widget(searchForm.last_buy_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.last_buy_end, {'attr': {'class': 'input_cal'}}) }}
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
