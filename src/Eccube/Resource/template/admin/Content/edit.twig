@@ -38,13 +38,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
 <script>
 $(function() {
-
-    $('#admin_news_date').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
+    var inputDate = document.createElement('input');
+    inputDate.setAttribute('type', 'date');
+    if (inputDate.type !== 'date') {
+        $('#admin_news_date').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
+    }
 
 });
 </script>
@@ -62,7 +65,12 @@ $(function() {
 
                         {{ form_row(form._token) }}
 
-                        {{ form_row(form.date) }}
+                        <div class="form-group">
+                            {{ form_label(form.date) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(form.date, {'attr': {'class': 'input_cal'}}) }}
+                            </div>
+                        </div>
 
                         {{ form_row(form.title) }}
 

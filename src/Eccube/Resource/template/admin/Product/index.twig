@@ -39,19 +39,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script>
 $(function() {
 
-    $('input[id$=_date_start]').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
+    var inputDate = document.createElement('input');
+    inputDate.setAttribute('type', 'date');
+    if (inputDate.type !== 'date') {
+        $('input[id$=_date_start]').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
 
-    $('input[id$=_date_end]').datetimepicker({
-        locale: 'ja',
-        format: 'YYYY-MM-DD',
-        useCurrent: false,
-        showTodayButton: true
-    });
+        $('input[id$=_date_end]').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
+    }
 
 });
 </script>
@@ -109,31 +113,28 @@ $(function() {
                                 
                                         <div class="row">
                                             <div class="col-sm-6">
+                                                <label>登録日</label>
                                                 <div class="form-group range">
-                                                    <label>登録日</label>
-                                                    {{ form_widget(searchForm.create_date_start) }} ～ {{ form_widget(searchForm.create_date_end) }}
+                                                    {{ form_widget(searchForm.create_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.create_date_end, {'attr': {'class': 'input_cal'}}) }}
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
+                                                <label>更新日</label>
                                                 <div class="form-group range">
-                                                    <label>更新日</label>
-                                                    {{ form_widget(searchForm.update_date_start) }} ～ {{ form_widget(searchForm.update_date_end) }}
+                                                    {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                                                 </div>
                                             </div>
                                         </div><!-- /.row -->
-                                
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <p class="text-center"><a href="#">検索条件をクリア</a></p>
+                                                <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
                                             </div>
-                                        </div><!-- /.row --> 
-                                
+                                        </div><!-- /.row -->
                                     </div>
-                                </div>                            
-
+                                </div>
                             </div>
                         </div>
-                        <!-- /.col --> 
+                        <!-- /.col -->
                     </div>
                     <div class="row btn_area">
                         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
@@ -141,7 +142,7 @@ $(function() {
                                 検索する <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
                             </button>
                         </div>
-                        <!-- /.col --> 
+                        <!-- /.col -->
                     </div>
                 </form>
             </div>
