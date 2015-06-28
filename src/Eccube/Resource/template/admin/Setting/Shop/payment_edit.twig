@@ -28,6 +28,109 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload.css">
+    <link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/fileupload/jquery.fileupload-ui.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <style>
+        .ui-state-highlight {
+            height: 148px;
+            border: dashed 1px #ccc;
+            background: #fff;
+        }
+    </style>
+{% endblock stylesheet %}
+
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/vendor/jquery.ui.widget.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.iframe-transport.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-process.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-validate.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script>
+    var hideSvg = function () {
+        if ($("#thumb li").length > 0) {
+            $("#icon_no_image").css("display", "none");
+        } else {
+            $("#icon_no_image").css("display", "");
+        }
+    };
+
+    var proto_img = ''
+            + '<li class="ui-state-default">'
+            + '<img src="__path__" />'
+            + '<a class="delete-image">'
+            + '<svg class="cb cb-close">'
+            + '<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-close"></use>'
+            + '</svg>'
+            + '</a>'
+            + '</li>';
+    if ($("#{{ form.payment_image.vars.id }}").val() != "") {
+        var filename = $("#{{ form.payment_image.vars.id }}").val();
+        var path = '{{ app.config.image_save_urlpath }}/' + filename;
+        var $img = $(proto_img.replace(/__path__/g, path));
+        $("#{{ form.payment_image.vars.id }}").val(filename);
+
+        $('#thumb').append($img);
+    }
+    hideSvg();
+
+    $('#{{ form.payment_image_file.vars.id }}').fileupload({
+        url: "{{ url('admin_payment_image_add') }}",
+        type: "post",
+        dataType: 'json',
+        done: function (e, data) {
+            $('#progress').hide();
+            var path = '{{ app.config.image_temp_urlpath }}/' + data.result.filename;
+            var $img = $(proto_img.replace(/__path__/g, path));
+            $("#{{ form.payment_image.vars.id }}").val(data.result.filename);
+
+            $('#thumb').append($img);
+            hideSvg();
+        },
+        fail: function (e, data) {
+            alert('アップロードに失敗しました。');
+        },
+        always: function (e, data) {
+            $('#progress').hide();
+            $('#progress .progress-bar').width('0%');
+        },
+        start: function (e, data) {
+            $('#progress').show();
+            $("#thumb").find("li").remove();
+            $("#{{ form.payment_image.vars.id }}").val('');
+        },
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize: 10000000,
+        maxNumberOfFiles: 1,
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+            );
+        },
+        processalways: function (e, data) {
+            if (data.files.error) {
+                alert("画像ファイルサイズが大きいか画像ファイルではありません。");
+            }
+        }
+    });
+
+    $("#thumb").on("click", ".delete-image", function () {
+        $("#{{ form.payment_image.vars.id }}").val('');
+        $(this).parent("li").remove();
+        hideSvg();
+    });
+
+    // 画像アップロード
+    $('#file_upload').on('click', function () {
+        $('#{{ form.payment_image_file.vars.id }}').click();
+    });
+</script>
+{% endblock %}
+
 {% block main %}
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="" {{ form_enctype(form) }}>
         {{ form_widget(form._token) }}
@@ -59,13 +162,33 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.rule_max) }}
                             </div>
                         </div>
-                        {{ form_label(form.payment_image_file) }}
-                        {% if image is not null %}
-                            <img src="{{ image }}" /><a href="{{ url('admin_setting_shop_payment_delete_image', {id: payment_id}) }}">[画像を削除]</a>
-                        {% endif %}
-                        {{ form_widget(form.payment_image_file) }}
-                        {{ form_errors(form.payment_image_file) }}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="admin_product_product_image">
+                                {{ form.payment_image_file.vars.label }}
+                                <br>
+                                <span class="small">620px以上推奨</span>
+                            </label>
+                            <div class="col-sm-9 col-lg-10">
+                                <div class="photo_files" id="drag-drop-area">
+                                    <svg id="icon_no_image" class="cb cb-photo no-image"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-photo"></use></svg>
+                                    <ul id="thumb" class="clearfix"></ul>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-9 col-lg-10 ">
+                                <div id="progress" class="progress progress-striped active" style="display:none;">
+                                    <div class="progress-bar progress-bar-info"></div>
+                                </div>
+                                {{ form_widget(form.payment_image, { attr : { style : 'display:none;' } }) }}
+                                {{ form_widget(form.payment_image_file, { attr : { accept : 'image/*', style : 'display:none;' } }) }}
+                                <a id="file_upload" class="with-icon">
+                                    <svg class="cb cb-plus"> <use xlink:href="#cb-plus" /></svg>ファイルをアップロード
+                                </a>
+                                {{ form_errors(form.payment_image_file) }}
+                            </div>
+                        </div>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
