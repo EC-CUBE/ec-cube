@@ -555,7 +555,7 @@
 
             // 規格1のみの場合
             if (!$sele2.length) {
-                eccube.checkStock($form, product_id, $sele1.val(), '0');
+                eccube.checkStock($form, product_id, $sele1.val(), null);
                 // 規格2ありの場合
             } else {
                 eccube.setClassCategories($form, product_id, $sele1, $sele2);

@@ -24,19 +24,17 @@
 
 namespace Eccube\Controller\Install;
 
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\DBAL\Migrations\Migration;
+use Doctrine\DBAL\Migrations\MigrationException;
+use Doctrine\ORM\Tools\SchemaTool;
+use Eccube\Common\Constant;
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;
-
-;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\ORM\Tools\SchemaTool;
-
 
 class InstallController
 {
@@ -135,6 +133,7 @@ class InstallController
                 ->createConfigYamlFile($data)
                 ->createMailYamlFile($data)
                 ->createPathYamlFile($data, $request);
+
             return $app->redirect($app->url('install_step4'));
         }
 
@@ -154,6 +153,7 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             $this->createDatabaseYamlFile($form->getData());
+
             return $app->redirect($app->url('install_step5'));
         }
 
@@ -183,9 +183,19 @@ class InstallController
                     ->doMigrate();
             }
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
-                $this->sendAppData($sessionData);
+
+                $host = $request->getSchemeAndHttpHost();
+                $basePath = $request->getBasePath();
+                $params = array(
+                    'http_url' => $host . $basePath,
+                    'shop_name' => $sessionData['shop_name'],
+                );
+
+                $this->sendAppData($params);
             }
             $this->addInstallStatus();
+
+            $request->getSession()->remove(self::SESSION_KEY);
 
             return $app->redirect($app->url('install_complete'));
         }
@@ -201,7 +211,10 @@ class InstallController
         $config_file = $this->config_path . '/path.yml';
         $config = Yaml::parse($config_file);
 
-        $adminUrl = ($config['root'] . $config['admin_dir']);
+        $host = $request->getSchemeAndHttpHost();
+        $basePath = $request->getBasePath();
+
+        $adminUrl = $host . $basePath . '/' . $config['admin_dir'];
 
         return $app['twig']->render('complete.twig', array(
             'admin_url' => $adminUrl,
@@ -350,7 +363,10 @@ class InstallController
             :admin_mail,
             current_timestamp,
             0);");
-        $sth->execute(array(':shop_name' => $this->session_data['shop_name'], ':admin_mail' => $this->session_data['email']));
+        $sth->execute(array(
+            ':shop_name' => $this->session_data['shop_name'],
+            ':admin_mail' => $this->session_data['email']
+        ));
 
         $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, 'admin', :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
         $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt));
@@ -431,7 +447,7 @@ class InstallController
             $fs->remove($config_file);
         }
 
-        $auth_magic = \Eccube\Util\Str::random();
+        $auth_magic = Str::random(32);
         $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
         if (empty($allowHost)) {
             $adminAllowHosts = array();
@@ -439,8 +455,8 @@ class InstallController
             $adminAllowHosts = explode("\n", $allowHost);
         }
 
-        $target = array('${HTTP_URL}', '${HTTPS_URL}', '${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
-        $replace = array($data['http_url'], $data['https_url'], $auth_magic, $data['shop_name'], '0', $data['force_ssl']);
+        $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
+        $replace = array($auth_magic, $data['shop_name'], '0', $data['force_ssl']);
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -492,7 +508,14 @@ class InstallController
                 break;
         }
         $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
-        $replace = array($data['db_driver'], $data['database_host'], $data['database_name'], $data['database_port'], $data['database_user'], $data['database_password']);
+        $replace = array(
+            $data['db_driver'],
+            $data['database_host'],
+            $data['database_name'],
+            $data['database_port'],
+            $data['database_user'],
+            $data['database_password']
+        );
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -514,7 +537,13 @@ class InstallController
             $fs->remove($config_file);
         }
         $target = array('${MAIL_BACKEND}', '${MAIL_HOST}', '${MAIL_PORT}', '${MAIL_USER}', '${MAIL_PASS}');
-        $replace = array($data['mail_backend'], $data['smtp_host'], $data['smtp_port'], $data['smtp_username'], $data['smtp_password']);
+        $replace = array(
+            $data['mail_backend'],
+            $data['smtp_host'],
+            $data['smtp_port'],
+            $data['smtp_username'],
+            $data['smtp_password']
+        );
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -539,11 +568,7 @@ class InstallController
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
         $ROOT_DIR = realpath(__DIR__ . '/../../../../');
-        $ROOT_URLPATH = str_replace(
-            array($request->server->get('DOCUMENT_ROOT'), '/install.php'),
-            array('', ''),
-            $request->server->get('SCRIPT_FILENAME')
-        );
+        $ROOT_URLPATH = $request->getBasePath();
 
         $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}');
         $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH);
@@ -559,11 +584,8 @@ class InstallController
         return $this;
     }
 
-    private function sendAppData($sessionData)
+    private function sendAppData($params)
     {
-        $config_file = $this->config_path . '/config.yml';
-        $config = Yaml::parse($config_file);
-
         $config_file = $this->config_path . '/database.yml';
         $db_config = Yaml::parse($config_file);
 
@@ -583,9 +605,9 @@ class InstallController
 
         $data = http_build_query(
             array(
-                'site_url' => $sessionData['http_url'],
-                'shop_name' => $sessionData['shop_name'],
-                'cube_ver' => $config['ECCUBE_VERSION'],
+                'site_url' => $params['http_url'],
+                'shop_name' => $params['shop_name'],
+                'cube_ver' => Constant::VERSION,
                 'php_ver' => phpversion(),
                 'db_ver' => $db_ver,
                 'os_type' => php_uname(),

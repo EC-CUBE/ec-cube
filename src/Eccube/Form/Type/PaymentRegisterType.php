@@ -70,6 +70,9 @@ class PaymentRegisterType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ))
+            ->add('payment_image', 'hidden', array(
+                'required' => false,
+            ))
             ->add('charge_flg', 'hidden')
             ->add('fix_flg', 'hidden')
             ->addEventListener(FormEvents::POST_BIND, function ($event) {

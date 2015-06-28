@@ -211,7 +211,18 @@ class Application extends \Silex\Application
 
     public function initSession()
     {
-        $this->register(new \Silex\Provider\SessionServiceProvider());
+        $this->register(new \Silex\Provider\SessionServiceProvider(), array(
+            'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
+            'session.storage.options' => array(
+                'name' => 'eccube',
+                'cookie_path'     => $this['config']['root_urlpath'],
+                'cookie_secure'   => $this['config']['force_ssl'],
+                'cookie_lifetime' => $this['config']['cookie_lifetime'],
+                'cookie_httponly' => true,
+                // cookie_domainは指定しない
+                // http://blog.tokumaru.org/2011/10/cookiedomain.html
+            ),
+        ));
     }
 
     public function initLocale()

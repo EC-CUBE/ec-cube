@@ -24,9 +24,11 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\EntityManager;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -73,7 +75,7 @@ class TaxRuleController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($this->isValid($app['orm.em'], $form)) {
                 $app['orm.em']->persist($TargetTaxRule);
                 $app['orm.em']->flush();
 
@@ -95,7 +97,7 @@ class TaxRuleController extends AbstractController
 
     /**
      * 税率設定の削除
-     * 
+     *
      * @param Application $app
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -140,5 +142,41 @@ class TaxRuleController extends AbstractController
         }
 
         return $app->redirect($app->url('admin_setting_shop_tax'));
+    }
+
+    protected function isValid(EntityManager $em, Form $form)
+    {
+        if (!$form->isValid()) {
+            return false;
+        }
+        /**
+         * 同一日時のエラーチェック.
+         */
+        /** @var $TargetTaxRule \Eccube\Entity\TaxRule */
+        $TargetTaxRule = $form->getData();
+        $parameters = array();
+        $parameters['apply_date'] = $TargetTaxRule->getApplyDate();
+        $qb = $em
+            ->getRepository('Eccube\Entity\TaxRule')
+            ->createQueryBuilder('t')
+            ->select('count(t.id)')
+            ->where('t.apply_date = :apply_date');
+        // 編集時は, 編集対象をのぞいて検索.
+        if ($TargetTaxRule->getId()) {
+            $qb->andWhere('t.id <> :id');
+            $parameters['id'] = $TargetTaxRule->getId();
+        }
+        $qb->setParameters($parameters);
+        $count = $qb
+            ->getQuery()
+            ->getSingleScalarResult();
+        // 同じ適用日時の登録データがあればエラーとする.
+        if ($count > 0) {
+            $form['apply_date']->addError(new FormError('既に同じ適用日時で登録されています。'));
+
+            return false;
+        }
+
+        return true;
     }
 }

@@ -31,6 +31,17 @@
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#zip-search').click(function(event) {
+        AjaxZip3.zip2addr('admin_customer[zip][zip01]', 'admin_customer[zip][zip02]', 'admin_customer[address][pref]', 'admin_customer[address][addr01]');
+    });
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
 <div class="row" id="aside_wrap">
     <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}">
@@ -73,6 +84,7 @@
                         <div class="col-sm-9 col-lg-10 input_zip form-inline">
                             〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                             {{ form_errors(form.zip) }}
+                            <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                         </div>
                     </div>
                     {# 住所：都道府県 #}
@@ -173,16 +185,49 @@
             <div class="box-header toggle">
                 <h3 class="box-title">購入履歴<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
             </div><!-- /.box-header -->
-            {% if Customer.Orders|length > 0 %}
-                {% for Order in Customer.Orders %}
-
-                {% endfor %}
-            {% else %}
-                <div class="box-body accpanel">
+            <div class="box-body accpanel">
+                {% if Customer.Orders|length > 0 %}
+                    <div class="table_list">
+                        <div class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>注文日時</th>
+                                    <th>受注番号</th>
+                                    <th>購入金額</th>
+                                    <th>発送日</th>
+                                    <th>支払方法</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for Order in Customer.Orders %}
+                                    <tr>
+                                        <td class="member_id">
+                                            {{ Order.order_date|date_format }}
+                                        </td>
+                                        <td class="member_name">
+                                            <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">{{ Order.id }}</a>
+                                        </td>
+                                        <td class="member_tel">
+                                            {{ Order.total|price }}
+                                        </td>
+                                        <td class="member_mail">
+                                            {{ Order.commit_date|date_format|default('未発送') }}
+                                        </td>
+                                        <td class="member_mail">
+                                            {{ Order.payment_method }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% else %}
                     <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
         {% endif %}
 

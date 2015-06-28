@@ -31,7 +31,7 @@ $(function(){
         $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
     });
 
-    $('#payment').on('change', function() {
+    $('.payment').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
     });
 
@@ -175,18 +175,18 @@ $(function(){
                         <input type="hidden" id="customer-tel02" class="customer-in" name="customer_tel02" value="{{ Order.tel02 }}">
                         <input type="hidden" id="customer-tel03" class="customer-in" name="customer_tel03" value="{{ Order.tel03 }}">
                         {% endif %}
-                   </div>
+                    </div>
 
-                   <h2 class="heading02">お届け先情報</h2>
-                   <div class="column is-edit">
-                       {# 複数配送を実装する場合、for文で制御 #}
-                       <p class="address">{{ Order.shippings[0].name01 }} {{ Order.shippings[0].name02 }} 様<br>
+                    <h2 class="heading02">お届け先情報</h2>
+                    <div class="column is-edit">
+                        {# 複数配送を実装する場合、for文で制御 #}
+                        <p class="address">{{ Order.shippings[0].name01 }} {{ Order.shippings[0].name02 }} 様<br>
                         〒{{ Order.shippings[0].zip01 }}-{{ Order.shippings[0].zip02 }} {{ Order.shippings[0].pref }}{{ Order.shippings[0].addr01 }}{{ Order.shippings[0].addr02 }}<br>
                         {{ Order.shippings[0].tel01 }}-{{ Order.shippings[0].tel02 }}-{{ Order.shippings[0].tel03 }}</p>
-                       <div class="form-inline form-group">
-                           <label>配送方法</label>
-                           {{ form_widget(form.delivery, {'id' : 'delivery'}) }}
-                       </div>
+                        <div class="form-inline form-group">
+                            <label>配送方法</label>
+                            {{ form_widget(form.delivery, {'id' : 'delivery'}) }}
+                        </div>
 
                         <div class="form-inline form-group">
                             <label>お届け日</label>
@@ -199,19 +199,26 @@ $(function(){
                         {% else %}
                         <p class="btn_edit"><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">変更</a></p>
                         {% endif %}
-                   </div>
+                    </div>
 
-                   <h2 class="heading02">お支払方法</h2>
-                   <div class="column">
-                       <div class="form-inline form-group">
-                           <label>支払方法</label>
-                           {{ form_widget(form.payment, {'id' : 'payment'}) }}
-                       </div>
-                   </div>
-                   <h2 class="heading02">お問い合わせ欄</h2>
-                   <div class="column">
-                       {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
-                   </div>
+                    <h2 class="heading02">お支払方法</h2>
+                    <div class="column">
+                        <div class="form-inline form-group">
+                            <label>支払方法</label>
+                            {% for key, child in form.payment %}
+                            <div>
+                                {{ form_widget(child, {'attr': {'class': 'payment'}}) }}
+                                {% if form.payment.vars.choices[key].data.payment_image is not null %}
+                                <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}" width="150px">
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <h2 class="heading02">お問い合わせ欄</h2>
+                    <div class="column">
+                        {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
+                    </div>
                 </div><!-- /.col -->
 
                 <div id="confirm_side" class="col-sm-4">

@@ -124,7 +124,7 @@ $(function() {
                                 <td>{{ TaxRule.id }}</td>
                                 <td>{{ TaxRule.tax_rate }}%</td>
                                 <td>{{ TaxRule.calc_rule }}</td>
-                                <td>{{ TaxRule.default_tax_rule  ? '基本税率設定' : TaxRule.apply_date|date('Y/m/d') }}</td>
+                                <td>{{ TaxRule.default_tax_rule  ? '基本税率設定' : TaxRule.apply_date|date('Y/m/d  H:i') }}</td>
                                 <td class="icon_edit">
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>

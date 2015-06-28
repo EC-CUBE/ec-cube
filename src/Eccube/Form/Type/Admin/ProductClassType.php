@@ -28,6 +28,7 @@ use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -116,6 +117,14 @@ class ProductClassType extends AbstractType
                 'required' => false,
                 'value' => 1,
             ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+                $form = $event->getForm();
+                $data = $form->getData();
+
+                if (empty($data['stock_unlimited']) && is_null($data['stock'])) {
+                    $form['stock_unlimited']->addError(new FormError('在庫数を入力、もしくは在庫無制限を設定してください。'));
+                }
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
 
