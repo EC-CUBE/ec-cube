@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Eccube\Common\Constant;
 
 /**
  * TaxRuleRepository
