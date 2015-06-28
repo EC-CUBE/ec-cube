@@ -173,16 +173,49 @@
             <div class="box-header toggle">
                 <h3 class="box-title">購入履歴<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
             </div><!-- /.box-header -->
-            {% if Customer.Orders|length > 0 %}
-                {% for Order in Customer.Orders %}
-
-                {% endfor %}
-            {% else %}
-                <div class="box-body accpanel">
+            <div class="box-body accpanel">
+                {% if Customer.Orders|length > 0 %}
+                    <div class="table_list">
+                        <div class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>注文日時</th>
+                                    <th>受注番号</th>
+                                    <th>購入金額</th>
+                                    <th>発送日</th>
+                                    <th>支払方法</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for Order in Customer.Orders %}
+                                    <tr>
+                                        <td class="member_id">
+                                            {{ Order.order_date|date_format }}
+                                        </td>
+                                        <td class="member_name">
+                                            <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">{{ Order.id }}</a>
+                                        </td>
+                                        <td class="member_tel">
+                                            {{ Order.total|price }}
+                                        </td>
+                                        <td class="member_mail">
+                                            {{ Order.commit_date|date_format|default('未発送') }}
+                                        </td>
+                                        <td class="member_mail">
+                                            {{ Order.payment_method }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% else %}
                     <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
         {% endif %}
 
