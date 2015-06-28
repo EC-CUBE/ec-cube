@@ -77,7 +77,7 @@ $(function() {
                             </dd>
                         </dl>
                         <dl>
-                            <dt>{{ form_label(form.tel) }}</dt>
+                            <dt>{{ form_label(form.tel) }}<span class="required">必須</span></dt>
                             <dd>
                                 <div class="form-inline form-group input_tel">
                                     {{ form_widget(form.tel, {attr : {class : 'short'}}) }}

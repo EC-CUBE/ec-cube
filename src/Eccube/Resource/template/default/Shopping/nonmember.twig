@@ -51,11 +51,31 @@ $(function() {
                 <form method="post" action="{{ url('shopping_nonmember') }}">
                     {{ form_widget(form._token) }}
                     <div class="dl_table">
-                        {{ form_row(form.name, {attr : {class : 'middle'}}) }}
-                        {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
-                        {{ form_row(form.company_name) }}
                         <dl>
-                            <dt>住所<span class="required">必須</span></dt>
+                            <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
+                                {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                                {{ form_errors(form.name) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.kana) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
+                                {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+                                {{ form_errors(form.kana) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.company_name) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.company_name) }}
+                                {{ form_errors(form.company_name) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.address) }}<span class="required">必須</span></dt>
                             <dd>
                                 <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
                                 <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
@@ -64,9 +84,17 @@ $(function() {
                                 </div>
                             </dd>
                         </dl>
-                        {{ form_row(form.tel, {attr : {class : 'short'}}) }}
                         <dl>
-                            <dt>メールアドレス<span class="required">必須</span></dt>
+                            <dt>{{ form_label(form.tel) }}<span class="required">必須</span></dt>
+                            <dd>
+                                <div class="form-inline form-group input_tel">
+                                    {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
+                                    {{ form_errors(form.tel) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.email) }}<span class="required">必須</span></dt>
                             <dd>
                                 <div class="form-group {% if form.email.first.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.first) }}</div>
                                 <div class="form-group {% if form.email.second.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.email.second, {attr: {placeholder: '確認のためもう一度入力してください'}}) }}
