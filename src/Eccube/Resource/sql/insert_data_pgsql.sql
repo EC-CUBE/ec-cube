@@ -42,18 +42,6 @@ INSERT INTO mtb_job (id, name, rank) VALUES (16, '学生・フリーター', 15)
 INSERT INTO mtb_job (id, name, rank) VALUES (17, '主婦', 16);
 INSERT INTO mtb_job (id, name, rank) VALUES (18, 'その他', 17);
 
-INSERT INTO mtb_magazine_type (id, name, rank) VALUES (1, 'HTML', 0);
-INSERT INTO mtb_magazine_type (id, name, rank) VALUES (2, 'テキスト', 1);
-
-INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (1, 'HTMLメール', 0);
-INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (2, 'テキストメール', 1);
-INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (3, '希望しない', 2);
-
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (1, 'PCメールアドレス', 0);
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (2, '携帯メールアドレス', 1);
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (3, 'PCメールアドレス (携帯メールアドレスを登録している会員は除外)', 2);
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (4, '携帯メールアドレス (PCメールアドレスを登録している会員は除外)', 3);
-
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (1, 'docomo.ne.jp', 0);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (2, 'ezweb.ne.jp', 1);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (3, 'softbank.ne.jp', 2);
