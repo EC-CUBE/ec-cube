@@ -52,6 +52,7 @@ class MailService
 
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
+            'BaseInfo' => $this->BaseInfo,
             'activateUrl' => $activateUrl,
         ));
 
@@ -79,6 +80,7 @@ class MailService
 
         $body = $this->app->renderView('Mail/entry_complete.twig', array(
             'Customer' => $Customer,
+            'BaseInfo' => $this->BaseInfo,
         ));
 
         $message = \Swift_Message::newInstance()
@@ -155,12 +157,16 @@ class MailService
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
 
-        $body = $this->app->renderView('Mail/order.twig', array(
+        $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
+
+        $body = $this->app->renderView($MailTemplate->getFileName(), array(
+            'header' => $MailTemplate->getHeader(),
+            'footer' => $MailTemplate->getFooter(),
             'Order' => $Order,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 購入が完了しました。')
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -217,7 +223,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . $formData['subject'])
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['subject'])
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -236,7 +242,7 @@ class MailService
      */
     public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
     {
-        $body = $this->app['view']->render('Mail/forgot_mail.twig', array(
+        $body = $this->app->renderView('Mail/forgot_mail.twig', array(
             'Customer' => $Customer,
             'reset_url' => $reset_url
         ));
@@ -261,9 +267,9 @@ class MailService
      */
     public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
     {
-        $body = $this->app['view']->render('Mail/reset_complete_mail.twig', array(
-                        'Customer' => $Customer,
-                        'password' => $password,
+        $body = $this->app->renderView('Mail/reset_complete_mail.twig', array(
+            'Customer' => $Customer,
+            'password' => $password,
         ));
 
         $message = \Swift_Message::newInstance()
@@ -278,6 +284,5 @@ class MailService
         $this->app->mail($message);
 
     }
-
 
 }
