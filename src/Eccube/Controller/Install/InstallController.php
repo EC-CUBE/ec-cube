@@ -196,6 +196,8 @@ class InstallController
             }
             $this->addInstallStatus();
 
+            $request->getSession()->remove(self::SESSION_KEY);
+
             return $app->redirect($app->url('install_complete'));
         }
 
