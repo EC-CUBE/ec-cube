@@ -732,6 +732,18 @@ fieldset[disabled] .btn-link:focus {
 }
 
 
+/*	dl-horizontal
+============================ */
+
+.dl-horizontal dt {
+	text-align: left;
+	white-space: normal;
+	padding-bottom: 8px;
+}
+.dl-horizontal dd {
+	padding-bottom: 8px;
+}
+
 /*	icon
 ============================ */
 
@@ -793,6 +805,7 @@ fieldset[disabled] .btn-link:focus {
         display: table-cell
     }
 }
+
 
 
 /*	pagination
@@ -1345,6 +1358,15 @@ dd.form-group .errormsg {
     padding: 16px 8px;
 }
 
+.ui-sortable .item_box {
+	cursor: move;
+}
+.ui-sortable .ui-sortable-helper {
+	border-bottom: 1px solid #d1d8d9;
+}
+
+
+
 /* link_list */
 
 .link_list {
@@ -1553,31 +1575,54 @@ dd.form-group .errormsg {
         margin-right: 16px;
     }
 
-    /* sortable_list */
+    /* ui-sortable */
+    .tableish.ui-sortable {
+        display: block;
+    }
+    .tableish.ui-sortable .thead {
+        display: block;
+    }
+    .tableish.ui-sortable .tbody {
+        display: block;
+    }
+    .tableish.ui-sortable .tr {
+        display: block;
+    }
 
-    .sortable_list .item_box {
+    /* sortable_list */
+    .sortable_list .tableish:not(.ui-sortable) .item_box {
         padding-left: 16px;
     }
-	.sortable_list .item_box > div {
+	.sortable_list .tableish:not(.ui-sortable) .item_box > div {
 		border-top: 1px solid #d1d8d9;
 	}
-    .sortable_list .item_box > div:first-child {
+    .sortable_list .tableish:not(.ui-sortable) .item_box > div:first-child {
         padding-left: 8px;
     }
-    .sortable_list .icon_sortable {
+    .sortable_list .tableish:not(.ui-sortable) .icon_sortable {
         display: table-cell;
         position: inherit;
         vertical-align: middle;
         margin-top: 0;
     }
-    .sortable_list .item_pattern {
+    .sortable_list .tableish:not(.ui-sortable) .item_pattern {
         padding: 16px;
     }
-    .sortable_list .icon_sortable + .item_photo {
+    .sortable_list .tableish:not(.ui-sortable) .icon_sortable + .item_photo {
         padding-left: 0;
     }
-	.sortable_list .item_pattern + .icon_edit {
+	.sortable_list .tableish:not(.ui-sortable) .item_pattern + .icon_edit {
 		width: 4%;
+	}
+
+	.sortable_list .ui-sortable .icon_sortable {
+		padding: 0.8em 0.3em;
+	}
+	.ui-sortable .item_pattern {
+		display: block;
+	}
+	.ui-sortable .icon_edit {
+		position: absolute;
 	}
 
 }
@@ -2852,6 +2897,7 @@ ul.link-with-bar li:last-child::after {
 /* !Padding  ---------------------------------------------------------------- */
 .padT00 { padding-top: 0   !important;}
 .padT05 { padding-top: 5px !important;}
+.padT07 { padding-top: 7px !important;}
 .padT08 { padding-top: 8px !important;}
 .padT10 { padding-top:10px !important;}
 .padT12 { padding-top:12px !important;}
