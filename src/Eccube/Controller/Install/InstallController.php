@@ -447,7 +447,7 @@ class InstallController
             $fs->remove($config_file);
         }
 
-        $auth_magic = \Eccube\Util\Str::random();
+        $auth_magic = Str::random(32);
         $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
         if (empty($allowHost)) {
             $adminAllowHosts = array();
@@ -568,12 +568,7 @@ class InstallController
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
         $ROOT_DIR = realpath(__DIR__ . '/../../../../');
-        // 最後の \install.php はWindowsServer対応
-        $ROOT_URLPATH = str_replace(
-            array($request->server->get('DOCUMENT_ROOT'), '/install.php', '\install.php'),
-            array('', '', ''),
-            $request->server->get('SCRIPT_FILENAME')
-        );
+        $ROOT_URLPATH = $request->getBasePath();
 
         $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}');
         $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH);
