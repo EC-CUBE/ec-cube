@@ -32,15 +32,53 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <form method="post" action="{{ url('entry') }}">
                     {{ form_widget(form._token) }}
                     <div class="dl_table">
-                        {{ form_row(form.name) }}
-                        {{ form_row(form.kana) }}
-                        {{ form_row(form.company_name) }}
-                        {{ form_row(form.zip) }}
-                        {{ form_row(form.address) }}
-                        {{ form_row(form.tel) }}
-                        {{ form_row(form.fax) }}
                         <dl>
-                            <dt>メールアドレス</dt>
+                            <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
+                                {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.kana) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
+                                {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.company_name) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.company_name) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.address) }}<span class="required">必須</span></dt>
+                            <dd>
+                                <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                    {{ form_widget(form.address) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.tel) }}</dt>
+                            <dd>
+                                <div class="form-inline form-group input_tel">
+                                    {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.fax) }}</dt>
+                            <dd>
+                                <div class="form-inline form-group input_tel">
+                                    {{ form_widget(form.fax, {attr : {class : 'short'}}) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.email) }}</dt>
                             <dd>
                                 <div class="form-group">
                                     {{ form_widget(form.email.first) }}
@@ -50,9 +88,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                     </div>
                     <div class="dl_table not_required">
-                        {{ form_row(form.birth) }}
-                        {{ form_row(form.sex) }}
-                        {{ form_row(form.job) }}
+                        <dl>
+                            <dt>{{ form_label(form.birth) }}</dt>
+                            <dd><div class="form-group form-inline">
+                                    {{ form_widget(form.birth) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.sex) }}</dt>
+                            <dd><div class="form-group form-inline">
+                                    {{ form_widget(form.sex) }}
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ form_label(form.job) }}</dt>
+                            <dd><div class="form-group form-inline">
+                                    {{ form_widget(form.job) }}
+                                </div>
+                            </dd>
+                        </dl>
                     </div>
                     <p class="form-control-static">{{ form_widget(form.password, {freeze_display_text: false}) }}</p>
                     <div class="row no-padding">
