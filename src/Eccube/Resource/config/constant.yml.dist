@@ -141,7 +141,6 @@ option_class_regist: 1
 option_deliv_fee: 1
 option_favorite_product: 1
 option_product_deliv_fee: 0
-option_product_tax_rule: 0
 option_recommend: 1
 order_back_order: 4
 order_cancel: 3
