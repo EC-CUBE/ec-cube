@@ -24,20 +24,17 @@
 
 namespace Eccube\Controller\Install;
 
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\DBAL\Migrations\Migration;
+use Doctrine\DBAL\Migrations\MigrationException;
+use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Common\Constant;
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;
-
-;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\ORM\Tools\SchemaTool;
-
 
 class InstallController
 {
@@ -136,6 +133,7 @@ class InstallController
                 ->createConfigYamlFile($data)
                 ->createMailYamlFile($data)
                 ->createPathYamlFile($data, $request);
+
             return $app->redirect($app->url('install_step4'));
         }
 
@@ -155,6 +153,7 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             $this->createDatabaseYamlFile($form->getData());
+
             return $app->redirect($app->url('install_step5'));
         }
 
@@ -364,7 +363,10 @@ class InstallController
             :admin_mail,
             current_timestamp,
             0);");
-        $sth->execute(array(':shop_name' => $this->session_data['shop_name'], ':admin_mail' => $this->session_data['email']));
+        $sth->execute(array(
+            ':shop_name' => $this->session_data['shop_name'],
+            ':admin_mail' => $this->session_data['email']
+        ));
 
         $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, 'admin', :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
         $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt));
@@ -506,7 +508,14 @@ class InstallController
                 break;
         }
         $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
-        $replace = array($data['db_driver'], $data['database_host'], $data['database_name'], $data['database_port'], $data['database_user'], $data['database_password']);
+        $replace = array(
+            $data['db_driver'],
+            $data['database_host'],
+            $data['database_name'],
+            $data['database_port'],
+            $data['database_user'],
+            $data['database_password']
+        );
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -528,7 +537,13 @@ class InstallController
             $fs->remove($config_file);
         }
         $target = array('${MAIL_BACKEND}', '${MAIL_HOST}', '${MAIL_PORT}', '${MAIL_USER}', '${MAIL_PASS}');
-        $replace = array($data['mail_backend'], $data['smtp_host'], $data['smtp_port'], $data['smtp_username'], $data['smtp_password']);
+        $replace = array(
+            $data['mail_backend'],
+            $data['smtp_host'],
+            $data['smtp_port'],
+            $data['smtp_username'],
+            $data['smtp_password']
+        );
 
         $fs = new Filesystem();
         $content = str_replace(
