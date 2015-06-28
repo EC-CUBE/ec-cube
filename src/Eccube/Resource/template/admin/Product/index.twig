@@ -211,6 +211,10 @@ $(function() {
                                 
                                     {% for Product in pagination %}
                                         <div class="item_box tr">
+                                            <div class="td">
+                                                {{Product.id}}
+                                            </div>
+
                                             <div class="item_photo td">
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                                 	<img src="{{ app.config.image_save_urlpath }}/{{ Product.mainFileName|no_image_main_list }}" />
