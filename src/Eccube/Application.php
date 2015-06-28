@@ -121,20 +121,23 @@ class Application extends \Silex\Application
     {
         // load config
         $this['config'] = $this->share(function () {
+            $ymlPath = __DIR__ . '/../../app/config/eccube';
+            $distPath = __DIR__ . '/../../src/Eccube/Resource/config';
+
             $config = array();
-            $config_yml = __DIR__ . '/../../app/config/eccube/config.yml';
+            $config_yml = $ymlPath . '/config.yml';
             if (file_exists($config_yml)) {
                 $config = Yaml::parse($config_yml);
             }
 
             $config_path = array();
-            $path_yml = __DIR__ . '/../../app/config/eccube/path.yml';
+            $path_yml = $ymlPath . '/path.yml';
             if (file_exists($path_yml)) {
                 $config_path = Yaml::parse($path_yml);
             }
 
             $config_constant = array();
-            $constant_yml = __DIR__ . '/../../app/config/eccube/constant.yml';
+            $constant_yml = $ymlPath . '/constant.yml';
             if (file_exists($constant_yml)) {
                 $config_constant = Yaml::parse($constant_yml);
                 $config_constant = empty($config_constant) ? array() : $config_constant;
@@ -142,7 +145,7 @@ class Application extends \Silex\Application
 
 
             $config_constant_dist = array();
-            $constant_yml_dist = __DIR__ . '/../../src/Eccube/Resource/config/constant.yml.dist';
+            $constant_yml_dist = $distPath . '/constant.yml.dist';
             if (file_exists($constant_yml_dist)) {
                 $config_constant_dist = Yaml::parse($constant_yml_dist);
             }
@@ -150,28 +153,30 @@ class Application extends \Silex\Application
             $configAll = array_replace_recursive($config_constant_dist, $config_constant, $config_path, $config);
 
             $database = array();
-            $yml = __DIR__ . '/../../app/config/eccube/database.yml';
+            $yml = $ymlPath . '/database.yml';
             if (file_exists($yml)) {
                 $database = Yaml::parse($yml);
             }
 
             $mail = array();
-            $yml = __DIR__ . '/../../app/config/eccube/mail.yml';
+            $yml = $ymlPath . '/mail.yml';
             if (file_exists($yml)) {
                 $mail = Yaml::parse($yml);
             }
-
             $configAll = array_replace_recursive($configAll, $database, $mail);
 
-            $log = array();
-            $yml = __DIR__ . '/../../app/config/eccube/log.yml';
+            $config_log = array();
+            $yml = $ymlPath . '/log.yml';
             if (file_exists($yml)) {
-                $log = array(
-                    'log' => Yaml::parse($yml)
-                );
+                $config_log = Yaml::parse($yml);
+            }
+            $config_log_dist = array();
+            $log_yml_dist = $distPath . '/log.yml.dist';
+            if (file_exists($log_yml_dist)) {
+                $config_log_dist = Yaml::parse($log_yml_dist);
             }
 
-            $configAll = array_replace_recursive($configAll, $log);
+            $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
 
             return $configAll;
         });

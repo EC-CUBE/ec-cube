@@ -54,6 +54,7 @@ class Step3Type extends AbstractType
                 'label' => 'メールアドレス（受注メールなどの宛先になります）',
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Url(),
                 ),
             ))
             ->add('login_id', 'text', array(
