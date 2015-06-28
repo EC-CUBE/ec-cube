@@ -1,4 +1,6 @@
 # EC-CUBE3
+
+[![Join the chat at https://gitter.im/EC-CUBE/ec-cube](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EC-CUBE/ec-cube?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/EC-CUBE/ec-cube.svg?branch=eccube-3.0.0-beta)](https://travis-ci.org/EC-CUBE/ec-cube)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=eccube-3.0.0-beta)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=eccube-3.0.0-beta)
 [![Code Coverage](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/coverage.png?b=eccube-3.0.0-beta)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=eccube-3.0.0-beta)
