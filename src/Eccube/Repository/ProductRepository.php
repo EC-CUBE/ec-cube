@@ -116,11 +116,11 @@ class ProductRepository extends EntityRepository
 
         // Order By
         // 価格順
-        if (!empty($searchData['orderby']) && $searchData['orderby'] === '1') {
+        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
             $qb->innerJoin('p.ProductClasses', 'pc');
-            $qb->orderBy('pc.price02', 'ASC');
+            $qb->orderBy('pc.price02', 'DESC');
         // 新着順
-        } elseif (!empty($searchData['orderby']) && $searchData['orderby'] === '2') {
+        } elseif (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.create_date', 'DESC');
         } else {
