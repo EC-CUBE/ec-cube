@@ -26,21 +26,16 @@ namespace Eccube\Controller\Install;
 
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 
 ;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand;
 
 
 class InstallController
