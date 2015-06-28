@@ -1,6 +1,0 @@
-prefix: site_
-suffix:
-format: Y-m-d
-action_level: WARNING
-log_level: INFO
-max_files: 90
