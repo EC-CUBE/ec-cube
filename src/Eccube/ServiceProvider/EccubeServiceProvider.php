@@ -64,9 +64,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         // Repository
-        $app['eccube.repository.master.constant'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Constant');
-        });
         $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
         });
