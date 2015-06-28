@@ -251,13 +251,13 @@ class CartService
                 ->find($ProductClass);
         }
         if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== 1) {
-            throw new \Exception();
+            throw new \Exception('cart.product.type.kind');
         }
 
         $this->setCanAddProductType($ProductClass->getProductType());
 
         if (!$this->canAddProduct($ProductClass->getId())) {
-            throw new \Exception();
+            throw new \Exception('cart.product.type.kind');
         }
 
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
