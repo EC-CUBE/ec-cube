@@ -586,9 +586,6 @@ class InstallController
 
     private function sendAppData($params)
     {
-        $config_file = $this->config_path . '/config.yml';
-        $config = Yaml::parse($config_file);
-
         $config_file = $this->config_path . '/database.yml';
         $db_config = Yaml::parse($config_file);
 
