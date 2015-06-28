@@ -1,25 +1,5 @@
 BEGIN;
 
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (0, 'table', 0);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (1, 'tr', 1);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (2, 'td', 2);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (3, 'a', 3);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (4, 'b', 4);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (5, 'blink', 5);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (6, 'br', 6);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (7, 'center', 7);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (8, 'font', 8);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (9, 'h', 9);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (10, 'hr', 10);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (11, 'img', 11);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (12, 'li', 12);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (13, 'strong', 13);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (14, 'p', 14);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (15, 'div', 15);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (16, 'i', 16);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (17, 'u', 17);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (18, 's', 18);
-
 INSERT INTO mtb_authority (id, name, rank) VALUES (0, 'システム管理者', 0);
 INSERT INTO mtb_authority (id, name, rank) VALUES (1, '店舗オーナー', 1);
 
