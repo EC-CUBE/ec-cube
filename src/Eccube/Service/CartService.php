@@ -306,7 +306,7 @@ class CartService
     public function addError($error = null)
     {
         $this->errors[] = $error;
-        $this->session->getFlashBag()->add('errors', $error);
+        $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
 
         return $this;
     }
