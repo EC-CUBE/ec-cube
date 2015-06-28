@@ -77,29 +77,8 @@ class Step3Type extends AbstractType
                     )),
                 ),
             ))
-            ->add('http_url', 'url', array(
-                'label' => 'お店のURL(通常)',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Url(),
-                ),
-            ))
-            ->add('https_url', 'url', array(
-                'label' => 'お店のURL(セキュア)',
-                'help' => '個人情報入力フォームなどを、SSL（https）で表示する場合',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Url(),
-                ),
-            ))
-            ->add('domain_name', 'text', array(
-                'label' => '共通ドメインの登録',
-                'required' => false,
-                'help' => '通常URLとセキュアURLでサブドメインが異なる場合、共通しているドメイン部分を入力',
-            ))
             ->add('admin_dir', 'text', array(
-                'label' => '管理画面のURL（半角英数字4～50文字）',
-                'help' => 'http://[ホスト名].[ドメイン名]/[ショップ名]/',
+                'label' => '管理画面のディレクトリ名（半角英数字4～50文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -109,7 +88,7 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('admin_force_ssl', 'checkbox', array(
-                'label' => '管理画面へのアクセスを、SSL（https）経由に制限します',
+                'label' => 'サイトへのアクセスを、SSL（https）経由に制限します',
                 'required' => false,
             ))
             ->add('admin_allow_hosts', 'textarea', array(
