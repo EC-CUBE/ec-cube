@@ -82,13 +82,13 @@ Eccube\Entity\BaseInfo:
             nullable: true
         point_rate:
             type: decimal
-            nullable: false
+            nullable: true
             precision: 10
             scale: 0
             default: '0'
         welcome_point:
             type: decimal
-            nullable: false
+            nullable: true
             precision: 10
             scale: 0
             default: '0'
