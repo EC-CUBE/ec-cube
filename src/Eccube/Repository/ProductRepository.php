@@ -206,14 +206,6 @@ class ProductRepository extends EntityRepository
                 ->setParameter('StockUnlimited', $searchData['stock_status']);
         }
 
-        // product_status
-        if (!empty($searchData['product_status']) && $searchData['product_status']->toArray()) {
-            $qb
-                ->innerJoin('p.ProductStatuses', 'ps')
-                ->andWhere($qb->expr()->in('ps.Status', ':ProductStatues'))
-                ->setParameter('ProductStatues', $searchData['product_status']->toArray());
-        }
-
         // crate_date
         if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
             $date = $searchData['create_date_start']

@@ -499,31 +499,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductStatuses;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $RecommendProducts;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $RecommendedProducts;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $Reviews;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $BestProducts;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $CustomerFavoriteProducts;
 
     /**
@@ -554,10 +529,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductCategories = new ArrayCollection();
         $this->ProductClasses = new ArrayCollection();
         $this->ProductStatuses = new ArrayCollection();
-        $this->RecommendProducts = new ArrayCollection();
-        $this->RecommendedProducts = new ArrayCollection();
-        $this->Reviews = new ArrayCollection();
-        $this->BestProducts = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
         $this->ProductImage = new ArrayCollection();
         $this->ProductTag = new ArrayCollection();
@@ -571,10 +542,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function copy()
     {
         // コピー対象外
-        $this->RecommendProducts = new ArrayCollection();
-        $this->BestProducts = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
-
 
         $Categories = $this->getProductCategories();
         $this->ProductCategories = new ArrayCollection();
@@ -882,170 +850,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         return false;
     }
 
-    /**
-     * Add ProductStatuses
-     *
-     * @param  \Eccube\Entity\ProductStatus $productStatuses
-     * @return Product
-     */
-    public function addProductStatus(\Eccube\Entity\ProductStatus $productStatuses)
-    {
-        $this->ProductStatuses[] = $productStatuses;
-
-        return $this;
-    }
-
-    /**
-     * Remove ProductStatuses
-     *
-     * @param \Eccube\Entity\ProductStatus $productStatuses
-     */
-    public function removeProductStatus(\Eccube\Entity\ProductStatus $productStatuses)
-    {
-        $this->ProductStatuses->removeElement($productStatuses);
-    }
-
-    /**
-     * Get ProductStatuses
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProductStatuses()
-    {
-        return $this->ProductStatuses;
-    }
-
-    /**
-     * Add RecommendProducts
-     *
-     * @param  \Eccube\Entity\RecommendProduct $recommendProducts
-     * @return Product
-     */
-    public function addRecommendProduct(\Eccube\Entity\RecommendProduct $recommendProducts)
-    {
-        $this->RecommendProducts[] = $recommendProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove RecommendProducts
-     *
-     * @param \Eccube\Entity\RecommendProduct $recommendProducts
-     */
-    public function removeRecommendProduct(\Eccube\Entity\RecommendProduct $recommendProducts)
-    {
-        $this->RecommendProducts->removeElement($recommendProducts);
-    }
-
-    /**
-     * Get RecommendProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRecommendProducts()
-    {
-        return $this->RecommendProducts;
-    }
-
-    /**
-     * Add RecommendedProducts
-     *
-     * @param  \Eccube\Entity\RecommendProduct $recommendedProducts
-     * @return Product
-     */
-    public function addRecommendedProduct(\Eccube\Entity\RecommendProduct $recommendedProducts)
-    {
-        $this->RecommendedProducts[] = $recommendedProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove RecommendedProducts
-     *
-     * @param \Eccube\Entity\RecommendProduct $recommendedProducts
-     */
-    public function removeRecommendedProduct(\Eccube\Entity\RecommendProduct $recommendedProducts)
-    {
-        $this->RecommendedProducts->removeElement($recommendedProducts);
-    }
-
-    /**
-     * Get RecommendedProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRecommendedProducts()
-    {
-        return $this->RecommendedProducts;
-    }
-
-    /**
-     * Add Reviews
-     *
-     * @param  \Eccube\Entity\Review $reviews
-     * @return Product
-     */
-    public function addReview(\Eccube\Entity\Review $reviews)
-    {
-        $this->Reviews[] = $reviews;
-
-        return $this;
-    }
-
-    /**
-     * Remove Reviews
-     *
-     * @param \Eccube\Entity\Review $reviews
-     */
-    public function removeReview(\Eccube\Entity\Review $reviews)
-    {
-        $this->Reviews->removeElement($reviews);
-    }
-
-    /**
-     * Get Reviews
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getReviews()
-    {
-        return $this->Reviews;
-    }
-
-    /**
-     * Add BestProducts
-     *
-     * @param  \Eccube\Entity\BestProduct $bestProducts
-     * @return Product
-     */
-    public function addBestProduct(\Eccube\Entity\BestProduct $bestProducts)
-    {
-        $this->BestProducts[] = $bestProducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove BestProducts
-     *
-     * @param \Eccube\Entity\BestProduct $bestProducts
-     */
-    public function removeBestProduct(\Eccube\Entity\BestProduct $bestProducts)
-    {
-        $this->BestProducts->removeElement($bestProducts);
-    }
-
-    /**
-     * Get BestProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBestProducts()
-    {
-        return $this->BestProducts;
-    }
 
     /**
      * Add CustomerFavoriteProducts

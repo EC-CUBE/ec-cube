@@ -67,9 +67,9 @@ class ShippingMultiType extends AbstractType
                     ),
                 ))
             ->add('other_deliv', 'entity', array(
-                    'class' => 'Eccube\Entity\OtherDeliv',
+                    'class' => 'Eccube\Entity\CustomerAddress',
                     'property' => 'name01',
-                    'query_builder' => function (\Eccube\Repository\OtherDelivRepository $er) use ($Customer) {
+                    'query_builder' => function (\Eccube\Repository\CustomerAddressRepository $er) use ($Customer) {
                             return $er
                                 ->createQueryBuilder('od')
                                 ->where('od.Customer = :Customer')

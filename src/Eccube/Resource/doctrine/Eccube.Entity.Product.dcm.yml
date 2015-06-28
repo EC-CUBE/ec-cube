@@ -72,25 +72,6 @@ Eccube\Entity\Product:
             targetEntity: Eccube\Entity\ProductClass
             cascade: ["persist"]
             mappedBy: Product
-        ProductStatuses:
-            targetEntity: Eccube\Entity\ProductStatus
-            mappedBy: Product
-        RecommendProducts:
-            targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: Product
-            orderBy:
-                rank: ASC
-        RecommendedProducts:
-            targetEntity: Eccube\Entity\RecommendProduct
-            mappedBy: Product
-        Reviews:
-            targetEntity: Eccube\Entity\Review
-            mappedBy: Product
-            orderBy:
-                create_date: DESC
-        BestProducts:
-            targetEntity: Eccube\Entity\BestProduct
-            mappedBy: Product
         ProductImage:
             targetEntity: Eccube\Entity\ProductImage
             mappedBy: Product
