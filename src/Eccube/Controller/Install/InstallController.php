@@ -332,7 +332,24 @@ class InstallController
         $salt = \Eccube\Util\Str::random();
 
         $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-        $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, point_rate, welcome_point) VALUES (1, :shop_name, :admin_mail, :admin_mail, :admin_mail, :admin_mail, current_timestamp, 0, 0);");
+        $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
+            id,
+            shop_name,
+            email01,
+            email02,
+            email03,
+            email04,
+            update_date,
+            option_product_tax_rule
+            ) VALUES (
+            1,
+            :shop_name,
+            :admin_mail,
+            :admin_mail,
+            :admin_mail,
+            :admin_mail,
+            current_timestamp,
+            0);");
         $sth->execute(array(':shop_name' => $this->session_data['shop_name'], ':admin_mail' => $this->session_data['email']));
 
         $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, 'admin', :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
@@ -522,9 +539,10 @@ class InstallController
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
         $ROOT_DIR = realpath(__DIR__ . '/../../../../');
+        // 最後の \install.php はWindowsServer対応
         $ROOT_URLPATH = str_replace(
-            array($request->server->get('DOCUMENT_ROOT'), '/install.php'),
-            array('', ''),
+            array($request->server->get('DOCUMENT_ROOT'), '/install.php', '\install.php'),
+            array('', '', ''),
             $request->server->get('SCRIPT_FILENAME')
         );
 

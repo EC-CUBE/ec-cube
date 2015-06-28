@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\ShipmentItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -75,8 +76,41 @@ class EditController extends AbstractController
                             $app['orm.em']->remove($OrderDetail);
                         }
                     }
+
+                    $NewShipimentItems = new ArrayCollection();
+
                     foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+                        /** @var $OrderDetail \Eccube\Entity\OrderDetail */
                         $OrderDetail->setOrder($TargetOrder);
+
+                        $NewShipmentItem = new ShipmentItem();
+                        $NewShipmentItem
+                            ->setProduct($OrderDetail->getProduct())
+                            ->setProductClass($OrderDetail->getProductClass())
+                            ->setProductName($OrderDetail->getProduct()->getName())
+                            ->setProductCode($OrderDetail->getProductClass()->getCode())
+                            ->setClassCategoryName1($OrderDetail->getClassCategoryName1())
+                            ->setClassCategoryName2($OrderDetail->getClassCategoryName2())
+                            ->setClassName1($OrderDetail->getClassName1())
+                            ->setClassName2($OrderDetail->getClassName2())
+                            ->setPrice($OrderDetail->getPrice())
+                            ->setQuantity($OrderDetail->getQuantity())
+                            ->setOrder($TargetOrder);
+                        $NewShipimentItems[] = $NewShipmentItem;
+                    }
+
+                    // 配送商品の更新. delete/insert.
+                    $Shippings = $TargetOrder->getShippings();
+                    foreach ($Shippings as $Shipping) {
+                        $ShipimentItems = $Shipping->getShipmentItems();
+                        foreach ($ShipimentItems as $ShipmentItem) {
+                            $app['orm.em']->remove($ShipmentItem);
+                        }
+                        $ShipimentItems->clear();
+                        foreach ($NewShipimentItems as $NewShipimentItem) {
+                            $NewShipimentItem->setShipping($Shipping);
+                            $ShipimentItems->add($NewShipimentItem);
+                        }
                     }
 
                     $app['orm.em']->persist($TargetOrder);
@@ -273,7 +307,6 @@ class EditController extends AbstractController
                     $OrderDetail->getProductClass());
                 $OrderDetail->setTaxRate($TaxRule->getTaxRate());
                 $OrderDetail->setTaxRule($TaxRule->getCalcRule()->getId());
-                $OrderDetail->setQuantity(2);
                 $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
                 $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
                 $OrderDetail->setPrice($OrderDetail->getProductClass()->getPrice02());
