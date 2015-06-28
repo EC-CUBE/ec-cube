@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends AbstractController
 {
@@ -42,7 +44,7 @@ class PaymentController extends AbstractController
         ));
     }
 
-    public function edit(Application $app, $id = null, $delete_image = false)
+    public function edit(Application $app, $id = null)
     {
         $Payment = $app['eccube.repository.payment']
             ->findOrCreate($id);
@@ -51,12 +53,6 @@ class PaymentController extends AbstractController
             ->createBuilder('payment_register')
             ->getForm();
         $form->setData($Payment);
-
-        $image = null;
-        $filename = $Payment->getPaymentImage();
-        if (!$delete_image && $filename !== null) {
-            $image = $app['config']['image_save_urlpath'] . $filename;
-        }
 
         // 登録ボタン押下
         if ('POST' === $app['request']->getMethod()) {
@@ -71,15 +67,13 @@ class PaymentController extends AbstractController
                 }
 
                 // ファイルアップロード
-                $file = $form['payment_image_file']->getData();
-                if (!$delete_image && $file !== null) {
-                    $extension = $file->guessExtension();
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
-                    $file->move($app['config']['image_save_realdir'], $filename);
-                    $PaymentData->setPaymentImage($filename);
-                }
-                if ($delete_image) {
-                    $PaymentData->setPaymentImage(null);
+                $file = $form['payment_image']->getData();
+                $fs = new Filesystem();
+                if ($fs->exists($app['config']['image_temp_realdir'] . '/' . $file)) {
+                    $fs->rename(
+                        $app['config']['image_temp_realdir'] . '/' . $file,
+                        $app['config']['image_save_realdir'] . '/' . $file
+                    );
                 }
 
                 $app['orm.em']->persist($PaymentData);
@@ -95,13 +89,21 @@ class PaymentController extends AbstractController
             'form' => $form->createView(),
             'payment_id' => $id,
             'Payment' => $Payment,
-            'image' => $image,
         ));
     }
 
-    public function deleteImage(Application $app, $id)
+    public function imageAdd(Application $app, Request $request)
     {
-        return $this->edit($app, $id, true);
+        $images = $request->files->get('payment_register');
+        $filename = null;
+        if (isset($images['payment_image_file'])) {
+            $image = $images['payment_image_file'];
+            $extension = $image->guessExtension();
+            $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+            $image->move($app['config']['image_temp_realdir'], $filename);
+        }
+
+        return $app->json(array('filename' => $filename), 200);
     }
 
     public function delete(Application $app, $id)
