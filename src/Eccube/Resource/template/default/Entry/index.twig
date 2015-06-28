@@ -24,15 +24,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'registration_page' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-$(function() {
-  $('#zip-search').click(function(event) {
-    event.preventDefault();
-    AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
-  });
-});
-</script>
+    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+    <script>
+        $(function () {
+            $('#zip-search').click(function (event) {
+                event.preventDefault();
+                AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -43,21 +43,21 @@ $(function() {
                 <form method="post" action="{{ url('entry') }}">
                     {{ form_widget(form._token) }}
                     <div class="dl_table">
-                    	<dl>
-                        <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
-                        <dd class="form-group input_name">
-                        	{{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
-                            {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
-                            {{ form_errors(form.name) }}
-                        </dd>
+                        <dl>
+                            <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
+                                {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                                {{ form_errors(form.name) }}
+                            </dd>
                         </dl>
-                    	<dl>
-                        <dt>{{ form_label(form.kana) }}<span class="required">必須</span></dt>
-                        <dd class="form-group input_name">
-                        	{{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
-                            {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
-                            {{ form_errors(form.kana) }}
-                        </dd>
+                        <dl>
+                            <dt>{{ form_label(form.kana) }}<span class="required">必須</span></dt>
+                            <dd class="form-group input_name">
+                                {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
+                                {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+                                {{ form_errors(form.kana) }}
+                            </dd>
                         </dl>
                         <dl>
                             <dt>{{ form_label(form.company_name) }}<span class="required">必須</span></dt>
@@ -71,8 +71,8 @@ $(function() {
                             <dd>
                                 <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
                                 <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                                {{ form_widget(form.address) }}
-                                {{ form_errors(form.address) }}
+                                    {{ form_widget(form.address) }}
+                                    {{ form_errors(form.address) }}
                                 </div>
                             </dd>
                         </dl>
@@ -116,7 +116,8 @@ $(function() {
                     <div class="dl_table not_required">
                         <dl>
                             <dt>{{ form_label(form.birth) }}</dt>
-                            <dd><div class="form-group form-inline">
+                            <dd>
+                                <div class="form-group form-inline">
                                     {{ form_widget(form.birth) }}
                                     {{ form_errors(form.birth) }}
                                 </div>
@@ -124,7 +125,8 @@ $(function() {
                         </dl>
                         <dl>
                             <dt>{{ form_label(form.sex) }}</dt>
-                            <dd><div class="form-group form-inline">
+                            <dd>
+                                <div class="form-group form-inline">
                                     {{ form_widget(form.sex) }}
                                     {{ form_errors(form.sex) }}
                                 </div>
@@ -132,7 +134,8 @@ $(function() {
                         </dl>
                         <dl>
                             <dt>{{ form_label(form.job) }}</dt>
-                            <dd><div class="form-group form-inline">
+                            <dd>
+                                <div class="form-group form-inline">
                                     {{ form_widget(form.job) }}
                                     {{ form_errors(form.job) }}
                                 </div>
@@ -140,16 +143,23 @@ $(function() {
                         </dl>
                     </div>
                     <input type="hidden" name="mode" value="confirm">
-                    <p class="form_terms_link"><a href="{{ url('help_agreement') }}" target="_blank">利用規約</a>に同意してお進みください</p>
+
+                    <p class="form_terms_link"><a href="{{ url('help_agreement') }}" target="_blank">利用規約</a>に同意してお進みください
+                    </p>
+
                     <div class="row no-padding">
-                    <div class="btn_group col-sm-offset-4 col-sm-4">
-                        <p><button type="submit" class="btn btn-primary btn-block">同意する</button></p>
-                        <p><a href="{{ url('index') }}" class="btn btn-info btn-block">同意しない</a></p>
-                    </div>
+                        <div class="btn_group col-sm-offset-4 col-sm-4">
+                            <p>
+                                <button type="submit" class="btn btn-primary btn-block">同意する</button>
+                            </p>
+                            <p><a href="{{ url('index') }}" class="btn btn-info btn-block">同意しない</a></p>
+                        </div>
                     </div>
                 </form>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
 
     </div>
 {% endblock %}

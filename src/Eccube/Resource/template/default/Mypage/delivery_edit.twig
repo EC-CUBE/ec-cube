@@ -26,15 +26,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-$(function() {
-  $('#zip-search').click(function(event) {
-    event.preventDefault();
-    AjaxZip3.zip2addr('customer_address[zip][zip01]', 'customer_address[zip][zip02]', 'customer_address[address][pref]', 'customer_address[address][addr01]');
-  });
-});
-</script>
+    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+    <script>
+        $(function () {
+            $('#zip-search').click(function (event) {
+                event.preventDefault();
+                AjaxZip3.zip2addr('customer_address[zip][zip01]', 'customer_address[zip][zip02]', 'customer_address[address][pref]', 'customer_address[address][addr01]');
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -44,6 +44,7 @@ $(function() {
         {{ include('Mypage/navi.twig') }}
 
         <h2 class="heading01">お届け先編集</h2>
+
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <form role="form" action="" method="post">
@@ -79,8 +80,8 @@ $(function() {
                             <dd>
                                 <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
                                 <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                                {{ form_widget(form.address) }}
-                                {{ form_errors(form.address) }}
+                                    {{ form_widget(form.address) }}
+                                    {{ form_errors(form.address) }}
                                 </div>
                             </dd>
                         </dl>
@@ -115,8 +116,10 @@ $(function() {
                         </div>
                     </div>
                 </form>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
 
     </div>
 {% endblock %}

@@ -22,15 +22,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-$(function() {
-  $('#zip-search').click(function(event) {
-    event.preventDefault();
-    AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
-  });
-});
-</script>
+    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+    <script>
+        $(function () {
+            $('#zip-search').click(function (event) {
+                event.preventDefault();
+                AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -39,11 +39,13 @@ $(function() {
         <div class="container-fluid inner no-padding">
             <div id="main">
                 <h1 class="page-heading">お問い合わせ</h1>
+
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br/>
                                 また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+
                             <form name="form1" id="form1" method="post" action="{{ url('contact') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="dl_table">
@@ -104,14 +106,19 @@ $(function() {
                                     </dl>
                                 </div>
                                 <input type="hidden" name="mode" value="confirm">
+
                                 <div class="row no-padding">
-                                <div class="btn_group col-sm-offset-4 col-sm-4">
-                                    <p><button type="submit" class="btn btn-primary btn-block">確認ページへ</button></p>
-                                </div>
+                                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                                        <p>
+                                            <button type="submit" class="btn btn-primary btn-block">確認ページへ</button>
+                                        </p>
+                                    </div>
                                 </div>
                             </form>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
 
                 </div>
             </div>
