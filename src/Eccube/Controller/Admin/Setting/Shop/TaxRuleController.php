@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -52,12 +53,15 @@ class TaxRuleController extends AbstractController
             }
         }
 
+        /** @var  $BaseInfo \Eccube\Entity\BaseInfo */
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
         $builder = $app['form.factory']
             ->createBuilder('tax_rule', $TargetTaxRule);
 
         $builder
             ->get('option_product_tax_rule')
-            ->setData($app['config']['option_product_tax_rule']);
+            ->setData($BaseInfo->getOptionProductTaxRule());
 
         if ($TargetTaxRule->isDefaultTaxRule()) {
             // 基本税率設定は適用日時の変更は行わない
@@ -126,13 +130,9 @@ class TaxRuleController extends AbstractController
             // 軽減税率設定の項目のみ処理する
             $optionForm = $form->get('option_product_tax_rule');
             if ($optionForm->isValid()) {
-                // TODO constant.ymlを更新する
-                $Constatnt = $app['eccube.repository.master.constant']
-                    ->find(strtolower('OPTION_PRODUCT_TAX_RULE'));
-
-                $Constatnt->setName($optionForm->getData());
-
-                $app['orm.em']->persist($Constatnt);
+                /** @var  $BaseInfo \Eccube\Entity\BaseInfo */
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+                $BaseInfo->setOptionProductTaxRule($optionForm->getData());
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.shop.tax.save.complete', 'admin');
