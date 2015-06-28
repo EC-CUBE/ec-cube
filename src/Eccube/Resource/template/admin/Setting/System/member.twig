@@ -28,6 +28,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+    <script>
+        function changeAction(action) {
+            document.form1.action = action;
+        }
+    </script>
+{% endblock %}
+
 {% block main %}
     <div class="row">
         <div class="col-md-12">
@@ -67,17 +75,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         </li>
                                                     {% else %}
                                                         <li>
-                                                            <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_delete', {id: Member.id}) }}'); document.form1.submit(); return false;">削除</a>
+                                                            <a href="?" onclick="changeAction('{{ url('admin_setting_system_member_delete', {id: Member.id}) }}'); document.form1.submit(); return false;">削除</a>
                                                         </li>
                                                     {% endif %}
                                                     {% if loop.first == false %}
                                                         <li>
-                                                            <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_up', {id: Member.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                                            <a href="?" onclick="changeAction('{{ url('admin_setting_system_member_up', {id: Member.id}) }}'); document.form1.submit(); return false;">上へ</a>
                                                         </li>
                                                     {% endif %}
                                                     {% if loop.last == false %}
                                                         <li>
-                                                            <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_system_member_down', {id: Member.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                                            <a href="?" onclick="changeAction('{{ url('admin_setting_system_member_down', {id: Member.id}) }}'); document.form1.submit(); return false;">下へ</a>
                                                         </li>
                                                     {% endif %}
 

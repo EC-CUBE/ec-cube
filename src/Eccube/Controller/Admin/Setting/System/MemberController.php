@@ -82,10 +82,11 @@ class MemberController extends AbstractController
                 $status = $app['eccube.repository.member']->save($Member);
 
                 if ($status) {
-                    $app['session']->getFlashBag()->add('admin.success', 'admin.member.save.complete');
+                    $app->addSuccess('admin.member.save.complete', 'admin');
+
                     return $app->redirect($app->url('admin_setting_system_member'));
                 } else {
-                    $app['session']->getFlashBag()->add('admin.error', 'admin.member.save.error');
+                    $app->addError('admin.member.save.error', 'admin');
                 }
             }
         }
@@ -111,11 +112,9 @@ class MemberController extends AbstractController
         }
 
         if ($status) {
-            // fixme : キー名を英語にする
-            $app['session']->getFlashBag()->add('admin.success', 'admin.member.up.complete');
+            $app->addSuccess('admin.member.up.complete', 'admin');
         } else {
-            // fixme : キー名を英語にする
-            $app['session']->getFlashBag()->add('admin.error', 'admin.member.up.error');
+            $app->addError('admin.member.up.error', 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_system_member'));
@@ -135,11 +134,9 @@ class MemberController extends AbstractController
         }
 
         if ($status) {
-            // fixme : キー名を英語にする
-            $app['session']->getFlashBag()->add('admin.success', 'admin.member.down.complete');
+            $app->addSuccess('admin.member.down.complete', 'admin');
         } else {
-            // fixme : キー名を英語にする
-            $app['session']->getFlashBag()->add('admin.error', 'admin.member.down.error');
+            $app->addError('admin.member.down.error', 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_system_member'));
@@ -158,11 +155,9 @@ class MemberController extends AbstractController
         }
 
         if ($status) {
-            // fixme : キー名を英語にする
-            $app['session']->getFlashBag()->add('admin.success', 'admin.member.delete.complete');
+            $app->addSuccess('admin.member.delete.complete', 'admin');
         } else {
-            // fixme : キー名を英語にする
-            $app['session']->getFlashBag()->add('admin.error', 'admin.member.delete.error');
+            $app->addError('admin.member.delete.error', 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_system_member'));
