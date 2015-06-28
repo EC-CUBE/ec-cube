@@ -787,7 +787,7 @@ class ShoppingController extends AbstractController
             'property' => 'method',
             'choices' => $payments,
             'data' => $payment,
-            // 'expanded' => true,
+            'expanded' => true,
         ));
 
     }
