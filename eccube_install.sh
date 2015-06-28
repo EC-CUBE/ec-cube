@@ -53,11 +53,8 @@ CONSTANT_YML_DIST="${DIST_DIR}/constant.yml.dist"
 # ---------------------------------------------------------------------
 export ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-export HTTP_URL=${HTTP_URL:-"http://localhost/ec-cube/html"}
-export HTTPS_URL=${HTTPS_URL:-"http://localhost/ec-cube/html"}
 export ROOT_DIR=${BASE_DIR}
 export ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html"}
-export DOMAIN_NAME=${DOMAIN_NAME:-""}
 export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
 export USR_DATA_ROUTE=${USR_DATA_ROUTE:-"user_data"}
 export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}

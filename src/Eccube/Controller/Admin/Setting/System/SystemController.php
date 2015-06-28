@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 
 class SystemController
 {
@@ -66,7 +67,7 @@ class SystemController
         $server = $app['request'];
 
         $arrSystemInfo = array(
-            array('title' => 'EC-CUBE',     'value' => $app['config']['ECCUBE_VERSION']),
+            array('title' => 'EC-CUBE',     'value' => Constant::VERSION),
             array('title' => 'サーバーOS',    'value' => php_uname()),
             array('title' => 'DBサーバー',    'value' => $system->getDbversion()),
             array('title' => 'WEBサーバー',   'value' => $server->server->get("SERVER_SOFTWARE")),
