@@ -307,7 +307,6 @@ class EditController extends AbstractController
                     $OrderDetail->getProductClass());
                 $OrderDetail->setTaxRate($TaxRule->getTaxRate());
                 $OrderDetail->setTaxRule($TaxRule->getCalcRule()->getId());
-                $OrderDetail->setQuantity(2);
                 $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
                 $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
                 $OrderDetail->setPrice($OrderDetail->getProductClass()->getPrice02());

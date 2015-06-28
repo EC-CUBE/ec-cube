@@ -19,7 +19,7 @@
         if ($sele2 && $sele2.length) {
             // 規格2の選択肢をクリア
             $sele2.children().remove();
-            var classcat2 = eccube.productsClassCategories[product_id][classcat_id1];
+            var classcat2 = productsClassCategories[product_id][classcat_id1];
 
             // 規格2の要素を設定
             for (var key in classcat2) {
@@ -119,7 +119,7 @@
                         {% endif %}
                     </td>
                     <td class="text-right">
-                        <button onclick="fnAddOrderDetail($(this).parent(), {{ Product.id }})" type="button" class="btn btn-default btn-sm">
+                        <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ Product.id }})" type="button" class="btn btn-default btn-sm">
                             決定
                         </button>
                     </td>
