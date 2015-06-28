@@ -539,9 +539,10 @@ class InstallController
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
         $ROOT_DIR = realpath(__DIR__ . '/../../../../');
+        // 最後の \install.php はWindowsServer対応
         $ROOT_URLPATH = str_replace(
-            array($request->server->get('DOCUMENT_ROOT'), '/install.php'),
-            array('', ''),
+            array($request->server->get('DOCUMENT_ROOT'), '/install.php', '\install.php'),
+            array('', '', ''),
             $request->server->get('SCRIPT_FILENAME')
         );
 

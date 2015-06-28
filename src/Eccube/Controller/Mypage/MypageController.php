@@ -81,11 +81,18 @@ class MypageController extends AbstractController
      */
     public function history(Application $app, Request $request, $id)
     {
-        $Customer = $app['user'];
+
+
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass'
+        ));
+
 
         $Order = $app['eccube.repository.order']->findOneBy(array(
             'id' => $id,
-            'Customer' => $Customer,
+            'Customer' => $app->user(),
         ));
         if (!$Order) {
             throw new NotFoundHttpException();

@@ -152,6 +152,23 @@ $(function() {
             return true;
         }
     });
+
+    $(".delete-item").on("click", function(){
+        $(this).parents(".item_box").remove();
+        order_details_count--;
+
+        onChangeOrderDetailCount(order_details_count);
+    });
+
+    var onChangeOrderDetailCount = function(order_details_count) {
+        if (order_details_count == 1) {
+            $(".delete-item").attr("disabled", "disabled");
+        } else {
+            $(".delete-item").removeAttr("disabled");
+        }
+    };
+
+    onChangeOrderDetailCount();
 });
 var setModeAndSubmit = function(mode, keyname, keyid) {
     document.form1.mode.value = mode;
@@ -301,28 +318,55 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {% endfilter %}">
 
                             {% for orderDetailForm in form.OrderDetails %}
-                                <div class="item_box tr">
-                                    <div class="item_detail td">
-                                        {{ form_widget(orderDetailForm.Product) }}
-                                        {{ form_widget(orderDetailForm.ProductClass) }}
-                                        <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
-                                        <span class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span><br>
-                                        <span class="item_pattern small"></span>
+                                {{ form_widget(orderDetailForm.Product) }}
+                                {{ form_widget(orderDetailForm.ProductClass) }}
+                                <div class="item_box">
+                                    <div class="item_detail">
+                                        <div class="item_name_area">
+                                            <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
+                                            <span class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span>
+                                            <span class="item_pattern small">
+                                                {% if orderDetailForm.vars.value.class_category_name1 is not empty %}
+                                                / (
+                                                    {{ orderDetailForm.vars.value.class_name1 }}：
+                                                    {{ orderDetailForm.vars.value.class_category_name1 }}
+                                                    {% if orderDetailForm.vars.value.class_category_name2 is not empty %}
+                                                        /
+                                                        {{ orderDetailForm.vars.value.class_name2 }}：
+                                                        {{ orderDetailForm.vars.value.class_category_name2 }}
+                                                    {% endif %}
+                                                    )
+                                                {% endif %}
+                                            </span>
+                                        </div>
                                         <div class="row">
-                                            <div class="col-lg-6 form-group form-inline">
-                                                <span class="item_price">\ {{ form_widget(orderDetailForm.price) }}</span>
+                                            <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                                <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
+                                                    {{ form_widget(orderDetailForm.price) }}
+                                                </span>
                                             </div>
-                                            <div class="col-lg-6 form-group form-inline">
-                                                <span class="item_quantity">数量：{{ form_widget(orderDetailForm.quantity) }}</span>
+                                            <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                                <span class="item_quantity">
+                                                    数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                </span>
                                             </div>
-                                            <div class="col-lg-6 form-group form-inline">
-                                                <span class="item_quantity">税率：{{ form_widget(orderDetailForm.tax_rate) }} %</span>
+                                            <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                            	<span class="item_tax">
+                                                    税率：
+                                                    <span class="input-group">
+                                                    {{ form_widget(orderDetailForm.tax_rate) }}
+                                                    <span class="input-group-addon">%</span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-12 col-lg-3 item_subtotal text-right">
+                                                <span>小計：</span> {{ orderDetailForm.vars.value.total_price|price }}
                                             </div>
                                         </div>
-                                        <span class="item_subtotal"><span class="small">小計</span> \ {{ orderDetailForm.vars.value.total_price|number_format }}</span>
+
                                     </div>
-                                    <div class="td">
-                                        <button class="btn btn-default btn-sm" onclick="$(this).parent().parent().remove(); order_details_count--;">削除</button>
+                                    <div class="icon_edit">
+                                        <button class="btn btn-default btn-sm delete-item">削除</button>
                                     </div>
                                 </div><!-- /.item_box -->
                             {% endfor %}
