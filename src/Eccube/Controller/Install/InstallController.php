@@ -26,21 +26,22 @@ namespace Eccube\Controller\Install;
 
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Doctrine\DBAL\Migrations\MigrationException;
+
+;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\ORM\Tools\SchemaTool;
 
 
 class InstallController
 {
+    private $app;
+
     private $data;
 
     private $PDO;
@@ -69,7 +70,7 @@ class InstallController
             if ($form->isValid()) {
                 $sessionData = $session->get(self::SESSION_KEY) ?: array();
                 $formData = array_replace_recursive($sessionData, $form->getData());
-                $session->set(self::SESSION_KEY , $formData);
+                $session->set(self::SESSION_KEY, $formData);
 
                 return true;
             }
@@ -164,6 +165,7 @@ class InstallController
     //    データベースの初期化
     public function step5(InstallApplication $app, Request $request)
     {
+        $this->app = $app;
         $form = $app['form.factory']
             ->createBuilder('install_step5')
             ->getForm();
@@ -240,25 +242,53 @@ class InstallController
     {
         $this->resetNatTimer();
 
-        $doctrine = __DIR__ . '/../../../../vendor/bin/doctrine';
-        exec(' php ' . $doctrine . ' orm:schema-tool:drop --force 2>&1', $output, $state);
+        $em = $this->getEntityManager();
+        $metadatas = $em->getMetadataFactory()->getAllMetadata();
+        $schemaTool = new SchemaTool($em);
 
-        if ($state != 0) { // スキーマ作成の失敗時
-            throw new \Exception(join("\n", $output));
-        }
+        $schemaTool->dropSchema($metadatas);
 
         return $this;
     }
+
+    private function getEntityManager()
+    {
+        $config_file = $this->config_path . '/database.yml';
+        $database = Yaml::parse($config_file);
+
+        $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+            'db.options' => $database['database']
+        ));
+
+        $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.em.options' => array(
+                'mappings' => array(
+                    array(
+                        'type' => 'yml',
+                        'namespace' => 'Eccube\Entity',
+                        'path' => array(
+                            __DIR__ . '/../../Resource/doctrine',
+                            __DIR__ . '/../../Resource/doctrine/master',
+                        ),
+                    ),
+
+                ),
+            )
+        ));
+
+        return $em = $this->app['orm.em'];
+    }
+
     private function createTables()
     {
         $this->resetNatTimer();
 
-        $doctrine = __DIR__ . '/../../../../vendor/bin/doctrine';
-        exec(' php ' . $doctrine . ' orm:schema-tool:create 2>&1', $output, $state);
+        $em = $this->getEntityManager();
+        $metadatas = $em->getMetadataFactory()->getAllMetadata();
+        $schemaTool = new SchemaTool($em);
 
-        if ($state != 0) { // スキーマ作成の失敗時
-            throw new \Exception(join("\n", $output));
-        }
+        $schemaTool->createSchema($metadatas);
 
         return $this;
     }
@@ -411,7 +441,8 @@ class InstallController
         return $this;
     }
 
-    private function addInstallStatus(){
+    private function addInstallStatus()
+    {
         $config_file = $this->config_path . '/config.yml';
         $config = Yaml::parse($config_file);
         $config['eccube_install'] = 1;
@@ -461,7 +492,7 @@ class InstallController
     private function createMailYamlFile($data)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path .'/mail.yml';
+        $config_file = $this->config_path . '/mail.yml';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -478,11 +509,11 @@ class InstallController
 
         return $this;
     }
-    
+
     private function createPathYamlFile($data, Request $request)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path .'/path.yml';
+        $config_file = $this->config_path . '/path.yml';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -546,13 +577,13 @@ class InstallController
 
         $header = array(
             "Content-Type: application/x-www-form-urlencoded",
-            "Content-Length: ".strlen($data),
+            "Content-Length: " . strlen($data),
         );
         $context = stream_context_create(
             array(
                 'http' => array(
-                    'method'=> 'POST',
-                    'header'=> $header,
+                    'method' => 'POST',
+                    'header' => $header,
                     'content' => $data,
                 )
             )
