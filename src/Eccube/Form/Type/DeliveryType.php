@@ -53,7 +53,7 @@ class DeliveryType extends AbstractType
                 ),
             ))
             ->add('description', 'textarea', array(
-                'label' => 'ショップ用メモ帳',
+                'label' => 'ショップ用メモ欄',
                 'required' => false,
             ))
             ->add('confirm_url', 'text', array(
