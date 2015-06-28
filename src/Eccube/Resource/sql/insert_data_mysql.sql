@@ -4,9 +4,6 @@ SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';
 INSERT INTO mtb_authority (id, name, rank) VALUES (0, 'システム管理者', 0);
 INSERT INTO mtb_authority (id, name, rank) VALUES (1, '店舗オーナー', 1);
 
-INSERT INTO mtb_auth_excludes (id, name, rank) VALUES (0, 'index.php', 0);
-INSERT INTO mtb_auth_excludes (id, name, rank) VALUES (1, 'logout.php', 1);
-
 INSERT INTO mtb_db (id, name, rank) VALUES (1, 'PostgreSQL', 0);
 INSERT INTO mtb_db (id, name, rank) VALUES (2, 'MySQL', 1);
 
