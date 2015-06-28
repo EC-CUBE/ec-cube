@@ -168,7 +168,7 @@ class ProductController
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
                     } catch (\Exception $e) {
-                        $app->addRequestError('cart.product.type.kind');
+                        $app->addRequestError($e->getMessage());
                     }
 
                     return $app->redirect($app->url('cart'));
