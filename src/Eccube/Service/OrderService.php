@@ -167,7 +167,9 @@ class OrderService
         $tax = 0;
         $totalQuantity = 0;
         $productTypes = array();
+        $productDeliveryFeeTotal = 0;
 
+        $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 受注詳細, 配送商品
         foreach ($cartItems as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
@@ -236,7 +238,6 @@ class OrderService
 
 
         $Order->setDeliveryFeeTotal($deliveryFee->getFee());
-        $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 配送料無料条件(合計金額)
         $freeRule = $baseInfo->getFreeRule();
         if (!is_null($freeRule)) {
@@ -269,6 +270,7 @@ class OrderService
         $Order->setTotal($total);
         $Order->setSubTotal($subTotal);
         $Order->setPaymentTotal($total);
+
         $em->flush();
 
         return $Order;

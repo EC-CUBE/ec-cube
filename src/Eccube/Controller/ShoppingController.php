@@ -59,14 +59,22 @@ class ShoppingController extends AbstractController
 
             // 未ログインの場合は, ログイン画面へリダイレクト.
             if (!$this->isGranted($app)) {
-                return $app->redirect($app->url('shopping_login'));
+                // 非会員でも一度会員登録されていればショッピング画面へ遷移
+                $arr = $app['session']->get('eccube.front.shopping.nonmember');
+                if (is_null($arr)) {
+                    return $app->redirect($app->url('shopping_login'));
+                }
+                $Customer = $arr['customer'];
+                $Customer->setPref($app['eccube.repository.master.pref']->find($arr['pref']));
+            } else {
+                $Customer = $app->user();
             }
 
             // ランダムなpre_order_idを作成
             $preOrderId = sha1(uniqid(mt_rand(), true));
 
             // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $app->user(), $preOrderId);
+            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer, $preOrderId);
 
             $cartService->setPreOrderId($preOrderId);
             $cartService->save();
@@ -601,7 +609,6 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-
         $form = $app['form.factory']->createBuilder('nonmember')->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -641,6 +648,12 @@ class ShoppingController extends AbstractController
                     $cartService->setPreOrderId($preOrderId);
                     $cartService->save();
                 }
+
+                // 非会員用セッションを作成
+                $arr = array();
+                $arr['customer'] = $Customer;
+                $arr['pref'] = $Customer->getPref()->getId();
+                $app['session']->set('eccube.front.shopping.nonmember', $arr);
 
                 return $app->redirect($app->url('shopping'));
 
