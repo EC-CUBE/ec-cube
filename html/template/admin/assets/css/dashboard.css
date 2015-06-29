@@ -1248,9 +1248,15 @@ dd.form-group .errormsg {
 	display: table-cell;
 	vertical-align: middle;
 }
+.item_list .item_box .item_id {
+	width: 1em;
+}
 .item_list .item_box .item_photo {
-    width: 98px;
+    width: 80px;
 	padding-right: 0;
+}
+.item_list .item_box .item_id + .item_photo {
+	padding-left: 0;
 }
 .item_list .item_box .item_detail {
 	font-size: 14px;
