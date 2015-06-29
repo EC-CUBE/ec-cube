@@ -318,24 +318,6 @@ class Application extends \Silex\Application
                 $app["twig"]->addGlobal("title", $PageLayout->getName());
             }
         });
-
-        // install.phpのWarning出力.
-        $this->before(function (Request $request, \Silex\Application $app) {
-            if ($app['debug']) {
-                return;
-            }
-
-            // 管理画面のみ出力.
-            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                // install.phpのチェック.
-                if (isset($app['config']['eccube_install']) && $app['config']['eccube_install'] == 1) {
-                    $file = $app['config']['root_dir'] . '/html/install.php';
-                    if (file_exists($file)) {
-                        $app->addWarning('admin.install.warning', 'admin');
-                    }
-                }
-            }
-        });
     }
 
     public function initMailer()
