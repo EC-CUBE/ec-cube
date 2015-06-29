@@ -79,9 +79,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.product_type'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductType');
         });
-        $app['eccube.repository.master.product_status'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Master\Status');
-        });
         $app['eccube.repository.master.page_max'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\PageMax');
         });
@@ -254,7 +251,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\CalcRuleType();
             $types[] = new \Eccube\Form\Type\Master\SexType();
             $types[] = new \Eccube\Form\Type\Master\DispType();
-            $types[] = new \Eccube\Form\Type\Master\StatusType();
             $types[] = new \Eccube\Form\Type\Master\PrefType();
             $types[] = new \Eccube\Form\Type\Master\ZipType();
             $types[] = new \Eccube\Form\Type\Master\ProductTypeType();

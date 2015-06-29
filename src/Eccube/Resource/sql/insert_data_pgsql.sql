@@ -140,18 +140,6 @@ INSERT INTO mtb_sex (id, name, rank) VALUES (2, '女性', 1);
 INSERT INTO mtb_customer_status (id, name, rank) VALUES (1, '仮会員', 0);
 INSERT INTO mtb_customer_status (id, name, rank) VALUES (2, '本会員', 1);
 
-INSERT INTO mtb_status (id, name, rank) VALUES (1, 'NEW', 0);
-INSERT INTO mtb_status (id, name, rank) VALUES (2, '残りわずか', 1);
-INSERT INTO mtb_status (id, name, rank) VALUES (3, 'ポイント２倍', 2);
-INSERT INTO mtb_status (id, name, rank) VALUES (4, 'オススメ', 3);
-INSERT INTO mtb_status (id, name, rank) VALUES (5, '限定品', 4);
-
-INSERT INTO mtb_status_image (id, name, rank) VALUES (1, 'img/icon/ico_01.gif', 0);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (2, 'img/icon/ico_02.gif', 1);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (3, 'img/icon/ico_03.gif', 2);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (4, 'img/icon/ico_04.gif', 3);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (5, 'img/icon/ico_05.gif', 4);
-
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (1, '四捨五入', 0);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (2, '切り捨て', 1);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (3, '切り上げ', 2);
