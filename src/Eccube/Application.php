@@ -476,7 +476,7 @@ class Application extends \Silex\Application
             }
             // const
             if (isset($config['const'])) {
-                $app[$config['name']] = array(
+                $this[$config['name']] = array(
                     'const' => $config['const'],
                 );
             }
