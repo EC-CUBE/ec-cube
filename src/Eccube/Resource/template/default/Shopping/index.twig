@@ -203,16 +203,17 @@ $(function(){
 
                     <h2 class="heading02">お支払方法</h2>
                     <div class="column">
-                        <div class="form-inline form-group">
-                            <label>支払方法</label>
+                        <div class="form-group">
+                        	<ul class="payment_list">
                             {% for key, child in form.payment %}
-                            <div>
+                            <li>
                                 {{ form_widget(child, {'attr': {'class': 'payment'}}) }}
                                 {% if form.payment.vars.choices[key].data.payment_image is not null %}
-                                <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}" width="150px">
+                                <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}">
                                 {% endif %}
-                            </div>
+                            </li>
                             {% endfor %}
+                            </ul>
                         </div>
                     </div>
                     <h2 class="heading02">お問い合わせ欄</h2>
