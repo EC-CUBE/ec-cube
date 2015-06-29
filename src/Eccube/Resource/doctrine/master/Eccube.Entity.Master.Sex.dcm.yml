@@ -16,5 +16,4 @@ Eccube\Entity\Master\Sex:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
     lifecycleCallbacks: {  }
