@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,7 @@ class ProductController
     public function index(Application $app, Request $request, $page_no = null)
     {
 
-        $session = $request->getSession();
+        $session = $app['session'];
 
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_product')
@@ -82,12 +83,11 @@ class ProductController
                     $status = $request->get('status');
                     if (!empty($status)) {
                         if ($status != $app['config']['admin_product_stock_status']) {
-                            $searchData['status']->clear();
-                            $searchData['status']->add($status);
-                            $session->set('eccube.admin.product.search', $searchData);
+                            $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
                         } else {
-                            $searchData['stock_status'] = $app['config']['disabled'];
+                            $searchData['stock_status'] = Constant::DISABLED;
                         }
+                        $searchData['status'] = null;
                         $page_status = $status;
                     }
                     // 表示件数
@@ -108,7 +108,6 @@ class ProductController
                     }
                     if (empty($status)) {
                         if (count($searchData['status']) > 0) {
-                            $status_ids = array();
                             foreach ($searchData['status'] as $Status) {
                                 $status_ids[] = $Status->getId();
                             }

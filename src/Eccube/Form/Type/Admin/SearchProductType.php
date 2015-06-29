@@ -107,7 +107,8 @@ class SearchProductType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('page_no', 'hidden', array(
+            ->add('link_status', 'hidden', array(
+                'mapped' => false,
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;

@@ -199,6 +199,13 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Status', $searchData['status']->toArray());
         }
 
+        // link_status
+        if (isset($searchData['link_status'])) {
+            $qb
+                ->andWhere($qb->expr()->in('p.Status', ':Status'))
+                ->setParameter('Status', $searchData['link_status']);
+        }
+
         // stock status
         if (isset($searchData['stock_status'])) {
             $qb
