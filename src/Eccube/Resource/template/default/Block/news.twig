@@ -31,14 +31,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <dt>
                                 <span class="date">{{ News.date|date("Y.m.d") }}</span>
                                 <span class="news_title">
-                                    {% if News.url %}<a href="{{ News.url }}" {% if News.link_method == '2' %}target="_blank"{% endif %}>{% endif %}
                                     {{ News.title }}
-                                    {% if News.url %}</a>{% endif %}
                                 </span>
                                 <span class="angle-circle"><svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg></span>
                             </dt>
-
-                            <dd>{{ News.comment }}</dd>
+                            <dd>{{ News.comment }}
+                            {% if News.url %}<br><a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{% endif %}
+                            詳しくはこちら
+                            {% if News.url %}</a>{% endif %}
+                            </dd>
                         </dl>
                         {% endfor %}
 

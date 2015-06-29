@@ -54,6 +54,7 @@ class ContentsController extends AbstractController
             if (!$News) {
                 throw new NotFoundHttpException();
             }
+            $News->setLinkMethod((bool) $News->getLinkMethod());
         } else {
             $News = new \Eccube\Entity\News();
             // TODO : 開始年をコンストから取得？

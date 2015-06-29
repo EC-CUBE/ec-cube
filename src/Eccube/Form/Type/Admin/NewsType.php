@@ -73,8 +73,7 @@ class NewsType extends AbstractType
             ->add('link_method', 'checkbox', array(
                 'required' => false,
                 'label' => '別ウィンドウを開く',
-                'value' => '2',
-                'data' => false,
+                'value' => '1',
             ))
             ->add('comment', 'textarea', array(
                 'label' => '本文',
