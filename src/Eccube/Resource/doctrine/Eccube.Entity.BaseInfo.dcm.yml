@@ -66,7 +66,7 @@ Eccube\Entity\BaseInfo:
         email04:
             type: text
             nullable: true
-        free_rule:
+        delivery_free_amount:
             type: decimal
             nullable: true
             precision: 10
@@ -118,7 +118,7 @@ Eccube\Entity\BaseInfo:
             type: smallint
             nullable: true
             unsigned: false
-        delivery_free_amount:
+        delivery_free_quantity:
             type: integer
             nullable: true
             default: 0

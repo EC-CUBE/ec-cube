@@ -146,9 +146,10 @@ class OrderController
             $app['orm.em']->persist($Order);
             $app['orm.em']->flush();
 
-            $app['session']->getFlashBag()->add('admin.order.complete', 'admin.order.delete.complete');
+            $app->addSuccess('admin.order.delete.complete', 'admin');
         }
 
-        return $this->index($app);
+
+        return $app->redirect($app->url('admin_order'));
     }
 }

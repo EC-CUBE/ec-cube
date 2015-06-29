@@ -67,10 +67,10 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'email04' => 'takahashi4@lockon.co.jp',
         'good_traded' => 'インテリグッズ',
         'message' => '立方隊長が集めた\nワールドワイドなインテリグッズ',
-        'free_rule' => '1000',
+        'delivery_free_amount' => '1000',
         'latitude' => '34.4138',
         'longitude' => '135.3008',
-        'delivery_free_amount' => 100,
+        'delivery_free_quantity' => 100,
         'use_multiple_shipping' => 1,
         'forgot_mail' => 1,
         'mypage_order_status_disp_flg' => 1,
@@ -582,29 +582,29 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidFreeRule_Number()
+    public function testInvalidFreeAmount_Number()
     {
-        $this->formData['free_rule'] = 'e1';
+        $this->formData['delivery_free_amount'] = 'e1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidFreeRule_MaxLengthInvalid()
+    public function testInvalidFreeAmount_MaxLengthInvalid()
     {
         $num = str_repeat('1', $this->app['config']['price_len']) . '1';
 
-        $this->formData['free_rule'] = $num;
+        $this->formData['delivery_free_amount'] = $num;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidFreeRule_MaxLengthValid()
+    public function testInvalidFreeAmount_MaxLengthValid()
     {
         $num = str_repeat('1', $this->app['config']['price_len']);
 
-        $this->formData['free_rule'] = $num;
+        $this->formData['delivery_free_amount'] = $num;
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
@@ -751,9 +751,9 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDeliveryFreeAmount_Number()
+    public function testInvalidDeliveryFreeQuantity_Number()
     {
-        $this->formData['delivery_free_amount'] = 'e1';
+        $this->formData['delivery_free_quantity'] = 'e1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
