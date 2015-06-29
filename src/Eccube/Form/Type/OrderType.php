@@ -141,11 +141,35 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('discount')
-            ->add('delivery_fee_total')
-            ->add('charge')
+            ->add('discount', 'integer', array(
+                'label' => '値引き',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
+            ->add('delivery_fee_total', 'integer', array(
+                'label' => '送料',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
+            ->add('charge', 'integer', array(
+                'label' => '手数料',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
             ->add('note', 'textarea', array(
-                'label' => 'SHOP用メモ',
+                'label' => 'SHOP用メモ欄',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
