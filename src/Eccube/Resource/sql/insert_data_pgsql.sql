@@ -42,17 +42,6 @@ INSERT INTO mtb_job (id, name, rank) VALUES (16, '学生・フリーター', 15)
 INSERT INTO mtb_job (id, name, rank) VALUES (17, '主婦', 16);
 INSERT INTO mtb_job (id, name, rank) VALUES (18, 'その他', 17);
 
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (1, 'docomo.ne.jp', 0);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (2, 'ezweb.ne.jp', 1);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (3, 'softbank.ne.jp', 2);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (4, 'vodafone.ne.jp', 3);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (5, 'pdx.ne.jp', 4);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (6, 'disney.ne.jp', 5);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (7, 'willcom.com', 6);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (8, 'emnet.ne.jp', 7);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (9, 'i.softbank.jp', 8);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (10, 'emobile.ne.jp', 9);
-
 INSERT INTO mtb_order_status (id, name, rank) VALUES (7, '決済処理中', 0);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (1, '新規受付', 1);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (2, '入金待ち', 2);
