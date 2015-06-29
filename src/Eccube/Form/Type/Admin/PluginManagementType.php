@@ -24,11 +24,11 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
-use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class PluginManagementType extends AbstractType
@@ -45,17 +45,10 @@ class PluginManagementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $plugin_id=$options['plugin_id'];
-        $enable=$options['enable'];
+        $plugin_id = $options['plugin_id'];
+        $enable = $options['enable'];
 
         $builder
-            ->add('uninstall', 'submit') 
-            ->add('enable', 'submit',array(
-                'disabled'=>(boolean)$enable
-            )) 
-            ->add('disable', 'submit',array(
-                'disabled'=>!(boolean)$enable
-            )) 
             ->add('plugin_id', 'hidden', array(
                 'data' => $plugin_id,
                 'constraints' => array(
@@ -68,7 +61,6 @@ class PluginManagementType extends AbstractType
                 ),
                 'required' => false
             ))
-            ->add('update', 'submit') 
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -79,12 +71,13 @@ class PluginManagementType extends AbstractType
     {
         return 'plugin_management';
     }
+
     /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('plugin_id','enable'));
+        $resolver->setRequired(array('plugin_id', 'enable'));
     }
 
 }

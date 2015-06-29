@@ -51,7 +51,6 @@ class PluginLocalInstallType extends AbstractType
                 ),
                 'required' => true
             ))
-            ->add('install', 'submit') 
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
