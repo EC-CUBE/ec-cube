@@ -28,6 +28,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script>
+function fnDelete(action) {
+    if (confirm('この新着情報を削除しても宜しいですか？')) {
+        document.form1.action = action;
+        document.form1.submit();
+    }
+}
+function changeAction(action) {
+    document.form1.action = action;
+    document.form1.submit();
+}
+</script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="row">
         <div class="col-md-12">
@@ -59,15 +74,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
                                                         <li><a href="{{ url('admin_content_edit', { 'id' : News.id }) }}" >編集</a></li>
-                                                        <li><a href="?" onclick="eccube.changeAction('{{ url('admin_content_delete', {id: News.id}) }}'); document.form1.submit(); return false;">削除</a></li>
+                                                        <li><a href="?" onclick="fnDelete('{{ url('admin_content_delete', {id: News.id}) }}'); document.form1.submit(); return false;">削除</a></li>
                                                         {% if loop.first == false %}
                                                             <li>
-                                                                <a href="?" onclick="eccube.changeAction('{{ url('admin_content_up', {id: News.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                                                <a href="?" onclick="changeAction('{{ url('admin_content_up', {id: News.id}) }}'); document.form1.submit(); return false;">上へ</a>
                                                             </li>
                                                         {% endif %}
                                                         {% if loop.last == false %}
                                                             <li>
-                                                                <a href="?" onclick="eccube.changeAction('{{ url('admin_content_down', {id: News.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                                                <a href="?" onclick="changeAction('{{ url('admin_content_down', {id: News.id}) }}'); document.form1.submit(); return false;">下へ</a>
                                                             </li>
                                                         {% endif %}
 
