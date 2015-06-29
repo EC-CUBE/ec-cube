@@ -241,6 +241,7 @@ class InstallController
         if (!empty($data['port'])) {
             $dsn .= ';port=' . $data['port'];
         }
+        $dsn .= ';charset=utf8';
 
         $this->PDO = new \PDO(
             $dsn,
