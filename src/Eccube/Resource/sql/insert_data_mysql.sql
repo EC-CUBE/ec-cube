@@ -135,12 +135,6 @@ INSERT INTO mtb_product_list_max (id, name, rank) VALUES (50, '50件', 2);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (1, '価格順', 0);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (2, '新着順', 1);
 
-INSERT INTO mtb_recommend (id, name, rank) VALUES (5, '★★★★★', 0);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (4, '★★★★', 1);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (3, '★★★', 2);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (2, '★★', 3);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (1, '★', 4);
-
 INSERT INTO mtb_reminder (id, name, rank) VALUES (1, '母親の旧姓は？', 0);
 INSERT INTO mtb_reminder (id, name, rank) VALUES (2, 'お気に入りのマンガは？', 1);
 INSERT INTO mtb_reminder (id, name, rank) VALUES (3, '大好きなペットの名前は？', 2);
