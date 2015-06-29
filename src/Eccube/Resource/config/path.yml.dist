@@ -12,7 +12,7 @@ template_code: ${TEMPLATE_CODE}
 
 # routing
 admin_route: ${ADMIN_ROUTE}
-user_data_route: ${USR_DATA_ROUTE}
+user_data_route: ${USER_DATA_ROUTE}
 
 # realdir::image
 image_save_realdir: ${ROOT_DIR}/html/upload/save_image
