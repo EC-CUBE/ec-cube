@@ -114,7 +114,7 @@ $(function(){
                 <div class="item_detail">
                     <!--★通常価格★-->
                     {% if Product.hasProductClass -%}
-                        {% if  Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
+                        {% if Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
                         <p class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> ～ <span class="price01_default">{{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span></p>
                         {% endif %}
                     {% else -%}
