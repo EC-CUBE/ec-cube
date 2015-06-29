@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <use xlink:href="#cb-close"/>
             </svg>
         </a>
-        <span class="cart_price pc">合計 <span class="price"> \ {{ Cart.total_price|number_format }}</span></span></p>
+        <span class="cart_price pc">合計 <span class="price">{{ Cart.total_price|price }}</span></span></p>
     <div id="cart" class="cart">
         <div class="inner">
             {% for CartItem in Cart.CartItems %}
@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% set Product = ProductClass.Product %}
                 <div class="item_box clearfix">
                     <div class="item_photo"><img
-                                src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_main_list }}"
+                                src="{{ app.config.image_save_urlpath }}/{{ Product.MainListImage|no_image_product }}"
                                 alt="{{ Product.name }}"></div>
                     <dl class="item_detail">
                         <dt class="item_name">{{ Product.name }}</dt>
@@ -49,13 +49,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {%- endif -%}
                             {%- endif -%}
                         </dd>
-                        <dd class="item_price">{{ CartItem.price|number_format }}<span class="small">税込</span></dd>
+                        <dd class="item_price">{{ CartItem.price|price }}<span class="small">税込</span></dd>
                         <dd class="item_quantity form-group form-inline">数量：{{ CartItem.quantity }}</dd>
                     </dl>
                 </div><!--/item_box-->
             {% endfor %}
 
-            <p class="cart_price sp">合計 <span class="price"> \ {{ Cart.total_price|number_format }}</span></p>
+            <p class="cart_price sp">合計 <span class="price">{{ Cart.total_price|price }}</span></p>
 
             <div class="btn_area">
                 <ul>

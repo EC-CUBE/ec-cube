@@ -24,9 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'cart_page' %}
 
 {% block main %}
-    {% if error %}
-        <div>{{ error.message }}</div>
-    {% endif %}
+
     <h1 class="page-heading">ログイン</h1>
     <div class="container-fluid">
         <form method="post" action="{{ url('login_check') }}">
@@ -41,10 +39,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
                             <div class="form-group">
                                 {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
-                                <label><input type="checkbox">記憶</label></div>
+                                <label><input type="checkbox">記憶</label>
+                            </div>
                             <div class="form-group">
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
-                                </div>
+                            {% if error %}
+                                <p class="errormsg text-danger">{{ error.message }}</p>
+                            {% endif %}
+                            </div>
                             <div class="btn_area">
                                 <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
                                 <ul>
