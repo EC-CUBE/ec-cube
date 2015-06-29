@@ -125,9 +125,9 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $email04;
 
     /**
-     * @var string
+     * @var integer
      */
-    private $free_rule;
+    private $delivery_free_amount;
 
     /**
      * @var string
@@ -202,7 +202,7 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $delivery_free_amount;
+    private $delivery_free_quantity;
 
     /**
      * @var integer
@@ -683,26 +683,26 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set free_rule
+     * Set delivery_free_amount
      *
-     * @param  string   $freeRule
+     * @param  string   $deliveryFreeAmount
      * @return BaseInfo
      */
-    public function setFreeRule($freeRule)
+    public function setDeliveryFreeAmount($deliveryFreeAmount)
     {
-        $this->free_rule = $freeRule;
+        $this->delivery_free_amount = $deliveryFreeAmount;
 
         return $this;
     }
 
     /**
-     * Get free_rule
+     * Get delivery_free_amount
      *
-     * @return string
+     * @return integer
      */
-    public function getFreeRule()
+    public function getDeliveryFreeAmount()
     {
-        return $this->free_rule;
+        return $this->delivery_free_amount;
     }
 
     /**
@@ -1028,16 +1028,16 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
         return $this->Pref;
     }
 
-    public function setDeliveryFreeAmount($delivery_free_amount)
+    public function setDeliveryFreeQuantity($delivery_free_quantity)
     {
-        $this->delivery_free_amount = $delivery_free_amount;
+        $this->delivery_free_quantity = $delivery_free_quantity;
 
         return $this;
     }
 
-    public function getDeliveryFreeAmount()
+    public function getDeliveryFreeQuantity()
     {
-        return $this->delivery_free_amount;
+        return $this->delivery_free_quantity;
     }
 
     public function setUseMultipleShipping($use_multiple_shipping)
