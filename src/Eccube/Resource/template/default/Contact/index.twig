@@ -22,15 +22,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-$(function() {
-  $('#zip-search').click(function(event) {
-    event.preventDefault();
-    AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
-  });
-});
-</script>
+    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+    <script>
+        $(function () {
+            $('#zip-search').click(function (event) {
+                event.preventDefault();
+                AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -39,29 +39,55 @@ $(function() {
         <div class="container-fluid inner no-padding">
             <div id="main">
                 <h1 class="page-heading">お問い合わせ</h1>
+
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br/>
                                 また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+
                             <form name="form1" id="form1" method="post" action="{{ url('contact') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="dl_table">
-                                    {{ form_row(form.name, {attr : {class : 'middle'}}) }}
-                                    {{ form_row(form.kana, {attr : {class : 'middle'}}) }}
                                     <dl>
-                                        <dt>住所</dt>
+                                        <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
+                                        <dd class="form-group input_name">
+                                            {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
+                                            {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                                            {{ form_errors(form.name) }}
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>
+                                            {{ form_label(form.kana) }}
+                                        </dt>
+                                        <dd class="form-group input_name">
+                                            {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
+                                            {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+                                            {{ form_errors(form.kana) }}
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>{{ form_label(form.address) }}</dt>
                                         <dd>
                                             <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                                            <div class="form-group {% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                                            {{ form_widget(form.address) }}
-                                            {{ form_errors(form.address) }}
+                                            <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                                {{ form_widget(form.address) }}
+                                                {{ form_errors(form.address) }}
                                             </div>
                                         </dd>
                                     </dl>
-                                    {{ form_row(form.tel, {attr : {class : 'short'}}) }}
                                     <dl>
-                                        <dt>メールアドレス<span class="required">必須</span></dt>
+                                        <dt>{{ form_label(form.tel) }}</dt>
+                                        <dd>
+                                            <div class="form-inline form-group input_tel">
+                                                {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
+                                                {{ form_errors(form.tel) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>{{ form_label(form.email) }}<span class="required">必須</span></dt>
                                         <dd>
                                             <div class="form-group">
                                                 {{ form_widget(form.email) }}
@@ -69,17 +95,30 @@ $(function() {
                                             </div>
                                         </dd>
                                     </dl>
-                                    {{ form_row(form.contents, {'attr': {'rows': '70'}}) }}
+                                    <dl>
+                                        <dt>{{ form_label(form.contents) }}<span class="required">必須</span></dt>
+                                        <dd>
+                                            <div class="column">
+                                                {{ form_widget(form.contents) }}
+                                                {{ form_errors(form.contents) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
                                 </div>
                                 <input type="hidden" name="mode" value="confirm">
+
                                 <div class="row no-padding">
-                                <div class="btn_group col-sm-offset-4 col-sm-4">
-                                    <p><button type="submit" class="btn btn-primary btn-block">確認ページへ</button></p>
-                                </div>
+                                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                                        <p>
+                                            <button type="submit" class="btn btn-primary btn-block">確認ページへ</button>
+                                        </p>
+                                    </div>
                                 </div>
                             </form>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
 
                 </div>
             </div>
