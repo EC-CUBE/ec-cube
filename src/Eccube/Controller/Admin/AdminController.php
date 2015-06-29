@@ -54,6 +54,14 @@ class AdminController extends AbstractController
 
     public function index(Application $app, Request $request)
     {
+        // install.phpのチェック.
+        if (isset($app['config']['eccube_install']) && $app['config']['eccube_install'] == 1) {
+            $file = $app['config']['root_dir'] . '/html/install.php';
+            if (file_exists($file)) {
+                $app->addWarning('admin.install.warning', 'admin');
+            }
+        }
+
         // 受注マスター検索用フォーム
         $searchOrderForm = $app['form.factory']
             ->createBuilder('admin_search_order')

@@ -241,6 +241,7 @@ class InstallController
         if (!empty($data['port'])) {
             $dsn .= ';port=' . $data['port'];
         }
+        $dsn .= ';charset=utf8';
 
         $this->PDO = new \PDO(
             $dsn,
@@ -323,7 +324,7 @@ class InstallController
         } elseif ($config['database']['driver'] == 'pdo_mysql') {
             $sqlFile = __DIR__ . '/../../Resource/sql/insert_data_mysql.sql';
         } else {
-            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data.sql';
+            die('database type invalid.');
         }
 
         $fp = fopen($sqlFile, 'r');

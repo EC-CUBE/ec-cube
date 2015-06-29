@@ -190,7 +190,7 @@ class Application extends \Silex\Application
         ));
 
         $levels = Logger::getLevels();
-        $this['monolog'] = $this->extend('monolog', function($monolog, $this) use ($levels, $file) {
+        $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $this) use ($levels, $file) {
 
             $RotateHandler = new RotatingFileHandler($file, $this['config']['log']['max_files'], $this['config']['log']['log_level']);
             $RotateHandler->setFilenameFormat(
@@ -206,7 +206,7 @@ class Application extends \Silex\Application
             $monolog->pushHandler($FingerCrossedHandler);
 
             return $monolog;
-        });
+        }));
     }
 
     public function initSession()
