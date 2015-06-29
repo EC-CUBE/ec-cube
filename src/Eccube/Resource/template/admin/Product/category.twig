@@ -77,6 +77,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     $(".modal-backdrop").remove();
                 });
             };
+
+            // カテゴリツリー開閉
+            // 初期表示
+            $("#category_tree li ul").css("display", "none");
+            // 現在地まで拓く
+            $("#category_tree li.active")
+                    .parents("ul")
+                    .css("display", "");
+
+            // クリックでひらく
+            $("#category_tree li svg").on("click", function(){
+                $(this).parent().find("ul").slideToggle(100);
+            });
         });
     </script>
 {% endblock %}
@@ -177,8 +190,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
         </div><!-- /.col -->
 
-        {% macro tree(Category, TargetId) %}
-            <li {% if Category.id == TargetId %}class="active"{% endif %}>
+        {% macro tree(Category, TargetId, level) %}
+            {% set level = level + 1 %}
+            <li class="level{{ level }} {% if Category.id == TargetId %}active{% endif %}">
                 <svg class="cb cb-plus-square"> <use xlink:href="{% if Category.children|length > 0 %}#cb-plus-square{% else %}#cb-minus-square{% endif %}" /></svg>
                 <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">
                     {{ Category.name }} ({{ Category.children|length }})
@@ -186,7 +200,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% if Category.children|length > 0 %}
                     {% for ChildCategory in Category.children %}
                         <ul>
-                            {{ _self.tree(ChildCategory, TargetId) }}
+                            {{ _self.tree(ChildCategory, TargetId, level) }}
                         </ul>
                     {% endfor %}
                 {% endif %}
@@ -200,9 +214,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="box-body">
                         <div class="tree">
                             <p class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
-                            <ul>
+                            <ul id="category_tree">
                                 {% for TopCategory in TopCategories %}
-                                    {{ _self.tree(TopCategory, TargetCategory.Parent.id | default(null)) }}
+                                    {{ _self.tree(TopCategory, TargetCategory.Parent.id | default(null), 0)}}
                                 {% endfor %}
                             </ul>
                         </div>

@@ -1314,7 +1314,7 @@ p.cart-trigger.cart-is-visible .cb-close {
     border-bottom: 1px solid #f8f8f8;
 }
 .newslist dl {
-    border-top: 1px dotted #ebe8e1;
+    border-top: 1px dotted #ccc;
 }
 .newslist dt {
     cursor: pointer;
@@ -1326,7 +1326,7 @@ p.cart-trigger.cart-is-visible .cb-close {
 }
 .newslist dt .angle-circle {
     position: absolute;
-    right: 8px;top: 17px;
+    right: 16px;top: 17px;
     display: inline-block;
     width: 21px; height: 21px;
     border-radius: 50%;
@@ -1882,6 +1882,21 @@ div.table .tbody .addr_box .column {
     border-top: 1px dotted #ccc;
 }
 
+/* payment_list */
+
+.payment_list li {
+	margin-bottom: 8px;
+}
+.payment_list li img {
+margin-top: 5px;
+}
+#shopping_confirm .payment_list .radio label{
+	font-weight: normal;
+}
+
+
+
+
 
 /* MyPage
 ------------------------------------------- */
@@ -2011,6 +2026,25 @@ div.table .tbody .addr_box .column {
     font-size: 1.6rem;
     margin: 0 0 16px;
 }
+
+#entry_birth select {
+	margin: 0 8px;
+}
+#entry_birth select:first-child {
+	margin-left: 0;
+}
+#entry_sex .radio {
+	display: inline-block;
+	margin-right: 10px;
+}
+#entry_sex .radio input[type="radio"] {
+	margin-right: 10px;
+}
+
+.mypage .dl_table dt label {
+	font-weight: bold;
+}
+
 
 /* Error Page */
 
@@ -2159,6 +2193,9 @@ div.table .tbody .addr_box .column {
 }
 .cart_page .form_terms_link {
     margin-bottom: 0;
+}
+#shopping_confirm .cart_item.table {
+	border-top: 0 none;
 }
 #shopping_confirm .cart_item .item_box .table {
     width:100%;
@@ -2314,7 +2351,7 @@ div.table .tbody .addr_box .column {
 }
 
 .mypage .not_required {
-    margin-top: 16px;
+    margin-top: 40px;
 }
 
 .mypage .title_hint {
@@ -2342,8 +2379,10 @@ div.table .tbody .addr_box .column {
     margin: 0 0 16px;
 }
 .registration_page .dl_table dt {
-    font-weight: bold;
     margin-bottom: 5px;
+}
+.registration_page .dl_table dt label {
+    font-weight: bold;
 }
 .registration_page .form_terms_link {
     margin-bottom: 0;
@@ -3609,7 +3648,9 @@ fieldset[disabled] .btn-link:focus {
     #header .category-nav .toggle {
         display: none;
     }
-
+    #header .category-nav > li {
+        margin: 0;
+    }
     #header .category-nav li ul {
         display: block;
     }
@@ -3619,7 +3660,7 @@ fieldset[disabled] .btn-link:focus {
         display: inline-block;
     }
     #header .category-nav > li > a {
-        padding: 0 10px;
+        padding: 0 1em;
         height: 55px;
         line-height: 55px;
         border-bottom: none;
@@ -3681,10 +3722,6 @@ fieldset[disabled] .btn-link:focus {
     #header .category-nav li ul li ul li a {}
     #header .category-nav li:hover ul li ul li a:hover {  background: rgba(204, 204, 204, 0.1)}
 
-    #header .category-nav a.has-toggle {
-        padding-right: 20px;
-    }
-
     #header .category-nav ul > li > a,
     #header .category-nav ul > li > ul > li > a,
     #header .category-nav ul > li > ul > li > ul > li a {
@@ -3733,8 +3770,8 @@ fieldset[disabled] .btn-link:focus {
         width: 25px; height: 25px;
     }
     .newslist dt .cb {
-        font-size: 22px;
-        top: 0; left: 2px;
+        font-size: 20px;
+        top: 0; left: 3px;
     }
     .newslist dt .date {
         float: left;
@@ -4033,6 +4070,21 @@ fieldset[disabled] .btn-link:focus {
     #confirm_side {
         top: 0;
     }
+	
+	/* payment_list */
+	
+	.payment_list .radio {
+		display: inline;
+		margin-right: 16px;
+		vertical-align:middle;
+	}
+	.payment_list .radio input[type="radio"] {
+		margin-right: 10px;
+	}
+	.payment_list li img {
+		margin-top: 0;
+		vertical-align:middle;
+	}
 
     /* MyPage
     ------------------------------------------- */
@@ -4075,7 +4127,7 @@ fieldset[disabled] .btn-link:focus {
 
     #footer {
         padding-top: 32px;
-        margin-top: 50px;
+        margin-top: 80px;
     }
 
     #footer ul {
@@ -4171,6 +4223,12 @@ fieldset[disabled] .btn-link:focus {
         width: 100%;
         float: none;
     }
+    #shopping_confirm .total_box dl {
+		padding-top: 8px;
+	}
+    #shopping_confirm .total_box dl:first-child {
+		padding-top: 0;
+	}
     #shopping_confirm .total_box dl dt {
         font-size: 14px;
         font-size: 1.4rem;
