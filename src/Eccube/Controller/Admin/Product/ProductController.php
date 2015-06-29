@@ -371,6 +371,7 @@ class ProductController
     public function copy(Application $app, Request $request, $id = null)
     {
         if (!is_null($id)) {
+            $fs = new Filesystem();
             $Product = $app['eccube.repository.product']->find($id);
             if ($Product instanceof \Eccube\Entity\Product) {
                 $CopyProduct = clone $Product;
@@ -388,6 +389,15 @@ class ProductController
                 }
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
+                    $oldFileName = $Image->getFilename();
+                    $fileMeta = explode('.', $oldFileName);
+                    $extension = end($fileMeta);
+                    $newFileName = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $fs->copy(
+                        $app['config']['image_save_realdir'] . '/' . $oldFileName,
+                        $app['config']['image_save_realdir'] . '/' . $newFileName
+                    );
+                    $Image->setFileName($newFileName);
                     $app['orm.em']->persist($Image);
                 }
                 $Tags = $CopyProduct->getProductTag();
