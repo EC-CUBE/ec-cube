@@ -39,7 +39,7 @@ admin.delete.failed: 削除できませんでした。
 admin.rank.move.complete: ランクの移動が完了しました。
 
 admin.order.save.complete: 受注情報を保存しました。
-admin.order.delete.complete: 登録が完了しました。
+admin.order.delete.complete: 受注情報を削除しました。
 
 Quantity: 数量
 
