@@ -214,7 +214,7 @@ $(function(){
                     <h2 class="heading02">お支払方法</h2>
                     <div class="column">
                         <div class="form-group">
-                        	<ul class="payment_list">
+                            <ul class="payment_list">
                             {% for key, child in form.payment %}
                             <li>
                                 {{ form_widget(child, {'attr': {'class': 'payment'}}) }}

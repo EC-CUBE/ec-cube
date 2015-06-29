@@ -267,23 +267,14 @@ class OrderService
 
         // 初期選択の支払い方法をセット
         $paymentOptions = $delivery->getPaymentOptions();
-        $payments = array();
-        foreach ($paymentOptions as $paymentOption) {
-            $payment = $paymentOption->getPayment();
-            // 支払方法の制限値内であれば表示
-            if (intval($payment->getRuleMin()) <= $subTotal) {
-                if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
-                    $payments[] = $payment;
-                }
-            }
-        }
+        $payments = $this->getPayments($paymentOptions, $subTotal);
+
         if (count($payments) > 0) {
             $payment = $payments[0];
             $Order->setPayment($payment);
             $Order->setPaymentMethod($payment->getMethod());
             $Order->setCharge($payment->getCharge());
         } else {
-            $payment = null;
             $Order->setCharge(0);
         }
 
@@ -489,5 +480,30 @@ class OrderService
         $user->setBuyTotal($user->getBuyTotal() + $Order->getTotal());
 
     }
+
+
+    /**
+     * 支払方法選択の表示設定
+     *
+     * @param $paymentOptions 支払選択肢情報
+     * @param $subTotal 小計
+     */
+    public function getPayments($paymentOptions, $subTotal)
+    {
+        $payments = array();
+        foreach ($paymentOptions as $paymentOption) {
+            $payment = $paymentOption->getPayment();
+            // 支払方法の制限値内であれば表示
+            if (intval($payment->getRuleMin()) <= $subTotal) {
+                if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
+                    $payments[] = $payment;
+                }
+            }
+        }
+
+        return $payments;
+
+    }
+
 
 }

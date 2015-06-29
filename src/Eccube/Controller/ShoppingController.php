@@ -105,7 +105,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order);
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         return $app->render('Shopping/index.twig', array(
                 'form' => $form->createView(),
@@ -151,7 +151,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order);
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -252,7 +252,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order);
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
 
@@ -323,7 +323,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order);
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
 
@@ -786,20 +786,12 @@ class ShoppingController extends AbstractController
     /**
      * 支払い方法のフォームを設定
      */
-    private function setFormPayment($form, $delivery, $Order)
+    private function setFormPayment($form, $delivery, $Order, $app)
     {
 
+        $orderService = $app['eccube.service.order'];
         $paymentOptions = $delivery->getPaymentOptions();
-        $payments = array();
-        foreach ($paymentOptions as $paymentOption) {
-            $payment = $paymentOption->getPayment();
-            // 支払方法の制限値内であれば表示
-            if (intval($payment->getRuleMin()) <= $Order->getSubTotal()) {
-                if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $Order->getSubTotal()) {
-                    $payments[] = $payment;
-                }
-            }
-        }
+        $payments = $orderService->getPayments($paymentOptions, $Order->getSubTotal());
 
         $form->add('payment', 'entity', array(
             'class' => 'Eccube\Entity\Payment',
