@@ -469,6 +469,11 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
+    private $search_word;
+
+    /**
+     * @var string
+     */
     private $free_area;
 
     /**
@@ -679,6 +684,29 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getDescriptionDetail()
     {
         return $this->description_detail;
+    }
+
+    /**
+     * Set search_word
+     *
+     * @param string $searchWord
+     * @return Product
+     */
+    public function setSearchWord($searchWord)
+    {
+        $this->search_word = $searchWord;
+
+        return $this;
+    }
+
+    /**
+     * Get search_word
+     *
+     * @return string 
+     */
+    public function getSearchWord()
+    {
+        return $this->search_word;
     }
 
     /**
@@ -1061,4 +1089,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     {
         return $this->ProductTag;
     }
+
+
 }

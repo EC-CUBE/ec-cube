@@ -107,9 +107,10 @@ class ProductRepository extends EntityRepository
         // name
         if (!empty($searchData['name']) && $searchData['name']) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
+
             foreach ($keywords as $keyword) {
                 $qb
-                    ->andWhere('p.name LIKE :keyword')
+                    ->andWhere('p.name LIKE :keyword OR p.search_word LIKE :keyword')
                     ->setParameter('keyword', '%' . $keyword . '%');
             }
         }
