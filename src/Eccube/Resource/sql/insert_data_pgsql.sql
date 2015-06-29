@@ -855,7 +855,7 @@ INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_na
 INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date) VALUES(4, 2, 1, 'cafe-1.jpg', 3, CURRENT_TIMESTAMP);
 INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date) VALUES(5, 2, 1, 'cafe-2.jpg', 3, CURRENT_TIMESTAMP);
 INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_name, rank, create_date) VALUES(6, 2, 1, 'cafe-3.jpg', 3, CURRENT_TIMESTAMP);
-SELECT setval('dtb_product_stock_product_stock_id_seq', 6);
+SELECT setval('dtb_product_image_product_image_id_seq', 6);
 
 INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date) VALUES (1, 'default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date) VALUES (2, 'mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
