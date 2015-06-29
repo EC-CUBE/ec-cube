@@ -56,7 +56,7 @@ export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 export ROOT_DIR=${BASE_DIR}
 export ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html"}
 export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
-export USR_DATA_ROUTE=${USR_DATA_ROUTE:-"user_data"}
+export USER_DATA_ROUTE=${USER_DATA_ROUTE:-"user_data"}
 export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}
 export FORCE_SSL=${FORCE_SSL:-"0"}
 
