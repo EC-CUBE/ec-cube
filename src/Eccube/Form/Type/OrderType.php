@@ -141,8 +141,10 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('discount', 'integer', array(
+            ->add('discount', 'money', array(
                 'label' => '値引き',
+                'currency' => 'JPY',
+                'precision' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -150,8 +152,10 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('delivery_fee_total', 'integer', array(
+            ->add('delivery_fee_total', 'money', array(
                 'label' => '送料',
+                'currency' => 'JPY',
+                'precision' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -159,8 +163,10 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('charge', 'integer', array(
+            ->add('charge', 'money', array(
                 'label' => '手数料',
+                'currency' => 'JPY',
+                'precision' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
