@@ -134,14 +134,6 @@ INSERT INTO mtb_product_list_max (id, name, rank) VALUES (50, '50件', 2);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (1, '価格順', 0);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (2, '新着順', 1);
 
-INSERT INTO mtb_reminder (id, name, rank) VALUES (1, '母親の旧姓は？', 0);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (2, 'お気に入りのマンガは？', 1);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (3, '大好きなペットの名前は？', 2);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (4, '初恋の人の名前は？', 3);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (5, '面白かった映画は？', 4);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (6, '尊敬していた先生の名前は？', 5);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (7, '好きな食べ物は？', 6);
-
 INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (0, 'http://', 0);
 INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (1, 'https://', 1);
 INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (2, 'ttp://', 2);
