@@ -80,19 +80,6 @@ INSERT INTO mtb_page_max (id, name, rank) VALUES (80, '80', 7);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (90, '90', 8);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (100, '100', 9);
 
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/index.php', '0', 0);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/delete.php', '0', 1);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/input.php', '0', 2);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/master.php', '0', 3);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/master_delete.php', '0', 4);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/master_rank.php', '0', 5);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/mastercsv.php', '0', 6);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/rank.php', '0', 7);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/entry/index.php', '1', 8);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/entry/delete.php', '1', 9);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/entry/inputzip.php', '1', 10);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/search/delete_note.php', '1', 11);
-
 INSERT INTO mtb_pref (id, name, rank) VALUES (1, '北海道', 1);
 INSERT INTO mtb_pref (id, name, rank) VALUES (2, '青森県', 2);
 INSERT INTO mtb_pref (id, name, rank) VALUES (3, '岩手県', 3);
