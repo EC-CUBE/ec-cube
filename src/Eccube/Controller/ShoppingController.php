@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Form\Type\ShippingMultiType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingController extends AbstractController
 {
@@ -104,7 +105,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order);
 
         return $app->render('Shopping/index.twig', array(
                 'form' => $form->createView(),
@@ -150,7 +151,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -198,6 +199,8 @@ class ShoppingController extends AbstractController
 
                 return $app->redirect($app->url('shopping_complete'));
 
+            } else {
+                return $app->redirect($app->url('shopping_error'));
             }
         }
 
@@ -249,7 +252,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order);
 
         if ('POST' === $request->getMethod()) {
 
@@ -320,7 +323,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order);
 
         if ('POST' === $request->getMethod()) {
 
@@ -783,22 +786,30 @@ class ShoppingController extends AbstractController
     /**
      * 支払い方法のフォームを設定
      */
-    private function setFormPayment($form, $delivery, $payment = null)
+    private function setFormPayment($form, $delivery, $Order)
     {
 
-        // 支払い方法選択
         $paymentOptions = $delivery->getPaymentOptions();
         $payments = array();
-        // 初期値で設定されている配送業社を設定
         foreach ($paymentOptions as $paymentOption) {
-            $payments[] = $paymentOption->getPayment();
+            $payment = $paymentOption->getPayment();
+            // 支払方法の制限値内であれば表示
+            if (intval($payment->getRuleMin()) <= $Order->getSubTotal()) {
+                if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $Order->getSubTotal()) {
+                    $payments[] = $payment;
+                }
+            }
         }
+
         $form->add('payment', 'entity', array(
             'class' => 'Eccube\Entity\Payment',
             'property' => 'method',
             'choices' => $payments,
-            'data' => $payment,
+            'data' => $Order->getPayment(),
             'expanded' => true,
+            'constraints' => array(
+                new Assert\NotBlank(),
+            ),
         ));
 
     }

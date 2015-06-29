@@ -170,6 +170,8 @@ class OrderService
         $productDeliveryFeeTotal = 0;
 
         $baseInfo = $this->app['eccube.repository.base_info']->get();
+        $optionProductDeliveryFee = $baseInfo->getOptionProductDeliveryFee();
+
         // 受注詳細, 配送商品
         foreach ($cartItems as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
@@ -180,6 +182,12 @@ class OrderService
             $quantity = $item->getQuantity();
             $productTypes[] = $ProductClass->getProductType();
             $totalQuantity += $quantity;
+            if (!is_null($optionProductDeliveryFee)) {
+                // 商品ごとの配送料が設定
+                if (!is_null($ProductClass->getDeliveryFee())) {
+                    $productDeliveryFeeTotal += $ProductClass->getDeliveryFee() * $quantity;
+                }
+            }
 
             // 受注詳細
             $OrderDetail = $this->newOrderDetail($Product, $ProductClass, $quantity);
@@ -234,10 +242,11 @@ class OrderService
         // 配送料金の設定
         $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $delivery, 'Pref' => $Shipping->getPref()));
         $Shipping->setDelivery($delivery);
+        // $Shipping->setDeliveryFee($deliveryFee + $productDeliveryFeeTotal);
         $Shipping->setDeliveryFee($deliveryFee);
+        $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
 
-
-        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
+        $Order->setDeliveryFeeTotal($deliveryFee->getFee() + $productDeliveryFeeTotal);
         // 配送料無料条件(合計金額)
         $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
         if (!is_null($deliveryFreeAmount)) {
@@ -258,12 +267,27 @@ class OrderService
 
         // 初期選択の支払い方法をセット
         $paymentOptions = $delivery->getPaymentOptions();
-        $payment = $paymentOptions[0]->getPayment();
+        $payments = array();
+        foreach ($paymentOptions as $paymentOption) {
+            $payment = $paymentOption->getPayment();
+            // 支払方法の制限値内であれば表示
+            if (intval($payment->getRuleMin()) <= $subTotal) {
+                if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
+                    $payments[] = $payment;
+                }
+            }
+        }
+        if (count($payments) > 0) {
+            $payment = $payments[0];
+            $Order->setPayment($payment);
+            $Order->setPaymentMethod($payment->getMethod());
+            $Order->setCharge($payment->getCharge());
+        } else {
+            $payment = null;
+            $Order->setCharge(0);
+        }
 
         $Order->setTax($tax);
-        $Order->setPayment($payment);
-        $Order->setPaymentMethod($payment->getMethod());
-        $Order->setCharge($payment->getCharge());
 
         $total = $subTotal + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
@@ -293,9 +317,11 @@ class OrderService
         // 配送料金の設定
         $payment = $Order->getPayment();
 
-        $Order->setPayment($payment);
-        $Order->setPaymentMethod($payment->getMethod());
-        $Order->setCharge($payment->getCharge());
+        if (!is_null($payment)) {
+            $Order->setPayment($payment);
+            $Order->setPaymentMethod($payment->getMethod());
+            $Order->setCharge($payment->getCharge());
+        }
         $Order->setDeliveryFeeTotal($deliveryFee->getFee());
 
         $baseInfo = $this->app['eccube.repository.base_info']->get();
@@ -317,8 +343,6 @@ class OrderService
             }
         }
 
-
-
         $total = $Order->getSubTotal()  + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
         $Order->setTotal($total);
@@ -328,8 +352,6 @@ class OrderService
         return $Order;
 
     }
-
-
 
 
     /**
