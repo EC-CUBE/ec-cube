@@ -299,6 +299,12 @@ class Application extends \Silex\Application
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
+
+                // プラグイン追加のサブナビを追加
+                $navis = array('content', 'customer', 'order', 'product', 'shop', 'system');
+                foreach ($navis as $navi) {
+                    $app["twig"]->addGlobal('navi_' . $navi, isset($this->subnavi[$navi]) ? $this->subnavi[$navi] : array());
+                }
             // フロント画面
             } else {
                 $request = $event->getRequest();
@@ -316,6 +322,7 @@ class Application extends \Silex\Application
 
                 $app["twig"]->addGlobal("PageLayout", $PageLayout);
                 $app["twig"]->addGlobal("title", $PageLayout->getName());
+
             }
         });
     }
@@ -485,6 +492,15 @@ class Application extends \Silex\Application
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
                     $this->register(new $class($this));
+                }
+            }
+            // subnavi
+            if (file_exists($dir->getRealPath() . '/subnavi.yml')) {
+                $subnavi = Yaml::parse($dir->getRealPath() . '/subnavi.yml');
+                if (isset($subnavi)) {
+                    foreach ($subnavi as $menu => $navi) {
+                        $this->subnavi[$menu][] = $navi;
+                    }
                 }
             }
         }

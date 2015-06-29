@@ -33,6 +33,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <li id="navi-basis-delivery" class="{% if active_menus(menus)[2] == 'shop_delivery' %}active{% endif %}"><a href="{{ url('admin_setting_shop_delivery') }}">配送方法設定</a></li>
                             <li id="navi-basis-tax" class="{% if active_menus(menus)[2] == 'shop_tax' %}active{% endif %}"><a href="{{ url('admin_setting_shop_tax') }}">税率設定</a></li>
                             <li id="navi-basis-mail" class="{% if active_menus(menus)[2] == 'shop_mail' %}active{% endif %}"><a href="{{ url('admin_setting_shop_mail') }}">メール設定</a></li>
+                            {% for navi in navi_shop %}
+                                <li id="navi-basis-{{ navi.url }}"
+                                    class="{% if active_menus(menus)[2] == navi.url %}active{% endif %}">
+                                    <a href="{{ url(navi.url) }}">
+                                        {{ navi.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </li>
                     <li class="{% if active_menus(menus)[1] == 'ownersstore' %}active{% endif %}">
@@ -44,7 +52,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <li id="navi-ownersstore-pluginhandler" class="{% if active_menus(menus)[2] == 'pluginhandler' %}active{% endif %}"><a href="{{ url('admin_setting_system_plugin_handler') }}">プラグインハンドラ設定</a></li>
 
                             <li id="navi-ownersstore-template" class="{% if active_menus(menus)[2] == 'template' %}active{% endif %}"><a href="{{ url('admin_content_template') }}">テンプレート</a></li>
-
                         </ul>
                     </li>
                     <li class="{% if active_menus(menus)[1] == 'system' %}active{% endif %}">
@@ -56,6 +63,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {#<li id="navi-system-masterdata" class="{% if active_menus(menus)[2] == 'masterdata' %}active{% endif %}"><a href="{{ url('admin_setting_system_masterdata') }}">マスターデータ管理</a></li>#}
                             <li id="navi-system-security" class="{% if active_menus(menus)[2] == 'security' %}active{% endif %}"><a href="{{ url('admin_setting_system_security') }}">セキュリティ管理</a></li>
                             {#<li id="navi-system-log" class="{% if active_menus(menus)[2] == 'log' %}active{% endif %}"><a href="{{ url('admin_setting_system_log') }}">EC-CUBE ログ表示</a></li>#}
+                            {% for navi in navi_system %}
+                                <li id="navi-system-{{ navi.url }}"
+                                    class="{% if active_menus(menus)[2] == navi.url %}active{% endif %}">
+                                    <a href="{{ url(navi.url) }}">
+                                        {{ navi.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </li>
                 </ul>
