@@ -90,7 +90,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 <div class="box-body">
                     <div class="form-inline">
-                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
+                        <form novalidate="novalidate" role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
                             {{ form_widget(form._token) }}
                             {{ form_widget(form.name, {attr: {placeholder: '分類名を入力'}}) }}
                             <button class="btn btn-default btn-sm" type="submit">分類作成</button>

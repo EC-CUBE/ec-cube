@@ -124,7 +124,7 @@ $(function(){
                 </div>
             </div><!-- /.col -->
         </div><!-- /.row -->
-        <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
+        <form novalidate="novalidate" id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
             {{ form_widget(form._token) }}
             <div id="shopping_confirm" class="row">
                 <div id="confirm_main" class="col-sm-8">

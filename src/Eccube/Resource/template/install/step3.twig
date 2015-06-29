@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
-                            <form name="form1" id="form1" method="post" action="{{ url('install_step3') }}">
+                            <form novalidate="novalidate" name="form1" id="form1" method="post" action="{{ url('install_step3') }}">
                                 {{ form_widget(form._token) }}
                                 {{ form_row(form.shop_name) }}
                                 {{ form_row(form.email) }}

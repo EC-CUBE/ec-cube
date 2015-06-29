@@ -98,7 +98,7 @@
         <tbody>
 
         {% for Product in Products %}
-            <form name="product_form{{ Product.id }}">
+            <form novalidate="novalidate" name="product_form{{ Product.id }}">
                 {% set form = forms[Product.id] %}
 
                 <tr>

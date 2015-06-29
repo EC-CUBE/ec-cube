@@ -45,7 +45,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <li>version:{{ plugin.version|e }}</li>
     <li>event:{{ plugin.className|e }}</li>
     <li>del_flg:{{ plugin.delFlg|e }}</li>
-        <form action="plugin/manage" method="post"  {{ form_enctype(form) }}>
+        <form novalidate="novalidate" action="plugin/manage" method="post"  {{ form_enctype(form) }}>
             {{ form_widget(form) }}
         </form>
     <a href="/admin/plugin/{{plugin.code|e}}/config">プラグイン設定</a>

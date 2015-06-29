@@ -107,7 +107,7 @@ function fnReSendMail(action) {
 {% endblock javascript %}
 
 {% block main %}
-<form name="search_form" id="search_form" method="post" action="">
+<form novalidate="novalidate" name="search_form" id="search_form" method="post" action="">
     {{ form_widget(searchForm._token) }}
     <!--検索条件設定テーブルここから-->
     <div class="search-box">

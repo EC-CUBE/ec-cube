@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <p class="addbtn">
             <a href="{{ path('mypage_delivery_address') }}" onclick="eccube.openWindow('{{ path('mypage_delivery_address') }}?page={{ path('shopping_shipping_multiple') }}','new_deiv','600','640'); return false;"><img class="hover_change_image" src="{{ app.config.tpl }}img/button/btn_add_address.jpg" alt="新しいお届け先を追加する" /></a>
         </p>
-        <form name="form1" id="form1" method="post" action="{{ path('shopping_shipping_multiple') }}">
+        <form novalidate="novalidate" name="form1" id="form1" method="post" action="{{ path('shopping_shipping_multiple') }}">
             {{ form_widget(form._token) }}
             <table summary="商品情報">
                 <col width="10%" />

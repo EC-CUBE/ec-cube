@@ -40,7 +40,7 @@ $(function(){
 {% endblock javascript %}
 
 {% block main %}
-    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
+    <form novalidate="novalidate" role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
         {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
             <div class="col-md-9">

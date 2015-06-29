@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <h1 class="page-heading">お届け先の追加・編集</h1>
     <div class="container-fluid">
-        <form method="post" action="{{ url('shopping_shipping_edit') }}">
+        <form novalidate="novalidate" method="post" action="{{ url('shopping_shipping_edit') }}">
             {{ form_widget(form._token) }}
             <div class="dl_table">
                 <dl>

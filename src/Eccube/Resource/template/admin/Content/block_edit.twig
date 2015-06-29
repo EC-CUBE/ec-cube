@@ -31,7 +31,7 @@
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
-<form name="content_block_form" id="content_block_form" method="post" action="
+<form novalidate="novalidate" name="content_block_form" id="content_block_form" method="post" action="
 {%- if block_id is not null %}{{ url('admin_content_block_edit', {id: block_id}) }}{% else %}{{ url('admin_content_block_new')}}{% endif -%}">
     {{ form_widget(form._token) }}
     {{ form_widget(form.id) }}

@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
 
-            <form name="form1" id="form1" method="post" action="{{ path('shopping_point') }}">
+            <form novalidate="novalidate" name="form1" id="form1" method="post" action="{{ path('shopping_point') }}">
                 {{ form_widget(form._token) }}
                 <table summary="ポイント利用">
                     <col width="100%" />

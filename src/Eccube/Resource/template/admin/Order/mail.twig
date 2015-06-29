@@ -98,7 +98,7 @@ $(function() {
 {% endif %}
 <div class="row">
     <div class="col-md-9">
-        <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
+        <form novalidate="novalidate" id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
         {{ form_widget(form._token) }}
         <input id="mode" type="hidden" name="mode">
         <div class="box">

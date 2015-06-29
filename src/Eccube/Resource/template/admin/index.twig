@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         <div class="row">
             <div class="col-md-6">
-                <form id="form1" name="form1" action="{{ url('admin_order') }}" method="post">
+                <form novalidate="novalidate" id="form1" name="form1" action="{{ url('admin_order') }}" method="post">
                 {{ form_widget(searchOrderForm._token) }}
                 <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
                 <div class="box" id="order_info">
@@ -102,10 +102,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <h3 class="box-title">ショップ状況</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
-                        <form id="form2" name="form2" action="{{ url('admin_product_page', { page_no : 1, status : 3}) }}" method="post">
+                        <form novalidate="novalidate" id="form2" name="form2" action="{{ url('admin_product_page', { page_no : 1, status : 3}) }}" method="post">
                             {{ form_widget(searchProductForm._token) }}
                         </form>
-                        <form id="form3" name="form3" action="{{ url('admin_customer') }}" method="post">
+                        <form novalidate="novalidate" id="form3" name="form3" action="{{ url('admin_customer') }}" method="post">
                             {{ form_widget(searchCustomerForm._token) }}
                             <input type="hidden" id="admin_search_customer_status_1" name="admin_search_customer[customer_status]" value="2">
                         </form>

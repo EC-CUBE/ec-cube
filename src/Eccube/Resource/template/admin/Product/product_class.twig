@@ -143,7 +143,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
 <div class="row">
     <div class="col-md-12">
-        <form class="form-inline" method="post" action="{{ url('admin_product_product_class', {id : Product.id}) }}">
+        <form novalidate="novalidate" class="form-inline" method="post" action="{{ url('admin_product_product_class', {id : Product.id}) }}">
             <div class="box">
                 <div class="box-header">
                     商品名 : <h3 class="box-title">{{ Product.name }}</h3>
@@ -176,7 +176,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 {% if classForm is not null %}
-<form id="product-class-form" class="form-inline" method="post" action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
+<form novalidate="novalidate" id="product-class-form" class="form-inline" method="post" action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
 {{ form_widget(classForm._token) }}
 <div class="row">
     <div class="col-md-12">

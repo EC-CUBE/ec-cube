@@ -46,7 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br/>
                                 また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
 
-                            <form name="form1" id="form1" method="post" action="{{ url('contact') }}">
+                            <form novalidate="novalidate" name="form1" id="form1" method="post" action="{{ url('contact') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="dl_table">
                                     <dl>

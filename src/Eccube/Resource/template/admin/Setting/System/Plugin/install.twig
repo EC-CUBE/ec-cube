@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <p>仮プラグインインストール画面
 <p>install：アーカイブを選択して、installボタン
 
-<form action="" method="post"  {{ form_enctype(install_form) }}>
+<form novalidate="novalidate" action="" method="post"  {{ form_enctype(install_form) }}>
     {{ form_widget(install_form) }}
 </form>
 

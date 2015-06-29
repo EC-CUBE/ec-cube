@@ -188,7 +188,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form role="form" name="form1" id="form1" method="post" action="?">
+    <form novalidate="novalidate" role="form" name="form1" id="form1" method="post" action="?">
     <input type="hidden" name="mode" value="">
     {{ form_widget(form._token) }}
         <div class="col-md-9">

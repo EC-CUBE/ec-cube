@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <h2 class="title">{{ title }}</h2>
     {% include 'Mypage/navi.twig' %}
     <div id="mycontents_area">
-        <form name="form1" id="form1" method="post" action="{{ path('mypage_favorite')}}">
+        <form novalidate="novalidate" name="form1" id="form1" method="post" action="{{ path('mypage_favorite')}}">
             <input type="hidden" name="mode" value="" />
             <input type="hidden" name="pageno" value="{{ app.request.get('pageno') }}" />
             <input type="hidden" name="product_id" value="" />

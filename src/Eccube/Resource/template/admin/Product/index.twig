@@ -82,7 +82,7 @@ $(function() {
 {% block main %}
             <!--検索条件設定テーブルここから-->
             <div class="search-box">
-                <form name="search_form" id="search_form" method="post" action="{{ url('admin_product') }}">
+                <form novalidate="novalidate" name="search_form" id="search_form" method="post" action="{{ url('admin_product') }}">
                 	{{ form_widget(searchForm._token) }}
                     <div class="row">
                         <div class="col-md-12 accordion">

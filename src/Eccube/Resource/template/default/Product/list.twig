@@ -42,11 +42,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <form name="form1" id="form1" method="get" action="?">
+    <form novalidate="novalidate" name="form1" id="form1" method="get" action="?">
         {{ form_widget(search_form) }}
     </form>
     <div class="row">
-        <form name="page_navi_top" id="page_navi_top" action="?">
+        <form novalidate="novalidate" name="page_navi_top" id="page_navi_top" action="?">
         <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。</p>
         <div class="col-sm-6 no-padding">
             <ul class="pagenumberarea clearfix">

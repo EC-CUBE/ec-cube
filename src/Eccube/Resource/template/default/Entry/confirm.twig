@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="col-md-10 col-md-offset-1">
                 <p>下記の内容で送信してもよろしいでしょうか？<br/>よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
 
-                <form method="post" action="{{ url('entry') }}">
+                <form novalidate="novalidate" method="post" action="{{ url('entry') }}">
                     {{ form_widget(form._token) }}
                     <div class="dl_table">
                         <dl>

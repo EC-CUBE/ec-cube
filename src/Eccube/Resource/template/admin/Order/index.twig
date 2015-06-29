@@ -92,7 +92,7 @@ $(function() {
 {% block main %}
     <!--検索条件設定テーブルここから-->
     <div class="search-box">
-        <form name="search_form" id="search_form" method="post" action="{{ url('admin_order') }}">
+        <form novalidate="novalidate" name="search_form" id="search_form" method="post" action="{{ url('admin_order') }}">
             {{ form_widget(searchForm._token) }}
             <div class="row">
                 <div class="col-md-12 accordion">
@@ -265,7 +265,7 @@ $(function() {
                             </ul>
                         </div>
                     </div>
-                    <form id="dropdown-form">
+                    <form novalidate="novalidate" id="dropdown-form">
                     <div class="table_list">
                         <div class="table-responsive with-border">
                             <table class="table table-striped">

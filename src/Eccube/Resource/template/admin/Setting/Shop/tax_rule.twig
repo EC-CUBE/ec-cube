@@ -56,7 +56,7 @@ $(function() {
 {% endblock javascript%}
 
 {% block main %}
-    <form name="form1" role="form" class="form-horizontal" id="form1" method="post" action="
+    <form novalidate="novalidate" name="form1" role="form" class="form-horizontal" id="form1" method="post" action="
     {%- if TargetTaxRule.id is null -%}
         {{ url('admin_setting_shop_tax_new')}}
     {%- else -%}

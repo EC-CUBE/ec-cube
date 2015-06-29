@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <p>会員を退会された場合には、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますがよろしいでしょうか？</p>
             </div>
         </div>
-        <form method="post" action="{{ url('mypage_withdraw') }}">
+        <form novalidate="novalidate" method="post" action="{{ url('mypage_withdraw') }}">
             {{ form_widget(form._token) }}
             <div class="row">
                 <div class="btn_group col-sm-offset-4 col-sm-4">

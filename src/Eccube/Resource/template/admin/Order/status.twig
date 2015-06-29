@@ -36,7 +36,7 @@ $(function(){
 });
 </script>
 
-<form name="form1" id="form1" method="post" action="{{ url('admin_order_status', { id: CurrentStatus.id }) }}" >
+<form novalidate="novalidate" name="form1" id="form1" method="post" action="{{ url('admin_order_status', { id: CurrentStatus.id }) }}" >
 {{ form_widget(form._token) }}
     <div id="order" class="contents-main">
         <h2>抽出条件</h2>

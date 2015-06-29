@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
 <div class="row">
     <div class="col-md-9">
-        <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail_all') }}">
+        <form novalidate="novalidate" id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail_all') }}">
         {{ form_widget(form._token) }}
         <input type="hidden" name="ids" value="{{ ids }}">
         <div class="box">
