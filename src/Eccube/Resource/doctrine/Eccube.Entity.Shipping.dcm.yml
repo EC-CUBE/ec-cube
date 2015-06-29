@@ -100,16 +100,15 @@ Eccube\Entity\Shipping:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
     oneToMany:
         ShipmentItems:
             targetEntity: Eccube\Entity\ShipmentItem

@@ -12,25 +12,6 @@ Eccube\Entity\ProductClass:
             generator:
                 strategy: AUTO
     fields:
-#        product_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#        classcategory_id1:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
-#        classcategory_id2:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
-#        product_type_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
         code:
             type: text
             column: product_code
@@ -66,29 +47,18 @@ Eccube\Entity\ProductClass:
             nullable: true
             precision: 10
             scale: 0
-        point_rate:
-            type: decimal
-            nullable: false
-            precision: 10
-            scale: 0
-            default: '0'
-#        creator_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
     manyToOne:
         Product:
             targetEntity: Eccube\Entity\Product

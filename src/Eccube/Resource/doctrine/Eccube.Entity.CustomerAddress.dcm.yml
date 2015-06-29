@@ -63,16 +63,15 @@ Eccube\Entity\CustomerAddress:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
-            default: 0
+            options:
+                default: '0'
     manyToOne:
         Customer:
             targetEntity: Eccube\Entity\Customer

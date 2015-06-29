@@ -100,7 +100,8 @@ Eccube\Entity\Order:
             nullable: false
             precision: 10
             scale: 0
-            default: '0'
+            options:
+                default: '0'
         delivery_fee_total:
             type: decimal
             nullable: true
@@ -135,11 +136,9 @@ Eccube\Entity\Order:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
         order_date:
             type: datetime
             nullable: true
@@ -153,7 +152,8 @@ Eccube\Entity\Order:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
     manyToOne:
         Customer:
             targetEntity: Eccube\Entity\Customer

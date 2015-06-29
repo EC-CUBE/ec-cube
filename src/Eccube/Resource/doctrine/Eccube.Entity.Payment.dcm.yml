@@ -34,20 +34,20 @@ Eccube\Entity\Payment:
             type: smallint
             nullable: true
             unsigned: false
-            default: '1'
+            options:
+                default: '1'
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
         payment_image:
             type: text
             nullable: true
@@ -55,7 +55,8 @@ Eccube\Entity\Payment:
             type: smallint
             nullable: true
             unsigned: false
-            default: '1'
+            options:
+                default: '1'
         rule_min:
             type: decimal
             nullable: true

@@ -19,10 +19,10 @@ Eccube\Entity\DeliveryDate:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
         rank:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
     lifecycleCallbacks: {  }

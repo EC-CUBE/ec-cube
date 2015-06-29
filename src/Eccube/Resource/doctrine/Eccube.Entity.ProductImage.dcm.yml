@@ -22,7 +22,6 @@ Eccube\Entity\ProductImage:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
     manyToOne:
         Product:
             targetEntity: Eccube\Entity\Product
