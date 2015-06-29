@@ -68,25 +68,6 @@ INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (3, 'キャンセ�
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (4, '注文受付', 5);
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (5, '発送済み', 6);
 
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1000', '不明なエラーが発生しました。', 0);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1001', '不正なパラメーターが送信されました。', 1);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1002', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 2);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1003', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 3);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1004', '購入済みの商品はありません。', 4);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1005', 'ダウンロード可能なアップデータはありません。<br />・ステータスが「入金待ち」の可能性があります<br />・インストールされているモジュールが既に最新版の可能性があります。', 5);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1006', '配信サーバーでエラーが発生しました。', 6);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1007', 'ダウンロード完了通知に失敗しました。', 7);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2001', '管理画面の認証に失敗しました。<br />管理画面トップページへ戻り、ログインし直してください。', 8);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2002', '配信サーバーへ接続できません。', 9);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2003', '配信サーバーへ接続できません。', 10);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2004', '配信サーバーでエラーが発生しました。', 11);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2005', '認証キーが設定されていません。<br />・「認証キー設定」で認証キーを設定してください。', 12);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2006', '不正なアクセスです。', 13);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2007', '不正なパラメーターが送信されました。', 14);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2008', '自動アップデートが無効です', 15);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2009', 'ファイルの書き込みに失敗しました。<br />・書き込み権限が正しく設定されていません。<br />・data/downloads/tmpディレクトリに書き込み権限があるかどうか確認してください', 16);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2010', 'ファイルの書き込みに失敗しました。<br />・「ログ管理」で詳細を確認してください。', 17);
-
 INSERT INTO mtb_page_max (id, name, rank) VALUES (10, '10', 0);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (20, '20', 1);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (30, '30', 2);
