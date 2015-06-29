@@ -188,6 +188,10 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/system/plugin/install', '\Eccube\Controller\Admin\Setting\System\PluginController::install')->bind('admin_setting_system_plugin_install');
         $c->match('/setting/system/plugin/handler', '\Eccube\Controller\Admin\Setting\System\PluginController::handler')->bind('admin_setting_system_plugin_handler');
         $c->match('/setting/system/plugin/manage', '\Eccube\Controller\Admin\Setting\System\PluginController::manage')->bind('admin_setting_system_plugin_manage');
+        $c->post('/setting/system/plugin/{id}/enable', '\Eccube\Controller\Admin\Setting\System\PluginController::enable')->assert('id', '\d+')->bind('admin_setting_system_plugin_enable');
+        $c->post('/setting/system/plugin/{id}/disable', '\Eccube\Controller\Admin\Setting\System\PluginController::disable')->assert('id', '\d+')->bind('admin_setting_system_plugin_disable');
+        $c->post('/setting/system/plugin/{id}/update', '\Eccube\Controller\Admin\Setting\System\PluginController::update')->assert('id', '\d+')->bind('admin_setting_system_plugin_update');
+        $c->post('/setting/system/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Setting\System\PluginController::uninstall')->assert('id', '\d+')->bind('admin_setting_system_plugin_uninstall');
 
         $c->match('/setting/system/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Setting\System\PluginController::handler_up')->bind('admin_setting_system_plugin_handler_up');
         $c->match('/setting/system/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Setting\System\PluginController::handler_down')->bind('admin_setting_system_plugin_handler_down');

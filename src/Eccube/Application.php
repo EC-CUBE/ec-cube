@@ -375,9 +375,9 @@ class Application extends \Silex\Application
             if (isset($config['orm.path']) and is_array( $config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
-                    $paths[] = $ormMappings . '/' . $config['name'] . $path;
+                    $paths[] = $pluginBasePath . '/' . $config['name'] . $path;
                 }
-                $ormMppings[] = array(
+                $ormMappings[] = array(
                     'type' => 'yml',
                     'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
                     'path' => $paths,
@@ -483,9 +483,13 @@ class Application extends \Silex\Application
             }
             // const
             if (isset($config['const'])) {
-                $app[$config['name']] = array(
-                    'const' => $config['const'],
-                );
+                $this['config'] = $this->share(function($eccubeConfig) use ($config) {
+                    $eccubeConfig[$config['name']] = array(
+                        'const' => $config['const'],
+                    );
+
+                    return $eccubeConfig;
+                });
             }
             // Type: ServiceProvider
             if (isset($config['service'])) {

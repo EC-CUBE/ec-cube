@@ -44,7 +44,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </ul>
                     </li>
                     <li class="{% if active_menus(menus)[1] == 'ownersstore' %}active{% endif %}">
-                        <a class="toggle">OwnersStore<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                        <a class="toggle">オーナーズストア<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
                         <ul {% if active_menus(menus)[1] == 'ownersstore' %}class="active" style="display: block;"{% endif %}>
 
                             <li id="navi-ownersstore-plugininstall" class="{% if active_menus(menus)[2] == 'plugin' %}active{% endif %}"><a href="{{ url('admin_setting_system_plugin_index') }}">プラグイン一覧</a></li>
