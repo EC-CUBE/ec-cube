@@ -135,11 +135,6 @@ INSERT INTO mtb_product_list_max (id, name, rank) VALUES (50, '50件', 2);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (1, '価格順', 0);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (2, '新着順', 1);
 
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (0, 'http://', 0);
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (1, 'https://', 1);
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (2, 'ttp://', 2);
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (3, 'ttps://', 3);
-
 INSERT INTO mtb_sex (id, name, rank) VALUES (1, '男性', 0);
 INSERT INTO mtb_sex (id, name, rank) VALUES (2, '女性', 1);
 
