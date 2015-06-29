@@ -58,6 +58,7 @@ class BlockRepository extends EntityRepository
         $Block = new \Eccube\Entity\Block();
         $Block
             ->setDeviceType($DeviceType)
+            ->setLogicFlg(0)
             ->setDeletableFlg(1);
 
         return $Block;
