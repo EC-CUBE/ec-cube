@@ -167,7 +167,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="total_box">
                     <dl>
                         <dt>小計</dt>
-                        <dd class="text-primary">{{ Order.subtotal|price }}</dd>
+                        <dd>{{ Order.subtotal|price }}</dd>
                     </dl>
                     <dl>
                         <dt>手数料</dt>
@@ -177,14 +177,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <dt>送料合計</dt>
                         <dd>{{ Order.delivery_fee_total|price }}</dd>
                     </dl>
-                    <dl>
-                        <dt>値引き</dt>
-                        <dd>
-                            {% if Order.discount > 0 %}
-                                &minus;{{ Order.discount|price }}
-                            {% endif %}
-                        </dd>
-                    </dl>
+                    {% if Order.discount > 0 %}
+                        <dl>
+                            <dt>値引き</dt>
+                            <dd>
+                                    &minus;{{ Order.discount|price }}
+                            </dd>
+                        </dl>
+                    {% endif %}
 
                     <div class="total_amount">
                         <p class="total_price">合計 <strong class="text-primary">{{ Order.payment_total|price }}<span class="small">税込</span></strong></p>

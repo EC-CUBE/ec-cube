@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% macro tree(Category) %}
     <li>
-        <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">
+        <a href="{{ url('product_list') }}?category_id={{ Category.id }}">
             {{ Category.name }}
         </a>
         {% if Category.children|length > 0 %}

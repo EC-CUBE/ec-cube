@@ -24,21 +24,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'product_page' %}
 
 {% block javascript %}
-<script>
-    // 並び順を変更
-    function fnChangeOrderBy(orderby) {
-        eccube.setValue('orderby', orderby);
-        eccube.setValue('pageno', 1);
-        eccube.submitForm();
-    }
+    <script>
+        // 並び順を変更
+        function fnChangeOrderBy(orderby) {
+            eccube.setValue('orderby', orderby);
+            eccube.setValue('pageno', 1);
+            eccube.submitForm();
+        }
 
-    // 表示件数を変更
-    function fnChangeDispNumber(dispNumber) {
-        eccube.setValue('disp_number', dispNumber);
-        eccube.setValue('pageno', 1);
-        eccube.submitForm();
-    }
-</script>
+        // 表示件数を変更
+        function fnChangeDispNumber(dispNumber) {
+            eccube.setValue('disp_number', dispNumber);
+            eccube.setValue('pageno', 1);
+            eccube.submitForm();
+        }
+    </script>
 {% endblock %}
 
 {% block main %}
@@ -47,17 +47,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </form>
     <div class="row">
         <form name="page_navi_top" id="page_navi_top" action="?">
-        <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。</p>
-        <div class="col-sm-6 no-padding">
-            <ul class="pagenumberarea clearfix">
-            <li>
-            {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
-            </li>
-            <li>
-            {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
-            </li>
-            </ul>
-        </div>
+            <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
+            </p>
+
+            <div class="col-sm-6 no-padding">
+                <ul class="pagenumberarea clearfix">
+                    <li>
+                        {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
+                    </li>
+                    <li>
+                        {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
+                    </li>
+                </ul>
+            </div>
         </form>
     </div>
 
@@ -65,21 +67,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div id="item_list">
         <div class="row no-padding">
             {% for Product in pagination %}
-            <div class="col-sm-3 col-xs-6">
-                <div class="product_item">
-                    <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                        <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">{#<button type="button" class="btn_circle" data-toggle="modal" data-target="#myModal"><svg class="cb cb-ellipsis"><use xlink:href="#cb-ellipsis" /></svg></button>#}</div>
-                        <dl>
-                            <dt class="item_name">{{ Product.name }}</dt>
-                            {% if Product.hasProductClass %}
-                            <dd class="item_price">{{ Product.getPrice02IncTaxMin|price }}～{{ Product.getPrice02IncTaxMax|price }}</dd>
-                            {% else %}
-                            <dd class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>
+                <div class="col-sm-3 col-xs-6">
+                    <div class="product_item">
+                        <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                            <div class="item_photo">
+                                <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">
+                            </div>
+                            {% if Product.description_list %}
+                                <p class="item_comment">{{ Product.description_list }}</p>
                             {% endif %}
-                        </dl>
-                    </a>
+                            <dl>
+                                <dt class="item_name">{{ Product.name }}</dt>
+                                {% if Product.hasProductClass %}
+                                    <dd class="item_price">
+                                        {{ Product.getPrice02IncTaxMin|price }}
+                                        ～{{ Product.getPrice02IncTaxMax|price }}
+                                    </dd>
+                                {% else %}
+                                    <dd class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>
+                                {% endif %}
+                            </dl>
+                        </a>
+                    </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
 

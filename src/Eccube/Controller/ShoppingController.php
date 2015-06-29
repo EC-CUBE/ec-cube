@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Form\Type\ShippingMultiType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingController extends AbstractController
 {
@@ -59,14 +60,22 @@ class ShoppingController extends AbstractController
 
             // 未ログインの場合は, ログイン画面へリダイレクト.
             if (!$this->isGranted($app)) {
-                return $app->redirect($app->url('shopping_login'));
+                // 非会員でも一度会員登録されていればショッピング画面へ遷移
+                $arr = $app['session']->get('eccube.front.shopping.nonmember');
+                if (is_null($arr)) {
+                    return $app->redirect($app->url('shopping_login'));
+                }
+                $Customer = $arr['customer'];
+                $Customer->setPref($app['eccube.repository.master.pref']->find($arr['pref']));
+            } else {
+                $Customer = $app->user();
             }
 
             // ランダムなpre_order_idを作成
             $preOrderId = sha1(uniqid(mt_rand(), true));
 
             // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $app->user(), $preOrderId);
+            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer, $preOrderId);
 
             $cartService->setPreOrderId($preOrderId);
             $cartService->save();
@@ -96,7 +105,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         return $app->render('Shopping/index.twig', array(
                 'form' => $form->createView(),
@@ -142,7 +151,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -190,6 +199,8 @@ class ShoppingController extends AbstractController
 
                 return $app->redirect($app->url('shopping_complete'));
 
+            } else {
+                return $app->redirect($app->url('shopping_error'));
             }
         }
 
@@ -241,7 +252,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
 
@@ -312,7 +323,7 @@ class ShoppingController extends AbstractController
         $this->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order->getPayment());
+        $this->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
 
@@ -601,7 +612,6 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-
         $form = $app['form.factory']->createBuilder('nonmember')->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -641,6 +651,12 @@ class ShoppingController extends AbstractController
                     $cartService->setPreOrderId($preOrderId);
                     $cartService->save();
                 }
+
+                // 非会員用セッションを作成
+                $arr = array();
+                $arr['customer'] = $Customer;
+                $arr['pref'] = $Customer->getPref()->getId();
+                $app['session']->set('eccube.front.shopping.nonmember', $arr);
 
                 return $app->redirect($app->url('shopping'));
 
@@ -770,22 +786,22 @@ class ShoppingController extends AbstractController
     /**
      * 支払い方法のフォームを設定
      */
-    private function setFormPayment($form, $delivery, $payment = null)
+    private function setFormPayment($form, $delivery, $Order, $app)
     {
 
-        // 支払い方法選択
+        $orderService = $app['eccube.service.order'];
         $paymentOptions = $delivery->getPaymentOptions();
-        $payments = array();
-        // 初期値で設定されている配送業社を設定
-        foreach ($paymentOptions as $paymentOption) {
-            $payments[] = $paymentOption->getPayment();
-        }
+        $payments = $orderService->getPayments($paymentOptions, $Order->getSubTotal());
+
         $form->add('payment', 'entity', array(
             'class' => 'Eccube\Entity\Payment',
             'property' => 'method',
             'choices' => $payments,
-            'data' => $payment,
+            'data' => $Order->getPayment(),
             'expanded' => true,
+            'constraints' => array(
+                new Assert\NotBlank(),
+            ),
         ));
 
     }
