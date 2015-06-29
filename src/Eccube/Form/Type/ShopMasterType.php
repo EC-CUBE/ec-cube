@@ -204,7 +204,7 @@ class ShopMasterType extends AbstractType
             ))
 
             // 送料設定
-            ->add('free_rule', 'money', array(
+            ->add('delivery_free_amount', 'money', array(
                 'label' => '送料無料条件(金額)',
                 'required' => false,
                 'currency' => 'JPY',
@@ -215,7 +215,7 @@ class ShopMasterType extends AbstractType
                     )),
                 ),
             ))
-            ->add('delivery_free_amount', 'integer', array(
+            ->add('delivery_free_quantity', 'integer', array(
                 'label' => '送料無料条件(数量)',
                 'required' => false,
             ))
