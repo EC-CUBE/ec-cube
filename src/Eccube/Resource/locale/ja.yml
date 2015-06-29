@@ -30,6 +30,8 @@ cart.over.sale_limit: |-
     一度に販売制限数を超える購入はできません。
 cart.product.type.kind: この商品は同時に購入することはできません。
 
+admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
+
 admin.register.complete: 登録が完了しました。
 admin.register.failed: 登録できませんでした。
 admin.delete.complete: 削除が完了しました。
