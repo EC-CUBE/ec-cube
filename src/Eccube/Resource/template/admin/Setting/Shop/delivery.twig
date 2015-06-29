@@ -26,8 +26,59 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}配送方法管理{% endblock %}
 
-{% block main %}
+{% block javascript %}
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.core.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.widget.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
+    <script>
+        function changeAction(action) {
+            document.form1.action = action;
+        }
 
+        $(function() {
+            var oldRanks = [];
+            // 画面の中のrank一覧を保持
+            $("div.tableish > .item_box").each(function() {
+                oldRanks.push(this.dataset.rank);
+            });
+            // rsort
+            oldRanks.sort().reverse();
+
+            $("div.tableish").sortable({
+                items: '> .item_box',
+                cursor: 'move',
+                update: function(e, ui) {
+                    $("body").append($('<div class="modal-backdrop in"></div>'));
+                    updateRank();
+                }
+            });
+
+            var updateRank = function() {
+                // 並び替え後にrankを更新
+                var newRanks = {};
+                var i = 0;
+                $("div.tableish > .item_box").each(function() {
+                    newRanks[this.dataset.deliveryId] = oldRanks[i];
+                    i++;
+                });
+
+                $.ajax({
+                    url: '{{ url('admin_setting_shop_delivery_rank_move') }}',
+                    type: 'POST',
+                    data: newRanks
+                }).done(function() {
+                    $(".modal-backdrop").remove();
+                }).fail(function() {
+                    $(".modal-backdrop").remove();
+                });
+            };
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
+    <form name="form1" method="post""></form>
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -41,7 +92,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 {% for Delivery in Deliveries%}
 
-                                    <div class="item_box tr">
+                                    <div class="item_box tr" data-delivery-id="{{ Delivery.id }}" data-rank="{{ Delivery.rank }}">
                                         <div class="icon_sortable td">
                                             <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
                                         </div>
@@ -60,7 +111,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% if loop.first == false %}
                                                         {% set up_action = url('admin_setting_shop_delivery_up', {id: Delivery.id} ) %}
                                                         <li>
-                                                            <a href="?" onclick="eccube.changeAction('{{ up_action }}'); document.form1.submit(); return false;">
+                                                            <a href="?" onclick="changeAction('{{ up_action }}'); document.form1.submit(); return false;">
                                                                 上へ
                                                             </a>
                                                         </li>
@@ -69,7 +120,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% if loop.last == false %}
                                                         {% set down_action = url('admin_setting_shop_delivery_down', {id: Delivery.id} ) %}
                                                         <li>
-                                                            <a href="?" onclick="eccube.changeAction('{{ down_action }}'); document.form1.submit(); return false;">
+                                                            <a href="?" onclick="changeAction('{{ down_action }}'); document.form1.submit(); return false;">
                                                                 下へ
                                                             </a>
                                                         </li>

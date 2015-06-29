@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class DeliveryController extends AbstractController
 {
@@ -205,7 +206,7 @@ class DeliveryController extends AbstractController
 
         $app->addSuccess('admin.register.complete', 'admin');
 
-        return $app->redirect($appurl('admin_setting_shop_delivery'));
+        return $app->redirect($app->url('admin_setting_shop_delivery'));
     }
 
     public function down(Application $app, $id)
@@ -225,5 +226,21 @@ class DeliveryController extends AbstractController
         $app->addSuccess('admin.register.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_delivery'));
+    }
+
+    public function moveRank(Application $app, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $ranks = $request->request->all();
+            foreach ($ranks as $deliveryId => $rank) {
+                $Delivery = $app['eccube.repository.delivery']
+                    ->find($deliveryId);
+                $Delivery->setRank($rank);
+                $app['orm.em']->persist($Delivery);
+            }
+            $app['orm.em']->flush();
+        }
+
+        return true;
     }
 }
