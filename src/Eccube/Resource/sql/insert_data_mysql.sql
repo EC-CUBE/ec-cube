@@ -1,31 +1,8 @@
 SET FOREIGN_KEY_CHECKS=0;
 SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';
 
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (0, 'table', 0);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (1, 'tr', 1);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (2, 'td', 2);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (3, 'a', 3);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (4, 'b', 4);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (5, 'blink', 5);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (6, 'br', 6);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (7, 'center', 7);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (8, 'font', 8);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (9, 'h', 9);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (10, 'hr', 10);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (11, 'img', 11);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (12, 'li', 12);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (13, 'strong', 13);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (14, 'p', 14);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (15, 'div', 15);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (16, 'i', 16);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (17, 'u', 17);
-INSERT INTO mtb_allowed_tag (id, name, rank) VALUES (18, 's', 18);
-
 INSERT INTO mtb_authority (id, name, rank) VALUES (0, 'システム管理者', 0);
 INSERT INTO mtb_authority (id, name, rank) VALUES (1, '店舗オーナー', 1);
-
-INSERT INTO mtb_auth_excludes (id, name, rank) VALUES (0, 'index.php', 0);
-INSERT INTO mtb_auth_excludes (id, name, rank) VALUES (1, 'logout.php', 1);
 
 INSERT INTO mtb_db (id, name, rank) VALUES (1, 'PostgreSQL', 0);
 INSERT INTO mtb_db (id, name, rank) VALUES (2, 'MySQL', 1);
@@ -65,18 +42,6 @@ INSERT INTO mtb_job (id, name, rank) VALUES (15, '出版・マスコミ関係', 
 INSERT INTO mtb_job (id, name, rank) VALUES (16, '学生・フリーター', 15);
 INSERT INTO mtb_job (id, name, rank) VALUES (17, '主婦', 16);
 INSERT INTO mtb_job (id, name, rank) VALUES (18, 'その他', 17);
-
-INSERT INTO mtb_magazine_type (id, name, rank) VALUES (1, 'HTML', 0);
-INSERT INTO mtb_magazine_type (id, name, rank) VALUES (2, 'テキスト', 1);
-
-INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (1, 'HTMLメール', 0);
-INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (2, 'テキストメール', 1);
-INSERT INTO mtb_mail_magazine_type (id, name, rank) VALUES (3, '希望しない', 2);
-
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (1, 'PCメールアドレス', 0);
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (2, '携帯メールアドレス', 1);
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (3, 'PCメールアドレス (携帯メールアドレスを登録している会員は除外)', 2);
-INSERT INTO mtb_mail_type (id, name, rank) VALUES (4, '携帯メールアドレス (PCメールアドレスを登録している会員は除外)', 3);
 
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (1, 'docomo.ne.jp', 0);
 INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (2, 'ezweb.ne.jp', 1);
