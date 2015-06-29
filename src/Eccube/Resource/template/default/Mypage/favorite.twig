@@ -61,7 +61,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </td>
                             <td class="alignC">
                                 <a href="{{ path('product_detail', {'productId': Product.id}) }}">
-                                    <img src="{{ app.config.image_path }}{{ Product.main_list_image|no_image_main_list }}" style="max-width: 65px;max-height: 65px;" alt="{{ Product.name }}" />
+                                    <img src="{{ app.config.image_path }}{{ Product.main_list_image|no_image_product }}" style="max-width: 65px;max-height: 65px;" alt="{{ Product.name }}" />
                             </td>
                             <td>
                                 <a href="{{ path('product_detail', {'productId': Product.id}) }}">

@@ -133,7 +133,7 @@ $(function(){
                             {% for orderDetail in Order.orderDetails %}
                             <div class="item_box tr">
                                 <div class="td table">
-                                    <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product.MainListImage|no_image_main_list }}" alt="{{ orderDetail.productName }}" /></div>
+                                    <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" /></div>
                                     <dl class="item_detail">
                                         <dt class="item_name text-default">{{ orderDetail.productName }}</dt>
                                         <dd class="item_pattern small">

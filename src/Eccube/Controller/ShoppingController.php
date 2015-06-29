@@ -560,14 +560,12 @@ class ShoppingController extends AbstractController
         }
         $session = $request->getSession();
 
-        // ログインエラーがあれば、ここで取得
+        $error = null;
+
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        // Sessionにエラー情報があるか確認
         } else if ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            // Sessionからエラー情報を取得
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            // 一度表示したらSessionからは削除する
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
@@ -578,8 +576,8 @@ class ShoppingController extends AbstractController
             ->getForm();
 
         return $app->render('Shopping/login.twig', array(
-            'error' => $app['security.last_error']($app['request']),
             'form'  => $form->createView(),
+            'error' => $error,
         ));
     }
 
