@@ -368,9 +368,9 @@ class Application extends \Silex\Application
             if (isset($config['orm.path']) and is_array( $config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
-                    $paths[] = $ormMappings . '/' . $config['name'] . $path;
+                    $paths[] = __DIR__ . '/../../app/Plugin/' . $config['name'] . $path;
                 }
-                $ormMppings[] = array(
+                $ormMappings[] = array(
                     'type' => 'yml',
                     'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
                     'path' => $paths,
