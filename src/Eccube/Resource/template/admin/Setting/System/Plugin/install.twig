@@ -26,17 +26,61 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}プラグインインストール{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function(){
+            $(".file_plus").on("click", function(){
+                $(this).next().trigger("click");
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block main %}
+    <div class="row" id="aside_wrap">
+        <form name="form1" id="form1" role="form" method="post" action="" {{ form_enctype(form) }}>
+            {{ form_widget(form._token) }}
+            <div class="col-md-9">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">新規プラグイン登録</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-sm-3 col-lg-4">
+                                    {{ form_label(form.plugin_archive) }}
+                                </div>
+                                <div class="col-sm-6 col-lg-6 input_name form-inline">
+                                    <a class="with-icon file_plus">
+                                        <svg class="cb cb-plus"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-plus"></use></svg>ファイルをアップロード
+                                    </a>
+                                    {{ form_widget(form.plugin_archive, { attr : { style : 'display: none;'} }) }}
+                                    {{ form_errors(form.plugin_archive) }}
+                                </div>
+                            </div>
+                        </div>
 
-<a href="{{ url('admin_setting_system_plugin_index') }}">プラグイン一覧へ</a><br>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
 
-<p>仮プラグインインストール画面
-<p>install：アーカイブを選択して、installボタン
-
-<form action="" method="post"  {{ form_enctype(install_form) }}>
-    {{ form_widget(install_form) }}
-</form>
-
+            <div class="col-md-3" id="aside_column">
+                <div class="col_inner">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div><!-- /.col -->
+        </form>
+    </div>
 
 {% endblock %}
 
