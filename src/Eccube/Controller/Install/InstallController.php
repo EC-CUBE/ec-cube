@@ -241,7 +241,7 @@ class InstallController
         if (!empty($data['port'])) {
             $dsn .= ';port=' . $data['port'];
         }
-        if ($config['database']['driver'] == 'pdo_mysql') {
+        if ($data['driver'] == 'pdo_mysql') {
             $dsn .= ';charset=utf8';
         }
         $this->PDO = new \PDO(
