@@ -6,17 +6,11 @@ INSERT INTO mtb_authority (id, name, rank) VALUES (1, '店舗オーナー', 1);
 INSERT INTO mtb_db (id, name, rank) VALUES (1, 'PostgreSQL', 0);
 INSERT INTO mtb_db (id, name, rank) VALUES (2, 'MySQL', 1);
 
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (1, '/shopping/deliv.php', 0);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (2, '/shopping/payment.php', 1);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (3, '/shopping/confirm.php', 2);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (4, '/shopping/card.php', 3);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (5, '/shopping/loan.php', 4);
-
 INSERT INTO mtb_disp (id, name, rank) VALUES (1, '公開', 0);
 INSERT INTO mtb_disp (id, name, rank) VALUES (2, '非公開', 1);
 
-INSERT INTO mtb_product_type (id, name, rank) VALUES (1, '通常商品', 0);
-INSERT INTO mtb_product_type (id, name, rank) VALUES (2, 'ダウンロード商品', 1);
+INSERT INTO mtb_product_type (id, name, rank) VALUES (1, '商品種別A', 0);
+INSERT INTO mtb_product_type (id, name, rank) VALUES (2, '商品種別B', 1);
 
 INSERT INTO mtb_device_type (id, name, rank) VALUES (1, 'モバイル', 0);
 INSERT INTO mtb_device_type (id, name, rank) VALUES (2, 'スマートフォン', 1);
@@ -67,6 +61,7 @@ INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (6, '注文受付'
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (3, 'キャンセル', 4);
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (4, '注文受付', 5);
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (5, '発送済み', 6);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (8, '注文未完了', 7);
 
 INSERT INTO mtb_page_max (id, name, rank) VALUES (10, '10', 0);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (20, '20', 1);
