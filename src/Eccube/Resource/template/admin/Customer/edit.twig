@@ -66,7 +66,8 @@ $(function() {
                         <div class="col-sm-9 col-lg-10 input_name form-inline">
                             {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
                             {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
-                            {{ form_errors(form.name) }}
+                            {{ form_errors(form.name.name01) }}
+                            {{ form_errors(form.name.name02) }}
                         </div>
                     </div>
                     {# 名前(カナ) #}
@@ -75,7 +76,8 @@ $(function() {
                         <div class="col-sm-9 col-lg-10 input_name form-inline">
                             {{ form_widget(form.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
                             {{ form_widget(form.kana.kana02, { attr : { placeholder : 'メイ' }}) }}
-                            {{ form_errors(form.kana) }}
+                            {{ form_errors(form.kana.kana01) }}
+                            {{ form_errors(form.kana.kana02) }}
                         </div>
                     </div>
                     {# 住所：郵便番号 #}
