@@ -43,7 +43,6 @@ class EccubeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'image_info' => new \Twig_Function_Method($this, 'getImageInfo'),
             'calc_inc_tax' => new \Twig_Function_Method($this, 'getCalcIncTax'),
             'active_menus' => new \Twig_Function_Method($this, 'getActiveMenus'),
         );
@@ -57,8 +56,6 @@ class EccubeExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('no_image_main_list', array($this, 'getNoImageMainList')),
-            new \Twig_SimpleFilter('no_image_main', array($this, 'getNoImageMain')),
             new \Twig_SimpleFilter('no_image_product', array($this, 'getNoImageProduct')),
             new \Twig_SimpleFilter('date_format', array($this, 'getDateFormatFilter')),
             new \Twig_SimpleFilter('price', array($this, 'getPriceFilter')),
@@ -76,41 +73,6 @@ class EccubeExtension extends \Twig_Extension
     }
 
     /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getImageInfo($path)
-    {
-        $image_info = array(
-            'path'      => null,
-            'width'     => null,
-            'height'    => null,
-            'type'      => null,
-            'tag'       => null,
-        );
-
-        // TODO FIX PATH
-        $realpath = realpath(__DIR__ . '/../../../../html' . $path);
-        if (!$realpath) {
-            return $image_info;
-        }
-
-        $info = getimagesize($realpath);
-        if ($info) {
-            $image_info = array(
-                'path'      => $path,
-                'width'     => $info[0],
-                'height'    => $info[1],
-                'type'      => $info[2],
-                'tag'       => $info[3],
-            );
-        }
-
-        return $image_info;
-    }
-
-    /**
      * return No Image filename
      *
      * @return string
@@ -120,25 +82,6 @@ class EccubeExtension extends \Twig_Extension
         return empty($image) ? 'no_image_product.jpg' : $image;
     }
 
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getNoImageMainList($image)
-    {
-        return empty($image) ? 'noimage_main_list.jpg' : $image;
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @return string
-     */
-    public function getNoImageMain($image)
-    {
-        return empty($image) ? 'noimage_main.jpg' : $image;
-    }
 
     /**
      * Name of this extension
