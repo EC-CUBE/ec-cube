@@ -21,6 +21,7 @@ Eccube\Entity\CategoryTotalCount:
     oneToOne:
         Category:
             targetEntity: Category
+            inversedBy: CategoryTotalCount
             joinColumn:
                 name: category_id
                 referencedColumnName: category_id
