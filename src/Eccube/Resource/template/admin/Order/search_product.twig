@@ -52,15 +52,30 @@
             product_class_id = product['product_class_id'];
             price = product['price02'];
             product_code = product['product_code'];
-            //console.log('noclass');
-            // 規格が登録されている商品の場合
-        } else if ($sele1.length && $sele2.length) {
-            var class_category_id1 = $sele1.val();
-            var class_cateogry_id2 = $sele2.val();
-            var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
+        // 規格が登録されている商品の場合
+        } else if ($sele1.length) {
+            if ($sele2.length) {
+                var class_category_id1 = $sele1.val();
+                var class_cateogry_id2 = $sele2.val();
+                if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
+                    alert('規格を選択してください。')
+                    return;
+                }
+                var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
 
-            product_class_id = product['product_class_id'];
-            price = product['price02'];
+                product_class_id = product['product_class_id'];
+                price = product['price02'];
+            } else {
+                var class_category_id1 = $sele1.val();
+                if (class_category_id1 == '__unselected') {
+                    alert('規格を選択してください。')
+                    return;
+                }
+                var product = productsClassCategories[product_id][class_category_id1]['#'];
+
+                product_class_id = product['product_class_id'];
+                price = product['price02'];
+            }
         }
 
         // 受注明細行を取得.
