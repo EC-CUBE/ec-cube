@@ -244,6 +244,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\DeliveryTimeType();
             $types[] = new \Eccube\Form\Type\ProductTypeType();
             $types[] = new \Eccube\Form\Type\PaymentRegisterType();
+            $types[] = new \Eccube\Form\Type\MailType();
             $types[] = new \Eccube\Form\Type\MailTemplateType();
             $types[] = new \Eccube\Form\Type\CategoryType();
 

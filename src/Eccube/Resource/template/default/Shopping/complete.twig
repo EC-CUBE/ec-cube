@@ -28,11 +28,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
+                {% if is_granted('ROLE_USER') %}
                 <div class="flowline step3">
+                {% else %}
+                <div class="flowline step4">
+                {% endif %}
                     <ul class="clearfix">
-                    <li><span class="flow_number">1</span><br>カートの商品</li>
-                    <li><span class="flow_number">2</span><br>ご注文内容確認</li>
-                    <li class="active"><span class="flow_number">3</span><br>完了</li>
+                        <li><span class="flow_number">1</span><br>カートの商品</li>
+                    {% if is_granted('ROLE_USER') %}
+                        <li><span class="flow_number">2</span><br>ご注文内容確認</li>
+                        <li class="active"><span class="flow_number">3</span><br>完了</li>
+                    {% else %}
+                        <li><span class="flow_number">2</span><br>お客様情報</li>
+                        <li><span class="flow_number">3</span><br>ご注文内容確認</li>
+                        <li class="active"><span class="flow_number">4</span><br>完了</li>
+                    {% endif %}
                     </ul>
                 </div>
             </div><!-- /.col -->
