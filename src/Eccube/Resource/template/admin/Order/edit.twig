@@ -382,13 +382,13 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="col-lg-9 col-lg-offset-3">
                                 <dl class="dl-horizontal amount_area">
                                     <dt>小計：</dt>
-                                    <dd>\ {{ Order.subtotal|number_format }}</dd>
+                                    <dd>{{ Order.subtotal|price }}</dd>
                                     <dt>値引き：</dt>
-                                    <dd class="form-group form-inline">\ {{ form_widget(form.discount) }}</dd>
+                                    <dd class="form-group form-inline">{{ form_widget(form.discount) }}</dd>
                                     <dt>送料：</dt>
-                                    <dd class="form-group form-inline">\ {{ form_widget(form.delivery_fee_total) }}</dd>
+                                    <dd class="form-group form-inline">{{ form_widget(form.delivery_fee_total) }}</dd>
                                     <dt>手数料：</dt>
-                                    <dd class="form-group form-inline">\ {{ form_widget(form.charge) }}</dd>
+                                    <dd class="form-group form-inline">{{ form_widget(form.charge) }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -397,9 +397,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="col-lg-9 col-lg-offset-3">
                                 <dl class="dl-horizontal amount_area">
                                     <dt>合計：</dt>
-                                    <dd>\ {{ Order.total|number_format }}</dd>
+                                    <dd>{{ Order.total|price }}</dd>
                                     <dt>お支払合計：</dt>
-                                    <dd>\ {{ Order.payment_total|number_format }}</dd>
+                                    <dd>{{ Order.payment_total|price }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -511,7 +511,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="form-group">
                                 {{ form_label(shippingForm.Delivery) }}
                                 <div class="col-sm-9 col-lg-10">
+                                    {% if shippingForm.vars.value.shipping_delivery_name is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_name }}<br/>
+                                    {% endif %}
                                     {{ form_widget(shippingForm.Delivery) }}
                                     {{ form_errors(shippingForm.Delivery) }}
                                 </div>
@@ -520,7 +522,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="form-group">
                                 {{ form_label(shippingForm.DeliveryTime) }}
                                 <div class="col-sm-9 col-lg-10">
+                                    {% if shippingForm.vars.value.shipping_delivery_time is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_time }}<br/>
+                                    {% endif %}
                                     {{ form_widget(shippingForm.DeliveryTime) }}
                                     {{ form_errors(shippingForm.DeliveryTime) }}
                                 </div>

@@ -238,19 +238,19 @@ class OrderService
         $Order->setDeliveryFeeTotal($deliveryFee->getFee());
         $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 配送料無料条件(合計金額)
-        $freeRule = $baseInfo->getFreeRule();
-        if (!is_null($freeRule)) {
+        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
+        if (!is_null($deliveryFreeAmount)) {
             // 合計金額が設定金額以上であれば送料無料
-            if ($subTotal >= $freeRule) {
+            if ($subTotal >= $deliveryFreeAmount) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }
 
         // 配送料無料条件(合計数量)
-        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
-        if (!is_null($deliveryFreeAmount)) {
+        $deliveryFreeQuantity = $baseInfo->getDeliveryFreeQuantity();
+        if (!is_null($deliveryFreeQuantity)) {
             // 合計数量が設定数量以上であれば送料無料
-            if ($totalQuantity >= $deliveryFreeAmount) {
+            if ($totalQuantity >= $deliveryFreeQuantity) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }
@@ -298,19 +298,19 @@ class OrderService
 
         $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 配送料無料条件(合計金額)
-        $freeRule = $baseInfo->getFreeRule();
-        if (!is_null($freeRule)) {
+        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
+        if (!is_null($deliveryFreeAmount)) {
             // 合計金額が設定金額以上であれば送料無料
-            if ($Order->getSubTotal() >= $freeRule) {
+            if ($Order->getSubTotal() >= $deliveryFreeAmount) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }
 
         // 配送料無料条件(合計数量)
-        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
-        if (!is_null($deliveryFreeAmount)) {
+        $deliveryFreeQuantity = $baseInfo->getDeliveryFreeQuantity();
+        if (!is_null($deliveryFreeQuantity)) {
             // 合計数量が設定数量以上であれば送料無料
-            if ($Cart->getTotalQuantity() >= $deliveryFreeAmount) {
+            if ($Cart->getTotalQuantity() >= $deliveryFreeQuantity) {
                 $Order->setDeliveryFeeTotal(0);
             }
         }

@@ -41,10 +41,10 @@ class CartController
         $isDeliveryFree = false;
         $least = 0;
         if ($BaseInfo->getUsePoint()) {
-            if ($BaseInfo->getDeliveryFreeAmount() <= $Cart->getTotalQuantity()) {
+            if ($BaseInfo->getDeliveryFreeQuantity() <= $Cart->getTotalQuantity()) {
                 // 送料無料（個数）を超えている
                 $isDeliveryFree = true;
-            } elseif ($BaseInfo->getOptionDeliveryFee() <= $Cart->getTotalPrice()) {
+            } elseif ($BaseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
                 // 送料無料（金額）を超えている
                 $isDeliveryFree = true;
             } else {
