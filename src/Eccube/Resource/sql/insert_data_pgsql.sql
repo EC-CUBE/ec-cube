@@ -144,14 +144,6 @@ INSERT INTO mtb_taxrule (id, name, rank) VALUES (1, '四捨五入', 0);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (2, '切り捨て', 1);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (3, '切り上げ', 2);
 
-INSERT INTO mtb_wday (id, name, rank) VALUES (0, '日', 0);
-INSERT INTO mtb_wday (id, name, rank) VALUES (1, '月', 1);
-INSERT INTO mtb_wday (id, name, rank) VALUES (2, '火', 2);
-INSERT INTO mtb_wday (id, name, rank) VALUES (3, '水', 3);
-INSERT INTO mtb_wday (id, name, rank) VALUES (4, '木', 4);
-INSERT INTO mtb_wday (id, name, rank) VALUES (5, '金', 5);
-INSERT INTO mtb_wday (id, name, rank) VALUES (6, '土', 6);
-
 INSERT INTO mtb_work (id, name, rank) VALUES (0, '非稼働', 0);
 INSERT INTO mtb_work (id, name, rank) VALUES (1, '稼働', 1);
 
