@@ -134,10 +134,6 @@ INSERT INTO mtb_product_list_max (id, name, rank) VALUES (50, '50件', 2);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (1, '価格順', 0);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (2, '新着順', 1);
 
-INSERT INTO mtb_product_status_color (id, name, rank) VALUES (1, '#FFFFFF', 0);
-INSERT INTO mtb_product_status_color (id, name, rank) VALUES (2, '#C9C9C9', 1);
-INSERT INTO mtb_product_status_color (id, name, rank) VALUES (3, '#DDE6F2', 2);
-
 INSERT INTO mtb_recommend (id, name, rank) VALUES (5, '★★★★★', 0);
 INSERT INTO mtb_recommend (id, name, rank) VALUES (4, '★★★★', 1);
 INSERT INTO mtb_recommend (id, name, rank) VALUES (3, '★★★', 2);
