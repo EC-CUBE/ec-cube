@@ -723,7 +723,6 @@ fieldset[disabled] .btn-link:focus {
     opacity:1
 }
 .alert-dismissable .close, .alert-dismissible .close {
-    top: 2px;
 	font-size: 13px;
 }
 
@@ -1040,8 +1039,6 @@ dd.form-group .errormsg {
     border-radius: 3px;
     text-align: center;
     vertical-align: middle;
-    font-size: 12px;
-    font-size: 1.2rem;
     position: absolute;
     right: 16px; top: 12px;
     color: #666;
@@ -1457,7 +1454,7 @@ dd.form-group .errormsg {
 }
 
 .link_list_wrap {
-    height: 295px;
+    height: 236px;
 	border: 0 none;
 	width: 100%;
     border-top: 1px solid #d1d8d9;
@@ -1527,7 +1524,7 @@ dd.form-group .errormsg {
 /* order_info */
 
 #order_info .link_list {
-    min-height: 295px;
+    min-height: 236px;
     background: #fff;
 }
 
@@ -1612,6 +1609,9 @@ dd.form-group .errormsg {
 	}
     .sortable_list .tableish:not(.ui-sortable) .item_box > div:first-child {
         padding-left: 8px;
+    }
+    .sortable_list .tableish:not(.ui-sortable) .item_box > .item_pattern:first-child {
+        padding-left: 16px;
     }
     .sortable_list .tableish:not(.ui-sortable) .icon_sortable {
         display: table-cell;
@@ -2101,6 +2101,9 @@ dl.accordion {
 #side a:active { color: #000; text-decoration: none;}
 
 
+#side ul.nav-sidebar {
+    padding-bottom: 50px;
+}
 #side ul {
     list-style: none;
 }
@@ -2567,6 +2570,12 @@ ul.link-with-bar li:last-child::after {
 	fill:#b8bec4;
 }
 
+.price_cell input[type="text"] {
+	min-width: 7em;
+	text-align: right;
+}
+
+
 /* datetimepicker */
 
 .bootstrap-datetimepicker-widget.dropdown-menu {
@@ -2642,8 +2651,13 @@ ul.link-with-bar li:last-child::after {
 .login-box {
     margin: 7% auto;
     width: 360px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%);
 }
-
 .login-logo {
     margin: 7% auto 25px;
     max-width: 1200px;

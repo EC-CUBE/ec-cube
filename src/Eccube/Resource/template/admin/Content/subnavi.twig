@@ -1,0 +1,30 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+            <li class="{% if active_menus(menus)[0] == 'content' %}active{% endif %}">
+                <a class="toggle"><svg class="cb cb-file-text"> <use xlink:href="#cb-file-text" /></svg>コンテンツ管理<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                <ul {% if active_menus(menus)[0] == 'content' %}class="active" style="display: block;"{% endif %}>
+                    <li id="navi-contents-index" class="{% if active_menus(menus)[1] == 'news' %}active{% endif %}"><a href="{{ url('admin_content') }}">新着情報管理</a></li>
+                    <li id="navi-contents-file" class="{% if active_menus(menus)[1] == 'file' %}active{% endif %}"><a href="{{ url('admin_content_file') }}">ファイル管理</a></li>
+                    <li id="navi-contents-page" class="{% if active_menus(menus)[1] == 'page' %}active{% endif %}"><a href="{{ url('admin_content_page') }}">ページ管理</a></li>
+                    <li id="navi-contents-block" class="{% if active_menus(menus)[1] == 'block' %}active{% endif %}"><a href="{{ url('admin_content_block') }}">ブロック管理</a></li>
+                </ul>
+            </li>

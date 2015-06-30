@@ -244,11 +244,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(product_class_form.sale_limit) }}
                                     {{ form_errors(product_class_form.sale_limit) }}
                                 </td>
-                                <td>
+                                <td class="price_cell">
                                     {{ form_widget(product_class_form.price01, {'attr': {'class': 'notmoney'}}) }}
                                     {{ form_errors(product_class_form.price01) }}
                                 </td>
-                                <td>
+                                <td class="price_cell">
                                     {{ form_widget(product_class_form.price02, {'attr': {'class': 'notmoney'}}) }}
                                     {{ form_errors(product_class_form.price02) }}
                                 </td>
@@ -292,10 +292,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="row">
     <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
 {% if not_product_class  %}
-        <button type="submit" class="btn btn-primary btn-lg" name="mode" value="edit">登録</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" name="mode" value="edit">登録</button>
 {% else %}
         <input id="mode" type="hidden" name="mode">
-        <button type="submit" class="btn btn-primary btn-lg" name="mode" value="update">更新</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" name="mode" value="update">更新</button>
 {% endif %}
         <p><a href="{{ url('admin_product') }}">前のページに戻る</a></p>
     </div>
