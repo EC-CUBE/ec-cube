@@ -21,6 +21,10 @@ body {
 .txt_center {
 	text-align: center;
 }
+.img_right,
+.txt_right {
+	text-align: right;
+}
 
 /****** Base Layout Setting ********/
 
@@ -436,7 +440,7 @@ body {
 		text-align: left;
 	}
 	#news_area {
-		margin-bottom: 16px;
+		margin-bottom: 32px;
 	}
 	
 
