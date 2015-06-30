@@ -492,13 +492,13 @@ class Application extends \Silex\Application
             }
             // const
             if (isset($config['const'])) {
-                $this['config'] = $this->share(function($eccubeConfig) use ($config) {
+                $this['config'] = $this->share($this->extend('config', function($eccubeConfig) use ($config) {
                     $eccubeConfig[$config['name']] = array(
                         'const' => $config['const'],
                     );
 
                     return $eccubeConfig;
-                });
+                }));
             }
             // Type: ServiceProvider
             if (isset($config['service'])) {
