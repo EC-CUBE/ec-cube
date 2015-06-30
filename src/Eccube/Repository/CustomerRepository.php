@@ -287,27 +287,13 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('statuses', $searchData['customer_status']);
         }
 
-        $joinedOrder = false;
-        // buy_product_name
-        if (!empty($searchData['buy_product_name']) && $searchData['buy_product_name']) {
+        // buy_product_name、buy_product_code
+        if (!empty($searchData['buy_product_code']) && $searchData['buy_product_code']) {
             $qb
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderDetails', 'od')
-                ->andWhere('od.product_name LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
-            $joinedOrder = true;
-        }
-
-        // buy_product_code
-        if (!empty($searchData['buy_product_code']) && $searchData['buy_product_code']) {
-            if (!$joinedOrder) {
-                $qb
-                    ->leftJoin('c.Orders', 'o')
-                    ->leftJoin('o.OrderDetails', 'od');
-            }
-            $qb
-                ->andWhere('od.product_code LIKE :buy_product_code')
-                ->setParameter('buy_product_code', '%' . $searchData['buy_product_code'] . '%');
+                ->andWhere('od.product_name LIKE :buy_product_name OR od.product_code LIKE :buy_product_name')
+                ->setParameter('buy_product_name', '%' . $searchData['buy_product_code'] . '%');
         }
 
         // Order By

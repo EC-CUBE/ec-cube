@@ -185,6 +185,10 @@ class SearchCustomerType extends AbstractType
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
+            ->add('buy_category', 'category', array(
+                'label' => '商品カテゴリ',
+                'required' => false,
+            ))
             ->add('customer_status', 'choice', array(
                 'label' => '会員ステータス',
                 'required' => false,
