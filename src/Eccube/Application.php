@@ -65,7 +65,6 @@ class Application extends \Silex\Application
         // init provider
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
-        $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
         $app = $this;
         $this->error(function (\Exception $e, $code) use ($app) {
@@ -244,9 +243,16 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
+
+        // http://stackoverflow.com/questions/17558541/silex-form-validator-translations-not-being-set-from-yaml
+        // https://github.com/silexphp/Silex/issues/1041
+        $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this['validator'];
+
         $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
             $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', 'ja');
+            $translator->addResource('yaml', __DIR__ . '/Resource/locale/validators.ja.yml', 'ja', 'validators');
 
             return $translator;
         }));
