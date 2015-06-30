@@ -103,6 +103,8 @@ class ProductClassType extends AbstractType
             ))
             ->add('product_type', 'product_type', array(
                 'label' => '商品種別',
+				'multiple'=> false,
+				'expanded' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

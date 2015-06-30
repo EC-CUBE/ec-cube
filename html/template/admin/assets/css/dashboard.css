@@ -2570,6 +2570,12 @@ ul.link-with-bar li:last-child::after {
 	fill:#b8bec4;
 }
 
+.price_cell input[type="text"] {
+	min-width: 7em;
+	text-align: right;
+}
+
+
 /* datetimepicker */
 
 .bootstrap-datetimepicker-widget.dropdown-menu {
