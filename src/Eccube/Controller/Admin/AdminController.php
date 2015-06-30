@@ -81,6 +81,8 @@ class AdminController extends AbstractController
         $excludes = array();
         $excludes[] = $app['config']['order_pending'];
         $excludes[] = $app['config']['order_processing'];
+        $excludes[] = $app['config']['order_cancel'];
+        $excludes[] = $app['config']['order_deliv'];
 
         // 受注ステータスごとの受注件数.
         $Orders = $this->getOrderEachStatus($app['orm.em'], $excludes);
@@ -145,7 +147,7 @@ class AdminController extends AbstractController
                     dtb_order t1
                 WHERE
                     t1.del_flg = 0
-                    AND t1.status NOT IN (?, ?)
+                    AND t1.status NOT IN (:excludes)
                 GROUP BY
                     t1.status
                 ORDER BY
@@ -154,7 +156,7 @@ class AdminController extends AbstractController
         $rsm->addScalarResult('status', 'status');
         $rsm->addScalarResult('count', 'count');
         $query = $em->createNativeQuery($sql, $rsm);
-        $query->setParameters($excludes);
+        $query->setParameters(array(':excludes' => $excludes));
         $result = $query->getResult();
         $orderArray = array();
         foreach ($result as $row) {
