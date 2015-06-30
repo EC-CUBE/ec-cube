@@ -122,6 +122,12 @@ class ProductController
         $orderByForm = $builder->getForm();
         $orderByForm->handleRequest($request);
 
+        if ($request->query->has('category_id')) {
+            $Category = $app['eccube.repository.category']->find($request->query->get('category_id'));
+        } else {
+            $Category = null;
+        }
+
         return $app['twig']->render('Product/list.twig', array(
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
@@ -129,6 +135,7 @@ class ProductController
             'disp_number_form' => $dispNumberForm->createView(),
             'order_by_form' => $orderByForm->createView(),
             'forms' => $forms,
+            'Category' => $Category,
         ));
     }
 
