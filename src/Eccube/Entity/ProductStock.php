@@ -39,6 +39,10 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
      */
     private $Creator;
 
+    public function __clone()
+    {
+        $this->id = null;
+    }
 
     /**
      * Get id

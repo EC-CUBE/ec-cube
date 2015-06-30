@@ -392,6 +392,11 @@ class ProductController
                 }
                 $CopyProductClasses = $CopyProduct->getProductClasses();
                 foreach ($CopyProductClasses as $Class) {
+                    $Stock = $Class->getProductStock();
+                    $CopyStock = clone $Stock;
+                    $CopyStock->setProductClass($Class);
+                    $app['orm.em']->persist($CopyStock);
+
                     $app['orm.em']->persist($Class);
                 }
                 $Images = $CopyProduct->getProductImage();
