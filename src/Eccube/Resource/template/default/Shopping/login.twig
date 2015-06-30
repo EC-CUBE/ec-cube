@@ -43,10 +43,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             <div class="form-group">
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
-                            {% if error %}
-                                <p class="errormsg text-danger">{{ error.message }}</p>
-                            {% endif %}
                             </div>
+                            {% if error %}
+                            <div class="form-group">
+                                <span class="text-danger">{{ error.message|trans }}</span>
+                            </div>
+                            {% endif %}
                             <div class="btn_area">
                                 <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
                                 <ul>

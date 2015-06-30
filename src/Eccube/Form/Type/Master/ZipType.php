@@ -85,7 +85,8 @@ class ZipType extends AbstractType
                     'maxlength' => 3,
                 ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 3, 'max' => 3))
+                    new Assert\Length(array('min' => 3, 'max' => 3)),
+                    new Assert\Regex(array('pattern' => '/^\d{3}$/')),
                 ),
             ),
             'zip02_options' => array(
@@ -93,7 +94,8 @@ class ZipType extends AbstractType
                     'maxlength' => 4,
                 ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 4, 'max' => 4))
+                    new Assert\Length(array('min' => 4, 'max' => 4)),
+                    new Assert\Regex(array('pattern' => '/^\d{4}$/')),
                 ),
             ),
             'zip01_name' => '',

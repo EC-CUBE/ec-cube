@@ -171,6 +171,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- endblock password_widget -%}
 
 
+{%- block date_widget -%}
+    {%- if freeze -%}
+    {%- for child in form %}
+            {%- if child.vars.value is not empty -%}
+            {{ form_widget(child) }}
+            {%- if loop.last == false%}/{% endif -%}
+            {%- endif -%}
+    {% endfor -%}
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock date_widget -%}
+
 
 {# EC-CUBE Widget #}
 
@@ -192,7 +205,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- block tel_widget -%}
     {%- for child in form %}
         {{- form_widget(child, {'style': 'ime-mode: disabled;'}) -}}
-        {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+        {%- if freeze -%}
+            {%- if child.vars.value is not empty -%}
+                {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+            {%- endif -%}
+        {%- else -%}
+            {%- if loop.last == false%}&nbsp;-&nbsp;{% endif -%}
+        {%- endif -%}
     {% endfor -%}
     {%- for child in form %}
         {{- form_errors(child) -}}

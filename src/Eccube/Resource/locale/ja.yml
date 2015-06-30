@@ -1,6 +1,8 @@
 Login email: メールアドレス
 Login pass: パスワード
 Login memory: メールアドレスをコンピューターに記憶させる
+Bad credentials.: メールアドレスもしくはパスワードが正しくありません。
+Invalid CSRF token.: もう一度ログイン処理をしてください。
 
 Name: お名前
 Name01: 姓
