@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
@@ -41,6 +42,7 @@ class EntryController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
+        /** @var $Customer \Eccube\Entity\Customer */
         $Customer = $app['eccube.repository.customer']->newCustomer();
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
@@ -98,7 +100,7 @@ class EntryController extends AbstractController
                             ->setFax01($Customer->getFax01())
                             ->setFax02($Customer->getFax02())
                             ->setFax03($Customer->getFax03())
-                            ->setDelFlg($app['config']['disabled'])
+                            ->setDelFlg(Constant::DISABLED)
                             ->setCustomer($Customer);
 
                         $app['orm.em']->persist($Customer);
@@ -107,13 +109,19 @@ class EntryController extends AbstractController
 
                         $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
-                        if ($app['config']['customer_confirm_mail']) {
+                        /** @var $BaseInfo \Eccube\Entity\BaseInfo */
+                        $BaseInfo = $app['eccube.repository.base_info']->get();
+                        $activateFlg = $BaseInfo->getOptionCustomerActivate();
+
+                        // 仮会員設定が有効な場合は、確認メールを送信し完了画面表示.
+                        if ($activateFlg) {
 
                             // メール送信
                             $app['eccube.service.mail']->sendCustomerConfirmMail($Customer, $activateUrl);
 
                             return $app->redirect($app->url('entry_complete'));
 
+                        // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
                         } else {
                             return $app->redirect($activateUrl);
                         }
