@@ -178,6 +178,20 @@ class Application extends \Silex\Application
 
             $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
 
+            $config_nav = array();
+            $yml = $ymlPath . '/nav.yml';
+            if (file_exists($yml)) {
+                $config_nav = array('nav' => Yaml::parse($yml));
+            }
+            $config_nav_dist = array();
+            $nav_yml_dist = $distPath . '/nav.yml.dist';
+            if (file_exists($nav_yml_dist)) {
+                $config_nav_dist = array('nav' => Yaml::parse($nav_yml_dist));
+            }
+
+            $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
+
+
             return $configAll;
         });
     }
@@ -299,6 +313,7 @@ class Application extends \Silex\Application
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
+
             // フロント画面
             } else {
                 $request = $event->getRequest();
@@ -316,6 +331,7 @@ class Application extends \Silex\Application
 
                 $app["twig"]->addGlobal("PageLayout", $PageLayout);
                 $app["twig"]->addGlobal("title", $PageLayout->getName());
+
             }
         });
     }
