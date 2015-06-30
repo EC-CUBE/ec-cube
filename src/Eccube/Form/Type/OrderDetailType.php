@@ -46,15 +46,40 @@ class OrderDetailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $config = $this->app['config'];
+
         $builder
             ->add('new', 'hidden', array(
                 'required' => false,
                 'mapped' => false,
                 'data' => 1
             ))
-            ->add('price')
-            ->add('quantity')
-            ->add('tax_rate');
+            ->add('price', 'money', array(
+                'currency' => 'JPY',
+                'precision' => 0,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
+            ->add('quantity', 'text', array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
+            ->add('tax_rate', 'text', array(
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                )
+            ));
 
         $builder
             ->add($builder->create('Product', 'hidden')
