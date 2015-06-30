@@ -31,7 +31,10 @@ class NewsController
     public function index(Application $app)
     {
         $NewsList = $app['orm.em']->getRepository('\Eccube\Entity\News')
-            ->findAll();
+            ->findBy(
+                array(),
+                array('rank' => 'DESC')
+            );
 
         return $app['view']->render('Block/news.twig', array(
             'NewsList' => $NewsList,
