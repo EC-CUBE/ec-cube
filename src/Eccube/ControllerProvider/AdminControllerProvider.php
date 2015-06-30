@@ -158,9 +158,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         // tradelaw
         $c->match('/setting/shop/tradelaw', '\Eccube\Controller\Admin\Setting\Shop\TradelawController::index')->bind('admin_setting_shop_tradelaw');
 
-        // shop
-        $c->match('/setting/shop/point', '\Eccube\Controller\Admin\Setting\Shop\PointController::index')->bind('admin_setting_shop_point');
-
         // tax
         $c->match('/setting/shop/tax', '\Eccube\Controller\Admin\Setting\Shop\TaxRuleController::index')->bind('admin_setting_shop_tax');
         $c->match('/setting/shop/tax/new', '\Eccube\Controller\Admin\Setting\Shop\TaxRuleController::index')->assert('id', '\d+')->bind('admin_setting_shop_tax_new');
