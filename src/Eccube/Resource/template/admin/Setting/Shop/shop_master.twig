@@ -30,6 +30,18 @@
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#zip-search').click(function(event) {
+        AjaxZip3.zip2addr('shop_master[zip][zip01]', 'shop_master[zip][zip02]', 'shop_master[address][pref]', 'shop_master[address][addr01]');
+    });
+});
+</script>
+{% endblock javascript %}
+
+
 {% block main %}
 
     <div class="row" id="aside_wrap">
@@ -48,15 +60,61 @@
                         {{ form_row(form.shop_name) }}
                         {{ form_row(form.shop_kana) }}
                         {{ form_row(form.shop_name_eng) }}
-                        {{ form_row(form.zip) }}
-                        {{ form_row(form.address) }}
-                        {{ form_row(form.tel) }}
-                        {{ form_row(form.fax) }}
+                        
+                        {# 住所：郵便番号 #}
+                        <div class="form-group">
+                            {{ form_label(form.address) }}
+                            <div class="col-sm-9 col-lg-10 input_zip form-inline">
+                                〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
+                                {{ form_errors(form.zip) }}
+                                <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
+                            </div>
+                        </div>
+                        {# 住所：都道府県 #}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
+                                {{ form_widget(form.address.pref) }}
+                                {{ form_errors(form.address.pref) }}
+                            </div>
+                        </div>
+                        {# 住所：住所1 #}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                                {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
+                                {{ form_errors(form.address.addr01) }}
+                            </div>
+                        </div>
+                        {# 住所：住所2 #}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                                {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
+                                {{ form_errors(form.address.addr02) }}
+                            </div>
+                        </div>
+                        {# 電話番号 #}
+                        <div class="form-group">
+                            {{ form_label(form.tel) }}
+                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
+                                {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
+                                {{ form_errors(form.tel) }}
+                            </div>
+                        </div>
+                        {# FAX番号 #}
+                        <div class="form-group">
+                            {{ form_label(form.fax) }}
+                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
+                                {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}-{{ form_widget(form.fax.fax03) }}
+                                {{ form_errors(form.fax) }}
+                            </div>
+                        </div>
+                        
                         {{ form_row(form.business_hour) }}
                         {{ form_row(form.email01) }}
                         {{ form_row(form.email02) }}
                         {{ form_row(form.email03) }}
                         {{ form_row(form.email04) }}
+                        {{ form_row(form.good_traded) }}
+                        {{ form_row(form.message) }}
                         {{ form_row(form.good_traded) }}
                         {{ form_row(form.message) }}
 

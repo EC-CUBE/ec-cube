@@ -162,7 +162,7 @@ class ContactTypeTest extends AbstractTypeTestCase
 
     public function testInvalidTel01_LengthMax()
     {
-        $this->formData['tel']['tel01'] = '1234';
+        $this->formData['tel']['tel01'] = '12345';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());

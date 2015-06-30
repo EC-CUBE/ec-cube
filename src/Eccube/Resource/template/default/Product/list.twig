@@ -45,6 +45,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <form name="form1" id="form1" method="get" action="?">
         {{ form_widget(search_form) }}
     </form>
+    <!-- ▼topicpath▼ -->
+    <div id="topicpath" class="row">
+        <ol>
+            <li><a href="{{ url('product_list') }}">全商品</a></li>
+            {% if Category is not null %}
+                {% for Path in Category.path %}
+                    <li><a href="{{ url('product_list') }}?category_id={{ Path.id }}">{{ Path.name }}</a></li>
+                {% endfor %}
+            {% endif %}
+        </ol>
+    </div>
+    <!-- ▲topicpath▲ -->
     <div class="row">
         <form name="page_navi_top" id="page_navi_top" action="?">
             <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
@@ -80,8 +92,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <dt class="item_name">{{ Product.name }}</dt>
                                 {% if Product.hasProductClass %}
                                     <dd class="item_price">
-                                        {{ Product.getPrice02IncTaxMin|price }}
-                                        ～{{ Product.getPrice02IncTaxMax|price }}
+                                        {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
                                     </dd>
                                 {% else %}
                                     <dd class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>

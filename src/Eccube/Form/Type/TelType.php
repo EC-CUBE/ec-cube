@@ -26,6 +26,8 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -66,6 +68,22 @@ class TelType extends AbstractType
         $builder->setAttribute('tel01_name', $options['tel01_name']);
         $builder->setAttribute('tel02_name', $options['tel02_name']);
         $builder->setAttribute('tel03_name', $options['tel03_name']);
+        $builder->addEventListener(FormEvents::POST_BIND, function ($event) use($builder) {
+                $form = $event->getForm();
+                $count = 0;
+                if ($form[$builder->getName() . '01']->getData() != '') {
+                    $count++;
+                }
+                if ($form[$builder->getName() . '02']->getData() != '') {
+                    $count++;
+                }
+                if ($form[$builder->getName() . '03']->getData() != '') {
+                    $count++;
+                }
+                if ($count != 0 && $count != 3) {
+                    $form[$builder->getName() . '01']->addError(new FormError('全て入力してください。'));
+                }
+            });
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -89,10 +107,10 @@ class TelType extends AbstractType
             'options' => array(),
             'tel01_options' => array(
                 'attr' => array(
-                    'maxlength' => 3,
+                    'maxlength' => 4,
                 ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 2, 'max' => 3)),
+                    new Assert\Length(array('min' => 2, 'max' => 4)),
                     new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                 ),
             ),

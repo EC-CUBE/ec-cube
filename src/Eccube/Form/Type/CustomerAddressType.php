@@ -55,6 +55,7 @@ class CustomerAddressType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                     ),
                 ),
             ))
@@ -65,6 +66,7 @@ class CustomerAddressType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -80,20 +82,7 @@ class CustomerAddressType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
-                'zip01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 3, 'max' => 3))
-                    ),
-                ),
-                'zip02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 4, 'max' => 4))
-                    ),
-                ),
-            ))
+            ->add('zip', 'zip', array())
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
                 'options' => array(
@@ -105,36 +94,7 @@ class CustomerAddressType extends AbstractType
                     ),
                 ),
             ))
-
-            ->add('tel', 'tel', array(
-                'required' => false,
-            ))
-
-            ->add('tel', 'tel', array(
-                'tel01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 3)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel03_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-            ))
-
-
+            ->add('tel', 'tel', array())
             ->add('fax', 'tel', array(
                 'required' => false,
             ))

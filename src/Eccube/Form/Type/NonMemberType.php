@@ -53,6 +53,7 @@ class NonMemberType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $app['config']['stext_len'])),
                     ),
                 ),
             ))
@@ -63,6 +64,10 @@ class NonMemberType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        )),
                     ),
                 ),
             ))
@@ -75,20 +80,7 @@ class NonMemberType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
-                'zip01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 3, 'max' => 3))
-                    ),
-                ),
-                'zip02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 4, 'max' => 4))
-                    ),
-                ),
-            ))
+            ->add('zip', 'zip', array())
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
                 'options' => array(
@@ -104,7 +96,7 @@ class NonMemberType extends AbstractType
                 'tel01_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 3)),
+                        new Assert\Length(array('min' => 2, 'max' => 4)),
                         new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                     ),
                 ),
