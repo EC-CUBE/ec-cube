@@ -152,7 +152,7 @@ class PluginService
         if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
             throw new PluginException("config.yml event empty or invalid_character(\W) ");
         }
-        if (!isset($meta['version']) or !$this->checkSymbolName($meta['name'])) {
+        if (!isset($meta['version']) or !$this->checkSymbolName($meta['version'])) {
             throw new PluginException("config.yml version not defined. ");
         }
     }
