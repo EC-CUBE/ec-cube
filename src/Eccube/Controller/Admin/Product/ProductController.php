@@ -84,11 +84,15 @@ class ProductController
                     if (!empty($status)) {
                         if ($status != $app['config']['admin_product_stock_status']) {
                             $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
+                            $searchData['status'] = null;
+                            $session->set('eccube.admin.product.search', $searchData);
                         } else {
                             $searchData['stock_status'] = Constant::DISABLED;
                         }
-                        $searchData['status'] = null;
                         $page_status = $status;
+                    } else {
+                        $searchData['link_status'] = null;
+                        $searchData['stock_status'] = null;
                     }
                     // 表示件数
                     $pcount = $request->get('page_count');
@@ -114,7 +118,10 @@ class ProductController
                             }
                             $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                         }
+                        $searchData['link_status'] = null;
+                        $searchData['stock_status'] = null;
                     }
+                    /*
                     if (count($searchData['product_status']) > 0) {
                         $product_status_ids = array();
                         foreach ($searchData['product_status'] as $ProductStatus) {
@@ -122,6 +129,7 @@ class ProductController
                         }
                         $searchData['product_status'] = $app['eccube.repository.master.product_status']->findBy(array('id' => $product_status_ids));
                     }
+                    */
                     $searchForm->setData($searchData);
                     $active = true;
                 }
