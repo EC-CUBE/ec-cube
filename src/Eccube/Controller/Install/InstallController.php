@@ -126,7 +126,6 @@ class InstallController
             ->getForm();
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
-
         if ($this->isValid($request, $form)) {
             $data = $form->getData();
             $this
@@ -458,7 +457,7 @@ class InstallController
         }
 
         $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
-        $replace = array($auth_magic, $data['shop_name'], '0', $data['force_ssl']);
+        $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl']);
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -566,7 +565,7 @@ class InstallController
             $fs->remove($config_file);
         }
 
-        $ADMIN_ROUTE = $data['admin_dir'];
+        $ADMIN_ROUTE = trim($data['admin_dir']," \t\n\r\0\x0B/"  ); // 末尾、先頭に/など不要な文字をを除去
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
         $ROOT_DIR = realpath(__DIR__ . '/../../../../');
