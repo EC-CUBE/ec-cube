@@ -447,7 +447,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidTel01_MaxLengthInvalid()
     {
-        $this->formData['tel']['tel01'] = 1111;
+        $this->formData['tel']['tel01'] = 11111;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -519,7 +519,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidFax01_MaxLengthInvalid()
     {
-        $this->formData['fax']['fax01'] = 1111;
+        $this->formData['fax']['fax01'] = 11111;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
