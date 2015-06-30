@@ -565,7 +565,7 @@ class InstallController
             $fs->remove($config_file);
         }
 
-        $ADMIN_ROUTE = trim($data['admin_dir']," \t\n\r\0\x0B/"  ); // 末尾、先頭に/など不要な文字をを除去
+        $ADMIN_ROUTE = $data['admin_dir'];
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
         $ROOT_DIR = realpath(__DIR__ . '/../../../../');
