@@ -351,11 +351,13 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
                                                     {{ form_widget(orderDetailForm.price) }}
+                                                    {{ form_errors(orderDetailForm.price) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="item_quantity">
                                                     数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                    {{ form_errors(orderDetailForm.quantity) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
@@ -363,6 +365,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                     税率：
                                                     <span class="input-group">
                                                     {{ form_widget(orderDetailForm.tax_rate) }}
+                                                    {{ form_errors(orderDetailForm.tax_rate) }}
                                                     <span class="input-group-addon">%</span>
                                                     </span>
                                                 </span>
@@ -386,11 +389,20 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     <dt>小計：</dt>
                                     <dd>{{ Order.subtotal|price }}</dd>
                                     <dt>値引き：</dt>
-                                    <dd class="form-group form-inline">{{ form_widget(form.discount) }}</dd>
+                                    <dd class="form-group form-inline">
+                                        {{ form_widget(form.discount) }}
+                                        {{ form_errors(form.discount) }}
+                                    </dd>
                                     <dt>送料：</dt>
-                                    <dd class="form-group form-inline">{{ form_widget(form.delivery_fee_total) }}</dd>
+                                    <dd class="form-group form-inline">
+                                        {{ form_widget(form.delivery_fee_total) }}
+                                        {{ form_errors(form.delivery_fee_total) }}
+                                    </dd>
                                     <dt>手数料：</dt>
-                                    <dd class="form-group form-inline">{{ form_widget(form.charge) }}</dd>
+                                    <dd class="form-group form-inline">
+                                        {{ form_widget(form.charge) }}
+                                        {{ form_errors(form.charge) }}
+                                    </dd>
                                 </dl>
                             </div>
                         </div>
