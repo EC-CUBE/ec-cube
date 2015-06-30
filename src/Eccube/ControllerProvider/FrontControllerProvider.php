@@ -45,16 +45,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/', '\Eccube\Controller\TopController::index')->bind('homepage');
         $c->match('/', '\Eccube\Controller\TopController::index')->bind('top');
         $c->match('/', '\Eccube\Controller\TopController::index')->bind('index');
-        $c->match('/input_zip', '\Eccube\Page\InputZip')->bind('input_zip');
-        $c->match('/sitemap', '\Eccube\Page\Sitemap')->bind('sitemap');
-        $c->match('/error', '\Eccube\Page\Error\SystemError')->bind('error');
-        $c->match('/resize_image', '\Eccube\Page\ResizeImage')->bind('resize_image');
-
-        // api
-        $c->match('/api', '\Eccube\Page\Api\Index')->bind('api');
-        $c->match('/api/json', '\Eccube\Page\Api\Json')->bind('api_json');
-        $c->match('/api/php', '\Eccube\Page\Api\Php')->bind('api_php');
-        $c->match('/api/xml', '\Eccube\Page\Api\Xml')->bind('api_xml');
 
         // block
         $c->match('/block', '\Eccube\Controller\BlockController::index')->bind('block');
@@ -106,7 +96,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/delivery/{id}/edit', '\Eccube\Controller\Mypage\DeliveryController::edit')->assert('id', '\d+')->bind('mypage_delivery_edit');
         $c->match('/mypage/delivery/{id}/delete', '\Eccube\Controller\Mypage\DeliveryController::delete')->assert('id', '\d+')->bind('mypage_delivery_delete');
 
-        $c->match('/mypage/download', '\Eccube\Page\Mypage\Download')->bind('mypage_download');
         $c->match('/mypage/favorite', '\Eccube\Controller\Mypage\MypageController::favorite')->bind('mypage_favorite');
         $c->match('/mypage/history/{id}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('id', '\d+');
         $c->match('/mypage/mail_view/{id}', '\Eccube\Controller\Mypage\MypageController::mailView')->bind('mypage_mail_view')->assert('id', '\d+');
