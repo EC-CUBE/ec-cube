@@ -707,7 +707,7 @@ INSERT INTO dtb_mail_template (template_id, name, file_name, subject, header, fo
 
 INSERT INTO dtb_mail_template (template_id, name, file_name, subject, header, footer, creator_id, del_flg, create_date, update_date) VALUES (5, '問合受付メール', 'Mail/contact.twig', 'お問い合わせを受け付けました', NULL, NULL, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
 
 INSERT INTO dtb_product (product_id, name, status, note, del_flg, creator_id, create_date, update_date, delivery_date_id, description_detail) VALUES (1, 'ディナーフォーク', 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 'セットで揃えたいディナー用のカトラリー。
 定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。
@@ -716,7 +716,6 @@ INSERT INTO dtb_product (product_id, name, status, note, del_flg, creator_id, cr
 パーコレーターはコーヒーの粉をセットして直火にかけて抽出する器具です。
 アウトドアでも淹れたてのコーヒーをお楽しみいただけます。
 いまだけ、おいしい淹れ方の冊子つきです。');
-SELECT setval('dtb_product_product_id_seq', 2);
 
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (1, 5, 1);
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (1, 6, 1);
