@@ -70,11 +70,6 @@ class SearchProductType extends AbstractType
                 'multiple'=> true,
                 'required' => false,
             ))
-            ->add('product_status', 'status', array(
-                'label' => '商品ステータス',
-                'multiple'=> true,
-                'required' => false,
-            ))
             ->add('create_date_start', 'date', array(
                 'label' => '登録日(FROM)',
                 'required' => false,

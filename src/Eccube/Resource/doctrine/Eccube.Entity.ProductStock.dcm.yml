@@ -20,11 +20,9 @@ Eccube\Entity\ProductStock:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member

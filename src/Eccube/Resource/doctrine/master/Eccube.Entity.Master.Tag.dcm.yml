@@ -16,7 +16,6 @@ Eccube\Entity\Master\Tag:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
     oneToMany:
         ProductTag:
             targetEntity: Eccube\Entity\ProductTag

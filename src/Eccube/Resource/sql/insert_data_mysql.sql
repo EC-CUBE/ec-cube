@@ -7,17 +7,11 @@ INSERT INTO mtb_authority (id, name, rank) VALUES (1, '店舗オーナー', 1);
 INSERT INTO mtb_db (id, name, rank) VALUES (1, 'PostgreSQL', 0);
 INSERT INTO mtb_db (id, name, rank) VALUES (2, 'MySQL', 1);
 
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (1, '/shopping/deliv.php', 0);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (2, '/shopping/payment.php', 1);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (3, '/shopping/confirm.php', 2);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (4, '/shopping/card.php', 3);
-INSERT INTO mtb_disable_logout (id, name, rank) VALUES (5, '/shopping/loan.php', 4);
-
 INSERT INTO mtb_disp (id, name, rank) VALUES (1, '公開', 0);
 INSERT INTO mtb_disp (id, name, rank) VALUES (2, '非公開', 1);
 
-INSERT INTO mtb_product_type (id, name, rank) VALUES (1, '通常商品', 0);
-INSERT INTO mtb_product_type (id, name, rank) VALUES (2, 'ダウンロード商品', 1);
+INSERT INTO mtb_product_type (id, name, rank) VALUES (1, '商品種別A', 0);
+INSERT INTO mtb_product_type (id, name, rank) VALUES (2, '商品種別B', 1);
 
 INSERT INTO mtb_device_type (id, name, rank) VALUES (1, 'モバイル', 0);
 INSERT INTO mtb_device_type (id, name, rank) VALUES (2, 'スマートフォン', 1);
@@ -42,17 +36,6 @@ INSERT INTO mtb_job (id, name, rank) VALUES (15, '出版・マスコミ関係', 
 INSERT INTO mtb_job (id, name, rank) VALUES (16, '学生・フリーター', 15);
 INSERT INTO mtb_job (id, name, rank) VALUES (17, '主婦', 16);
 INSERT INTO mtb_job (id, name, rank) VALUES (18, 'その他', 17);
-
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (1, 'docomo.ne.jp', 0);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (2, 'ezweb.ne.jp', 1);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (3, 'softbank.ne.jp', 2);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (4, 'vodafone.ne.jp', 3);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (5, 'pdx.ne.jp', 4);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (6, 'disney.ne.jp', 5);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (7, 'willcom.com', 6);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (8, 'emnet.ne.jp', 7);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (9, 'i.softbank.jp', 8);
-INSERT INTO mtb_mobile_domain (id, name, rank) VALUES (10, 'emobile.ne.jp', 9);
 
 INSERT INTO mtb_order_status (id, name, rank) VALUES (7, '決済処理中', 0);
 INSERT INTO mtb_order_status (id, name, rank) VALUES (1, '新規受付', 1);
@@ -79,25 +62,7 @@ INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (6, '注文受付'
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (3, 'キャンセル', 4);
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (4, '注文受付', 5);
 INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (5, '発送済み', 6);
-
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1000', '不明なエラーが発生しました。', 0);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1001', '不正なパラメーターが送信されました。', 1);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1002', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 2);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1003', '認証に失敗しました。<br />・仮会員の方は、本会員登録を行ってください<br />・認証キーが正しく設定されているか確認してください', 3);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1004', '購入済みの商品はありません。', 4);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1005', 'ダウンロード可能なアップデータはありません。<br />・ステータスが「入金待ち」の可能性があります<br />・インストールされているモジュールが既に最新版の可能性があります。', 5);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1006', '配信サーバーでエラーが発生しました。', 6);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('1007', 'ダウンロード完了通知に失敗しました。', 7);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2001', '管理画面の認証に失敗しました。<br />管理画面トップページへ戻り、ログインし直してください。', 8);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2002', '配信サーバーへ接続できません。', 9);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2003', '配信サーバーへ接続できません。', 10);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2004', '配信サーバーでエラーが発生しました。', 11);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2005', '認証キーが設定されていません。<br />・「認証キー設定」で認証キーを設定してください。', 12);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2006', '不正なアクセスです。', 13);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2007', '不正なパラメーターが送信されました。', 14);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2008', '自動アップデートが無効です', 15);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2009', 'ファイルの書き込みに失敗しました。<br />・書き込み権限が正しく設定されていません。<br />・data/downloads/tmpディレクトリに書き込み権限があるかどうか確認してください', 16);
-INSERT INTO mtb_ownersstore_err (id, name, rank) VALUES ('2010', 'ファイルの書き込みに失敗しました。<br />・「ログ管理」で詳細を確認してください。', 17);
+INSERT INTO mtb_customer_order_status (id, name, rank) VALUES (8, '注文未完了', 7);
 
 INSERT INTO mtb_page_max (id, name, rank) VALUES (10, '10', 0);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (20, '20', 1);
@@ -109,19 +74,6 @@ INSERT INTO mtb_page_max (id, name, rank) VALUES (70, '70', 6);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (80, '80', 7);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (90, '90', 8);
 INSERT INTO mtb_page_max (id, name, rank) VALUES (100, '100', 9);
-
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/index.php', '0', 0);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/delete.php', '0', 1);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/input.php', '0', 2);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/master.php', '0', 3);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/master_delete.php', '0', 4);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/master_rank.php', '0', 5);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/mastercsv.php', '0', 6);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/system/rank.php', '0', 7);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/entry/index.php', '1', 8);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/entry/delete.php', '1', 9);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/entry/inputzip.php', '1', 10);
-INSERT INTO mtb_permission (id, name, rank) VALUES ('/admin/search/delete_note.php', '1', 11);
 
 INSERT INTO mtb_pref (id, name, rank) VALUES (1, '北海道', 1);
 INSERT INTO mtb_pref (id, name, rank) VALUES (2, '青森県', 2);
@@ -178,58 +130,15 @@ INSERT INTO mtb_product_list_max (id, name, rank) VALUES (50, '50件', 2);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (1, '価格順', 0);
 INSERT INTO mtb_product_list_order_by (id, name, rank) VALUES (2, '新着順', 1);
 
-INSERT INTO mtb_product_status_color (id, name, rank) VALUES (1, '#FFFFFF', 0);
-INSERT INTO mtb_product_status_color (id, name, rank) VALUES (2, '#C9C9C9', 1);
-INSERT INTO mtb_product_status_color (id, name, rank) VALUES (3, '#DDE6F2', 2);
-
-INSERT INTO mtb_recommend (id, name, rank) VALUES (5, '★★★★★', 0);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (4, '★★★★', 1);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (3, '★★★', 2);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (2, '★★', 3);
-INSERT INTO mtb_recommend (id, name, rank) VALUES (1, '★', 4);
-
-INSERT INTO mtb_reminder (id, name, rank) VALUES (1, '母親の旧姓は？', 0);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (2, 'お気に入りのマンガは？', 1);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (3, '大好きなペットの名前は？', 2);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (4, '初恋の人の名前は？', 3);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (5, '面白かった映画は？', 4);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (6, '尊敬していた先生の名前は？', 5);
-INSERT INTO mtb_reminder (id, name, rank) VALUES (7, '好きな食べ物は？', 6);
-
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (0, 'http://', 0);
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (1, 'https://', 1);
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (2, 'ttp://', 2);
-INSERT INTO mtb_review_deny_url (id, name, rank) VALUES (3, 'ttps://', 3);
-
 INSERT INTO mtb_sex (id, name, rank) VALUES (1, '男性', 0);
 INSERT INTO mtb_sex (id, name, rank) VALUES (2, '女性', 1);
 
 INSERT INTO mtb_customer_status (id, name, rank) VALUES (1, '仮会員', 0);
 INSERT INTO mtb_customer_status (id, name, rank) VALUES (2, '本会員', 1);
 
-INSERT INTO mtb_status (id, name, rank) VALUES (1, 'NEW', 0);
-INSERT INTO mtb_status (id, name, rank) VALUES (2, '残りわずか', 1);
-INSERT INTO mtb_status (id, name, rank) VALUES (3, 'ポイント２倍', 2);
-INSERT INTO mtb_status (id, name, rank) VALUES (4, 'オススメ', 3);
-INSERT INTO mtb_status (id, name, rank) VALUES (5, '限定品', 4);
-
-INSERT INTO mtb_status_image (id, name, rank) VALUES (1, 'img/icon/ico_01.gif', 0);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (2, 'img/icon/ico_02.gif', 1);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (3, 'img/icon/ico_03.gif', 2);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (4, 'img/icon/ico_04.gif', 3);
-INSERT INTO mtb_status_image (id, name, rank) VALUES (5, 'img/icon/ico_05.gif', 4);
-
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (1, '四捨五入', 0);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (2, '切り捨て', 1);
 INSERT INTO mtb_taxrule (id, name, rank) VALUES (3, '切り上げ', 2);
-
-INSERT INTO mtb_wday (id, name, rank) VALUES (0, '日', 0);
-INSERT INTO mtb_wday (id, name, rank) VALUES (1, '月', 1);
-INSERT INTO mtb_wday (id, name, rank) VALUES (2, '火', 2);
-INSERT INTO mtb_wday (id, name, rank) VALUES (3, '水', 3);
-INSERT INTO mtb_wday (id, name, rank) VALUES (4, '木', 4);
-INSERT INTO mtb_wday (id, name, rank) VALUES (5, '金', 5);
-INSERT INTO mtb_wday (id, name, rank) VALUES (6, '土', 6);
 
 INSERT INTO mtb_work (id, name, rank) VALUES (0, '非稼働', 0);
 INSERT INTO mtb_work (id, name, rank) VALUES (1, '稼働', 1);
@@ -813,17 +722,17 @@ INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (2, 1, 1
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (2, 4, 1);
 INSERT INTO dtb_product_category (product_id, category_id, rank) VALUES (2, 6, 2);
 
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(0, 1, NULL, NULL, 'fork-01', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(1, 1, 3, 6, 'fork-01', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(2, 1, 3, 5, 'fork-02', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(3, 1, 3, 4, 'fork-03', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(4, 1, 2, 6, 'fork-04', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(5, 1, 2, 5, 'fork-05', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(6, 1, 2, 4, 'fork-06', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(7, 1, 1, 6, 'fork-07', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(8, 1, 1, 5, 'fork-08', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(9, 1, 1, 4, 'fork-09', NULL, 1, NULL, 1000, 933, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
-INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, point_rate, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(10, 2, NULL, NULL, 'cafe-01', 100, 0, 5, 1700, 1650, NULL, 10, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(0, 1, NULL, NULL, 'fork-01', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(1, 1, 3, 6, 'fork-01', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(2, 1, 3, 5, 'fork-02', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(3, 1, 3, 4, 'fork-03', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(4, 1, 2, 6, 'fork-04', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(5, 1, 2, 5, 'fork-05', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(6, 1, 2, 4, 'fork-06', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(7, 1, 1, 6, 'fork-07', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(8, 1, 1, 5, 'fork-08', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(9, 1, 1, 4, 'fork-09', NULL, 1, NULL, 1000, 933, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
+INSERT INTO dtb_product_class (product_class_id, product_id, class_category_id1, class_category_id2, product_code, stock, stock_unlimited, sale_limit, price01, price02, delivery_fee, creator_id, create_date, update_date, del_flg, product_type_id) VALUES(10, 2, NULL, NULL, 'cafe-01', 100, 0, 5, 1700, 1650, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 1);
 
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(1, 0, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_product_stock (product_stock_id, product_class_id, stock, creator_id, create_date, update_date) VALUES(2, 1, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

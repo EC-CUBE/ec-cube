@@ -517,11 +517,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $Status;
 
     /**
-     * @var \Eccube\Entity\Master\ProductStatusColor
-     */
-    private $ProductStatusColor;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -951,29 +946,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getStatus()
     {
         return $this->Status;
-    }
-
-    /**
-     * Set ProductStatusColor
-     *
-     * @param  \Eccube\Entity\Master\ProductStatusColor $productStatusColor
-     * @return Product
-     */
-    public function setProductStatusColor(\Eccube\Entity\Master\ProductStatusColor $productStatusColor = null)
-    {
-        $this->ProductStatusColor = $productStatusColor;
-
-        return $this;
-    }
-
-    /**
-     * Get ProductStatusColor
-     *
-     * @return \Eccube\Entity\Master\ProductStatusColor
-     */
-    public function getProductStatusColor()
-    {
-        return $this->ProductStatusColor;
     }
 
     /**

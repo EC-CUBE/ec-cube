@@ -7,7 +7,6 @@ Eccube\Entity\Help:
             type: integer
             nullable: false
             unsigned: false
-            default: '0'
             id: true
             generator:
                 strategy: AUTO
@@ -93,13 +92,9 @@ Eccube\Entity\Help:
         create_date:
             type: datetime
             nullable: false
-#                options:
-#                  default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-#                options:
-#                  default: CURRENT_TIMESTAMP
     manyToOne:
         LawCountry:
             targetEntity: Eccube\Entity\Master\Country

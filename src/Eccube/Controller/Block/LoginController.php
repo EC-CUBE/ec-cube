@@ -38,24 +38,10 @@ class LoginController
             ->createNamedBuilder('', 'customer_login')
             ->getForm();
 
-        $disableLogout = $this->isDisableLogoutPage($app);
-
         return $app->render('Block/login.twig', array(
             'error' => $app['security.last_error']($request),
-            'disableLogout' => $disableLogout,
             'email' => $email,
             'form' => $form->createView(),
         ));
-    }
-
-    public function isDisableLogoutPage(Application $app)
-    {
-        $uri = str_replace($app['config']['root'], '', $app['request']->server->get('REDIRECT_URL'));
-        $disableLogout = $app['orm.em']->getRepository('Eccube\Entity\Master\DisableLogout')
-            ->findBy(array(
-                'name' => $uri,
-            ));
-
-        return (count($disableLogout) > 0);
     }
 }

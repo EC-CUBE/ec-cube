@@ -7,7 +7,6 @@ Eccube\Entity\BaseInfo:
             type: integer
             nullable: false
             unsigned: false
-            default: '0'
             id: true
             generator:
                 strategy: AUTO

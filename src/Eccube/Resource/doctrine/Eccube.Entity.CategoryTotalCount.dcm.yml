@@ -9,7 +9,7 @@ Eccube\Entity\CategoryTotalCount:
             unsigned: false
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
     fields:
         product_count:
             type: integer
@@ -18,10 +18,10 @@ Eccube\Entity\CategoryTotalCount:
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
     oneToOne:
         Category:
             targetEntity: Category
+            inversedBy: CategoryTotalCount
             joinColumn:
                 name: category_id
                 referencedColumnName: category_id
