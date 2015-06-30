@@ -70,7 +70,7 @@ class TemplateController
 
                 $app->addSuccess('admin.content.template.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_content_template'));
+                return $app->redirect($app->url('admin_setting_ownersstore_template'));
             }
         }
 
