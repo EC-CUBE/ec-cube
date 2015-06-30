@@ -32,6 +32,7 @@ use Eccube\Common\Constant;
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
@@ -49,6 +50,8 @@ class InstallController
     private $config_path;
 
     private $dist_path;
+
+    private $cache_path;
 
     private $session_data;
 
@@ -112,6 +115,16 @@ class InstallController
     public function step2(InstallApplication $app, Request $request)
     {
         $protectedDirs = $this->getProtectedDirs();
+
+        // 権限がある場合, キャッシュディレクトリをクリア
+        if (empty($protectedDirs)) {
+            $finder = Finder::create()
+                ->in($this->cache_path)
+                ->directories()
+                ->depth(0);
+            $fs = new Filesystem();
+            $fs->remove($finder);
+        }
 
         return $app['twig']->render('step2.twig', array(
             'protectedDirs' => $protectedDirs,
