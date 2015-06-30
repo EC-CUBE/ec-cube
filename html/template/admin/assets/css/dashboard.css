@@ -723,7 +723,6 @@ fieldset[disabled] .btn-link:focus {
     opacity:1
 }
 .alert-dismissable .close, .alert-dismissible .close {
-    top: 2px;
 	font-size: 13px;
 }
 
@@ -1040,8 +1039,6 @@ dd.form-group .errormsg {
     border-radius: 3px;
     text-align: center;
     vertical-align: middle;
-    font-size: 12px;
-    font-size: 1.2rem;
     position: absolute;
     right: 16px; top: 12px;
     color: #666;
@@ -1457,7 +1454,7 @@ dd.form-group .errormsg {
 }
 
 .link_list_wrap {
-    height: 295px;
+    height: 236px;
 	border: 0 none;
 	width: 100%;
     border-top: 1px solid #d1d8d9;
@@ -1527,7 +1524,7 @@ dd.form-group .errormsg {
 /* order_info */
 
 #order_info .link_list {
-    min-height: 295px;
+    min-height: 236px;
     background: #fff;
 }
 
