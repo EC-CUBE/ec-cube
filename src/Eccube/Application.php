@@ -29,12 +29,8 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends \Silex\Application
@@ -177,6 +173,20 @@ class Application extends \Silex\Application
 
             $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
 
+            $config_nav = array();
+            $yml = $ymlPath . '/nav.yml';
+            if (file_exists($yml)) {
+                $config_nav = array('nav' => Yaml::parse($yml));
+            }
+            $config_nav_dist = array();
+            $nav_yml_dist = $distPath . '/nav.yml.dist';
+            if (file_exists($nav_yml_dist)) {
+                $config_nav_dist = array('nav' => Yaml::parse($nav_yml_dist));
+            }
+
+            $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
+
+
             return $configAll;
         });
     }
@@ -233,7 +243,7 @@ class Application extends \Silex\Application
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-            $file = dirname($r->getFilename()).'/Resources/translations/validators.' . $app['locale'] . '.xlf';
+            $file = dirname($r->getFilename()) . '/Resources/translations/validators.' . $app['locale'] . '.xlf';
             if (file_exists($file)) {
                 $translator->addResource('xliff', $file, $app['locale'], 'validators');
             }
@@ -330,6 +340,7 @@ class Application extends \Silex\Application
 
                 $app["twig"]->addGlobal("PageLayout", $PageLayout);
                 $app["twig"]->addGlobal("title", $PageLayout->getName());
+
             }
         });
     }
@@ -490,13 +501,13 @@ class Application extends \Silex\Application
             }
             // const
             if (isset($config['const'])) {
-                $this['config'] = $this->share(function ($eccubeConfig) use ($config) {
+                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
                     $eccubeConfig[$config['name']] = array(
                         'const' => $config['const'],
                     );
 
                     return $eccubeConfig;
-                });
+                }));
             }
             // Type: ServiceProvider
             if (isset($config['service'])) {

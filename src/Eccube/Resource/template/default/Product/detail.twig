@@ -115,17 +115,29 @@ $(function(){
                     <!--★通常価格★-->
                     {% if Product.hasProductClass -%}
                         {% if Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
-                        <p class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> ～ <span class="price01_default">{{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                            <p class="normal_price">
+                                {% if Product.hasPrice01IncTaxRange %}
+                                    通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> ～ <span class="price01_default">{{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span>
+                                {% else %}
+                                    通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span>
+                                {% endif %}
+                            </p>
                         {% endif %}
                     {% else -%}
                         {% if Product.getPrice01Max is not null %}
-                        <p class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                            <p class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
                         {% endif %}
                     {% endif -%}
 
                     <!--★販売価格★-->
                     {% if Product.hasProductClass -%}
-                        <p class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> ～ <span class="price02_default">{{ Product.getPrice02IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                    <p class="sale_price text-primary">
+                        {% if Product.hasPrice02IncTaxRange %}
+                            <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> ～ <span class="price02_default">{{ Product.getPrice02IncTaxMax|price }}</span> <span class="small">税込</span>
+                        {% else %}
+                            <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span>
+                        {% endif %}
+                        </p>
                     {% else -%}
                         <p class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span></p>
                     {% endif -%}
@@ -204,7 +216,7 @@ $(function(){
                     </form>
 
                     <!--★商品説明★-->
-                    <p class="item_comment">{{ Product.description_detail }}</p>
+                    <p class="item_comment">{{ Product.description_detail|nl2br }}</p>
 
                 </div>
                 <!-- /.item_detail -->

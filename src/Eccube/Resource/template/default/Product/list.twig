@@ -92,8 +92,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <dt class="item_name">{{ Product.name }}</dt>
                                 {% if Product.hasProductClass %}
                                     <dd class="item_price">
-                                        {{ Product.getPrice02IncTaxMin|price }}
-                                        ～{{ Product.getPrice02IncTaxMax|price }}
+                                        {% if Product.hasPrice02IncTaxRange %}
+                                            {{ Product.getPrice02IncTaxMin|price }}
+                                            ～{{ Product.getPrice02IncTaxMax|price }}
+                                        {% else %}
+                                            {{ Product.getPrice02IncTaxMin|price }}
+                                        {% endif %}
                                     </dd>
                                 {% else %}
                                     <dd class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>
