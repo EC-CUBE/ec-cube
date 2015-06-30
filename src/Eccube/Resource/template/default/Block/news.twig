@@ -36,9 +36,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <span class="angle-circle"><svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg></span>
                             </dt>
                             <dd>{{ News.comment }}
-                            {% if News.url %}<br><a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>{% endif %}
+                            {% if News.url %}<br><a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
                             詳しくはこちら
-                            {% if News.url %}</a>{% endif %}
+                            </a>{% endif %}
                             </dd>
                         </dl>
                         {% endfor %}
