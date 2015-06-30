@@ -39,8 +39,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $price01IncTaxs = array();
     private $price02IncTaxs = array();
     private $codes = array();
-    private $pointRates = array();
-    private $points = array();
     private $classCategories1 = array();
     private $classCategories2 = array();
     private $className1;
@@ -88,12 +86,6 @@ class Product extends \Eccube\Entity\AbstractEntity
 
                 // product_code
                 $this->codes[] = $ProductClass->getCode();
-
-                // point
-                $this->points[] = $ProductClass->getPoint();
-
-                // point_rate
-                $this->pointRates[] = $ProductClass->getPointRate();
 
                 if ($i === 0) {
                     if ($ProductClass->getClassCategory1() && $ProductClass->getClassCategory1()->getId()) {
@@ -333,26 +325,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get Point min
-     *
-     * @return integer
-     */
-    public function getPointMin()
-    {
-        return min($this->points);
-    }
-
-    /**
-     * Get Point max
-     *
-     * @return integer
-     */
-    public function getPointMax()
-    {
-        return max($this->points);
-    }
-
-    /**
      * Get Product_code min
      *
      * @return integer
@@ -374,18 +346,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->_calc();
 
         return max($this->codes);
-    }
-
-    /**
-     * Get getPointRate
-     *
-     * @return integer
-     */
-    public function getPointRate()
-    {
-        $this->_calc();
-
-        return max($this->pointRates);
     }
 
     /**

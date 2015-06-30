@@ -31,7 +31,6 @@ class CartController
 {
     public function index(Application $app)
     {
-        $title = 'カゴの中';
         $Cart = $app['eccube.service.cart']->getCart();
 
         /* @var $BaseInfo \Eccube\Entity\BaseInfo */
@@ -40,7 +39,7 @@ class CartController
 
         $isDeliveryFree = false;
         $least = 0;
-        if ($BaseInfo->getUsePoint()) {
+        if ($BaseInfo->getDeliveryFreeAmount()) {
             if ($BaseInfo->getDeliveryFreeQuantity() <= $Cart->getTotalQuantity()) {
                 // 送料無料（個数）を超えている
                 $isDeliveryFree = true;

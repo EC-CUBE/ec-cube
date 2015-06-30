@@ -31,7 +31,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
 {
     private $price01_inc_tax = null;
     private $price02_inc_tax = null;
-    private $point = null;
     private $add = false;
     private $tax_rate = false;
 
@@ -89,29 +88,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getPrice02IncTax()
     {
         return $this->price02_inc_tax;
-    }
-
-    /**
-     * Set point
-     *
-     * @param  string       $point
-     * @return ProductClass
-     */
-    public function setPoint($point)
-    {
-        $this->point = $point;
-
-        return $this;
-    }
-
-    /**
-     * Get point
-     *
-     * @return string
-     */
-    public function getPoint()
-    {
-        return $this->point;
     }
 
     /**
@@ -216,11 +192,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
      * @var string
      */
     private $delivery_fee;
-
-    /**
-     * @var string
-     */
-    private $point_rate = 0;
 
     /**
      * @var \DateTime
@@ -441,29 +412,6 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getDeliveryFee()
     {
         return $this->delivery_fee;
-    }
-
-    /**
-     * Set point_rate
-     *
-     * @param  string       $pointRate
-     * @return ProductClass
-     */
-    public function setPointRate($pointRate)
-    {
-        $this->point_rate = $pointRate;
-
-        return $this;
-    }
-
-    /**
-     * Get point_rate
-     *
-     * @return string
-     */
-    public function getPointRate()
-    {
-        return $this->point_rate;
     }
 
     /**
