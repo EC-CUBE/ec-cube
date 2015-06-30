@@ -56,7 +56,6 @@ class ContentsController extends AbstractController
             }
         } else {
             $News = new \Eccube\Entity\News();
-            // TODO : 開始年をコンストから取得？
         }
 
         $form = $app['form.factory']
@@ -97,9 +96,9 @@ class ContentsController extends AbstractController
         }
 
         if ($status) {
-            $app->addSuccess('admin.member.up.complete', 'admin');
+            $app->addSuccess('admin.news.up.complete', 'admin');
         } else {
-            $app->addError('admin.member.up.error', 'admin');
+            $app->addError('admin.news.up.error', 'admin');
         }
 
         return $app->redirect($app->url('admin_content'));

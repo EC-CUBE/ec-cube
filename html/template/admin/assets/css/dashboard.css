@@ -727,6 +727,14 @@ fieldset[disabled] .btn-link:focus {
 	font-size: 13px;
 }
 
+.alert-close {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 1px 0 #fff;
+}
+
+
 .btn_area2 {
     padding: 16px 0 48px;
 }

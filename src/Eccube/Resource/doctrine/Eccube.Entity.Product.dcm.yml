@@ -28,6 +28,10 @@ Eccube\Entity\Product:
             type: text
             nullable: true
             length: 65535
+        search_word:
+            type: text
+            nullable: true
+            length: 65535
         free_area:
             type: text
             nullable: true
