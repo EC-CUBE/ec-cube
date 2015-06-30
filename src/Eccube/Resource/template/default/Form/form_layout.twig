@@ -217,7 +217,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {%- for child in form %}
             {{- form_errors(child) -}}
         {% endfor -%}
-        <div class="zip-search"><a id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</a></div>
+        <div class="zip-search"><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></div>
     {%- endif -%}
 {%- endblock zip_widget -%}
 

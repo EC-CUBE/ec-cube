@@ -26,15 +26,14 @@
 {% set mypageno = 'change' %}
 
 {% block javascript %}
-    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-    <script>
-        $(function () {
-            $('#zip-search').click(function (event) {
-                event.preventDefault();
-                AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
-            });
-        });
-    </script>
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#zip-search').click(function() {
+        AjaxZip3.zip2addr('entry[zip][zip01]', 'entry[zip][zip02]', 'entry[address][pref]', 'entry[address][addr01]');
+    });
+});
+</script>
 {% endblock javascript %}
 
 {% block main %}

@@ -22,15 +22,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block javascript %}
-    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-    <script>
-        $(function () {
-            $('#zip-search').click(function (event) {
-                event.preventDefault();
-                AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
-            });
-        });
-    </script>
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#zip-search').click(function() {
+        AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
+    });
+});
+</script>
 {% endblock javascript %}
 
 {% block main %}
