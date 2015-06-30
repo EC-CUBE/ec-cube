@@ -44,8 +44,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ form_row(form.law_manager) }}
                             {{ form_row(form.law_zip) }}
                             {{ form_row(form.law_address) }}
-                            {{ form_row(form.law_tel) }}
-                            {{ form_row(form.law_fax) }}
+                            
+                        {# 電話番号 #}
+                        <div class="form-group">
+                            {{ form_label(form.law_tel) }}
+                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
+                                {{ form_widget(form.law_tel.law_tel01) }}-{{ form_widget(form.law_tel.law_tel02) }}-{{ form_widget(form.law_tel.law_tel03) }}
+                                {{ form_errors(form.law_tel) }}
+                            </div>
+                        </div>
+                        {# FAX番号 #}
+                        <div class="form-group">
+                            {{ form_label(form.law_fax) }}
+                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
+                                {{ form_widget(form.law_fax.law_fax01) }}-{{ form_widget(form.law_fax.law_fax02) }}-{{ form_widget(form.law_fax.law_fax03) }}
+                                {{ form_errors(form.law_fax) }}
+                            </div>
+                        </div>
+                            
                             {{ form_row(form.law_email) }}
                             {{ form_row(form.law_url) }}
                             {{ form_row(form.law_term01) }}

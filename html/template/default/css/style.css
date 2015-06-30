@@ -770,6 +770,13 @@ p.message {
 .cart .btn_area .btn {
     width: 100%;
 }
+.cart .btn_area .btn-sm {
+	height: auto;
+    font-size: 14px;
+    font-size: 1.4rem;
+	line-height: 1.4;
+    padding: 10px 8px;
+}
 
 /* form_terms_link */
 
@@ -1116,6 +1123,8 @@ p.cart-trigger.cart-is-visible .cb-close {
     background: #f8f8f8;
     border-top: 1px solid #e8e8e8;
     padding-top: 12px;
+	padding-bottom: 24px;
+	margin-top: 36px;
 }
 #footer ul {
     text-align: center;
@@ -2259,6 +2268,9 @@ margin-top: 5px;
 
 #shopping_confirm .heading02 {
     margin-top: 24px;
+	font-weight: bold;
+	background: #EFEFEF;
+	padding: 8px 12px;
 }
 #shopping_confirm .column {
     position: relative;
@@ -2401,7 +2413,7 @@ margin-top: 5px;
 #login_box .column {
     background: #F3F4F4;
     height: 100%;
-    padding: 8px;
+    padding: 8px 8px 32px;
     margin-bottom: 16px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -2415,6 +2427,9 @@ margin-top: 5px;
     text-align: center;
     font-size: 70px;
     color: #e7e7e7;
+}
+#login_box .column  .icon svg {
+	vertical-align: middle;
 }
 #login_box .column .form-group {
     padding: 8px 0 8px 10%;
@@ -4130,9 +4145,6 @@ fieldset[disabled] .btn-link:focus {
         margin-top: 80px;
     }
 
-    #footer ul {
-        text-align: left;
-    }
     #footer ul li {
         display: inline-block;
         margin: 0 8px 8px;
@@ -4296,7 +4308,7 @@ fieldset[disabled] .btn-link:focus {
     /* Login Page */
 
     #login_box .column {
-        padding: 16px;
+        padding: 16px 16px 40px;
     }
     #login_box .column p {
         margin-bottom: 8px;

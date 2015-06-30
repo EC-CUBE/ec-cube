@@ -261,16 +261,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         return max($this->price01);
     }
 
-    public function hasPrice01Range()
-    {
-        $min = min($this->price01);
-        $max = max($this->price01);
-        if ($min == $max) {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * Get Price02 min
      *
@@ -294,17 +284,6 @@ class Product extends \Eccube\Entity\AbstractEntity
 
         return max($this->price02);
     }
-
-    public function hasPrice02Range()
-    {
-        $min = min($this->price02);
-        $max = max($this->price02);
-        if ($min == $max) {
-            return false;
-        }
-        return true;
-    }
-
 
     /**
      * Get Price01IncTax min
@@ -330,16 +309,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         return max($this->price01IncTaxs);
     }
 
-    public function hasPrice01IncTaxRange()
-    {
-        $min = min($this->price01IncTaxs);
-        $max = max($this->price01IncTaxs);
-        if ($min == $max) {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * Get Price02IncTax min
      *
@@ -362,16 +331,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->_calc();
 
         return max($this->price02IncTaxs);
-    }
-
-    public function hasPrice02IncTaxRange()
-    {
-        $min = min($this->price02IncTaxs);
-        $max = max($this->price02IncTaxs);
-        if ($min == $max) {
-            return false;
-        }
-        return true;
     }
 
     /**

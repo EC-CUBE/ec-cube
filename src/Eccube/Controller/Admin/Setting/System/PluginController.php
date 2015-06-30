@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Controller\Admin\Setting\Ownersstore;
+namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -42,7 +42,7 @@ class PluginController extends AbstractController
             ));
             $pluginForms[$Plugin->getId()] = $builder->getForm()->createView();
         }
-        return $app->render('Setting/Ownersstore/plugin.twig', array(
+        return $app->render('Setting/System/Plugin/index.twig', array(
             'plugin_forms' => $pluginForms,
             'Plugins' => $Plugins
         ));
@@ -65,7 +65,7 @@ class PluginController extends AbstractController
             $service->install($tmpDir . '/' . $tmpFile);
         }
 
-        return $app->render('Setting/Ownersstore/plugin_install.twig', array(
+        return $app->render('Setting/System/Plugin/install.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -91,7 +91,7 @@ class PluginController extends AbstractController
         $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
         $app->addSuccess('admin.plugin.update.complete', 'admin');
 
-        return $app->redirect($app->url('admin_setting_ownersstore_plugin_index'));
+        return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
 
     public function enable(Application $app, $id)
@@ -105,7 +105,7 @@ class PluginController extends AbstractController
             $app->addSuccess('admin.plugin.enable.complete');
         }
 
-        return $app->redirect($app->url('admin_setting_ownersstore_plugin_index'));
+        return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
 
     public function disable(Application $app, $id)
@@ -119,7 +119,7 @@ class PluginController extends AbstractController
             $app->addError('admin.plugin.already.disable', 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_ownersstore_plugin_index'));
+        return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
 
     public function uninstall(Application $app, $id)
@@ -128,7 +128,7 @@ class PluginController extends AbstractController
             ->find($id);
         $app['eccube.service.plugin']->uninstall($Plugin);
 
-        return $app->redirect($app->url('admin_setting_ownersstore_plugin_index'));
+        return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
 
     function handler(Application $app)
@@ -141,7 +141,7 @@ class PluginController extends AbstractController
             $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
         }
 
-        return $app->render('Setting/Ownersstore/plugin_handler.twig', array(
+        return $app->render('Setting/System/Plugin/handler.twig', array(
             'handlersPerEvent' => $HandlersPerEvent
         ));
 
@@ -152,7 +152,7 @@ class PluginController extends AbstractController
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId));
 
-        return $app->redirect($app->url('admin_setting_ownersstore_plugin_handler'));
+        return $app->redirect($app->url('admin_setting_system_plugin_handler'));
     }
 
     function handler_down(Application $app, $handlerId)
@@ -160,7 +160,7 @@ class PluginController extends AbstractController
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId), false);
 
-        return $app->redirect($app->url('admin_setting_ownersstore_plugin_handler'));
+        return $app->redirect($app->url('admin_setting_system_plugin_handler'));
     }
 
 }
