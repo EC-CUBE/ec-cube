@@ -26,13 +26,20 @@ namespace Eccube\Controller\Block;
 
 use Eccube\Application;
 
+
 class SearchProductController
 {
     public function index(Application $app)
     {
+        /** @var $form \Symfony\Component\Form\Form */
         $form = $app['form.factory']
             ->createNamedBuilder('', 'search_product')
+            ->setMethod('GET')
             ->getForm();
+
+        /** @var $request \Symfony\Component\HttpFoundation\Request */
+        $request = $app['request_stack']->getMasterRequest();
+        $form->handleRequest($request);
 
         return $app['view']->render('Block/search_product.twig', array(
             'form' => $form->createView(),
