@@ -108,6 +108,7 @@ class ProductController
                     }
                     if (empty($status)) {
                         if (count($searchData['status']) > 0) {
+                            $status_ids = array();
                             foreach ($searchData['status'] as $Status) {
                                 $status_ids[] = $Status->getId();
                             }
