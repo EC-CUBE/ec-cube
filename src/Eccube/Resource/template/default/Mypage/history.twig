@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <dl class="order_detail">
                     <dt>ご注文日時：</dt><dd>{{ Order.create_date|date("Y/m/d H:i:s") }}</dd>
                     <dt>ご注文番号：</dt><dd>{{ Order.id }}</dd>
-                    {% if app.config.mypage_order_status_disp_flag %}
+                    {% if BaseInfo.option_mypage_order_status_display %}
                         <dt>ご注文状況：</dt>
                         <dd>{{ Order.CustomerOrderStatus }}</dd>
                     {% endif %}
