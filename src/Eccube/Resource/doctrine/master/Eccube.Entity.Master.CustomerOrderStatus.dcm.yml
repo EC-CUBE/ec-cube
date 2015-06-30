@@ -16,5 +16,4 @@ Eccube\Entity\Master\CustomerOrderStatus:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
     lifecycleCallbacks: {  }

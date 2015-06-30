@@ -27,23 +27,18 @@ Eccube\Entity\MailTemplate:
         footer:
             type: text
             nullable: true
-#        creator_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member

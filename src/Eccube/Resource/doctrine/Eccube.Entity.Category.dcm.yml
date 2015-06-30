@@ -16,11 +16,6 @@ Eccube\Entity\Category:
             type: text
             nullable: true
             column: category_name
-#        parent_category_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
-#            default: '0'
         level:
             type: integer
             nullable: false
@@ -29,23 +24,18 @@ Eccube\Entity\Category:
             type: integer
             nullable: true
             unsigned: false
-#        creator_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
     manyToOne:
         Parent:
             targetEntity: Eccube\Entity\Category

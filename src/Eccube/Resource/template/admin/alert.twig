@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% for message in app.session.flashBag.get('eccube.admin.success') %}
         <div class="row">
             <div class="alert alert-success alert-dismissable">
-                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"><svg class="cb cb-close"> <use xlink:href="#cb-close" /></svg></button>
+                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
         </div>
@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% for message in app.session.flashBag.get('eccube.admin.info') %}
         <div class="row">
             <div class="alert alert-info alert-dismissable">
-                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"><svg class="cb cb-close"> <use xlink:href="#cb-close" /></svg></button>
+                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
         </div>
@@ -44,7 +44,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% for message in app.session.flashBag.get('eccube.admin.warning') %}
         <div class="row">
             <div class="alert alert-warning alert-dismissable">
-                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"><svg class="cb cb-close"> <use xlink:href="#cb-close" /></svg></button>
+                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
         </div>
@@ -54,7 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% for message in app.session.flashBag.get('eccube.admin.danger') %}
         <div class="row">
             <div class="alert alert-danger alert-dismissable">
-                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"><svg class="cb cb-close"> <use xlink:href="#cb-close" /></svg></button>
+                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
         </div>
@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% for message in app.session.flashBag.get('eccube.admin.error') %}
         <div class="row">
             <div class="alert alert-danger alert-dismissable">
-                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"><svg class="cb cb-close"> <use xlink:href="#cb-close" /></svg></button>
+                <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
         </div>

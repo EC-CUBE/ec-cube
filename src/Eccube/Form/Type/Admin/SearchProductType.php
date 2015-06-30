@@ -70,11 +70,6 @@ class SearchProductType extends AbstractType
                 'multiple'=> true,
                 'required' => false,
             ))
-            ->add('product_status', 'status', array(
-                'label' => '商品ステータス',
-                'multiple'=> true,
-                'required' => false,
-            ))
             ->add('create_date_start', 'date', array(
                 'label' => '登録日(FROM)',
                 'required' => false,
@@ -107,7 +102,8 @@ class SearchProductType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('page_no', 'hidden', array(
+            ->add('link_status', 'hidden', array(
+                'mapped' => false,
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;

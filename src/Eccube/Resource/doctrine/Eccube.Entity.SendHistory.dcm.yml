@@ -30,7 +30,8 @@ Eccube\Entity\SendHistory:
             type: integer
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
         start_date:
             type: datetime
             nullable: true
@@ -44,19 +45,14 @@ Eccube\Entity\SendHistory:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
-#        creator_id:
-#            type: integer
-#            nullable: false
-#            unsigned: false
+            options:
+                default: '0'
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member

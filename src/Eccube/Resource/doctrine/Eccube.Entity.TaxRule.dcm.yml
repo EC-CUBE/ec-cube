@@ -17,30 +17,30 @@ Eccube\Entity\TaxRule:
             nullable: false
             precision: 10
             scale: 0
-            default: '8'
+            options:
+                default: '8'
         tax_adjust:
             type: decimal
             nullable: false
             precision: 10
             scale: 0
-            default: '0'
+            options:
+                default: '0'
         apply_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         del_flg:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
         create_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member

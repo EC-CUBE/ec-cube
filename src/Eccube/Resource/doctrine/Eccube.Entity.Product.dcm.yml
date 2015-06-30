@@ -28,6 +28,10 @@ Eccube\Entity\Product:
             type: text
             nullable: true
             length: 65535
+        search_word:
+            type: text
+            nullable: true
+            length: 65535
         free_area:
             type: text
             nullable: true
@@ -36,15 +40,14 @@ Eccube\Entity\Product:
             type: smallint
             nullable: false
             unsigned: false
-            default: '0'
+            options:
+                default: '0'
         create_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         update_date:
             type: datetime
             nullable: false
-            default: '0000-00-00 00:00:00'
     manyToOne:
         Creator:
             targetEntity: Eccube\Entity\Member
