@@ -61,6 +61,7 @@ class InstallController
     {
         $this->config_path = __DIR__ . '/../../../../app/config/eccube';
         $this->dist_path = __DIR__ . '/../../Resource/config';
+        $this->cache_path = __DIR__ . '/../../../../app/cache';
     }
 
     private function isValid(Request $request, Form $form)
