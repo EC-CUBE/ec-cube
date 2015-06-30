@@ -65,11 +65,6 @@ Eccube\Entity\BaseInfo:
         email04:
             type: text
             nullable: true
-        delivery_free_amount:
-            type: decimal
-            nullable: true
-            precision: 10
-            scale: 0
         shop_name:
             type: text
             nullable: true
@@ -79,22 +74,9 @@ Eccube\Entity\BaseInfo:
         shop_name_eng:
             type: text
             nullable: true
-        point_rate:
-            type: decimal
-            nullable: true
-            precision: 10
-            scale: 0
-            default: '0'
-        welcome_point:
-            type: decimal
-            nullable: true
-            precision: 10
-            scale: 0
-            default: '0'
         update_date:
             type: datetime
             nullable: false
-            default: CURRENT_TIMESTAMP
         good_traded:
             type: text
             nullable: true
@@ -107,65 +89,58 @@ Eccube\Entity\BaseInfo:
         longitude:
             type: text
             nullable: true
-        downloadable_days:
+        delivery_free_amount:
             type: decimal
             nullable: true
             precision: 10
             scale: 0
-            default: '30'
-        downloadable_days_unlimited:
-            type: smallint
-            nullable: true
-            unsigned: false
+            options:
+                default: null
         delivery_free_quantity:
             type: integer
             nullable: true
-            default: 0
-        use_multiple_shipping:
+            options:
+                default: null
+        option_multiple_shipping:
             type: smallint
             nullable: true
-            default: 1
-        forgot_mail:
+            options:
+                default: 0
+        option_mypage_order_status_display:
             type: smallint
             nullable: true
-            default: 0
-        mypage_order_status_disp_flg:
-            type: smallint
-            nullable: true
-            default: 1
+            options:
+                default: 1
         nostock_hidden:
             type: smallint
             nullable: true
-            default: 0
+            options:
+                default: 0
         option_favorite_product:
             type: smallint
             nullable: true
-            default: 1
+            options:
+                default: 1
         option_product_delivery_fee:
             type: smallint
             nullable: true
-            default: 0
+            options:
+                default: 0
         option_product_tax_rule:
             type: smallint
             nullable: true
-            default: 0
+            options:
+                default: 0
         option_delivery_fee:
             type: smallint
             nullable: true
-            default: 0
-        point_rule:
+            options:
+                default: 0
+        option_customer_activate:
             type: smallint
             nullable: true
-            default: 2
-        point_value:
-            type: integer
-            unsigned: false
-            nullable: true
-            default: 1
-        use_point:
-            type: smallint
-            nullable: true
-            default: 1
+            options:
+                default: 1
     manyToOne:
         Country:
             targetEntity: Eccube\Entity\Master\Country

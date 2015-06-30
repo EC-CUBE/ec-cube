@@ -33,8 +33,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShopMasterType extends AbstractType
 {
-    public $app;
-
     public function __construct($config)
     {
         $this->config = $config;
@@ -229,7 +227,7 @@ class ShopMasterType extends AbstractType
                 'multiple' => false,
             ))
             ->add('option_delivery_fee', 'choice', array(
-                'label' => '配送業者ごとの配送料を加算するか',
+                'label' => '配送業者ごとの配送料を加算する',
                 'choices' => array(
                     '0' => '無効',
                     '1' => '有効',
@@ -237,7 +235,7 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
-            ->add('use_multiple_shipping', 'choice', array(
+            ->add('option_multiple_shipping', 'choice', array(
                 'label' => '複数配送を有効にする',
                 'choices' => array(
                     '0' => '無効',
@@ -248,8 +246,8 @@ class ShopMasterType extends AbstractType
             ))
 
             // 会員設定
-            ->add('forgot_mail', 'choice', array(
-                'label' => 'パスワードリマインダ利用時にメールを送信する',
+            ->add('option_customer_activate', 'choice', array(
+                'label' => '仮会員を有効にする',
                 'choices' => array(
                     '0' => '無効',
                     '1' => '有効',
@@ -257,7 +255,7 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
-            ->add('mypage_order_status_disp_flg', 'choice', array(
+            ->add('option_mypage_order_status_display', 'choice', array(
                 'label' => 'マイページに注文状況を表示する',
                 'choices' => array(
                     '0' => '無効',

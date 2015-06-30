@@ -65,7 +65,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <form name="form" id="form_cart" method="post" action="{{ url('cart') }}">
                     <p class="message">
                         商品の合計金額は「<strong>￥{{ Cart.total_price|number_format }}</strong>」です。
-                        {% if BaseInfo.use_point %}
+                        {% if BaseInfo.delivery_free_amount %}
                             <br />
                             {% if is_delivery_free %}
                                 現在送料無料です。
