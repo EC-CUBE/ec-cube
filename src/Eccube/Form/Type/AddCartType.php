@@ -70,10 +70,14 @@ class AddCartType extends AbstractType
                 'data' => $Product->getId(),
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Regex(array('pattern' => '/^\d+$/')),
                 ),
             ))
             ->add('product_class_id', 'hidden', array(
                 'data' => count($ProductClasses) === 1 ? $ProductClasses[0]->getId() : '',
+                'constraints' => array(
+                    new Assert\Regex(array('pattern' => '/^\d+$/')),
+                ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 
@@ -90,6 +94,7 @@ class AddCartType extends AbstractType
                         new Assert\GreaterThanOrEqual(array(
                             'value' => 1,
                         )),
+                        new Assert\Regex(array('pattern' => '/^\d+$/')),
                     ),
                 ))
             ;

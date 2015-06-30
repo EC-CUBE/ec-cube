@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -167,7 +168,7 @@ class ProductController
                 } else {
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
-                    } catch (\Exception $e) {
+                    } catch (CartException $e) {
                         $app->addRequestError($e->getMessage());
                     }
 
