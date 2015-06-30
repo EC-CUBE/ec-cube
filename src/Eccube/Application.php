@@ -178,6 +178,20 @@ class Application extends \Silex\Application
 
             $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
 
+            $config_nav = array();
+            $yml = $ymlPath . '/nav.yml';
+            if (file_exists($yml)) {
+                $config_nav = array('nav' => Yaml::parse($yml));
+            }
+            $config_nav_dist = array();
+            $nav_yml_dist = $distPath . '/nav.yml.dist';
+            if (file_exists($nav_yml_dist)) {
+                $config_nav_dist = array('nav' => Yaml::parse($nav_yml_dist));
+            }
+
+            $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
+
+
             return $configAll;
         });
     }
@@ -300,11 +314,6 @@ class Application extends \Silex\Application
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
 
-                // プラグイン追加のサブナビを追加
-                $navis = array('content', 'customer', 'order', 'product', 'shop', 'system');
-                foreach ($navis as $navi) {
-                    $app["twig"]->addGlobal('navi_' . $navi, isset($this->subnavi[$navi]) ? $this->subnavi[$navi] : array());
-                }
             // フロント画面
             } else {
                 $request = $event->getRequest();
@@ -496,15 +505,6 @@ class Application extends \Silex\Application
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
                     $this->register(new $class($this));
-                }
-            }
-            // subnavi
-            if (file_exists($dir->getRealPath() . '/subnavi.yml')) {
-                $subnavi = Yaml::parse($dir->getRealPath() . '/subnavi.yml');
-                if (isset($subnavi)) {
-                    foreach ($subnavi as $menu => $navi) {
-                        $this->subnavi[$menu][] = $navi;
-                    }
                 }
             }
         }

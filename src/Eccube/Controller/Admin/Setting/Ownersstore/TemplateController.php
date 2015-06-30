@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Controller\Admin\Content;
+namespace Eccube\Controller\Admin\Setting\Ownersstore;
 
 use Eccube\Application;
 use Symfony\Component\Filesystem\Filesystem;
@@ -74,7 +74,7 @@ class TemplateController
             }
         }
 
-        return $app->render('Content/template.twig', array(
+        return $app->render('Setting/Ownersstore/template.twig', array(
             'form' => $form->createView(),
             'Templates' => $Templates,
         ));
@@ -155,14 +155,14 @@ class TemplateController
         if ($Template->isDefaultTemplate()) {
             $app->addError('admin.content.template.delete.default.error', 'admin');
 
-            return $app->redirect($app->url('admin_content_template'));
+            return $app->redirect($app->url('admin_setting_ownersstore_template'));
         }
 
         // 設定中のテンプレート
         if ($app['config']['template_code'] === $Template->getCode()) {
             $app->addError('admin.content.template.delete.current.error', 'admin');
 
-            return $app->redirect($app->url('admin_content_template'));
+            return $app->redirect($app->url('admin_setting_ownersstore_template'));
         }
 
         // テンプレートディレクトリの削除
@@ -181,7 +181,7 @@ class TemplateController
 
         $app->addSuccess('admin.content.template.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_content_template'));
+        return $app->redirect($app->url('admin_setting_ownersstore_template'));
     }
 
     public function add(Application $app, Request $request)
@@ -224,7 +224,7 @@ class TemplateController
                 if (!file_exists($appDir)) {
                     $form['file']->addError(new FormError('appディレクトリが見つかりません。ファイルの形式を確認してください。'));
 
-                    return $app->render('Content/template_add.twig', array(
+                    return $app->render('Setting/Ownersstore/template_add.twig', array(
                         'form' => $form->createView(),
                     ));
                 }
@@ -233,7 +233,7 @@ class TemplateController
                 if (!file_exists($htmlDir)) {
                     $form['file']->addError(new FormError('htmlディレクトリが見つかりません。ファイルの形式を確認してください。'));
 
-                    return $app->render('Content/template_add.twig', array(
+                    return $app->render('Setting/Ownersstore/template_add.twig', array(
                         'form' => $form->createView(),
                     ));
                 }
@@ -257,11 +257,11 @@ class TemplateController
 
                 $app->addSuccess('admin.content.template.add.complete', 'admin');
 
-                return $app->redirect($app->url('admin_content_template'));
+                return $app->redirect($app->url('admin_setting_ownersstore_template'));
             }
         }
 
-        return $app->render('Content/template_add.twig', array(
+        return $app->render('Setting/Ownersstore/template_add.twig', array(
             'form' => $form->createView(),
         ));
     }
