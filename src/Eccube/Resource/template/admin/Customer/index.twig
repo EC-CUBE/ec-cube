@@ -183,16 +183,15 @@ function fnReSendMail(action) {
                                             {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
                                         </div>
                                     </div>
+                                    {#
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>購入商品カテゴリー</label>
-                                            <select class="form-control">
-                                                <option>おなべ</option>
-                                                <option>アイス</option>
-                                                <option>立方体</option>
+                                            {{ form_widget(searchForm.buy_category) }}
                                             </select>
                                         </div>
                                     </div>
+                                    #}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>購入商品名・コード</label>
