@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block main %}
-    {{ error }}
     <h1 class="page-heading">{{ title }}</h1>
     <div class="container-fluid">
         <form name="login_mypage" id="login_mypage" method="post" action="{{ url('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')" {{ form_enctype(form) }}>
@@ -40,6 +39,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="form-group">
                                 {{ form_widget(form.login_pass, { placeholder : form.login_pass.vars.label }) }}
                             </div>
+                            {% if error %}
+                            <div class="form-group">
+                                <span class="text-danger">{{ error|trans }}</span>
+                            </div>
+                            {% endif %}
                             <div class="btn_area">
                                 <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
                                 <ul>

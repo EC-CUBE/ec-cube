@@ -66,6 +66,9 @@ class CustomerType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        )),
                     ),
                 ),
             ))
@@ -78,20 +81,7 @@ class CustomerType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
-                'zip01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Regex(array('pattern' => '/^\d{3}$/'))
-                    ),
-                ),
-                'zip02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Regex(array('pattern' => '/^\d{4}$/'))
-                    ),
-                ),
-            ))
+            ->add('zip', 'zip', array())
             ->add('address', 'address', array(
                 'addr01_options' => array(
                     'constraints' => array(
@@ -134,7 +124,7 @@ class CustomerType extends AbstractType
                 'label' => '生年月日',
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y')-100, date('Y')),
+                'years' => range(date('Y')-80, date('Y')),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
