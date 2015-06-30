@@ -4,3 +4,4 @@ shop_name: ${SHOP_NAME}
 force_ssl: ${FORCE_SSL}
 admin_allow_host:
 cookie_lifetime: 0
+locale: ja
