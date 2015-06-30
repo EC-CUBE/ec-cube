@@ -1610,6 +1610,9 @@ dd.form-group .errormsg {
     .sortable_list .tableish:not(.ui-sortable) .item_box > div:first-child {
         padding-left: 8px;
     }
+    .sortable_list .tableish:not(.ui-sortable) .item_box > .item_pattern:first-child {
+        padding-left: 16px;
+    }
     .sortable_list .tableish:not(.ui-sortable) .icon_sortable {
         display: table-cell;
         position: inherit;
