@@ -23,8 +23,8 @@
 
 namespace Eccube\Controller\Admin\Content;
 
-use Doctrine\Common\Util\Debug;
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -54,6 +54,7 @@ class ContentsController extends AbstractController
             if (!$News) {
                 throw new NotFoundHttpException();
             }
+            $News->setLinkMethod((bool) $News->getLinkMethod());
         } else {
             $News = new \Eccube\Entity\News();
         }
@@ -65,6 +66,10 @@ class ContentsController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $data = $form->getData();
+                if (empty($data['url'])) {
+                    $News->setLinkMethod(Constant::DISABLED);
+                }
                 $status = $app['eccube.repository.news']->save($News);
                 if ($status) {
                     $app->addSuccess('admin.news.save.complete', 'admin');
