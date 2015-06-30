@@ -147,7 +147,6 @@ class OrderServiceTest extends AbstractServiceTestCase
             ->setName02('first name')
             ->setEmail('example@lockon.co.jp')
             ->setSecretKey('dummy' + uniqid())
-            ->setPoint(0)
             ->setStatus($CustomerStatus)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime())

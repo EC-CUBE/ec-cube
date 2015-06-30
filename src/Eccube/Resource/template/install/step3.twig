@@ -60,7 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_row(form.login_pass) }}
 
                                 <h2>セキュリティの設定</h2>
-                                {{ form_row(form.admin_dir) }}
+                                {{ form_row(form.admin_dir , {attr : {placeholder: 'セキュリティのため推測されにくいディレクトリ名を入力して下さい'}}) }}
                                 {{ form_row(form.admin_force_ssl) }}
                                 {{ form_row(form.admin_allow_hosts) }}
 

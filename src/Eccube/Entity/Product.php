@@ -39,8 +39,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $price01IncTaxs = array();
     private $price02IncTaxs = array();
     private $codes = array();
-    private $pointRates = array();
-    private $points = array();
     private $classCategories1 = array();
     private $classCategories2 = array();
     private $className1;
@@ -88,12 +86,6 @@ class Product extends \Eccube\Entity\AbstractEntity
 
                 // product_code
                 $this->codes[] = $ProductClass->getCode();
-
-                // point
-                $this->points[] = $ProductClass->getPoint();
-
-                // point_rate
-                $this->pointRates[] = $ProductClass->getPointRate();
 
                 if ($i === 0) {
                     if ($ProductClass->getClassCategory1() && $ProductClass->getClassCategory1()->getId()) {
@@ -260,6 +252,16 @@ class Product extends \Eccube\Entity\AbstractEntity
         return max($this->price01);
     }
 
+    public function hasPrice01Range()
+    {
+        $min = min($this->price01);
+        $max = max($this->price01);
+        if ($min == $max) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Get Price02 min
      *
@@ -284,6 +286,17 @@ class Product extends \Eccube\Entity\AbstractEntity
         return max($this->price02);
     }
 
+    public function hasPrice02Range()
+    {
+        $min = min($this->price02);
+        $max = max($this->price02);
+        if ($min == $max) {
+            return false;
+        }
+        return true;
+    }
+
+
     /**
      * Get Price01IncTax min
      *
@@ -306,6 +319,16 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->_calc();
 
         return max($this->price01IncTaxs);
+    }
+
+    public function hasPrice01IncTaxRange()
+    {
+        $min = min($this->price01IncTaxs);
+        $max = max($this->price01IncTaxs);
+        if ($min == $max) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -332,24 +355,14 @@ class Product extends \Eccube\Entity\AbstractEntity
         return max($this->price02IncTaxs);
     }
 
-    /**
-     * Get Point min
-     *
-     * @return integer
-     */
-    public function getPointMin()
+    public function hasPrice02IncTaxRange()
     {
-        return min($this->points);
-    }
-
-    /**
-     * Get Point max
-     *
-     * @return integer
-     */
-    public function getPointMax()
-    {
-        return max($this->points);
+        $min = min($this->price02IncTaxs);
+        $max = max($this->price02IncTaxs);
+        if ($min == $max) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -374,18 +387,6 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->_calc();
 
         return max($this->codes);
-    }
-
-    /**
-     * Get getPointRate
-     *
-     * @return integer
-     */
-    public function getPointRate()
-    {
-        $this->_calc();
-
-        return max($this->pointRates);
     }
 
     /**

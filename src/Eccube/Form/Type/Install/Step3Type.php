@@ -85,6 +85,7 @@ class Step3Type extends AbstractType
                         'min' => 4,
                         'max' => 50,
                     )),
+                    new Assert\Regex(array('pattern' => '/\A\w+\z/')),
                 ),
             ))
             ->add('admin_force_ssl', 'checkbox', array(

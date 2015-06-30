@@ -126,7 +126,6 @@ class InstallController
             ->getForm();
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
-
         if ($this->isValid($request, $form)) {
             $data = $form->getData();
             $this
@@ -458,7 +457,7 @@ class InstallController
         }
 
         $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
-        $replace = array($auth_magic, $data['shop_name'], '0', $data['force_ssl']);
+        $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl']);
 
         $fs = new Filesystem();
         $content = str_replace(

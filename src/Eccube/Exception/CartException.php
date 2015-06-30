@@ -22,15 +22,8 @@
  */
 
 
-namespace Eccube\Tests\Web\Admin\Basis;
+namespace Eccube\Exception;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-
-class PointController extends AbstractAdminWebTestCase
+class CartException extends \Exception
 {
-    public function testRoutingAdminBasisPoint()
-    {
-        $this->client->request('GET', '/admin/setting/shop/point');
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
 }

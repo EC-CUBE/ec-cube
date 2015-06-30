@@ -71,9 +71,8 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'latitude' => '34.4138',
         'longitude' => '135.3008',
         'delivery_free_quantity' => 100,
-        'use_multiple_shipping' => 1,
-        'forgot_mail' => 1,
-        'mypage_order_status_disp_flg' => 1,
+        'option_multiple_shipping' => 1,
+        'option_mypage_order_status_display' => 1,
         'nostock_hidden' => 1,
         'option_favorite_product' => 1,
         'option_product_delivery_fee' => 1,
@@ -851,7 +850,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidUseMultipleShipping_MaxInvalid()
     {
-        $this->formData['use_multiple_shipping'] = 1 + 1;
+        $this->formData['option_multiple_shipping'] = 1 + 1;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -859,7 +858,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidUseMultipleShipping_MaxValid()
     {
-        $this->formData['use_multiple_shipping'] = 1;
+        $this->formData['option_multiple_shipping'] = 1;
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
@@ -867,7 +866,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidUseMultipleShipping_MinInvalid()
     {
-        $this->formData['use_multiple_shipping'] = 0 - 1;
+        $this->formData['option_multiple_shipping'] = 0 - 1;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -875,48 +874,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidUseMultipleShipping_MinValid()
     {
-        $this->formData['use_multiple_shipping'] = 0;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidForgotMail_Number()
-    {
-        $this->formData['forgot_mail'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-
-    public function testInvalidForgotMail_MaxInvalid()
-    {
-        $this->formData['forgot_mail'] = 1 + 1;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidForgotMail_MaxValid()
-    {
-        $this->formData['forgot_mail'] = 1;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidForgotMail_MinInvalid()
-    {
-        $this->formData['forgot_mail'] = 0 - 1;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidForgotMail_MinValid()
-    {
-        $this->formData['forgot_mail'] = 0;
+        $this->formData['option_multiple_shipping'] = 0;
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
@@ -924,7 +882,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidMypageOrderStatusDispFlg_Number()
     {
-        $this->formData['mypage_order_status_disp_flg'] = 'e1';
+        $this->formData['option_mypage_order_status_display'] = 'e1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -933,7 +891,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidMypageOrderStatusDispFlg_MaxInvalid()
     {
-        $this->formData['mypage_order_status_disp_flg'] = 1 + 1;
+        $this->formData['option_mypage_order_status_display'] = 1 + 1;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -941,7 +899,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidMypageOrderStatusDispFlg_MaxValid()
     {
-        $this->formData['mypage_order_status_disp_flg'] = 1;
+        $this->formData['option_mypage_order_status_display'] = 1;
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
@@ -949,7 +907,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidMypageOrderStatusDispFlg_MinInvalid()
     {
-        $this->formData['mypage_order_status_disp_flg'] = 0 - 1;
+        $this->formData['option_mypage_order_status_display'] = 0 - 1;
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -957,7 +915,7 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidMypageOrderStatusDispFlg_MinValid()
     {
-        $this->formData['mypage_order_status_disp_flg'] = 0;
+        $this->formData['option_mypage_order_status_display'] = 0;
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());

@@ -26,6 +26,7 @@ namespace Eccube\Service;
 
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\EntityManager;
 
@@ -241,7 +242,7 @@ class CartService
      * @param  \Eccube\Entity\ProductClass|integer $ProductClass
      * @param  integer                             $quantity
      * @return \Eccube\Service\CartService
-     * @throws \Exception
+     * @throws CartException
      */
     public function setProductQuantity($ProductClass, $quantity)
     {
@@ -251,13 +252,13 @@ class CartService
                 ->find($ProductClass);
         }
         if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== 1) {
-            throw new \Exception('cart.product.type.kind');
+            throw new CartException('cart.product.type.kind');
         }
 
         $this->setCanAddProductType($ProductClass->getProductType());
 
         if (!$this->canAddProduct($ProductClass->getId())) {
-            throw new \Exception('cart.product.type.kind');
+            throw new CartException('cart.product.type.kind');
         }
 
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
