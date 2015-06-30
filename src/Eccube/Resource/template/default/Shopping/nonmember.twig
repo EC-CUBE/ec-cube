@@ -24,15 +24,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'cart_page' %}
 
 {% block javascript %}
-    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-    <script>
-        $(function () {
-            $('#zip-search').click(function (event) {
-                event.preventDefault();
-                AjaxZip3.zip2addr('nonmember[zip][zip01]', 'nonmember[zip][zip02]', 'nonmember[address][pref]', 'nonmember[address][addr01]');
-            });
-        });
-    </script>
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#zip-search').click(function() {
+        AjaxZip3.zip2addr('nonmember[zip][zip01]', 'nonmember[zip][zip02]', 'nonmember[address][pref]', 'nonmember[address][addr01]');
+    });
+});
+</script>
 {% endblock javascript %}
 
 {% block main %}

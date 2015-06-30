@@ -31,13 +31,13 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminTemplate_index()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_ownersstore_template'));
+        $this->client->request('GET', $this->app->url('admin_content_template'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routing_AdminTemplate_new()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_ownersstore_template_new'));
+        $this->client->request('GET', $this->app->url('admin_content_template_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

@@ -67,10 +67,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for Plugin in Plugins %}
                                     {% set form = plugin_forms[Plugin.id] %}
                                         <form name="{{ form.vars.name }}" id="{{ form.vars.name }}" action="" method="post" enctype="multipart/form-data">
-                                            {% set enable_action = url('admin_setting_ownersstore_plugin_enable', { id : Plugin.id }) %}
-                                            {% set disable_action = url('admin_setting_ownersstore_plugin_disable', { id : Plugin.id }) %}
-                                            {% set uninstall_action = url('admin_setting_ownersstore_plugin_uninstall', { id : Plugin.id }) %}
-                                            {% set update_action = url('admin_setting_ownersstore_plugin_update', { id : Plugin.id }) %}
+                                            {% set enable_action = url('admin_setting_system_plugin_enable', { id : Plugin.id }) %}
+                                            {% set disable_action = url('admin_setting_system_plugin_disable', { id : Plugin.id }) %}
+                                            {% set uninstall_action = url('admin_setting_system_plugin_uninstall', { id : Plugin.id }) %}
+                                            {% set update_action = url('admin_setting_system_plugin_update', { id : Plugin.id }) %}
                                             <tbody>
                                                 <tr>
                                                     <td class="member_id">

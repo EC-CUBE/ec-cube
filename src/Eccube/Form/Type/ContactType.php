@@ -51,6 +51,7 @@ class ContactType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                     ),
                 ),
             ))
@@ -61,10 +62,11 @@ class ContactType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
-                    )
+                    ),
                 ),
             ))
             ->add('zip', 'zip', array(

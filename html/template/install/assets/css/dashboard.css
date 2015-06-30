@@ -1130,8 +1130,12 @@ textarea.disp_area {
 	background: #fff;
 	border-radius: 5px;
 }
-.note_box p:last-child {
+.note_box .checkbox:last-child {
 	margin-bottom: 0;
+}
+.note_box .checkbox input[type="checkbox"] {
+	position: relative;
+	top: 1px;
 }
 
 

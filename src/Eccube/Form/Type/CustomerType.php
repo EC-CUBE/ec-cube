@@ -53,6 +53,7 @@ class CustomerType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $app['config']['stext_len'])),
                     ),
                 ),
             ))
@@ -63,6 +64,10 @@ class CustomerType extends AbstractType
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
+                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        )),
                     ),
                 ),
             ))

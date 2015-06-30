@@ -57,7 +57,7 @@ $app['debug'] = true;
 
 // load config dev
 $conf = $app['config'];
-$app['config'] = $app->share($app->extend('config', function () use($conf) {
+$app['config'] = $app->share(function () use($conf) {
     $confarray = array();
     $config_dev_file = __DIR__ . '/../app/config/eccube/config_dev.yml';
     if (file_exists($config_dev_file)) {
@@ -66,9 +66,8 @@ $app['config'] = $app->share($app->extend('config', function () use($conf) {
             $confarray = array_replace_recursive($confarray, $config_dev);
         }
     }
-    
     return array_replace_recursive($conf, $confarray);
-}));
+});
 
 
 // Mail

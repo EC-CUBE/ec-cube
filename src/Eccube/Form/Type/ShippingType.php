@@ -73,6 +73,9 @@ class ShippingType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        )),
                     ),
                 ),
             ))
@@ -85,20 +88,7 @@ class ShippingType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
-                'zip01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Regex(array('pattern' => '/^\d{3}$/'))
-                    ),
-                ),
-                'zip02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Regex(array('pattern' => '/^\d{4}$/'))
-                    ),
-                ),
-            ))
+            ->add('zip', 'zip', array())
             ->add('address', 'address', array(
                 'addr01_options' => array(
                     'constraints' => array(

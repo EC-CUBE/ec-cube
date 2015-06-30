@@ -1,0 +1,62 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+
+            <li class="{% if active_menus(menus)[0] == 'setting' %}active{% endif %}">
+                <a class="toggle"><svg class="cb cb-cog"> <use xlink:href="#cb-cog" /></svg>設定<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                <ul {% if active_menus(menus)[0] == 'setting' %}class="active" style="display: block;"{% endif %}>
+                    <li class="{% if active_menus(menus)[1] == 'shop' %}active{% endif %}">
+                        <a class="toggle">基本情報設定<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                        <ul {% if active_menus(menus)[1] == 'shop' %}class="active" style="display: block;"{% endif %}>
+                            <li id="navi-basis-index" class="{% if active_menus(menus)[2] == 'shop_index' %}active{% endif %}"><a href="{{ url('admin_setting_shop') }}">SHOPマスター</a></li>
+                            <li id="navi-basis-tradelaw" class="{% if active_menus(menus)[2] == 'tradelaw' %}active{% endif %}"><a href="{{ url('admin_setting_shop_tradelaw') }}">特定商取引法</a></li>
+                            <li id="navi-basis-customer-agreement" class="{% if active_menus(menus)[2] == 'customer_agreement' %}active{% endif %}"><a href="{{ url('admin_setting_shop_customer_agreement') }}">会員規約設定</a></li>
+                            <li id="navi-basis-payment" class="{% if active_menus(menus)[2] == 'shop_payment' %}active{% endif %}"><a href="{{ url('admin_setting_shop_payment') }}">支払方法設定</a></li>
+                            <li id="navi-basis-delivery" class="{% if active_menus(menus)[2] == 'shop_delivery' %}active{% endif %}"><a href="{{ url('admin_setting_shop_delivery') }}">配送方法設定</a></li>
+                            <li id="navi-basis-tax" class="{% if active_menus(menus)[2] == 'shop_tax' %}active{% endif %}"><a href="{{ url('admin_setting_shop_tax') }}">税率設定</a></li>
+                            <li id="navi-basis-mail" class="{% if active_menus(menus)[2] == 'shop_mail' %}active{% endif %}"><a href="{{ url('admin_setting_shop_mail') }}">メール設定</a></li>
+                        </ul>
+                    </li>
+                    <li class="{% if active_menus(menus)[1] == 'ownersstore' %}active{% endif %}">
+                        <a class="toggle">オーナーズストア<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                        <ul {% if active_menus(menus)[1] == 'ownersstore' %}class="active" style="display: block;"{% endif %}>
+
+                            <li id="navi-ownersstore-plugininstall" class="{% if active_menus(menus)[2] == 'plugin' %}active{% endif %}"><a href="{{ url('admin_setting_system_plugin_index') }}">プラグイン一覧</a></li>
+                            <li id="navi-ownersstore-plugininstall" class="{% if active_menus(menus)[2] == 'plugininstall' %}active{% endif %}"><a href="{{ url('admin_setting_system_plugin_install') }}">プラグインインストール</a></li>
+                            <li id="navi-ownersstore-pluginhandler" class="{% if active_menus(menus)[2] == 'pluginhandler' %}active{% endif %}"><a href="{{ url('admin_setting_system_plugin_handler') }}">プラグインハンドラ設定</a></li>
+
+                            <li id="navi-ownersstore-template" class="{% if active_menus(menus)[2] == 'template' %}active{% endif %}"><a href="{{ url('admin_content_template') }}">テンプレート</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="{% if active_menus(menus)[1] == 'system' %}active{% endif %}">
+                        <a class="toggle">システム設定<svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                        <ul {% if active_menus(menus)[1] == 'system' %}class="active" style="display: block;"{% endif %}>
+                            <li id="navi-system-system" class="{% if active_menus(menus)[2] == 'system_index' %}active{% endif %}"><a href="{{ url('admin_setting_system_system') }}">システム情報</a></li>
+                            <li id="navi-system-index" class="{% if active_menus(menus)[2] == 'member' %}active{% endif %}"><a href="{{ url('admin_setting_system_member') }}">メンバー管理</a></li>
+                            {#<li id="navi-system-parameter" class="{% if active_menus(menus)[2] == 'parameter' %}active{% endif %}"><a href="{{ url('admin_setting_system_parameter') }}">パラメーター設定</a></li>#}
+                            {#<li id="navi-system-masterdata" class="{% if active_menus(menus)[2] == 'masterdata' %}active{% endif %}"><a href="{{ url('admin_setting_system_masterdata') }}">マスターデータ管理</a></li>#}
+                            <li id="navi-system-security" class="{% if active_menus(menus)[2] == 'security' %}active{% endif %}"><a href="{{ url('admin_setting_system_security') }}">セキュリティ管理</a></li>
+                            {#<li id="navi-system-log" class="{% if active_menus(menus)[2] == 'log' %}active{% endif %}"><a href="{{ url('admin_setting_system_log') }}">EC-CUBE ログ表示</a></li>#}
+                        </ul>
+                    </li>
+                </ul>
+            </li>
