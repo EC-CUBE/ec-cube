@@ -386,7 +386,6 @@ class Product extends \Eccube\Entity\AbstractEntity
                 'stock_find'        => $ProductClass->getStockFind(),
                 'price01'           => number_format($ProductClass->getPrice01IncTax()),
                 'price02'           => number_format($ProductClass->getPrice02IncTax()),
-                'point'             => number_format($ProductClass->getPoint()),
                 'product_class_id'  => (string) $ProductClass->getId(),
                 'product_code'      => $ProductClass->getCode(),
                 'product_type'      => (string) $ProductClass->getProductType()->getId(),
