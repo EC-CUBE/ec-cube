@@ -49,7 +49,6 @@ class RouterCommand extends \Knp\Command\Command
             ->setDescription('Displays current routes for an application')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> displays the configured routes:
-
   <info>php %command.full_name%</info>
 EOF
             );
@@ -59,8 +58,9 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $this->app->initialize();
+        $this->app->boot();
 
-        $console = new Application('EC-CUBE Console', '1.0.0');
+        $console = new Application();
 
         $table = $console->getHelperSet()->get('table');
         $table->setHeaders(array('Name', 'Path', 'Pattern'));
