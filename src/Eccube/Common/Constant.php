@@ -26,11 +26,9 @@ namespace Eccube\Common;
 class Constant {
 
     /**
-     * EC-CUBE VERSION,
-     *
-     * @var
+     * EC-CUBE VERSION.
      */
-    const VERSION = '3.0.0-dev';
+    const VERSION = '3.0.0';
 
     /**
      * Enable value.
