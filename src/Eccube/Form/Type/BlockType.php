@@ -79,13 +79,13 @@ class BlockType extends AbstractType
                 'property' => 'id',
             ))
             ->add('id', 'hidden')
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
                 $block_id = $form['id']->getData();
 
-                $qb = $this->app['orm.em']->createQueryBuilder();
+                $qb = $app['orm.em']->createQueryBuilder();
                 $qb->select('b')
                     ->from('Eccube\\Entity\\Block', 'b')
                     ->where('b.file_name = :file_name')
