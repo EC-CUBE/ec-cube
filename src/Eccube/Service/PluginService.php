@@ -27,6 +27,7 @@ namespace Eccube\Service;
 use Eccube\Exception\PluginException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
+use Eccube\Util\Str;
 
 class PluginService
 {
@@ -176,7 +177,8 @@ class PluginService
 
         $base = __DIR__ . '/../../../app/cache/plugin';
         @mkdir($base);
-        $d = ($base . '/' . sha1(openssl_random_pseudo_bytes(16)));
+        $d = ($base . '/' . sha1(Str::random(16)));
+
         if (!mkdir($d, 0777)) {
             throw new PluginException($php_errormsg);
         }
@@ -320,4 +322,5 @@ class PluginService
         $f = new Filesystem();
         return $f->remove($path);
     }
+
 }

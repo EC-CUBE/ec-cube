@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Util\Str;
 
 class PluginController extends AbstractController
 {
@@ -71,7 +72,7 @@ class PluginController extends AbstractController
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             $tmpDir = $service->createTempDir();
-            $tmpFile = sha1(openssl_random_pseudo_bytes(20)) . ".tar"; // 拡張子を付けないとpharが動かないので付ける
+            $tmpFile = sha1(Str::random(32)) . ".tar"; // 拡張子を付けないとpharが動かないので付ける
 
             $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
 
@@ -98,7 +99,7 @@ class PluginController extends AbstractController
         $form->handleRequest($app['request']);
 
         $tmpDir = $app['eccube.service.plugin']->createTempDir();
-        $tmpFile = sha1(openssl_random_pseudo_bytes(20)) . ".tar";
+        $tmpFile = sha1(Str::random(32)) . ".tar";
 
         $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
         $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
