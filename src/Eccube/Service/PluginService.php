@@ -144,16 +144,17 @@ class PluginService
             throw new PluginException("config.yml not found or syntax error");
         }
         if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
-            throw new PluginException("config.yml code  empty or invalid_character(\W) ");
+            throw new PluginException("config.yml code empty or invalid_character(\W) ");
         }
         if (!isset($meta['name']) or !$this->checkSymbolName($meta['name'])) {
-            throw new PluginException("config.yml name  empty or invalid_character(\W)");
+            throw new PluginException("config.yml name empty or invalid_character(\W)");
         }
         if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
             throw new PluginException("config.yml event empty or invalid_character(\W) ");
         }
-        if (!isset($meta['version']) or !$this->checkSymbolName($meta['version'])) {
-            throw new PluginException("config.yml version not defined. ");
+        if (!isset($meta['version']) ) { 
+            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
+            throw new PluginException("config.yml version invalid_character(\W) ");
         }
     }
 

@@ -35,17 +35,30 @@ class PluginController extends AbstractController
 
         $pluginForms = array();
         $Plugins = $repo->findBy(array(), array('id' => 'ASC'));
+        $configPages = array();
+
         foreach ($repo->findAll() as $Plugin) {
             $builder = $app['form.factory']->createNamedBuilder('form' . $Plugin->getId(), 'plugin_management', null, array(
                 'plugin_id' => $Plugin->getId(),
                 'enable' => $Plugin->getEnable()
             ));
             $pluginForms[$Plugin->getId()] = $builder->getForm()->createView();
+
+            $configPage= '/'.$app['config']['admin_route'].'/plugin/'.$Plugin->getCode()."/config";
+            // 定義されている全ルートからpluginのconfigがあるかどうか線形検索
+            foreach($app['routes']->all() as $r){
+                if($configPage == $r->getPath()) {// pluginでrouteが定義されている
+                    $configPages[$Plugin->getCode()] = $configPage;
+                }
+            }
         }
+
         return $app->render('Setting/System/Plugin/index.twig', array(
             'plugin_forms' => $pluginForms,
-            'Plugins' => $Plugins
+            'Plugins' => $Plugins,
+            'configPages' => $configPages
         ));
+
     }
 
     public function install(Application $app)
@@ -58,7 +71,7 @@ class PluginController extends AbstractController
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             $tmpDir = $service->createTempDir();
-            $tmpFile = sha1(openssl_random_pseudo_bytes(20)) . ".tar";
+            $tmpFile = sha1(openssl_random_pseudo_bytes(20)) . ".tar"; // 拡張子を付けないとpharが動かないので付ける
 
             $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
 
