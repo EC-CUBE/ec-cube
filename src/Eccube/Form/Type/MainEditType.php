@@ -115,13 +115,13 @@ class MainEditType extends AbstractType
                 'property' => 'id',
             ))
             ->add('id', 'hidden')
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
                 $page_id = $form['id']->getData();
 
-                $qb = $this->app['orm.em']->createQueryBuilder();
+                $qb = $app['orm.em']->createQueryBuilder();
                 $qb->select('p')
                     ->from('Eccube\\Entity\\PageLayout', 'p')
                     ->where('p.file_name = :file_name')
