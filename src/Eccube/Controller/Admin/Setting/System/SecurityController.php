@@ -94,7 +94,7 @@ class SecurityController extends AbstractController
                     $this->getSecurity($app)->setToken(null);
 
                     // 管理者画面へ再ログイン
-                    return $app->redirect('/' . $config['admin_route']);
+                    return $app->redirect($request->getBaseUrl() . '/' . $config['admin_route']);
                 }
 
                 $app->addSuccess('admin.sysmte.security.save.complete', 'admin');
@@ -105,7 +105,6 @@ class SecurityController extends AbstractController
             $form->get('admin_route_dir')->setData($app['config']['admin_route']);
             $allowHost = $app['config']['admin_allow_host'];
             if (count($allowHost) > 0) {
-                // $form->get('admin_allow_host')->setData(implode("\n", $allowHost));
                 $form->get('admin_allow_host')->setData(Str::convertLineFeed(implode("\n", $allowHost)));
             }
             $form->get('force_ssl')->setData((bool)$app['config']['force_ssl']);
