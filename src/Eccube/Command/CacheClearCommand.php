@@ -43,13 +43,13 @@ class CacheClearCommand extends \Knp\Command\Command
     }
 
     protected function configure() {
-                $this
+        $this
             ->setName('cache:clear')
             ->setDefinition(array(
-                new InputOption('all', '', InputOption::VALUE_NONE, 'cache all clear.'),
+                new InputOption('all', '', InputOption::VALUE_NONE, 'Clear all cache.'),
             ))
-            ->setDescription('Clears the cache')
-            ->addOption('all', null, InputOption::VALUE_NONE, 'If set, cache all clear.')
+            ->setDescription('Clear the cache of Application.')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'If set, Clear all cache.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command clears the application cache;
 EOF

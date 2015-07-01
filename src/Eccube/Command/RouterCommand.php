@@ -105,7 +105,6 @@ EOF
                 $maxMethod = strlen($method);
             }
         }
-        $format  = '%-'.$maxName.'s %-'.$maxMethod.'s %s';
 
         foreach ($routes as $name => $route) {
             $requirements = $route->getRequirements();
