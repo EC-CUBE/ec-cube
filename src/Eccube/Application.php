@@ -427,6 +427,12 @@ class Application extends ApplicationTrait
             $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
+
+        $app = $this;
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+            $route = $event->getRequest()->attributes->get('_route');
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
+        });
     }
 
     public function loadPlugin()
