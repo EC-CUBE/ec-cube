@@ -145,7 +145,7 @@ class PluginService
             throw new PluginException("config.yml not found or syntax error");
         }
         if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
-            throw new PluginException("config.yml code empty or invalid_character(\W) ");
+            throw new PluginException("config.yml code empty or invalid_character(\W)");
         }
         if (!isset($meta['name']) or !$this->checkSymbolName($meta['name'])) {
             throw new PluginException("config.yml name empty or invalid_character(\W)");
@@ -180,7 +180,7 @@ class PluginService
         $d = ($base . '/' . sha1(Str::random(16)));
 
         if (!mkdir($d, 0777)) {
-            throw new PluginException($php_errormsg);
+            throw new PluginException($php_errormsg.$d);
         }
         return $d;
 
@@ -196,10 +196,6 @@ class PluginService
 
     public function unpackPluginArchive($archive, $dir)
     {
-#        $tar = new \Archive_Tar($archive, true);
-#        $tar->setErrorHandling(PEAR_ERROR_EXCEPTION);
-#        $result = $tar->extractModify($dir . '/', '');
-
         $phar = new \PharData($archive);
         $phar->extractTo($dir, null, true);
     }
@@ -221,7 +217,11 @@ class PluginService
                         throw new PluginException("Handler name format error");
                     }
                     // updateで追加されたハンドラかどうか調べる
-                    $peh = $rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId(), 'event' => $event, 'handler' => $handler[0]));
+                    $peh = $rep->findBy(array('del_flg' => 0, 
+                                              'plugin_id' => $plugin->getId(), 
+                                              'event' => $event, 
+                                              'handler' => $handler[0] ,
+                                              'handler_type'  => $handler[1]));
 
                     if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                         $peh = new \Eccube\Entity\PluginEventHandler();
@@ -238,10 +238,25 @@ class PluginService
                 }
             }
 
-            # TODO:updateで廃止されたハンドラの削除
-
+            # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
+            foreach($rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId())) as $peh){
+                if(!isset($event_yml[$peh->getEvent()])){
+                   $em->remove($peh);
+                   $em->flush();
+                }else{
+                   $match=false;
+                   foreach($event_yml[$peh->getEvent()] as $handler){
+                       if ($peh->getHandler() == $handler[0] and $peh->getHandlerType() == $handler[1] ){
+                           $match=true; 
+                       }
+                   } 
+                   if(!$match){
+                       $em->remove($peh);
+                       $em->flush();
+                   } 
+                }
+            }
         }
-
         $em->persist($plugin);
         $em->flush();
         $em->getConnection()->commit();
