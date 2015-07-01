@@ -122,11 +122,7 @@ class ProductController
         $orderByForm = $builder->getForm();
         $orderByForm->handleRequest($request);
 
-        if ($request->query->has('category_id')) {
-            $Category = $app['eccube.repository.category']->find($request->query->get('category_id'));
-        } else {
-            $Category = null;
-        }
+        $Category = $searchForm->get('category_id')->getData();
 
         return $app['twig']->render('Product/list.twig', array(
             'subtitle' => $this->getPageTitle($searchData),
