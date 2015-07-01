@@ -200,7 +200,10 @@ class ShoppingController extends AbstractController
                 return $app->redirect($app->url('shopping_complete'));
 
             } else {
-                return $app->redirect($app->url('shopping_error'));
+                return $app->render('Shopping/index.twig', array(
+                    'form' => $form->createView(),
+                    'Order' => $Order,
+                ));
             }
         }
 
