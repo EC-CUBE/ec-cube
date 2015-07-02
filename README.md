@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/EC-CUBE/ec-cube.svg?branch=master)](https://travis-ci.org/EC-CUBE/ec-cube)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ※本ドキュメントはEC-CUBEの開発者を主要な対象者としております。  
 ※パッケージ版をご利用の方は[EC-CUBEオフィシャルサイト](http://www.ec-cube.net)をご確認ください。

@@ -1,0 +1,8 @@
+{
+    "name": "EC-CUBE3",
+    "description": "EC-CUBE3 on Heroku",
+    "website": "https://github.com/EC-CUBE/ec-cube",
+    "repository": "https://github.com/EC-CUBE/ec-cube",
+    "keywords": ["php", "postgresql", "ec", "ec-cube", "GitHub"],
+    "addons": ["heroku-postgresql"]
+}
