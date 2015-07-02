@@ -27,6 +27,8 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Util\Str;
+use Symfony\Component\Filesystem\Filesystem;
+
 
 class PluginController extends AbstractController
 {
@@ -45,12 +47,10 @@ class PluginController extends AbstractController
             ));
             $pluginForms[$Plugin->getId()] = $builder->getForm()->createView();
 
-            $configPage= '/'.$app['config']['admin_route'].'/plugin/'.$Plugin->getCode()."/config";
-            // 定義されている全ルートからpluginのconfigがあるかどうか線形検索
-            foreach($app['routes']->all() as $r){
-                if($configPage == $r->getPath()) {// pluginでrouteが定義されている
-                    $configPages[$Plugin->getCode()] = $configPage;
-                }
+
+            try{
+                $configPages[$Plugin->getCode()] = $app->url('plugin_'.$Plugin->getCode().'_config');
+            }catch(\Exception $e){
             }
         }
 

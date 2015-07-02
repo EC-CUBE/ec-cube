@@ -301,6 +301,7 @@ class PluginService
         $em->persist($p);
         $em->flush();
         $em->getConnection()->commit();
+        return $p;
 
     }
 
