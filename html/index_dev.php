@@ -84,5 +84,7 @@ $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
 
 
+// Silex Code Completion (for PhpStorm)
+$app->register(new \Sorien\Provider\PimpleDumpProvider());
 
 $app->run();
