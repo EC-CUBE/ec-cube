@@ -6,6 +6,7 @@ git:
 language: php
 sudo: required
 php:
+  - 5.3.3
   - 5.3
   - 5.4
   - 5.5
@@ -21,6 +22,7 @@ matrix:
   allow_failures:
     - php: hhvm
     - php: 7.0
+    - php: 5.3.3
 
 env:
   - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root

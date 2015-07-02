@@ -47,13 +47,15 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 Debug::enable();
 
+// load configs.
 $app = new Eccube\Application();
-$app->initialize();
-$app->initializePlugin();
 
-// debug
+// debug enable.
 $app['debug'] = true;
 
+// initialize servicies.
+$app->initialize();
+$app->initializePlugin();
 
 // load config dev
 $conf = $app['config'];
