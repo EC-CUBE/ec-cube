@@ -79,6 +79,9 @@ class PluginController extends AbstractController
             $service->install($tmpDir . '/' . $tmpFile);
         }
 
+        $fs = new Filesystem();
+        $fs->remove($tmpDir, $tmpFile);
+
         return $app->render('Setting/System/Plugin/install.twig', array(
             'form' => $form->createView(),
         ));
@@ -104,6 +107,9 @@ class PluginController extends AbstractController
         $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
         $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
         $app->addSuccess('admin.plugin.update.complete', 'admin');
+
+        $fs = new Filesystem();
+        $fs->remove($tmpDir, $tmpFile);
 
         return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
@@ -135,6 +141,7 @@ class PluginController extends AbstractController
 
         return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
+
 
     public function uninstall(Application $app, $id)
     {
