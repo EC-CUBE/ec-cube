@@ -54,7 +54,7 @@ class PluginService
 
         $this->checkSamePlugin($config['code']); // 重複していないかチェック
 
-        $pluginBaseDir = $this->calcPluginDir($config['name']);
+        $pluginBaseDir = $this->calcPluginDir($config['code']);
         $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
 
         $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
@@ -111,7 +111,7 @@ class PluginService
             throw new PluginException("new/old plugin name is different.");
         }
 
-        $pluginBaseDir = $this->calcPluginDir($config['name']);
+        $pluginBaseDir = $this->calcPluginDir($config['code']);
         $this->deleteFile($tmp); // テンポラリのファイルを削除
 
         $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
@@ -146,7 +146,7 @@ class PluginService
         if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
             throw new PluginException("config.yml code  empty or invalid_character(\W) ");
         }
-        if (!isset($meta['name']) or !$this->checkSymbolName($meta['name'])) {
+        if (!isset($meta['name'])) {
             throw new PluginException("config.yml name  empty or invalid_character(\W)");
         }
         if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
@@ -305,7 +305,7 @@ class PluginService
 
     public function callPluginManagerMethod($meta, $method)
     {
-        $class = '\\Plugin' . '\\' . $meta['name'] . '\\' . 'PluginManager';
+        $class = '\\Plugin' . '\\' . $meta['code'] . '\\' . 'PluginManager';
         if (class_exists($class)) {
             $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
             if (method_exists($installer, $method)) {
