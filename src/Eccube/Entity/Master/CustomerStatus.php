@@ -30,6 +30,16 @@ namespace Eccube\Entity\Master;
 class CustomerStatus extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * 仮会員.
+     */
+    const NONACTIVE = 1;
+
+    /**
+     * 本会員.
+     */
+    const ACTIVE = 2;
+
+    /**
      * @return string
      */
     public function __toString()
