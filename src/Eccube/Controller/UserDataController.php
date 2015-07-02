@@ -25,33 +25,32 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Entity\Master\DeviceType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserDataController
 {
-
-    public function index(Application $app)
+    public function index(Application $app, $route)
     {
-        $url = ltrim($app['request']->getRequestUri(), '/');
-        $device_type_id = $this->getDeviceTypeId($app);
+        $DeviceType = $app['orm.em']
+            ->getRepository('Eccube\Entity\Master\DeviceType')
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
         $PageLayout = $app['eccube.repository.page_layout']->findOneBy(
-            array('url'=> $url, 'device_type_id' => $device_type_id)
+            array('url' => $route, 'DeviceType' => $DeviceType)
         );
 
-        // テンプレートファイルの取得
-        $templatePath = $app['eccube.repository.page_layout']
-            ->getTemplatePath($device_type_id, true);
-        $file = $templatePath . $PageLayout->getFileName() . '.twig';
+        if (is_null($PageLayout)) {
+            throw new NotFoundHttpException();
+        }
+
+        // user_dataディレクトリを探索パスに追加.
+        $paths = array();
+        $paths[] = $app['config']['user_data_realdir'];
+        $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+
+        $file = $PageLayout->getFileName() . '.twig';
 
         return $app['twig']->render($file);
-    }
-
-    /**
-     * FIXME: アクセスしたデバイスによっての切替を実装する？
-     * @param $app
-     * @return integer
-     */
-    public function getDeviceTypeId($app)
-    {
-        return $app['config']['device_type_pc'];
     }
 }

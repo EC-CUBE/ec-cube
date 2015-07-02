@@ -26,7 +26,6 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
-use Eccube\Form\Type\ShippingMultiType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,7 +52,10 @@ class ShoppingController extends AbstractController
 
         // 受注データを取得
         $preOrderId = $cartService->getPreOrderId();
-        $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $preOrderId, 'OrderStatus' => $app['config']['order_processing']));
+        $Order = $app['eccube.repository.order']->findOneBy(array(
+            'pre_order_id' => $preOrderId,
+            'OrderStatus' => $app['config']['order_processing']
+        ));
 
         // 初回アクセス(受注データがない)の場合は, 受注データを作成
         if (is_null($Order)) {
@@ -75,7 +77,8 @@ class ShoppingController extends AbstractController
             $preOrderId = sha1(uniqid(mt_rand(), true));
 
             // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer, $preOrderId);
+            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer,
+                $preOrderId);
 
             $cartService->setPreOrderId($preOrderId);
             $cartService->save();
@@ -108,8 +111,8 @@ class ShoppingController extends AbstractController
         $this->setFormPayment($form, $delivery, $Order, $app);
 
         return $app->render('Shopping/index.twig', array(
-                'form' => $form->createView(),
-                'Order' => $Order,
+            'form' => $form->createView(),
+            'Order' => $Order,
         ));
     }
 
@@ -168,6 +171,7 @@ class ShoppingController extends AbstractController
                     if (!$check) {
                         $em->getConnection()->rollback();
                         $em->close();
+
                         return $app->redirect($app->url('shopping_error'));
                     }
 
@@ -188,6 +192,7 @@ class ShoppingController extends AbstractController
                 } catch (\Exception $e) {
                     $em->getConnection()->rollback();
                     $em->close();
+
                     return $app->redirect($app->url('shopping_error'));
                 }
 
@@ -200,7 +205,10 @@ class ShoppingController extends AbstractController
                 return $app->redirect($app->url('shopping_complete'));
 
             } else {
-                return $app->redirect($app->url('shopping_error'));
+                return $app->render('Shopping/index.twig', array(
+                    'form' => $form->createView(),
+                    'Order' => $Order,
+                ));
             }
         }
 
@@ -267,7 +275,10 @@ class ShoppingController extends AbstractController
                 $shippings = $Order->getShippings();
                 $Shipping = $shippings[0];
 
-                $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $delivery, 'Pref' => $Shipping->getPref()));
+                $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
+                    'Delivery' => $delivery,
+                    'Pref' => $Shipping->getPref()
+                ));
                 $Shipping->setDelivery($delivery);
                 $Shipping->setDeliveryFee($deliveryFee);
 
@@ -338,7 +349,7 @@ class ShoppingController extends AbstractController
                 $Order->setPaymentMethod($payment->getMethod());
                 $Order->setCharge($payment->getCharge());
 
-                $total = $Order->getSubTotal()  + $Order->getCharge() + $Order->getDeliveryFeeTotal();
+                $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
                 $Order->setTotal($total);
                 $Order->setPaymentTotal($total);
@@ -508,7 +519,7 @@ class ShoppingController extends AbstractController
         }
 
         return $app->render('Shopping/shipping_edit.twig', array(
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
         ));
 
     }
@@ -525,18 +536,18 @@ class ShoppingController extends AbstractController
             $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $app['eccube.service.cart']->getPreOrderId()));
 
             $Order
-                    ->setName01($data['customer_name01'])
-                    ->setName02($data['customer_name02'])
-                    ->setCompanyName($data['customer_company_name'])
-                    ->setTel01($data['customer_tel01'])
-                    ->setTel02($data['customer_tel02'])
-                    ->setTel03($data['customer_tel03'])
-                    ->setZip01($data['customer_zip01'])
-                    ->setZip02($data['customer_zip02'])
-                    ->setZipCode($data['customer_zip01'] . $data['customer_zip02'])
-                    // ->setPref($data['customer_pref'])
-                    ->setAddr01($data['customer_addr01'])
-                    ->setAddr02($data['customer_addr02']);
+                ->setName01($data['customer_name01'])
+                ->setName02($data['customer_name02'])
+                ->setCompanyName($data['customer_company_name'])
+                ->setTel01($data['customer_tel01'])
+                ->setTel02($data['customer_tel02'])
+                ->setTel03($data['customer_tel03'])
+                ->setZip01($data['customer_zip01'])
+                ->setZip02($data['customer_zip02'])
+                ->setZipCode($data['customer_zip01'] . $data['customer_zip02'])
+                // ->setPref($data['customer_pref'])
+                ->setAddr01($data['customer_addr01'])
+                ->setAddr02($data['customer_addr02']);
             // 配送先を更新
             $app['orm.em']->flush();
 
@@ -575,9 +586,11 @@ class ShoppingController extends AbstractController
 
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } else if ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            if ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
+                $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+                $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+            }
         }
 
 
@@ -587,7 +600,7 @@ class ShoppingController extends AbstractController
             ->getForm();
 
         return $app->render('Shopping/login.twig', array(
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
             'error' => $error,
         ));
     }
@@ -638,7 +651,10 @@ class ShoppingController extends AbstractController
 
                 // 受注関連情報を取得
                 $preOrderId = $cartService->getPreOrderId();
-                $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $preOrderId, 'OrderStatus' => $app['config']['order_processing']));
+                $Order = $app['eccube.repository.order']->findOneBy(array(
+                    'pre_order_id' => $preOrderId,
+                    'OrderStatus' => $app['config']['order_processing']
+                ));
 
                 // 初回アクセス(受注データがない)の場合は, 受注データを作成
                 if (is_null($Order)) {
@@ -646,7 +662,8 @@ class ShoppingController extends AbstractController
                     $preOrderId = sha1(uniqid(mt_rand(), true));
 
                     // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-                    $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer, $preOrderId);
+                    $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(),
+                        $Customer, $preOrderId);
 
                     $cartService->setPreOrderId($preOrderId);
                     $cartService->save();
@@ -664,7 +681,7 @@ class ShoppingController extends AbstractController
         }
 
         return $app->render('Shopping/nonmember.twig', array(
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -754,12 +771,12 @@ class ShoppingController extends AbstractController
                 new \DateInterval('P1D'),
                 new \DateTime($minDate + $app['config']['deliv_date_end_max'] . ' day')
             );
-    
+
             foreach ($period as $day) {
                 $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
             }
         }
- 
+
 
         $form->add('deliveryDate', 'choice', array(
             'choices' => $deliveryDates,
@@ -780,7 +797,7 @@ class ShoppingController extends AbstractController
             'property' => 'deliveryTime',
             'choices' => $delivery->getDeliveryTimes(),
         ));
-        
+
     }
 
     /**

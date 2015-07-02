@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Common\Constant;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -77,9 +78,21 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      */
     public function loadUserByUsername($username)
     {
+        // 本会員ステータスの会員のみ有効.
+        $CustomerStatus = $this
+            ->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\CustomerStatus')
+            ->find(\Eccube\Entity\Master\CustomerStatus::ACTIVE);
+
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email')
-            ->setParameter('email', $username)
+            ->andWhere('c.del_flg = :delFlg')
+            ->andWhere('c.Status =:CustomerStatus')
+            ->setParameters(array(
+                'email' => $username,
+                'delFlg' => Constant::DISABLED,
+                'CustomerStatus' => $CustomerStatus,
+            ))
             ->getQuery();
         $Customer = $query->getOneOrNullResult();
         if (!$Customer) {

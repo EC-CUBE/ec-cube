@@ -232,4 +232,7 @@ esac
 # DB migrator
 php app/console migrations:migrate  --no-interaction
 
+# Application cache clear
+php app/console cache:clear --all
+
 echo "Finished Successful!"
