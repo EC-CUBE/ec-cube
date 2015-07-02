@@ -66,6 +66,9 @@ class MainEditType extends AbstractType
                     new Assert\Length(array(
                         'max' => $app['config']['stext_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^[0-9a-zA-Z]+$/",
+                    )),
                 )
             ))
             ->add('tpl_data', 'textarea', array(

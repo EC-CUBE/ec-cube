@@ -229,6 +229,7 @@ $(function(){
                     <h2 class="heading02">お問い合わせ欄</h2>
                     <div class="column">
                         {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
+                        {{ form_errors(form.message) }}
                     </div>
                 </div><!-- /.col -->
 
