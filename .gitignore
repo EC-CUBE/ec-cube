@@ -20,3 +20,4 @@ composer.phar
 /reports/*
 .idea
 *.php~
+pimple.json
