@@ -427,6 +427,12 @@ class Application extends ApplicationTrait
             $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
+
+        $app = $this;
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+            $route = $event->getRequest()->attributes->get('_route');
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
+        });
     }
 
     public function loadPlugin()
@@ -465,7 +471,7 @@ class Application extends ApplicationTrait
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
             // Type: Event
             if (isset($config['event'])) {
-                $class = '\\Plugin\\' . $config['name'] . '\\' . $config['event'];
+                $class = '\\Plugin\\' . $config['code'] . '\\' . $config['event'];
                 $subscriber = new $class($this);
 
                 if (file_exists($dir->getRealPath() . '/event.yml')) {
@@ -488,7 +494,7 @@ class Application extends ApplicationTrait
             // const
             if (isset($config['const'])) {
                 $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
-                    $eccubeConfig[$config['name']] = array(
+                    $eccubeConfig[$config['code']] = array(
                         'const' => $config['const'],
                     );
 
@@ -498,7 +504,7 @@ class Application extends ApplicationTrait
             // Type: ServiceProvider
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\' . $config['name'] . '\\ServiceProvider\\' . $service;
+                    $class = '\\Plugin\\' . $config['code'] . '\\ServiceProvider\\' . $service;
                     $this->register(new $class($this));
                 }
             }
