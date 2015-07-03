@@ -617,4 +617,49 @@ class Application extends ApplicationTrait
         $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
     }
 
+    /** TwigTrait */
+    /**
+     * Renders a view and returns a Response.
+     *
+     * To stream a view, pass an instance of StreamedResponse as a third argument.
+     *
+     * プラグイン拡張のため、オーバーライドしている
+     *
+     * @param string $view The view name
+     * @param array $parameters An array of parameters to pass to the view
+     * @param Response $response A Response instance
+     *
+     * @return Response A Response instance
+     */
+    public function render($view, array $parameters = array(), Response $response = null)
+    {
+        $twig = $this['twig'];
+
+        if ($response instanceof StreamedResponse) {
+            $response->setCallback(function () use ($twig, $view, $parameters) {
+                $twig->display($view, $parameters);
+            });
+        } else {
+            if (null === $response) {
+                $response = new Response();
+            }
+            $response->setContent($this['view']->render($view, $parameters));
+        }
+
+        return $response;
+    }
+
+    /**
+     * Renders a view.
+     *
+     * @param string $view The view name
+     * @param array $parameters An array of parameters to pass to the view
+     *
+     * @return Response A Response instance
+     */
+    public function renderView($view, array $parameters = array())
+    {
+        return $this['view']->render($view, $parameters);
+    }
+
 }

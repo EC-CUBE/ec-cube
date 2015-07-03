@@ -74,7 +74,7 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
 
     public function createApplication()
     {
-        $app = new \Eccube\Application();
+        $app = new \Eccube\Application\ApplicationTrait();
         $app->register(new TwigServiceProvider());
 
         return $app;
