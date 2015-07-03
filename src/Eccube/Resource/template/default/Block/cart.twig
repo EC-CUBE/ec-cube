@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="inner">
             {% for CartItem in Cart.CartItems %}
                 {% set ProductClass = CartItem.Object %}
+                {% if is_empty(ProductClass) %}
                 {% set Product = ProductClass.Product %}
                 <div class="item_box clearfix">
                     <div class="item_photo"><img
@@ -53,6 +54,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <dd class="item_quantity form-group form-inline">数量：{{ CartItem.quantity }}</dd>
                     </dl>
                 </div><!--/item_box-->
+                {% endif %}
             {% endfor %}
 
             <p class="cart_price sp">合計 <span class="price">{{ Cart.total_price|price }}</span></p>

@@ -66,18 +66,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="item_box tr">
                                 <div class="td table">
                                     <div class="item_photo">
-                                        <a href="{{ url('product_detail', { id : OrderDetail.Product.id } ) }}">
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_product }}">
-                                        </a>
+                                        {% if is_not_empty(OrderDetail.Product) %}
+                                            <a href="{{ url('product_detail', { id : OrderDetail.Product.id } ) }}">
+                                                <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_product }}">
+                                            </a>
+                                        {% else %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                        {% endif %}
                                     </div>
                                     <dl class="item_detail">
                                         <dt class="item_name text-default">
-                                            {% if OrderDetail.enable %}
-                                                <a href="{{ url('product_detail', {'productId': OrderDetail.Product.id}) }}">
-                                            {% endif %}
+                                            {% if is_not_empty(OrderDetail.Product) %}
+                                                {% if OrderDetail.enable %}
+                                                    <a href="{{ url('product_detail', {'productId': OrderDetail.Product.id}) }}">
+                                                        {{ OrderDetail.product_name }}
+                                                    </a>
+                                                {% else %}
                                                     {{ OrderDetail.product_name }}
-                                            {% if OrderDetail.enable %}
-                                                </a>
+                                                {% endif %}
+                                            {% else %}
+                                                {{ OrderDetail.product_name }}
                                             {% endif %}
                                         </dt>
                                         <dd class="item_pattern small">

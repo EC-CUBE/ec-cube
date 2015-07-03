@@ -24,6 +24,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Eccube\Util\EntityUtil;
 use Silex\Application;
 
 class EccubeExtension extends \Twig_Extension
@@ -45,6 +46,8 @@ class EccubeExtension extends \Twig_Extension
         return array(
             'calc_inc_tax' => new \Twig_Function_Method($this, 'getCalcIncTax'),
             'active_menus' => new \Twig_Function_Method($this, 'getActiveMenus'),
+            'is_empty' => new \Twig_Function_Method($this, 'getIsEmpty'),
+            'is_not_empty' => new \Twig_Function_Method($this, 'getIsNotEmpty'),
         );
     }
 
@@ -73,17 +76,6 @@ class EccubeExtension extends \Twig_Extension
     }
 
     /**
-     * return No Image filename
-     *
-     * @return string
-     */
-    public function getNoImageProduct($image)
-    {
-        return empty($image) ? 'no_image_product.jpg' : $image;
-    }
-
-
-    /**
      * Name of this extension
      *
      * @return string
@@ -93,6 +85,53 @@ class EccubeExtension extends \Twig_Extension
         return $price + $this->app['eccube.service.tax_rule']->calcTax($price, $tax_rate, $tax_rule);
     }
 
+    /**
+     * Name of this extension
+     *
+     * @param array $menus
+     * @return array
+     */
+    public function getActiveMenus($menus = array())
+    {
+        $count = count($menus);
+        for ($i = $count; $i <= 2; $i++) {
+            $menus[] = '';
+        }
+
+        return $menus;
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @param null $entity
+     * @return bool
+     */
+    public function getIsEmpty($entity)
+    {
+        return EntityUtil::isEmpty($entity);
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @param null $entity
+     * @return bool
+     */
+    public function getIsNotEmpty($entity)
+    {
+        return EntityUtil::isNotEmpty($entity);
+    }
+
+    /**
+     * return No Image filename
+     *
+     * @return string
+     */
+    public function getNoImageProduct($image)
+    {
+        return empty($image) ? 'no_image_product.jpg' : $image;
+    }
 
     /**
      * Name of this extension
@@ -116,19 +155,9 @@ class EccubeExtension extends \Twig_Extension
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
         $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = '¥ '.$price;
+        $price = '¥ ' . $price;
 
         return $price;
-    }
-
-    public function getActiveMenus($menus = array())
-    {
-        $count = count($menus);
-        for ($i = $count; $i <= 2; $i++) {
-            $menus[] = '';
-        }
-
-        return $menus;
     }
 
 }

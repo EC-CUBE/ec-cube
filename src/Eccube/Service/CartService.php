@@ -24,11 +24,11 @@
 
 namespace Eccube\Service;
 
-use Eccube\Entity\Cart;
+use Doctrine\ORM\EntityManager;
 use Eccube\Entity\CartItem;
 use Eccube\Exception\CartException;
+use Eccube\Util\EntityUtil;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Doctrine\ORM\EntityManager;
 
 class CartService
 {
@@ -108,7 +108,7 @@ class CartService
     }
 
     /**
-     * @param  string                      $pre_order_id
+     * @param  string $pre_order_id
      * @return \Eccube\Service\CartService
      */
     public function setPreOrderId($pre_order_id)
@@ -146,14 +146,20 @@ class CartService
                 ->entityManager
                 ->getRepository($CartItem->getClassName())
                 ->find($CartItem->getClassId());
-            $CartItem->setObject($ProductClass);
+
+            // 商品情報が削除されたらカートからも削除
+            if (EntityUtil::isNotEmpty($ProductClass->getProduct())) {
+                $CartItem->setObject($ProductClass);
+            } else {
+                $this->removeProduct($ProductClass->getId());
+            }
         }
 
         return $this->cart;
     }
 
     /**
-     * @param  string  $productClassId
+     * @param  string $productClassId
      * @return boolean
      */
     public function canAddProduct($productClassId)
@@ -183,8 +189,8 @@ class CartService
 
     /**
      *
-     * @param  string                      $productClassId
-     * @param  integer                     $quantity
+     * @param  string $productClassId
+     * @param  integer $quantity
      * @return \Eccube\Service\CartService
      */
     public function addProduct($productClassId, $quantity = 1)
@@ -196,12 +202,12 @@ class CartService
     }
 
     /**
-     * @param  string  $productClassId
+     * @param  string $productClassId
      * @return integer
      */
     public function getProductQuantity($productClassId)
     {
-        $CartItem = $this->cart->getCartItemByIdentifier('Eccube\Entity\ProductClass', (string) $productClassId);
+        $CartItem = $this->cart->getCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
         if ($CartItem) {
             return $CartItem->getQuantity();
         } else {
@@ -210,7 +216,7 @@ class CartService
     }
 
     /**
-     * @param  string                      $productClassId
+     * @param  string $productClassId
      * @return \Eccube\Service\CartService
      */
     public function upProductQuantity($productClassId)
@@ -222,7 +228,7 @@ class CartService
     }
 
     /**
-     * @param  string                      $productClassId
+     * @param  string $productClassId
      * @return \Eccube\Service\CartService
      */
     public function downProductQuantity($productClassId)
@@ -240,7 +246,7 @@ class CartService
 
     /**
      * @param  \Eccube\Entity\ProductClass|integer $ProductClass
-     * @param  integer                             $quantity
+     * @param  integer $quantity
      * @return \Eccube\Service\CartService
      * @throws CartException
      */
@@ -272,7 +278,7 @@ class CartService
         $CartItem = new CartItem();
         $CartItem
             ->setClassName('Eccube\Entity\ProductClass')
-            ->setClassId((string) $ProductClass->getId())
+            ->setClassId((string)$ProductClass->getId())
             ->setPrice($ProductClass->getPrice02IncTax())
             ->setQuantity($quantity);
 
@@ -282,12 +288,12 @@ class CartService
     }
 
     /**
-     * @param  string                      $productClassId
+     * @param  string $productClassId
      * @return \Eccube\Service\CartService
      */
     public function removeProduct($productClassId)
     {
-        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string) $productClassId);
+        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
 
         return $this;
     }
@@ -301,7 +307,7 @@ class CartService
     }
 
     /**
-     * @param  string                      $error
+     * @param  string $error
      * @return \Eccube\Service\CartService
      */
     public function addError($error = null)
@@ -321,7 +327,7 @@ class CartService
     }
 
     /**
-     * @param  string                      $message
+     * @param  string $message
      * @return \Eccube\Service\CartService
      */
     public function setMessage($message)
