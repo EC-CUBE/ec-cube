@@ -51,6 +51,7 @@ class PluginController extends AbstractController
             try{
                 $configPages[$Plugin->getCode()] = $app->url('plugin_'.$Plugin->getCode().'_config');
             }catch(\Exception $e){
+                // プラグインで設定画面のルートが定義されていない場合は無視
             }
         }
 
@@ -77,10 +78,11 @@ class PluginController extends AbstractController
             $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
 
             $service->install($tmpDir . '/' . $tmpFile);
+
+            $fs = new Filesystem();
+            $fs->remove($tmpDir . '/' . $tmpFile);
         }
 
-        $fs = new Filesystem();
-        $fs->remove($tmpDir, $tmpFile);
 
         return $app->render('Setting/System/Plugin/install.twig', array(
             'form' => $form->createView(),
@@ -109,7 +111,7 @@ class PluginController extends AbstractController
         $app->addSuccess('admin.plugin.update.complete', 'admin');
 
         $fs = new Filesystem();
-        $fs->remove($tmpDir, $tmpFile);
+        $fs->remove($tmpDir . '/' . $tmpFile);
 
         return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }

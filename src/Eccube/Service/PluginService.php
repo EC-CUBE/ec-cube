@@ -241,19 +241,19 @@ class PluginService
             # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
             foreach($rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId())) as $peh){
                 if(!isset($event_yml[$peh->getEvent()])){
-                   $em->remove($peh);
-                   $em->flush();
+                    $em->remove($peh);
+                    $em->flush();
                 }else{
-                   $match=false;
-                   foreach($event_yml[$peh->getEvent()] as $handler){
-                       if ($peh->getHandler() == $handler[0] and $peh->getHandlerType() == $handler[1] ){
-                           $match=true; 
-                       }
-                   } 
-                   if(!$match){
-                       $em->remove($peh);
-                       $em->flush();
-                   } 
+                    $match=false;
+                    foreach($event_yml[$peh->getEvent()] as $handler){
+                        if ($peh->getHandler() == $handler[0] and $peh->getHandlerType() == $handler[1] ){
+                            $match=true; 
+                        }
+                    } 
+                    if(!$match){
+                        $em->remove($peh);
+                        $em->flush();
+                    } 
                 }
             }
         }
