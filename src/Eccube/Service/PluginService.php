@@ -27,6 +27,7 @@ namespace Eccube\Service;
 use Eccube\Exception\PluginException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
+use Eccube\Util\Str;
 
 class PluginService
 {
@@ -144,16 +145,18 @@ class PluginService
             throw new PluginException("config.yml not found or syntax error");
         }
         if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
-            throw new PluginException("config.yml code  empty or invalid_character(\W) ");
+            throw new PluginException("config.yml code empty or invalid_character(\W)");
         }
         if (!isset($meta['name'])) {
-            throw new PluginException("config.yml name  empty or invalid_character(\W)");
+            // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
+            throw new PluginException("config.yml name empty");
         }
         if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
             throw new PluginException("config.yml event empty or invalid_character(\W) ");
         }
-        if (!isset($meta['version']) or !$this->checkSymbolName($meta['version'])) {
-            throw new PluginException("config.yml version not defined. ");
+        if (!isset($meta['version']) ) { 
+            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
+            throw new PluginException("config.yml version invalid_character(\W) ");
         }
     }
 
@@ -175,9 +178,10 @@ class PluginService
 
         $base = __DIR__ . '/../../../app/cache/plugin';
         @mkdir($base);
-        $d = ($base . '/' . sha1(openssl_random_pseudo_bytes(16)));
+        $d = ($base . '/' . sha1(Str::random(16)));
+
         if (!mkdir($d, 0777)) {
-            throw new PluginException($php_errormsg);
+            throw new PluginException($php_errormsg.$d);
         }
         return $d;
 
@@ -193,10 +197,6 @@ class PluginService
 
     public function unpackPluginArchive($archive, $dir)
     {
-#        $tar = new \Archive_Tar($archive, true);
-#        $tar->setErrorHandling(PEAR_ERROR_EXCEPTION);
-#        $result = $tar->extractModify($dir . '/', '');
-
         $phar = new \PharData($archive);
         $phar->extractTo($dir, null, true);
     }
@@ -218,7 +218,11 @@ class PluginService
                         throw new PluginException("Handler name format error");
                     }
                     // updateで追加されたハンドラかどうか調べる
-                    $peh = $rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId(), 'event' => $event, 'handler' => $handler[0]));
+                    $peh = $rep->findBy(array('del_flg' => 0, 
+                                              'plugin_id' => $plugin->getId(), 
+                                              'event' => $event, 
+                                              'handler' => $handler[0] ,
+                                              'handler_type'  => $handler[1]));
 
                     if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                         $peh = new \Eccube\Entity\PluginEventHandler();
@@ -235,10 +239,25 @@ class PluginService
                 }
             }
 
-            # TODO:updateで廃止されたハンドラの削除
-
+            # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
+            foreach($rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId())) as $peh){
+                if(!isset($event_yml[$peh->getEvent()])){
+                    $em->remove($peh);
+                    $em->flush();
+                }else{
+                    $match=false;
+                    foreach($event_yml[$peh->getEvent()] as $handler){
+                        if ($peh->getHandler() == $handler[0] and $peh->getHandlerType() == $handler[1] ){
+                            $match=true; 
+                        }
+                    } 
+                    if(!$match){
+                        $em->remove($peh);
+                        $em->flush();
+                    } 
+                }
+            }
         }
-
         $em->persist($plugin);
         $em->flush();
         $em->getConnection()->commit();
@@ -283,6 +302,7 @@ class PluginService
         $em->persist($p);
         $em->flush();
         $em->getConnection()->commit();
+        return $p;
 
     }
 
@@ -319,4 +339,5 @@ class PluginService
         $f = new Filesystem();
         return $f->remove($path);
     }
+
 }
