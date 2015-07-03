@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ca4e08fb0b5ee6a9be60ef4e7fe294f0",
+    "hash": "b9ee7e9f3031fbf3248f219e3a25d73a",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -547,7 +547,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/a4f14d3a3d397104e557ec65d1a4e43bb86e4ddf",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/70c580174e4e16a79296a02256fb40a34192731c",
                 "reference": "a4f14d3a3d397104e557ec65d1a4e43bb86e4ddf",
                 "shasum": ""
             },
@@ -600,7 +600,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2015-06-20 21:00:20"
+            "time": "2015-05-02 06:20:23"
         },
         {
             "name": "doctrine/orm",
@@ -3747,6 +3747,48 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2015-06-21 13:59:46"
+        },
+        {
+            "name": "sorien/silex-pimple-dumper",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sorien/silex-pimple-dumper.git",
+                "reference": "85877e437c6c1aadd100ea212f13fef754e2f9f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sorien/silex-pimple-dumper/zipball/85877e437c6c1aadd100ea212f13fef754e2f9f1",
+                "reference": "85877e437c6c1aadd100ea212f13fef754e2f9f1",
+                "shasum": ""
+            },
+            "require-dev": {
+                "silex/silex": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sorien\\Provider\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stanislav Turza",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Pimple File Dumper - Helper Provider for Silex Idea Plugin",
+            "keywords": [
+                "dumper",
+                "idea",
+                "plugin",
+                "silex"
+            ],
+            "time": "2015-06-17 07:50:04"
         },
         {
             "name": "symfony/browser-kit",
