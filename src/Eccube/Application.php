@@ -59,6 +59,7 @@ class Application extends ApplicationTrait
         $this->initRendering();
 
         // init provider
+        $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
