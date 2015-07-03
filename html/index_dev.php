@@ -86,5 +86,4 @@ $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
 
 
-
 $app->run();
