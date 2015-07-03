@@ -217,7 +217,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar->addFromString('config.yml',Yaml::dump($config));
 
         $this->setExpectedException(
-          '\Eccube\Exception\PluginException', 'config.yml name empty or invalid_character(\W)'
+          '\Eccube\Exception\PluginException', 'config.yml name empty'
         );
         // インストールできないはず
         $this->assertNull($service->install($tmpfile));

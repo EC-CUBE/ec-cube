@@ -149,7 +149,7 @@ class PluginService
         }
         if (!isset($meta['name'])) {
             // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException("config.yml name  empty or invalid_character(\W)");
+            throw new PluginException("config.yml name empty");
         }
         if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
             throw new PluginException("config.yml event empty or invalid_character(\W) ");
