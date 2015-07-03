@@ -217,7 +217,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar->addFromString('config.yml',Yaml::dump($config));
 
         $this->setExpectedException(
-          '\Eccube\Exception\PluginException', 'config.yml name  empty or invalid_character(\W)'
+          '\Eccube\Exception\PluginException', 'config.yml name empty'
         );
         // インストールできないはず
         $this->assertNull($service->install($tmpfile));
@@ -279,7 +279,6 @@ EOD;
         $event=array();
         $event['eccube.event.app.before'] = array();
         $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
-        $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
         $event['eccube.event.app.before'][] = array("dummyHandlerFirst",'FIRST');
         $event['eccube.event.app.after'] = array();
         $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
@@ -303,7 +302,7 @@ EOD;
         $this->assertEquals($plugin->getVersion(),$tmpname);
 
         // event.ymlとdtb_plugin_event_handlerの内容を照合(優先度、ハンドラメソッド名、イベント名)
-        $this->assertEquals(4,count($plugin->getPluginEventHandlers()->toArray()));
+        $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
 
         foreach($plugin->getPluginEventHandlers() as $handler){
             if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL){
@@ -336,6 +335,52 @@ EOD;
         $this->assertTrue($service->disable($plugin));
         $this->assertTrue($service->enable($plugin));
 
+        // イベント定義を更新する
+        $event=array();
+        $event['eccube.event.controller.cart.after'] = array();
+        $event['eccube.event.controller.cart.after'][] = array("dummyCartHandlerLast",'LAST');
+        $event['eccube.event.app.before'] = array();
+        $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
+        $event['eccube.event.app.after'] = array();
+        $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
+        $tar->addFromString('event.yml',Yaml::dump($event));
+
+        // config.ymlを更新する
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."u";
+        $config['event'] = 'DummyEvent';
+        $tar->addFromString('config.yml',Yaml::dump($config));
+
+        $tar->addFromString('update_dummy',"update dummy");
+
+        // updateできるか
+        $this->assertTrue($service->update($plugin,$tmpfile));
+        $this->assertEquals($plugin->getVersion(),$tmpname."u");
+
+        // イベントハンドラが新しいevent.ymlと整合しているか(追加、削除)
+        $this->app['orm.em']->detach($plugin); 
+        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('name'=>$tmpname)));
+        $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
+
+        foreach($plugin->getPluginEventHandlers() as $handler){
+            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL){
+                $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_END,$handler->getPriority() );
+                $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_START,$handler->getPriority() );
+                $this->assertEquals('dummyHandler',$handler->getHandler());
+                $this->assertEquals('eccube.event.app.before',$handler->getEvent());
+            }
+            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST){
+                $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_END,$handler->getPriority() );
+                $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_START,$handler->getPriority() );
+                $this->assertContains($handler->getHandler(), array('dummyHandlerLast','dummyCartHandlerLast'));
+                $this->assertContains($handler->getEvent(),array('eccube.event.app.after','eccube.event.controller.cart.after') );
+            }
+        }
+        // 追加されたファイルが配置されているか
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/update_dummy");
+ 
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
         // 正しくアンインストールされているか
@@ -344,7 +389,6 @@ EOD;
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/event.yml");
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
     }
-
 
 
      // インストーラを含むプラグインが正しくインストールできるか 

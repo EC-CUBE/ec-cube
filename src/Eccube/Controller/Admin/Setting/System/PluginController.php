@@ -26,6 +26,9 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Util\Str;
+use Symfony\Component\Filesystem\Filesystem;
+
 
 class PluginController extends AbstractController
 {
@@ -35,17 +38,29 @@ class PluginController extends AbstractController
 
         $pluginForms = array();
         $Plugins = $repo->findBy(array(), array('id' => 'ASC'));
+        $configPages = array();
+
         foreach ($repo->findAll() as $Plugin) {
             $builder = $app['form.factory']->createNamedBuilder('form' . $Plugin->getId(), 'plugin_management', null, array(
                 'plugin_id' => $Plugin->getId(),
                 'enable' => $Plugin->getEnable()
             ));
             $pluginForms[$Plugin->getId()] = $builder->getForm()->createView();
+
+
+            try{
+                $configPages[$Plugin->getCode()] = $app->url('plugin_'.$Plugin->getCode().'_config');
+            }catch(\Exception $e){
+                // プラグインで設定画面のルートが定義されていない場合は無視
+            }
         }
+
         return $app->render('Setting/System/Plugin/index.twig', array(
             'plugin_forms' => $pluginForms,
-            'Plugins' => $Plugins
+            'Plugins' => $Plugins,
+            'configPages' => $configPages
         ));
+
     }
 
     public function install(Application $app)
@@ -58,12 +73,16 @@ class PluginController extends AbstractController
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             $tmpDir = $service->createTempDir();
-            $tmpFile = sha1(openssl_random_pseudo_bytes(20)) . ".tar";
+            $tmpFile = sha1(Str::random(32)) . ".tar"; // 拡張子を付けないとpharが動かないので付ける
 
             $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
 
             $service->install($tmpDir . '/' . $tmpFile);
+
+            $fs = new Filesystem();
+            $fs->remove($tmpDir . '/' . $tmpFile);
         }
+
 
         return $app->render('Setting/System/Plugin/install.twig', array(
             'form' => $form->createView(),
@@ -85,11 +104,14 @@ class PluginController extends AbstractController
         $form->handleRequest($app['request']);
 
         $tmpDir = $app['eccube.service.plugin']->createTempDir();
-        $tmpFile = sha1(openssl_random_pseudo_bytes(20)) . ".tar";
+        $tmpFile = sha1(Str::random(32)) . ".tar";
 
         $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
         $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
         $app->addSuccess('admin.plugin.update.complete', 'admin');
+
+        $fs = new Filesystem();
+        $fs->remove($tmpDir . '/' . $tmpFile);
 
         return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
@@ -121,6 +143,7 @@ class PluginController extends AbstractController
 
         return $app->redirect($app->url('admin_setting_system_plugin_index'));
     }
+
 
     public function uninstall(Application $app, $id)
     {

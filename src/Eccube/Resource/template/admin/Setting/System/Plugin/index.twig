@@ -120,9 +120,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <a href="#" class="btn btn-warning" onclick="changeActionSubmit('{{ uninstall_action }}', '{{ form.vars.name }}');return false;">
                                                             アンインストール
                                                         </a>
-                                                        {#<a href="/admin/plugin/{{ plugin.code|e }}/config">#}
-                                                        {#プラグイン設定#}
-                                                        {#</a>#}
+                                                        {% if configPages[Plugin.code] is defined %} 
+                                                           <a target='_blank' href='{{configPages[Plugin.code]}}'>設定</a>
+                                                        {% endif %} 
                                                     </td>
                                                 </tr>
                                             </tbody>
