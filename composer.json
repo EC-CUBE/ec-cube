@@ -14,7 +14,7 @@
         "php": ">=5.3.3",
         "silex/silex": "~1.2",
         "silex/web-profiler": "~1.0",
-        "doctrine/orm": "~2.2",
+        "doctrine/orm": "<2.5",
         "symfony/monolog-bridge": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "symfony/finder": "~2.3",
@@ -30,7 +30,7 @@
         "saxulum/saxulum-webprofiler-provider": "*",
         "swiftmailer/swiftmailer": "5.*",
         "knplabs/knp-components": "*",
-        "doctrine/migrations": "1.0.*@dev" ,
+        "doctrine/migrations": "v1.0-ALPHA2" ,
         "knplabs/console-service-provider": "dev-master",
         "symfony/class-loader": "~2.3"
     },
