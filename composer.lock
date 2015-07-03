@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "03231645342854ddaeb931d4600f81a1",
+    "hash": "0fdaf78b932cc8521d205d97e972500a",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -539,16 +539,16 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "v1.0-ALPHA2",
+            "version": "v1.0.0-alpha3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "df0705c11c87158102cf13704a1a21fc565e88b6"
+                "reference": "d2d18ef671b47a7d48fae54806adac87e82fe8e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/df0705c11c87158102cf13704a1a21fc565e88b6",
-                "reference": "df0705c11c87158102cf13704a1a21fc565e88b6",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/d2d18ef671b47a7d48fae54806adac87e82fe8e9",
+                "reference": "d2d18ef671b47a7d48fae54806adac87e82fe8e9",
                 "shasum": ""
             },
             "require": {
@@ -593,7 +593,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2015-03-21 16:13:55"
+            "time": "2015-03-22 13:09:02"
         },
         {
             "name": "doctrine/orm",

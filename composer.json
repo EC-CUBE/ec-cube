@@ -30,7 +30,7 @@
         "saxulum/saxulum-webprofiler-provider": "*",
         "swiftmailer/swiftmailer": "5.*",
         "knplabs/knp-components": "*",
-        "doctrine/migrations": "v1.0-ALPHA2" ,
+        "doctrine/migrations": "v1.0.0-alpha3" ,
         "knplabs/console-service-provider": "dev-master",
         "symfony/class-loader": "~2.3"
     },
