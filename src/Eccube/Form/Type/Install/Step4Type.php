@@ -45,13 +45,19 @@ class Step4Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $database = array();
+        if (extension_loaded('pdo_pgsql')) {
+            $database['pgsql'] = 'PostgreSQL';
+        }
+        if (extension_loaded('pdo_mysql')) {
+            $database['mysql'] = 'MySQL';
+        }
+
         $builder
             ->add('database', 'choice', array(
                 'label' => 'DBの種類',
-                'choices' => array(
-                    'pgsql' => 'PostgreSQL',
-                    'mysql' => 'MySQL',
-                ),
+                'choices' => $database,
                 'expanded' => false,
                 'multiple' => false,
             ))

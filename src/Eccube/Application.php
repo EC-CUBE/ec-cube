@@ -139,7 +139,6 @@ class Application extends ApplicationTrait
                 $config_constant = empty($config_constant) ? array() : $config_constant;
             }
 
-
             $config_constant_dist = array();
             $constant_yml_dist = $distPath . '/constant.yml.dist';
             if (file_exists($constant_yml_dist)) {
@@ -343,7 +342,7 @@ class Application extends ApplicationTrait
         $transport = $this['config']['mail']['transport'];
         if ($transport == 'sendmail') {
             $this['swiftmailer.transport'] = \Swift_SendmailTransport::newInstance();
-        } else if ($transport == 'mail') {
+        } elseif ($transport == 'mail') {
             $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
         }
     }
@@ -579,42 +578,4 @@ class Application extends ApplicationTrait
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
-
-
-    /**
-     * Application Shortcut Methods
-     *
-     *
-     */
-
-    public function addSuccess($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
-    }
-
-    public function addError($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
-    }
-
-    public function addDanger($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
-    }
-
-    public function addWarning($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
-    }
-
-    public function addInfo($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
-    }
-
-    public function addRequestError($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
-    }
-
 }

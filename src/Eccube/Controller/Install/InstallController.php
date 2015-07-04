@@ -55,6 +55,10 @@ class InstallController
 
     private $session_data;
 
+    private $required_modules = array('pdo', 'phar', 'gd', 'freetype2', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL');
+
+    private $recommended_module = array('hash', 'APC', 'mcrypt');
+
     const SESSION_KEY = 'eccube.session.install';
 
     public function __construct()
@@ -105,6 +109,22 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             return $app->redirect($app->url('install_step2'));
+        }
+
+        foreach($this->required_modules as $module) {
+            if(!extension_loaded($module)) {
+                $app->addDanger($module . ' 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
+        if(!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
+            $app->addDanger('pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+        }
+
+        foreach($this->recommended_module as $module) {
+            if(!extension_loaded($module)) {
+                $app->addWarning($module . ' 拡張モジュールが有効になっていません。', 'install');
+            }
         }
 
         return $app['twig']->render('step1.twig', array(
@@ -161,6 +181,7 @@ class InstallController
         $form = $app['form.factory']
             ->createBuilder('install_step4')
             ->getForm();
+
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
 
