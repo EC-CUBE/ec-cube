@@ -1,0 +1,66 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+
+{% for level1 in app.config.nav %}
+    <li class="{% if active_menus(menus)[0] == level1.id %}active{% endif %}">
+        {% if level1.has_child is defined and level1.has_child == true %}
+            <a class="toggle">
+                <svg class="cb {{ level1.icon }}"> <use xlink:href="#{{ level1.icon }}" /></svg>
+                {{ level1.name }}
+                <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
+            </a>
+            <ul {% if active_menus(menus)[0] == level1.id %}class="active" style="display: block;"{% endif %}>
+                {% for level2 in level1.child %}
+                    <li class="{% if active_menus(menus)[1] == level2.id %}active{% endif %}">
+                        {% if level2.has_child is defined and level2.has_child == true %}
+                            <a class="toggle">
+                                {{ level2.name }}
+                                <svg class="cb cb-angle-down"> <use xlink:href="#cb-angle-down" /></svg>
+                            </a>
+                            <ul {% if active_menus(menus)[1] == level2.id %}class="active" style="display: block;"{% endif %}>
+                                {% for level3 in level2.child %}
+                                    <li class="{% if active_menus(menus)[2] == level3.id %}active{% endif %}">
+                                        <a href="{{ url(level3.url) }}">
+                                            {{ level3.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <a href="{{ url(level2.url) }}">
+                                {{ level2.name }}
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            {% if level1.url is defined %}
+                <a href="{{ url(level1.url) }}">
+                    {{ level1.name }}
+                </a>
+            {% else %}
+                {{ level1.name }}
+            {% endif %}
+        {% endif %}
+    </li>
+{% endfor %}
