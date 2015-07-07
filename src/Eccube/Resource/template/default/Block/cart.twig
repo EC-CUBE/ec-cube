@@ -32,6 +32,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <span class="cart_price pc">合計 <span class="price">{{ Cart.total_price|price }}</span></span></p>
     <div id="cart" class="cart">
         <div class="inner">
+            {% for error in app.session.flashbag.get('eccube.front.cart.error')  %}
+                <div class="message">
+                    <p class="errormsg bg-danger">
+                        <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
+                    </p>
+                </div>
+            {% endfor %}
             {% for CartItem in Cart.CartItems %}
                 {% set ProductClass = CartItem.Object %}
                 {% if is_empty(ProductClass) %}
@@ -55,20 +62,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </dl>
                 </div><!--/item_box-->
                 {% endif %}
+                <p class="cart_price sp">合計 <span class="price">{{ Cart.total_price|price }}</span></p>
+
+                <div class="btn_area">
+                    <ul>
+                        <li>
+                            <a href="{{ url('cart') }}" class="btn btn-primary">カートへ進む</a>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-default btn-sm cart-trigger">キャンセル</button>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <div class="btn_area">
+                    <div class="message">
+                        <p class="errormsg bg-danger" style="margin-bottom: 20px;">
+                            現在、カート内に商品はございません。
+                        </p>
+                    </div>
+                </div>
             {% endfor %}
-
-            <p class="cart_price sp">合計 <span class="price">{{ Cart.total_price|price }}</span></p>
-
-            <div class="btn_area">
-                <ul>
-                    <li>
-                        <a href="{{ url('cart') }}" class="btn btn-primary">カートへ進む</a>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-default btn-sm cart-trigger">キャンセル</button>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>

@@ -59,6 +59,11 @@ class CartService
      */
     private $messages = array();
 
+    /**
+     * @var array
+     */
+    private $error;
+
     public function __construct(Session $session, EntityManager $entityManager)
     {
         $this->session = $session;
@@ -151,6 +156,7 @@ class CartService
             if (EntityUtil::isNotEmpty($ProductClass->getProduct())) {
                 $CartItem->setObject($ProductClass);
             } else {
+                $this->setError('cart.product.delete');
                 $this->removeProduct($ProductClass->getId());
             }
         }
@@ -336,4 +342,24 @@ class CartService
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+    /**
+     * @param  string $error
+     * @return \Eccube\Service\CartService
+     */
+    public function setError($error = null)
+    {
+        $this->error = $error;
+        $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
+        $this->session->getFlashBag()->set('eccube.front.request.error', $error);
+        return $this;
+    }
+
 }
