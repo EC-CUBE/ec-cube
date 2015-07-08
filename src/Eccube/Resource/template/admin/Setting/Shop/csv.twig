@@ -28,32 +28,46 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block stylesheet %}
-<link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/jquery.multiselect2side.css">
-{% endblock stylesheet %}
-
 {% block javascript %}
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery-migrate-1.2.1.min.js"></script>
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.multiselect2side.js"></script>
 <script>
-    $(function() {
-        $('#output_list').multiselect2side({
-            selectedPosition: 'right',
-            moveOptions: true,
-            labelsx: 'CSV出力しない項目',
-            labeldx: 'CSV出力する項目',
-            labelTop: '一番上',
-            labelBottom: '一番下',
-            labelUp: '一つ上',
-            labelDown: '一つ下',
-            labelSort: '項目順序'
+$(function() {
+   function move(event) {
+        $('#' + event.data.from + ' option:selected')
+                .appendTo($('#' + event.data.to))
+                .prop('selected', false);
+    }
+    function moveAll(event) {
+        $('#' + event.data.from + ' option').each(function () {
+            $(this).appendTo($('#' + event.data.to));
+            $(this).prop('selected', false);// 選択状態の解除
         });
-        $('.ms2side__div select').val(null);
-        // [Sort] ボタンは混乱防止のため非表示
-        // FIXME 選択・非選択のボタンと比べて、位置ズレしている
-        $('.ms2side__div .SelSort').hide();
+    }
+
+    $('#add').on('click', {from: 'csv-not-output', to: 'csv-output'}, move);
+    $('#add-all').on('click', {from: 'csv-not-output', to: 'csv-output'}, moveAll);
+    $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, move);
+    $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, moveAll);
+
+    $('.move').click(function() {
+        var $op = $('#csv-output option:selected');
+        var val = $(this).val();
+        if ($op.length) {
+            val == 'up' ? $op.first().prev().before($op) : $op.last().next().after($op);
+        }
     });
 
+    $('.move-most').click(function() {
+        var $op = $('#csv-output option:selected');
+        var val = $(this).val();
+        if ($op.length) {
+            val == 'top' ? $op.prependTo('#csv-output') : $op.appendTo('#csv-output');
+        }
+    });
+
+    $("#form1").on("submit", function (event) {
+        $("#cart").children().prop("selected", true);
+    });
+});
 </script>
 {% endblock javascript %}
 
@@ -63,33 +77,70 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="col-md-9">
                 <div class="box">
                     <div class="box-header">
-                        <select id="admin_page_layout_layout" name="admin_page_layout[layout]" class="form-control"><option value="1" selected="selected">TOPページ</option><option value="2">商品一覧ページ</option><option value="3">商品詳細ページ</option><option value="4">MYページ</option><option value="5">MYページ/会員登録内容変更(入力ページ)</option><option value="6">MYページ/会員登録内容変更(完了ページ)</option><option value="7">MYページ/お届け先変更</option><option value="8">MYページ/お届け先追加</option><option value="9">MYページ/お気に入り一覧</option><option value="10">MYページ/購入履歴詳細</option><option value="11">MYページ/ログイン</option><option value="12">MYページ/退会手続き(入力ページ)</option><option value="13">MYページ/退会手続き(完了ページ)</option><option value="14">当サイトについて</option><option value="15">現在のカゴの中</option><option value="16">お問い合わせ(入力ページ)</option><option value="17">お問い合わせ(完了ページ)</option><option value="18">会員登録(入力ページ)</option><option value="19">ご利用規約</option><option value="20">会員登録(完了ページ)</option><option value="21">特定商取引に関する法律に基づく表記</option><option value="22">本会員登録(完了ページ)</option><option value="23">商品購入/ログイン</option><option value="24">商品購入/お届け先の指定</option><option value="25">商品購入/お届け先の複数指定</option><option value="26">商品購入/お支払方法・お届け時間等の指定</option><option value="27">商品購入/ご入力内容のご確認</option><option value="28">商品購入/ご注文完了</option><option value="29">プライバシーポリシー</option><option value="30">商品購入ログイン</option><option value="31">非会員購入情報入力</option></select>
+                        <select id="admin_page_layout_layout" name="admin_page_layout[layout]" class="form-control"><option value="1" selected="selected">TOPページ</option>
+                            </select>
                     </div>
                     <div class="box-body no-border row">
-                        <div class="col-md-12">
-                            {{ form_widget(form.csv_output, {'id': 'output_list'}) }}
-                        </div><!-- /.col -->
                         {#
-                        <div class="col-md-2">
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button></p>
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                        </div><!-- /.col -->
-                        <div class="col-md-5">
-                            <p>CSV出力する項目</p>
-                            {{ form_widget(form.csv_input) }}
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button></p>
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                            <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-
+                        <div class="col-md-12">
+                            <div id="csv-block">
+                                <div class="csv-select">
+                                    <p>CSV出力しない項目</p>
+                                    {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
+                                </div>
+                                <div class="csv-button">
+                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button></p>
+                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
+                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
+                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
+                                </div>
+                                <div class="csv-select">
+                                    <p>CSV出力する項目</p>
+                                    {{ form_widget(form.csv_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
+                                </div>
+                                <div class="csv-button">
+                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button></p>
+                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
+                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
+                                </div>
+                                </div>
                         </div><!-- /.col -->
                         #}
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-10 col-xs-offset-2 col-sm-6 col-sm-offset-3 text-center btn_area2">
-                            <p><a href="http://localhost:8001/index_dev.php/admin/content/page">戻る</a></p>
-                        </div>
+
+
+
+
+
+
+
+                        <div class="col-md-4 col-xs-4">
+                            <p>CSV出力しない項目</p>
+                            {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
+                        </div><!-- /.col -->
+                        <div class="col-md-2 col-xs-2">
+                            <div class="text-center" style="padding-top: 230px;">
+                                <p><button type="button" id="add" class="btn btn-default"><span class="glyphicon glyphicon-step-forward"></span></button></p>
+                                <p><button type="button" id="add-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-forward"></span></button></p>
+                                <p><button type="button" id="remove" class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span></button></p>
+                                <p><button type="button" id="remove-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-backward"></span></button></p>
+                            </div>
+                        </div><!-- /.col -->
+                        <div class="col-md-4 col-xs-4">
+                            <p>CSV出力する項目</p>
+                            {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
+                        </div><!-- /.col -->
+                        <div class="col-md-2 col-xs-2">
+                            <div style="padding-top: 230px;">
+                            <p><button type="button" class="btn btn-default move" value="up">一つ上</button></p>
+                            <p><button type="button" class="btn btn-default move" value="down">一つ下</button></p>
+                            <p><button type="button" class="btn btn-default move-most" value="top">一番上</button></p>
+                            <p><button type="button" class="btn btn-default move-most" value="bottom">一番下</button></p>
+                            </div>
+                        </div><!-- /.col -->
+
+
+
+
                     </div>
                 </div>
             </div>

@@ -1,0 +1,51 @@
+Eccube\Entity\Csv:
+    type: entity
+    table: dtb_csv
+    repositoryClass: Eccube\Repository\CsvRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: csv_id
+            generator:
+                strategy: AUTO
+    fields:
+        col_name:
+            type: text
+            nullable: false
+        entity_col_name:
+            type: text
+            nullable: true
+        disp_name:
+            type: string
+            nullable: false
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+            precision: 3
+        enable_flg:
+            type: smallint
+            nullable: false
+            unsigned: false
+        create_date:
+            type: datetime
+            nullable: false
+        update_date:
+            type: datetime
+            nullable: false
+    manyToOne:
+        Csv:
+            targetEntity: Eccube\Entity\Master\Csv
+            joinColumn:
+                name: csv
+                referencedColumnName: id
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

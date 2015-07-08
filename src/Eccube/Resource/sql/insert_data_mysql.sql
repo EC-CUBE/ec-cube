@@ -757,3 +757,49 @@ INSERT INTO dtb_product_image (product_image_id, product_id, creator_id, file_na
 INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('default', 10, 'デフォルト', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO dtb_template (template_code, device_type_id, template_name, create_date, update_date) VALUES ('sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_id', '商品ID', 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('status_id', '公開ステータス(ID)', 2, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('status_name', '公開ステータス(名称)', 3, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('name', '商品名', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('note', 'ショップ用メモ欄', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('description_list', '商品説明(一覧)', 6, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('description_detail', '商品説明(詳細)', 7, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('search_word', '検索ワード', 8, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('free_area', 'フリーエリア', 9, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_class_id', '商品規格ID', 10, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_type_id', '商品種別(ID)', 11, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_type_name', '商品種別(名称)', 12, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('class_category_id1', '規格分類1(ID)', 13, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('class_category_name1', '規格分類1(名称)', 14, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('class_category_id2', '規格分類2(ID)', 15, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('class_category_name2', '規格分類2(名称)', 16, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('deliver_date_id', '発送日目安(ID)', 17, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('deliver_date_name', '発送日目安(名称)', 18, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_code', '商品コード', 19, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('stock', '在庫数コード', 20, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('stock_unlimited', '在庫数無制限フラグ', 21, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('sale_limit', '販売制限数', 22, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('price01', '通常価格', 23, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('price02', '販売価格', 24, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('delivery_fee', '送料', 25, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_image', '商品画像', 26, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_category_id', '商品カテゴリ(ID)', 27, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO dtb_csv_product (col_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES('product_category_name', '商品カテゴリ(名称)', 28, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

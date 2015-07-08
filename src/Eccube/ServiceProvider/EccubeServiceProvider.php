@@ -184,6 +184,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.mail_template'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\MailTemplate');
         });
+        $app['eccube.repository.csv_product'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\CsvProduct');
+        });
 
         $app['paginator'] = $app->protect(function () {
             return new \Knp\Component\Pager\Paginator();

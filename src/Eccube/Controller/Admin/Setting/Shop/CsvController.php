@@ -24,7 +24,9 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\EntityRepository;
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -35,17 +37,30 @@ class CsvController extends AbstractController
 
         $form = $app->form()->getForm();
 
+        $form->add('csv_not_output', 'entity', array(
+            'class' => 'Eccube\Entity\CsvProduct',
+            'property' => 'disp_name',
+            'multiple' => true,
+            'query_builder' => function (EntityRepository $er) {
+                return $er
+                    ->createQueryBuilder('cp')
+                    ->where('cp.enable_flg = ' . Constant::DISABLED)
+                    ->orderBy('cp.rank', 'ASC');
+            },
+        ));
+
+
+        $Csv = $app['eccube.repository.csv_product']->findBy(array('enable_flg' => Constant::DISABLED), array('rank' => 'ASC'));
         $form->add('csv_output', 'entity', array(
             'class' => 'Eccube\Entity\CsvProduct',
             'property' => 'disp_name',
             'multiple' => true,
-        ));
-
-
-        $form->add('csv_input', 'entity', array(
-            'class' => 'Eccube\Entity\CsvProduct',
-            'property' => 'disp_name',
-            'multiple' => true,
+            'query_builder' => function (EntityRepository $er) {
+                return $er
+                    ->createQueryBuilder('cp')
+                    ->where('cp.enable_flg = ' . Constant::ENABLED)
+                    ->orderBy('cp.rank', 'ASC');
+            },
         ));
 
         return $app->render('Setting/Shop/csv.twig', array(

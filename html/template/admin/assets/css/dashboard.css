@@ -2813,6 +2813,41 @@ ul.link-with-bar li:last-child::after {
 }
 
 
+/* csv 管理 */
+
+#csv-block {
+    clear: left;
+    width: 100%;
+    padding: 1px;
+    float: left;
+    background : url('') repeat-x; /* HACK FOR CHROME */
+}
+
+.csv-select {
+    float: left;
+}
+
+.csv-button {
+    float: left;
+    font-size: 10pt;
+    margin: 0;
+    padding: 230px 18px 0 18px;
+    width: 80px;
+    color: black;
+    text-align: center;
+    overflow: hidden;
+    padding-top: 230.5px;
+}
+
+
+#csv-block select {
+    width: 260px;
+    float: left;
+}
+
+
+
+
 /* !Inline Align ------------------------------------------------------------ */
 .alignL { text-align: left   !important;}
 .alignC { text-align: center !important;}
