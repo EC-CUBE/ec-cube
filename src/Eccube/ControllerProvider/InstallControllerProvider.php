@@ -44,6 +44,8 @@ class InstallControllerProvider implements ControllerProviderInterface
 
         $controllers->match('/complete', "\\Eccube\\Controller\\Install\\InstallController::complete")->bind('install_complete');
 
+        $controllers->match('/migration', "\\Eccube\\Controller\\Install\\InstallController::migration")->bind('migration');
+        $controllers->match('/migration_end', "\\Eccube\\Controller\\Install\\InstallController::migration_end")->bind('migration_end');
         return $controllers;
     }
 }
