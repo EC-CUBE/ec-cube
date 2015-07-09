@@ -24,47 +24,58 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
-use Doctrine\ORM\EntityRepository;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\CsvType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CsvController extends AbstractController
 {
-    public function index(Application $app, Request $request)
+    public function index(Application $app, Request $request, $id = CsvType::CSV_TYPE_PRODUCT)
     {
 
-        $form = $app->form()->getForm();
+        $CsvType = $app['eccube.repository.master.csv_type']->find($id);
+        if (is_null($CsvType)) {
+            throw new NotFoundHttpException();
+        }
 
-        $form->add('csv_not_output', 'entity', array(
-            'class' => 'Eccube\Entity\CsvProduct',
-            'property' => 'disp_name',
-            'multiple' => true,
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('cp')
-                    ->where('cp.enable_flg = ' . Constant::DISABLED)
-                    ->orderBy('cp.rank', 'ASC');
-            },
-        ));
+        $options = array('CsvType' => $CsvType);
+        $form = $app['form.factory']->createBuilder('csv', null, $options)->getForm();
 
+        if ('POST' === $request->getMethod()) {
 
-        $Csv = $app['eccube.repository.csv_product']->findBy(array('enable_flg' => Constant::DISABLED), array('rank' => 'ASC'));
-        $form->add('csv_output', 'entity', array(
-            'class' => 'Eccube\Entity\CsvProduct',
-            'property' => 'disp_name',
-            'multiple' => true,
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('cp')
-                    ->where('cp.enable_flg = ' . Constant::ENABLED)
-                    ->orderBy('cp.rank', 'ASC');
-            },
-        ));
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+
+                $data = $form->getData();
+
+                $Csvs = $data['csv_not_output'];
+                foreach ($Csvs as $csv) {
+                    // $csv->setRank();
+                    error_log($csv->getDispName());
+                    $csv->setEnableFlg(Constant::DISABLED);
+                }
+
+                $Csvs = $data['csv_output'];
+                foreach ($Csvs as $csv) {
+                    // $csv->setRank();
+           //         error_log($csv->getDispName());
+                    $csv->setEnableFlg(Constant::ENABLED);
+                }
+
+                $app->addSuccess('admin.shop.csv.save.complete', 'admin');
+
+                //return $app->redirect($app->url('admin_setting_shop_csv', array('id' => $id)));
+            }
+        }
 
         return $app->render('Setting/Shop/csv.twig', array(
             'form' => $form->createView(),
+            'id' => $id,
         ));
 
     }

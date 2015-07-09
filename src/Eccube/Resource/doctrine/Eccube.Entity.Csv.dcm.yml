@@ -37,11 +37,12 @@ Eccube\Entity\Csv:
             type: datetime
             nullable: false
     manyToOne:
-        Csv:
-            targetEntity: Eccube\Entity\Master\Csv
+        CsvType:
+            targetEntity: Eccube\Entity\Master\CsvType
             joinColumn:
-                name: csv
+                name: csv_type_id
                 referencedColumnName: id
+                nullable: false
         Creator:
             targetEntity: Eccube\Entity\Member
             joinColumn:

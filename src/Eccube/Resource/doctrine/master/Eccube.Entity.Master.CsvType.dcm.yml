@@ -1,7 +1,7 @@
-Eccube\Entity\Master\Csv:
+Eccube\Entity\Master\CsvType:
     type: entity
-    table: mtb_csv
-    repositoryClass: Eccube\Repository\Master\CsvRepository
+    table: mtb_csv_type
+    repositoryClass: Eccube\Repository\Master\CsvTypeRepository
     id:
         id:
             type: smallint

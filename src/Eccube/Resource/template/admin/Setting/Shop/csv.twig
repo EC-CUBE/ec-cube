@@ -64,55 +64,24 @@ $(function() {
         }
     });
 
-    $("#form1").on("submit", function (event) {
-        $("#cart").children().prop("selected", true);
-    });
+    $("#csv-form").submit(function() {
+        $("#csv-not-output").children().prop("selected", true);
+        $("#csv-output").children().prop("selected", true);
+    })
 });
 </script>
 {% endblock javascript %}
 
 {% block main %}
-    <form name="form1" id="form1" method="post" action="http://localhost:8001/index_dev.php/admin/content/layout/1/edit">
+    <form id="csv-form" method="post" action="{{ url('admin_setting_shop_csv', {'id': id}) }}">
+        {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
             <div class="col-md-9">
                 <div class="box">
                     <div class="box-header">
-                        <select id="admin_page_layout_layout" name="admin_page_layout[layout]" class="form-control"><option value="1" selected="selected">TOPページ</option>
-                            </select>
+                        {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
                     </div>
                     <div class="box-body no-border row">
-                        {#
-                        <div class="col-md-12">
-                            <div id="csv-block">
-                                <div class="csv-select">
-                                    <p>CSV出力しない項目</p>
-                                    {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
-                                </div>
-                                <div class="csv-button">
-                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button></p>
-                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                                </div>
-                                <div class="csv-select">
-                                    <p>CSV出力する項目</p>
-                                    {{ form_widget(form.csv_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
-                                </div>
-                                <div class="csv-button">
-                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-right"></span></button></p>
-                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                                    <p><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-left"></span></button></p>
-                                </div>
-                                </div>
-                        </div><!-- /.col -->
-                        #}
-
-
-
-
-
-
-
                         <div class="col-md-4 col-xs-4">
                             <p>CSV出力しない項目</p>
                             {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
@@ -137,10 +106,6 @@ $(function() {
                             <p><button type="button" class="btn btn-default move-most" value="bottom">一番下</button></p>
                             </div>
                         </div><!-- /.col -->
-
-
-
-
                     </div>
                 </div>
             </div>

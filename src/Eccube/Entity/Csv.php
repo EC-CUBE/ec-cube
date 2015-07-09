@@ -50,9 +50,9 @@ class Csv extends \Eccube\Entity\AbstractEntity
     private $update_date;
 
     /**
-     * @var \Eccube\Entity\Master\Csv
+     * @var \Eccube\Entity\Master\CsvType
      */
-    private $Csv;
+    private $CsvType;
 
     /**
      * @var \Eccube\Entity\Member
@@ -231,27 +231,27 @@ class Csv extends \Eccube\Entity\AbstractEntity
         return $this->update_date;
     }
 
-    /**
-     * Set Csv
+   /**
+     * Set CsvType
      *
-     * @param \Eccube\Entity\Master\Csv $csv
+     * @param \Eccube\Entity\Master\CsvType $csvType
      * @return Csv
      */
-    public function setCsv(\Eccube\Entity\Master\Csv $csv = null)
+    public function setCsvType(\Eccube\Entity\Master\CsvType $csvType)
     {
-        $this->Csv = $csv;
+        $this->CsvType = $csvType;
 
         return $this;
     }
 
     /**
-     * Get Csv
+     * Get CsvType
      *
-     * @return \Eccube\Entity\Master\Csv 
+     * @return \Eccube\Entity\Master\CsvType
      */
-    public function getCsv()
+    public function getCsvType()
     {
-        return $this->Csv;
+        return $this->CsvType;
     }
 
     /**

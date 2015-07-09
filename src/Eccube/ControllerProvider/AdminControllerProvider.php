@@ -174,6 +174,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // csv
         $c->match('/setting/shop/csv', '\Eccube\Controller\Admin\Setting\Shop\CsvController::index')->bind('admin_setting_shop_csv');
+        $c->match('/setting/shop/csv/{id}', '\Eccube\Controller\Admin\Setting\Shop\CsvController::index')->assert('id', '\d+')->bind('admin_setting_shop_csv_edit');
 
 
         // setting/system
