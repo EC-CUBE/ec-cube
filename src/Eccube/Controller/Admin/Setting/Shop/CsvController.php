@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CsvController extends AbstractController
 {
-    public function index(Application $app, Request $request, $id = CsvType::CSV_TYPE_PRODUCT)
+    public function index(Application $app, Request $request, $id = CsvType::CSV_TYPE_ORDER)
     {
 
         $CsvType = $app['eccube.repository.master.csv_type']->find($id);
@@ -42,36 +42,73 @@ class CsvController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $options = array('CsvType' => $CsvType);
-        $form = $app['form.factory']->createBuilder('csv', null, $options)->getForm();
+        $builder = $app->form();
+
+        $builder->add('csv_type', 'csv_type', array(
+            'label' => 'CSV出力項目',
+            'required' => true,
+            'constraints' => array(
+                new Assert\NotBlank(),
+            ),
+            'data' => $CsvType,
+        ));
+
+        $CsvNotOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::DISABLED), array('rank' => 'ASC'));
+
+        $builder->add('csv_not_output', 'entity', array(
+            'class' => 'Eccube\Entity\Csv',
+            'property' => 'disp_name',
+            'required' => false,
+            'expanded' => false,
+            'multiple' => true,
+            'choices' => $CsvNotOutput,
+        ));
+
+        $CsvOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::ENABLED), array('rank' => 'ASC'));
+
+        $builder->add('csv_output', 'entity', array(
+            'class' => 'Eccube\Entity\Csv',
+            'property' => 'disp_name',
+            'required' => false,
+            'expanded' => false,
+            'multiple' => true,
+            'choices' => $CsvOutput,
+        ));
+
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
 
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-
-                $data = $form->getData();
-
+            $data = $request->get('form');
+            if (isset($data['csv_not_output'])) {
                 $Csvs = $data['csv_not_output'];
+                $rank = 1;
                 foreach ($Csvs as $csv) {
-                    // $csv->setRank();
-                    error_log($csv->getDispName());
-                    $csv->setEnableFlg(Constant::DISABLED);
+                    $c = $app['eccube.repository.csv']->find($csv);
+                    $c->setRank($rank);
+                    $c->setEnableFlg(Constant::DISABLED);
+                    $rank++;
                 }
-
-                $Csvs = $data['csv_output'];
-                foreach ($Csvs as $csv) {
-                    // $csv->setRank();
-           //         error_log($csv->getDispName());
-                    $csv->setEnableFlg(Constant::ENABLED);
-                }
-
-                $app->addSuccess('admin.shop.csv.save.complete', 'admin');
-
-                //return $app->redirect($app->url('admin_setting_shop_csv', array('id' => $id)));
             }
+
+            if (isset($data['csv_output'])) {
+                $Csvs = $data['csv_output'];
+                $rank = 1;
+                foreach ($Csvs as $csv) {
+                    $c = $app['eccube.repository.csv']->find($csv);
+                    $c->setRank($rank);
+                    $c->setEnableFlg(Constant::ENABLED);
+                    $rank++;
+                }
+            }
+
+            $app['orm.em']->flush();
+
+            $app->addSuccess('admin.shop.csv.save.complete', 'admin');
+
+            return $app->redirect($app->url('admin_setting_shop_csv', array('id' => $id)));
         }
+
 
         return $app->render('Setting/Shop/csv.twig', array(
             'form' => $form->createView(),

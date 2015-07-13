@@ -24,6 +24,7 @@
 
 namespace Eccube\ControllerProvider;
 
+use Eccube\Entity\Master\CsvType;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 
@@ -173,9 +174,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/customer_agreement', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
         // csv
-        $c->match('/setting/shop/csv', '\Eccube\Controller\Admin\Setting\Shop\CsvController::index')->bind('admin_setting_shop_csv');
-        $c->match('/setting/shop/csv/{id}', '\Eccube\Controller\Admin\Setting\Shop\CsvController::index')->assert('id', '\d+')->bind('admin_setting_shop_csv_edit');
-
+        $c->match('/setting/shop/csv/{id}', '\Eccube\Controller\Admin\Setting\Shop\CsvController::index')->assert('id', '\d+')->value('id', CsvType::CSV_TYPE_ORDER)->bind('admin_setting_shop_csv');
 
         // setting/system
         $c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');

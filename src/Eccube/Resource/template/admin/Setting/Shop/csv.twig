@@ -64,9 +64,16 @@ $(function() {
         }
     });
 
-    $("#csv-form").submit(function() {
-        $("#csv-not-output").children().prop("selected", true);
-        $("#csv-output").children().prop("selected", true);
+    $('#csv-type').on('change', function() {
+        var id = $(this).val();
+        var href = '{{ url('admin_setting_shop_csv') }}' + '/' + id;
+        location.href = href;
+        return false;
+    });
+
+    $('#csv-form').submit(function() {
+        $('#csv-not-output').children().prop('selected', true);
+        $('#csv-output').children().prop('selected', true);
     })
 });
 </script>
