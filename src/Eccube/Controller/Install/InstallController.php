@@ -647,6 +647,7 @@ class InstallController
         return $this;
     }
 
+
     public function migration(InstallApplication $app, Request $request)
     {
         return $app['twig']->render('migration.twig');
@@ -654,6 +655,12 @@ class InstallController
     public function migration_end(InstallApplication $app, Request $request)
     {
         $this->doMigrate();
+
+        $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
+        $config_app->initialize();
+        $config_app->boot();
+        \Eccube\Util\Cache::clear($config_app,true);
+
         return $app['twig']->render('migration_end.twig');
     }
 }
