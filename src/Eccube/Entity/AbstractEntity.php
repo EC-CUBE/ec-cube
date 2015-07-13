@@ -55,4 +55,73 @@ abstract class AbstractEntity implements \ArrayAccess
     {
     }
 
+    /**
+     * 引数の連想配列を元にプロパティを設定します.
+     * DBから取り出した連想配列を, プロパティへ設定する際に使用します.
+     *
+     * @param array プロパティの情報を格納した連想配列
+     * @param ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
+     */
+    public function setPropertiesFromArray(array $arrProps, \ReflectionClass $parentClass = null)
+    {
+        $objReflect = null;
+        if (is_object($parentClass)) {
+            $objReflect = $parentClass;
+        } else {
+            $objReflect = new \ReflectionClass($this);
+        }
+        $arrProps = array_change_key_case($arrProps);
+        $arrProperties = $objReflect->getProperties();
+        foreach ($arrProperties as $objProperty) {
+            $objProperty->setAccessible(true);
+            $name = $objProperty->getName();
+            if (!isset($arrProps[$name])) {
+                continue;
+            }
+            $objProperty->setValue($this, $arrProps[$name]);
+        }
+
+        // 親クラスがある場合は再帰的にプロパティを取得
+        $parentClass = $objReflect->getParentClass();
+        if (is_object($parentClass)) {
+            self::setPropertiesFromArray($arrProps, $parentClass);
+        }
+    }
+
+    /**
+     * プロパティの値を連想配列で返します.
+     * DBを更新する場合などで, 連想配列の値を取得したい場合に使用します.
+     *
+     * @param ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
+     * @return array 連想配列のプロパティの値
+     */
+    public function toArray(\ReflectionClass $parentClass = null)
+    {
+        $objReflect = null;
+        if (is_object($parentClass)) {
+            $objReflect = $parentClass;
+        } else {
+            $objReflect = new \ReflectionClass($this);
+        }
+        $arrProperties = $objReflect->getProperties();
+        $arrResults = array();
+        foreach ($arrProperties as $objProperty) {
+            $objProperty->setAccessible(true);
+            $name = $objProperty->getName();
+            $arrResults[$name] = $objProperty->getValue($this);
+        }
+
+        $parentClass = $objReflect->getParentClass();
+        if (is_object($parentClass)) {
+            $arrParents = self::toArray($parentClass);
+            if (!is_array($arrParents)) {
+                $arrParents = array();
+            }
+            if (!is_array($arrResults)) {
+                $arrResults = array();
+            }
+            $arrResults = array_merge($arrParents, $arrResults);
+        }
+        return $arrResults;
+    }
 }
