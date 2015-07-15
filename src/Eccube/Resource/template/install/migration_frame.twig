@@ -1,0 +1,93 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../favicon.ico">
+    <title>ようこそ | EC-CUBEマイグレーション</title>
+    <link href="../template/install/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../template/install/assets/css/dashboard.css" rel="stylesheet">
+    <script src="../template/install/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div id="wrapper">
+    <!-- ▼ #header ▼ -->
+    <header id="header" role="navigation">
+        <div class="navbar">
+            <div class="logo" href="./"><svg class="cb cb-logomark"><use xlink:href="#cb-logomark" /></svg><svg class="cb cb-logotext"><use xlink:href="#cb-logotext" /></svg></div>
+        </div>
+    </header>
+    <!-- ▲ #header ▲ -->
+    <div class="main_wrap">
+        <!-- ▼ #side ▼ -->
+        <aside id="side">
+            <div class="step_nav">
+                <ol>
+                    <li{% if current >= 1 %} class="current"{% endif %}><span class="number">1</span>ようこそ</li>
+                    <li{% if current >= 2 %} class="current"{% endif %}><span class="number">2</span>マイグレーション完了</li>
+                </ol>
+            </div>
+        </aside>
+        <!-- ▲ #side ▲ -->
+        <!-- ▼ #main ▼ -->
+        {% block main %}{% endblock %}
+        <!-- ▲ #main ▲ -->
+    </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../template/install/dist/js/bootstrap.min.js"></script>
+<script src="../template/install/assets/js/function.js"></script>
+<script>
+$(function() {
+    /*
+     * for svg icon
+     */
+    $.ajax({
+        type: 'GET',
+        url: '../template/install/assets/img/svg.html',
+        dataType: 'html',
+        success: function(data){
+            $('body').prepend(data);
+        },
+        error: function() {
+            console.log('error');
+        }
+    });
+});
+</script>
+</body>
+</html>
