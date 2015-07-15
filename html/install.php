@@ -25,4 +25,9 @@ require __DIR__ . '/../autoload.php';
 
 $app = new Eccube\InstallApplication();
 $app['debug'] = true;
+$app->before(function (\Symfony\Component\HttpFoundation\Request $request, \Silex\Application $app) {
+    if (!$request->getSession()->isStarted()) {
+        $request->getSession()->start();
+    }
+});
 $app->run();
