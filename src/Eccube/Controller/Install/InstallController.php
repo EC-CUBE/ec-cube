@@ -55,7 +55,7 @@ class InstallController
 
     private $session_data;
 
-    private $required_modules = array('pdo', 'phar', 'gd', 'freetype2', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL');
+    private $required_modules = array('pdo', 'phar', 'gd', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL');
 
     private $recommended_module = array('hash', 'APC', 'mcrypt');
 
@@ -117,6 +117,13 @@ class InstallController
             }
         }
 
+        if (extension_loaded('gd')) {
+            $gdInfo = gd_info();
+            if (empty($gdInfo['FreeType Support'])) {
+                $app->addDanger('FreeType 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
         if(!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
             $app->addDanger('pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
         }
@@ -125,6 +132,16 @@ class InstallController
             if(!extension_loaded($module)) {
                 $app->addWarning($module . ' 拡張モジュールが有効になっていません。', 'install');
             }
+        }
+
+        if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
+            // 有効
+        } elseif (isset($_SERVER['IIS_UrlRewriteModule'])) {
+            // ISSの場合
+        } elseif (!function_exists('apache_get_modules')) {
+            $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+        } else {
+            $app->addDanger('mod_rewriteを有効にしてください。', 'install');
         }
 
         return $app['twig']->render('step1.twig', array(
