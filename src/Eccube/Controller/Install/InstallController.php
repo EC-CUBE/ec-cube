@@ -390,44 +390,49 @@ class InstallController
         }
 
         $this->PDO->beginTransaction();
-        $this->PDO->exec(file_get_contents($sqlFile));
+        try{
+            $this->PDO->exec(file_get_contents($sqlFile));
 
-        $config = array(
-            'auth_type' => '',
-            'auth_magic' => $config['config']['auth_magic'],
-            'password_hash_algos' => 'sha256',
-        );
-        $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
-        $salt = \Eccube\Util\Str::random();
+            $config = array(
+                'auth_type' => '',
+                'auth_magic' => $config['config']['auth_magic'],
+                'password_hash_algos' => 'sha256',
+            );
+            $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
+            $salt = \Eccube\Util\Str::random();
 
-        $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-        $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
-            id,
-            shop_name,
-            email01,
-            email02,
-            email03,
-            email04,
-            update_date,
-            option_product_tax_rule
+            $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
+            $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
+                id,
+                shop_name,
+                email01,
+                email02,
+                email03,
+                email04,
+                update_date,
+                option_product_tax_rule
             ) VALUES (
-            1,
-            :shop_name,
-            :admin_mail,
-            :admin_mail,
-            :admin_mail,
-            :admin_mail,
-            current_timestamp,
-            0);");
-        $sth->execute(array(
-            ':shop_name' => $this->session_data['shop_name'],
-            ':admin_mail' => $this->session_data['email']
-        ));
+                1,
+                :shop_name,
+                :admin_mail,
+                :admin_mail,
+                :admin_mail,
+                :admin_mail,
+                current_timestamp,
+                0);");
+            $sth->execute(array(
+                ':shop_name' => $this->session_data['shop_name'],
+                ':admin_mail' => $this->session_data['email']
+            ));
 
-        $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
-        $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
+            $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+            $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
 
-        $this->PDO->commit();
+            $this->PDO->commit();
+        } catch(Exception $e) {
+            $this->PDO->rollback();
+            throw $e;
+        }
 
         return $this;
     }
