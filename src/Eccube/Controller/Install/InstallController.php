@@ -41,11 +41,7 @@ class InstallController
 {
     private $app;
 
-    private $data;
-
     private $PDO;
-
-    private $error;
 
     private $config_path;
 
@@ -287,7 +283,7 @@ class InstallController
         $config_file = $this->config_path . '/database.yml';
         $config = Yaml::parse($config_file);
         $data = $config['database'];
-
+        /*
         $dsn = str_replace('pdo_', '', $data['driver'])
             . ':host=' . $data['host']
             . ';dbname=' . $data['dbname'];
@@ -302,6 +298,18 @@ class InstallController
             $data['user'],
             $data['password']
         );
+*/
+
+        try {
+
+            $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
+            $this->PDO->connect();
+
+        } catch (\Exception $e) {
+            $this->PDO->close();
+            die($e->getMessage());
+
+        }
 
         return $this;
     }
@@ -381,15 +389,8 @@ class InstallController
             die('database type invalid.');
         }
 
-        $fp = fopen($sqlFile, 'r');
-        $sql = fread($fp, filesize($sqlFile));
-        fclose($fp);
-        $sqls = explode(';', $sql);
-
         $this->PDO->beginTransaction();
-        foreach ($sqls as $sql) {
-            $this->PDO->query(trim($sql));
-        }
+        $this->PDO->exec(file_get_contents($sqlFile));
 
         $config = array(
             'auth_type' => '',
@@ -549,13 +550,13 @@ class InstallController
         }
 
         switch ($data['database']) {
-            case 'pgsql':
+            case 'pdo_pgsql':
                 if (empty($data['db_port'])) {
                     $data['db_port'] = '5432';
                 }
                 $data['db_driver'] = 'pdo_pgsql';
                 break;
-            case 'mysql':
+            case 'pdo_mysql':
                 if (empty($data['db_port'])) {
                     $data['db_port'] = '3306';
                 }

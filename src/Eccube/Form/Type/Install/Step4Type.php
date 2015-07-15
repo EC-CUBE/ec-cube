@@ -92,7 +92,7 @@ class Step4Type extends AbstractType
                     );
                     $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
-                    // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーが出ないのか？
+                    // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
 
                 } catch (\Exception $e) {
                     $conn->close();
