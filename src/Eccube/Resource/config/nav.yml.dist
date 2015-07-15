@@ -86,7 +86,7 @@
               name: メール設定
               url: admin_setting_shop_mail
             - id: shop_csv
-              name: CSV設定
+              name: CSV出力項目設定
               url: admin_setting_shop_csv
       - id: store
         name: オーナーズストア
