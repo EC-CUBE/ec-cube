@@ -31,22 +31,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block javascript %}
 <script>
 $(function() {
-   function move(event) {
+
+    function add(event) {
         $('#' + event.data.from + ' option:selected')
                 .appendTo($('#' + event.data.to))
                 .prop('selected', false);
     }
-    function moveAll(event) {
+    function addAll(event) {
         $('#' + event.data.from + ' option').each(function () {
             $(this).appendTo($('#' + event.data.to));
             $(this).prop('selected', false);// 選択状態の解除
         });
     }
 
-    $('#add').on('click', {from: 'csv-not-output', to: 'csv-output'}, move);
-    $('#add-all').on('click', {from: 'csv-not-output', to: 'csv-output'}, moveAll);
-    $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, move);
-    $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, moveAll);
+    $('#add').on('click', {from: 'csv-not-output', to: 'csv-output'}, add);
+    $('#add-all').on('click', {from: 'csv-not-output', to: 'csv-output'}, addAll);
+    $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, add);
+    $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, addAll);
 
     $('.move').click(function() {
         var $op = $('#csv-output option:selected');
@@ -106,11 +107,14 @@ $(function() {
                             {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
                         </div><!-- /.col -->
                         <div class="col-md-2 col-xs-2">
-                            <div style="padding-top: 230px;">
-                            <p><button type="button" class="btn btn-default move" value="up">一つ上</button></p>
-                            <p><button type="button" class="btn btn-default move" value="down">一つ下</button></p>
-                            <p><button type="button" class="btn btn-default move-most" value="top">一番上</button></p>
-                            <p><button type="button" class="btn btn-default move-most" value="bottom">一番下</button></p>
+                            <div style="padding-top: 200px;">
+                                <div class="well well-sm text-center">
+                                    <p>項目順序</p>
+                                    <p><button type="button" class="btn btn-default move" value="up">一つ上</button></p>
+                                    <p><button type="button" class="btn btn-default move" value="down">一つ下</button></p>
+                                    <p><button type="button" class="btn btn-default move-most" value="top">一番上</button></p>
+                                    <p><button type="button" class="btn btn-default move-most" value="bottom">一番下</button></p>
+                                </div>
                             </div>
                         </div><!-- /.col -->
                     </div>

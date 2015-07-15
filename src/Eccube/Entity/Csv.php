@@ -17,12 +17,17 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $col_name;
+    private $entity_name;
 
     /**
      * @var string
      */
-    private $entity_col_name;
+    private $field_name;
+
+    /**
+     * @var string
+     */
+    private $reference_field_name;
 
     /**
      * @var string
@@ -71,49 +76,72 @@ class Csv extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set col_name
+     * Set entity_name
      *
-     * @param string $colName
+     * @param string $entityName
      * @return Csv
      */
-    public function setColName($colName)
+    public function setEntityName($entityName)
     {
-        $this->col_name = $colName;
+        $this->entity_name = $entityName;
 
         return $this;
     }
 
     /**
-     * Get col_name
+     * Get entity_name
      *
-     * @return string 
+     * @return string
      */
-    public function getColName()
+    public function getEntityName()
     {
-        return $this->col_name;
+        return $this->entity_name;
     }
 
     /**
-     * Set entity_col_name
+     * Set field_name
      *
-     * @param string $entityColName
+     * @param string $fieldName
      * @return Csv
      */
-    public function setEntityColName($entityColName)
+    public function setFieldName($fieldName)
     {
-        $this->entity_col_name = $entityColName;
+        $this->field_name = $fieldName;
 
         return $this;
     }
 
     /**
-     * Get entity_col_name
+     * Get field_name
      *
      * @return string 
      */
-    public function getEntityColName()
+    public function getFieldName()
     {
-        return $this->entity_col_name;
+        return $this->field_name;
+    }
+
+    /**
+     * Set reference_field_name
+     *
+     * @param string $feferenceFieldName
+     * @return Csv
+     */
+    public function setReferenceFieldName($referenceFieldName)
+    {
+        $this->reference_field_name = $referenceFieldName;
+
+        return $this;
+    }
+
+    /**
+     * Get reference_field_name
+     *
+     * @return string 
+     */
+    public function getReferenceFieldName()
+    {
+        return $this->reference_field_name;
     }
 
     /**
