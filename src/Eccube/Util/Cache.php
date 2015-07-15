@@ -21,23 +21,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Common;
+namespace Eccube\Util;
 
-class Constant {
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
-    /**
-     * EC-CUBE VERSION.
-     */
-    const VERSION = '3.0.1';
+class Cache {
 
-    /**
-     * Enable value.
-     */
-    const ENABLED = 1;
+    public static function clear($app,$isAll){
 
-    /**
-     * Disable value.
-     */
-    const DISABLED = 0;
+        $cacheDir = $app['config']['root_dir'] . '/app/cache';
 
+        $filesystem = new Filesystem();
+        if ($isAll) {
+            $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
+        } else {
+            $finder = Finder::create()->in($cacheDir . '/doctrine');
+            $filesystem->remove($finder);
+            $finder = Finder::create()->in($cacheDir . '/profiler');
+            $filesystem->remove($finder);
+            $finder = Finder::create()->in($cacheDir . '/twig');
+        }
+
+        $filesystem->remove($finder);
+        return true;
+    }
 }
