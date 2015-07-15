@@ -21,13 +21,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require __DIR__ . '/../autoload.php';
 
-$app = new Eccube\InstallApplication();
-$app['debug'] = true;
-$app->before(function (\Symfony\Component\HttpFoundation\Request $request, \Silex\Application $app) {
-    if (!$request->getSession()->isStarted()) {
-        $request->getSession()->start();
+namespace Eccube\Tests\Web\Admin\Setting\Store;
+
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+
+class TemplateControllerTest extends AbstractAdminWebTestCase
+{
+
+    public function test_routing_AdminTemplate_index()
+    {
+        $this->client->request('GET', $this->app->url('admin_setting_store_template'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
-});
-$app->run();
+
+    public function test_routing_AdminTemplate_new()
+    {
+        $this->client->request('GET', $this->app->url('admin_setting_store_template_new'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+}

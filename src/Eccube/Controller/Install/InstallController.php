@@ -135,6 +135,8 @@ class InstallController
     // 権限チェック
     public function step2(InstallApplication $app, Request $request)
     {
+        $this->getSessionData($request);
+
         $protectedDirs = $this->getProtectedDirs();
 
         // 権限がある場合, キャッシュディレクトリをクリア
@@ -405,7 +407,7 @@ class InstallController
         ));
 
         $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
-        $sth->execute(array('login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
+        $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
 
         $this->PDO->commit();
 
@@ -666,5 +668,22 @@ class InstallController
         file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
 
         return $this;
+    }
+
+
+    public function migration(InstallApplication $app, Request $request)
+    {
+        return $app['twig']->render('migration.twig');
+    }
+    public function migration_end(InstallApplication $app, Request $request)
+    {
+        $this->doMigrate();
+
+        $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
+        $config_app->initialize();
+        $config_app->boot();
+        \Eccube\Util\Cache::clear($config_app,true);
+
+        return $app['twig']->render('migration_end.twig');
     }
 }

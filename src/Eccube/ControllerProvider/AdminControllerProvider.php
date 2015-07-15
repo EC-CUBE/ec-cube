@@ -134,11 +134,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/page/{id}/edit', '\Eccube\Controller\Admin\Content\PageController::edit')->assert('id', '\d+')->bind('admin_content_page_edit');
         $c->post('/content/page/{id}/delete', '\Eccube\Controller\Admin\Content\PageController::delete')->assert('id', '\d+')->bind('admin_content_page_delete');
 
-        $c->match('/content/template', '\Eccube\Controller\Admin\Content\TemplateController::index')->bind('admin_content_template');
-        $c->match('/content/template/new', '\Eccube\Controller\Admin\Content\TemplateController::add')->bind('admin_content_template_new');
-        $c->match('/content/template/{id}/download', '\Eccube\Controller\Admin\Content\TemplateController::download')->assert('id', '\d+')->bind('admin_content_template_download');
-        $c->post('/content/template/{id}/delete', '\Eccube\Controller\Admin\Content\TemplateController::delete')->assert('id', '\d+')->bind('admin_content_template_delete');
-
         // shop
         $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
 
@@ -177,21 +172,25 @@ class AdminControllerProvider implements ControllerProviderInterface
         // customer_agreement
         $c->match('/setting/shop/customer_agreement/', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
 
-        // system/system
+        // setting/system
         $c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');
 
-        // system/plugin
-        $c->match('/setting/system/plugin', '\Eccube\Controller\Admin\Setting\System\PluginController::index')->bind('admin_setting_system_plugin_index');
-        $c->match('/setting/system/plugin/install', '\Eccube\Controller\Admin\Setting\System\PluginController::install')->bind('admin_setting_system_plugin_install');
-        $c->match('/setting/system/plugin/handler', '\Eccube\Controller\Admin\Setting\System\PluginController::handler')->bind('admin_setting_system_plugin_handler');
-        $c->match('/setting/system/plugin/manage', '\Eccube\Controller\Admin\Setting\System\PluginController::manage')->bind('admin_setting_system_plugin_manage');
-        $c->post('/setting/system/plugin/{id}/enable', '\Eccube\Controller\Admin\Setting\System\PluginController::enable')->assert('id', '\d+')->bind('admin_setting_system_plugin_enable');
-        $c->post('/setting/system/plugin/{id}/disable', '\Eccube\Controller\Admin\Setting\System\PluginController::disable')->assert('id', '\d+')->bind('admin_setting_system_plugin_disable');
-        $c->post('/setting/system/plugin/{id}/update', '\Eccube\Controller\Admin\Setting\System\PluginController::update')->assert('id', '\d+')->bind('admin_setting_system_plugin_update');
-        $c->post('/setting/system/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Setting\System\PluginController::uninstall')->assert('id', '\d+')->bind('admin_setting_system_plugin_uninstall');
+        // setting/store
+        $c->match('/setting/store/template', '\Eccube\Controller\Admin\Setting\Store\TemplateController::index')->bind('admin_setting_store_template');
+        $c->match('/setting_store/template/new', '\Eccube\Controller\Admin\Setting\Store\TemplateController::add')->bind('admin_setting_store_template_new');
+        $c->match('/setting/store/template/{id}/download', '\Eccube\Controller\Admin\Setting\Store\TemplateController::download')->assert('id', '\d+')->bind('admin_setting_store_template_download');
+        $c->post('/setting/store/template/{id}/delete', '\Eccube\Controller\Admin\Setting\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_setting_store_template_delete');
 
-        $c->match('/setting/system/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Setting\System\PluginController::handler_up')->bind('admin_setting_system_plugin_handler_up');
-        $c->match('/setting/system/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Setting\System\PluginController::handler_down')->bind('admin_setting_system_plugin_handler_down');
+        $c->match('/setting/store/plugin', '\Eccube\Controller\Admin\Setting\Store\PluginController::index')->bind('admin_setting_store_plugin');
+        $c->match('/setting/store/plugin/install', '\Eccube\Controller\Admin\Setting\Store\PluginController::install')->bind('admin_setting_store_plugin_install');
+        $c->match('/setting/store/plugin/handler', '\Eccube\Controller\Admin\Setting\Store\PluginController::handler')->bind('admin_setting_store_plugin_handler');
+        $c->match('/setting/store/plugin/manage', '\Eccube\Controller\Admin\Setting\Store\PluginController::manage')->bind('admin_setting_store_plugin_manage');
+        $c->post('/setting/store/plugin/{id}/enable', '\Eccube\Controller\Admin\Setting\Store\PluginController::enable')->assert('id', '\d+')->bind('admin_setting_store_plugin_enable');
+        $c->post('/setting/store/plugin/{id}/disable', '\Eccube\Controller\Admin\Setting\Store\PluginController::disable')->assert('id', '\d+')->bind('admin_setting_store_plugin_disable');
+        $c->post('/setting/store/plugin/{id}/update', '\Eccube\Controller\Admin\Setting\Store\PluginController::update')->assert('id', '\d+')->bind('admin_setting_store_plugin_update');
+        $c->post('/setting/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Setting\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_setting_store_plugin_uninstall');
+        $c->match('/setting/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_up')->bind('admin_setting_store_plugin_handler_up');
+        $c->match('/setting/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_down')->bind('admin_setting_store_plugin_handler_down');
 
         // system/member
         $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');

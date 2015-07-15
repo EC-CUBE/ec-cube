@@ -21,23 +21,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Util;
 
-namespace Eccube\Tests\Web\Admin\Content;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+class Cache {
 
-class TemplateControllerTest extends AbstractAdminWebTestCase
-{
+    public static function clear($app,$isAll){
 
-    public function test_routing_AdminTemplate_index()
-    {
-        $this->client->request('GET', $this->app->url('admin_content_template'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
+        $cacheDir = $app['config']['root_dir'] . '/app/cache';
 
-    public function test_routing_AdminTemplate_new()
-    {
-        $this->client->request('GET', $this->app->url('admin_content_template_new'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $filesystem = new Filesystem();
+        if ($isAll) {
+            $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
+        } else {
+            $finder = Finder::create()->in($cacheDir . '/doctrine');
+            $filesystem->remove($finder);
+            $finder = Finder::create()->in($cacheDir . '/profiler');
+            $filesystem->remove($finder);
+            $finder = Finder::create()->in($cacheDir . '/twig');
+        }
+
+        $filesystem->remove($finder);
+        return true;
     }
 }

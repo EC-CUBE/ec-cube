@@ -22,13 +22,12 @@
  */
 
 
-namespace Eccube\Controller\Admin\Setting\System;
+namespace Eccube\Controller\Admin\Setting\Store;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
-
 
 class PluginController extends AbstractController
 {
@@ -48,14 +47,14 @@ class PluginController extends AbstractController
             $pluginForms[$Plugin->getId()] = $builder->getForm()->createView();
 
 
-            try{
-                $configPages[$Plugin->getCode()] = $app->url('plugin_'.$Plugin->getCode().'_config');
-            }catch(\Exception $e){
+            try {
+                $configPages[$Plugin->getCode()] = $app->url('plugin_' . $Plugin->getCode() . '_config');
+            } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
         }
 
-        return $app->render('Setting/System/Plugin/index.twig', array(
+        return $app->render('Setting/Store/plugin.twig', array(
             'plugin_forms' => $pluginForms,
             'Plugins' => $Plugins,
             'configPages' => $configPages
@@ -84,7 +83,7 @@ class PluginController extends AbstractController
         }
 
 
-        return $app->render('Setting/System/Plugin/install.twig', array(
+        return $app->render('Setting/Store/plugin_install.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -113,7 +112,7 @@ class PluginController extends AbstractController
         $fs = new Filesystem();
         $fs->remove($tmpDir . '/' . $tmpFile);
 
-        return $app->redirect($app->url('admin_setting_system_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin_index'));
     }
 
     public function enable(Application $app, $id)
@@ -127,7 +126,7 @@ class PluginController extends AbstractController
             $app->addSuccess('admin.plugin.enable.complete');
         }
 
-        return $app->redirect($app->url('admin_setting_system_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin_index'));
     }
 
     public function disable(Application $app, $id)
@@ -141,7 +140,7 @@ class PluginController extends AbstractController
             $app->addError('admin.plugin.already.disable', 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_system_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin_index'));
     }
 
 
@@ -151,20 +150,20 @@ class PluginController extends AbstractController
             ->find($id);
         $app['eccube.service.plugin']->uninstall($Plugin);
 
-        return $app->redirect($app->url('admin_setting_system_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin_index'));
     }
 
     function handler(Application $app)
     {
         $handlers = $app['eccube.repository.plugin_event_handler']->getHandlers();
 
-        // 一次元配列からイベント毎の二次元配列に変換する 
+        // 一次元配列からイベント毎の二次元配列に変換する
         $HandlersPerEvent = array();
         foreach ($handlers as $handler) {
             $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
         }
 
-        return $app->render('Setting/System/Plugin/handler.twig', array(
+        return $app->render('Setting/Store/plugin_handler.twig', array(
             'handlersPerEvent' => $HandlersPerEvent
         ));
 
@@ -175,7 +174,7 @@ class PluginController extends AbstractController
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId));
 
-        return $app->redirect($app->url('admin_setting_system_plugin_handler'));
+        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
     }
 
     function handler_down(Application $app, $handlerId)
@@ -183,7 +182,7 @@ class PluginController extends AbstractController
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId), false);
 
-        return $app->redirect($app->url('admin_setting_system_plugin_handler'));
+        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
     }
 
 }
