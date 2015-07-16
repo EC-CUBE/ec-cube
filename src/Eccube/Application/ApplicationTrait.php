@@ -59,9 +59,7 @@ class ApplicationTrait extends \Silex\Application
      * LICENSE file that was distributed with this source code.
      */
 
-    /**
- * FormTrait 
-*/
+    /** FormTrait */
     /**
      * Creates and returns a form builder instance
      *
@@ -75,9 +73,7 @@ class ApplicationTrait extends \Silex\Application
         return $this['form.factory']->createBuilder('form', $data, $options);
     }
 
-    /**
- * MonologTrait 
-*/
+    /** MonologTrait */
     /**
      * Adds a log record.
      *
@@ -92,9 +88,7 @@ class ApplicationTrait extends \Silex\Application
         return $this['monolog']->addRecord($level, $message, $context);
     }
 
-    /**
- * SecurityTrait 
-*/
+    /** SecurityTrait */
     /**
      * Gets a user from the Security Context.
      *
@@ -130,9 +124,7 @@ class ApplicationTrait extends \Silex\Application
         return $this['security.encoder_factory']->getEncoder($user)->encodePassword($password, $user->getSalt());
     }
 
-    /**
- * SwiftmailerTrait 
-*/
+    /** SwiftmailerTrait */
     /**
      * Sends an email.
      *
@@ -146,9 +138,7 @@ class ApplicationTrait extends \Silex\Application
         return $this['mailer']->send($message, $failedRecipients);
     }
 
-    /**
- * TranslationTrait 
-*/
+    /** TranslationTrait */
     /**
      * Translates the given message.
      *
@@ -180,9 +170,7 @@ class ApplicationTrait extends \Silex\Application
         return $this['translator']->transChoice($id, $number, $parameters, $domain, $locale);
     }
 
-    /**
- * TwigTrait 
-*/
+    /** TwigTrait */
     /**
      * Renders a view and returns a Response.
      *
@@ -199,11 +187,9 @@ class ApplicationTrait extends \Silex\Application
         $twig = $this['twig'];
 
         if ($response instanceof StreamedResponse) {
-            $response->setCallback(
-                function () use ($twig, $view, $parameters) {
-                    $twig->display($view, $parameters);
-                }
-            );
+            $response->setCallback(function () use ($twig, $view, $parameters) {
+                $twig->display($view, $parameters);
+            });
         } else {
             if (null === $response) {
                 $response = new Response();
@@ -227,9 +213,7 @@ class ApplicationTrait extends \Silex\Application
         return $this['twig']->render($view, $parameters);
     }
 
-    /**
- * UrlGeneratorTrait 
-*/
+    /** UrlGeneratorTrait */
     /**
      * Generates a path from the given parameters.
      *
