@@ -290,7 +290,6 @@ class InstallController
     {
         $config_file = $this->config_path . '/database.yml';
         $config = Yaml::parse($config_file);
-        $data = $config['database'];
 
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
@@ -298,8 +297,7 @@ class InstallController
 
         } catch (\Exception $e) {
             $this->PDO->close();
-            die($e->getMessage());
-
+            throw $e;
         }
 
         return $this;
