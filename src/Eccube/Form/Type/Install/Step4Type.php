@@ -45,28 +45,34 @@ class Step4Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $database = array();
+        if (extension_loaded('pdo_pgsql')) {
+            $database['pdo_pgsql'] = 'PostgreSQL';
+        }
+        if (extension_loaded('pdo_mysql')) {
+            $database['pdo_mysql'] = 'MySQL';
+        }
+
         $builder
             ->add('database', 'choice', array(
-                'label' => 'DBの種類',
-                'choices' => array(
-                    'pgsql' => 'PostgreSQL',
-                    'mysql' => 'MySQL',
-                ),
+                'label' => 'データベースの種類',
+                'choices' => $database,
                 'expanded' => false,
                 'multiple' => false,
             ))
             ->add('database_host', 'text', array(
-                'label' => 'DBサーバのIPアドレス',
+                'label' => 'データベースのホスト名',
             ))
             ->add('database_port', 'text', array(
-                'label' => 'DBサーバのポート番号',
+                'label' => 'ポート番号',
                 'required' => false,
             ))
             ->add('database_name', 'text', array(
-                'label' => 'DB名',
+                'label' => 'データベース名',
             ))
             ->add('database_user', 'text', array(
-                'label' => 'DBユーザ名',
+                'label' => 'ユーザ名',
             ))
             ->add('database_password', 'password', array(
                 'label' => 'パスワード',
@@ -75,19 +81,21 @@ class Step4Type extends AbstractType
                 $form = $event->getForm();
                 $data = $form->getData();
                 try {
-                    $dsn = $data['database']
-                        . ':host=' . $data['database_host']
-                        . ';dbname=' . $data['database_name'];
-                    if (!empty($data['port'])) {
-                        $dsn .= ';port=' . $data['database_port'];
-                    }
-                    new \PDO(
-                        $dsn,
-                        $data['database_user'],
-                        $data['database_password']
+                    $config = new \Doctrine\DBAL\Configuration();
+                    $connectionParams = array(
+                        'dbname' => $data['database_name'],
+                        'user' => $data['database_user'],
+                        'password' => $data['database_password'],
+                        'host' => $data['database_host'],
+                        'driver' => $data['database'],
+                        'port' => $data['database_port'],
                     );
-                } catch (\PDOException $e) {
-                    $form['database_name']->addError(new FormError('データベースに接続できませんでした。'));
+                    // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
+                    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+                    $conn->connect();
+
+                } catch (\Exception $e) {
+                    $form['database']->addError(new FormError('データベースに接続できませんでした。' . $e->getMessage()));
                 }
             });
 

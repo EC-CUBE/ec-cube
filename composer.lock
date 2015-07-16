@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b9ee7e9f3031fbf3248f219e3a25d73a",
+    "hash": "9fca5894324975ed494ae1bcbeadef3e",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -547,7 +547,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/70c580174e4e16a79296a02256fb40a34192731c",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/78954cce4962a4655ff47c0751eb78021fbaf2cc",
                 "reference": "a4f14d3a3d397104e557ec65d1a4e43bb86e4ddf",
                 "shasum": ""
             },
@@ -2812,6 +2812,43 @@
             "time": "2015-06-14 21:17:01"
         },
         {
+            "name": "leaphub/phpcs-symfony2-standard",
+            "version": "v2.0.3",
+            "target-dir": "leaphub/phpcs/Symfony2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leaphub/phpcs-symfony2-standard.git",
+                "reference": "3a69d4c86585b474f434cc0422569f372038147c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leaphub/phpcs-symfony2-standard/zipball/3a69d4c86585b474f434cc0422569f372038147c",
+                "reference": "3a69d4c86585b474f434cc0422569f372038147c",
+                "shasum": ""
+            },
+            "require": {
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A PHP_CodeSniffer standard for Symfony 2 applications",
+            "homepage": "https://github.com/leaphub/phpcs-symfony2-standard",
+            "keywords": [
+                "Coding Standard",
+                "phpcs",
+                "symfony 2"
+            ],
+            "time": "2015-03-25 10:07:53"
+        },
+        {
             "name": "phing/phing",
             "version": "2.11.0",
             "source": {
@@ -3789,6 +3826,80 @@
                 "silex"
             ],
             "time": "2015-06-17 07:50:04"
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "2.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "c1a26c729508f73560c1a4f767f60b8ab6b4a666"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/c1a26c729508f73560c1a4f767f60b8ab6b4a666",
+                "reference": "c1a26c729508f73560c1a4f767f60b8ab6b4a666",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.1.2"
+            },
+            "bin": [
+                "scripts/phpcs",
+                "scripts/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CodeSniffer.php",
+                    "CodeSniffer/CLI.php",
+                    "CodeSniffer/Exception.php",
+                    "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
+                    "CodeSniffer/Report.php",
+                    "CodeSniffer/Reporting.php",
+                    "CodeSniffer/Sniff.php",
+                    "CodeSniffer/Tokens.php",
+                    "CodeSniffer/Reports/",
+                    "CodeSniffer/Tokenizers/",
+                    "CodeSniffer/DocGenerators/",
+                    "CodeSniffer/Standards/AbstractPatternSniff.php",
+                    "CodeSniffer/Standards/AbstractScopeSniff.php",
+                    "CodeSniffer/Standards/AbstractVariableSniff.php",
+                    "CodeSniffer/Standards/IncorrectPatternException.php",
+                    "CodeSniffer/Standards/Generic/Sniffs/",
+                    "CodeSniffer/Standards/MySource/Sniffs/",
+                    "CodeSniffer/Standards/PEAR/Sniffs/",
+                    "CodeSniffer/Standards/PSR1/Sniffs/",
+                    "CodeSniffer/Standards/PSR2/Sniffs/",
+                    "CodeSniffer/Standards/Squiz/Sniffs/",
+                    "CodeSniffer/Standards/Zend/Sniffs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2015-06-24 03:16:23"
         },
         {
             "name": "symfony/browser-kit",
