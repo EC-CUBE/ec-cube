@@ -91,6 +91,11 @@ class CsvExportService
     protected $customerRepository;
 
     /**
+     * @var \Eccube\Repository\ProductRepository
+     */
+    protected $productRepository;
+
+    /**
      * @param $config
      */
     public function setConfig($config)
@@ -122,9 +127,20 @@ class CsvExportService
         $this->orderRepository = $orderRepository;
     }
 
+    /**
+     * @param \Eccube\Repository\CustomerRepository $customerRepository
+     */
     public function setCustomerRepository(\Eccube\Repository\CustomerRepository $customerRepository)
     {
         $this->customerRepository = $customerRepository;
+    }
+
+    /**
+     * @param \Eccube\Repository\ProductRepository $productRepository
+     */
+    public function setProductRepository(\Eccube\Repository\ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -382,6 +398,35 @@ class CsvExportService
         // 会員データのクエリビルダを構築.
         $qb = $this->customerRepository
             ->getQueryBuilderBySearchData($searchData);
+
+        return $qb;
+    }
+
+    /**
+     * 商品検索用のクエリビルダを返す.
+     *
+     * @param FormFactory $formFactory
+     * @param Request $request
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getProductQueryBuilder(FormFactory $formFactory, Request $request)
+    {
+        $searchForm = $formFactory
+            ->createBuilder('admin_search_customer')
+            ->getForm();
+
+        $searchData = array();
+
+        if ('POST' === $request->getMethod()) {
+            $searchForm->handleRequest($request);
+            if ($searchForm->isValid()) {
+                $searchData = $searchForm->getData();
+            }
+        }
+
+        // 商品データのクエリビルダを構築.
+        $qb = $this->productRepository
+            ->getQueryBuilderBySearchDataForAdmin($searchData);
 
         return $qb;
     }

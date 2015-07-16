@@ -69,6 +69,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
             $csvService->setOrderRepository($app['eccube.repository.order']);
             $csvService->setCustomerRepository($app['eccube.repository.customer']);
+            $csvService->setProductRepository($app['eccube.repository.product']);
+
             return $csvService;
         });
 
