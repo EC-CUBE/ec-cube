@@ -8,7 +8,7 @@ if (version_compare(PHP_VERSION, '5.3.3') < 0) {
 $autoload = __DIR__ . '/vendor/autoload.php';
 
 if (file_exists($autoload) && is_readable($autoload)) {
-    $loader = require $autoload;
+    $loader = include $autoload;
 } else {
     die('Composer is not installed.');
 }

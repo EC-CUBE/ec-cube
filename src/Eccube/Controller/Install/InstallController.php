@@ -109,9 +109,11 @@ class InstallController
 
         $this->checkModules($app);
 
-        return $app['twig']->render('step1.twig', array(
+        return $app['twig']->render(
+            'step1.twig', array(
             'form' => $form->createView(),
-        ));
+            )
+        );
     }
 
     // 権限チェック
@@ -131,9 +133,11 @@ class InstallController
             $fs->remove($finder);
         }
 
-        return $app['twig']->render('step2.twig', array(
+        return $app['twig']->render(
+            'step2.twig', array(
             'protectedDirs' => $protectedDirs,
-        ));
+            )
+        );
     }
 
     //    サイトの設定
@@ -154,9 +158,11 @@ class InstallController
             return $app->redirect($app->url('install_step4'));
         }
 
-        return $app['twig']->render('step3.twig', array(
+        return $app['twig']->render(
+            'step3.twig', array(
             'form' => $form->createView(),
-        ));
+            )
+        );
     }
 
     //    データベースの設定
@@ -175,9 +181,11 @@ class InstallController
             return $app->redirect($app->url('install_step5'));
         }
 
-        return $app['twig']->render('step4.twig', array(
+        return $app['twig']->render(
+            'step4.twig', array(
             'form' => $form->createView(),
-        ));
+            )
+        );
     }
 
     //    データベースの初期化
@@ -218,9 +226,11 @@ class InstallController
             return $app->redirect($app->url('install_complete'));
         }
 
-        return $app['twig']->render('step5.twig', array(
+        return $app['twig']->render(
+            'step5.twig', array(
             'form' => $form->createView(),
-        ));
+            )
+        );
     }
 
     //    インストール完了
@@ -234,9 +244,11 @@ class InstallController
 
         $adminUrl = $host . $basePath . '/' . $config['admin_dir'];
 
-        return $app['twig']->render('complete.twig', array(
+        return $app['twig']->render(
+            'complete.twig', array(
             'admin_url' => $adminUrl,
-        ));
+            )
+        );
     }
 
     private function resetNatTimer()
@@ -248,7 +260,8 @@ class InstallController
     }
 
 
-    private function checkModules($app) {
+    private function checkModules($app) 
+    {
 
         foreach($this->required_modules as $module) {
             if(!extension_loaded($module)) {
@@ -282,15 +295,12 @@ class InstallController
         } else {
             $app->addDanger('mod_rewriteを有効にしてください。', 'install');
         }
-
-
     }
 
     private function setPDO()
     {
         $config_file = $this->config_path . '/database.yml';
         $config = Yaml::parse($config_file);
-        $data = $config['database'];
 
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
@@ -298,8 +308,7 @@ class InstallController
 
         } catch (\Exception $e) {
             $this->PDO->close();
-            die($e->getMessage());
-
+            throw $e;
         }
 
         return $this;
@@ -323,11 +332,14 @@ class InstallController
         $config_file = $this->config_path . '/database.yml';
         $database = Yaml::parse($config_file);
 
-        $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+        $this->app->register(
+            new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $database['database']
-        ));
+            )
+        );
 
-        $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+        $this->app->register(
+            new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => array(
@@ -342,7 +354,8 @@ class InstallController
 
                 ),
             )
-        ));
+            )
+        );
 
         return $em = $this->app['orm.em'];
     }
@@ -393,7 +406,8 @@ class InstallController
             $salt = \Eccube\Util\Str::random();
 
             $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-            $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
+            $sth = $this->PDO->prepare(
+                "INSERT INTO dtb_base_info (
                 id,
                 shop_name,
                 email01,
@@ -410,17 +424,20 @@ class InstallController
                 :admin_mail,
                 :admin_mail,
                 current_timestamp,
-                0);");
-            $sth->execute(array(
+                0);"
+            );
+            $sth->execute(
+                array(
                 ':shop_name' => $this->session_data['shop_name'],
                 ':admin_mail' => $this->session_data['email']
-            ));
+                )
+            );
 
             $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
             $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
 
             $this->PDO->commit();
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             $this->PDO->rollback();
             throw $e;
         }
@@ -546,18 +563,18 @@ class InstallController
         }
 
         switch ($data['database']) {
-            case 'pdo_pgsql':
-                if (empty($data['db_port'])) {
-                    $data['db_port'] = '5432';
-                }
-                $data['db_driver'] = 'pdo_pgsql';
-                break;
-            case 'pdo_mysql':
-                if (empty($data['db_port'])) {
-                    $data['db_port'] = '3306';
-                }
-                $data['db_driver'] = 'pdo_mysql';
-                break;
+        case 'pdo_pgsql':
+            if (empty($data['db_port'])) {
+                $data['db_port'] = '5432';
+            }
+            $data['db_driver'] = 'pdo_pgsql';
+            break;
+        case 'pdo_mysql':
+            if (empty($data['db_port'])) {
+                $data['db_port'] = '3306';
+            }
+            $data['db_driver'] = 'pdo_mysql';
+            break;
         }
         $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
         $replace = array(
@@ -696,7 +713,7 @@ class InstallController
         $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
         $config_app->initialize();
         $config_app->boot();
-        \Eccube\Util\Cache::clear($config_app,true);
+        \Eccube\Util\Cache::clear($config_app, true);
 
         return $app['twig']->render('migration_end.twig');
     }

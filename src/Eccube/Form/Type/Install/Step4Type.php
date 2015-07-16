@@ -29,7 +29,6 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class Step4Type extends AbstractType
 {
@@ -55,50 +54,64 @@ class Step4Type extends AbstractType
         }
 
         $builder
-            ->add('database', 'choice', array(
+            ->add(
+                'database', 'choice', array(
                 'label' => 'データベースの種類',
                 'choices' => $database,
                 'expanded' => false,
                 'multiple' => false,
-            ))
-            ->add('database_host', 'text', array(
+                )
+            )
+            ->add(
+                'database_host', 'text', array(
                 'label' => 'データベースのホスト名',
-            ))
-            ->add('database_port', 'text', array(
+                )
+            )
+            ->add(
+                'database_port', 'text', array(
                 'label' => 'ポート番号',
                 'required' => false,
-            ))
-            ->add('database_name', 'text', array(
+                )
+            )
+            ->add(
+                'database_name', 'text', array(
                 'label' => 'データベース名',
-            ))
-            ->add('database_user', 'text', array(
+                )
+            )
+            ->add(
+                'database_user', 'text', array(
                 'label' => 'ユーザ名',
-            ))
-            ->add('database_password', 'password', array(
+                )
+            )
+            ->add(
+                'database_password', 'password', array(
                 'label' => 'パスワード',
-            ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
-                $form = $event->getForm();
-                $data = $form->getData();
-                try {
-                    $config = new \Doctrine\DBAL\Configuration();
-                    $connectionParams = array(
+                )
+            )
+            ->addEventListener(
+                FormEvents::POST_SUBMIT, function ($event) {
+                    $form = $event->getForm();
+                    $data = $form->getData();
+                    try {
+                        $config = new \Doctrine\DBAL\Configuration();
+                        $connectionParams = array(
                         'dbname' => $data['database_name'],
                         'user' => $data['database_user'],
                         'password' => $data['database_password'],
                         'host' => $data['database_host'],
                         'driver' => $data['database'],
                         'port' => $data['database_port'],
-                    );
-                    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-                    $conn->connect();
-                    // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
+                        );
+                        // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
+                        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+                        $conn->connect();
 
-                } catch (\Exception $e) {
-                    $conn->close();
-                    $form['database']->addError(new FormError('データベースに接続できませんでした。' . $e->getMessage()));
+                    } catch (\Exception $e) {
+
+                        $form['database']->addError(new FormError('データベースに接続できませんでした。' . $e->getMessage()));
+                    }
                 }
-            });
+            );
 
     }
 
