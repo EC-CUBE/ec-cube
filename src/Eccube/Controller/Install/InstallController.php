@@ -115,6 +115,8 @@ class InstallController
     // 権限チェック
     public function step2(InstallApplication $app, Request $request)
     {
+        $this->getSessionData($request);
+
         $protectedDirs = $this->getProtectedDirs();
 
         // 権限がある場合, キャッシュディレクトリをクリア
