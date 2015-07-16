@@ -88,6 +88,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.master.device_type'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\DeviceType');
         });
+        $app['eccube.repository.master.csv_type'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\CsvType');
+        });
 
         $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
@@ -184,6 +187,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.mail_template'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\MailTemplate');
         });
+        $app['eccube.repository.csv'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Csv');
+        });
 
         $app['paginator'] = $app->protect(function () {
             return new \Knp\Component\Pager\Paginator();
@@ -257,6 +263,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
             $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
             $types[] = new \Eccube\Form\Type\Master\PageMaxType();
+            $types[] = new \Eccube\Form\Type\Master\CsvType();
 
             $types[] = new \Eccube\Form\Type\EntryType($app);
             $types[] = new \Eccube\Form\Type\CustomerType($app);
