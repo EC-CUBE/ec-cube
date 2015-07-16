@@ -246,7 +246,7 @@ class OrderController
         $response->setCallback(function () use ($app, $request) {
 
             // CSV種別を元に初期化.
-            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_DELIVERY);
+            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_SHIPPING);
 
             // ヘッダ行の出力.
             $app['eccube.service.csv.export']->exportHeader();
