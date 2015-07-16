@@ -25,7 +25,9 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Application;
+use Eccube\Entity\Master\CsvType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderController
 {
@@ -151,5 +153,153 @@ class OrderController
 
 
         return $app->redirect($app->url('admin_order'));
+    }
+
+
+    /**
+     * 受注CSVの出力.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return StreamedResponse
+     */
+    public function exportOrder(Application $app, Request $request)
+    {
+
+        // タイムアウトを無効にする.
+        set_time_limit(0);
+
+        // sql loggerを無効にする.
+        $em = $app['orm.em'];
+        $em->getConfiguration()->setSQLLogger(null);
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($app, $request) {
+
+            // CSV種別を元に初期化.
+            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_ORDER);
+
+            // ヘッダ行の出力.
+            $app['eccube.service.csv.export']->exportHeader();
+
+            // 受注データ検索用のクエリビルダを取得.
+            $qb = $app['eccube.service.csv.export']
+                ->getOrderQueryBuilder($app['form.factory'], $request);
+
+            // データ行の出力.
+            $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+
+                $Csvs = $csvService->getCsvs();
+
+                $Order = $entity;
+                $OrderDetails = $Order->getOrderDetails();
+
+                foreach ($OrderDetails as $OrderDetail) {
+                    $row = array();
+
+                    // CSV出力項目と合致するデータを取得.
+                    foreach ($Csvs as $Csv) {
+                        // 受注データを検索.
+                        $data = $csvService->getData($Csv, $Order);
+                        if (is_null($data)) {
+                            // 受注データにない場合は, 受注明細を検索.
+                            $data = $csvService->getData($Csv, $OrderDetail);
+                        }
+                        $row[] = $data;
+
+                    }
+
+                    //$row[] = number_format(memory_get_usage(true));
+                    // 出力.
+                    $csvService->fputcsv($row);
+                }
+            });
+        });
+
+        $now = new \DateTime();
+        $filename = 'order_' . $now->format('YmdHis') . '.csv';
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->send();
+
+        return $response;
+    }
+
+    /**
+     * 配送CSVの出力.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return StreamedResponse
+     */
+    public function exportShipping(Application $app, Request $request)
+    {
+        // タイムアウトを無効にする.
+        set_time_limit(0);
+
+        // sql loggerを無効にする.
+        $em = $app['orm.em'];
+        $em->getConfiguration()->setSQLLogger(null);
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($app, $request) {
+
+            // CSV種別を元に初期化.
+            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_DELIVERY);
+
+            // ヘッダ行の出力.
+            $app['eccube.service.csv.export']->exportHeader();
+
+            // 受注データ検索用のクエリビルダを取得.
+            $qb = $app['eccube.service.csv.export']
+                ->getOrderQueryBuilder($app['form.factory'], $request);
+
+            // データ行の出力.
+            $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+
+                $Csvs = $csvService->getCsvs();
+
+                /** @var $Order \Eccube\Entity\Order */
+                $Order = $entity;
+                /** @var $Shippings \Eccube\Entity\Shipping[] */
+                $Shippings = $Order->getShippings();
+
+                foreach ($Shippings as $Shipping) {
+                    /** @var $ShipmentItems \Eccube\Entity\ShipmentItem */
+                    $ShipmentItems = $Shipping->getShipmentItems();
+                    foreach ($ShipmentItems as $ShipmentItem) {
+                        $row = array();
+
+                        // CSV出力項目と合致するデータを取得.
+                        foreach ($Csvs as $Csv) {
+                            // 受注データを検索.
+                            $data = $csvService->getData($Csv, $Order);
+                            if (is_null($data)) {
+                                // 配送情報を検索.
+                                $data = $csvService->getData($Csv, $Shipping);
+                            }
+                            if (is_null($data)) {
+                                // 配送商品を検索.
+                                $data = $csvService->getData($Csv, $ShipmentItem);
+                            }
+                            $row[] = $data;
+                        }
+                        //$row[] = number_format(memory_get_usage(true));
+                        // 出力.
+                        $csvService->fputcsv($row);
+                    }
+                }
+            });
+        });
+
+        $now = new \DateTime();
+        $filename = 'shipping_' . $now->format('YmdHis') . '.csv';
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->send();
+
+        return $response;
     }
 }
