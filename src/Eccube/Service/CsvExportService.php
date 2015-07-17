@@ -268,19 +268,17 @@ class CsvExportService
         // データを取得.
         $data = $entity->offsetGet($Csv->getFieldName());
 
-        // todo 参照先が論理削除されたケースを対応する
-
         // one to one の場合は, dtb_csv.referece_field_nameと比較し, 合致する結果を取得する.
         if ($data instanceof \Eccube\Entity\AbstractEntity) {
             return $data->offsetGet($Csv->getReferenceFieldName());
 
-        } elseif ($data instanceof \Doctrine\Common\Collections\ArrayCollection) {
+        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
             $array = array();
             foreach ($data as $elem) {
                 $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
             }
-            return implode($array, $this->config['csv_export_multidata_separator']);
+            return implode($this->config['csv_export_multidata_separator'], $array);
 
         } elseif ($data instanceof \DateTime) {
             // datetimeの場合は文字列に変換する.
@@ -305,7 +303,7 @@ class CsvExportService
 
         return function ($value) use ($config) {
             return mb_convert_encoding(
-                $value, $config['csv_export_encoding'], mb_internal_encoding()
+                (string) $value, $config['csv_export_encoding'], mb_internal_encoding()
             );
         };
     }

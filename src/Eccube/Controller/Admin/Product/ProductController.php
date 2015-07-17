@@ -444,7 +444,6 @@ class ProductController
      */
     public function export(Application $app, Request $request)
     {
-
         // タイムアウトを無効にする.
         set_time_limit(0);
 
@@ -461,9 +460,15 @@ class ProductController
             // ヘッダ行の出力.
             $app['eccube.service.csv.export']->exportHeader();
 
-            // 受注データ検索用のクエリビルダを取得.
+            // 商品データ検索用のクエリビルダを取得.
             $qb = $app['eccube.service.csv.export']
                 ->getProductQueryBuilder($app['form.factory'], $request);
+
+            // joinする場合はiterateが使えないため, select句をdistinctする.
+            // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
+            $qb->resetDQLPart('select')
+                ->select('p')
+                ->distinct();
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
@@ -473,6 +478,7 @@ class ProductController
 
                 /** @var $Product \Eccube\Entity\Product */
                 $Product = $entity;
+
                 /** @var $Product \Eccube\Entity\ProductClass[] */
                 $ProductClassess = $Product->getProductClasses();
 
