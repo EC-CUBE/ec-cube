@@ -351,17 +351,11 @@ class CsvExportService
      */
     public function getOrderQueryBuilder(FormFactory $formFactory, Request $request)
     {
-        $searchForm = $formFactory
-            ->createBuilder('admin_search_order')
-            ->getForm();
-
-        $searchData = array();
-
-        if ('POST' === $request->getMethod()) {
-            $searchForm->handleRequest($request);
-            if ($searchForm->isValid()) {
-                $searchData = $searchForm->getData();
-            }
+        $session = $request->getSession();
+        if ($session->has('eccube.admin.order.search')) {
+            $searchData = $session->get('eccube.admin.order.search');
+        } else {
+            $searchData = array();
         }
 
         // 受注データのクエリビルダを構築.
@@ -380,17 +374,11 @@ class CsvExportService
      */
     public function getCustomerQueryBuilder(FormFactory $formFactory, Request $request)
     {
-        $searchForm = $formFactory
-            ->createBuilder('admin_search_customer')
-            ->getForm();
-
-        $searchData = array();
-
-        if ('POST' === $request->getMethod()) {
-            $searchForm->handleRequest($request);
-            if ($searchForm->isValid()) {
-                $searchData = $searchForm->getData();
-            }
+        $session = $request->getSession();
+        if ($session->has('eccube.admin.customer.search')) {
+            $searchData = $session->get('eccube.admin.customer.search');
+        } else {
+            $searchData = array();
         }
 
         // 会員データのクエリビルダを構築.
@@ -409,17 +397,11 @@ class CsvExportService
      */
     public function getProductQueryBuilder(FormFactory $formFactory, Request $request)
     {
-        $searchForm = $formFactory
-            ->createBuilder('admin_search_customer')
-            ->getForm();
-
-        $searchData = array();
-
-        if ('POST' === $request->getMethod()) {
-            $searchForm->handleRequest($request);
-            if ($searchForm->isValid()) {
-                $searchData = $searchForm->getData();
-            }
+        $session = $request->getSession();
+        if ($session->has('eccube.admin.product.search')) {
+            $searchData = $session->get('eccube.admin.product.search');
+        } else {
+            $searchData = array();
         }
 
         // 商品データのクエリビルダを構築.

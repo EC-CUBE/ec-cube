@@ -134,7 +134,7 @@ class CustomerController
 
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $Order \Eccube\Entity\Order */
+                /** @var $Customer \Eccube\Entity\Customer */
                 $Customer = $entity;
 
                 $row = array();
