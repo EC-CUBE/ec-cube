@@ -80,12 +80,13 @@ class PluginController extends AbstractController
 
             $fs = new Filesystem();
             $fs->remove($tmpDir . '/' . $tmpFile);
+            return $app->redirect($app->url('admin_setting_store_plugin'));
         }
-
 
         return $app->render('Setting/Store/plugin_install.twig', array(
             'form' => $form->createView(),
         ));
+
     }
 
     public function update(Application $app, $id)
