@@ -64,7 +64,7 @@ class Version20150716110827 extends AbstractMigration
         if (!$schema->hasTable(self::NAME)) {
             return true;
         }
-        $table = $schema->dropTable(self::NAME);
+        $schema->dropTable(self::NAME);
 
     }
 }
