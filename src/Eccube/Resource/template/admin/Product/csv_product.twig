@@ -1,0 +1,110 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'product_csv_import'] %}
+
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}商品CSVアップロード{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" method="post" action="{{ url('admin_product_csv_import') }}" {{ form_enctype(form) }}>
+            {{ form_widget(form._token) }}
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">商品登録CSV</h3>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">CSVファイル選択</label>
+                        <div class="col-sm-6">
+                            {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
+                        </div>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body text-center">
+                    <button type="submit" class="btn btn-primary btn-sm" name="mode" value="import">CSVファイルのアップロード</button>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </form>
+    </div><!-- /.col -->
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <a href="{{ url('admin_product_csv_template') }}" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
+                <h3 class="box-title">商品登録CSVファイルフォーマット</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="table_list">
+                    <div class="table-responsive with-border table-menu">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="text-nowrap">
+                                    <th>商品ID</th>
+                                    <th>公開ステータス(ID)</th>
+                                    <th>商品名</th>
+                                    <th>ショップ用メモ欄</th>
+                                    <th>商品説明(一覧)</th>
+                                    <th>商品説明(一覧)</th>
+                                    <th>検索ワード</th>
+                                    <th>フリーエリア</th>
+                                    <th>商品削除フラグ</th>
+                                    <th>商品画像</th>
+                                    <th>商品カテゴリ(ID)</th>
+                                    <th>商品種別(ID)</th>
+                                    <th>規格分類1(ID)</th>
+                                    <th>規格分類2(ID)</th>
+                                    <th>発送日目安(ID)</th>
+                                    <th>商品コード</th>
+                                    <th>在庫数</th>
+                                    <th>在庫数無制限フラグア</th>
+                                    <th>販売数制限数</th>
+                                    <th>通常価格</th>
+                                    <th>販売価格</th>
+                                    <th>送料</th>
+                                    <th>商品規格削除フラグ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    商品ID
+                                </td>
+                                <td>
+                                    商品ID
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+</div>
+
+{% endblock %}

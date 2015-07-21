@@ -63,6 +63,18 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\MailService($app);
         });
 
+        $app['eccube.service.csv.import'] = $app->share(function () use ($app) {
+            $csvService =  new \Eccube\Service\CsvImportService();
+            $csvService->setConfig($app['config']);
+            $csvService->setCsvRepository($app['eccube.repository.csv']);
+            $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
+            $csvService->setOrderRepository($app['eccube.repository.order']);
+            $csvService->setCustomerRepository($app['eccube.repository.customer']);
+            $csvService->setProductRepository($app['eccube.repository.product']);
+
+            return $csvService;
+        });
+
         // Repository
         $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
@@ -307,6 +319,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\NewsType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\SecurityType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\CsvImportType($app);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
