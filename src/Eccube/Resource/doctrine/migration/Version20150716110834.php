@@ -225,7 +225,7 @@ class Version20150716110834 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DELETE FROM ' . self::NAME);
+        // $this->addSql('DELETE FROM ' . self::NAME);
 
     }
 }

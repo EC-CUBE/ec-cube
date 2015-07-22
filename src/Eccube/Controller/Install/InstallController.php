@@ -458,7 +458,7 @@ class InstallController
     {
         try {
             $migration = $this->getMigration();
-            $migration->migrate('first', false);
+            $migration->migrate(0, false);
         } catch (MigrationException $e) {
         }
 
