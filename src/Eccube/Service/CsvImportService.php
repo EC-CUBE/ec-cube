@@ -27,6 +27,10 @@ use Eccube\Application;
 
 class CsvImportService
 {
+
+    /** @var \Eccube\Application */
+    protected $app;
+
     /**
      * @var
      */
@@ -99,12 +103,17 @@ class CsvImportService
 
 
     /**
-     * @param \SplFileObject $file
-     * @param string         $delimiter
-     * @param string         $enclosure
-     * @param string         $escape
+     * @param Application $app
      */
-    public function __construct(\SplFileObject $file, $delimiter, $enclosure, $escape)
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
+     * @param \SplFileObject $file
+     */
+    public function setCsvImport(\SplFileObject $file)
     {
         ini_set('auto_detect_line_endings', true);
 
@@ -116,11 +125,23 @@ class CsvImportService
             \SplFileObject::DROP_NEW_LINE
         );
         $this->file->setCsvControl(
-            $delimiter,
-            $enclosure,
-            $escape
+            $this->app['config']['csv_delimiter'],
+            $this->app['config']['csv_enclosure'],
+            $this->app['config']['csv_escape']
         );
+
     }
+
+
+    public function getReader() {
+
+
+    }
+
+
+
+
+
 
     /**
      * @param $config
@@ -198,7 +219,7 @@ class CsvImportService
     /**
      * Csv種別からServiceの初期化を行う.
      *
-     * @param $CsvType|integer
+     * @param $CsvType |integer
      */
     public function initCsvType($CsvType)
     {
@@ -325,7 +346,7 @@ class CsvImportService
 
         return function ($value) use ($config) {
             return mb_convert_encoding(
-                (string) $value, $config['csv_export_encoding'], 'UTF-8'
+                (string)$value, $config['csv_export_encoding'], 'UTF-8'
             );
         };
     }

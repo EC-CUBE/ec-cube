@@ -42,7 +42,8 @@ class CsvImportController
 
         $builder = $app['form.factory']->createBuilder('admin_csv_import');
 
-        $headers = $app['eccube.service.csv.import']->getProductCsvHeader();
+        $csvService = $app['eccube.service.csv.import'];
+        $headers = $csvService->getProductCsvHeader();
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -53,21 +54,38 @@ class CsvImportController
 
                 $file = $form['import_file']->getData();
 
-                error_log($file->getClientOriginalName());
-
                 if (!empty($file)) {
                     // アップロードされたCSVファイルを一時ディレクトリに保存
                     $fileName = Str::random() . '.' . $file->guessExtension();
                     $file->move($app['config']['csv_temp_realdir'], $fileName);
 
 
+                    // $rows = $csvService->loadCsv($app['config']['csv_temp_realdir'] . $fileName);
+                    // $rows->setHeaderRowNumber(0);
+                    // $rows->setStrict($this->strict);
 
-                    $reader = new CsvReader($file, $this->delimiter, $this->enclosure, $this->escape);
-                    if (null !== $this->headerRowNumber) {
-                        $reader->setHeaderRowNumber($this->headerRowNumber);
+                    $data = $this->convert($app['config']['csv_temp_realdir'] . '/' . $fileName);
+
+                    $data = mb_convert_encoding($data, 'UTF-8', $app['config']['csv_encoding']);
+
+                    $em = $app['orm.em'];
+
+                    $em->getConfiguration()->setSQLLogger(null);
+
+                    $size = count($data);
+
+                    foreach ($data as $row) {
+
+                        // Persisting the current user
+                        // $em->persist($user);
+                        error_log(print_r($row, true));
+
                     }
 
-                    $reader->setStrict($this->strict);
+                    // Flushing and clear data on queue
+                    $em->flush();
+                    $em->clear();
+
                 }
 
             }
@@ -78,6 +96,29 @@ class CsvImportController
             'headers' => $headers,
         ));
 
+    }
+
+    public function convert($filename, $delimiter = ',')
+    {
+        if (!file_exists($filename) || !is_readable($filename)) {
+            return FALSE;
+        }
+
+        $header = NULL;
+        $data = array();
+
+        if (($handle = fopen($filename, 'r')) !== FALSE) {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE) {
+                if (!$header) {
+                    $header = $row;
+                } else {
+                    $row = mb_convert_encoding($row, 'UTF-8', $app['config']['csv_encoding']);
+                    $data[] = array_combine($header, $row);
+                }
+            }
+            fclose($handle);
+        }
+        return $data;
     }
 
 
