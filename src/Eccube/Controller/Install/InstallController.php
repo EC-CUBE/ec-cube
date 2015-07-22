@@ -41,11 +41,7 @@ class InstallController
 {
     private $app;
 
-    private $data;
-
     private $PDO;
-
-    private $error;
 
     private $config_path;
 
@@ -54,6 +50,10 @@ class InstallController
     private $cache_path;
 
     private $session_data;
+
+    private $required_modules = array('pdo', 'phar', 'gd', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL');
+
+    private $recommended_module = array('hash', 'APC', 'mcrypt');
 
     const SESSION_KEY = 'eccube.session.install';
 
@@ -106,6 +106,8 @@ class InstallController
         if ($this->isValid($request, $form)) {
             return $app->redirect($app->url('install_step2'));
         }
+
+        $this->checkModules($app);
 
         return $app['twig']->render('step1.twig', array(
             'form' => $form->createView(),
@@ -163,6 +165,7 @@ class InstallController
         $form = $app['form.factory']
             ->createBuilder('install_step4')
             ->getForm();
+
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
 
@@ -198,7 +201,6 @@ class InstallController
                     ->doMigrate();
             }
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
-
                 $host = $request->getSchemeAndHttpHost();
                 $basePath = $request->getBasePath();
                 $params = array(
@@ -239,31 +241,64 @@ class InstallController
     private function resetNatTimer()
     {
         // NATの無通信タイマ対策（仮）
-        echo str_repeat(" ", 4 * 1024);
+        echo str_repeat(' ', 4 * 1024);
         ob_flush();
         flush();
+    }
+
+
+    private function checkModules($app)
+    {
+
+        foreach ($this->required_modules as $module) {
+            if (!extension_loaded($module)) {
+                $app->addDanger($module . ' 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
+        if (extension_loaded('gd')) {
+            $gdInfo = gd_info();
+            if (empty($gdInfo['FreeType Support'])) {
+                $app->addDanger('FreeType 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
+        if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
+            $app->addDanger('pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+        }
+
+        foreach ($this->recommended_module as $module) {
+            if (!extension_loaded($module)) {
+                $app->addWarning($module . ' 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
+        if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
+            // 有効
+        } elseif (isset($_SERVER['IIS_UrlRewriteModule'])) {
+            // ISSの場合
+        } elseif (!function_exists('apache_get_modules')) {
+            $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+        } else {
+            $app->addDanger('mod_rewriteを有効にしてください。', 'install');
+        }
+
+
     }
 
     private function setPDO()
     {
         $config_file = $this->config_path . '/database.yml';
         $config = Yaml::parse($config_file);
-        $data = $config['database'];
 
-        $dsn = str_replace('pdo_', '', $data['driver'])
-            . ':host=' . $data['host']
-            . ';dbname=' . $data['dbname'];
-        if (!empty($data['port'])) {
-            $dsn .= ';port=' . $data['port'];
+        try {
+            $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
+            $this->PDO->connect();
+
+        } catch (\Exception $e) {
+            $this->PDO->close();
+            throw $e;
         }
-        if ($data['driver'] == 'pdo_mysql') {
-            $dsn .= ';charset=utf8';
-        }
-        $this->PDO = new \PDO(
-            $dsn,
-            $data['user'],
-            $data['password']
-        );
 
         return $this;
     }
@@ -291,7 +326,7 @@ class InstallController
         ));
 
         $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => array(
                     array(
@@ -343,52 +378,50 @@ class InstallController
             die('database type invalid.');
         }
 
-        $fp = fopen($sqlFile, 'r');
-        $sql = fread($fp, filesize($sqlFile));
-        fclose($fp);
-        $sqls = explode(';', $sql);
-
         $this->PDO->beginTransaction();
-        foreach ($sqls as $sql) {
-            $this->PDO->query(trim($sql));
-        }
+        try {
+            $this->PDO->exec(file_get_contents($sqlFile));
 
-        $config = array(
-            'auth_type' => '',
-            'auth_magic' => $config['config']['auth_magic'],
-            'password_hash_algos' => 'sha256',
-        );
-        $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
-        $salt = \Eccube\Util\Str::random();
+            $config = array(
+                'auth_type' => '',
+                'auth_magic' => $config['config']['auth_magic'],
+                'password_hash_algos' => 'sha256',
+            );
+            $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
+            $salt = \Eccube\Util\Str::random();
 
-        $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-        $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
-            id,
-            shop_name,
-            email01,
-            email02,
-            email03,
-            email04,
-            update_date,
-            option_product_tax_rule
+            $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
+            $sth = $this->PDO->prepare('INSERT INTO dtb_base_info (
+                id,
+                shop_name,
+                email01,
+                email02,
+                email03,
+                email04,
+                update_date,
+                option_product_tax_rule
             ) VALUES (
-            1,
-            :shop_name,
-            :admin_mail,
-            :admin_mail,
-            :admin_mail,
-            :admin_mail,
-            current_timestamp,
-            0);");
-        $sth->execute(array(
-            ':shop_name' => $this->session_data['shop_name'],
-            ':admin_mail' => $this->session_data['email']
-        ));
+                1,
+                :shop_name,
+                :admin_mail,
+                :admin_mail,
+                :admin_mail,
+                :admin_mail,
+                current_timestamp,
+                0);');
+            $sth->execute(array(
+                ':shop_name' => $this->session_data['shop_name'],
+                ':admin_mail' => $this->session_data['email']
+            ));
 
-        $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (1, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
-        $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
+            $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+            $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
 
-        $this->PDO->commit();
+            $this->PDO->commit();
+        } catch (\Exception $e) {
+            $this->PDO->rollback();
+            throw $e;
+        }
 
         return $this;
     }
@@ -511,13 +544,13 @@ class InstallController
         }
 
         switch ($data['database']) {
-            case 'pgsql':
+            case 'pdo_pgsql':
                 if (empty($data['db_port'])) {
                     $data['db_port'] = '5432';
                 }
                 $data['db_driver'] = 'pdo_pgsql';
                 break;
-            case 'mysql':
+            case 'pdo_mysql':
                 if (empty($data['db_port'])) {
                     $data['db_port'] = '3306';
                 }
@@ -632,8 +665,8 @@ class InstallController
         );
 
         $header = array(
-            "Content-Type: application/x-www-form-urlencoded",
-            "Content-Length: " . strlen($data),
+            'Content-Type: application/x-www-form-urlencoded',
+            'Content-Length: ' . strlen($data),
         );
         $context = stream_context_create(
             array(
@@ -661,7 +694,7 @@ class InstallController
         $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
         $config_app->initialize();
         $config_app->boot();
-        \Eccube\Util\Cache::clear($config_app,true);
+        \Eccube\Util\Cache::clear($config_app, true);
 
         return $app['twig']->render('migration_end.twig');
     }
