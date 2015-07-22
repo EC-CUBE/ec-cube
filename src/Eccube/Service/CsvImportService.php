@@ -108,6 +108,7 @@ class CsvImportService
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->config = $app['config'];
     }
 
     /**
@@ -133,14 +134,11 @@ class CsvImportService
     }
 
 
-    public function getReader() {
+    public function getReader()
+    {
 
 
     }
-
-
-
-
 
 
     /**
@@ -346,8 +344,9 @@ class CsvImportService
 
         return function ($value) use ($config) {
             return mb_convert_encoding(
-                (string)$value, $config['csv_export_encoding'], 'UTF-8'
+                (string) $value, $config['csv_export_encoding'], 'UTF-8'
             );
+
         };
     }
 
