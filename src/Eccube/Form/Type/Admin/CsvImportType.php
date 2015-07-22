@@ -47,9 +47,18 @@ class CsvImportType extends AbstractType
 
         $builder
             ->add('import_file', 'file', array(
-                'label' => 'CSVアップロード',
+                'label' => false,
                 'mapped' => false,
                 'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
+                    new Assert\File(array(
+                        'maxSize' => $app['config']['csv_size'] . 'M',
+                        'mimeTypes' => array('text/csv', 'text/plain'),
+                        'maxSizeMessage' => 'CSVファイルは' . $app['config']['csv_size'] . 'M以下でアップロードしてください。',
+                        'mimeTypesMessage' => 'CSVファイルをアップロードしてください。',
+                    )),
+                ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
@@ -59,6 +68,6 @@ class CsvImportType extends AbstractType
      */
     public function getName()
     {
-        return 'admin_csv_upload';
+        return 'admin_csv_import';
     }
 }

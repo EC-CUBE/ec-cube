@@ -37,9 +37,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="box-header">
                     <h3 class="box-title">商品登録CSV</h3>
                     <div class="form-group">
-                        <label class="col-sm-6 control-label">CSVファイル選択</label>
-                        <div class="col-sm-6">
+                        <label class="col-sm-5 control-label">CSVファイル選択</label>
+                        <div class="col-sm-7">
                             {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
+                            {{ form_errors(form.import_file) }}
                         </div>
                     </div>
                 </div><!-- /.box-header -->
@@ -64,29 +65,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <table class="table table-striped">
                             <thead>
                                 <tr class="text-nowrap">
-                                    <th>商品ID</th>
-                                    <th>公開ステータス(ID)</th>
-                                    <th>商品名</th>
-                                    <th>ショップ用メモ欄</th>
-                                    <th>商品説明(一覧)</th>
-                                    <th>商品説明(一覧)</th>
-                                    <th>検索ワード</th>
-                                    <th>フリーエリア</th>
-                                    <th>商品削除フラグ</th>
-                                    <th>商品画像</th>
-                                    <th>商品カテゴリ(ID)</th>
-                                    <th>商品種別(ID)</th>
-                                    <th>規格分類1(ID)</th>
-                                    <th>規格分類2(ID)</th>
-                                    <th>発送日目安(ID)</th>
-                                    <th>商品コード</th>
-                                    <th>在庫数</th>
-                                    <th>在庫数無制限フラグア</th>
-                                    <th>販売数制限数</th>
-                                    <th>通常価格</th>
-                                    <th>販売価格</th>
-                                    <th>送料</th>
-                                    <th>商品規格削除フラグ</th>
+                                    {% for header in headers|keys %}
+                                        <th>{{ header }}</th>
+                                    {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>

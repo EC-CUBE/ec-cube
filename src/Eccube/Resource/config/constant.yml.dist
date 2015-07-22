@@ -29,7 +29,7 @@ cookie_expire: 365
 credit_add_year: 10
 credit_no_len: 4
 csv_line_max: 10000
-csv_size: 2000
+csv_size: 5
 csv_temp_realdir: /PATH/TO/WEB_ROOT/data/upload/csv/
 customer_confirm_mail: false
 customer_log_realfile: /PATH/TO/WEB_ROOT/data/logs/customer.log
@@ -248,11 +248,3 @@ enabled: 1
 disabled: 0
 eccube_info_url: 'https://www.ec-cube.net/info/3/'
 customer_reset_expire: 10
-# CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
-csv_export_separator: ,
-# 出力エンコーディング
-csv_export_encoding: UTF-8
-# 日付のフォーマット
-csv_export_date_format: 'Y-m-d H:i:s'
-# 複数データの区切り文字
-csv_export_multidata_separator: ,

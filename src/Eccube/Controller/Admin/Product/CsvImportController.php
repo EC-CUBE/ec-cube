@@ -24,9 +24,8 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\Common\Util\Debug;
 use Eccube\Application;
-use Symfony\Component\Form\FormError;
+use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -41,61 +40,42 @@ class CsvImportController
     public function csvProduct(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('admin_csv_upload');
+        $builder = $app['form.factory']->createBuilder('admin_csv_import');
 
+        $headers = $app['eccube.service.csv.import']->getProductCsvHeader();
         $form = $builder->getForm();
+
         if ('POST' === $request->getMethod()) {
 
             $form->handleRequest($request);
 
-            switch ($request->get('mode')) {
-                case 'upload':
+            if ($form->isValid()) {
 
-                    if ($form->isValid()) {
+                $file = $form['import_file']->getData();
 
-                        $data = $form->getData();
-                        $ClassName1 = $data['class_name1'];
-                        $ClassName2 = $data['class_name2'];
+                error_log($file->getClientOriginalName());
 
-                        if (!is_null($ClassName2) && $ClassName1->getId() == $ClassName2->getId()) {
-                            // 規格1と規格2が同じ値はエラー
+                if (!empty($file)) {
+                    // アップロードされたCSVファイルを一時ディレクトリに保存
+                    $fileName = Str::random() . '.' . $file->guessExtension();
+                    $file->move($app['config']['csv_temp_realdir'], $fileName);
 
-                            $form['class_name2']->addError(new FormError('規格1と規格2は、同じ値を使用できません。'));
 
-                        } else {
 
-                            // 規格分類が設定されていない商品規格を取得
-                            $orgProductClasses = $Product->getProductClasses();
-                            $sourceProduct = $orgProductClasses[0];
-
-                            // 規格分類が組み合わされた商品規格を取得
-                            $ProductClasses = $this->createProductClasses($app, $Product, $ClassName1, $ClassName2);
-
-                            // 組み合わされた商品規格にデフォルト値をセット
-                            foreach ($ProductClasses as $productClass) {
-                                $this->setDefualtProductClass($productClass, $sourceProduct);
-                            }
-
-                            $productClassForm = $app->form()
-                                ->add('product_classes', 'collection', array(
-                                    'type' => 'admin_product_class',
-                                    'allow_add' => true,
-                                    'allow_delete' => true,
-                                    'data' => $ProductClasses,
-                                ))
-                                ->getForm()
-                                ->createView();
-                        }
+                    $reader = new CsvReader($file, $this->delimiter, $this->enclosure, $this->escape);
+                    if (null !== $this->headerRowNumber) {
+                        $reader->setHeaderRowNumber($this->headerRowNumber);
                     }
-                    break;
 
-                default:
-                    break;
+                    $reader->setStrict($this->strict);
+                }
+
             }
         }
 
         return $app->render('Product/csv_product.twig', array(
             'form' => $form->createView(),
+            'headers' => $headers,
         ));
 
     }
@@ -107,10 +87,6 @@ class CsvImportController
     public function csvTemplate(Application $app, Request $request)
     {
         set_time_limit(0);
-
-        // sql loggerを無効にする.
-        $em = $app['orm.em'];
-        $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($app, $request) {
@@ -125,6 +101,5 @@ class CsvImportController
 
         return $response;
     }
-
 
 }

@@ -62,17 +62,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.mail'] = $app->share(function () use ($app) {
             return new \Eccube\Service\MailService($app);
         });
-
         $app['eccube.service.csv.import'] = $app->share(function () use ($app) {
-            $csvService =  new \Eccube\Service\CsvImportService();
-            $csvService->setConfig($app['config']);
-            $csvService->setCsvRepository($app['eccube.repository.csv']);
-            $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
-            $csvService->setOrderRepository($app['eccube.repository.order']);
-            $csvService->setCustomerRepository($app['eccube.repository.customer']);
-            $csvService->setProductRepository($app['eccube.repository.product']);
-
-            return $csvService;
+            return  new \Eccube\Service\CsvImportService($app);
         });
 
         // Repository

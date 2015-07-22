@@ -38,6 +38,11 @@ class CsvImportService
     protected $closed = false;
 
     /**
+     * @var \SplFileObject
+     */
+    protected $file;
+
+    /**
      * @var \Closure
      */
     protected $convertEncodingCallBack;
@@ -91,6 +96,31 @@ class CsvImportService
      * @var \Eccube\Repository\ProductRepository
      */
     protected $productRepository;
+
+
+    /**
+     * @param \SplFileObject $file
+     * @param string         $delimiter
+     * @param string         $enclosure
+     * @param string         $escape
+     */
+    public function __construct(\SplFileObject $file, $delimiter, $enclosure, $escape)
+    {
+        ini_set('auto_detect_line_endings', true);
+
+        $this->file = $file;
+        $this->file->setFlags(
+            \SplFileObject::READ_CSV |
+            \SplFileObject::SKIP_EMPTY |
+            \SplFileObject::READ_AHEAD |
+            \SplFileObject::DROP_NEW_LINE
+        );
+        $this->file->setCsvControl(
+            $delimiter,
+            $enclosure,
+            $escape
+        );
+    }
 
     /**
      * @param $config
@@ -294,9 +324,8 @@ class CsvImportService
         $config = $this->config;
 
         return function ($value) use ($config) {
-  //          return $value;
             return mb_convert_encoding(
-                (string) $value, $config['csv_export_encoding'], ''
+                (string) $value, $config['csv_export_encoding'], 'UTF-8'
             );
         };
     }
