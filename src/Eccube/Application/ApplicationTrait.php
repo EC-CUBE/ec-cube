@@ -11,12 +11,46 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * TODO PHP5.4以上の対応でよくなったら消す
+ * TODO Traitが使えるようになったら不要になる
  */
 class ApplicationTrait extends \Silex\Application
 {
+    /**
+     * Application Shortcut Methods
+     */
+    public function addSuccess($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
+    }
+
+    public function addError($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
+    }
+
+    public function addDanger($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
+    }
+
+    public function addWarning($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
+    }
+
+    public function addInfo($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
+    }
+
+    public function addRequestError($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
+    }
 
     /*
+     * 注意！以下コードはSilexのコードのコピーなので触らないコト
+     *
      * 以下のコードの著作権について
      *
      * (c) Fabien Potencier <fabien@symfony.com>
@@ -24,11 +58,12 @@ class ApplicationTrait extends \Silex\Application
      * For the full copyright and license information, please view the silex
      * LICENSE file that was distributed with this source code.
      */
+
     /** FormTrait */
     /**
      * Creates and returns a form builder instance
      *
-     * @param mixed $data The initial data for the form
+     * @param mixed $data    The initial data for the form
      * @param array $options Options for the form
      *
      * @return FormBuilder
@@ -43,8 +78,8 @@ class ApplicationTrait extends \Silex\Application
      * Adds a log record.
      *
      * @param string $message The log message
-     * @param array $context The log context
-     * @param int $level The logging level
+     * @param array  $context The log context
+     * @param int    $level   The logging level
      *
      * @return bool Whether the record has been processed
      */
@@ -77,8 +112,8 @@ class ApplicationTrait extends \Silex\Application
     /**
      * Encodes the raw password.
      *
-     * @param UserInterface $user A UserInterface instance
-     * @param string $password The password to encode
+     * @param UserInterface $user     A UserInterface instance
+     * @param string        $password The password to encode
      *
      * @return string The encoded password
      *
@@ -93,8 +128,8 @@ class ApplicationTrait extends \Silex\Application
     /**
      * Sends an email.
      *
-     * @param \Swift_Message $message A \Swift_Message instance
-     * @param array $failedRecipients An array of failures by-reference
+     * @param \Swift_Message $message          A \Swift_Message instance
+     * @param array          $failedRecipients An array of failures by-reference
      *
      * @return int The number of sent messages
      */
@@ -107,10 +142,10 @@ class ApplicationTrait extends \Silex\Application
     /**
      * Translates the given message.
      *
-     * @param string $id The message id
-     * @param array $parameters An array of parameters for the message
-     * @param string $domain The domain for the message
-     * @param string $locale The locale
+     * @param string $id         The message id
+     * @param array  $parameters An array of parameters for the message
+     * @param string $domain     The domain for the message
+     * @param string $locale     The locale
      *
      * @return string The translated string
      */
@@ -122,11 +157,11 @@ class ApplicationTrait extends \Silex\Application
     /**
      * Translates the given choice message by choosing a translation according to a number.
      *
-     * @param string $id The message id
-     * @param int $number The number to use to find the indice of the message
-     * @param array $parameters An array of parameters for the message
-     * @param string $domain The domain for the message
-     * @param string $locale The locale
+     * @param string $id         The message id
+     * @param int    $number     The number to use to find the indice of the message
+     * @param array  $parameters An array of parameters for the message
+     * @param string $domain     The domain for the message
+     * @param string $locale     The locale
      *
      * @return string The translated string
      */
@@ -141,9 +176,9 @@ class ApplicationTrait extends \Silex\Application
      *
      * To stream a view, pass an instance of StreamedResponse as a third argument.
      *
-     * @param string $view The view name
-     * @param array $parameters An array of parameters to pass to the view
-     * @param Response $response A Response instance
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A Response instance
      *
      * @return Response A Response instance
      */
@@ -168,8 +203,8 @@ class ApplicationTrait extends \Silex\Application
     /**
      * Renders a view.
      *
-     * @param string $view The view name
-     * @param array $parameters An array of parameters to pass to the view
+     * @param string $view       The view name
+     * @param array  $parameters An array of parameters to pass to the view
      *
      * @return Response A Response instance
      */
@@ -182,8 +217,8 @@ class ApplicationTrait extends \Silex\Application
     /**
      * Generates a path from the given parameters.
      *
-     * @param string $route The name of the route
-     * @param mixed $parameters An array of parameters
+     * @param string $route      The name of the route
+     * @param mixed  $parameters An array of parameters
      *
      * @return string The generated path
      */
@@ -195,8 +230,8 @@ class ApplicationTrait extends \Silex\Application
     /**
      * Generates an absolute URL from the given parameters.
      *
-     * @param string $route The name of the route
-     * @param mixed $parameters An array of parameters
+     * @param string $route      The name of the route
+     * @param mixed  $parameters An array of parameters
      *
      * @return string The generated URL
      */
