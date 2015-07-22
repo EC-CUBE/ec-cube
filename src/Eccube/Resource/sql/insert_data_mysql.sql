@@ -1,7 +1,7 @@
 SET FOREIGN_KEY_CHECKS=0;
 SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';
 
-CREATE TABLE doctrine_migration_versions (
+CREATE TABLE IF NOT EXISTS doctrine_migration_versions (
   version varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 

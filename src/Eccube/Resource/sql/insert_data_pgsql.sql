@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE TABLE doctrine_migration_versions (
+CREATE TABLE IF NOT EXISTS doctrine_migration_versions(
   version varchar(255) NOT NULL
 );
 
