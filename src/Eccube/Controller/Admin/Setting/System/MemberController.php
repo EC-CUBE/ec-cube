@@ -65,6 +65,7 @@ class MemberController extends AbstractController
         $form = $app['form.factory']
             ->createBuilder('admin_member', $Member)
             ->getForm();
+        $form->get('Authority')->setData($Member->getAuthority());
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -79,6 +80,8 @@ class MemberController extends AbstractController
                     $password = $app['eccube.repository.member']->encryptPassword($Member);
                     $Member->setPassword($password);
                 }
+                $Authority = $form->get('Authority')->getData();
+                $Member->setAuthority($Authority);
                 $status = $app['eccube.repository.member']->save($Member);
 
                 if ($status) {
