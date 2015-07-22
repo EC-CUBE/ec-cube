@@ -59,6 +59,7 @@ class Application extends ApplicationTrait
         $this->initRendering();
 
         // init provider
+        $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
@@ -138,7 +139,6 @@ class Application extends ApplicationTrait
                 $config_constant = Yaml::parse($constant_yml);
                 $config_constant = empty($config_constant) ? array() : $config_constant;
             }
-
 
             $config_constant_dist = array();
             $constant_yml_dist = $distPath . '/constant.yml.dist';
@@ -267,7 +267,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
-        $this['twig'] = $this->share($this->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+        $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
@@ -276,7 +276,7 @@ class Application extends ApplicationTrait
 
         $this->before(function (Request $request, \Silex\Application $app) {
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+            $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
                 if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
                     if (file_exists(__DIR__ . '/../../app/template/admin')) {
@@ -316,7 +316,7 @@ class Application extends ApplicationTrait
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
             // ショップ基本情報
             $BaseInfo = $app['eccube.repository.base_info']->get();
-            $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
+            $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
             // 管理画面
             if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
@@ -332,14 +332,14 @@ class Application extends ApplicationTrait
                         $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
                     } else {
                         $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType,
-                            $request->attributes->get('_route'));
+                        $request->attributes->get('_route'));
                     }
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
 
-                $app["twig"]->addGlobal("PageLayout", $PageLayout);
-                $app["twig"]->addGlobal("title", $PageLayout->getName());
+                $app['twig']->addGlobal('PageLayout', $PageLayout);
+                $app['twig']->addGlobal('title', $PageLayout->getName());
             }
         });
     }
@@ -356,7 +356,7 @@ class Application extends ApplicationTrait
         $transport = $this['config']['mail']['transport'];
         if ($transport == 'sendmail') {
             $this['swiftmailer.transport'] = \Swift_SendmailTransport::newInstance();
-        } else if ($transport == 'mail') {
+        } elseif ($transport == 'mail') {
             $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
         }
     }
@@ -403,7 +403,7 @@ class Application extends ApplicationTrait
         }
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => $ormMappings,
             ),
@@ -488,7 +488,6 @@ class Application extends ApplicationTrait
                 $subscriber = new $class($this);
 
                 if (file_exists($dir->getRealPath() . '/event.yml')) {
-
                     foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
                         foreach ($handlers as $handler) {
                             if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
@@ -592,42 +591,4 @@ class Application extends ApplicationTrait
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
-
-
-    /**
-     * Application Shortcut Methods
-     *
-     *
-     */
-
-    public function addSuccess($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
-    }
-
-    public function addError($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
-    }
-
-    public function addDanger($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
-    }
-
-    public function addWarning($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
-    }
-
-    public function addInfo($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
-    }
-
-    public function addRequestError($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
-    }
-
 }

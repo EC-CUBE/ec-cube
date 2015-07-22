@@ -206,7 +206,7 @@ class ShopMasterType extends AbstractType
                 'label' => '送料無料条件(金額)',
                 'required' => false,
                 'currency' => 'JPY',
-                'precision' => '0',
+                'precision' => 0,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $config['price_len'],

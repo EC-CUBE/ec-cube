@@ -80,12 +80,13 @@ class PluginController extends AbstractController
 
             $fs = new Filesystem();
             $fs->remove($tmpDir . '/' . $tmpFile);
+            return $app->redirect($app->url('admin_setting_store_plugin'));
         }
-
 
         return $app->render('Setting/Store/plugin_install.twig', array(
             'form' => $form->createView(),
         ));
+
     }
 
     public function update(Application $app, $id)
@@ -112,7 +113,7 @@ class PluginController extends AbstractController
         $fs = new Filesystem();
         $fs->remove($tmpDir . '/' . $tmpFile);
 
-        return $app->redirect($app->url('admin_setting_store_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin'));
     }
 
     public function enable(Application $app, $id)
@@ -126,7 +127,7 @@ class PluginController extends AbstractController
             $app->addSuccess('admin.plugin.enable.complete');
         }
 
-        return $app->redirect($app->url('admin_setting_store_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin'));
     }
 
     public function disable(Application $app, $id)
@@ -140,7 +141,7 @@ class PluginController extends AbstractController
             $app->addError('admin.plugin.already.disable', 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_store_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin'));
     }
 
 
@@ -150,7 +151,7 @@ class PluginController extends AbstractController
             ->find($id);
         $app['eccube.service.plugin']->uninstall($Plugin);
 
-        return $app->redirect($app->url('admin_setting_store_plugin_index'));
+        return $app->redirect($app->url('admin_setting_store_plugin'));
     }
 
     function handler(Application $app)
