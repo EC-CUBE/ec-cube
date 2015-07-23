@@ -42,6 +42,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
                             {{ form_errors(form.import_file) }}
                         </div>
+                        {% for error in errors %}
+                            <div class="text-danger">{{ error.message }}</div>
+                        {% endfor %}
+                        </div>
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body text-center">

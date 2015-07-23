@@ -25,96 +25,97 @@ namespace Eccube\Service;
 
 use Eccube\Application;
 
-class CsvImportService
+
+/**
+ * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+class CsvImportService implements \Iterator ,\SeekableIterator, \Countable
 {
 
-    /** @var \Eccube\Application */
-    protected $app;
+    const DUPLICATE_HEADERS_INCREMENT = 1;
+    const DUPLICATE_HEADERS_MERGE = 2;
 
     /**
-     * @var
+     * Number of the row that contains the column names
+     *
+     * @var integer
      */
-    protected $fp;
+    protected $headerRowNumber;
 
     /**
-     * @var
-     */
-    protected $closed = false;
-
-    /**
+     * CSV file
+     *
      * @var \SplFileObject
      */
     protected $file;
 
     /**
-     * @var \Closure
-     */
-    protected $convertEncodingCallBack;
-
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
-
-    /**
-     * @var \Doctrine\ORM\QueryBuilder;
-     */
-    protected $qb;
-
-    /**
+     * Column headers as read from the CSV file
+     *
      * @var array
      */
-    protected $config;
+    protected $columnHeaders = array();
 
     /**
-     * @var \Eccube\Entity\Master\CsvType
+     * Number of column headers, stored and re-used for performance
+     *
+     * In case of duplicate headers, this is always the number of unmerged headers.
+     *
+     * @var integer
      */
-    protected $CsvType;
+    protected $headersCount;
 
     /**
-     * @var \Eccube\Entity\Csv[]
+     * Total number of rows in the CSV file
+     *
+     * @var integer
      */
-    protected $Csvs;
+    protected $count;
 
     /**
-     * @var \Eccube\Repository\CsvRepository
+     * Faulty CSV rows
+     *
+     * @var array
      */
-    protected $csvRepository;
+    protected $errors = array();
 
     /**
-     * @var \Eccube\Repository\Master\CsvTypeRepository
+     * Strict parsing - skip any lines mismatching header length
+     *
+     * @var boolean
      */
-    protected $csvTypeRepository;
+    protected $strict = true;
 
     /**
-     * @var \Eccube\Repository\OrderRepository
+     * How to handle duplicate headers
+     *
+     * @var integer
      */
-    protected $orderRepository;
-
-    /**
-     * @var \Eccube\Repository\CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var \Eccube\Repository\ProductRepository
-     */
-    protected $productRepository;
+    protected $duplicateHeadersFlag;
 
 
     /**
      * @param Application $app
      */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-        $this->config = $app['config'];
-    }
-
-    /**
-     * @param \SplFileObject $file
-     */
-    public function setCsvImport(\SplFileObject $file)
+    public function __construct(\SplFileObject $file, $delimiter = ',', $enclosure = '"', $escape = '\\')
     {
         ini_set('auto_detect_line_endings', true);
 
@@ -126,364 +127,334 @@ class CsvImportService
             \SplFileObject::DROP_NEW_LINE
         );
         $this->file->setCsvControl(
-            $this->app['config']['csv_delimiter'],
-            $this->app['config']['csv_enclosure'],
-            $this->app['config']['csv_escape']
+            $delimiter,
+            $enclosure,
+            $escape
         );
-
-    }
-
-
-    public function getReader()
-    {
-
-
-    }
-
-
-    /**
-     * @param $config
-     */
-    public function setConfig($config)
-    {
-        $this->config = $config;
     }
 
     /**
-     * @param \Eccube\Repository\CsvRepository $csvRepository
-     */
-    public function setCsvRepository(\Eccube\Repository\CsvRepository $csvRepository)
-    {
-        $this->csvRepository = $csvRepository;
-    }
-
-    /**
-     * @param \Eccube\Repository\Master\CsvTypeRepository $csvTypeRepository
-     */
-    public function setCsvTypeRepository(\Eccube\Repository\Master\CsvTypeRepository $csvTypeRepository)
-    {
-        $this->csvTypeRepository = $csvTypeRepository;
-    }
-
-    /**
-     * @param \Eccube\Repository\OrderRepository $orderRepository
-     */
-    public function setOrderRepository(\Eccube\Repository\OrderRepository $orderRepository)
-    {
-        $this->orderRepository = $orderRepository;
-    }
-
-    /**
-     * @param \Eccube\Repository\CustomerRepository $customerRepository
-     */
-    public function setCustomerRepository(\Eccube\Repository\CustomerRepository $customerRepository)
-    {
-        $this->customerRepository = $customerRepository;
-    }
-
-    /**
-     * @param \Eccube\Repository\ProductRepository $productRepository
-     */
-    public function setProductRepository(\Eccube\Repository\ProductRepository $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $em
-     */
-    public function setEntityManager(\Doctrine\ORM\EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
-    }
-
-    /**
-     * @param \Doctrine\ORM\QueryBuilder $qb
-     */
-    public function setExportQueryBuilder(\Doctrine\ORM\QueryBuilder $qb)
-    {
-        $this->qb = $qb;
-        $this->setEntityManager($qb->getEntityManager());
-    }
-
-    /**
-     * Csv種別からServiceの初期化を行う.
+     * Return the current row as an array
      *
-     * @param $CsvType |integer
-     */
-    public function initCsvType($CsvType)
-    {
-        if ($CsvType instanceof \Eccube\Entity\Master\CsvType) {
-            $this->CsvType = $CsvType;
-        } else {
-            $this->CsvType = $this->csvTypeRepository->find($CsvType);
-        }
-
-        $criteria = array(
-            'CsvType' => $CsvType,
-            'enable_flg' => Constant::ENABLED
-        );
-        $orderBy = array(
-            'rank' => 'ASC'
-        );
-        $this->Csvs = $this->csvRepository->findBy($criteria, $orderBy);
-    }
-
-    /**
-     * @return \Eccube\Entity\Csv[]
-     */
-    public function getCsvs()
-    {
-        return $this->Csvs;
-    }
-
-    /**
-     * ヘッダ行を出力する.
-     */
-    public function exportHeader()
-    {
-        $row = array();
-        foreach ($this->getProductCsvHeader() as $key => $value) {
-            $row[] = $key;
-        }
-
-        $this->fopen();
-        $this->fputcsv($row);
-        $this->fclose();
-    }
-
-    /**
-     * クエリビルダにもとづいてデータ行を出力する.
-     * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
+     * If a header row has been set, an associative array will be returned
      *
-     * @param \Closure $closure
+     * @return array
      */
-    public function exportData(\Closure $closure)
+    public function current()
     {
-        if (is_null($this->qb) || is_null($this->em)) {
-            throw new \LogicException('query builder not set.');
+        // If the CSV has no column headers just return the line
+        if (empty($this->columnHeaders)) {
+            return $this->file->current();
         }
 
-        $this->fopen();
+        // Since the CSV has column headers use them to construct an associative array for the columns in this line
+        do {
+            $line = $this->file->current();
 
-        $query = $this->qb->getQuery();
-        foreach ($query->iterate() as $iteratableResult) {
-            $closure($iteratableResult[0], $this);
-
-            $this->em->detach($iteratableResult[0]);
-            $this->em->clear();
-            $query->free();
-            flush();
-        }
-
-        $this->fclose();
-    }
-
-    /**
-     * CSV出力項目と比較し, 合致するデータを返す.
-     *
-     * @param \Eccube\Entity\Csv $Csv
-     * @param $entity
-     * @return mixed|null|string|void
-     */
-    public function getData(\Eccube\Entity\Csv $Csv, $entity)
-    {
-        // エンティティ名が一致するかどうかチェック.
-        if ($Csv->getEntityName() !== get_class($entity)) {
-            return;
-        }
-
-        // カラム名がエンティティに存在するかどうかをチェック.
-        if (!$entity->offsetExists($Csv->getFieldName())) {
-            return;
-        }
-
-        // データを取得.
-        $data = $entity->offsetGet($Csv->getFieldName());
-
-        // one to one の場合は, dtb_csv.referece_field_nameと比較し, 合致する結果を取得する.
-        if ($data instanceof \Eccube\Entity\AbstractEntity) {
-            return $data->offsetGet($Csv->getReferenceFieldName());
-
-        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-            // one to manyの場合は, カンマ区切りに変換する.
-            $array = array();
-            foreach ($data as $elem) {
-                $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
+            // In non-strict mode pad/slice the line to match the column headers
+            /*
+            if (!$this->isStrict()) {
+                if ($this->headersCount > count($line)) {
+                    $line = array_pad($line, $this->headersCount, null); // Line too short
+                } else {
+                    $line = array_slice($line, 0, $this->headersCount); // Line too long
+                }
             }
-            return implode($this->config['csv_export_multidata_separator'], $array);
+            */
 
-        } elseif ($data instanceof \DateTime) {
-            // datetimeの場合は文字列に変換する.
-            return $data->format($this->config['csv_export_date_format']);
+            // See if values for duplicate headers should be merged
+            if (self::DUPLICATE_HEADERS_MERGE === $this->duplicateHeadersFlag) {
+                $line = $this->mergeDuplicates($line);
+            }
 
-        } else {
-            // スカラ値の場合はそのまま.
-            return $data;
-        }
+            // Count the number of elements in both: they must be equal.
+            if (count($this->columnHeaders) === count($line)) {
+                return array_combine(array_keys($this->columnHeaders), $line);
+            } else  {
+                return $line;
+            }
+
+            // They are not equal, so log the row as error and skip it.
+            if ($this->valid()) {
+                $this->errors[$this->key()] = $line;
+                $this->next();
+            }
+        } while ($this->valid());
 
         return null;
     }
 
     /**
-     * 文字エンコーディングの変換を行うコールバック関数を返す.
+     * Get column headers
      *
-     * @return \Closure
+     * @return array
      */
-    public function getConvertEncodingCallback()
+    public function getColumnHeaders()
     {
-        $config = $this->config;
-
-        return function ($value) use ($config) {
-            return mb_convert_encoding(
-                (string) $value, $config['csv_export_encoding'], 'UTF-8'
-            );
-
-        };
+        return array_keys($this->columnHeaders);
     }
 
     /**
+     * Set column headers
      *
+     * @param array $columnHeaders
      */
-    public function fopen()
+    public function setColumnHeaders(array $columnHeaders)
     {
-        if (is_null($this->fp) || $this->closed) {
-            $this->fp = fopen('php://output', 'w');
+        $this->columnHeaders = array_count_values($columnHeaders);
+        $this->headersCount = count($columnHeaders);
+    }
+
+    /**
+     * Set header row number
+     *
+     * @param integer $rowNumber Number of the row that contains column header names
+     * @param integer $duplicates How to handle duplicates (optional). One of:
+     *                        - CsvReader::DUPLICATE_HEADERS_INCREMENT;
+     *                        increments duplicates (dup, dup1, dup2 etc.)
+     *                        - CsvReader::DUPLICATE_HEADERS_MERGE; merges
+     *                        values for duplicate headers into an array
+     *                        (dup => [value1, value2, value3])
+     *
+     * @throws DuplicateHeadersException If duplicate headers are encountered
+     *                                   and no duplicate handling has been
+     *                                   specified
+     */
+    public function setHeaderRowNumber($rowNumber, $duplicates = null)
+    {
+        $this->duplicateHeadersFlag = $duplicates;
+        $this->headerRowNumber = $rowNumber;
+        $headers = $this->readHeaderRow($rowNumber);
+
+        $this->setColumnHeaders($headers);
+    }
+
+    /**
+     * Rewind the file pointer
+     *
+     * If a header row has been set, the pointer is set just below the header
+     * row. That way, when you iterate over the rows, that header row is
+     * skipped.
+     */
+    public function rewind()
+    {
+        $this->file->rewind();
+        if (null !== $this->headerRowNumber) {
+            $this->file->seek($this->headerRowNumber + 1);
         }
     }
 
     /**
-     * @param $row
-     * @param null $callback
+     * {@inheritdoc}
      */
-    public function fputcsv($row)
+    public function count()
     {
-        if (is_null($this->convertEncodingCallBack)) {
-            $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
+        if (null === $this->count) {
+            $position = $this->key();
+
+            $this->count = iterator_count($this);
+
+            $this->seek($position);
         }
 
-        fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->config['csv_export_separator']);
+        return $this->count;
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function next()
+    {
+        $this->file->next();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function valid()
+    {
+        return $this->file->valid();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function key()
+    {
+        return $this->file->key();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function seek($pointer)
+    {
+        $this->file->seek($pointer);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFields()
+    {
+        return $this->getColumnHeaders();
+    }
+
+    /**
+     * Get a row
      *
-     */
-    public function fclose()
-    {
-        if (!$this->closed) {
-            fclose($this->fp);
-            $this->closed = true;
-        }
-    }
-
-    /**
-     * 受注検索用のクエリビルダを返す.
+     * @param integer $number Row number
      *
-     * @param FormFactory $formFactory
-     * @param Request $request
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return array
      */
-    public function getOrderQueryBuilder(FormFactory $formFactory, Request $request)
+    public function getRow($number)
     {
-        $session = $request->getSession();
-        if ($session->has('eccube.admin.order.search')) {
-            $searchData = $session->get('eccube.admin.order.search');
-        } else {
-            $searchData = array();
-        }
+        $this->seek($number);
 
-        // 受注データのクエリビルダを構築.
-        $qb = $this->orderRepository
-            ->getQueryBuilderBySearchDataForAdmin($searchData);
-
-        return $qb;
+        return $this->current();
     }
 
     /**
-     * 会員検索用のクエリビルダを返す.
+     * Get rows that have an invalid number of columns
      *
-     * @param FormFactory $formFactory
-     * @param Request $request
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return array
      */
-    public function getCustomerQueryBuilder(FormFactory $formFactory, Request $request)
+    public function getErrors()
     {
-        $session = $request->getSession();
-        if ($session->has('eccube.admin.customer.search')) {
-            $searchData = $session->get('eccube.admin.customer.search');
-        } else {
-            $searchData = array();
+        if (0 === $this->key()) {
+            // Iterator has not yet been processed, so do that now
+            foreach ($this as $row) { /* noop */
+            }
         }
 
-        // 会員データのクエリビルダを構築.
-        $qb = $this->customerRepository
-            ->getQueryBuilderBySearchData($searchData);
-
-        return $qb;
+        return $this->errors;
     }
 
     /**
-     * 商品検索用のクエリビルダを返す.
+     * Does the reader contain any invalid rows?
      *
-     * @param FormFactory $formFactory
-     * @param Request $request
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return boolean
      */
-    public function getProductQueryBuilder(FormFactory $formFactory, Request $request)
+    public function hasErrors()
     {
-        $session = $request->getSession();
-        if ($session->has('eccube.admin.product.search')) {
-            $searchData = $session->get('eccube.admin.product.search');
-        } else {
-            $searchData = array();
-        }
-
-        // 商品データのクエリビルダを構築.
-        $qb = $this->productRepository
-            ->getQueryBuilderBySearchDataForAdmin($searchData);
-
-        return $qb;
+        return count($this->getErrors()) > 0;
     }
 
     /**
-     * CSV定義
+     * Should the reader use strict parsing?
+     *
+     * @return boolean
      */
-    public function getProductCsvHeader()
+    public function isStrict()
     {
+        return $this->strict;
+    }
 
-        return array(
-            '商品ID' => 'id',
-            '公開ステータス(ID)' => 'status',
-            '商品名' => 'name',
-            'ショップ用メモ欄' => 'note',
-            '商品説明(一覧)' => 'description_list',
-            '商品説明(一覧)' => 'description_detail',
-            '検索ワード' => 'search_word',
-            'フリーエリア' => 'free_area',
-            '商品削除フラグ' => 'product_del_flg',
-            '商品画像' => 'product_image',
-            '商品カテゴリ(ID)' => 'product_category',
-            '商品種別(ID)' => 'product_type',
-            '規格分類1(ID)' => 'class_category1',
-            '規格分類2(ID)' => 'class_category2',
-            '発送日目安(ID)' => 'deliveryFee',
-            '商品コード' => 'product_code',
-            '在庫数' => 'stock',
-            '在庫数無制限フラグ' => 'stock_unlimited',
-            '販売数制限数' => 'sale_limit',
-            '通常価格' => 'price01',
-            '販売価格' => 'price02',
-            '送料' => 'delivery_fee',
-            '商品規格削除フラグ' => 'product_class_del_flg',
-        );
+    /**
+     * Set strict parsing
+     *
+     * @param boolean $strict
+     */
+    public function setStrict($strict)
+    {
+        $this->strict = $strict;
+    }
+
+    /**
+     * Read header row from CSV file
+     *
+     * @param integer $rowNumber Row number
+     *
+     * @return array
+     *
+     * @throws DuplicateHeadersException
+     */
+    protected function readHeaderRow($rowNumber)
+    {
+        $this->file->seek($rowNumber);
+        $headers = $this->file->current();
+
+        // Test for duplicate column headers
+        /*
+        $diff = array_diff_assoc($headers, array_unique($headers));
+        if (count($diff) > 0) {
+            switch ($this->duplicateHeadersFlag) {
+                case self::DUPLICATE_HEADERS_INCREMENT:
+                    $headers = $this->incrementHeaders($headers);
+                // Fall through
+                case self::DUPLICATE_HEADERS_MERGE:
+                    break;
+                default:
+                    // throw new icateHeadersException($diff);
+                    throw new icateHeadersException($diff);
+            }
+        }
+        */
+
+        return $headers;
+    }
+
+    /**
+     * Add an increment to duplicate headers
+     *
+     * So the following line:
+     * |duplicate|duplicate|duplicate|
+     * |first    |second   |third    |
+     *
+     * Yields value:
+     * $duplicate => 'first', $duplicate1 => 'second', $duplicate2 => 'third'
+     *
+     * @param array $headers
+     *
+     * @return array
+     */
+    protected function incrementHeaders(array $headers)
+    {
+        $incrementedHeaders = array();
+        foreach (array_count_values($headers) as $header => $count) {
+            if ($count > 1) {
+                $incrementedHeaders[] = $header;
+                for ($i = 1; $i < $count; $i++) {
+                    $incrementedHeaders[] = $header . $i;
+                }
+            } else {
+                $incrementedHeaders[] = $header;
+            }
+        }
+
+        return $incrementedHeaders;
+    }
+
+    /**
+     * Merges values for duplicate headers into an array
+     *
+     * So the following line:
+     * |duplicate|duplicate|duplicate|
+     * |first    |second   |third    |
+     *
+     * Yields value:
+     * $duplicate => ['first', 'second', 'third']
+     *
+     * @param array $line
+     *
+     * @return array
+     */
+    protected function mergeDuplicates(array $line)
+    {
+        $values = array();
+
+        $i = 0;
+        foreach ($this->columnHeaders as $count) {
+            if (1 === $count) {
+                $values[] = $line[$i];
+            } else {
+                $values[] = array_slice($line, $i, $count);
+            }
+
+            $i += $count;
+        }
+
+        return $values;
     }
 
 }

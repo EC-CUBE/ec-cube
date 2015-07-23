@@ -62,9 +62,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.mail'] = $app->share(function () use ($app) {
             return new \Eccube\Service\MailService($app);
         });
-        $app['eccube.service.csv.import'] = $app->share(function () use ($app) {
-            return  new \Eccube\Service\CsvImportService($app);
-        });
 
         // Repository
         $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
@@ -97,6 +94,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
         $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
+        });
+        $app['eccube.repository.delivery_date'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryDate');
         });
         $app['eccube.repository.delivery_fee'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\DeliveryFee');
