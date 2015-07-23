@@ -22,7 +22,7 @@ Eccube\Entity\Csv:
             type: text
             nullable: true
         disp_name:
-            type: string
+            type: text
             nullable: false
         rank:
             type: smallint

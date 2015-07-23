@@ -69,7 +69,7 @@ class PluginService
 
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
-        $pluginDir = $this->calcPluginDir($plugin->getName());
+        $pluginDir = $this->calcPluginDir($plugin->getCode());
 
         $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), 'disable');
         $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), 'uninstall');
@@ -81,7 +81,7 @@ class PluginService
 
     public function enable(\Eccube\Entity\Plugin $plugin, $enable = true)
     {
-        $pluginDir = $this->calcPluginDir($plugin->getName());
+        $pluginDir = $this->calcPluginDir($plugin->getCode());
         $em = $this->app['orm.em'];
         $plugin->setEnable($enable ? 1 : 0);
         $em->persist($plugin);

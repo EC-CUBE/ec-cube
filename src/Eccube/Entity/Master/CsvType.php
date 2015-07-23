@@ -17,7 +17,7 @@ class CsvType extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    const CSV_TYPE_MEMBER = 2;
+    const CSV_TYPE_CUSTOMER = 2;
 
      /**
      * @var integer
@@ -27,7 +27,7 @@ class CsvType extends \Eccube\Entity\AbstractEntity
      /**
      * @var integer
      */
-    const CSV_TYPE_DELIVERY = 4;
+    const CSV_TYPE_SHIPPING = 4;
 
      /**
      * @var integer

@@ -458,7 +458,7 @@ class InstallController
     {
         try {
             $migration = $this->getMigration();
-            $migration->migrate('first', false);
+            $migration->migrate(0, false); // firstだと最初のバージョンと認識してくれないため修正
         } catch (MigrationException $e) {
         }
 
