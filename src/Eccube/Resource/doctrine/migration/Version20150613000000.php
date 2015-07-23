@@ -803,6 +803,27 @@ class Version20150613000000 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date) VALUES (2, 'mobile', 1, 'モバイル', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);");
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date) VALUES (4, 'sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);");
 
+        if ($this->connection->getDatabasePlatform()->getName() == "pgsql") {
+            $this->addSql("SELECT setval('dtb_member_member_id_seq', 2);");
+            $this->addSql("SELECT setval('dtb_tax_rule_tax_rule_id_seq', 1);");
+            $this->addSql("SELECT setval('dtb_block_block_id_seq', 11);");
+            $this->addSql("SELECT setval('dtb_page_layout_page_id_seq', 31);");
+            $this->addSql("SELECT setval('dtb_category_category_id_seq', 6);");
+            $this->addSql("SELECT setval('dtb_class_name_class_name_id_seq', 2);");
+            $this->addSql("SELECT setval('dtb_class_category_class_category_id_seq', 6);");
+            $this->addSql("SELECT setval('dtb_delivery_delivery_id_seq', 2);");
+            $this->addSql("SELECT setval('dtb_payment_payment_id_seq', 4);");
+            $this->addSql("SELECT setval('dtb_delivery_fee_fee_id_seq', 94);");
+            $this->addSql("SELECT setval('dtb_delivery_time_time_id_seq', 3);");
+            $this->addSql("SELECT setval('dtb_delivery_date_date_id_seq', 9);");
+            $this->addSql("SELECT setval('dtb_mail_template_template_id_seq', 5);");
+            $this->addSql("SELECT setval('dtb_news_news_id_seq', 1);");
+            $this->addSql("SELECT setval('dtb_product_product_id_seq', 2);");
+            $this->addSql("SELECT setval('dtb_product_class_product_class_id_seq', 10);");
+            $this->addSql("SELECT setval('dtb_product_stock_product_stock_id_seq', 11);");
+            $this->addSql("SELECT setval('dtb_product_image_product_image_id_seq', 6);");
+            $this->addSql("SELECT setval('dtb_template_template_id_seq', 4);");
+        }
     }
 
     /**
