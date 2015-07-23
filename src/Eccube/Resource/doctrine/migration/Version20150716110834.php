@@ -216,7 +216,7 @@ class Version20150716110834 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_csv (csv_id, csv_type, entity_name, field_name, reference_field_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES (192, 5, 'Eccube\\\\Entity\\\\Category', 'Parent', 'id', '親カテゴリID', 4, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
         $this->addSql("INSERT INTO dtb_csv (csv_id, csv_type, entity_name, field_name, reference_field_name, disp_name, rank, enable_flg, creator_id, create_date, update_date) VALUES (193, 5, 'Eccube\\\\Entity\\\\Category', 'level', NULL, '階層', 5, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
 
-        if ($this->connection->getDatabasePlatform()->getName() == "pgsql") {
+        if ($this->connection->getDatabasePlatform()->getName() == "postgresql") {
             $this->addSql("SELECT setval('dtb_csv_csv_id_seq', 193);");
         }
     }
