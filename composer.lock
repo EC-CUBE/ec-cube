@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "afc00af71def93404901f480bcd28c92",
+    "hash": "637970fb2e62ca2ff172614e0eac6275",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -720,7 +720,7 @@
         },
         {
             "name": "knplabs/console-service-provider",
-            "version": "v1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/ConsoleServiceProvider.git",
@@ -3940,7 +3940,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/migrations": 20
+        "doctrine/migrations": 20,
+        "knplabs/console-service-provider": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
