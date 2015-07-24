@@ -299,11 +299,13 @@ class ProductController
                 $delete_images = $form->get('delete_images')->getData();
                 foreach ($delete_images as $delete_image) {
                     $ProductImage = $app['eccube.repository.product_image']
-                        ->findOneBy(array('file_name' => $delete_image));
+                        ->findOneBy(array('file_name' => ltrim($delete_image,'/')));
+
                     // 追加してすぐに削除した画像は、Entityに追加されない
                     if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
                         $Product->removeProductImage($ProductImage);
                         $app['orm.em']->remove($ProductImage);
+
                     }
                     $app['orm.em']->persist($Product);
 
