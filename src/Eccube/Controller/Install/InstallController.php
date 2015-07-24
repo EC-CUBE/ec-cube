@@ -675,6 +675,7 @@ class InstallController
     {
         return $app['twig']->render('migration.twig');
     }
+
     public function migration_end(InstallApplication $app, Request $request)
     {
         $this->doMigrate();
