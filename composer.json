@@ -31,7 +31,7 @@
         "swiftmailer/swiftmailer": "5.*",
         "knplabs/knp-components": "*",
         "doctrine/migrations": "v1.0.0-alpha3" ,
-        "knplabs/console-service-provider": "dev-master",
+        "knplabs/console-service-provider": "*",
         "symfony/class-loader": "~2.3"
     },
     "require-dev": {

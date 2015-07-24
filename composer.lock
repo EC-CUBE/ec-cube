@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0fdaf78b932cc8521d205d97e972500a",
+    "hash": "9a1db4a095a57e1cc32dfb93bcc6d37c",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -720,7 +720,7 @@
         },
         {
             "name": "knplabs/console-service-provider",
-            "version": "dev-master",
+            "version": "v1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/ConsoleServiceProvider.git",
@@ -3940,8 +3940,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/migrations": 15,
-        "knplabs/console-service-provider": 20
+        "doctrine/migrations": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
