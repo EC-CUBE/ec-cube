@@ -315,7 +315,7 @@ class InstallController
 
         $schemaTool->dropSchema($metadatas);
 
-        $em->getConnection()->executeQuery('DROP TABLE doctrine_migration_versions');
+        $em->getConnection()->executeQuery('DROP TABLE IF EXISTS doctrine_migration_versions');
 
         return $this;
     }
@@ -675,6 +675,7 @@ class InstallController
     {
         return $app['twig']->render('migration.twig');
     }
+
     public function migration_end(InstallApplication $app, Request $request)
     {
         $this->doMigrate();
