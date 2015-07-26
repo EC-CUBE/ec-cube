@@ -27,6 +27,7 @@ namespace Eccube\Controller\Install;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Common\Constant;
 use Eccube\InstallApplication;
@@ -192,13 +193,14 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             if (!$form['no_update']->getData()) {
+                set_time_limit(0);
+                
                 $this
                     ->setPDO()
                     ->dropTables()
-                    ->revertMigrate()
                     ->createTables()
-                    ->insert()
-                    ->doMigrate();
+                    ->doMigrate()
+                    ->insert();
             }
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $host = $request->getSchemeAndHttpHost();
@@ -313,9 +315,14 @@ class InstallController
 
         $schemaTool->dropSchema($metadatas);
 
+        $em->getConnection()->executeQuery('DROP TABLE IF EXISTS doctrine_migration_versions');
+
         return $this;
     }
 
+    /**
+     * @return EntityManager
+     */
     private function getEntityManager()
     {
         $config_file = $this->config_path . '/database.yml';
@@ -370,17 +377,9 @@ class InstallController
         $baseConfig = Yaml::parse($config_file);
         $config['config'] = $baseConfig;
 
-        if ($config['database']['driver'] == 'pdo_pgsql') {
-            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data_pgsql.sql';
-        } elseif ($config['database']['driver'] == 'pdo_mysql') {
-            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data_mysql.sql';
-        } else {
-            die('database type invalid.');
-        }
-
         $this->PDO->beginTransaction();
+
         try {
-            $this->PDO->exec(file_get_contents($sqlFile));
 
             $config = array(
                 'auth_type' => '',
@@ -448,17 +447,6 @@ class InstallController
             $migration = $this->getMigration();
             // nullを渡すと最新バージョンまでマイグレートする
             $migration->migrate(null, false);
-        } catch (MigrationException $e) {
-        }
-
-        return $this;
-    }
-
-    private function revertMigrate()
-    {
-        try {
-            $migration = $this->getMigration();
-            $migration->migrate('first', false);
         } catch (MigrationException $e) {
         }
 
@@ -687,6 +675,7 @@ class InstallController
     {
         return $app['twig']->render('migration.twig');
     }
+
     public function migration_end(InstallApplication $app, Request $request)
     {
         $this->doMigrate();
