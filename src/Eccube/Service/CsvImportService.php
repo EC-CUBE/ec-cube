@@ -98,13 +98,6 @@ class CsvImportService implements \Iterator ,\SeekableIterator, \Countable
     protected $errors = array();
 
     /**
-     * Strict parsing - skip any lines mismatching header length
-     *
-     * @var boolean
-     */
-    protected $strict = true;
-
-    /**
      * How to handle duplicate headers
      *
      * @var integer
@@ -150,17 +143,6 @@ class CsvImportService implements \Iterator ,\SeekableIterator, \Countable
         // Since the CSV has column headers use them to construct an associative array for the columns in this line
         do {
             $line = $this->file->current();
-
-            // In non-strict mode pad/slice the line to match the column headers
-            /*
-            if (!$this->isStrict()) {
-                if ($this->headersCount > count($line)) {
-                    $line = array_pad($line, $this->headersCount, null); // Line too short
-                } else {
-                    $line = array_slice($line, 0, $this->headersCount); // Line too long
-                }
-            }
-            */
 
             // See if values for duplicate headers should be merged
             if (self::DUPLICATE_HEADERS_MERGE === $this->duplicateHeadersFlag) {
@@ -341,26 +323,6 @@ class CsvImportService implements \Iterator ,\SeekableIterator, \Countable
     }
 
     /**
-     * Should the reader use strict parsing?
-     *
-     * @return boolean
-     */
-    public function isStrict()
-    {
-        return $this->strict;
-    }
-
-    /**
-     * Set strict parsing
-     *
-     * @param boolean $strict
-     */
-    public function setStrict($strict)
-    {
-        $this->strict = $strict;
-    }
-
-    /**
      * Read header row from CSV file
      *
      * @param integer $rowNumber Row number
@@ -373,23 +335,6 @@ class CsvImportService implements \Iterator ,\SeekableIterator, \Countable
     {
         $this->file->seek($rowNumber);
         $headers = $this->file->current();
-
-        // Test for duplicate column headers
-        /*
-        $diff = array_diff_assoc($headers, array_unique($headers));
-        if (count($diff) > 0) {
-            switch ($this->duplicateHeadersFlag) {
-                case self::DUPLICATE_HEADERS_INCREMENT:
-                    $headers = $this->incrementHeaders($headers);
-                // Fall through
-                case self::DUPLICATE_HEADERS_MERGE:
-                    break;
-                default:
-                    // throw new icateHeadersException($diff);
-                    throw new icateHeadersException($diff);
-            }
-        }
-        */
 
         return $headers;
     }
