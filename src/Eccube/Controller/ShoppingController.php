@@ -391,7 +391,9 @@ class ShoppingController extends AbstractController
             }
 
             // 選択されたお届け先情報を取得
-            $customerAddress = $app['eccube.repository.customer_address']->find($address);
+            $customerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
+                'Customer' => $app->user(),
+                'id' => $address));
 
             $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $app['eccube.service.cart']->getPreOrderId()));
             // お届け先情報を更新
