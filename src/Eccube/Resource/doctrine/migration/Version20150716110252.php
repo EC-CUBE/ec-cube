@@ -31,31 +31,31 @@ class Version20150716110252 extends AbstractMigration
 
         $CsvType = new CsvType();
         $CsvType->setId(1);
-        $CsvType->setName('商品管理');
+        $CsvType->setName('商品CSV');
         $CsvType->setRank(3);
         $em->persist($CsvType);
 
         $CsvType = new CsvType();
         $CsvType->setId(2);
-        $CsvType->setName('会員管理');
+        $CsvType->setName('会員CSV');
         $CsvType->setRank(4);
         $em->persist($CsvType);
 
         $CsvType = new CsvType();
         $CsvType->setId(3);
-        $CsvType->setName('受注管理');
+        $CsvType->setName('受注CSV');
         $CsvType->setRank(1);
         $em->persist($CsvType);
 
         $CsvType = new CsvType();
         $CsvType->setId(4);
-        $CsvType->setName('配送管理');
+        $CsvType->setName('配送CSV');
         $CsvType->setRank(2);
         $em->persist($CsvType);
 
         $CsvType = new CsvType();
         $CsvType->setId(5);
-        $CsvType->setName('カテゴリ');
+        $CsvType->setName('カテゴリCSV');
         $CsvType->setRank(5);
         $em->persist($CsvType);
 
@@ -68,7 +68,7 @@ class Version20150716110252 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DELETE FROM ' . self::NAME);
+//        $this->addSql('DELETE FROM ' . self::NAME);
 
     }
 }

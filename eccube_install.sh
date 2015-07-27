@@ -195,8 +195,8 @@ case "${DBTYPE}" in
     echo "create table..."
     ./vendor/bin/doctrine orm:schema-tool:create
 
-    echo "insert data..."
-    sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data_pgsql.sql ${DBNAME}
+    echo "migration..."
+    php app/console migrations:migrate  --no-interaction
 
     echo "execute optional SQL..."
     get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
@@ -221,16 +221,13 @@ case "${DBTYPE}" in
     echo "create table..."
     ./vendor/bin/doctrine orm:schema-tool:create
 
-    echo "insert data..."
-    ${MYSQL} -u ${DBUSER} ${PASSOPT} --default-character-set=utf8  ${DBNAME} < ${SQL_DIR}/insert_data_mysql.sql
+    echo "migration..."
+    php app/console migrations:migrate  --no-interaction
 
     echo "execute optional SQL..."
     get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
 ;;
 esac
-
-# DB migrator
-php app/console migrations:migrate  --no-interaction
 
 # Application cache clear
 php app/console cache:clear --all
