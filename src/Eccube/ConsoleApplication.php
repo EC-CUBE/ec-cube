@@ -27,6 +27,8 @@ use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
+// test2
+
 class ConsoleApplication extends \Silex\Application
 {
     public function __construct(array $values = array())
