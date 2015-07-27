@@ -47,7 +47,7 @@ use Eccube\Application;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-class CsvImportService implements \Iterator ,\SeekableIterator, \Countable
+class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {
 
     const DUPLICATE_HEADERS_INCREMENT = 1;
@@ -152,7 +152,7 @@ class CsvImportService implements \Iterator ,\SeekableIterator, \Countable
             // Count the number of elements in both: they must be equal.
             if (count($this->columnHeaders) === count($line)) {
                 return array_combine(array_keys($this->columnHeaders), $line);
-            } else  {
+            } else {
                 return $line;
             }
 
