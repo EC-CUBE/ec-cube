@@ -68,9 +68,9 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
-        $config['name'] = $tmpname;
+        $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
-        $config['version'] = $tmpname;
+        $config['version'] = $tmpname."_version";
 
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
@@ -89,7 +89,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $service->install($tmpfile);
 
         // アンインストールできるか
-        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
         $this->assertTrue($service->uninstall($plugin));
         
     }
@@ -231,7 +231,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
-        $config['name'] = $tmpname;
+        $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         $config['event'] = 'DummyEvent';
@@ -290,15 +290,15 @@ EOD;
         $this->assertTrue($service->install($tmpfile));
         $rep= $this->app['eccube.repository.plugin'];
 
-        $plugin=$rep->findOneBy(array('name'=>$tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
+        $plugin=$rep->findOneBy(array('code'=>$tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
         $this->app['orm.em']->detach($plugin); 
 
 
         // インストールした内容は正しいか
         // config.ymlとdtb_pluginの内容を照合
-        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('name'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals($plugin->getClassName(),"DummyEvent");
-        $this->assertEquals($plugin->getCode(),$tmpname);
+        $this->assertEquals($plugin->getName(),$tmpname."_name");
         $this->assertEquals($plugin->getVersion(),$tmpname);
 
         // event.ymlとdtb_plugin_event_handlerの内容を照合(優先度、ハンドラメソッド名、イベント名)
@@ -347,7 +347,7 @@ EOD;
 
         // config.ymlを更新する
         $config=array();
-        $config['name'] = $tmpname;
+        $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname."u";
         $config['event'] = 'DummyEvent';
@@ -361,7 +361,7 @@ EOD;
 
         // イベントハンドラが新しいevent.ymlと整合しているか(追加、削除)
         $this->app['orm.em']->detach($plugin); 
-        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('name'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
 
         foreach($plugin->getPluginEventHandlers() as $handler){

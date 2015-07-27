@@ -28,9 +28,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-
 
 class CacheClearCommand extends \Knp\Command\Command
 {
@@ -58,20 +55,7 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output) {
 
-        $cacheDir = $this->app['config']['root_dir'] . '/app/cache';
-
-        $filesystem = new Filesystem();
-        if ($input->getOption('all')) {
-            $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
-        } else {
-            $finder = Finder::create()->in($cacheDir . '/doctrine');
-            $filesystem->remove($finder);
-            $finder = Finder::create()->in($cacheDir . '/profiler');
-            $filesystem->remove($finder);
-            $finder = Finder::create()->in($cacheDir . '/twig');
-        }
-
-        $filesystem->remove($finder);
+        \Eccube\Util\Cache::clear($this->app,$input->getOption('all'));
         $output->writeln(sprintf("%s <info>success</info>", 'cache:clear'));
 
     }

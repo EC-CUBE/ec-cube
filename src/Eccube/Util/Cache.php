@@ -21,16 +21,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Util;
 
-namespace Eccube\Tests\Web;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
-class TopControllerTest extends AbstractWebTestCase
-{
+class Cache {
 
-    public function testRoutingIndex()
-    {
-        $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    public static function clear($app,$isAll){
+
+        $cacheDir = $app['config']['root_dir'] . '/app/cache';
+
+        $filesystem = new Filesystem();
+        if ($isAll) {
+            $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
+        } else {
+            $finder = Finder::create()->in($cacheDir . '/doctrine');
+            $filesystem->remove($finder);
+            $finder = Finder::create()->in($cacheDir . '/profiler');
+            $filesystem->remove($finder);
+            $finder = Finder::create()->in($cacheDir . '/twig');
+        }
+
+        $filesystem->remove($finder);
+        return true;
     }
-
 }

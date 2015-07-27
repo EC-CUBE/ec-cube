@@ -113,6 +113,8 @@ admin.shop.tax.delete.complete: 税率設定情報を削除しました。
 admin.shop.mail.save.complete: メールテンプレート情報を保存しました。
 admin.shop.mail.save.error: メールテンプレートの新規登録はできません。
 
+admin.shop.csv.save.complete: CSV出力を設定しました。
+
 admin.content.template.save.complete: テンプレート設定を保存しました。
 admin.content.template.add.complete: テンプレートファイルをアップロードしました。
 admin.content.template.delete.complete: テンプレートを削除しました。

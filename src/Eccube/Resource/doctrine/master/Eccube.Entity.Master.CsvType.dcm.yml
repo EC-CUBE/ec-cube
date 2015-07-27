@@ -1,0 +1,19 @@
+Eccube\Entity\Master\CsvType:
+    type: entity
+    table: mtb_csv_type
+    repositoryClass: Eccube\Repository\Master\CsvTypeRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+    lifecycleCallbacks: {  }
