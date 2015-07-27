@@ -67,7 +67,7 @@ class MainEditType extends AbstractType
                         'max' => $app['config']['stext_len'],
                     )),
                     new Assert\Regex(array(
-                        'pattern' => "/^[0-9a-zA-Z]+$/",
+                        'pattern' => '/^[0-9a-zA-Z\/_]+$/',
                     )),
                 )
             ))

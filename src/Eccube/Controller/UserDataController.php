@@ -37,7 +37,7 @@ class UserDataController
             ->find(DeviceType::DEVICE_TYPE_PC);
 
         $PageLayout = $app['eccube.repository.page_layout']->findOneBy(
-            array('url' => $route, 'DeviceType' => $DeviceType)
+            array('url' => 'user_data_' . $route, 'DeviceType' => $DeviceType)
         );
 
         if (is_null($PageLayout)) {
