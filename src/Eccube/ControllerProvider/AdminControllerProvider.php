@@ -181,7 +181,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // setting/store
         $c->match('/setting/store/template', '\Eccube\Controller\Admin\Setting\Store\TemplateController::index')->bind('admin_setting_store_template');
-        $c->match('/setting_store/template/new', '\Eccube\Controller\Admin\Setting\Store\TemplateController::add')->bind('admin_setting_store_template_new');
+        $c->match('/setting/store/template/install', '\Eccube\Controller\Admin\Setting\Store\TemplateController::add')->bind('admin_setting_store_template_install');
         $c->match('/setting/store/template/{id}/download', '\Eccube\Controller\Admin\Setting\Store\TemplateController::download')->assert('id', '\d+')->bind('admin_setting_store_template_download');
         $c->post('/setting/store/template/{id}/delete', '\Eccube\Controller\Admin\Setting\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_setting_store_template_delete');
 
