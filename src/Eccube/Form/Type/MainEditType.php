@@ -58,8 +58,21 @@ class MainEditType extends AbstractType
                     ))
                 )
             ))
-            ->add('file_name', 'text', array(
+            ->add('url', 'text', array(
                 'label' => 'URL',
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $app['config']['stext_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[0-9a-zA-Z_]+$/',
+                    )),
+                )
+            ))
+            ->add('file_name', 'text', array(
+                'label' => 'ファイル名',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -120,15 +133,15 @@ class MainEditType extends AbstractType
             ->add('id', 'hidden')
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
                 $form = $event->getForm();
-                $file_name = $form['file_name']->getData();
+                $url = $form['url']->getData();
                 $DeviceType = $form['DeviceType']->getData();
                 $page_id = $form['id']->getData();
 
                 $qb = $app['orm.em']->createQueryBuilder();
                 $qb->select('p')
                     ->from('Eccube\\Entity\\PageLayout', 'p')
-                    ->where('p.file_name = :file_name')
-                    ->setParameter('file_name', $file_name)
+                    ->where('p.url = :url')
+                    ->setParameter('url', $url)
                     ->andWhere('p.DeviceType = :DeviceType')
                     ->setParameter('DeviceType', $DeviceType)
                 ;
@@ -145,7 +158,7 @@ class MainEditType extends AbstractType
                     ->getQuery()
                     ->getResult();
                 if (count($PageLayout) > 0) {
-                    $form['file_name']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
+                    $form['url']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());

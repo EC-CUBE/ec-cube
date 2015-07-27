@@ -76,11 +76,6 @@ class PageController
             if ($form->isValid()) {
                 $PageLayout = $form->getData();
 
-                $url = strtolower($form->get('file_name')->getData());
-                $url = str_replace('/', '_', $url);
-                $PageLayout->setUrl('user_data_' . $url);
-                $PageLayout->setFileName($url);
-
                 if (!$editable) {
                     $PageLayout
                         ->setUrl($PrevPageLayout->getUrl())
@@ -108,10 +103,13 @@ class PageController
             }
         }
 
+        $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
+
         return $app->render('Content/page_edit.twig', array(
             'form' => $form->createView(),
             'page_id' => $PageLayout->getId(),
             'editable' => $editable,
+            'template_path' => $templatePath,
         ));
     }
 

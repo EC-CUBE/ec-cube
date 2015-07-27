@@ -331,7 +331,7 @@ class Application extends ApplicationTrait
                 // ユーザ作成画面
                 if ($route === trim($app['config']['user_data_route'])) {
                     $params = $request->attributes->get('_route_params');
-                    $route = 'user_data_' . $params['route'];
+                    $route = $params['route'];
                 // プレビュー画面
                 } elseif ($request->get('preview')) {
                     $route = 'preview';
