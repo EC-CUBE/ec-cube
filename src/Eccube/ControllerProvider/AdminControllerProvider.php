@@ -82,7 +82,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         $c->match('/product/product_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvProduct')->bind('admin_product_csv_import');
         $c->match('/product/category_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvCategory')->bind('admin_product_category_csv_import');
-        $c->match('/product/csv_template', '\Eccube\Controller\Admin\Product\CsvImportController::csvTemplate')->bind('admin_product_csv_template');
+        $c->match('/product/csv_template/{type}', '\Eccube\Controller\Admin\Product\CsvImportController::csvTemplate')->bind('admin_product_csv_template');
 
         // customer
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');

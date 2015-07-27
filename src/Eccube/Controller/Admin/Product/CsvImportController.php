@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\Category;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
@@ -37,6 +38,7 @@ use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class CsvImportController
@@ -47,6 +49,10 @@ class CsvImportController
     private $fileName;
 
     private $em;
+
+    private $productTwig = 'Product/csv_product.twig';
+
+    private $categoryTwig = 'Product/csv_category.twig';
 
 
     /**
@@ -70,43 +76,20 @@ class CsvImportController
 
                 if (!empty($formFile)) {
 
-                    // アップロードされたCSVファイルを一時ディレクトリに保存
-                    $this->fileName = 'upload_' . Str::random() . '.' . $formFile->guessExtension();
-                    $formFile->move($app['config']['csv_temp_realdir'], $this->fileName);
-
-                    $file = file_get_contents($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
-                    // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-                    $encode = Str::characterEncoding(substr($file, 0, 6));
-                    if ($encode != 'UTF-8') {
-                        $file = mb_convert_encoding($file, 'UTF-8', $encode);
-                    }
-                    $file = Str::convertLineFeed($file);
-
-                    $tmp = tmpfile();
-                    fwrite($tmp, $file);
-                    rewind($tmp);
-                    $meta = stream_get_meta_data($tmp);
-                    $file = new \SplFileObject($meta['uri']);
-
-                    set_time_limit(0);
-
-                    // アップロードされたCSVファイルを行ごとに取得
-                    $data = new CsvImportService($file, $app['config']['csv_import_delimiter'], $app['config']['csv_import_enclosure']);
-
-                    $data->setHeaderRowNumber(0);
+                    $data = $this->getImportData($app, $formFile);
 
                     $keys = array_keys($headers);
                     $columnHeaders = $data->getColumnHeaders();
 
                     if ($keys !== $columnHeaders) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
-                        return $this->render($app, $form, $headers);
+                        return $this->render($app, $form, $headers, $this->productTwig);
                     }
 
                     $size = count($data);
                     if ($size < 1) {
                         $this->addErrors('CSVデータが存在しません。');
-                        return $this->render($app, $form, $headers);
+                        return $this->render($app, $form, $headers, $this->productTwig);
                     }
 
                     $headerSize = count($keys);
@@ -123,7 +106,7 @@ class CsvImportController
 
                         if ($headerSize != count($row)) {
                             $this->addErrors(($data->key() + 1) . '行目のCSVフォーマットが一致しません。');
-                            return $this->render($app, $form, $headers);
+                            return $this->render($app, $form, $headers, $this->productTwig);
                         }
 
                         if ($row['商品ID'] == '') {
@@ -133,7 +116,7 @@ class CsvImportController
                             $Product = $app['eccube.repository.product']->find($row['商品ID']);
                             if (!$Product) {
                                 $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
-                                return $this->render($app, $form, $headers);
+                                return $this->render($app, $form, $headers, $this->productTwig);
                             }
                         }
 
@@ -352,7 +335,7 @@ class CsvImportController
 
 
                         if ($this->hasErrors()) {
-                            return $this->render($app, $form, $headers);
+                            return $this->render($app, $form, $headers, $this->productTwig);
                         }
 
                         $this->em->persist($Product);
@@ -363,25 +346,160 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->close();
 
-                    $app->addSuccess('admin.product.csv_upload.save.complete', 'admin');
+                    $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
 
             }
         }
 
-        return $this->render($app, $form, $headers);
+        return $this->render($app, $form, $headers, $this->productTwig);
+    }
+
+    /**
+     * カテゴリ登録CSVアップロード
+     */
+    public function csvCategory(Application $app, Request $request)
+    {
+
+        $builder = $app['form.factory']->createBuilder('admin_csv_import');
+
+        $headers = $this->getCategoryCsvHeader();
+        $form = $builder->getForm();
+
+        if ('POST' === $request->getMethod()) {
+
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+
+                $formFile = $form['import_file']->getData();
+
+                if (!empty($formFile)) {
+
+                    $data = $this->getImportData($app, $formFile);
+
+                    $keys = array_keys($headers);
+                    $columnHeaders = $data->getColumnHeaders();
+
+                    if ($keys !== $columnHeaders) {
+                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        return $this->render($app, $form, $headers, $this->categoryTwig);
+                    }
+
+                    $size = count($data);
+                    if ($size < 1) {
+                        $this->addErrors('CSVデータが存在しません。');
+                        return $this->render($app, $form, $headers, $this->categoryTwig);
+                    }
+
+                    $headerSize = count($keys);
+
+                    $this->em = $app['orm.em'];
+                    $this->em->getConfiguration()->setSQLLogger(null);
+
+                    $this->em->getConnection()->beginTransaction();
+
+                    // CSVファイルの登録処理
+                    foreach ($data as $row) {
+
+                        if ($headerSize != count($row)) {
+                            $this->addErrors(($data->key() + 1) . '行目のCSVフォーマットが一致しません。');
+                            return $this->render($app, $form, $headers, $this->categoryTwig);
+                        }
+
+                        if ($row['カテゴリID'] == '') {
+                            $Category = new Category();
+                            $this->em->persist($Category);
+                        } else {
+                            $Category = $app['eccube.repository.category']->find($row['カテゴリID']);
+                            if (!$Category) {
+                                $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
+                            if ($row['カテゴリID'] == $row['親カテゴリID']) {
+                                $this->addErrors(($data->key() + 1) . '行目のカテゴリIDと親カテゴリIDが同じです。');
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
+
+                            $Parent = $Category->getParent();
+                        }
+
+                        if ($row['カテゴリ名'] == '') {
+                            $this->addErrors(($data->key() + 1) . '行目のカテゴリ名が設定されていません。');
+                        } else {
+                            $Category->setName($row['カテゴリ名']);
+                        }
+
+                        if ($row['親カテゴリID'] != '') {
+
+                            $ParentCategory = $app['eccube.repository.category']->find($row['親カテゴリID']);
+                            if (!$ParentCategory) {
+                                $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
+
+                        } else {
+                            $ParentCategory = null;
+                        }
+
+                        $Category->setParent($ParentCategory);
+                        if ($ParentCategory) {
+                            $Category->setLevel($ParentCategory->getLevel() + 1);
+                        } else {
+                            $Category->setLevel(1);
+                        }
+
+                        if ($app['config']['category_nest_level'] < $Category->getLevel()) {
+                            $this->addErrors(($data->key() + 1) . '行目のカテゴリが最大レベルを超えているため設定できません。');
+                            return $this->render($app, $form, $headers, $this->categoryTwig);
+                        }
+
+                        $status = $app['eccube.repository.category']->save($Category);
+
+                        if (!$status) {
+                            $this->addErrors(($data->key() + 1) . '行目のカテゴリが設定できません。');
+                        }
+
+                        if ($this->hasErrors()) {
+                            return $this->render($app, $form, $headers, $this->categoryTwig);
+                        }
+
+                        $this->em->persist($Category);
+
+                    }
+
+                    $this->em->getConnection()->commit();
+                    $this->em->flush();
+                    $this->em->close();
+
+                    $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
+                }
+
+            }
+        }
+
+        return $this->render($app, $form, $headers, $this->categoryTwig);
     }
 
 
     /**
      * アップロード用CSV雛形ファイルダウンロード
      */
-    public function csvTemplate(Application $app, Request $request)
+    public function csvTemplate(Application $app, Request $request, $type)
     {
         set_time_limit(0);
 
         $response = new StreamedResponse();
-        $headers = $this->getProductCsvHeader();
+
+        if ($type == 'product') {
+            $headers = $this->getProductCsvHeader();
+            $filename = 'product.csv';
+        } else if ($type == 'category') {
+            $headers = $this->getCategoryCsvHeader();
+            $filename = 'category.csv';
+        } else {
+            throw new NotFoundHttpException();
+        }
 
         $response->setCallback(function () use ($app, $request, $headers) {
 
@@ -397,7 +515,6 @@ class CsvImportController
 
         });
 
-        $filename = 'product.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
@@ -410,21 +527,61 @@ class CsvImportController
      * 登録、更新時のエラー画面表示
      *
      */
-    protected function render($app, $form, $headers)
+    protected function render($app, $form, $headers, $twig)
     {
 
         if ($this->hasErrors()) {
             $fs = new Filesystem();
             $fs->remove($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
-            $this->em->getConnection()->rollback();
-            $this->em->close();
+            if ($this->em) {
+                $this->em->getConnection()->rollback();
+                $this->em->close();
+            }
         }
 
-        return $app->render('Product/csv_product.twig', array(
+        return $app->render($twig, array(
             'form' => $form->createView(),
             'headers' => $headers,
             'errors' => $this->errors,
         ));
+    }
+
+
+    /**
+     * アップロードされたCSVファイルの行ごとの処理
+     *
+     * @param $formFile
+     * @return CsvImportService
+     */
+    protected function getImportData($app, $formFile)
+    {
+
+        // アップロードされたCSVファイルを一時ディレクトリに保存
+        $this->fileName = 'upload_' . Str::random() . '.' . $formFile->guessExtension();
+        $formFile->move($app['config']['csv_temp_realdir'], $this->fileName);
+
+        $file = file_get_contents($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
+        // アップロードされたファイルがUTF-8以外は文字コード変換を行う
+        $encode = Str::characterEncoding(substr($file, 0, 6));
+        if ($encode != 'UTF-8') {
+            $file = mb_convert_encoding($file, 'UTF-8', $encode);
+        }
+        $file = Str::convertLineFeed($file);
+
+        $tmp = tmpfile();
+        fwrite($tmp, $file);
+        rewind($tmp);
+        $meta = stream_get_meta_data($tmp);
+        $file = new \SplFileObject($meta['uri']);
+
+        set_time_limit(0);
+
+        // アップロードされたCSVファイルを行ごとに取得
+        $data = new CsvImportService($file, $app['config']['csv_import_delimiter'], $app['config']['csv_import_enclosure']);
+
+        $data->setHeaderRowNumber(0);
+
+        return $data;
     }
 
 
@@ -780,11 +937,10 @@ class CsvImportController
     }
 
     /**
-     * CSVヘッダー定義
+     * 商品登録CSVヘッダー定義
      */
     private function getProductCsvHeader()
     {
-
         return array(
             '商品ID' => 'id',
             '公開ステータス(ID)' => 'status',
@@ -812,4 +968,16 @@ class CsvImportController
         );
     }
 
+
+    /**
+     * カテゴリCSVヘッダー定義
+     */
+    private function getCategoryCsvHeader()
+    {
+        return array(
+            'カテゴリID' => 'id',
+            'カテゴリ名' => 'category_name',
+            '親カテゴリID' => 'parent_category_id',
+        );
+    }
 }
