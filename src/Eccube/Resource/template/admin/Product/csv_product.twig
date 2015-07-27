@@ -28,10 +28,46 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/spin.min.js"></script>
+<script>
+$(function() {
+
+    var opts = {
+        // position: position,
+        lines: 13,
+        length: 30,
+        width: 2,
+        radius: 12,
+        corners: 1,
+        rotate: 0,
+        direction: 1,
+        color: '#BBB',
+        speed: 1,
+        trail: 67,
+        shadow: true,
+        hwaccel: false,
+        className: 'spinner',
+        zIndex: 2e9,
+        top: top
+    };
+
+    ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
+    ImageSpinner.stop();
+
+    $('#upload-form').submit(function() {
+        $('#upload-button').attr('disabled', 'disabled');
+        $('#download-button').attr('disabled', 'disabled');
+        ImageSpinner.spin(document.getElementById('spinner'));
+    });
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
 <div class="row">
     <div class="col-md-12">
-        <form class="form-inline" method="post" action="{{ url('admin_product_csv_import') }}" {{ form_enctype(form) }}>
+        <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_csv_import') }}" {{ form_enctype(form) }}>
             {{ form_widget(form._token) }}
             <div class="box">
                 <div class="box-header">
@@ -47,9 +83,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% endfor %}
                         </div>
                     </div>
+                    <div id="spinner"></div>
                 </div><!-- /.box-header -->
                 <div class="box-body text-center">
-                    <button type="submit" class="btn btn-primary btn-sm" name="mode" value="import">CSVファイルのアップロード</button>
+                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </form>
@@ -60,7 +97,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <a href="{{ url('admin_product_csv_template') }}" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
+                <a href="{{ url('admin_product_csv_template') }}" id="download-button" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
                 <h3 class="box-title">商品登録CSVファイルフォーマット</h3>
             </div><!-- /.box-header -->
             <div class="box-body no-padding">
@@ -75,14 +112,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>
-                                    商品ID
-                                </td>
-                                <td>
-                                    商品ID
-                                </td>
-                            </tr>
+                                <tr class="text-nowrap">
+                                    <td>新規登録時は未設定<br>既存商品の更新は商品IDを設定</td>
+                                    <td>必須</td>
+                                    <td>必須</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>設定されていない場合<br>0を登録</td>
+                                    <td>複数画像の場合<br>画像ファイル名をカンマ区切りで<br>「"」で囲んで設定</td>
+                                    <td>複数カテゴリの場合<br>商品カテゴリIDをカンマ区切りで<br>「"」で囲んで設定</td>
+                                    <td>必須</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>必須</td>
+                                    <td>在庫数無制限フラグが0の場合<br>0以上の数値を設定</td>
+                                    <td>必須</td>
+                                    <td>0以上の数値を設定</td>
+                                    <td>0以上の数値を設定</td>
+                                    <td>必須<br>0以上の数値を設定</td>
+                                    <td>商品ごとの送料設定が有効の場合<br>0以上の数値を設定</td>
+                                    <td>設定されていない場合<br>0を登録</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

@@ -195,7 +195,12 @@ class CsvImportController
                             $ProductClassOrg = $this->createProductClass($row, $Product, $app, $data);
                             if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                 if ($row['送料'] != '') {
-                                    $ProductClassOrg->setDeliveryFee($row['送料']);
+                                    $deliveryFee = str_replace(',', '', $row['送料']);
+                                    if (is_numeric($deliveryFee) && $deliveryFee >= 0) {
+                                        $ProductClassOrg->setDeliveryFee($deliveryFee);
+                                    } else {
+                                        $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
+                                    }
                                 }
                             }
 
@@ -267,7 +272,12 @@ class CsvImportController
 
                                     if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                         if ($row['送料'] != '') {
-                                            $pc->setDeliveryFee($row['送料']);
+                                            $deliveryFee = str_replace(',', '', $row['送料']);
+                                            if (is_numeric($deliveryFee) && $deliveryFee >= 0) {
+                                                $pc->setDeliveryFee($deliveryFee);
+                                            } else {
+                                                $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
+                                            }
                                         }
                                     }
 
@@ -324,7 +334,12 @@ class CsvImportController
 
                                     if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                         if ($row['送料'] != '') {
-                                            $ProductClass->setDeliveryFee($row['送料']);
+                                            $deliveryFee = str_replace(',', '', $row['送料']);
+                                            if (is_numeric($deliveryFee) && $deliveryFee >= 0) {
+                                                $ProductClass->setDeliveryFee($deliveryFee);
+                                            } else {
+                                                $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
+                                            }
                                         }
                                     }
 
@@ -369,9 +384,8 @@ class CsvImportController
         $headers = $this->getProductCsvHeader();
 
         $response->setCallback(function () use ($app, $request, $headers) {
-            // ヘッダ行の出力
-            // $app['eccube.service.csv.import']->exportHeader();
 
+            // ヘッダ行の出力
             $row = array();
             foreach ($headers as $key => $value) {
                 $row[] = mb_convert_encoding($key, $app['config']['csv_export_encoding'], 'UTF-8');
