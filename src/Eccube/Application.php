@@ -392,11 +392,11 @@ class Application extends ApplicationTrait
             if (isset($config['orm.path']) and is_array($config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
-                    $paths[] = $pluginBasePath . '/' . $config['name'] . $path;
+                    $paths[] = $pluginBasePath . '/' . $config['code'] . $path;
                 }
                 $ormMappings[] = array(
                     'type' => 'yml',
-                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'namespace' => 'Plugin\\' . $config['code'] . '\\Entity',
                     'path' => $paths,
                 );
             }
