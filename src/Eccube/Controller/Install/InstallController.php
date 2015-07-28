@@ -52,7 +52,7 @@ class InstallController
 
     private $session_data;
 
-    private $required_modules = array('pdo', 'phar', 'gd', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL');
+    private $required_modules = array('pdo', 'phar', 'gd', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
 
     private $recommended_module = array('hash', 'APC', 'mcrypt');
 
