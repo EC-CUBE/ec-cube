@@ -52,7 +52,7 @@ class InstallController
 
     private $session_data;
 
-    private $required_modules = array('pdo', 'phar', 'gd', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
+    private $required_modules = array('pdo', 'phar', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
 
     private $recommended_module = array('hash', 'APC', 'mcrypt');
 
@@ -254,13 +254,6 @@ class InstallController
         foreach ($this->required_modules as $module) {
             if (!extension_loaded($module)) {
                 $app->addDanger('[必須] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
-            }
-        }
-
-        if (extension_loaded('gd')) {
-            $gdInfo = gd_info();
-            if (empty($gdInfo['FreeType Support'])) {
-                $app->addDanger('[必須] ' . 'FreeType 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
