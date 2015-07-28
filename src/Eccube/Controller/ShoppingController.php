@@ -50,6 +50,12 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
         // 受注データを取得
         $preOrderId = $cartService->getPreOrderId();
         $Order = $app['eccube.repository.order']->findOneBy(array(
@@ -626,6 +632,13 @@ class ShoppingController extends AbstractController
         if ($this->isGranted($app)) {
             return $app->redirect($app->url('shopping'));
         }
+
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
 
         $form = $app['form.factory']->createBuilder('nonmember')->getForm();
 
