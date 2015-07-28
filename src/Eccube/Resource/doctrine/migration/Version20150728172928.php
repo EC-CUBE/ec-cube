@@ -23,19 +23,17 @@ class Version20150728172928 extends AbstractMigration
 
         if($t->hasColumn('delivery_date_id')){
 
-            $keyName;
             $keys = $t->getForeignKeys();
             foreach ($keys as $key) {
                 $column = $key->getColumns();
                 if ($column[0] == 'delivery_date_id') {
                     $keyName = $key->getName();
+                    $t->removeForeignKey($keyName);
+                    $t->dropColumn('delivery_date_id');
                     break;
                 }
-
             }
 
-            $t->removeForeignKey($keyName);
-            $t->dropColumn('delivery_date_id');
         }
     }
 
