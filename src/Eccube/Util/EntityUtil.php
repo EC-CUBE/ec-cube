@@ -43,7 +43,7 @@ class EntityUtil
             }
             return false;
         } else {
-            return isset($entity);
+            return empty($entity);
         }
     }
 

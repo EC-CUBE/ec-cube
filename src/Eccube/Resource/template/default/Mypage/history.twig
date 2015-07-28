@@ -66,17 +66,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="item_box tr">
                                 <div class="td table">
                                     <div class="item_photo">
-                                        {% if is_not_empty(OrderDetail.Product) %}
+                                        {% if OrderDetail.Product is null %}
+                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                        {% else %}
                                             <a href="{{ url('product_detail', { id : OrderDetail.Product.id } ) }}">
                                                 <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_product }}">
                                             </a>
-                                        {% else %}
-                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
                                         {% endif %}
                                     </div>
                                     <dl class="item_detail">
                                         <dt class="item_name text-default">
-                                            {% if is_not_empty(OrderDetail.Product) %}
+                                            {% if OrderDetail.Product is null %}
+                                                {{ OrderDetail.product_name }}
+                                            {% else %}
                                                 {% if OrderDetail.enable %}
                                                     <a href="{{ url('product_detail', {'productId': OrderDetail.Product.id}) }}">
                                                         {{ OrderDetail.product_name }}
@@ -84,8 +86,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% else %}
                                                     {{ OrderDetail.product_name }}
                                                 {% endif %}
-                                            {% else %}
-                                                {{ OrderDetail.product_name }}
                                             {% endif %}
                                         </dt>
                                         <dd class="item_pattern small">
@@ -119,7 +119,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <p>
                             配送方法：　{{ Shipping.shipping_delivery_name }}（＋{{ Shipping.delivery_fee.fee|price }}）<br>
                             お届け日：　{{ Shipping.shipping_date|default('指定なし') }}<br>
-                            お届け時間：　{{ Shipping.shipping_time|default('指定なし') }}
+                            お届け時間：　{{ Shipping.shipping_delivery_time|default('指定なし') }}
                         </p>
                     </div>
                 {% endfor %}

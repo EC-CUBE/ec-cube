@@ -24,7 +24,6 @@
 
 namespace Eccube\Twig\Extension;
 
-use Eccube\Util\EntityUtil;
 use Silex\Application;
 
 class EccubeExtension extends \Twig_Extension
@@ -44,10 +43,8 @@ class EccubeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'calc_inc_tax' => new \Twig_Function_Method($this, 'getCalcIncTax'),
-            'active_menus' => new \Twig_Function_Method($this, 'getActiveMenus'),
-            'is_empty' => new \Twig_Function_Method($this, 'getIsEmpty'),
-            'is_not_empty' => new \Twig_Function_Method($this, 'getIsNotEmpty'),
+            new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
+            new \Twig_SimpleFunction('active_menus', array($this, 'getActiveMenus')),
         );
     }
 
@@ -99,28 +96,6 @@ class EccubeExtension extends \Twig_Extension
         }
 
         return $menus;
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @param null $entity
-     * @return bool
-     */
-    public function getIsEmpty($entity)
-    {
-        return EntityUtil::isEmpty($entity);
-    }
-
-    /**
-     * Name of this extension
-     *
-     * @param null $entity
-     * @return bool
-     */
-    public function getIsNotEmpty($entity)
-    {
-        return EntityUtil::isNotEmpty($entity);
     }
 
     /**

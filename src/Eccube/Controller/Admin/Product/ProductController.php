@@ -183,7 +183,7 @@ class ProductController
             $Product
                 ->setDelFlg(0)
                 ->addProductClass($ProductClass)
-            ->setStatus($Disp);
+                ->setStatus($Disp);
             $ProductClass
                 ->setDelFlg(0)
                 ->setStockUnlimited(true)
@@ -361,9 +361,51 @@ class ProductController
             /* @var $Product \Eccube\Entity\Product */
             $Product = $app['eccube.repository.product']->find($id);
             if ($Product instanceof \Eccube\Entity\Product) {
-                $Product->setDelFlg(1);
+                $Product->setDelFlg(Constant::ENABLED);
+
+                $ProductClasses = $Product->getProductClasses();
+                $deleteImages = array();
+                foreach ($ProductClasses as $ProductClass) {
+                    $ProductClass->setDelFlg(Constant::ENABLED);
+                    $Product->removeProductClass($ProductClass);
+
+                    $ProductClasses = $Product->getProductClasses();
+                    foreach ($ProductClasses as $ProductClass) {
+                        $ProductClass->setDelFlg(Constant::ENABLED);
+                        $Product->removeProductClass($ProductClass);
+
+                        $ProductStock = $ProductClass->getProductStock();
+                        $app['orm.em']->remove($ProductStock);
+                    }
+
+                    $ProductImages = $Product->getProductImage();
+                    foreach ($ProductImages as $ProductImage) {
+                        $Product->removeProductImage($ProductImage);
+                        $deleteImages[] = $ProductImage->getFileName();
+                        $app['orm.em']->remove($ProductImage);
+                    }
+
+                    $ProductCategories = $Product->getProductCategories();
+                    foreach ($ProductCategories as $ProductCategory) {
+                        $Product->removeProductCategory($ProductCategory);
+                        $app['orm.em']->remove($ProductCategory);
+                    }
+
+                }
+
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
+
+
+                // 画像ファイルの削除(commit後に削除させる)
+                foreach ($deleteImages as $deleteImage) {
+                    try {
+                        $fs = new Filesystem();
+                        $fs->remove($app['config']['image_save_realdir'] . '/' . $deleteImage);
+                    } catch (\Exception $e) {
+                        // エラーが発生しても無視する
+                    }
+                }
 
                 $app->addSuccess('admin.delete.complete', 'admin');
             } else {

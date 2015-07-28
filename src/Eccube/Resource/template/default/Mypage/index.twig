@@ -58,10 +58,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="tbody">
                                             <div class="tr">
                                                 <div class="item_photo td">
-                                                    {% if is_not_empty(OrderDetail.Product) %}
-                                                    <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_product }}" />
+                                                    {% if OrderDetail.Product is null %}
+                                                        <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
                                                     {% else %}
-                                                    <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                                        <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_product }}" />
                                                     {% endif %}
                                                 </div>
                                                 <dl class="item_detail td">

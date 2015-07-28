@@ -25,9 +25,9 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
+use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Exception\CartException;
-use Eccube\Util\EntityUtil;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService
@@ -80,7 +80,9 @@ class CartService
                 ->entityManager
                 ->getRepository($CartItem->getClassName())
                 ->find($CartItem->getClassId());
-            $this->setCanAddProductType($ProductClass->getProductType());
+            if ($ProductClass) {
+                $this->setCanAddProductType($ProductClass->getProductType());
+            }
         }
 
     }
@@ -146,6 +148,12 @@ class CartService
 
     public function getCart()
     {
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass'
+        ));
+
         foreach ($this->cart->getCartItems() as $CartItem) {
             $ProductClass = $this
                 ->entityManager
@@ -153,12 +161,13 @@ class CartService
                 ->find($CartItem->getClassId());
 
             // 商品情報が削除されたらカートからも削除
-            if (EntityUtil::isNotEmpty($ProductClass->getProduct())) {
+            if ($ProductClass->getDelFlg() == Constant::DISABLED) {
                 $CartItem->setObject($ProductClass);
             } else {
                 $this->setError('cart.product.delete');
                 $this->removeProduct($ProductClass->getId());
             }
+
         }
 
         return $this->cart;
@@ -350,6 +359,7 @@ class CartService
     {
         return $this->error;
     }
+
     /**
      * @param  string $error
      * @return \Eccube\Service\CartService
