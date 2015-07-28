@@ -57,14 +57,25 @@
                                 {{ form_errors(form.name) }}
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            {{ form_label(form.url) }}
+                            <div class="col-sm-9 col-lg-10 form-inline">
+                                {% if editable %}
+                                    {{ url('top') }}{{ app.config.user_data_route }}/{{ form_widget(form.url) }}
+                                {% else %}
+                                    {{ url(form.url.vars.value) }}
+                                    {{ form_widget(form.url, { type : 'hidden' } ) }}
+                                {% endif %}
+                                {{ form_errors(form.url) }}
+                            </div>
+                        </div>
                         <div class="form-group">
                             {{ form_label(form.file_name) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
                                 {% if editable %}
-                                    {{ url('top') }}{{ app.config.user_data_route }}/{{ form_widget(form.file_name) }}.twig
+                                    {{ template_path }}/{{ form_widget(form.file_name) }}.twig
                                 {% else %}
-                                    {{ url('top') }}{{ form.file_name.vars.value }}.twig
+                                    {{ template_path }}/{{ form.file_name.vars.value }}.twig
                                     {{ form_widget(form.file_name, { type : 'hidden' } ) }}
                                 {% endif %}
                                 {{ form_errors(form.file_name) }}
