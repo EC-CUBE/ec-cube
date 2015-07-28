@@ -251,41 +251,40 @@ class InstallController
 
     private function checkModules($app)
     {
-
         foreach ($this->required_modules as $module) {
             if (!extension_loaded($module)) {
-                $app->addDanger($module . ' 拡張モジュールが有効になっていません。', 'install');
+                $app->addDanger('[必須] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if (extension_loaded('gd')) {
             $gdInfo = gd_info();
             if (empty($gdInfo['FreeType Support'])) {
-                $app->addDanger('FreeType 拡張モジュールが有効になっていません。', 'install');
+                $app->addDanger('[必須] ' . 'FreeType 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
-            $app->addDanger('pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+            $app->addDanger('[必須] ' . 'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
         }
 
         foreach ($this->recommended_module as $module) {
             if (!extension_loaded($module)) {
-                $app->addWarning($module . ' 拡張モジュールが有効になっていません。', 'install');
+                $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
-        if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
-            // 有効
-        } elseif (isset($_SERVER['IIS_UrlRewriteModule'])) {
-            // ISSの場合
-        } elseif (!function_exists('apache_get_modules')) {
-            $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
-        } else {
-            $app->addDanger('mod_rewriteを有効にしてください。', 'install');
+        if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
+            if (!function_exists('apache_get_modules')) {
+                $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+            } elseif (!in_array('mod_rewrite', apache_get_modules())) {
+                $app->addDanger('[必須] ' . 'mod_rewriteを有効にしてください。', 'install');
+            }
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Microsoft-IIS', $_SERVER['SERVER_SOFTWARE']) !== false) {
+            // iis
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('nginx', $_SERVER['SERVER_SOFTWARE']) !== false) {
+            // nginx
         }
-
-
     }
 
     private function setPDO()
