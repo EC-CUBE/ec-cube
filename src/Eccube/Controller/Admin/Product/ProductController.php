@@ -181,11 +181,11 @@ class ProductController
             $ProductClass = new \Eccube\Entity\ProductClass();
             $Disp = $app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
             $Product
-                ->setDelFlg(0)
+                ->setDelFlg(Constant::DISABLED)
                 ->addProductClass($ProductClass)
             ->setStatus($Disp);
             $ProductClass
-                ->setDelFlg(0)
+                ->setDelFlg(Constant::DISABLED)
                 ->setStockUnlimited(true)
                 ->setProduct($Product);
             $ProductStock = new \Eccube\Entity\ProductStock();
