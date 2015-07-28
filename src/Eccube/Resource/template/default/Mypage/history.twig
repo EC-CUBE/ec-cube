@@ -118,7 +118,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </p>
                         <p>
                             配送方法：　{{ Shipping.shipping_delivery_name }}（＋{{ Shipping.delivery_fee.fee|price }}）<br>
-                            お届け日：　{{ Shipping.shipping_date|default('指定なし') }}<br>
+                            お届け日：　{{ Shipping.shipping_delivery_date|date_format|default('指定なし') }}<br>
                             お届け時間：　{{ Shipping.shipping_delivery_time|default('指定なし') }}
                         </p>
                     </div>
@@ -126,7 +126,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <h2 class="heading02">お支払方法</h2>
                 <div class="column">
                     <p>
-                        支払方法：　{{ Order.Payment }}
+                        支払方法：　{{ Order.PaymentMethod }}
                     </p>
                 </div>
 

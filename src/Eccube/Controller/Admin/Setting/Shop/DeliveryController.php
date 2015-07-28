@@ -100,8 +100,7 @@ class DeliveryController extends AbstractController
         // 支払方法をセット
         $Payments = array();
         foreach ($Delivery->getPaymentOptions() as $PaymentOption) {
-            $Payments[] = $app['eccube.repository.payment']
-                ->find($PaymentOption->getPaymentId());
+            $Payments[] = $PaymentOption->getPayment();
         }
 
         $form['delivery_times']->setData($Delivery->getDeliveryTimes());
@@ -141,8 +140,7 @@ class DeliveryController extends AbstractController
                         ->setPaymentId($PaymentData->getId())
                         ->setPayment($PaymentData)
                         ->setDeliveryId($DeliveryData->getId())
-                        ->setDelivery($DeliveryData)
-                    ;
+                        ->setDelivery($DeliveryData);
                     $DeliveryData->addPaymentOption($PaymentOption);
                     $app['orm.em']->persist($DeliveryData);
                 }
@@ -180,12 +178,12 @@ class DeliveryController extends AbstractController
         foreach ($Delivs as $Deliv) {
             if ($Deliv->getId() != $id) {
                 $Deliv->setRank($rank);
-                $rank ++;
+                $rank++;
             }
         }
         $app['orm.em']->flush();
 
-        $app->addSuccess('admin.delete.complete', 'admin') ;
+        $app->addSuccess('admin.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_delivery'));
     }
