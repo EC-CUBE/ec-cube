@@ -106,7 +106,10 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
 
     /**
-     * @param Application $app
+     * @param \SplFileObject $file
+     * @param string $delimiter
+     * @param string $enclosure
+     * @param string $escape
      */
     public function __construct(\SplFileObject $file, $delimiter = ',', $enclosure = '"', $escape = '\\')
     {
@@ -141,7 +144,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         }
 
         // Since the CSV has column headers use them to construct an associative array for the columns in this line
-        do {
+        if ($this->valid()) {
             $line = $this->file->current();
 
             // See if values for duplicate headers should be merged
@@ -156,12 +159,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
                 return $line;
             }
 
-            // They are not equal, so log the row as error and skip it.
-            if ($this->valid()) {
-                $this->errors[$this->key()] = $line;
-                $this->next();
-            }
-        } while ($this->valid());
+        };
 
         return null;
     }
@@ -197,10 +195,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *                        - CsvReader::DUPLICATE_HEADERS_MERGE; merges
      *                        values for duplicate headers into an array
      *                        (dup => [value1, value2, value3])
-     *
-     * @throws DuplicateHeadersException If duplicate headers are encountered
-     *                                   and no duplicate handling has been
-     *                                   specified
      */
     public function setHeaderRowNumber($rowNumber, $duplicates = null)
     {
@@ -329,7 +323,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array
      *
-     * @throws DuplicateHeadersException
      */
     protected function readHeaderRow($rowNumber)
     {
