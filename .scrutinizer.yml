@@ -83,5 +83,5 @@ tools:
 checks:
     php:
         custom_coding_standard:
-            git_repository: 'https://github.com/escapestudios/Symfony2-coding-standard'
+            git_repository: 'https://github.com/M6Web/Symfony2-coding-standard'
             ruleset_path: 'Symfony2/ruleset.xml'
