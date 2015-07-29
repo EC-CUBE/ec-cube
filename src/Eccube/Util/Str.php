@@ -23,7 +23,8 @@
 
 namespace Eccube\Util;
 
-class Str {
+class Str
+{
 
     /**
      * The MIT License (MIT)
@@ -50,19 +51,17 @@ class Str {
      *
      * Generate a more truly "random" alpha-numeric string.
      *
-     * @param  int  $length
+     * @param  int $length
      * @return string
      *
      * @throws \RuntimeException
      */
     public static function random($length = 16)
     {
-        if (function_exists('openssl_random_pseudo_bytes'))
-        {
+        if (function_exists('openssl_random_pseudo_bytes')) {
             $bytes = openssl_random_pseudo_bytes($length * 2);
 
-            if ($bytes === false)
-            {
+            if ($bytes === false) {
                 throw new \RuntimeException('Unable to generate random string.');
             }
 
@@ -99,7 +98,7 @@ class Str {
      *
      * Should not be considered sufficient for cryptography, etc.
      *
-     * @param  int  $length
+     * @param  int $length
      * @return string
      */
     public static function quickRandom($length = 16)
@@ -110,11 +109,37 @@ class Str {
     }
 
 
-    public static function convertLineFeed($value, $lf = "\n") {
+    /**
+     * 改行コードの変換
+     *
+     * @param $value
+     * @param string $lf
+     * @return string
+     */
+    public static function convertLineFeed($value, $lf = "\n")
+    {
         if (empty($value)) {
             return '';
         }
         return strtr($value, array_fill_keys(array("\r\n", "\r", "\n"), $lf));
+    }
+
+    /**
+     * 文字コードの判定
+     *
+     * @param $value
+     * @return string
+     */
+    public static function characterEncoding($value, $encoding = array('UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'))
+    {
+        foreach ($encoding as $encode) {
+            if (mb_convert_encoding($value, $encode, $encode) == $value) {
+                return $encode;
+            }
+        }
+
+        return null;
+
     }
 
 }

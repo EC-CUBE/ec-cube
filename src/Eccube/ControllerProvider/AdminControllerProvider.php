@@ -80,6 +80,10 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/product/class_category/{class_name_id}/{id}/delete', '\Eccube\Controller\Admin\Product\ClassCategoryController::delete')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_delete');
         $c->post('/product/class_category/rank/move', '\Eccube\Controller\Admin\Product\ClassCategoryController::moveRank')->bind('admin_product_class_category_rank_move');
 
+        $c->match('/product/product_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvProduct')->bind('admin_product_csv_import');
+        $c->match('/product/category_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvCategory')->bind('admin_product_category_csv_import');
+        $c->match('/product/csv_template/{type}', '\Eccube\Controller\Admin\Product\CsvImportController::csvTemplate')->bind('admin_product_csv_template');
+
         // customer
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');
         $c->match('/customer/page/{page_no}', '\Eccube\Controller\Admin\Customer\CustomerController::index')->assert('page_no', '\d+')->bind('admin_customer_page');

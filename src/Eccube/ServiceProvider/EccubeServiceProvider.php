@@ -95,6 +95,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
         });
+        $app['eccube.repository.delivery_date'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryDate');
+        });
         $app['eccube.repository.delivery_fee'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\DeliveryFee');
         });
@@ -307,6 +310,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\NewsType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\SecurityType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\CsvImportType($app);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
