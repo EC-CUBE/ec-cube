@@ -84,4 +84,4 @@ checks:
     php:
         custom_coding_standard:
             git_repository: 'https://github.com/escapestudios/Symfony2-coding-standard'
-            ruleset_path: 'ruleset.xml'
+            ruleset_path: 'Symfony2/ruleset.xml'
