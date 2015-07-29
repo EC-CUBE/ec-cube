@@ -2988,3 +2988,31 @@ ul.link-with-bar li:last-child::after {
 .padL40 { padding-left:40px !important;}
 .padL45 { padding-left:45px !important;}
 .padL50 { padding-left:50px !important;}
+
+/* csv download dropdown */
+.dl_dropdown .dropdown > a {
+    display: inline-block;
+    font-size: 14px;
+    font-size: 1.4rem;
+    padding: 11px 32px 11px 5px;
+}
+.dl_dropdown {
+    padding: 0 !important;
+    text-align: right;
+}
+.dl_dropdown .dropdown-menu {
+    margin-top: -10px;
+    min-width: auto;
+}
+.dl_dropdown .dropdown .dropdown-toggle .icon_down {
+    top: 14px;
+}
+
+@media (min-width: 768px) {
+    .dl_dropdown .dropdown > a {
+        padding-right: 46px;
+    }
+    .dl_dropdown .dropdown .dropdown-toggle .icon_down {
+        right: 27px;
+    }
+}
