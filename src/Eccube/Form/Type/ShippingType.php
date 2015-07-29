@@ -116,15 +116,21 @@ class ShippingType extends AbstractType
                 'label' => '配送業者',
                 'class' => 'Eccube\Entity\Delivery',
                 'property' => 'name',
-                'empty_value' => false,
+                'empty_value' => '選択してください',
                 'empty_data' => null,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->add('DeliveryTime', 'entity', array(
                 'label' => 'お届け時間',
                 'class' => 'Eccube\Entity\DeliveryTime',
                 'property' => 'delivery_time',
-                'empty_value' => false,
+                'empty_value' => '選択してください',
                 'empty_data' => null,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->add('shipping_delivery_date', null, array(
                 'label' => 'お届け日'
