@@ -33,15 +33,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="column_inner clearfix">
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
                             <div class="form-group">
-                                {{ form_widget(form.login_email, {'attr': {'style' : 'ime-mode: disabled;', 'placeholder' : form.login_email.vars.label }}) }}
+                                {{ form_widget(form.login_email, {'attr': {'style' : 'ime-mode: disabled;', 'placeholder' : 'メールアドレス' }}) }}
                                 {{ form_widget(form.login_memory) }}
                             </div>
                             <div class="form-group">
-                                {{ form_widget(form.login_pass, { placeholder : form.login_pass.vars.label }) }}
+                                {{ form_widget(form.login_pass,  {'attr': {'placeholder' : 'パスワード' }}) }}
                             </div>
                             {% if error %}
                             <div class="form-group">
-                                <span class="text-danger">{{ error|trans }}</span>
+                                <span class="text-danger">{{ error|trans|raw }}</span>
                             </div>
                             {% endif %}
                             <div class="btn_area">
