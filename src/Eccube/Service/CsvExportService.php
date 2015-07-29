@@ -25,6 +25,7 @@
 namespace Eccube\Service;
 
 use Eccube\Common\Constant;
+use Eccube\Util\EntityUtil;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -270,13 +271,16 @@ class CsvExportService
 
         // one to one の場合は, dtb_csv.referece_field_nameと比較し, 合致する結果を取得する.
         if ($data instanceof \Eccube\Entity\AbstractEntity) {
-            return $data->offsetGet($Csv->getReferenceFieldName());
-
+            if (EntityUtil::isNotEmpty($data)) {
+                return $data->offsetGet($Csv->getReferenceFieldName());
+            }
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
             $array = array();
             foreach ($data as $elem) {
-                $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
+                if (EntityUtil::isNotEmpty($elem)) {
+                    $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
+                }
             }
             return implode($this->config['csv_export_multidata_separator'], $array);
 
