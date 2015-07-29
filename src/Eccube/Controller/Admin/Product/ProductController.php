@@ -510,8 +510,12 @@ class ProductController
 
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
+            // distinctのmysqlとpgsqlの挙動をあわせる.
+            // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select')
+                ->resetDQLPart('orderBy')
                 ->select('p')
+                ->orderBy('p.update_date', 'DESC')
                 ->distinct();
 
             // データ行の出力.

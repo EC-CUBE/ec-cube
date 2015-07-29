@@ -25,6 +25,7 @@
 namespace Eccube\Service;
 
 use Eccube\Common\Constant;
+use Eccube\Util\EntityUtil;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -169,7 +170,7 @@ class CsvExportService
     }
 
     /**
-     * CsvŽí•Ê‚©‚çService‚Ì‰Šú‰»‚ðs‚¤.
+     * Csvç¨®åˆ¥ã‹ã‚‰Serviceã®åˆæœŸåŒ–ã‚’è¡Œã†.
      *
      * @param $CsvType|integer
      */
@@ -200,8 +201,8 @@ class CsvExportService
     }
 
     /**
-     * ƒwƒbƒ_s‚ðo—Í‚·‚é.
-     * ‚±‚Ìƒƒ\ƒbƒh‚ðŽg‚¤ê‡‚Í, Ž–‘O‚ÉinitCsvType($CsvType)‚Å‰Šú‰»‚µ‚Ä‚¨‚­•K—v‚ª‚ ‚é.
+     * ãƒ˜ãƒƒãƒ€è¡Œã‚’å‡ºåŠ›ã™ã‚‹.
+     * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä½¿ã†å ´åˆã¯, äº‹å‰ã«initCsvType($CsvType)ã§åˆæœŸåŒ–ã—ã¦ãŠãå¿…è¦ãŒã‚ã‚‹.
      */
     public function exportHeader()
     {
@@ -220,8 +221,8 @@ class CsvExportService
     }
 
     /**
-     * ƒNƒGƒŠƒrƒ‹ƒ_‚É‚à‚Æ‚Ã‚¢‚Äƒf[ƒ^s‚ðo—Í‚·‚é.
-     * ‚±‚Ìƒƒ\ƒbƒh‚ðŽg‚¤ê‡‚Í, Ž–‘O‚ÉsetExportQueryBuilder($qb)‚Åo—Í‘ÎÛ‚ÌƒNƒGƒŠƒrƒ‹ƒ_‚ð‚í‚½‚µ‚Ä‚¨‚­•K—v‚ª‚ ‚é.
+     * ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã«ã‚‚ã¨ã¥ã„ã¦ãƒ‡ãƒ¼ã‚¿è¡Œã‚’å‡ºåŠ›ã™ã‚‹.
+     * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä½¿ã†å ´åˆã¯, äº‹å‰ã«setExportQueryBuilder($qb)ã§å‡ºåŠ›å¯¾è±¡ã®ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã‚’ã‚ãŸã—ã¦ãŠãå¿…è¦ãŒã‚ã‚‹.
      *
      * @param \Closure $closure
      */
@@ -247,7 +248,7 @@ class CsvExportService
     }
 
     /**
-     * CSVo—Í€–Ú‚Æ”äŠr‚µ, ‡’v‚·‚éƒf[ƒ^‚ð•Ô‚·.
+     * CSVå‡ºåŠ›é …ç›®ã¨æ¯”è¼ƒã—, åˆè‡´ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™.
      *
      * @param \Eccube\Entity\Csv $Csv
      * @param $entity
@@ -255,37 +256,42 @@ class CsvExportService
      */
     public function getData(\Eccube\Entity\Csv $Csv, $entity)
     {
-        // ƒGƒ“ƒeƒBƒeƒB–¼‚ªˆê’v‚·‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN.
-        if ($Csv->getEntityName() !== get_class($entity)) {
-            return;
+        // ã‚¨ãƒ³ãƒ†ã‚£ãƒ†ã‚£åãŒä¸€è‡´ã™ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯.
+        $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
+        $entityName = str_replace('\\\\', '\\', get_class($entity));
+        if ($csvEntityName !== $entityName) {
+            return null;
         }
 
-        // ƒJƒ‰ƒ€–¼‚ªƒGƒ“ƒeƒBƒeƒB‚É‘¶Ý‚·‚é‚©‚Ç‚¤‚©‚ðƒ`ƒFƒbƒN.
+        // ã‚«ãƒ©ãƒ åãŒã‚¨ãƒ³ãƒ†ã‚£ãƒ†ã‚£ã«å­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯.
         if (!$entity->offsetExists($Csv->getFieldName())) {
-            return;
+            return null;
         }
 
-        // ƒf[ƒ^‚ðŽæ“¾.
+        // ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—.
         $data = $entity->offsetGet($Csv->getFieldName());
 
-        // one to one ‚Ìê‡‚Í, dtb_csv.referece_field_name‚Æ”äŠr‚µ, ‡’v‚·‚éŒ‹‰Ê‚ðŽæ“¾‚·‚é.
+        // one to one ã®å ´åˆã¯, dtb_csv.referece_field_nameã¨æ¯”è¼ƒã—, åˆè‡´ã™ã‚‹çµæžœã‚’å–å¾—ã™ã‚‹.
         if ($data instanceof \Eccube\Entity\AbstractEntity) {
-            return $data->offsetGet($Csv->getReferenceFieldName());
-
+            if (EntityUtil::isNotEmpty($data)) {
+                return $data->offsetGet($Csv->getReferenceFieldName());
+            }
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-            // one to many‚Ìê‡‚Í, ƒJƒ“ƒ}‹æØ‚è‚É•ÏŠ·‚·‚é.
+            // one to manyã®å ´åˆã¯, ã‚«ãƒ³ãƒžåŒºåˆ‡ã‚Šã«å¤‰æ›ã™ã‚‹.
             $array = array();
             foreach ($data as $elem) {
-                $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
+                if (EntityUtil::isNotEmpty($elem)) {
+                    $array[] = $elem->offsetGet($Csv->getReferenceFieldName());
+                }
             }
             return implode($this->config['csv_export_multidata_separator'], $array);
 
         } elseif ($data instanceof \DateTime) {
-            // datetime‚Ìê‡‚Í•¶Žš—ñ‚É•ÏŠ·‚·‚é.
+            // datetimeã®å ´åˆã¯æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹.
             return $data->format($this->config['csv_export_date_format']);
 
         } else {
-            // ƒXƒJƒ‰’l‚Ìê‡‚Í‚»‚Ì‚Ü‚Ü.
+            // ã‚¹ã‚«ãƒ©å€¤ã®å ´åˆã¯ãã®ã¾ã¾.
             return $data;
         }
 
@@ -293,7 +299,7 @@ class CsvExportService
     }
 
     /**
-     * •¶ŽšƒGƒ“ƒR[ƒfƒBƒ“ƒO‚Ì•ÏŠ·‚ðs‚¤ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ð•Ô‚·.
+     * æ–‡å­—ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã®å¤‰æ›ã‚’è¡Œã†ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’è¿”ã™.
      *
      * @return \Closure
      */
@@ -303,7 +309,7 @@ class CsvExportService
 
         return function ($value) use ($config) {
             return mb_convert_encoding(
-                (string) $value, $config['csv_export_encoding'], mb_internal_encoding()
+                (string) $value, $config['csv_export_encoding'], 'UTF-8'
             );
         };
     }
@@ -343,7 +349,7 @@ class CsvExportService
     }
 
     /**
-     * Žó’ŒŸõ—p‚ÌƒNƒGƒŠƒrƒ‹ƒ_‚ð•Ô‚·.
+     * å—æ³¨æ¤œç´¢ç”¨ã®ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã‚’è¿”ã™.
      *
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
@@ -357,7 +363,7 @@ class CsvExportService
             $searchData = array();
         }
 
-        // Žó’ƒf[ƒ^‚ÌƒNƒGƒŠƒrƒ‹ƒ_‚ð\’z.
+        // å—æ³¨ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã‚’æ§‹ç¯‰.
         $qb = $this->orderRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);
 
@@ -365,7 +371,7 @@ class CsvExportService
     }
 
     /**
-     * ‰ïˆõŒŸõ—p‚ÌƒNƒGƒŠƒrƒ‹ƒ_‚ð•Ô‚·.
+     * ä¼šå“¡æ¤œç´¢ç”¨ã®ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã‚’è¿”ã™.
      *
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
@@ -379,7 +385,7 @@ class CsvExportService
             $searchData = array();
         }
 
-        // ‰ïˆõƒf[ƒ^‚ÌƒNƒGƒŠƒrƒ‹ƒ_‚ð\’z.
+        // ä¼šå“¡ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã‚’æ§‹ç¯‰.
         $qb = $this->customerRepository
             ->getQueryBuilderBySearchData($searchData);
 
@@ -387,7 +393,7 @@ class CsvExportService
     }
 
     /**
-     * ¤•iŒŸõ—p‚ÌƒNƒGƒŠƒrƒ‹ƒ_‚ð•Ô‚·.
+     * å•†å“æ¤œç´¢ç”¨ã®ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã‚’è¿”ã™.
      *
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
@@ -401,7 +407,7 @@ class CsvExportService
             $searchData = array();
         }
 
-        // ¤•iƒf[ƒ^‚ÌƒNƒGƒŠƒrƒ‹ƒ_‚ð\’z.
+        // å•†å“ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ã‚¨ãƒªãƒ“ãƒ«ãƒ€ã‚’æ§‹ç¯‰.
         $qb = $this->productRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);
 
