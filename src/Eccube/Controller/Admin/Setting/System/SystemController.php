@@ -75,17 +75,6 @@ class SystemController
 
         $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
         $arrSystemInfo[] = array('title' => 'PHP', 'value' => $value);
-
-        if (extension_loaded('GD') || extension_loaded('gd')) {
-            $arrValue = array();
-            foreach (gd_info() as $key => $val) {
-                $arrValue[] = "$key => $val";
-            }
-            $value = '有効 (' . implode(', ', $arrValue) . ')';
-        } else {
-            $value = '無効';
-        }
-        $arrSystemInfo[] = array('title' => 'GD', 'value' => $value);
         $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $server->headers->get('User-Agent'));
 
         return $arrSystemInfo;
