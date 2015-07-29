@@ -126,7 +126,7 @@ class CustomerController
 
             // 会員データ検索用のクエリビルダを取得.
             $qb = $app['eccube.service.csv.export']
-                ->getCustomerQueryBuilder($app['form.factory'], $request);
+                ->getCustomerQueryBuilder($request);
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);

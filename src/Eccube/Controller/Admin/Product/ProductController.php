@@ -506,7 +506,7 @@ class ProductController
 
             // 商品データ検索用のクエリビルダを取得.
             $qb = $app['eccube.service.csv.export']
-                ->getProductQueryBuilder($app['form.factory'], $request);
+                ->getProductQueryBuilder($request);
 
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7

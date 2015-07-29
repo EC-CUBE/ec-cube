@@ -184,7 +184,7 @@ class OrderController
 
             // 受注データ検索用のクエリビルダを取得.
             $qb = $app['eccube.service.csv.export']
-                ->getOrderQueryBuilder($app['form.factory'], $request);
+                ->getOrderQueryBuilder($request);
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
@@ -253,7 +253,7 @@ class OrderController
 
             // 受注データ検索用のクエリビルダを取得.
             $qb = $app['eccube.service.csv.export']
-                ->getOrderQueryBuilder($app['form.factory'], $request);
+                ->getOrderQueryBuilder($request);
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);

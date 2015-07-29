@@ -345,11 +345,10 @@ class CsvExportService
     /**
      * 受注検索用のクエリビルダを返す.
      *
-     * @param FormFactory $formFactory
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getOrderQueryBuilder(FormFactory $formFactory, Request $request)
+    public function getOrderQueryBuilder(Request $request)
     {
         $session = $request->getSession();
         if ($session->has('eccube.admin.order.search')) {
@@ -368,11 +367,10 @@ class CsvExportService
     /**
      * 会員検索用のクエリビルダを返す.
      *
-     * @param FormFactory $formFactory
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getCustomerQueryBuilder(FormFactory $formFactory, Request $request)
+    public function getCustomerQueryBuilder(Request $request)
     {
         $session = $request->getSession();
         if ($session->has('eccube.admin.customer.search')) {
@@ -391,11 +389,10 @@ class CsvExportService
     /**
      * 商品検索用のクエリビルダを返す.
      *
-     * @param FormFactory $formFactory
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getProductQueryBuilder(FormFactory $formFactory, Request $request)
+    public function getProductQueryBuilder(Request $request)
     {
         $session = $request->getSession();
         if ($session->has('eccube.admin.product.search')) {
