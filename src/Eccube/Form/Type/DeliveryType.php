@@ -27,6 +27,8 @@ namespace Eccube\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -104,6 +106,14 @@ class DeliveryType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+                $form = $event->getForm();
+                $payments = $form['payments']->getData();
+
+                if (empty($payments) || count($payments) < 1) {
+                    $form['payments']->addError(new FormError('支払方法を選択してください。'));
+                }
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }

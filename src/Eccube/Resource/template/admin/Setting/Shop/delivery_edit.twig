@@ -63,13 +63,8 @@ $(function(){
                         <h3 class="box-title">支払方法設定</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-                        <div class="form-group form-inline">
-                            {% for child in form.payments %}
-                            <div class="col-sm-2">
-                                {{ form_widget(child) }}
-                            </div>
-                            {% endfor %}
-                        </div>
+                        {{ form_widget(form.payments) }}
+                        {{ form_errors(form.payments) }}
                     </div>
                 </div>
 
