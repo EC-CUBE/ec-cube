@@ -45,7 +45,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\SystemService($app);
         });
         $app['view'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\ViewService($app);
+            return $app['twig'];
         });
         $app['eccube.service.cart'] = $app->share(function () use ($app) {
             return new \Eccube\Service\CartService($app['session'], $app['orm.em']);

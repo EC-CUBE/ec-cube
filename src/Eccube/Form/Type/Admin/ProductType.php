@@ -91,12 +91,6 @@ class ProductType extends AbstractType
                 'label' => "検索ワード",
                 'required' => false,
             ))
-            ->add('DeliveryDate', 'delivery_date', array(
-                'label' => '発送日目安',
-                'empty_value' => '選択してください',
-                'required' => false,
-            ))
-
             // サブ情報
             ->add('free_area', 'textarea', array(
                 'label' => 'サブ情報',

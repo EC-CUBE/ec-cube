@@ -480,11 +480,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     private $Creator;
 
     /**
-     * @var \Eccube\Entity\DeliveryDate
-     */
-    private $DeliveryDate;
-
-    /**
      * @var \Eccube\Entity\Master\Disp
      */
     private $Status;
@@ -896,29 +891,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function getCreator()
     {
         return $this->Creator;
-    }
-
-    /**
-     * Set DeliveryDate
-     *
-     * @param  \Eccube\Entity\DeliveryDate $deliveryDate
-     * @return Product
-     */
-    public function setDeliveryDate(\Eccube\Entity\DeliveryDate $deliveryDate = null)
-    {
-        $this->DeliveryDate = $deliveryDate;
-
-        return $this;
-    }
-
-    /**
-     * Get DeliveryDate
-     *
-     * @return \Eccube\Entity\DeliveryDate
-     */
-    public function getDeliveryDate()
-    {
-        return $this->DeliveryDate;
     }
 
     /**

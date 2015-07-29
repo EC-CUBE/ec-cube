@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0fdaf78b932cc8521d205d97e972500a",
+    "hash": "5dd29373f076ffd0decea0ff33c68474",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -3940,7 +3940,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/migrations": 15,
+        "doctrine/migrations": 20,
         "knplabs/console-service-provider": 20
     },
     "prefer-stable": false,

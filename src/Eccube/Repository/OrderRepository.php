@@ -268,11 +268,11 @@ class OrderRepository extends EntityRepository
         }
         // multi
         if (!empty($searchData['multi']) && $searchData['multi']) {
-            $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['mutli'] : null;
+            $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR ' .
                            'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti')
-                ->setParameter('multi', $id)
+                ->setParameter('multi', $multi)
                 ->setParameter('likemulti', '%' . $searchData['multi'] . '%');
         }
 
