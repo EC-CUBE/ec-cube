@@ -307,7 +307,7 @@ class CsvExportService
 
         return function ($value) use ($config) {
             return mb_convert_encoding(
-                (string) $value, $config['csv_export_encoding'], mb_internal_encoding()
+                (string) $value, $config['csv_export_encoding'], 'UTF-8'
             );
         };
     }
