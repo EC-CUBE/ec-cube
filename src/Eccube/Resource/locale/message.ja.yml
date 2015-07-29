@@ -1,8 +1,9 @@
 Login email: メールアドレス
 Login pass: パスワード
 Login memory: メールアドレスをコンピューターに記憶させる
-Bad credentials.: メールアドレスもしくはパスワードが正しくありません。
+Bad credentials.: ログインできませんでした。<br>入力内容に誤りがないかご確認ください。
 Invalid CSRF token.: もう一度ログイン処理をしてください。
+Your session has timed out, or you have disabled cookies.: もう一度ログイン処理をしてください。
 
 Name: お名前
 Name01: 姓
@@ -30,6 +31,7 @@ cart.over.sale_limit: |-
     選択された商品は販売制限しております。
     一度に販売制限数を超える購入はできません。
 cart.product.type.kind: この商品は同時に購入することはできません。
+cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
 
 admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
 

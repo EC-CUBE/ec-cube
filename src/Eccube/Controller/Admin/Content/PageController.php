@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class PageController
 {
@@ -75,10 +76,6 @@ class PageController
             if ($form->isValid()) {
                 $PageLayout = $form->getData();
 
-                $url = strtolower($form->get('file_name')->getData());
-                $url = str_replace('/', '_', $url);
-                $PageLayout->setUrl($url);
-
                 if (!$editable) {
                     $PageLayout
                         ->setUrl($PrevPageLayout->getUrl())
@@ -98,14 +95,21 @@ class PageController
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
+                // twig キャッシュの削除.
+                $finder = Finder::create()->in($app['config']['root_dir'] . '/app/cache/twig');
+                $fs->remove($finder);
+
                 return $app->redirect($app->url('admin_content_page_edit', array('id' => $PageLayout->getId())));
             }
         }
+
+        $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
 
         return $app->render('Content/page_edit.twig', array(
             'form' => $form->createView(),
             'page_id' => $PageLayout->getId(),
             'editable' => $editable,
+            'template_path' => $templatePath,
         ));
     }
 

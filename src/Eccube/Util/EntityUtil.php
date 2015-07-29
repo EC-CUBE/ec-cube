@@ -21,27 +21,40 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Util;
 
-namespace Eccube\Event;
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Proxy\Proxy;
 
-use Symfony\Component\EventDispatcher\Event;
-
-class RenderEvent extends Event
+class EntityUtil
 {
-    private $source;
 
-    public function __construct($source)
+    /**
+     * @param $entity
+     * @return bool
+     */
+    public static function isEmpty($entity)
     {
-        $this->source = $source;
+        if ($entity instanceof Proxy) {
+            try {
+                $entity->__load();
+            } catch (EntityNotFoundException $e) {
+                return true;
+            }
+            return false;
+        } else {
+            return empty($entity);
+        }
     }
 
-    public function setSource($source)
+    /**
+     * @param $entity
+     * @return bool
+     */
+    public static function isNotEmpty($entity)
     {
-        $this->source = $source;
+        return !self::isEmpty($entity);
     }
 
-    public function getSource()
-    {
-        return $this->source;
-    }
+
 }

@@ -754,10 +754,10 @@ class Version20150613000000 extends AbstractMigration
 
         $this->addSql("INSERT INTO dtb_news (news_id, news_date, rank, news_title, news_comment, news_url, news_select, link_method, creator_id, create_date, update_date, del_flg) VALUES (1, CURRENT_TIMESTAMP, 1, 'サイトオープンいたしました!', '一人暮らしからオフィスなどさまざまなシーンで あなたの生活をサポートするグッズをご家庭へお届けします！', NULL, 0, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);");
 
-        $this->addSql("INSERT INTO dtb_product (product_id, name, status, note, del_flg, creator_id, create_date, update_date, delivery_date_id, description_detail) VALUES (1, 'ディナーフォーク', 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 'セットで揃えたいディナー用のカトラリー。
+        $this->addSql("INSERT INTO dtb_product (product_id, name, status, note, del_flg, creator_id, create_date, update_date, description_detail) VALUES (1, 'ディナーフォーク', 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'セットで揃えたいディナー用のカトラリー。
 定番の銀製は、シルバー特有の美しい輝きと柔らかな曲線が特徴です。適度な重みと日本人の手に合いやすいサイズ感で長く愛用いただけます。
 最高級プラチナフォークは、贈り物としても人気です。');");
-        $this->addSql("INSERT INTO dtb_product (product_id, name, status, note, del_flg, creator_id, create_date, update_date, delivery_date_id, description_detail) VALUES (2, 'パーコレーター', 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, '
+        $this->addSql("INSERT INTO dtb_product (product_id, name, status, note, del_flg, creator_id, create_date, update_date, description_detail) VALUES (2, 'パーコレーター', 1, NULL, 0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '
 パーコレーターはコーヒーの粉をセットして直火にかけて抽出する器具です。
 アウトドアでも淹れたてのコーヒーをお楽しみいただけます。
 いまだけ、おいしい淹れ方の冊子つきです。');");

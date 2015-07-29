@@ -494,9 +494,11 @@ class OrderService
         foreach ($paymentOptions as $paymentOption) {
             $payment = $paymentOption->getPayment();
             // 支払方法の制限値内であれば表示
-            if (intval($payment->getRuleMin()) <= $subTotal) {
-                if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
-                    $payments[] = $payment;
+            if (!is_null($payment)) {
+                if (intval($payment->getRuleMin()) <= $subTotal) {
+                    if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
+                        $payments[] = $payment;
+                    }
                 }
             }
         }
