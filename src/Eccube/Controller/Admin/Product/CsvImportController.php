@@ -439,7 +439,7 @@ class CsvImportController
                             $Category = new Category();
                             $this->em->persist($Category);
                         } else {
-                            if (is_numeric($row['カテゴリID'])) {
+                            if (!is_numeric($row['カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
@@ -463,7 +463,7 @@ class CsvImportController
 
                         if ($row['親カテゴリID'] != '') {
 
-                            if (is_numeric($row['親カテゴリID'])) {
+                            if (!is_numeric($row['親カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
