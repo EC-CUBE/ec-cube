@@ -421,7 +421,6 @@ class CsvImportController
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
 
-                            $Parent = $Category->getParent();
                         }
 
                         if ($row['カテゴリ名'] == '') {
