@@ -257,13 +257,15 @@ class CsvExportService
     public function getData(\Eccube\Entity\Csv $Csv, $entity)
     {
         // エンティティ名が一致するかどうかチェック.
-        if ($Csv->getEntityName() !== get_class($entity)) {
-            return;
+        $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
+        $entityName = str_replace('\\\\', '\\', get_class($entity));
+        if ($csvEntityName !== $entityName) {
+            return null;
         }
 
         // カラム名がエンティティに存在するかどうかをチェック.
         if (!$entity->offsetExists($Csv->getFieldName())) {
-            return;
+            return null;
         }
 
         // データを取得.
