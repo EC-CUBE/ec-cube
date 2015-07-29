@@ -182,8 +182,11 @@ class OrderType extends AbstractType
             ->add('Payment', 'entity', array(
                 'class' => 'Eccube\Entity\Payment',
                 'property' => 'method',
-                'empty_value' => false,
+                'empty_value' => '選択してください',
                 'empty_data' => null,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->add('OrderDetails', 'collection', array(
                 'type' => new OrderDetailType($this->app),

@@ -45,7 +45,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\SystemService($app);
         });
         $app['view'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\ViewService($app);
+            return $app['twig'];
         });
         $app['eccube.service.cart'] = $app->share(function () use ($app) {
             return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
@@ -61,6 +61,17 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.service.mail'] = $app->share(function () use ($app) {
             return new \Eccube\Service\MailService($app);
+        });
+        $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
+            $csvService =  new \Eccube\Service\CsvExportService();
+            $csvService->setConfig($app['config']);
+            $csvService->setCsvRepository($app['eccube.repository.csv']);
+            $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
+            $csvService->setOrderRepository($app['eccube.repository.order']);
+            $csvService->setCustomerRepository($app['eccube.repository.customer']);
+            $csvService->setProductRepository($app['eccube.repository.product']);
+
+            return $csvService;
         });
 
         // Repository
@@ -94,6 +105,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
         $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
+        });
+        $app['eccube.repository.delivery_date'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\DeliveryDate');
         });
         $app['eccube.repository.delivery_fee'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\DeliveryFee');
@@ -307,6 +321,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\NewsType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\SecurityType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\CsvImportType($app);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();

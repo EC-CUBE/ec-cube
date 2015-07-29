@@ -37,7 +37,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminTemplate_new()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_store_template_new'));
+        $this->client->request('GET', $this->app->url('admin_setting_store_template_install'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

@@ -258,13 +258,18 @@ function fnDelete(action) {
                                     {% endfor %}
                                         </ul>
                                 </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ url('admin_order_export_order') }}">受注CSVダウンロード</a></li>
+                                        <li><a href="{{ url('admin_order_export_shipping') }}">配送CSVダウンロード</a></li>
+                                        <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_ORDER') }) }}">受注CSV出力項目設定</a></li>
+                                        <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_SHIPPING') }) }}">配送CSV出力項目設定</a></li>
+                                    </ul>
+                                </li>
                                 <li id="dropmenu" class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown">その他<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
                                     <ul class="dropdown-menu">
-                                        {#
-                                        <li><a>CSVダウンロード</a></li>
-                                        <li><a>出力項目設定</a></li>
-                                        #}
                                         <li><a href="{{ url('admin_order_mail_all') }}">メール一括通知</a></li>
                                     </ul>
                                 </li>

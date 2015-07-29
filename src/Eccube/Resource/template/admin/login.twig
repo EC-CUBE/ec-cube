@@ -39,14 +39,14 @@ $(function() {
             <p class="login-logo2"><img src="{{ app.config.admin_urlpath }}/assets/img/logo2.png" width="106"></p>
             <form name="form1" id="form1" method="post" action="{{ path(app.config.admin_route ~ '_login_check') }}">
                 <div class="form-group has-feedback">
-                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'size': 20, 'class': "box25"}}) }}
+                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'size': 20, 'class': 'box25', 'placeholder': 'ログインID'}}) }}
                 </div>
                 <div class="form-group has-feedback">
-                    {{ form_widget(form.password, {'attr': {'size': 20, 'class': "box25"}}) }}
+                    {{ form_widget(form.password, {'attr': {'size': 20, 'class': 'box25', 'placeholder': 'パスワード'}}) }}
                 </div>
                 {% if error %}
                 <div class="form-group">
-                    <span class="text-danger">{{ error|trans }}</span>
+                    <span class="text-danger">{{ error|trans|raw }}</span>
                 </div>
                 {% endif %}
                 <p class="btn_area"><button type="submit" class="btn btn-primary btn-block btn-lg">ログイン</button></p>

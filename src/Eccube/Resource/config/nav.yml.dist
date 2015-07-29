@@ -15,6 +15,12 @@
       - id: class_category
         name: カテゴリ登録
         url: admin_product_category
+      - id: product_csv_import
+        name: 商品CSVアップロード
+        url: admin_product_csv_import
+      - id: category_csv_import
+        name: カテゴリCSVアップロード
+        url: admin_product_category_csv_import
 - id: order
   name: 受注管理
   has_child: true
@@ -102,8 +108,11 @@
               name: プラグインハンドラ設定
               url: admin_setting_store_plugin_handler
             - id: template
-              name: テンプレート
+              name: テンプレート一覧
               url: admin_setting_store_template
+            - id: template_install
+              name: テンプレートインストール
+              url: admin_setting_store_template_install
       - id: system
         name: システム情報設定
         has_child: true

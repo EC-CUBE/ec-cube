@@ -22,26 +22,8 @@
  */
 
 
-namespace Eccube\Event;
+namespace Eccube\Exception;
 
-use Symfony\Component\EventDispatcher\Event;
-
-class RenderEvent extends Event
+class CsvImportException extends \Exception
 {
-    private $source;
-
-    public function __construct($source)
-    {
-        $this->source = $source;
-    }
-
-    public function setSource($source)
-    {
-        $this->source = $source;
-    }
-
-    public function getSource()
-    {
-        return $this->source;
-    }
 }

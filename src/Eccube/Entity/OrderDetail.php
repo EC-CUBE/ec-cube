@@ -24,6 +24,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
+
 /**
  * OrderDetail
  */
@@ -416,6 +418,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getProduct()
     {
+        if (EntityUtil::isEmpty($this->Product)) {
+            return null;
+        }
         return $this->Product;
     }
 

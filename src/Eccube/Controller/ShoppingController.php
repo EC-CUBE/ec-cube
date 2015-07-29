@@ -50,6 +50,12 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
         // 受注データを取得
         $preOrderId = $cartService->getPreOrderId();
         $Order = $app['eccube.repository.order']->findOneBy(array(
@@ -391,7 +397,9 @@ class ShoppingController extends AbstractController
             }
 
             // 選択されたお届け先情報を取得
-            $customerAddress = $app['eccube.repository.customer_address']->find($address);
+            $customerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
+                'Customer' => $app->user(),
+                'id' => $address));
 
             $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $app['eccube.service.cart']->getPreOrderId()));
             // お届け先情報を更新
@@ -625,6 +633,13 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
+
         $form = $app['form.factory']->createBuilder('nonmember')->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -796,6 +811,8 @@ class ShoppingController extends AbstractController
             'class' => 'Eccube\Entity\DeliveryTime',
             'property' => 'deliveryTime',
             'choices' => $delivery->getDeliveryTimes(),
+            'required' => false,
+            'empty_value' => '指定なし',
         ));
 
     }

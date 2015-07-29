@@ -326,14 +326,21 @@ class Application extends ApplicationTrait
                 // フロント画面
             } else {
                 $request = $event->getRequest();
+                $route = $request->attributes->get('_route');
+
+                // ユーザ作成画面
+                if ($route === trim($app['config']['user_data_route'])) {
+                    $params = $request->attributes->get('_route_params');
+                    $route = $params['route'];
+                // プレビュー画面
+                } elseif ($request->get('preview')) {
+                    $route = 'preview';
+                }
+
                 try {
-                    $DeviceType = $app['eccube.repository.master.device_type']->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    if ($request->get('preview')) {
-                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
-                    } else {
-                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType,
-                        $request->attributes->get('_route'));
-                    }
+                    $DeviceType = $app['eccube.repository.master.device_type']
+                        ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
@@ -392,11 +399,11 @@ class Application extends ApplicationTrait
             if (isset($config['orm.path']) and is_array($config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
-                    $paths[] = $pluginBasePath . '/' . $config['name'] . $path;
+                    $paths[] = $pluginBasePath . '/' . $config['code'] . $path;
                 }
                 $ormMappings[] = array(
                     'type' => 'yml',
-                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'namespace' => 'Plugin\\' . $config['code'] . '\\Entity',
                     'path' => $paths,
                 );
             }

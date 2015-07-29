@@ -21,31 +21,40 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Util;
 
-namespace Eccube\Service;
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Proxy\Proxy;
 
-use Eccube\Event\RenderEvent;
-
-class ViewService
+class EntityUtil
 {
-    private $app;
 
-    public function __construct($app)
+    /**
+     * @param $entity
+     * @return bool
+     */
+    public static function isEmpty($entity)
     {
-        $this->app = $app;
+        if ($entity instanceof Proxy) {
+            try {
+                $entity->__load();
+            } catch (EntityNotFoundException $e) {
+                return true;
+            }
+            return false;
+        } else {
+            return empty($entity);
+        }
     }
 
-    public function render($name, array $context = array())
+    /**
+     * @param $entity
+     * @return bool
+     */
+    public static function isNotEmpty($entity)
     {
-        $compiledSource = $this->app['twig']->render($name, $context);
-
-        $event = new RenderEvent($compiledSource);
-
-        $route = $this->app['request']->attributes->get('_route');
-        $this->app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
-
-        $source = $event->getSource();
-
-        return $source;
+        return !self::isEmpty($entity);
     }
+
+
 }
