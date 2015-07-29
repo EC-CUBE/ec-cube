@@ -813,6 +813,7 @@ class ShoppingController extends AbstractController
             'choices' => $delivery->getDeliveryTimes(),
             'required' => false,
             'empty_value' => '指定なし',
+            'empty_data' => null,
         ));
 
     }

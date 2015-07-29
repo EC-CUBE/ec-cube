@@ -11,7 +11,7 @@ use Doctrine\DBAL\Schema\Schema;
 class Version20150728172928 extends AbstractMigration
 {
 
-    const NAME='dtb_product';
+    const NAME = 'dtb_product';
 
     /**
      * @param Schema $schema
@@ -19,9 +19,9 @@ class Version20150728172928 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $t=$schema->getTable(self::NAME);
+        $t = $schema->getTable(self::NAME);
 
-        if($t->hasColumn('delivery_date_id')){
+        if ($t->hasColumn('delivery_date_id')) {
 
             $keys = $t->getForeignKeys();
             foreach ($keys as $key) {

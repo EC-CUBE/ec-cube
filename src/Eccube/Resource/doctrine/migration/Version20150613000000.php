@@ -635,9 +635,8 @@ class Version20150613000000 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_delivery_fee (fee_id, delivery_id, fee, pref) VALUES (93, 2, 0, 46);");
         $this->addSql("INSERT INTO dtb_delivery_fee (fee_id, delivery_id, fee, pref) VALUES (94, 2, 0, 47);");
 
-        $this->addSql("INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (1, 1, '指定なし');");
-        $this->addSql("INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (2, 1, '午前');");
-        $this->addSql("INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (3, 1, '午後');");
+        $this->addSql("INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (1, 1, '午前');");
+        $this->addSql("INSERT INTO dtb_delivery_time (time_id, delivery_id, delivery_time) VALUES (2, 1, '午後');");
 
         $this->addSql("INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (1, '即日', 0, 0);");
         $this->addSql("INSERT INTO dtb_delivery_date (date_id, name, value, rank) VALUES (2, '1～2日後', 1, 1);");
