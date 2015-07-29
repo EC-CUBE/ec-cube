@@ -109,15 +109,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="form-inline">
-                        {% if TargetCategory.level < app.config.category_nest_level %}
-                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
-                            {{ form_widget(form._token) }}
-                            {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
-                            <button class="btn btn-default btn-sm" type="submit" onclick="document.form1.submit(); return false;">カテゴリ作成</button>
-                        </form>
-                        {% endif %}
-
+                    <div class="row">
+                        <div class="form-inline col-md-9">
+                            {% if TargetCategory.level < app.config.category_nest_level %}
+                            <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
+                                {{ form_widget(form._token) }}
+                                {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
+                                <button class="btn btn-default btn-sm" type="submit" onclick="document.form1.submit(); return false;">カテゴリ作成</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="dl_dropdown col-md-3">
+                            <div class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"/></svg></a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="{{ url('admin_product_category_export') }}">CSVダウンロード</a></li>
+                                    <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}">出力項目設定</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div><!-- /.box-header -->
                 {% if Categories|length > 0 %}
