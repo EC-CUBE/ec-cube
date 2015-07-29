@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Entity;
+use Eccube\Util\EntityUtil;
 
 /**
  * PaymentOption
@@ -120,6 +121,9 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
      */
     public function getDelivery()
     {
+        if (EntityUtil::isEmpty($this->Delivery)) {
+            return null;
+        }
         return $this->Delivery;
     }
 
@@ -143,6 +147,9 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
      */
     public function getPayment()
     {
+        if (EntityUtil::isEmpty($this->Payment)) {
+            return null;
+        }
         return $this->Payment;
     }
 }

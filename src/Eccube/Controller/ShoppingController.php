@@ -811,6 +811,8 @@ class ShoppingController extends AbstractController
             'class' => 'Eccube\Entity\DeliveryTime',
             'property' => 'deliveryTime',
             'choices' => $delivery->getDeliveryTimes(),
+            'required' => false,
+            'empty_value' => '指定なし',
         ));
 
     }
