@@ -119,6 +119,7 @@ class DeliveryController extends AbstractController
                 foreach ($DeliveryTimes as $DeliveryTime) {
                     if (is_null($DeliveryTime->getDeliveryTime())) {
                         $Delivery->removeDeliveryTime($DeliveryTime);
+                        $app['orm.em']->remove($DeliveryTime);
                     }
                 }
 

@@ -325,7 +325,9 @@ function fnClass(action) {
                             {% endif %}
 
                             {{ form_row(form.search_word) }}
-                            {{ form_row(form.DeliveryDate) }}
+                            {% if has_class == false %}
+                                {{ form_row(form.class.delivery_date) }}
+                            {% endif %}
                             {% if has_class == false %}
                                 <div class="form-group">
                                     {{ form_label(form.class.delivery_fee) }}
