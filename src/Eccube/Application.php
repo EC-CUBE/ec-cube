@@ -236,6 +236,7 @@ class Application extends ApplicationTrait
 
     public function initLocale()
     {
+        date_default_timezone_set('Asia/Tokyo');
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
         ));
