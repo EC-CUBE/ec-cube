@@ -11,7 +11,7 @@ composer.phar
 /app/config/eccube/database.yml
 /app/config/eccube/log.yml
 /app/log/*
-/app/Plugin/
+/app/Plugin/*
 /html/install/temp/*
 /html/upload/save_image/*
 /html/upload/temp_image/*
