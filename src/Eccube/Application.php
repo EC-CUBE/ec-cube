@@ -333,7 +333,7 @@ class Application extends ApplicationTrait
                 if ($route === trim($app['config']['user_data_route'])) {
                     $params = $request->attributes->get('_route_params');
                     $route = $params['route'];
-                // プレビュー画面
+                    // プレビュー画面
                 } elseif ($request->get('preview')) {
                     $route = 'preview';
                 }
@@ -533,44 +533,56 @@ class Application extends ApplicationTrait
 
     public function initSecurity()
     {
-        $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'admin' => array(
-                    'pattern' => "^/{$this['config']['admin_route']}",
-                    'form' => array(
-                        'login_path' => "/{$this['config']['admin_route']}/login",
-                        'check_path' => "/{$this['config']['admin_route']}/login_check",
-                        'username_parameter' => 'login_id',
-                        'password_parameter' => 'password',
-                        'with_csrf' => true,
-                        'use_forward' => true,
-                    ),
-                    'logout' => array(
-                        'logout_path' => "/{$this['config']['admin_route']}/logout",
-                        'target_url' => "/{$this['config']['admin_route']}/",
-                    ),
-                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
-                    'anonymous' => true,
+        $this->register(new \Silex\Provider\SecurityServiceProvider());
+        $this->register(new \Silex\Provider\RememberMeServiceProvider());
+
+        $this['security.firewalls'] = array(
+            'admin' => array(
+                'pattern' => "^/{$this['config']['admin_route']}",
+                'form' => array(
+                    'login_path' => "/{$this['config']['admin_route']}/login",
+                    'check_path' => "/{$this['config']['admin_route']}/login_check",
+                    'username_parameter' => 'login_id',
+                    'password_parameter' => 'password',
+                    'with_csrf' => true,
+                    'use_forward' => true,
                 ),
-                'customer' => array(
-                    'pattern' => '^/',
-                    'form' => array(
-                        'login_path' => '/mypage/login',
-                        'check_path' => '/login_check',
-                        'username_parameter' => 'login_email',
-                        'password_parameter' => 'login_pass',
-                        'with_csrf' => true,
-                        'use_forward' => true,
-                    ),
-                    'logout' => array(
-                        'logout_path' => '/logout',
-                        'target_url' => '/',
-                    ),
-                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
-                    'anonymous' => true,
+                'logout' => array(
+                    'logout_path' => "/{$this['config']['admin_route']}/logout",
+                    'target_url' => "/{$this['config']['admin_route']}/",
                 ),
+                'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
+                'anonymous' => true,
             ),
-        ));
+            'customer' => array(
+                'pattern' => '^/',
+                'form' => array(
+                    'login_path' => '/mypage/login',
+                    'check_path' => '/login_check',
+                    'username_parameter' => 'login_email',
+                    'password_parameter' => 'login_pass',
+                    'with_csrf' => true,
+                    'use_forward' => true,
+                ),
+                'logout' => array(
+                    'logout_path' => '/logout',
+                    'target_url' => '/',
+                ),
+                'remember_me' => array(
+                    'key' => sha1($this['config']['auth_magic']),
+                    'name' => 'eccube_rememberme',
+                    // lifetimeはデフォルトの1年間にする
+                    // 'lifetime' => $this['config']['cookie_lifetime'],
+                    'path' => $this['config']['root_urlpath'],
+                    'secure' => $this['config']['force_ssl'],
+                    'httponly' => true,
+                    'always_remember_me' => false,
+                    'remember_me_parameter' => 'login_memory',
+                ),
+                'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
+                'anonymous' => true,
+            ),
+        );
         $this['security.access_rules'] = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),

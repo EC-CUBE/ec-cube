@@ -39,10 +39,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
                             <div class="form-group">
                                 {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
-                                <label><input type="checkbox">記憶</label>
                             </div>
                             <div class="form-group">
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
+                                {% if BaseInfo.option_remember_me %}
+                                    {{ form_widget(form.login_memory) }}
+                                {% endif %}
                             </div>
                             {% if error %}
                             <div class="form-group">
