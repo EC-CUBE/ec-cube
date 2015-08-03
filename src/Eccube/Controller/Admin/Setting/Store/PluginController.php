@@ -30,6 +30,7 @@ use Eccube\Exception\PluginException;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
@@ -206,6 +207,47 @@ class PluginController extends AbstractController
         $repo->upPriority($repo->find($handlerId), false);
 
         return $app->redirect($app->url('admin_setting_store_plugin_handler'));
+    }
+
+    public function authenticationSetting(Application $app, Request $request)
+    {
+
+        $form = $app->form()->getForm();
+
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        // 認証キーの取得
+        $form->add(
+            'authentication_key', 'text', array(
+            'label' => '認証キー',
+            'constraints' => array(
+                new Assert\Regex(array(
+                    'pattern' => "/^[0-9a-zA-Z]+$/",
+                )),
+            ),
+            'data' => '',
+        ));
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                // 認証キーの登録
+
+                $app['orm.em']->flush($BaseInfo);
+
+                $app->addSuccess('admin.plugin.ahthentication.setting.complete', 'admin');
+
+            }
+        }
+
+
+        return $app->render('Setting/Store/authentication_setting.twig', array(
+            'form' => $form->createView(),
+        ));
+
     }
 
 }

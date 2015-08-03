@@ -99,7 +99,7 @@
         has_child: true
         child:
             - id: plugin
-              name: プラグイン一覧
+              name: インストール済プラグイン
               url: admin_setting_store_plugin
             - id: plugin_install
               name: プラグインインストール
@@ -113,6 +113,9 @@
             - id: template_install
               name: テンプレートインストール
               url: admin_setting_store_template_install
+            - id: authentication_setting
+              name: 認証キー設定
+              url: admin_setting_authentication_setting
       - id: system
         name: システム情報設定
         has_child: true

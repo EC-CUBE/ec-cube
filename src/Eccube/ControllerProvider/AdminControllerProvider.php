@@ -204,6 +204,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/setting/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Setting\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_setting_store_plugin_uninstall');
         $c->match('/setting/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_up')->bind('admin_setting_store_plugin_handler_up');
         $c->match('/setting/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_down')->bind('admin_setting_store_plugin_handler_down');
+        $c->match('/setting/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Setting\Store\PluginController::authenticationSetting')->bind('admin_setting_authentication_setting');
 
         // system/member
         $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');
