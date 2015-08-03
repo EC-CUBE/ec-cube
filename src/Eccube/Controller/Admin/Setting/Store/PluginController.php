@@ -26,8 +26,10 @@ namespace Eccube\Controller\Admin\Setting\Store;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Exception\PluginException;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
 class PluginController extends AbstractController
 {
@@ -62,29 +64,49 @@ class PluginController extends AbstractController
 
     }
 
-    public function install(Application $app)
+    public function install(Application $app, Request $request)
     {
         $form = $app['form.factory']
             ->createBuilder('plugin_local_install')
             ->getForm();
         $service = $app['eccube.service.plugin'];
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-            $tmpDir = $service->createTempDir();
-            $tmpFile = sha1(Str::random(32)) . ".tar"; // 拡張子を付けないとpharが動かないので付ける
+        $errors = array();
 
-            $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
 
-            $service->install($tmpDir . '/' . $tmpFile);
+            if ($form->isValid()) {
 
-            $fs = new Filesystem();
-            $fs->remove($tmpDir . '/' . $tmpFile);
-            return $app->redirect($app->url('admin_setting_store_plugin'));
+                try {
+
+                    $formFile = $form['plugin_archive']->getData();
+
+                    $tmpDir = $service->createTempDir();
+                    $tmpFile = sha1(Str::random(32)) . ".tar"; // 拡張子を付けないとpharが動かないので付ける
+
+                    $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
+
+                    $service->install($tmpDir . '/' . $tmpFile);
+
+                    $fs = new Filesystem();
+                    $fs->remove($tmpDir);
+
+                    return $app->redirect($app->url('admin_setting_store_plugin'));
+
+                } catch (PluginException $e) {
+                    if (file_exists($tmpDir)) {
+                        $fs = new Filesystem();
+                        $fs->remove($tmpDir);
+                    }
+                    $errors[] = $e;
+                }
+            }
         }
 
         return $app->render('Setting/Store/plugin_install.twig', array(
             'form' => $form->createView(),
+            'errors' => $errors,
         ));
 
     }

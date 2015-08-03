@@ -24,10 +24,11 @@
 
 namespace Eccube\Service;
 
+use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
+use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use Eccube\Util\Str;
 
 class PluginService
 {
@@ -43,26 +44,35 @@ class PluginService
 
     public function install($path)
     {
-        $tmp = $this->createTempDir();
+        try {
 
+            $tmp = $this->createTempDir();
 
-        $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
-        $this->checkPluginArchiveContent($tmp);
+            $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+            $this->checkPluginArchiveContent($tmp);
 
-        $config = $this->readYml($tmp . '/' . self::CONFIG_YML);
-        $event = $this->readYml($tmp . '/' . self::EVENT_YML);
-        $this->deleteFile($tmp); // テンポラリのファイルを削除
+            $config = $this->readYml($tmp . '/' . self::CONFIG_YML);
+            $event = $this->readYml($tmp . '/' . self::EVENT_YML);
+            $this->deleteFile($tmp); // テンポラリのファイルを削除
 
-        $this->checkSamePlugin($config['code']); // 重複していないかチェック
+            $this->checkSamePlugin($config['code']); // 重複していないかチェック
 
-        $pluginBaseDir = $this->calcPluginDir($config['code']);
-        $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
+            $pluginBaseDir = $this->calcPluginDir($config['code']);
+            $this->createPluginDir($pluginBaseDir); // 本来の置き場所を作成
 
-        $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
+            $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
-        $this->registerPlugin($config, $event); // dbにプラグイン登録
-        $this->callPluginManagerMethod($config, 'install');
-        $this->callPluginManagerMethod($config, 'enable');
+            $this->registerPlugin($config, $event); // dbにプラグイン登録
+            $this->callPluginManagerMethod($config, 'install');
+            $this->callPluginManagerMethod($config, 'enable');
+
+        } catch (PluginException $e) {
+            if (file_exists($tmp)) {
+                $fs = new Filesystem();
+                $fs->remove($tmp);
+            }
+            throw $e;
+        }
 
         return true;
     }
@@ -126,13 +136,13 @@ class PluginService
 
     public function calcPluginDir($name)
     {
-        return __DIR__ . '/../../../app/Plugin' . '/' . $name;
+        return $this->app['config']['plugin_realdir'] . '/' . $name;
     }
 
     public function checkSamePlugin($code)
     {
-        $repo = $this->app['eccube.repository.plugin'];
-        if (count($repo->getPluginByCode($code, true))) {
+        $repo = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $code));
+        if ($repo) {
             throw new PluginException('plugin already installed.');
         }
 
@@ -154,7 +164,7 @@ class PluginService
         if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
             throw new PluginException("config.yml event empty or invalid_character(\W) ");
         }
-        if (!isset($meta['version']) ) { 
+        if (!isset($meta['version'])) {
             // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
             throw new PluginException("config.yml version invalid_character(\W) ");
         }
@@ -176,12 +186,11 @@ class PluginService
     public function createTempDir()
     {
 
-        $base = __DIR__ . '/../../../app/cache/plugin';
-        @mkdir($base);
-        $d = ($base . '/' . sha1(Str::random(16)));
+        @mkdir($this->app['config']['plugin_temp_realdir']);
+        $d = ($this->app['config']['plugin_temp_realdir'] . '/' . sha1(Str::random(16)));
 
         if (!mkdir($d, 0777)) {
-            throw new PluginException($php_errormsg.$d);
+            throw new PluginException($php_errormsg . $d);
         }
         return $d;
 
@@ -218,11 +227,11 @@ class PluginService
                         throw new PluginException("Handler name format error");
                     }
                     // updateで追加されたハンドラかどうか調べる
-                    $peh = $rep->findBy(array('del_flg' => 0, 
-                                              'plugin_id' => $plugin->getId(), 
-                                              'event' => $event, 
-                                              'handler' => $handler[0] ,
-                                              'handler_type'  => $handler[1]));
+                    $peh = $rep->findBy(array('del_flg' => 0,
+                        'plugin_id' => $plugin->getId(),
+                        'event' => $event,
+                        'handler' => $handler[0],
+                        'handler_type' => $handler[1]));
 
                     if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                         $peh = new \Eccube\Entity\PluginEventHandler();
@@ -240,21 +249,21 @@ class PluginService
             }
 
             # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
-            foreach($rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId())) as $peh){
-                if(!isset($event_yml[$peh->getEvent()])){
+            foreach ($rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId())) as $peh) {
+                if (!isset($event_yml[$peh->getEvent()])) {
                     $em->remove($peh);
                     $em->flush();
-                }else{
-                    $match=false;
-                    foreach($event_yml[$peh->getEvent()] as $handler){
-                        if ($peh->getHandler() == $handler[0] and $peh->getHandlerType() == $handler[1] ){
-                            $match=true; 
+                } else {
+                    $match = false;
+                    foreach ($event_yml[$peh->getEvent()] as $handler) {
+                        if ($peh->getHandler() == $handler[0] and $peh->getHandlerType() == $handler[1]) {
+                            $match = true;
                         }
-                    } 
-                    if(!$match){
+                    }
+                    if (!$match) {
                         $em->remove($peh);
                         $em->flush();
-                    } 
+                    }
                 }
             }
         }
@@ -268,40 +277,47 @@ class PluginService
 
         $em = $this->app['orm.em'];
         $em->getConnection()->beginTransaction();
-        $p = new \Eccube\Entity\Plugin();
-        $p->setName($meta['name'])
-            ->setEnable(1)
-            ->setClassName(isset($meta['event']) ? $meta['event'] : '')
-            ->setVersion($meta['version'])
-            ->setDelflg(0)
-            ->setSource($source)
-            ->setCode($meta['code']);
+        try {
 
-        $em->persist($p);
-        $em->flush();
+            $p = new \Eccube\Entity\Plugin();
+            $p->setName($meta['name'])
+                ->setEnable(Constant::ENABLED)
+                ->setClassName(isset($meta['event']) ? $meta['event'] : '')
+                ->setVersion($meta['version'])
+                ->setDelflg(Constant::DISABLED)
+                ->setSource($source)
+                ->setCode($meta['code']);
 
-        if (is_array($event_yml)) {
-            foreach ($event_yml as $event => $handlers) {
-                foreach ($handlers as $handler) {
-                    if (!$this->checkSymbolName($handler[0])) {
-                        throw new PluginException("Handler name format error");
+            $em->persist($p);
+            $em->flush();
+
+            if (is_array($event_yml)) {
+                foreach ($event_yml as $event => $handlers) {
+                    foreach ($handlers as $handler) {
+                        if (!$this->checkSymbolName($handler[0])) {
+                            throw new PluginException("Handler name format error");
+                        }
+                        $peh = new \Eccube\Entity\PluginEventHandler();
+                        $peh->setPlugin($p)
+                            ->setEvent($event)
+                            ->setdelFlg(Constant::DISABLED)
+                            ->setHandler($handler[0])
+                            ->setHandlerType($handler[1])
+                            ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($event, $handler[1]));
+                        $em->persist($peh);
+                        $em->flush();
                     }
-                    $peh = new \Eccube\Entity\PluginEventHandler();
-                    $peh->setPlugin($p)
-                        ->setEvent($event)
-                        ->setdelFlg(0)
-                        ->setHandler($handler[0])
-                        ->setHandlerType($handler[1])
-                        ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($event, $handler[1]));
-                    $em->persist($peh);
-                    $em->flush();
                 }
             }
+
+            $em->persist($p);
+            $em->flush();
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            throw new PluginException($e->getMessage());
         }
 
-        $em->persist($p);
-        $em->flush();
-        $em->getConnection()->commit();
         return $p;
 
     }
@@ -337,7 +353,7 @@ class PluginService
     public function deleteFile($path)
     {
         $f = new Filesystem();
-        return $f->remove($path);
+        $f->remove($path);
     }
 
 }
