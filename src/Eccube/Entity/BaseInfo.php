@@ -215,6 +215,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $option_customer_activate;
 
     /**
+     * @var string
+     */
+    private $authentication_key;
+
+    /**
      * @var \Eccube\Entity\Master\Country
      */
     private $Country;
@@ -1061,6 +1066,29 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getOptionCustomerActivate()
     {
         return $this->option_customer_activate;
+    }
+
+    /**
+     * Set authentication_key
+     *
+     * @param string $authenticationKey
+     * @return BaseInfo
+     */
+    public function setAuthenticationKey($authenticationKey)
+    {
+        $this->authentication_key = $authenticationKey;
+
+        return $this;
+    }
+
+    /**
+     * Get authentication_keye
+     *
+     * @return string
+     */
+    public function getAuthenticationKey()
+    {
+        return $this->authentication_key;
     }
 
     /**

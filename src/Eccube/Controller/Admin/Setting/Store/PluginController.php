@@ -70,7 +70,6 @@ class PluginController extends AbstractController
         $form = $app['form.factory']
             ->createBuilder('plugin_local_install')
             ->getForm();
-        $service = $app['eccube.service.plugin'];
 
         $errors = array();
 
@@ -80,6 +79,7 @@ class PluginController extends AbstractController
             if ($form->isValid()) {
 
                 try {
+                    $service = $app['eccube.service.plugin'];
 
                     $formFile = $form['plugin_archive']->getData();
 
@@ -225,7 +225,7 @@ class PluginController extends AbstractController
                     'pattern' => "/^[0-9a-zA-Z]+$/",
                 )),
             ),
-            'data' => '',
+            'data' => $BaseInfo->getAuthenticationKey(),
         ));
 
         if ('POST' === $request->getMethod()) {
@@ -235,10 +235,10 @@ class PluginController extends AbstractController
                 $data = $form->getData();
 
                 // 認証キーの登録
-
+                $BaseInfo->setAuthenticationKey($data['authentication_key']);
                 $app['orm.em']->flush($BaseInfo);
 
-                $app->addSuccess('admin.plugin.ahthentication.setting.complete', 'admin');
+                $app->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
 
             }
         }
