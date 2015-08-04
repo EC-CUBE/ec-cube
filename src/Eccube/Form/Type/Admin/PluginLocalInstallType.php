@@ -46,8 +46,8 @@ class PluginLocalInstallType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
                     new Assert\File(array(
-                        'mimeTypes' => array('application/x-tar', 'application/x-gzip'),
-                        'mimeTypesMessage' => 'tarファイルまたはtar.gzファイルをアップロードしてください。',
+                        'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
+                        'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
                     )),
                 ),
             ))

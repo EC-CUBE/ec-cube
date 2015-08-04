@@ -206,8 +206,16 @@ class PluginService
 
     public function unpackPluginArchive($archive, $dir)
     {
-        $phar = new \PharData($archive);
-        $phar->extractTo($dir, null, true);
+        $extension = pathinfo($archive, PATHINFO_EXTENSION);
+        if ($extension == 'zip') {
+            $zip = new \ZipArchive();
+            $zip->open($archive);
+            $zip->extractTo($dir);
+            $zip->close();
+        } else {
+            $phar = new \PharData($archive);
+            $phar->extractTo($dir, null, true);
+        }
     }
 
     public function updatePlugin(\Eccube\Entity\Plugin $plugin, $meta, $event_yml)

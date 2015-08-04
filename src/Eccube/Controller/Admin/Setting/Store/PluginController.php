@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\Store;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
 use Eccube\Util\Str;
@@ -84,7 +85,7 @@ class PluginController extends AbstractController
                     $formFile = $form['plugin_archive']->getData();
 
                     $tmpDir = $service->createTempDir();
-                    $tmpFile = sha1(Str::random(32)) . ".tar"; // 拡張子を付けないとpharが動かないので付ける
+                    $tmpFile = sha1(Str::random(32)) . '.' . $formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
 
                     $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
 
@@ -105,9 +106,42 @@ class PluginController extends AbstractController
             }
         }
 
+        // オーナーズストアからダウンロード可能プラグイン情報を取得
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        $authKey = $BaseInfo->getAuthenticationKey();
+        $authResult = true;
+        $data = null;
+        if (!is_null($authKey)) {
+
+            $opts = array(
+                'http' => array(
+                    'method' => 'GET',
+                    'ignore_errors' => true,
+                    'header' => array(
+                        'Authorization: ' . base64_encode($authKey),
+                        'x-eccube-store-url: ' . base64_encode($request->getBaseUrl() . '/' . $app['config']['admin_route']),
+                        'x-eccube-store-version: ' . base64_encode(Constant::VERSION)
+                    )
+                )
+            );
+            $context = stream_context_create($opts);
+
+            $url = 'http://localhost:8003/test.json';
+            $json = file_get_contents($url, false, $context);
+
+            $data = json_decode($json, true);
+
+        } else {
+            $authResult = false;
+        }
+
+
         return $app->render('Setting/Store/plugin_install.twig', array(
             'form' => $form->createView(),
             'errors' => $errors,
+            'authResult' => $authResult,
+            'data' => $data,
         ));
 
     }

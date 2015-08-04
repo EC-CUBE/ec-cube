@@ -2583,6 +2583,35 @@ ul.link-with-bar li:last-child::after {
 }
 
 
+/* プラグインインストール追加パネル */
+.plugin-panel {
+    background:  #f6f6ff;
+    border: 1px solid #dedede;
+    margin: 5px;
+}
+
+.plugin-content {
+    background:  white;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.plugin-logo {
+
+}
+
+.plugin-logo img {
+    width: 168px;
+    height: 168px;
+    float: left;
+    margin-right: 15px;
+}
+
+.plugin-name {
+    font-weight: bold;
+}
+
+
 
 
 /*	Fixed Column
