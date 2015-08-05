@@ -71,6 +71,8 @@ $(function() {
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">商品登録CSV</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
                     <div class="form-group">
                         <label class="col-sm-5 control-label">CSVファイル選択</label>
                         <div class="col-sm-7">
@@ -80,13 +82,12 @@ $(function() {
                         {% for error in errors %}
                             <div class="text-danger">{{ error.message }}</div>
                         {% endfor %}
-                        </div>
                     </div>
                     <div id="spinner"></div>
-                </div><!-- /.box-header -->
-                <div class="box-body text-center">
-                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
                 </div><!-- /.box-body -->
+                <div class="box-footer text-center">
+                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
+                </div><!-- /.box-footer -->
             </div><!-- /.box -->
         </form>
     </div><!-- /.col -->
@@ -101,7 +102,7 @@ $(function() {
             </div><!-- /.box-header -->
             <div class="box-body no-padding">
                 <div class="table_list">
-                    <div class="table-responsive with-border table-menu">
+                    <div class="table-responsive no-border table-menu">
                         <table class="table table-striped">
                             <thead>
                                 <tr class="text-nowrap">

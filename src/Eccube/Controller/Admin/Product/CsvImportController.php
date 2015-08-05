@@ -61,10 +61,9 @@ class CsvImportController
     public function csvProduct(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('admin_csv_import');
+        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getProductCsvHeader();
-        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
 
@@ -113,21 +112,31 @@ class CsvImportController
                             $Product = new Product();
                             $this->em->persist($Product);
                         } else {
-                            $Product = $app['eccube.repository.product']->find($row['商品ID']);
-                            if (!$Product) {
+                            if (is_numeric($row['商品ID'])) {
+                                $Product = $app['eccube.repository.product']->find($row['商品ID']);
+                                if (!$Product) {
+                                    $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
+                                    return $this->render($app, $form, $headers, $this->productTwig);
+                                }
+                            } else {
                                 $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->productTwig);
                             }
+
                         }
 
                         if ($row['公開ステータス(ID)'] == '') {
                             $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が設定されていません。');
                         } else {
-                            $Disp = $app['eccube.repository.master.disp']->find($row['公開ステータス(ID)']);
-                            if (!$Disp) {
-                                $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
+                            if (is_numeric($row['公開ステータス(ID)'])) {
+                                $Disp = $app['eccube.repository.master.disp']->find($row['公開ステータス(ID)']);
+                                if (!$Disp) {
+                                    $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
+                                } else {
+                                    $Product->setStatus($Disp);
+                                }
                             } else {
-                                $Product->setStatus($Disp);
+                                $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
                             }
                         }
 
@@ -155,10 +164,11 @@ class CsvImportController
                         if ($row['商品削除フラグ'] == '') {
                             $Product->setDelFlg(Constant::DISABLED);
                         } else {
-                            if ($row['商品削除フラグ'] == Constant::DISABLED || $row['商品削除フラグ'] == Constant::ENABLED) {
+                            if ($row['商品削除フラグ'] == (string)Constant::DISABLED || $row['商品削除フラグ'] == (string)Constant::ENABLED) {
                                 $Product->setDelFlg($row['商品削除フラグ']);
                             } else {
                                 $this->addErrors(($data->key() + 1) . '行目の商品削除フラグが設定されていません。');
+                                return $this->render($app, $form, $headers, $this->productTwig);
                             }
                         }
 
@@ -201,25 +211,34 @@ class CsvImportController
                                     $ProductClassOrg->setDelFlg(Constant::ENABLED);
 
                                     // 規格分類1、2をそれぞれセットし作成
-                                    $ClassCategory1 = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
-                                    if (!$ClassCategory1) {
-                                        $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
+                                    $ClassCategory1= null;
+                                    if (is_numeric($row['規格分類1(ID)'])) {
+                                        $ClassCategory1 = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
+                                        if (!$ClassCategory1) {
+                                            $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
+                                        } else {
+                                            $ProductClass->setClassCategory1($ClassCategory1);
+                                        }
                                     } else {
-                                        $ProductClass->setClassCategory1($ClassCategory1);
+                                        $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
                                     }
 
                                     if ($row['規格分類2(ID)'] != '') {
-                                        $ClassCategory2 = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
-                                        if (!$ClassCategory2) {
-                                            $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
-                                        } else {
-                                            if ($ClassCategory1 &&
-                                                ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
-                                            ) {
-                                                $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)と規格分類2(ID)の規格名が同じです。');
+                                        if (is_numeric($row['規格分類2(ID)'])) {
+                                            $ClassCategory2 = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
+                                            if (!$ClassCategory2) {
+                                                $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
                                             } else {
-                                                $ProductClass->setClassCategory2($ClassCategory2);
+                                                if ($ClassCategory1 &&
+                                                    ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
+                                                ) {
+                                                    $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)と規格分類2(ID)の規格名が同じです。');
+                                                } else {
+                                                    $ProductClass->setClassCategory2($ClassCategory2);
+                                                }
                                             }
+                                        } else {
+                                            $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
                                         }
                                     }
                                     $ProductClass->setProductStock($ProductStock);
@@ -286,8 +305,13 @@ class CsvImportController
 
                                     // 必ず規格分類1がセットされている
                                     // 規格分類1、2をそれぞれセットし作成
-                                    $ClassCategory1 = $app['eccube.repository.class_category']->find($classCategoryId1);
-                                    if (!$ClassCategory1) {
+                                    $ClassCategory1 = null;
+                                    if (is_numeric($classCategoryId1)) {
+                                        $ClassCategory1 = $app['eccube.repository.class_category']->find($classCategoryId1);
+                                        if (!$ClassCategory1) {
+                                            $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
+                                        }
+                                    } else {
                                         $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
                                     }
 
@@ -296,15 +320,19 @@ class CsvImportController
                                         if ($pc->getClassCategory1() != null && $pc->getClassCategory2() == null) {
                                             $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)は設定できません。');
                                         } else {
-                                            $ClassCategory2 = $app['eccube.repository.class_category']->find($classCategoryId2);
-                                            if (!$ClassCategory2) {
-                                                $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
-                                            } else {
-                                                if ($ClassCategory1 &&
-                                                    ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
-                                                ) {
-                                                    $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)と規格分類2(ID)の規格名が同じです。');
+                                            if (is_numeric($classCategoryId2)) {
+                                                $ClassCategory2 = $app['eccube.repository.class_category']->find($classCategoryId2);
+                                                if (!$ClassCategory2) {
+                                                    $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
+                                                } else {
+                                                    if ($ClassCategory1 &&
+                                                        ($ClassCategory1->getClassName()->getId() == $ClassCategory2->getClassName()->getId())
+                                                    ) {
+                                                        $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)と規格分類2(ID)の規格名が同じです。');
+                                                    }
                                                 }
+                                            } else {
+                                                $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
                                             }
 
                                         }
@@ -342,8 +370,8 @@ class CsvImportController
 
                     }
 
-                    $this->em->getConnection()->commit();
                     $this->em->flush();
+                    $this->em->getConnection()->commit();
                     $this->em->close();
 
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
@@ -361,10 +389,9 @@ class CsvImportController
     public function csvCategory(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('admin_csv_import');
+        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getCategoryCsvHeader();
-        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
 
@@ -411,6 +438,10 @@ class CsvImportController
                             $Category = new Category();
                             $this->em->persist($Category);
                         } else {
+                            if (!is_numeric($row['カテゴリID'])) {
+                                $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
                             $Category = $app['eccube.repository.category']->find($row['カテゴリID']);
                             if (!$Category) {
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
@@ -430,6 +461,11 @@ class CsvImportController
                         }
 
                         if ($row['親カテゴリID'] != '') {
+
+                            if (!is_numeric($row['親カテゴリID'])) {
+                                $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
 
                             $ParentCategory = $app['eccube.repository.category']->find($row['親カテゴリID']);
                             if (!$ParentCategory) {
@@ -467,8 +503,8 @@ class CsvImportController
 
                     }
 
-                    $this->em->getConnection()->commit();
                     $this->em->flush();
+                    $this->em->getConnection()->commit();
                     $this->em->close();
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
@@ -530,11 +566,18 @@ class CsvImportController
     {
 
         if ($this->hasErrors()) {
-            $fs = new Filesystem();
-            $fs->remove($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
             if ($this->em) {
                 $this->em->getConnection()->rollback();
                 $this->em->close();
+            }
+        }
+
+        if (!empty($this->fileName)) {
+            try {
+                $fs = new Filesystem();
+                $fs->remove($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
+            } catch (\Exception $e) {
+                // エラーが発生しても無視する
             }
         }
 
@@ -556,7 +599,7 @@ class CsvImportController
     {
 
         // アップロードされたCSVファイルを一時ディレクトリに保存
-        $this->fileName = 'upload_' . Str::random() . '.' . $formFile->guessExtension();
+        $this->fileName = 'upload_' . Str::random() . '.' . $formFile->getClientOriginalExtension();
         $formFile->move($app['config']['csv_temp_realdir'], $this->fileName);
 
         $file = file_get_contents($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
@@ -635,19 +678,23 @@ class CsvImportController
             $rank = 1;
             foreach ($categories as $category) {
 
-                $Category = $app['eccube.repository.category']->find($category);
-                if (!$Category) {
-                    $this->addErrors(($data->key() + 1) . '行目の商品カテゴリ(ID)「' . $category . '」が存在しません。');
+                if (is_numeric($category)) {
+                    $Category = $app['eccube.repository.category']->find($category);
+                    if (!$Category) {
+                        $this->addErrors(($data->key() + 1) . '行目の商品カテゴリ(ID)「' . $category . '」が存在しません。');
+                    } else {
+                        $ProductCategory = new ProductCategory();
+                        $ProductCategory->setProductId($Product->getId());
+                        $ProductCategory->setCategoryId($Category->getId());
+                        $ProductCategory->setProduct($Product);
+                        $ProductCategory->setCategory($Category);
+                        $ProductCategory->setRank($rank);
+                        $Product->addProductCategory($ProductCategory);
+                        $rank++;
+                        $this->em->persist($ProductCategory);
+                    }
                 } else {
-                    $ProductCategory = new ProductCategory();
-                    $ProductCategory->setProductId($Product->getId());
-                    $ProductCategory->setCategoryId($Category->getId());
-                    $ProductCategory->setProduct($Product);
-                    $ProductCategory->setCategory($Category);
-                    $ProductCategory->setRank($rank);
-                    $Product->addProductCategory($ProductCategory);
-                    $rank++;
-                    $this->em->persist($ProductCategory);
+                    $this->addErrors(($data->key() + 1) . '行目の商品カテゴリ(ID)「' . $category . '」が存在しません。');
                 }
             }
 
@@ -669,11 +716,15 @@ class CsvImportController
         if ($row['商品種別(ID)'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
-            $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
-            if (!$ProductType) {
-                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+            if (is_numeric($row['商品種別(ID)'])) {
+                $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
+                if (!$ProductType) {
+                    $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+                } else {
+                    $ProductClass->setProductType($ProductType);
+                }
             } else {
-                $ProductClass->setProductType($ProductType);
+                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
             }
         }
 
@@ -681,11 +732,15 @@ class CsvImportController
         $ProductClass->setClassCategory2($ClassCategory2);
 
         if ($row['発送日目安(ID)'] != '') {
-            $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
-            if (!$DeliveryDate) {
-                $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
+            if (is_numeric($row['発送日目安(ID)'])) {
+                $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
+                if (!$DeliveryDate) {
+                    $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
+                } else {
+                    $ProductClass->setDeliveryDate($DeliveryDate);
+                }
             } else {
-                $ProductClass->setDeliveryDate($DeliveryDate);
+                $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
             }
         }
 
@@ -698,7 +753,7 @@ class CsvImportController
         if ($row['在庫数無制限フラグ'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
-            if ($row['在庫数無制限フラグ'] == Constant::DISABLED) {
+            if ($row['在庫数無制限フラグ'] == (string)Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(Constant::DISABLED);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
@@ -712,7 +767,7 @@ class CsvImportController
                     }
                 }
 
-            } else if ($row['在庫数無制限フラグ'] == Constant::ENABLED) {
+            } else if ($row['在庫数無制限フラグ'] == (string)Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {
@@ -752,7 +807,7 @@ class CsvImportController
         if ($row['商品規格削除フラグ'] == '') {
             $ProductClass->setDelFlg(Constant::DISABLED);
         } else {
-            if ($row['商品規格削除フラグ'] == Constant::DISABLED || $row['商品規格削除フラグ'] == Constant::ENABLED) {
+            if ($row['商品規格削除フラグ'] == (string)Constant::DISABLED || $row['商品規格削除フラグ'] == (string)Constant::ENABLED) {
                 $ProductClass->setDelFlg($row['商品規格削除フラグ']);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');
@@ -790,39 +845,55 @@ class CsvImportController
         if ($row['商品種別(ID)'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
-            $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
-            if (!$ProductType) {
-                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+            if (is_numeric($row['商品種別(ID)'])) {
+                $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
+                if (!$ProductType) {
+                    $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
+                } else {
+                    $ProductClass->setProductType($ProductType);
+                }
             } else {
-                $ProductClass->setProductType($ProductType);
+                $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
             }
         }
 
         // 規格分類1、2をそれぞれセットし作成
         if ($row['規格分類1(ID)'] != '') {
-            $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
-            if (!$ClassCategory) {
-                $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
+            if (is_numeric($row['規格分類1(ID)'])) {
+                $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
+                if (!$ClassCategory) {
+                    $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
+                } else {
+                    $ProductClass->setClassCategory1($ClassCategory);
+                }
             } else {
-                $ProductClass->setClassCategory1($ClassCategory);
+                $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
             }
         }
 
         if ($row['規格分類2(ID)'] != '') {
-            $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
-            if (!$ClassCategory) {
-                $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
+            if (is_numeric($row['規格分類2(ID)'])) {
+                $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
+                if (!$ClassCategory) {
+                    $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
+                } else {
+                    $ProductClass->setClassCategory2($ClassCategory);
+                }
             } else {
-                $ProductClass->setClassCategory2($ClassCategory);
+                $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
             }
         }
 
         if ($row['発送日目安(ID)'] != '') {
-            $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
-            if (!$DeliveryDate) {
-                $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
+            if (is_numeric($row['発送日目安(ID)'])) {
+                $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
+                if (!$DeliveryDate) {
+                    $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
+                } else {
+                    $ProductClass->setDeliveryDate($DeliveryDate);
+                }
             } else {
-                $ProductClass->setDeliveryDate($DeliveryDate);
+                $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
             }
         }
 
@@ -835,7 +906,7 @@ class CsvImportController
         if ($row['在庫数無制限フラグ'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
-            if ($row['在庫数無制限フラグ'] == Constant::DISABLED) {
+            if ($row['在庫数無制限フラグ'] == (string)Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(Constant::DISABLED);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
@@ -849,7 +920,7 @@ class CsvImportController
                     }
                 }
 
-            } else if ($row['在庫数無制限フラグ'] == Constant::ENABLED) {
+            } else if ($row['在庫数無制限フラグ'] == (string)Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {
@@ -889,7 +960,7 @@ class CsvImportController
         if ($row['商品規格削除フラグ'] == '') {
             $ProductClass->setDelFlg(Constant::DISABLED);
         } else {
-            if ($row['商品規格削除フラグ'] == Constant::DISABLED || $row['商品規格削除フラグ'] == Constant::ENABLED) {
+            if ($row['商品規格削除フラグ'] == (string)Constant::DISABLED || $row['商品規格削除フラグ'] == (string)Constant::ENABLED) {
                 $ProductClass->setDelFlg($row['商品規格削除フラグ']);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');
