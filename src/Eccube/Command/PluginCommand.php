@@ -34,18 +34,20 @@ class PluginCommand extends \Knp\Command\Command
 
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) {
+    public function __construct(\Eccube\Application $app, $name = null) 
+    {
         parent::__construct($name);
         $this->app = $app;
     }
 
-    protected function configure() {
+    protected function configure() 
+    {
         $this
             ->setName('plugin:develop')
             ->addArgument('mode',InputArgument::REQUIRED,'mode(install/uninstall/enable/disable/update)',null) 
             ->addOption('path',null,InputOption::VALUE_OPTIONAL,'path of tar or zip') 
             ->addOption('code',null,InputOption::VALUE_OPTIONAL,'plugin code') 
-            ->setDescription('install plugin.')
+            ->setDescription('plugin commandline installer.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> plugin installer runner for developer;
 EOF
@@ -53,11 +55,13 @@ EOF
     }
 
 
-    protected function getPluginFromCode($pluginCode) {
+    protected function getPluginFromCode($pluginCode) 
+    {
         return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0,'code'=>$pluginCode));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output) 
+    {
         $this->app->initialize();
         $this->app->boot();
 
@@ -65,7 +69,6 @@ EOF
         $path = $input->getOption('path');
         $code = $input->getOption('code');
 
-        // インストーラの起動に必要な情報を準備する
         $service = $this->app['eccube.service.plugin'];
 
         if($mode=='install'){
@@ -107,6 +110,4 @@ EOF
         }
         $output->writeln('undefined mode.');
     }
-    
-
 }
