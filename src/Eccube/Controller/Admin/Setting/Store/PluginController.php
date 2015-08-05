@@ -111,26 +111,100 @@ class PluginController extends AbstractController
 
         $authKey = $BaseInfo->getAuthenticationKey();
         $authResult = true;
-        $data = null;
+        $items = array();
+        $message = '';
         if (!is_null($authKey)) {
 
-            $opts = array(
-                'http' => array(
-                    'method' => 'GET',
-                    'ignore_errors' => true,
-                    'header' => array(
-                        'Authorization: ' . base64_encode($authKey),
-                        'x-eccube-store-url: ' . base64_encode($request->getBaseUrl() . '/' . $app['config']['admin_route']),
-                        'x-eccube-store-version: ' . base64_encode(Constant::VERSION)
-                    )
-                )
-            );
+            // 共通リクエストヘッダー取得
+            $opts = $this->getRequestOption($app, $request, $authKey);
             $context = stream_context_create($opts);
+            $url = $app['config']['owners_store_url'] . '?method=list';
+            $json = @file_get_contents($url, false, $context);
 
-            $url = 'http://localhost:8003/test.json';
-            $json = file_get_contents($url, false, $context);
+            if ($json === false) {
+                // 接続失敗時
+                $success = 0;
 
-            $data = json_decode($json, true);
+                if (!empty($http_response_header)) {
+                    list($version, $statusCode, $message) = explode(' ', $http_response_header[0], 3);
+
+                    switch ($statusCode) {
+                        case '404':
+                            $message = $statusCode . ' : ' . $message;
+                            break;
+                        case '500':
+                            $message = $statusCode . ' : ' . $message;
+                            break;
+                        default:
+                            $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                            break;
+                    }
+                } else {
+                    $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
+                }
+
+
+            } else {
+                // 接続成功時
+
+                $data = json_decode($json, true);
+
+                if (isset($data['success'])) {
+                    $success = $data['success'];
+                    if ($success == '1') {
+                        $items = array();
+
+                        // 既にインストールされているかどうか確認
+                        $Plugins = $app['eccube.repository.plugin']->findAll();
+                        if ($Plugins) {
+                            $status = false;
+                            foreach ($data['item'] as $item) {
+                                foreach($Plugins as $plugin) {
+                                    if ($plugin->getSource() == $item['product_id']) {
+                                        if ($plugin->getVersion() == $item['version']) {
+                                            // バージョンが同じ
+                                            $item['update_status'] = 2;
+                                        } else {
+                                            // バージョンが異なる
+                                            $item['update_status'] = 3;
+                                        }
+                                        $items[] = $item;
+                                        $status = true;
+                                        break;
+                                    }
+                                }
+                                if (!$status) {
+                                    // 未インストール
+                                    $item['update_status'] = 1;
+                                    $items[] = $item;
+                                }
+                                $status = false;
+                            }
+                        } else {
+                            $items = $data['item'];
+                        }
+
+                        // EC-CUBEのバージョンチェック
+                        $arr = $items;
+                        $items = array();
+                        foreach($arr as $item) {
+                            if (array_search(Constant::VERSION, $item['eccube_version'])) {
+                                $item['version_check'] = 1;
+                            } else {
+                                $item['version_check'] = 0;
+                            }
+                            $items[] = $item;
+                        }
+
+                    } else {
+                        $message = $data['error_message'];
+                    }
+                } else {
+                    $success = 0;
+                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                }
+            }
+
 
         } else {
             $authResult = false;
@@ -141,7 +215,9 @@ class PluginController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'authResult' => $authResult,
-            'data' => $data,
+            'success' => $success,
+            'items' => $items,
+            'message' => $message,
         ));
 
     }
@@ -284,4 +360,24 @@ class PluginController extends AbstractController
 
     }
 
+
+    /**
+     * リクエスト時の共通ヘッダ
+     * @return array
+     */
+    private function getRequestOption($app, $request, $authKey)
+    {
+        return array(
+            'http' => array(
+                'method' => 'GET',
+                'ignore_errors' => false,
+                'timeout' => 60,
+                'header' => array(
+                    'Authorization: ' . base64_encode($authKey),
+                    'x-eccube-store-url: ' . base64_encode($request->getBaseUrl() . '/' . $app['config']['admin_route']),
+                    'x-eccube-store-version: ' . base64_encode(Constant::VERSION)
+                )
+            )
+        );
+    }
 }

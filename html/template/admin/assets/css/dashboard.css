@@ -2585,33 +2585,69 @@ ul.link-with-bar li:last-child::after {
 
 /* プラグインインストール追加パネル */
 .plugin-panel {
+    /*
     background:  #f6f6ff;
     border: 1px solid #dedede;
     margin: 5px;
+    */
+    border: 1px solid #dedede;
+    padding: 10px;
+    margin: 5px;
+    font-size: 1.4rem;
 }
 
+.plugin-panel-not {
+    background:  #f6f6ff;
+}
+
+
+
 .plugin-content {
-    background:  white;
-    border-radius: 5px;
-    padding: 15px;
+    margin-left: 180px;
 }
 
 .plugin-logo {
-
+    margin: 0;
 }
 
 .plugin-logo img {
+    position: absolute;
     width: 168px;
     height: 168px;
-    float: left;
-    margin-right: 15px;
+    margin-right: 10px;
+    border-radius: 5px;
 }
 
 .plugin-name {
     font-weight: bold;
+    margin-bottom: 5px;
+}
+
+a.plugin-name {
+    text-decoration: none;
+    color: #333;
+}
+
+a.plugin-name:hover {
+    color: #2a6496;
+    text-decoration: underline;
+}
+
+.plugin-description {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    min-height: 90px;
 }
 
 
+.meta {
+    padding: 0;
+    list-style: none;
+    margin:0 0 15px
+}
+
+.plugin-developer {
+}
 
 
 /*	Fixed Column

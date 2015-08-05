@@ -24,6 +24,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Eccube\Util\Str;
 use Silex\Application;
 
 class EccubeExtension extends \Twig_Extension
@@ -59,6 +60,7 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFilter('no_image_product', array($this, 'getNoImageProduct')),
             new \Twig_SimpleFilter('date_format', array($this, 'getDateFormatFilter')),
             new \Twig_SimpleFilter('price', array($this, 'getPriceFilter')),
+            new \Twig_SimpleFilter('ellipsis', array($this, 'getEllipsis')),
         );
     }
 
@@ -135,4 +137,13 @@ class EccubeExtension extends \Twig_Extension
         return $price;
     }
 
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getEllipsis($value, $length = 100, $end = '...')
+    {
+        return Str::ellipsis($value, $length, $end);
+    }
 }

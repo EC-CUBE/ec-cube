@@ -142,4 +142,22 @@ class Str
 
     }
 
+    /**
+     * 指定した文字列以上ある場合、「...」を付加する
+     *
+     * @param string $value
+     * @param int $length
+     * @param string $end
+     * @return string
+     */
+    public static function ellipsis($value, $length = 100, $end = '...')
+    {
+        if (mb_strlen($value) <= $length) {
+            return $value;
+        }
+
+        return rtrim(mb_substr($value, 0, $length, 'UTF-8')) . $end;
+    }
+
+
 }
