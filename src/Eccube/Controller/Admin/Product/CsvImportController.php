@@ -61,10 +61,9 @@ class CsvImportController
     public function csvProduct(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('admin_csv_import');
+        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getProductCsvHeader();
-        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
 
@@ -212,6 +211,7 @@ class CsvImportController
                                     $ProductClassOrg->setDelFlg(Constant::ENABLED);
 
                                     // 規格分類1、2をそれぞれセットし作成
+                                    $ClassCategory1= null;
                                     if (is_numeric($row['規格分類1(ID)'])) {
                                         $ClassCategory1 = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
                                         if (!$ClassCategory1) {
@@ -370,8 +370,8 @@ class CsvImportController
 
                     }
 
-                    $this->em->getConnection()->commit();
                     $this->em->flush();
+                    $this->em->getConnection()->commit();
                     $this->em->close();
 
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
@@ -389,10 +389,9 @@ class CsvImportController
     public function csvCategory(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('admin_csv_import');
+        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getCategoryCsvHeader();
-        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
 
@@ -504,8 +503,8 @@ class CsvImportController
 
                     }
 
-                    $this->em->getConnection()->commit();
                     $this->em->flush();
+                    $this->em->getConnection()->commit();
                     $this->em->close();
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
