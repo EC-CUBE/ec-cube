@@ -26,7 +26,7 @@ namespace Eccube\Service;
 use Doctrine\DBAL\LockMode;
 use Eccube\Application;
 use Eccube\Common\Constant;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderService
 {
@@ -507,5 +507,135 @@ class OrderService
 
     }
 
+    /**
+     * 配送業者を取得
+     */
+    public function findDeliveriesFromOrderDetails($app, $details)
+    {
 
+        $productTypes = array();
+        foreach ($details as $detail) {
+            $productTypes[] = $detail->getProductClass()->getProductType();
+        }
+
+        $qb = $app['orm.em']->createQueryBuilder();
+        $deliveries = $qb->select("d")
+            ->from("\Eccube\Entity\Delivery", "d")
+            ->where($qb->expr()->in('d.ProductType', ':productTypes'))
+            ->setParameter('productTypes', $productTypes)
+            ->andWhere("d.del_flg = :delFlg")
+            ->setParameter('delFlg', Constant::DISABLED)
+            ->orderBy("d.rank", "ASC")
+            ->getQuery()
+            ->getResult();
+
+        return $deliveries;
+
+    }
+
+
+
+    /**
+     * 配送業者のフォームを設定
+     */
+    public function setFormDelivery($form, $deliveries, $delivery = null)
+    {
+
+        // 配送業社の設定
+        $form->add('delivery', 'entity', array(
+            'class' => 'Eccube\Entity\Delivery',
+            'property' => 'name',
+            'choices' => $deliveries,
+            'data' => $delivery,
+        ));
+
+    }
+
+
+    /**
+     * お届け日のフォームを設定
+     */
+    public function setFormDeliveryDate($form, $Order, $app)
+    {
+
+        // お届け日の設定
+        $minDate = 0;
+        $deliveryDateFlag = false;
+
+        // 配送時に最大となる商品日数を取得
+        foreach ($Order->getOrderDetails() as $detail) {
+            $deliveryDate = $detail->getProductClass()->getDeliveryDate();
+            if (!is_null($deliveryDate)) {
+                if ($minDate < $deliveryDate->getValue()) {
+                    $minDate = $deliveryDate->getValue();
+                }
+                // 配送日数が設定されている
+                $deliveryDateFlag = true;
+            }
+        }
+
+        // 配達最大日数期間を設定
+        $deliveryDates = array();
+
+        // 配送日数が設定されている
+        if ($deliveryDateFlag) {
+            $period = new \DatePeriod (
+                new \DateTime($minDate . ' day'),
+                new \DateInterval('P1D'),
+                new \DateTime($minDate + $app['config']['deliv_date_end_max'] . ' day')
+            );
+
+            foreach ($period as $day) {
+                $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
+            }
+        }
+
+
+        $form->add('deliveryDate', 'choice', array(
+            'choices' => $deliveryDates,
+            'required' => false,
+            'empty_value' => '指定なし',
+        ));
+
+    }
+
+    /**
+     * お届け時間のフォームを設定
+     */
+    public function setFormDeliveryTime($form, $delivery)
+    {
+        // お届け時間の設定
+        $form->add('deliveryTime', 'entity', array(
+            'class' => 'Eccube\Entity\DeliveryTime',
+            'property' => 'deliveryTime',
+            'choices' => $delivery->getDeliveryTimes(),
+            'required' => false,
+            'empty_value' => '指定なし',
+            'empty_data' => null,
+        ));
+
+    }
+
+    /**
+     * 支払い方法のフォームを設定
+     */
+    public function setFormPayment($form, $delivery, $Order, $app)
+    {
+
+        $orderService = $app['eccube.service.order'];
+        $paymentOptions = $delivery->getPaymentOptions();
+        $payments = $orderService->getPayments($paymentOptions, $Order->getSubTotal());
+
+        $form->add('payment', 'entity', array(
+            'class' => 'Eccube\Entity\Payment',
+            'property' => 'method',
+            'choices' => $payments,
+            'data' => $Order->getPayment(),
+            'expanded' => true,
+            'constraints' => array(
+                new Assert\NotBlank(),
+            ),
+        ));
+
+    }
 }
