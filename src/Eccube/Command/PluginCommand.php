@@ -44,9 +44,9 @@ class PluginCommand extends \Knp\Command\Command
     {
         $this
             ->setName('plugin:develop')
-            ->addArgument('mode',InputArgument::REQUIRED,'mode(install/uninstall/enable/disable/update)',null) 
-            ->addOption('path',null,InputOption::VALUE_OPTIONAL,'path of tar or zip') 
-            ->addOption('code',null,InputOption::VALUE_OPTIONAL,'plugin code') 
+            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update)', null) 
+            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip') 
+            ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code') 
             ->setDescription('plugin commandline installer.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> plugin installer runner for developer;
@@ -57,7 +57,7 @@ EOF
 
     protected function getPluginFromCode($pluginCode) 
     {
-        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0,'code'=>$pluginCode));
+        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0, 'code'=>$pluginCode));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) 
@@ -71,41 +71,41 @@ EOF
 
         $service = $this->app['eccube.service.plugin'];
 
-        if($mode=='install'){
-            if(empty($path)){
+        if ($mode == 'install') {
+            if (empty($path)) {
                 $output->writeln('path is required.');
                 return;
             }
-            if($service->install($path)){
+            if ($service->install($path)) {
                 $output->writeln('success');
-                return ;
+                return;
             }
         }
-        if($mode=='update'){
-            if(empty($code)){
+        if ($mode == 'update') {
+            if (empty($code)) {
                 $output->writeln('code is required.');
                 return;
             }
-            if(empty($path)){
+            if (empty($path)) {
                 $output->writeln('path is required.');
                 return;
             }
             $plugin = $this->getPluginFromCode($code);
-            if($service->update($plugin,$path)){
+            if ($service->update($plugin, $path)) {
                 $output->writeln('success');
-                return ;
+                return;
             }
         }
-        if(in_array($mode,array('enable','disable','uninstall'),true)){
-            if(empty($code)){
+        if (in_array($mode, array('enable', 'disable', 'uninstall'), true)) {
+            if (empty($code)) {
                 $output->writeln('code is required.');
                 return;
             }
 
             $plugin = $this->getPluginFromCode($code);
-            if($service->$mode($plugin)){
+            if ($service->$mode($plugin)) {
                 $output->writeln('success');
-                return ;
+                return;
             }
         }
         $output->writeln('undefined mode.');
