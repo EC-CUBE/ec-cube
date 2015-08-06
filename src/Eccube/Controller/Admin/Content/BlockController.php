@@ -131,6 +131,8 @@ class BlockController
             $app['orm.em']->flush();
         }
 
+        \Eccube\Util\Cache::clear();
+
         return $app->redirect($app->url('admin_content_block'));
     }
 }
