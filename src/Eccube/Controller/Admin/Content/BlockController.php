@@ -101,6 +101,8 @@ class BlockController
             }
         }
 
+        \Eccube\Util\Cache::clear();
+
         return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),
             'block_id' => $id,
