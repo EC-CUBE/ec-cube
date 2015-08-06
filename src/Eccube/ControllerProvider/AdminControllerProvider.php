@@ -195,6 +195,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/setting/store/template/{id}/delete', '\Eccube\Controller\Admin\Setting\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_setting_store_template_delete');
 
         $c->match('/setting/store/plugin', '\Eccube\Controller\Admin\Setting\Store\PluginController::index')->bind('admin_setting_store_plugin');
+        $c->match('/setting/store/plugin/owners_install', '\Eccube\Controller\Admin\Setting\Store\PluginController::ownersInstall')->bind('admin_setting_store_plugin_owners_install');
         $c->match('/setting/store/plugin/install', '\Eccube\Controller\Admin\Setting\Store\PluginController::install')->bind('admin_setting_store_plugin_install');
         $c->match('/setting/store/plugin/handler', '\Eccube\Controller\Admin\Setting\Store\PluginController::handler')->bind('admin_setting_store_plugin_handler');
         $c->match('/setting/store/plugin/manage', '\Eccube\Controller\Admin\Setting\Store\PluginController::manage')->bind('admin_setting_store_plugin_manage');
@@ -205,6 +206,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_up')->bind('admin_setting_store_plugin_handler_up');
         $c->match('/setting/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_down')->bind('admin_setting_store_plugin_handler_down');
         $c->match('/setting/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Setting\Store\PluginController::authenticationSetting')->bind('admin_setting_authentication_setting');
+        $c->match('/setting/store/plugin/upgrade/{action}/{id}/{version}', '\Eccube\Controller\Admin\Setting\Store\PluginController::upgrade')->assert('id', '\d+')->bind('admin_setting_store_plugin_upgrade');
 
         // system/member
         $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');

@@ -42,7 +42,7 @@ class PluginService
         $this->app = $app;
     }
 
-    public function install($path)
+    public function install($path, $source = 0)
     {
         try {
 
@@ -62,7 +62,7 @@ class PluginService
 
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
-            $this->registerPlugin($config, $event); // dbにプラグイン登録
+            $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
             $this->callPluginManagerMethod($config, 'install');
             $this->callPluginManagerMethod($config, 'enable');
 
@@ -223,8 +223,11 @@ class PluginService
         $em = $this->app['orm.em'];
         $em->getConnection()->beginTransaction();
         $plugin->setVersion($meta['version'])
-            ->setClassName($meta['event'])
             ->setName($meta['name']);
+
+        if (isset($meta['event'])) {
+            $plugin->setClassName($meta['event']);
+        }
 
         $rep = $this->app['eccube.repository.plugin_event_handler'];
 

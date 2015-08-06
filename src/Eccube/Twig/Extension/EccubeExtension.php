@@ -61,6 +61,7 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFilter('date_format', array($this, 'getDateFormatFilter')),
             new \Twig_SimpleFilter('price', array($this, 'getPriceFilter')),
             new \Twig_SimpleFilter('ellipsis', array($this, 'getEllipsis')),
+            new \Twig_SimpleFilter('time_ago', array($this, 'getTimeAgo')),
         );
     }
 
@@ -145,5 +146,15 @@ class EccubeExtension extends \Twig_Extension
     public function getEllipsis($value, $length = 100, $end = '...')
     {
         return Str::ellipsis($value, $length, $end);
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getTimeAgo($date)
+    {
+        return Str::timeAgo($date);
     }
 }

@@ -135,4 +135,5 @@ admin.plugin.uninstall.complete: アンインストールしました。
 admin.plugin.update.complete: 更新が完了しました。
 plugin already installed.: プラグインは既にインストールされています。
 admin.plugin.authentication.setting.complete: 認証キーを設定しました。
+admin.plugin.install.complete: プラグインをインストールしました。
 

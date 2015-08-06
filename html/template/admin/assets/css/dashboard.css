@@ -2584,12 +2584,13 @@ ul.link-with-bar li:last-child::after {
 
 
 /* プラグインインストール追加パネル */
+
+div.col-xs-12.col-md-6.grid-item {
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
 .plugin-panel {
-    /*
-    background:  #f6f6ff;
-    border: 1px solid #dedede;
-    margin: 5px;
-    */
     border: 1px solid #dedede;
     padding: 10px;
     margin: 5px;
@@ -2597,12 +2598,14 @@ ul.link-with-bar li:last-child::after {
 }
 
 .plugin-panel-not {
-    background:  #f6f6ff;
+    background:  #f3f4f6;
 }
 
+.plugin-panel-pr {
+    background:  #f0f8ff;
+}
 
-
-.plugin-content {
+.plugin-content-top {
     margin-left: 180px;
 }
 
@@ -2611,11 +2614,19 @@ ul.link-with-bar li:last-child::after {
 }
 
 .plugin-logo img {
+    /*
     position: absolute;
+    */
     width: 168px;
-    height: 168px;
+    height: 126px;
     margin-right: 10px;
+    margin-bottom: 10px;
     border-radius: 5px;
+    float: left;
+}
+
+.plugin-title {
+    margin-bottom: 20px;
 }
 
 .plugin-name {
@@ -2623,24 +2634,41 @@ ul.link-with-bar li:last-child::after {
     margin-bottom: 5px;
 }
 
-a.plugin-name {
-    text-decoration: none;
-    color: #333;
+.plugin-meta.dl-horizontal dt {
+    text-align: right;
+    padding-bottom: 0;
+    width: 180px;
+}
+.plugin-meta.dl-horizontal dd {
+    padding-bottom: 0;
+    margin-left: 200px
 }
 
+@media(max-width: 760px)  {
+    .plugin-meta.dl-horizontal dt {
+        text-align: left;
+    }
+    .plugin-meta.dl-horizontal dd {
+        margin-left: 0;
+    }
+}
+
+a.plugin-name {
+    font-size: 1.6rem;
+}
 a.plugin-name:hover {
-    color: #2a6496;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .plugin-description {
+    /*
     margin-top: 15px;
-    margin-bottom: 5px;
-    min-height: 90px;
+    */
+    margin-bottom: 25px;
 }
 
 
-.meta {
+.plugin-meta {
     padding: 0;
     list-style: none;
     margin:0 0 15px

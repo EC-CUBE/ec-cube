@@ -288,12 +288,12 @@ class Plugin
     /**
      * Set source
      *
-     * @param integer $delFlg
+     * @param integer $source
      * @return PluginEventHandler
      */
-    public function setSource($delFlg)
+    public function setSource($source)
     {
-        $this->source = $delFlg;
+        $this->source = $source;
 
         return $this;
     }

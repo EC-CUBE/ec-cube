@@ -66,6 +66,123 @@ class PluginController extends AbstractController
 
     }
 
+    /**
+     * オーナーズストアプラグインインストール画面
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ownersInstall(Application $app, Request $request)
+    {
+        // オーナーズストアからダウンロード可能プラグイン情報を取得
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        $authKey = $BaseInfo->getAuthenticationKey();
+        $authResult = true;
+        $success = 0;
+        $items = array();
+        $promotionItems = array();
+        $message = '';
+        if (!is_null($authKey)) {
+
+            // オーナーズストア通信
+            $url = $app['config']['owners_store_url'] . '?method=list';
+            $json = $this->getRequestApi($app, $request, $authKey, $url);
+
+            if ($json === false) {
+                // 接続失敗時
+                $success = 0;
+
+                $message = $this->getResponseErrorMessage();
+
+            } else {
+                // 接続成功時
+
+                $data = json_decode($json, true);
+
+                if (isset($data['success'])) {
+                    $success = $data['success'];
+                    if ($success == '1') {
+                        $items = array();
+
+                        // 既にインストールされているかどうか確認
+                        $Plugins = $app['eccube.repository.plugin']->findAll();
+                        $status = false;
+                        // update_status 1 : 未インストール、2 : インストール済、 3 : 更新あり、4 : 有料購入
+                        foreach ($data['item'] as $item) {
+                            foreach ($Plugins as $plugin) {
+                                if ($plugin->getSource() == $item['product_id']) {
+                                    if ($plugin->getVersion() == $item['version']) {
+                                        // バージョンが同じ
+                                        $item['update_status'] = 2;
+                                    } else {
+                                        // バージョンが異なる
+                                        $item['update_status'] = 3;
+                                    }
+                                    $items[] = $item;
+                                    $status = true;
+                                    break;
+                                }
+                            }
+                            if (!$status) {
+                                // 未インストール
+                                $item['update_status'] = 1;
+                                $items[] = $item;
+                            }
+                            $status = false;
+                        }
+
+                        // EC-CUBEのバージョンチェック
+                        // 参照渡しをして値を追加
+                        foreach ($items as &$item) {
+                            if (array_search(Constant::VERSION, $item['eccube_version'])) {
+                                // 対象バージョン
+                                $item['version_check'] = 1;
+                            } else {
+                                // 未対象バージョン
+                                $item['version_check'] = 0;
+                            }
+                            if ($item['price'] != '0' && $item['purchased'] == '0') {
+                                // 有料商品で未購入
+                                $item['update_status'] = 4;
+                            }
+                        }
+                        unset($item);
+
+                        // promotionアイテム
+                        $i = 0;
+                        foreach ($items as $item) {
+                            if ($item['promotion'] == 1) {
+                                $promotionItems[] = $item;
+                                unset($items[$i]);
+                            }
+                            $i++;
+                        }
+
+                    } else {
+                        $message = $data['error_code'] . ' : ' . $data['error_message'];
+                    }
+                } else {
+                    $success = 0;
+                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                }
+            }
+
+        } else {
+            $authResult = false;
+        }
+
+        return $app->render('Setting/Store/plugin_owners_install.twig', array(
+            'authResult' => $authResult,
+            'success' => $success,
+            'items' => $items,
+            'promotionItems' => $promotionItems,
+            'message' => $message,
+        ));
+
+    }
+
     public function install(Application $app, Request $request)
     {
         $form = $app['form.factory']
@@ -94,6 +211,8 @@ class PluginController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
 
+                    $app->addSuccess('admin.plugin.install.complete', 'admin');
+
                     return $app->redirect($app->url('admin_setting_store_plugin'));
 
                 } catch (PluginException $e) {
@@ -106,118 +225,9 @@ class PluginController extends AbstractController
             }
         }
 
-        // オーナーズストアからダウンロード可能プラグイン情報を取得
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-
-        $authKey = $BaseInfo->getAuthenticationKey();
-        $authResult = true;
-        $items = array();
-        $message = '';
-        if (!is_null($authKey)) {
-
-            // 共通リクエストヘッダー取得
-            $opts = $this->getRequestOption($app, $request, $authKey);
-            $context = stream_context_create($opts);
-            $url = $app['config']['owners_store_url'] . '?method=list';
-            $json = @file_get_contents($url, false, $context);
-
-            if ($json === false) {
-                // 接続失敗時
-                $success = 0;
-
-                if (!empty($http_response_header)) {
-                    list($version, $statusCode, $message) = explode(' ', $http_response_header[0], 3);
-
-                    switch ($statusCode) {
-                        case '404':
-                            $message = $statusCode . ' : ' . $message;
-                            break;
-                        case '500':
-                            $message = $statusCode . ' : ' . $message;
-                            break;
-                        default:
-                            $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
-                            break;
-                    }
-                } else {
-                    $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
-                }
-
-
-            } else {
-                // 接続成功時
-
-                $data = json_decode($json, true);
-
-                if (isset($data['success'])) {
-                    $success = $data['success'];
-                    if ($success == '1') {
-                        $items = array();
-
-                        // 既にインストールされているかどうか確認
-                        $Plugins = $app['eccube.repository.plugin']->findAll();
-                        if ($Plugins) {
-                            $status = false;
-                            foreach ($data['item'] as $item) {
-                                foreach($Plugins as $plugin) {
-                                    if ($plugin->getSource() == $item['product_id']) {
-                                        if ($plugin->getVersion() == $item['version']) {
-                                            // バージョンが同じ
-                                            $item['update_status'] = 2;
-                                        } else {
-                                            // バージョンが異なる
-                                            $item['update_status'] = 3;
-                                        }
-                                        $items[] = $item;
-                                        $status = true;
-                                        break;
-                                    }
-                                }
-                                if (!$status) {
-                                    // 未インストール
-                                    $item['update_status'] = 1;
-                                    $items[] = $item;
-                                }
-                                $status = false;
-                            }
-                        } else {
-                            $items = $data['item'];
-                        }
-
-                        // EC-CUBEのバージョンチェック
-                        $arr = $items;
-                        $items = array();
-                        foreach($arr as $item) {
-                            if (array_search(Constant::VERSION, $item['eccube_version'])) {
-                                $item['version_check'] = 1;
-                            } else {
-                                $item['version_check'] = 0;
-                            }
-                            $items[] = $item;
-                        }
-
-                    } else {
-                        $message = $data['error_message'];
-                    }
-                } else {
-                    $success = 0;
-                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
-                }
-            }
-
-
-        } else {
-            $authResult = false;
-        }
-
-
         return $app->render('Setting/Store/plugin_install.twig', array(
             'form' => $form->createView(),
             'errors' => $errors,
-            'authResult' => $authResult,
-            'success' => $success,
-            'items' => $items,
-            'message' => $message,
         ));
 
     }
@@ -361,23 +371,149 @@ class PluginController extends AbstractController
     }
 
 
+    public function upgrade(Application $app, Request $request, $action, $id, $version)
+    {
+
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        $authKey = $BaseInfo->getAuthenticationKey();
+        $authResult = true;
+        $success = 0;
+        $message = '';
+
+        $errors = array();
+        if (!is_null($authKey)) {
+
+            // オーナーズストア通信
+            $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
+            $json = $this->getRequestApi($app, $request, $authKey, $url);
+
+            if ($json === false) {
+                // 接続失敗時
+                $success = 0;
+
+                $message = $this->getResponseErrorMessage();
+
+            } else {
+                // 接続成功時
+
+                $data = json_decode($json, true);
+
+                if (isset($data['success'])) {
+                    $success = $data['success'];
+                    if ($success == '1') {
+                        try {
+                            $service = $app['eccube.service.plugin'];
+
+                            $item = $data['item'];
+                            $file = base64_decode($item['data']);
+                            $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
+
+                            $tmpDir = $service->createTempDir();
+                            $tmpFile = sha1(Str::random(32)) . '.' . $extension;
+
+                            // ファイル作成
+                            $fs = new Filesystem();
+                            $fs->dumpFile($tmpDir . '/' . $tmpFile, $file);
+
+                            if ($action == 'install') {
+
+                                $service->install($tmpDir . '/' . $tmpFile, $id);
+                                $app->addSuccess('admin.plugin.install.complete', 'admin');
+                            } else if ($action == 'update') {
+
+                                $Plugin = $app['eccube.repository.plugin']->findOneBy(array('source' => $id));
+
+                                $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
+
+                                $app->addSuccess('admin.plugin.update.complete', 'admin');
+                            }
+
+                            $fs = new Filesystem();
+                            $fs->remove($tmpDir);
+
+                            // ダウンロード完了通知処理
+                            $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=1&version=' . $version;
+                            $this->getRequestApi($app, $request, $authKey, $url);
+
+                            return $app->redirect($app->url('admin_setting_store_plugin'));
+
+                        } catch (PluginException $e) {
+                            if (file_exists($tmpDir)) {
+                                $fs = new Filesystem();
+                                $fs->remove($tmpDir);
+                            }
+                            $message = $e->getMessage();
+                        }
+
+                    } else {
+                        $message = $data['error_code'] . ' : ' . $data['error_message'];
+                    }
+                } else {
+                    $success = 0;
+                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                }
+            }
+        }
+
+        // ダウンロード完了通知処理
+        $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=0&version=' . $version . '&message=' . urlencode($message);
+        $this->getRequestApi($app, $request, $authKey, $url);
+
+        $app->addError($message, 'admin');
+
+        return $app->redirect($app->url('admin_setting_store_plugin_owners_install'));
+    }
+
+
     /**
-     * リクエスト時の共通ヘッダ
+     * APIリクエスト処理
      * @return array
      */
-    private function getRequestOption($app, $request, $authKey)
+    private function getRequestApi($app, Request $request, $authKey, $url)
     {
-        return array(
+        $opts = array(
             'http' => array(
                 'method' => 'GET',
                 'ignore_errors' => false,
                 'timeout' => 60,
                 'header' => array(
                     'Authorization: ' . base64_encode($authKey),
-                    'x-eccube-store-url: ' . base64_encode($request->getBaseUrl() . '/' . $app['config']['admin_route']),
+                    'x-eccube-store-url: ' . base64_encode($request->getSchemeAndHttpHost() . $request->getBasePath()),
                     'x-eccube-store-version: ' . base64_encode(Constant::VERSION)
                 )
             )
         );
+
+        $context = stream_context_create($opts);
+
+        return @file_get_contents($url, false, $context);
     }
+
+    /**
+     * レスポンスのエラーメッセージ
+     */
+    private function getResponseErrorMessage()
+    {
+        if (!empty($http_response_header)) {
+            list($version, $statusCode, $message) = explode(' ', $http_response_header[0], 3);
+
+            switch ($statusCode) {
+                case '404':
+                    $message = $statusCode . ' : ' . $message;
+                    break;
+                case '500':
+                    $message = $statusCode . ' : ' . $message;
+                    break;
+                default:
+                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                    break;
+            }
+        } else {
+            $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
+        }
+
+        return $message;
+    }
+
 }

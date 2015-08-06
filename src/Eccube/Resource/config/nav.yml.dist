@@ -101,8 +101,11 @@
             - id: plugin
               name: インストール済プラグイン
               url: admin_setting_store_plugin
-            - id: plugin_install
+            - id: plugin_owners_install
               name: プラグインインストール
+              url: admin_setting_store_plugin_owners_install
+            - id: plugin_install
+              name: プラグインのアップロード
               url: admin_setting_store_plugin_install
             - id: plugin_handler
               name: プラグインハンドラ設定
