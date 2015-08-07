@@ -38,8 +38,11 @@ class Cache {
         } else {
             $finder = Finder::create()->in($cacheDir . '/doctrine');
             $filesystem->remove($finder);
-            $finder = Finder::create()->in($cacheDir . '/profiler');
-            $filesystem->remove($finder);
+
+            if(is_dir($cacheDir . '/profiler')){
+                $finder = Finder::create()->in($cacheDir . '/profiler');
+                $filesystem->remove($finder);
+            }
             $finder = Finder::create()->in($cacheDir . '/twig');
         }
 
