@@ -101,7 +101,7 @@ class BlockController
             }
         }
 
-        \Eccube\Util\Cache::clear();
+        \Eccube\Util\Cache::clear($app,false);
 
         return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),
@@ -131,7 +131,7 @@ class BlockController
             $app['orm.em']->flush();
         }
 
-        \Eccube\Util\Cache::clear();
+        \Eccube\Util\Cache::clear($app,false);
 
         return $app->redirect($app->url('admin_content_block'));
     }
