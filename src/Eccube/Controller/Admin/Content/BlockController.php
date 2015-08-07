@@ -101,6 +101,8 @@ class BlockController
             }
         }
 
+        \Eccube\Util\Cache::clear();
+
         return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),
             'block_id' => $id,
@@ -128,6 +130,8 @@ class BlockController
             $app['orm.em']->remove($Block);
             $app['orm.em']->flush();
         }
+
+        \Eccube\Util\Cache::clear();
 
         return $app->redirect($app->url('admin_content_block'));
     }
