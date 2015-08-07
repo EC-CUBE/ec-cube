@@ -35,6 +35,7 @@ class Cache {
         $filesystem = new Filesystem();
         if ($isAll) {
             $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
+            $filesystem->remove($finder);
         } else {
             if(is_dir($cacheDir . '/doctrine')){
                 $finder = Finder::create()->in($cacheDir . '/doctrine');
@@ -46,10 +47,9 @@ class Cache {
             }
             if(is_dir($cacheDir . '/twig')){
                 $finder = Finder::create()->in($cacheDir . '/twig');
+                $filesystem->remove($finder);
             }
         }
-
-        $filesystem->remove($finder);
         return true;
     }
 }
