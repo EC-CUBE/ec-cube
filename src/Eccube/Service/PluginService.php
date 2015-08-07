@@ -107,28 +107,37 @@ class PluginService
 
     public function update(\Eccube\Entity\Plugin $plugin, $path)
     {
-        $tmp = $this->createTempDir();
+        try {
+            $tmp = $this->createTempDir();
 
-        $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
-        $this->checkPluginArchiveContent($tmp);
+            $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+            $this->checkPluginArchiveContent($tmp);
 
-        $config = $this->readYml($tmp . '/' . self::CONFIG_YML);
-        $event = $this->readYml($tmp . "/event.yml");
+            $config = $this->readYml($tmp . '/' . self::CONFIG_YML);
+            $event = $this->readYml($tmp . "/event.yml");
 
-        if ($plugin->getCode() != $config['code']) {
-            throw new PluginException("new/old plugin code is different.");
+            if ($plugin->getCode() != $config['code']) {
+                throw new PluginException("new/old plugin code is different.");
+            }
+            if ($plugin->getName() != $config['name']) {
+                throw new PluginException("new/old plugin name is different.");
+            }
+
+            $pluginBaseDir = $this->calcPluginDir($config['code']);
+            $this->deleteFile($tmp); // テンポラリのファイルを削除
+
+            $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
+
+            $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
+            $this->callPluginManagerMethod($config, 'update');
+
+        } catch (PluginException $e) {
+            if (file_exists($tmp)) {
+                $fs = new Filesystem();
+                $fs->remove($tmp);
+            }
+            throw $e;
         }
-        if ($plugin->getName() != $config['name']) {
-            throw new PluginException("new/old plugin name is different.");
-        }
-
-        $pluginBaseDir = $this->calcPluginDir($config['code']);
-        $this->deleteFile($tmp); // テンポラリのファイルを削除
-
-        $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
-
-        $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
-        $this->callPluginManagerMethod($config, 'update');
 
         return true;
     }

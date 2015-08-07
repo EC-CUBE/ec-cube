@@ -2602,7 +2602,7 @@ div.col-xs-12.col-md-6.grid-item {
 }
 
 .plugin-panel-pr {
-    background:  #f0f8ff;
+    background:  #ffffea;
 }
 
 .plugin-content-top {
@@ -2667,6 +2667,10 @@ a.plugin-name:hover {
     margin-bottom: 25px;
 }
 
+.plugin-panel-pr .plugin-name,
+.plugin-panel-pr .plugin-description {
+    font-size: 1.7rem;
+}
 
 .plugin-meta {
     padding: 0;
@@ -2675,6 +2679,26 @@ a.plugin-name:hover {
 }
 
 .plugin-developer {
+}
+
+.plugin-table .tp {
+    width: 350px;
+    word-break: break-all;
+}
+
+.plugin-table .tc {
+    width: 250px;
+    word-break: break-all;
+}
+
+.plugin-table .tv {
+    width: 90px;
+    word-break: break-all;
+}
+
+.plugin-table .ta {
+    width: 50px;
+    word-break: break-all;
 }
 
 

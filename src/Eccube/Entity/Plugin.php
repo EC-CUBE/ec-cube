@@ -79,6 +79,8 @@ class Plugin
 
     private $update_date;
 
+    private $update_status;
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -266,7 +268,7 @@ class Plugin
      * Set del_flg
      *
      * @param integer $delFlg
-     * @return PluginEventHandler
+     * @return Plugin
      */
     public function setDelFlg($delFlg)
     {
@@ -289,7 +291,7 @@ class Plugin
      * Set source
      *
      * @param integer $source
-     * @return PluginEventHandler
+     * @return Plugin
      */
     public function setSource($source)
     {
@@ -306,6 +308,29 @@ class Plugin
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set update_status
+     *
+     * @param string $updateStatus
+     * @return Plugin
+     */
+    public function setUpdateStatus($updateStatus)
+    {
+        $this->update_status = $updateStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get update_status
+     *
+     * @return string
+     */
+    public function getUpdateStatus()
+    {
+        return $this->update_status;
     }
 
     public function getPluginEventHandlers()

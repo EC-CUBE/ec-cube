@@ -35,33 +35,274 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
-        $repo = $app['eccube.repository.plugin'];
 
         $pluginForms = array();
-        $Plugins = $repo->findBy(array(), array('id' => 'ASC'));
         $configPages = array();
 
-        foreach ($repo->findAll() as $Plugin) {
-            $builder = $app['form.factory']->createNamedBuilder('form' . $Plugin->getId(), 'plugin_management', null, array(
-                'plugin_id' => $Plugin->getId(),
-                'enable' => $Plugin->getEnable()
-            ));
-            $pluginForms[$Plugin->getId()] = $builder->getForm()->createView();
+        $Plugins = $app['eccube.repository.plugin']->findBy(array(), array('name' => 'ASC'));
 
+        $officialPlugins = array();
+        $unofficialPlugins = array();
+
+        foreach ($Plugins as $Plugin) {
+
+            $form = $app['form.factory']
+                ->createNamedBuilder('form' . $Plugin->getId(), 'plugin_management', null, array(
+                    'plugin_id' => $Plugin->getId(),
+                ))
+                ->getForm();
+
+            $pluginForms[$Plugin->getId()] = $form->createView();
 
             try {
+                // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
                 $configPages[$Plugin->getCode()] = $app->url('plugin_' . $Plugin->getCode() . '_config');
             } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
+
+            if ($Plugin->getSource() == 0) {
+                // 商品IDが設定されていない場合、非公式プラグイン
+                $unofficialPlugins[] = $Plugin;
+            } else {
+                $officialPlugins[] = $Plugin;
+            }
+
         }
+
+
+        // オーナーズストアからダウンロード可能プラグイン情報を取得
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
+        $authKey = $BaseInfo->getAuthenticationKey();
+
+        if (!is_null($authKey)) {
+
+            // オーナーズストア通信
+            $url = $app['config']['owners_store_url'] . '?method=list';
+            $json = $this->getRequestApi($request, $authKey, $url);
+
+            if ($json === false) {
+                // 接続失敗時
+
+                $message = $this->getResponseErrorMessage();
+
+            } else {
+                // 接続成功時
+
+                $data = json_decode($json, true);
+
+                if (isset($data['success'])) {
+                    $success = $data['success'];
+                    if ($success == '1') {
+
+                        // 既にインストールされているかどうか確認
+                        foreach ($data['item'] as $item) {
+                            foreach ($officialPlugins as $plugin) {
+                                if ($plugin->getSource() == $item['product_id']) {
+                                    if ($plugin->getVersion() != $item['version']) {
+                                        // バージョンが異なる
+                                        if (array_search(Constant::VERSION, $item['eccube_version'])) {
+                                            // 対象バージョン
+                                            $plugin->setUpdateStatus(3);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         return $app->render('Setting/Store/plugin.twig', array(
             'plugin_forms' => $pluginForms,
-            'Plugins' => $Plugins,
+            'officialPlugins' => $officialPlugins,
+            'unofficialPlugins' => $unofficialPlugins,
             'configPages' => $configPages
+        ));
+
+    }
+
+    /**
+     * インストール済プラグインからのアップデート
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $id
+     */
+    public function update(Application $app, Request $request, $id)
+    {
+
+        $Plugin = $app['eccube.repository.plugin']->find($id);
+
+        $form = $app['form.factory']
+            ->createNamedBuilder('form' . $id, 'plugin_management', null, array(
+                'plugin_id' => null, // placeHolder
+            ))
+            ->getForm();
+
+        $errors = array();
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+
+                $tmpDir = null;
+                try {
+
+                    $tmpDir = $app['eccube.service.plugin']->createTempDir();
+                    $tmpFile = sha1(Str::random(32)) . ".tar";
+
+                    $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
+                    $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
+                    $app->addSuccess('admin.plugin.update.complete', 'admin');
+
+                    $fs = new Filesystem();
+                    $fs->remove($tmpDir . '/' . $tmpFile);
+
+                } catch (PluginException $e) {
+                    if (!empty($tmpDir) && file_exists($tmpDir)) {
+                        $fs = new Filesystem();
+                        $fs->remove($tmpDir);
+                    }
+                    $errors[] = $e;
+                }
+            }
+        }
+
+
+        return $app->redirect($app->url('admin_setting_store_plugin'));
+    }
+
+
+    public function enable(Application $app, $id)
+    {
+        $Plugin = $app['eccube.repository.plugin']
+            ->find($id);
+        if ($Plugin->getEnable() == 1) {
+            $app->addError('admin.plugin.already.enable', 'admin');
+        } else {
+            $app['eccube.service.plugin']->enable($Plugin);
+            $app->addSuccess('admin.plugin.enable.complete');
+        }
+
+        return $app->redirect($app->url('admin_setting_store_plugin'));
+    }
+
+    public function disable(Application $app, $id)
+    {
+        $Plugin = $app['eccube.repository.plugin']
+            ->find($id);
+        if ($Plugin->getEnable() == 1) {
+            $app['eccube.service.plugin']->disable($Plugin);
+            $app->addSuccess('admin.plugin.disable.complete');
+        } else {
+            $app->addError('admin.plugin.already.disable', 'admin');
+        }
+
+        return $app->redirect($app->url('admin_setting_store_plugin'));
+    }
+
+
+    public function uninstall(Application $app, $id)
+    {
+        $Plugin = $app['eccube.repository.plugin']
+            ->find($id);
+        $app['eccube.service.plugin']->uninstall($Plugin);
+
+        return $app->redirect($app->url('admin_setting_store_plugin'));
+    }
+
+    function handler(Application $app)
+    {
+        $handlers = $app['eccube.repository.plugin_event_handler']->getHandlers();
+
+        // 一次元配列からイベント毎の二次元配列に変換する
+        $HandlersPerEvent = array();
+        foreach ($handlers as $handler) {
+            $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
+        }
+
+        return $app->render('Setting/Store/plugin_handler.twig', array(
+            'handlersPerEvent' => $HandlersPerEvent
+        ));
+
+    }
+
+    function handler_up(Application $app, $handlerId)
+    {
+        $repo = $app['eccube.repository.plugin_event_handler'];
+        $repo->upPriority($repo->find($handlerId));
+
+        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
+    }
+
+    function handler_down(Application $app, $handlerId)
+    {
+        $repo = $app['eccube.repository.plugin_event_handler'];
+        $repo->upPriority($repo->find($handlerId), false);
+
+        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
+    }
+
+    /**
+     * プラグインファイルアップロード画面
+     *
+     * @param Application $app
+     * @param Request $request
+     */
+    public function install(Application $app, Request $request)
+    {
+        $form = $app['form.factory']
+            ->createBuilder('plugin_local_install')
+            ->getForm();
+
+        $errors = array();
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+
+                $tmpDir = null;
+                try {
+                    $service = $app['eccube.service.plugin'];
+
+                    $formFile = $form['plugin_archive']->getData();
+
+                    $tmpDir = $service->createTempDir();
+                    $tmpFile = sha1(Str::random(32)) . '.' . $formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
+
+                    $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
+
+                    $service->install($tmpDir . '/' . $tmpFile);
+
+                    $fs = new Filesystem();
+                    $fs->remove($tmpDir);
+
+                    $app->addSuccess('admin.plugin.install.complete', 'admin');
+
+                    return $app->redirect($app->url('admin_setting_store_plugin'));
+
+                } catch (PluginException $e) {
+                    if (!empty($tmpDir) && file_exists($tmpDir)) {
+                        $fs = new Filesystem();
+                        $fs->remove($tmpDir);
+                    }
+                    $errors[] = $e;
+                }
+            }
+        }
+
+        return $app->render('Setting/Store/plugin_install.twig', array(
+            'form' => $form->createView(),
+            'errors' => $errors,
         ));
 
     }
@@ -88,7 +329,7 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
-            $json = $this->getRequestApi($app, $request, $authKey, $url);
+            $json = $this->getRequestApi($request, $authKey, $url);
 
             if ($json === false) {
                 // 接続失敗時
@@ -183,152 +424,111 @@ class PluginController extends AbstractController
 
     }
 
-    public function install(Application $app, Request $request)
+    /**
+     * オーナーズブラグインインストール、アップデート
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $action
+     * @param $id
+     * @param $version
+     */
+    public function upgrade(Application $app, Request $request, $action, $id, $version)
     {
-        $form = $app['form.factory']
-            ->createBuilder('plugin_local_install')
-            ->getForm();
 
-        $errors = array();
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $authKey = $BaseInfo->getAuthenticationKey();
+        $message = '';
 
-            if ($form->isValid()) {
+        if (!is_null($authKey)) {
 
-                try {
-                    $service = $app['eccube.service.plugin'];
+            // オーナーズストア通信
+            $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
+            $json = $this->getRequestApi($request, $authKey, $url);
 
-                    $formFile = $form['plugin_archive']->getData();
+            if ($json === false) {
+                // 接続失敗時
 
-                    $tmpDir = $service->createTempDir();
-                    $tmpFile = sha1(Str::random(32)) . '.' . $formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
+                $message = $this->getResponseErrorMessage();
 
-                    $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
+            } else {
+                // 接続成功時
 
-                    $service->install($tmpDir . '/' . $tmpFile);
+                $data = json_decode($json, true);
 
-                    $fs = new Filesystem();
-                    $fs->remove($tmpDir);
+                if (isset($data['success'])) {
+                    $success = $data['success'];
+                    if ($success == '1') {
+                        $tmpDir = null;
+                        try {
+                            $service = $app['eccube.service.plugin'];
 
-                    $app->addSuccess('admin.plugin.install.complete', 'admin');
+                            $item = $data['item'];
+                            $file = base64_decode($item['data']);
+                            $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
 
-                    return $app->redirect($app->url('admin_setting_store_plugin'));
+                            $tmpDir = $service->createTempDir();
+                            $tmpFile = sha1(Str::random(32)) . '.' . $extension;
 
-                } catch (PluginException $e) {
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
+                            // ファイル作成
+                            $fs = new Filesystem();
+                            $fs->dumpFile($tmpDir . '/' . $tmpFile, $file);
+
+                            if ($action == 'install') {
+
+                                $service->install($tmpDir . '/' . $tmpFile, $id);
+                                $app->addSuccess('admin.plugin.install.complete', 'admin');
+                            } else if ($action == 'update') {
+
+                                $Plugin = $app['eccube.repository.plugin']->findOneBy(array('source' => $id));
+
+                                $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
+
+                                $app->addSuccess('admin.plugin.update.complete', 'admin');
+                            }
+
+                            $fs = new Filesystem();
+                            $fs->remove($tmpDir);
+
+                            // ダウンロード完了通知処理(正常終了時)
+                            $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=1&version=' . $version;
+                            $this->getRequestApi($request, $authKey, $url);
+
+                            return $app->redirect($app->url('admin_setting_store_plugin'));
+
+                        } catch (PluginException $e) {
+                            if (!empty($tmpDir) && file_exists($tmpDir)) {
+                                $fs = new Filesystem();
+                                $fs->remove($tmpDir);
+                            }
+                            $message = $e->getMessage();
+                        }
+
+                    } else {
+                        $message = $data['error_code'] . ' : ' . $data['error_message'];
                     }
-                    $errors[] = $e;
+                } else {
+                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
                 }
             }
         }
 
-        return $app->render('Setting/Store/plugin_install.twig', array(
-            'form' => $form->createView(),
-            'errors' => $errors,
-        ));
+        // ダウンロード完了通知処理(エラー発生時)
+        $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=0&version=' . $version . '&message=' . urlencode($message);
+        $this->getRequestApi($request, $authKey, $url);
 
+        $app->addError($message, 'admin');
+
+        return $app->redirect($app->url('admin_setting_store_plugin_owners_install'));
     }
 
-    public function update(Application $app, $id)
-    {
-        $Plugin = $app['eccube.repository.plugin']
-            ->find($id);
-
-        $form = $app['form.factory']
-            ->createNamedBuilder('form' . $id, 'plugin_management', null, array(
-                'plugin_id' => null, // placeHolder
-                'enable' => null,
-            ))
-            ->getForm();
-
-        $form->handleRequest($app['request']);
-
-        $tmpDir = $app['eccube.service.plugin']->createTempDir();
-        $tmpFile = sha1(Str::random(32)) . ".tar";
-
-        $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
-        $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
-        $app->addSuccess('admin.plugin.update.complete', 'admin');
-
-        $fs = new Filesystem();
-        $fs->remove($tmpDir . '/' . $tmpFile);
-
-        return $app->redirect($app->url('admin_setting_store_plugin'));
-    }
-
-    public function enable(Application $app, $id)
-    {
-        $Plugin = $app['eccube.repository.plugin']
-            ->find($id);
-        if ($Plugin->getEnable() == 1) {
-            $app->addError('admin.plugin.already.enable', 'admin');
-        } else {
-            $app['eccube.service.plugin']->enable($Plugin);
-            $app->addSuccess('admin.plugin.enable.complete');
-        }
-
-        return $app->redirect($app->url('admin_setting_store_plugin'));
-    }
-
-    public function disable(Application $app, $id)
-    {
-        $Plugin = $app['eccube.repository.plugin']
-            ->find($id);
-        if ($Plugin->getEnable() == 1) {
-            $app['eccube.service.plugin']->disable($Plugin);
-            $app->addSuccess('admin.plugin.disable.complete');
-        } else {
-            $app->addError('admin.plugin.already.disable', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_setting_store_plugin'));
-    }
-
-
-    public function uninstall(Application $app, $id)
-    {
-        $Plugin = $app['eccube.repository.plugin']
-            ->find($id);
-        $app['eccube.service.plugin']->uninstall($Plugin);
-
-        return $app->redirect($app->url('admin_setting_store_plugin'));
-    }
-
-    function handler(Application $app)
-    {
-        $handlers = $app['eccube.repository.plugin_event_handler']->getHandlers();
-
-        // 一次元配列からイベント毎の二次元配列に変換する
-        $HandlersPerEvent = array();
-        foreach ($handlers as $handler) {
-            $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
-        }
-
-        return $app->render('Setting/Store/plugin_handler.twig', array(
-            'handlersPerEvent' => $HandlersPerEvent
-        ));
-
-    }
-
-    function handler_up(Application $app, $handlerId)
-    {
-        $repo = $app['eccube.repository.plugin_event_handler'];
-        $repo->upPriority($repo->find($handlerId));
-
-        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
-    }
-
-    function handler_down(Application $app, $handlerId)
-    {
-        $repo = $app['eccube.repository.plugin_event_handler'];
-        $repo->upPriority($repo->find($handlerId), false);
-
-        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
-    }
-
+    /**
+     * 認証キー設定画面
+     *
+     * @param Application $app
+     * @param Request $request
+     */
     public function authenticationSetting(Application $app, Request $request)
     {
 
@@ -371,106 +571,15 @@ class PluginController extends AbstractController
     }
 
 
-    public function upgrade(Application $app, Request $request, $action, $id, $version)
-    {
-
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-
-        $authKey = $BaseInfo->getAuthenticationKey();
-        $authResult = true;
-        $success = 0;
-        $message = '';
-
-        $errors = array();
-        if (!is_null($authKey)) {
-
-            // オーナーズストア通信
-            $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
-            $json = $this->getRequestApi($app, $request, $authKey, $url);
-
-            if ($json === false) {
-                // 接続失敗時
-                $success = 0;
-
-                $message = $this->getResponseErrorMessage();
-
-            } else {
-                // 接続成功時
-
-                $data = json_decode($json, true);
-
-                if (isset($data['success'])) {
-                    $success = $data['success'];
-                    if ($success == '1') {
-                        try {
-                            $service = $app['eccube.service.plugin'];
-
-                            $item = $data['item'];
-                            $file = base64_decode($item['data']);
-                            $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
-
-                            $tmpDir = $service->createTempDir();
-                            $tmpFile = sha1(Str::random(32)) . '.' . $extension;
-
-                            // ファイル作成
-                            $fs = new Filesystem();
-                            $fs->dumpFile($tmpDir . '/' . $tmpFile, $file);
-
-                            if ($action == 'install') {
-
-                                $service->install($tmpDir . '/' . $tmpFile, $id);
-                                $app->addSuccess('admin.plugin.install.complete', 'admin');
-                            } else if ($action == 'update') {
-
-                                $Plugin = $app['eccube.repository.plugin']->findOneBy(array('source' => $id));
-
-                                $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
-
-                                $app->addSuccess('admin.plugin.update.complete', 'admin');
-                            }
-
-                            $fs = new Filesystem();
-                            $fs->remove($tmpDir);
-
-                            // ダウンロード完了通知処理
-                            $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=1&version=' . $version;
-                            $this->getRequestApi($app, $request, $authKey, $url);
-
-                            return $app->redirect($app->url('admin_setting_store_plugin'));
-
-                        } catch (PluginException $e) {
-                            if (file_exists($tmpDir)) {
-                                $fs = new Filesystem();
-                                $fs->remove($tmpDir);
-                            }
-                            $message = $e->getMessage();
-                        }
-
-                    } else {
-                        $message = $data['error_code'] . ' : ' . $data['error_message'];
-                    }
-                } else {
-                    $success = 0;
-                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
-                }
-            }
-        }
-
-        // ダウンロード完了通知処理
-        $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=0&version=' . $version . '&message=' . urlencode($message);
-        $this->getRequestApi($app, $request, $authKey, $url);
-
-        $app->addError($message, 'admin');
-
-        return $app->redirect($app->url('admin_setting_store_plugin_owners_install'));
-    }
-
-
     /**
      * APIリクエスト処理
+     *
+     * @param Request $request
+     * @param $authKey
+     * @param $url
      * @return array
      */
-    private function getRequestApi($app, Request $request, $authKey, $url)
+    private function getRequestApi(Request $request, $authKey, $url)
     {
         $opts = array(
             'http' => array(

@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="plugin-panel {% if version_check == 0 %}plugin-panel-not{% endif %} {% if item.promotion == 1 %}plugin-panel-pr{% endif %}">
     {% if item.promotion == 1 %}
         <p class="text-center text-primary">
-            <span class="glyphicon glyphicon-star"></span> おすすめ追加機能  <span class="glyphicon glyphicon-star"></span>
+            <span class="glyphicon glyphicon-star"></span> <strong>おすすめ追加機能</strong> <span class="glyphicon glyphicon-star"></span>
         </p>
     {% endif %}
     {% if version_check == 0 %}
@@ -49,7 +49,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
             <a class="plugin-name" href="{{ item.product_url }}" target="_blank">{{ item.name }}</a>
         </div>
-        <div class="plugin-description">{{ item.description|ellipsis(100) }}</div>
+        <div class="plugin-description">
+        {% if item.promotion == 1 %}
+           {{ item.description|ellipsis(200) }}
+        {% else %}
+            {{ item.description|ellipsis(100) }}
+        {% endif %}
+        </div>
     </div>
     <div class="clearfix"></div>
     <div class="plugin-content-bottom">
