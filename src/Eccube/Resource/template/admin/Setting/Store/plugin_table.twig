@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <tbody>
                 {% for Plugin in Plugins %}
                     {% set form = plugin_forms[Plugin.id] %}
-                    <form name="{{ form.vars.name }}" id="{{ form.vars.name }}" action="" method="post" enctype="multipart/form-data">
+                    <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action="" {{ form_enctype(form) }}>
                         {% set enable_action = url('admin_setting_store_plugin_enable', { id : Plugin.id }) %}
                         {% set disable_action = url('admin_setting_store_plugin_disable', { id : Plugin.id }) %}
                         {% set uninstall_action = url('admin_setting_store_plugin_uninstall', { id : Plugin.id }) %}
@@ -61,6 +61,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <td class="tc">{{ Plugin.code }}</td>
                                 {% if Plugin.source == 0 %}
                                     <td>
+                                        {{ form_widget(form._token) }}
                                         {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
                                         {{ form_errors(form.plugin_archive) }}
                                         <p></p>

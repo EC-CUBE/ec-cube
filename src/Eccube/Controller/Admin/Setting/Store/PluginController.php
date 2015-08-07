@@ -31,6 +31,7 @@ use Eccube\Exception\PluginException;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
@@ -146,7 +147,7 @@ class PluginController extends AbstractController
             ))
             ->getForm();
 
-        $errors = array();
+        $message = '';
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -156,52 +157,86 @@ class PluginController extends AbstractController
                 $tmpDir = null;
                 try {
 
-                    $tmpDir = $app['eccube.service.plugin']->createTempDir();
-                    $tmpFile = sha1(Str::random(32)) . ".tar";
+                    $formFile = $form['plugin_archive']->getData();
 
-                    $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
+                    $tmpDir = $app['eccube.service.plugin']->createTempDir();
+                    $tmpFile = sha1(Str::random(32)) . '.' . $formFile->getClientOriginalExtension();
+
+                    $formFile->move($tmpDir, $tmpFile);
                     $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
-                    $app->addSuccess('admin.plugin.update.complete', 'admin');
 
                     $fs = new Filesystem();
-                    $fs->remove($tmpDir . '/' . $tmpFile);
+                    $fs->remove($tmpDir);
+
+                    $app->addSuccess('admin.plugin.update.complete', 'admin');
+
+                    return $app->redirect($app->url('admin_setting_store_plugin'));
 
                 } catch (PluginException $e) {
                     if (!empty($tmpDir) && file_exists($tmpDir)) {
                         $fs = new Filesystem();
                         $fs->remove($tmpDir);
                     }
-                    $errors[] = $e;
+                    $message = $e->getMessage();
                 }
+            } else {
+                $errors = $form->getErrors();
+                foreach ($errors as $error) {
+                    $message = $error->getMessage();
+                    error_log($message);
+                }
+
             }
+
         }
 
+        $app->addError($message, 'admin');
 
         return $app->redirect($app->url('admin_setting_store_plugin'));
     }
 
 
+    /**
+     * 対象のプラグインを有効にします。
+     *
+     * @param Application $app
+     * @param $id
+     */
     public function enable(Application $app, $id)
     {
-        $Plugin = $app['eccube.repository.plugin']
-            ->find($id);
-        if ($Plugin->getEnable() == 1) {
+        $Plugin = $app['eccube.repository.plugin']->find($id);
+
+        if (!$Plugin) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($Plugin->getEnable() == Constant::ENABLED) {
             $app->addError('admin.plugin.already.enable', 'admin');
         } else {
             $app['eccube.service.plugin']->enable($Plugin);
-            $app->addSuccess('admin.plugin.enable.complete');
+            $app->addSuccess('admin.plugin.enable.complete', 'admin');
         }
 
         return $app->redirect($app->url('admin_setting_store_plugin'));
     }
 
+    /**
+     * 対象のプラグインを無効にします。
+     *
+     * @param Application $app
+     * @param $id
+     */
     public function disable(Application $app, $id)
     {
-        $Plugin = $app['eccube.repository.plugin']
-            ->find($id);
-        if ($Plugin->getEnable() == 1) {
+        $Plugin = $app['eccube.repository.plugin']->find($id);
+
+        if (!$Plugin) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($Plugin->getEnable() == Constant::ENABLED) {
             $app['eccube.service.plugin']->disable($Plugin);
-            $app->addSuccess('admin.plugin.disable.complete');
+            $app->addSuccess('admin.plugin.disable.complete', 'admin');
         } else {
             $app->addError('admin.plugin.already.disable', 'admin');
         }
@@ -210,11 +245,23 @@ class PluginController extends AbstractController
     }
 
 
+    /**
+     * 対象のプラグインを削除します。
+     *
+     * @param Application $app
+     * @param $id
+     */
     public function uninstall(Application $app, $id)
     {
-        $Plugin = $app['eccube.repository.plugin']
-            ->find($id);
+        $Plugin = $app['eccube.repository.plugin']->find($id);
+
+        if (!$Plugin) {
+            throw new NotFoundHttpException();
+        }
+
         $app['eccube.service.plugin']->uninstall($Plugin);
+
+        $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_store_plugin'));
     }
@@ -279,7 +326,7 @@ class PluginController extends AbstractController
                     $tmpDir = $service->createTempDir();
                     $tmpFile = sha1(Str::random(32)) . '.' . $formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
 
-                    $form['plugin_archive']->getData()->move($tmpDir, $tmpFile);
+                    $formFile->move($tmpDir, $tmpFile);
 
                     $service->install($tmpDir . '/' . $tmpFile);
 
@@ -479,12 +526,12 @@ class PluginController extends AbstractController
 
                                 $service->install($tmpDir . '/' . $tmpFile, $id);
                                 $app->addSuccess('admin.plugin.install.complete', 'admin');
+
                             } else if ($action == 'update') {
 
                                 $Plugin = $app['eccube.repository.plugin']->findOneBy(array('source' => $id));
 
-                                $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
-
+                                $service->update($Plugin, $tmpDir . '/' . $tmpFile);
                                 $app->addSuccess('admin.plugin.update.complete', 'admin');
                             }
 

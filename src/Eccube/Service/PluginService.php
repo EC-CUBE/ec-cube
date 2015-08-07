@@ -79,12 +79,14 @@ class PluginService
 
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
+
         $pluginDir = $this->calcPluginDir($plugin->getCode());
 
         $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), 'disable');
         $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), 'uninstall');
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
+
         return true;
 
     }
@@ -93,7 +95,7 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         $em = $this->app['orm.em'];
-        $plugin->setEnable($enable ? 1 : 0);
+        $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
         $em->persist($plugin);
         $em->flush();
         $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), $enable ? 'enable' : 'disable');
@@ -247,7 +249,7 @@ class PluginService
                         throw new PluginException("Handler name format error");
                     }
                     // updateで追加されたハンドラかどうか調べる
-                    $peh = $rep->findBy(array('del_flg' => 0,
+                    $peh = $rep->findBy(array('del_flg' => Constant::DISABLED,
                         'plugin_id' => $plugin->getId(),
                         'event' => $event,
                         'handler' => $handler[0],
@@ -257,7 +259,7 @@ class PluginService
                         $peh = new \Eccube\Entity\PluginEventHandler();
                         $peh->setPlugin($plugin)
                             ->setEvent($event)
-                            ->setdelFlg(0)
+                            ->setdelFlg(Constant::DISABLED)
                             ->setHandler($handler[0])
                             ->setHandlerType($handler[1])
                             ->setPriority($rep->calcNewPriority($event, $handler[1]));
@@ -269,7 +271,7 @@ class PluginService
             }
 
             # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
-            foreach ($rep->findBy(array('del_flg' => 0, 'plugin_id' => $plugin->getId())) as $peh) {
+            foreach ($rep->findBy(array('del_flg' => Constant::DISABLED, 'plugin_id' => $plugin->getId())) as $peh) {
                 if (!isset($event_yml[$peh->getEvent()])) {
                     $em->remove($peh);
                     $em->flush();
@@ -347,10 +349,10 @@ class PluginService
         $em = $this->app['orm.em'];
         $em->getConnection()->beginTransaction();
 
-        $p->setDelFlg(1)->setEnable(0);
+        $p->setDelFlg(Constant::ENABLED)->setEnable(Constant::DISABLED);
 
         foreach ($p->getPluginEventHandlers()->toArray() as $peh) {
-            $peh->setDelFlg(1);
+            $peh->setDelFlg(Constant::ENABLED);
         }
 
         $em->persist($p);
