@@ -24,6 +24,8 @@
 namespace Eccube\Controller\Admin\Setting\Store;
 
 use Eccube\Application;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormError;
@@ -35,14 +37,20 @@ use Symfony\Component\Yaml\Yaml;
 
 class TemplateController
 {
+
+    /**
+     * テンプレート一覧画面
+     *
+     * @param Application $app
+     * @param Request $request
+     */
     public function index(Application $app, Request $request)
     {
-        $DeviceType = $app['orm.em']
-            ->getRepository('Eccube\Entity\Master\DeviceType')
-            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
 
-        $Templates = $app['orm.em']
-            ->getRepository('Eccube\Entity\Template')
+        $DeviceType = $app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
+        $Templates = $app['eccube.repository.template']
             ->findBy(array('DeviceType' => $DeviceType));
 
         $form = $app->form()
@@ -52,8 +60,7 @@ class TemplateController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $Template = $app['orm.em']
-                    ->getRepository('Eccube\Entity\Template')
+                $Template = $app['eccube.repository.template']
                     ->find($form['selected']->getData());
 
                 // path.ymlの再構築
@@ -80,14 +87,19 @@ class TemplateController
         ));
     }
 
+    /**
+     * テンプレート一覧からのダウンロード
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $id
+     */
     public function download(Application $app, Request $request, $id)
     {
         /** @var $Template \Eccube\Entity\Template */
-        $Template = $app['orm.em']
-            ->getRepository('Eccube\Entity\Template')
-            ->find($id);
+        $Template = $app['eccube.repository.template']->find($id);
 
-        if (is_null($Template)) {
+        if (!$Template) {
             throw new NotFoundHttpException();
         }
 
@@ -98,7 +110,7 @@ class TemplateController
         $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
 
         // 一時ディレクトリ
-        $uniqId = sha1(uniqid(mt_rand(), true));
+        $uniqId = sha1(Str::random(32));
         $tmpDir = $config['template_temp_realdir'] . '/' . $uniqId;
         $appDir = $tmpDir . '/app';
         $htmlDir = $tmpDir . '/html';
@@ -143,11 +155,9 @@ class TemplateController
     public function delete(Application $app, Request $request, $id)
     {
         /** @var $Template \Eccube\Entity\Template */
-        $Template = $app['orm.em']
-            ->getRepository('Eccube\Entity\Template')
-            ->find($id);
+        $Template = $app['eccube.repository.template']->find($id);
 
-        if (is_null($Template)) {
+        if (!$Template) {
             throw new NotFoundHttpException();
         }
 
@@ -196,7 +206,19 @@ class TemplateController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            if ($this->isValid($form, $app)) {
+            if ($form->isValid()) {
+
+                /** @var $Template \Eccube\Entity\Template */
+                $tem = $app['eccube.repository.template']
+                    ->findByCode($form['code']->getData());
+
+                // テンプレートコードの重複チェック.
+                if ($tem) {
+                    $form['code']->addError(new FormError('すでに登録されているテンプレートコードです。'));
+
+                    return false;
+                }
+
                 // 該当テンプレートのディレクトリ
                 $config = $app['config'];
                 $templateCode = $Template->getCode();
@@ -204,25 +226,45 @@ class TemplateController
                 $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
 
                 // 一時ディレクトリ
-                $uniqId = sha1(uniqid(mt_rand(), true));
+                $uniqId = sha1(Str::random(32));
                 $tmpDir = $config['template_temp_realdir'] . '/' . $uniqId;
                 $appDir = $tmpDir . '/app';
                 $htmlDir = $tmpDir . '/html';
 
+                $formFile = $form['file']->getData();
                 // ファイル名
-                $tarFile = $tmpDir . '/' . $templateCode . '.tar.gz';
+                $archive = $templateCode . '.' . $formFile->getClientOriginalExtension();
 
                 // ファイルを一時ディレクトリへ移動.
-                $file = $form['file']->getData();
-                $file->move($tmpDir, $templateCode . '.tar.gz');
+                $formFile->move($tmpDir, $archive);
 
                 // 一時ディレクトリへ解凍する.
-                $phar = new \PharData($tarFile);
-                $phar->extractTo($tmpDir);
+                try {
+                    if ($formFile->getClientOriginalExtension() == 'zip') {
+                        $zip = new \ZipArchive();
+                        $zip->open($tmpDir . '/' . $archive);
+                        $zip->extractTo($tmpDir);
+                        $zip->close();
+                    } else {
+                        $phar = new \PharData($tmpDir . '/' . $archive);
+                        $phar->extractTo($tmpDir, null, true);
+                    }
+                } catch (\Exception $e) {
+                    $form['file']->addError(new FormError('アップロードに失敗しました。圧縮ファイルを確認してください。'));
+
+                    return $app->render('Setting/Store/template_add.twig', array(
+                        'form' => $form->createView(),
+                    ));
+                }
 
                 // appディレクトリの存在チェック.
                 if (!file_exists($appDir)) {
                     $form['file']->addError(new FormError('appディレクトリが見つかりません。ファイルの形式を確認してください。'));
+
+                    if (file_exists($tmpDir)) {
+                        $fs = new Filesystem();
+                        $fs->remove($tmpDir);
+                    }
 
                     return $app->render('Setting/Store/template_add.twig', array(
                         'form' => $form->createView(),
@@ -232,6 +274,11 @@ class TemplateController
                 // htmlディレクトリの存在チェック.
                 if (!file_exists($htmlDir)) {
                     $form['file']->addError(new FormError('htmlディレクトリが見つかりません。ファイルの形式を確認してください。'));
+
+                    if (file_exists($tmpDir)) {
+                        $fs = new Filesystem();
+                        $fs->remove($tmpDir);
+                    }
 
                     return $app->render('Setting/Store/template_add.twig', array(
                         'form' => $form->createView(),
@@ -246,9 +293,8 @@ class TemplateController
                 // 一時ディレクトリを削除.
                 $fs->remove($tmpDir);
 
-                $DeviceType = $app['orm.em']
-                    ->getRepository('Eccube\Entity\Master\DeviceType')
-                    ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                $DeviceType = $app['eccube.repository.master.device_type']
+                    ->find(DeviceType::DEVICE_TYPE_PC);
 
                 $Template->setDeviceType($DeviceType);
 
@@ -266,41 +312,4 @@ class TemplateController
         ));
     }
 
-    protected function isValid($form, $app)
-    {
-        // FormTypeのバリデーション.
-        if (!$form->isValid()) {
-            return false;
-        }
-
-        /** @var $Template \Eccube\Entity\Template */
-        $Template = $app['orm.em']
-            ->getRepository('Eccube\Entity\Template')
-            ->findByCode($form['code']->getData());
-
-        // テンプレートコードの重複チェック.
-        if ($Template) {
-            $form['code']->addError(new FormError('すでに登録されているテンプレートコードです。'));
-
-            return false;
-        }
-
-        // ファイルアップロードのチェック
-        $file = $form['file']->getData();
-        if (is_null($file)) {
-            $form['file']->addError(new FormError('ファイルが選択されていません。'));
-
-            return false;
-        }
-
-        // ファイルのアップロードのチェック
-        if (!$file->isValid()) {
-            $form['file']->addError(new FormError('ファイルのアップロードに失敗しました。'));
-
-            return false;
-        }
-
-        return true;
-    }
 }
-

@@ -114,7 +114,7 @@
               name: テンプレート一覧
               url: admin_setting_store_template
             - id: template_install
-              name: テンプレートインストール
+              name: テンプレートのアップロード
               url: admin_setting_store_template_install
             - id: authentication_setting
               name: 認証キー設定

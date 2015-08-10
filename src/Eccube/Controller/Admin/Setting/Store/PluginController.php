@@ -36,6 +36,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
+
+    /**
+     * インストール済プラグイン画面
+     *
+     * @param Application $app
+     * @param Request $request
+     */
     public function index(Application $app, Request $request)
     {
 
@@ -73,7 +80,6 @@ class PluginController extends AbstractController
 
         }
 
-
         // オーナーズストアからダウンロード可能プラグイン情報を取得
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
@@ -103,6 +109,11 @@ class PluginController extends AbstractController
                         foreach ($data['item'] as $item) {
                             foreach ($officialPlugins as $plugin) {
                                 if ($plugin->getSource() == $item['product_id']) {
+                                    // 商品IDが同一の情報を設定
+                                    $plugin->setNewVersion($item['version']);
+                                    $plugin->setLastUpdateDate($item['last_update_date']);
+                                    $plugin->setProductUrl($item['product_url']);
+
                                     if ($plugin->getVersion() != $item['version']) {
                                         // バージョンが異なる
                                         if (array_search(Constant::VERSION, $item['eccube_version'])) {

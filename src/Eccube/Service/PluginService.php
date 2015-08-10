@@ -34,8 +34,8 @@ class PluginService
 {
     private $app;
 
-    CONST CONFIG_YML = "config.yml";
-    CONST EVENT_YML = "event.yml";
+    CONST CONFIG_YML = 'config.yml';
+    CONST EVENT_YML = 'event.yml';
 
     public function __construct($app)
     {
@@ -116,13 +116,13 @@ class PluginService
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readYml($tmp . '/' . self::CONFIG_YML);
-            $event = $this->readYml($tmp . "/event.yml");
+            $event = $this->readYml($tmp . '/event.yml');
 
             if ($plugin->getCode() != $config['code']) {
-                throw new PluginException("new/old plugin code is different.");
+                throw new PluginException('new/old plugin code is different.');
             }
             if ($plugin->getName() != $config['name']) {
-                throw new PluginException("new/old plugin name is different.");
+                throw new PluginException('new/old plugin name is different.');
             }
 
             $pluginBaseDir = $this->calcPluginDir($config['code']);
@@ -161,23 +161,23 @@ class PluginService
 
     public function checkPluginArchiveContent($dir)
     {
-        $meta = $this->readYml($dir . "/config.yml");
+        $meta = $this->readYml($dir . '/config.yml');
         if (!is_array($meta)) {
-            throw new PluginException("config.yml not found or syntax error");
+            throw new PluginException('config.yml not found or syntax error');
         }
         if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
-            throw new PluginException("config.yml code empty or invalid_character(\W)");
+            throw new PluginException('config.yml code empty or invalid_character(\W)');
         }
         if (!isset($meta['name'])) {
             // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException("config.yml name empty");
+            throw new PluginException('config.yml name empty');
         }
         if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
-            throw new PluginException("config.yml event empty or invalid_character(\W) ");
+            throw new PluginException('config.yml event empty or invalid_character(\W) ');
         }
         if (!isset($meta['version'])) {
             // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException("config.yml version invalid_character(\W) ");
+            throw new PluginException('config.yml version invalid_character(\W) ');
         }
     }
 
@@ -218,14 +218,18 @@ class PluginService
     public function unpackPluginArchive($archive, $dir)
     {
         $extension = pathinfo($archive, PATHINFO_EXTENSION);
-        if ($extension == 'zip') {
-            $zip = new \ZipArchive();
-            $zip->open($archive);
-            $zip->extractTo($dir);
-            $zip->close();
-        } else {
-            $phar = new \PharData($archive);
-            $phar->extractTo($dir, null, true);
+        try {
+            if ($extension == 'zip') {
+                $zip = new \ZipArchive();
+                $zip->open($archive);
+                $zip->extractTo($dir);
+                $zip->close();
+            } else {
+                $phar = new \PharData($archive);
+                $phar->extractTo($dir, null, true);
+            }
+        } catch (\Exception $e) {
+            throw new PluginException('アップロードに失敗しました。圧縮ファイルを確認してください。');
         }
     }
 
@@ -246,7 +250,7 @@ class PluginService
             foreach ($event_yml as $event => $handlers) {
                 foreach ($handlers as $handler) {
                     if (!$this->checkSymbolName($handler[0])) {
-                        throw new PluginException("Handler name format error");
+                        throw new PluginException('Handler name format error');
                     }
                     // updateで追加されたハンドラかどうか調べる
                     $peh = $rep->findBy(array('del_flg' => Constant::DISABLED,
@@ -317,7 +321,7 @@ class PluginService
                 foreach ($event_yml as $event => $handlers) {
                     foreach ($handlers as $handler) {
                         if (!$this->checkSymbolName($handler[0])) {
-                            throw new PluginException("Handler name format error");
+                            throw new PluginException('Handler name format error');
                         }
                         $peh = new \Eccube\Entity\PluginEventHandler();
                         $peh->setPlugin($p)

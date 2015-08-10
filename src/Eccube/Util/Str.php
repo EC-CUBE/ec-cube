@@ -167,6 +167,10 @@ class Str
      */
     public static function timeAgo($date)
     {
+        if (empty($date)) {
+            return '';
+        }
+
         $now = new \DateTime();
         if (!($date instanceof \DateTime)) {
             $date = new \DateTime($date);
