@@ -12,5 +12,6 @@ $console = $app["console"];
 $console->add(new Eccube\Command\RouterCommand(new Eccube\Application()));
 $console->add(new Eccube\Command\CacheClearCommand(new Eccube\Application()));
 $console->add(new Eccube\Command\PhpStormCommand(new Eccube\Application()));
+$console->add(new Eccube\Command\PluginCommand(new Eccube\Application()));
 
 $console->run();
