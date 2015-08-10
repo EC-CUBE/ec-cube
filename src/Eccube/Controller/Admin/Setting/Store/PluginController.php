@@ -89,12 +89,12 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
-            $json = $this->getRequestApi($request, $authKey, $url);
+            list($json, $httpHeader) = $this->getRequestApi($request, $authKey, $url);
 
             if ($json === false) {
                 // 接続失敗時
 
-                $message = $this->getResponseErrorMessage();
+                $message = $this->getResponseErrorMessage($httpHeader);
 
             } else {
                 // 接続成功時
@@ -387,13 +387,13 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
-            $json = $this->getRequestApi($request, $authKey, $url);
+            list($json, $httpHeader) = $this->getRequestApi($request, $authKey, $url);
 
             if ($json === false) {
                 // 接続失敗時
                 $success = 0;
 
-                $message = $this->getResponseErrorMessage();
+                $message = $this->getResponseErrorMessage($httpHeader);
 
             } else {
                 // 接続成功時
@@ -503,12 +503,12 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
-            $json = $this->getRequestApi($request, $authKey, $url);
+            list($json, $httpHeader) = $this->getRequestApi($request, $authKey, $url);
 
             if ($json === false) {
                 // 接続失敗時
 
-                $message = $this->getResponseErrorMessage();
+                $message = $this->getResponseErrorMessage($httpHeader);
 
             } else {
                 // 接続成功時
@@ -654,16 +654,21 @@ class PluginController extends AbstractController
 
         $context = stream_context_create($opts);
 
-        return @file_get_contents($url, false, $context);
+        $json = @file_get_contents($url, false, $context);
+
+        return array($json, $http_response_header);
     }
 
     /**
-     * レスポンスのエラーメッセージ
+     * レスポンスヘッダーのチェック
+     *
+     * @param $httpHeader
+     * @return string
      */
-    private function getResponseErrorMessage()
+    private function getResponseErrorMessage($httpHeader)
     {
-        if (!empty($http_response_header)) {
-            list($version, $statusCode, $message) = explode(' ', $http_response_header[0], 3);
+        if (!empty($httpHeader)) {
+            list($version, $statusCode, $message) = explode(' ', $httpHeader[0], 3);
 
             switch ($statusCode) {
                 case '404':
