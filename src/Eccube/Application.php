@@ -599,6 +599,7 @@ class Application extends ApplicationTrait
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
             array('^/mypage', 'ROLE_USER'),
         );
         $this['eccube.password_encoder'] = $this->share(function ($app) {

@@ -33,14 +33,23 @@ class MypageController extends AbstractController
 {
     public function login(Application $app, Request $request)
     {
-        if ($app['security']->isGranted('ROLE_USER')) {
+        if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $app->redirect($app->url('mypage'));
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app['form.factory']
-            ->createNamedBuilder('', 'customer_login')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createNamedBuilder('', 'customer_login');
+
+        if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $Customer = $app->user();
+            if ($Customer) {
+                $builder->get('login_email')->setData($Customer->getEmail());
+                $builder->get('login_memory')->setData(true);
+            }
+        }
+
+        $form = $builder->getForm();
 
         return $app->render('Mypage/login.twig', array(
             'error' => $app['security.last_error']($request),
@@ -50,7 +59,7 @@ class MypageController extends AbstractController
 
     /**
      * @param  Application $app
-     * @param  Request     $request
+     * @param  Request $request
      * @return string
      */
     public function index(Application $app, Request $request)
@@ -76,7 +85,7 @@ class MypageController extends AbstractController
 
     /**
      * @param  Application $app
-     * @param  Request     $request
+     * @param  Request $request
      * @return string
      */
     public function history(Application $app, Request $request, $id)
@@ -105,7 +114,7 @@ class MypageController extends AbstractController
 
     /**
      * @param  Application $app
-     * @param  Request     $request
+     * @param  Request $request
      * @return string
      */
     public function order(Application $app, Request $request)
@@ -136,7 +145,7 @@ class MypageController extends AbstractController
 
     /**
      * @param  Application $app
-     * @param  Request     $request
+     * @param  Request $request
      * @return string
      */
     public function mailView(Application $app, Request $request, $id)
@@ -157,7 +166,7 @@ class MypageController extends AbstractController
 
     /**
      * @param  Application $app
-     * @param  Request     $request
+     * @param  Request $request
      * @return string
      */
     public function favorite(Application $app, Request $request)
