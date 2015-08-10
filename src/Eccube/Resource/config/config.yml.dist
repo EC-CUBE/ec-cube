@@ -5,3 +5,4 @@ force_ssl: ${FORCE_SSL}
 admin_allow_host:
 cookie_lifetime: 0
 locale: ja
+timezone: Asia/Tokyo

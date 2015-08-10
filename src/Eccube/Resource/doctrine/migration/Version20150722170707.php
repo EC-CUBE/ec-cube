@@ -52,8 +52,14 @@ class Version20150722170707 extends AbstractMigration
             $this->addSql("alter table  dtb_product_image             collate utf8_general_ci ;");
             $this->addSql("alter table  dtb_product_stock             collate utf8_general_ci ;");
             $this->addSql("alter table  dtb_product_tag               collate utf8_general_ci ;");
-            $this->addSql("alter table  dtb_send_customer             collate utf8_general_ci ;");
-            $this->addSql("alter table  dtb_send_history              collate utf8_general_ci ;");
+
+            if ($schema->hasTable('dtb_send_customer')) {
+                $this->addSql("alter table  dtb_send_customer             collate utf8_general_ci ;");
+            }
+            if ($schema->hasTable('dtb_send_history')) {
+                $this->addSql("alter table  dtb_send_history              collate utf8_general_ci ;");
+            }
+
             $this->addSql("alter table  dtb_shipment_item             collate utf8_general_ci ;");
             $this->addSql("alter table  dtb_shipping                  collate utf8_general_ci ;");
             $this->addSql("alter table  dtb_tax_rule                  collate utf8_general_ci ;");
@@ -252,11 +258,16 @@ class Version20150722170707 extends AbstractMigration
             $this->addSql("alter table dtb_product               modify free_area               text                    COLLATE utf8_general_ci ;");
             $this->addSql("alter table dtb_product_class         modify product_code            longtext                COLLATE utf8_general_ci ;");
             $this->addSql("alter table dtb_product_image         modify file_name               longtext      not null           COLLATE utf8_general_ci ;");
-            $this->addSql("alter table dtb_send_customer         modify email                   longtext                COLLATE utf8_general_ci ;");
-            $this->addSql("alter table dtb_send_customer         modify name                    longtext                COLLATE utf8_general_ci ;");
-            $this->addSql("alter table dtb_send_history          modify subject                 longtext                COLLATE utf8_general_ci ;");
-            $this->addSql("alter table dtb_send_history          modify body                    longtext                COLLATE utf8_general_ci ;");
-            $this->addSql("alter table dtb_send_history          modify search_data             longtext                COLLATE utf8_general_ci ;");
+
+            if ($schema->hasTable('dtb_send_customer')) {
+                $this->addSql("alter table dtb_send_customer         modify email                   longtext                COLLATE utf8_general_ci ;");
+                $this->addSql("alter table dtb_send_customer         modify name                    longtext                COLLATE utf8_general_ci ;");
+            }
+            if ($schema->hasTable('dtb_send_history')) {
+                $this->addSql("alter table dtb_send_history          modify subject                 longtext                COLLATE utf8_general_ci ;");
+                $this->addSql("alter table dtb_send_history          modify body                    longtext                COLLATE utf8_general_ci ;");
+                $this->addSql("alter table dtb_send_history          modify search_data             longtext                COLLATE utf8_general_ci ;");
+            }
             $this->addSql("alter table dtb_shipment_item         modify product_name            longtext      not null           COLLATE utf8_general_ci ;");
             $this->addSql("alter table dtb_shipment_item         modify product_code            longtext                COLLATE utf8_general_ci ;");
             $this->addSql("alter table dtb_shipment_item         modify class_name1             longtext                COLLATE utf8_general_ci ;");

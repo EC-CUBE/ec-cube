@@ -158,7 +158,7 @@ class ProductController
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
-                    $extension = $image->guessExtension();
+                    $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
@@ -447,6 +447,18 @@ class ProductController
                 }
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
+
+                    // 画像ファイルを新規作成
+                    $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
+                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    try {
+                        $fs = new Filesystem();
+                        $fs->copy($app['config']['image_save_realdir'] . '/' . $Image->getFileName(), $app['config']['image_save_realdir'] . '/' . $filename);
+                    } catch (\Exception $e) {
+                        // エラーが発生しても無視する
+                    }
+                    $Image->setFileName($filename);
+
                     $app['orm.em']->persist($Image);
                 }
                 $Tags = $CopyProduct->getProductTag();

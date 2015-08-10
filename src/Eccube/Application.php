@@ -127,6 +127,12 @@ class Application extends ApplicationTrait
                 $config = Yaml::parse($config_yml);
             }
 
+            $config_dist = array();
+            $config_yml_dist = $distPath . '/config.yml.dist';
+            if (file_exists($config_yml_dist)) {
+                $config_dist = Yaml::parse($config_yml_dist);
+            }
+
             $config_path = array();
             $path_yml = $ymlPath . '/path.yml';
             if (file_exists($path_yml)) {
@@ -146,7 +152,7 @@ class Application extends ApplicationTrait
                 $config_constant_dist = Yaml::parse($constant_yml_dist);
             }
 
-            $configAll = array_replace_recursive($config_constant_dist, $config_constant, $config_path, $config);
+            $configAll = array_replace_recursive($config_constant_dist, $config_dist, $config_constant, $config_path, $config);
 
             $database = array();
             $yml = $ymlPath . '/database.yml';
@@ -236,7 +242,12 @@ class Application extends ApplicationTrait
 
     public function initLocale()
     {
-        date_default_timezone_set('Asia/Tokyo');
+
+        // timezone
+        if (!empty($this['config']['timezone'])) {
+            date_default_timezone_set($this['config']['timezone']);
+        }
+
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
         ));
