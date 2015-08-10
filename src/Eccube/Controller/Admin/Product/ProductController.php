@@ -217,6 +217,7 @@ class ProductController
 
         $form = $builder->getForm();
         if (!$has_class) {
+            $ProductClass->setStockUnlimited((boolean)$ProductClass->getStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
