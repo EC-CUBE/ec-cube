@@ -28,6 +28,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script>
+function fnDelete(action) {
+    if (confirm('このテンプレートを削除しても宜しいですか？')) {
+        document.form1.action = action;
+        document.form1.submit();
+    }
+}
+</script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="row" id="aside_wrap">
         <form name="form1" id="form1" method="post" action="{{ url('admin_setting_store_template') }}">
@@ -73,9 +84,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <a>削除</a>
                                                     </li>
                                                 {% else %}
-                                                    <li>
-                                                        <a href="?" onclick="eccube.changeAction('{{ url('admin_setting_store_template_delete', { id : Template.id}) }}'); document.form1.submit(); return false;">削除</a>
-                                                    </li>
+                                                        <li><a href="#" onclick="fnDelete('{{ url('admin_setting_store_template_delete', { 'id': Template.id}) }}');return false;">削除</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>
