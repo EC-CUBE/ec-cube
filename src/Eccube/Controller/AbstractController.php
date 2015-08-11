@@ -44,16 +44,7 @@ class AbstractController
 
     protected function getSecurity($app)
     {
-        return $app['security.authorization_checker'];
-    }
-
-
-    protected function isGranted($app)
-    {
-        if ($this->getSecurity($app)->isGranted('ROLE_USER')) {
-            return true;
-        }
-        return false;
+        return $app['security.token_storage'];
     }
 
 }

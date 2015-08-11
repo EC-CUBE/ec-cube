@@ -33,7 +33,7 @@ class MypageController extends AbstractController
 {
     public function login(Application $app, Request $request)
     {
-        if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $app->redirect($app->url('mypage'));
         }
 
@@ -41,11 +41,10 @@ class MypageController extends AbstractController
         $builder = $app['form.factory']
             ->createNamedBuilder('', 'customer_login');
 
-        if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $Customer = $app->user();
             if ($Customer) {
                 $builder->get('login_email')->setData($Customer->getEmail());
-                $builder->get('login_memory')->setData(true);
             }
         }
 
