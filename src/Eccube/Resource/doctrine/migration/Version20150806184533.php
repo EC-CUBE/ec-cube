@@ -39,9 +39,10 @@ class Version20150806184533 extends AbstractMigration
     {
 
         // this up() migration is auto-generated, please modify it to your needs
-        $t=$schema->getTable('dtb_product_class');
-        if($c = $t->getColumn('stock_unlimited') && $c->getType()->getName() != 'smallint'){
+        $t = $schema->getTable('dtb_product_class');
+        $c = $t->getColumn('stock_unlimited');
 
+        if($c->getType()->getName() != 'smallint'){
             $this->addSql('ALTER TABLE dtb_product_class ADD stock_unlimited_tmp int ;');
             $this->addSql('UPDATE dtb_product_class SET stock_unlimited_tmp = 1 where stock_unlimited =  true ');
             $this->addSql('UPDATE dtb_product_class SET stock_unlimited_tmp = 0 where stock_unlimited <> true ');
