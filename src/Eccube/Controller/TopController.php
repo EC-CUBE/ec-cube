@@ -25,8 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Response;
+
 class TopController
 {
 
