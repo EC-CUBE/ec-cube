@@ -46,7 +46,6 @@ class PluginManagementType extends AbstractType
     {
 
         $plugin_id = $options['plugin_id'];
-        $enable = $options['enable'];
 
         $builder
             ->add('plugin_id', 'hidden', array(
@@ -56,10 +55,16 @@ class PluginManagementType extends AbstractType
                 ),
             ))
             ->add('plugin_archive', 'file', array(
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
+                    new Assert\File(array(
+                        'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
+                        'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
+                    )),
                 ),
-                'required' => false
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
@@ -77,7 +82,7 @@ class PluginManagementType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('plugin_id', 'enable'));
+        $resolver->setRequired(array('plugin_id'));
     }
 
 }
