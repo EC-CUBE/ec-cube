@@ -31,6 +31,6 @@ class TopController
 
     public function index(Application $app)
     {
-        return $app['view']->render('index.twig');
+        return $app->render('index.twig');
     }
 }

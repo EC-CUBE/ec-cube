@@ -260,6 +260,15 @@ class ShopMasterType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ))
+            ->add('option_remember_me', 'choice', array(
+                'label' => '自動ログイン機能を有効にする',
+                'choices' => array(
+                    '0' => '無効',
+                    '1' => '有効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+            ))
             ->add('option_favorite_product', 'choice', array(
                 'label' => 'お気に入り商品機能を利用する',
                 'choices' => array(
