@@ -19,69 +19,51 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['setting', 'store', 'plugininstall'] %}
+{% set menus = ['setting', 'store', 'plugin_install'] %}
 
-{% block title %}システム設定{% endblock %}
-{% block sub_title %}プラグインインストール{% endblock %}
+{% block title %}オーナーズストア{% endblock %}
+{% block sub_title %}プラグインのアップロード{% endblock %}
 
-{% block javascript %}
-    <script>
-        $(function(){
-            $(".file_plus").on("click", function(){
-                $(this).next().trigger("click");
-            });
-        });
-    </script>
-{% endblock %}
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
-    <div class="row" id="aside_wrap">
-        <form name="form1" id="form1" role="form" method="post" action="" {{ form_enctype(form) }}>
-            {{ form_widget(form._token) }}
-            <div class="col-md-9">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">新規プラグイン登録</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <div class="col-sm-3 col-lg-4">
-                                    {{ form_label(form.plugin_archive) }}
-                                </div>
-                                <div class="col-sm-6 col-lg-6 input_name form-inline">
-                                    <a class="with-icon file_plus">
-                                        <svg class="cb cb-plus"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-plus"></use></svg>ファイルをアップロード
-                                    </a>
-                                    {{ form_widget(form.plugin_archive, { attr : { style : 'display: none;'} }) }}
-                                    {{ form_errors(form.plugin_archive) }}
-                                </div>
-                            </div>
-                        </div>
-
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div><!-- /.col -->
-
-            <div class="col-md-3" id="aside_column">
-                <div class="col_inner">
-                    <div class="box no-header">
-                        <div class="box-body">
-                            <div class="row text-center">
-                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
-                                </div>
-                            </div>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
+<div class="row" id="aside_wrap">
+    <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_setting_store_plugin_install') }}" {{ form_enctype(form) }}>
+    <div class="col-md-9">
+       {{ form_widget(form._token) }}
+       <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">新規プラグインアップロード</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">プラグイン<br>(zip、tar、tar.gz形式)</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
+                        {{ form_errors(form.plugin_archive) }}
+                        {% for error in errors %}
+                            <div class="errormsg text-danger">{{ error.message|trans }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div><!-- /.col -->
-        </form>
-    </div>
-
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+    <div class="col-md-3">
+        <div class="col_inner" id="aside_column">
+            <div class="box no-header">
+                <div class="box-body">
+                    <div class="row text-center">
+                        <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                            <button class="btn btn-primary btn-block btn-lg" type="submit">アップロード</button>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div><!-- /.col -->
+    </form>
+</div>
 {% endblock %}
-
-

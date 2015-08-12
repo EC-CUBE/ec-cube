@@ -2583,6 +2583,123 @@ ul.link-with-bar li:last-child::after {
 }
 
 
+/* プラグインインストール追加パネル */
+
+div.col-xs-12.col-md-6.grid-item {
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.plugin-panel {
+    border: 1px solid #dedede;
+    padding: 10px;
+    margin: 5px;
+    font-size: 1.4rem;
+}
+
+.plugin-panel-not {
+    background:  #f3f4f6;
+}
+
+.plugin-panel-pr {
+    background:  #ffffea;
+}
+
+.plugin-content-top {
+    margin-left: 180px;
+}
+
+.plugin-logo {
+    margin: 0;
+}
+
+.plugin-logo img {
+    /*
+    position: absolute;
+    */
+    width: 168px;
+    height: 126px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    float: left;
+}
+
+.plugin-title {
+    margin-bottom: 20px;
+}
+
+.plugin-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.plugin-meta.dl-horizontal dt {
+    text-align: right;
+    padding-bottom: 0;
+    width: 180px;
+}
+.plugin-meta.dl-horizontal dd {
+    padding-bottom: 0;
+    margin-left: 200px
+}
+
+@media(max-width: 760px)  {
+    .plugin-meta.dl-horizontal dt {
+        text-align: left;
+    }
+    .plugin-meta.dl-horizontal dd {
+        margin-left: 0;
+    }
+}
+
+a.plugin-name {
+    font-size: 1.6rem;
+}
+a.plugin-name:hover {
+    text-decoration: none;
+}
+
+.plugin-description {
+    /*
+    margin-top: 15px;
+    */
+    margin-bottom: 25px;
+}
+
+.plugin-panel-pr .plugin-name,
+.plugin-panel-pr .plugin-description {
+    font-size: 1.7rem;
+}
+
+.plugin-meta {
+    padding: 0;
+    list-style: none;
+    margin:0 0 15px
+}
+
+.plugin-developer {
+}
+
+.plugin-table .tp {
+    width: 350px;
+    word-break: break-all;
+}
+
+.plugin-table .tc {
+    width: 250px;
+    word-break: break-all;
+}
+
+.plugin-table .tv {
+    width: 90px;
+    word-break: break-all;
+}
+
+.plugin-table .ta {
+    width: 50px;
+    word-break: break-all;
+}
 
 
 /*	Fixed Column

@@ -21,18 +21,12 @@ build_failure_conditions:
     - 'project.metric_change("scrutinizer.test_coverage", < -0.10)'
 
 filter:
-    excluded_paths: 
+    excluded_paths:
         - vendor/*
         - tests/*
         - docs/*
-        - html/js/jquery*.js
-        - html/js/**/jquery*.js 
-        - html/user_data/packages/**/**/jquery*.js
-        - src/fpdf/*
-        - src/fpdi/*
-        - src/gdthumb/*
-        - src/Eccube/Framework/*
-        - src/Eccube/Page/*
+        - html/template/**/js/vendor/*
+        - html/template/**/**/js/vendor/*
         - src/Eccube/Entity/*
 
 tools:
@@ -55,14 +49,14 @@ tools:
             browser: true
             globals: { _: false, Backbone: false, jQuery: false, eccube: false }
 
-    external_code_coverage: 
+    external_code_coverage:
         runs: 1
         timeout: 36000 #The timeout must be in the interval [60,36000].
 
-    php_code_sniffer:
-        enabled: true
-        config:
-            standard: PSR2
+    #php_code_sniffer:
+    #    enabled: true
+    #    config:
+    #        standard: PSR2
 
     php_cpd:
         enabled: false
@@ -85,3 +79,9 @@ tools:
         enabled: true
 
     sensiolabs_security_checker: true
+
+checks:
+    php:
+        custom_coding_standard:
+            git_repository: 'https://github.com/M6Web/Symfony2-coding-standard'
+            ruleset_path: 'Symfony2/ruleset.xml'

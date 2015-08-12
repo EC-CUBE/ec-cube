@@ -538,6 +538,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div class="col-sm-9 col-lg-10">
                                     {% if shippingForm.vars.value.shipping_delivery_time is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_time }}<br/>
+                                    {% else %}
+                                        指定なし
                                     {% endif %}
                                     {{ form_widget(shippingForm.DeliveryTime) }}
                                     {{ form_errors(shippingForm.DeliveryTime) }}
@@ -560,7 +562,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             <div class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <button class="btn btn-primary btn-block btn-lg" onclick="setModeAndSubmit('register')">登録</button>
                     {% if id is not null %}
                         <p><a href="{{ url('admin_order') }}">戻る</a></p>
                     {% endif %}

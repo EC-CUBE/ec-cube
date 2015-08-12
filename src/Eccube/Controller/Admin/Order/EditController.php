@@ -74,7 +74,11 @@ class EditController extends AbstractController
                 $Shippings = $TargetOrder->getShippings();
                 foreach ($Shippings as $Shipping) {
                     $Shipping->setShippingDeliveryName($Shipping->getDelivery()->getName());
-                    $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
+                    if (!is_null($Shipping->getDeliveryTime())) {
+                        $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
+                    } else {
+                        $Shipping->setShippingDeliveryTime(null);
+                    }
                 }
 
                 // 登録ボタン押下

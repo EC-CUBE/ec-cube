@@ -158,7 +158,7 @@ class ProductController
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
-                    $extension = $image->guessExtension();
+                    $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
@@ -217,6 +217,7 @@ class ProductController
 
         $form = $builder->getForm();
         if (!$has_class) {
+            $ProductClass->setStockUnlimited((boolean) $ProductClass->getStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
@@ -447,6 +448,18 @@ class ProductController
                 }
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
+
+                    // 画像ファイルを新規作成
+                    $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
+                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    try {
+                        $fs = new Filesystem();
+                        $fs->copy($app['config']['image_save_realdir'] . '/' . $Image->getFileName(), $app['config']['image_save_realdir'] . '/' . $filename);
+                    } catch (\Exception $e) {
+                        // エラーが発生しても無視する
+                    }
+                    $Image->setFileName($filename);
+
                     $app['orm.em']->persist($Image);
                 }
                 $Tags = $CopyProduct->getProductTag();
@@ -510,8 +523,12 @@ class ProductController
 
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
+            // distinctのmysqlとpgsqlの挙動をあわせる.
+            // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select')
+                ->resetDQLPart('orderBy')
                 ->select('p')
+                ->orderBy('p.update_date', 'DESC')
                 ->distinct();
 
             // データ行の出力.

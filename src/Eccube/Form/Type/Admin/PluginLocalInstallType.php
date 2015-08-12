@@ -32,11 +32,6 @@ use \Symfony\Component\Validator\Constraints as Assert;
 class PluginLocalInstallType extends AbstractType
 {
 
-    public function __construct()
-    {
-
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -45,11 +40,16 @@ class PluginLocalInstallType extends AbstractType
 
         $builder
             ->add('plugin_archive', 'file', array(
-                'label' => 'プラグイン(tar形式)',
+                'label' => false,
+                'mapped' => false,
+                'required' => true,
                 'constraints' => array(
-                    new Assert\NotBlank(),
+                    new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
+                    new Assert\File(array(
+                        'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
+                        'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
+                    )),
                 ),
-                'required' => true
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }

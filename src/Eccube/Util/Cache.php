@@ -35,15 +35,21 @@ class Cache {
         $filesystem = new Filesystem();
         if ($isAll) {
             $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
+            $filesystem->remove($finder);
         } else {
-            $finder = Finder::create()->in($cacheDir . '/doctrine');
-            $filesystem->remove($finder);
-            $finder = Finder::create()->in($cacheDir . '/profiler');
-            $filesystem->remove($finder);
-            $finder = Finder::create()->in($cacheDir . '/twig');
+            if(is_dir($cacheDir . '/doctrine')){
+                $finder = Finder::create()->in($cacheDir . '/doctrine');
+                $filesystem->remove($finder);
+            }
+            if(is_dir($cacheDir . '/profiler')){
+                $finder = Finder::create()->in($cacheDir . '/profiler');
+                $filesystem->remove($finder);
+            }
+            if(is_dir($cacheDir . '/twig')){
+                $finder = Finder::create()->in($cacheDir . '/twig');
+                $filesystem->remove($finder);
+            }
         }
-
-        $filesystem->remove($finder);
         return true;
     }
 }

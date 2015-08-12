@@ -75,6 +75,9 @@ EC-CUBE3の不具合の修正、機能のブラッシュアップを目的とし
 コードのリファクタリング、不具合修正以外のPullRequestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。  
 Pull Requestの送信前に、Issueにて提議いただく事も可能です。
 
+Gitterでも本体の開発に関する意見交換などを行っております。
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EC-CUBE/ec-cube?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 
 ### 開発協力に関して
 
