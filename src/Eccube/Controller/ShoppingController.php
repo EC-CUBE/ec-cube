@@ -67,7 +67,8 @@ class ShoppingController extends AbstractController
         if (is_null($Order)) {
 
             // 未ログインの場合は, ログイン画面へリダイレクト.
-            if (!$this->isGranted($app)) {
+            if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
+
                 // 非会員でも一度会員登録されていればショッピング画面へ遷移
                 $arr = $app['session']->get('eccube.front.shopping.nonmember');
                 if (is_null($arr)) {
@@ -186,7 +187,7 @@ class ShoppingController extends AbstractController
                     // 在庫情報を更新
                     $orderService->setStockUpdate($em, $Order);
 
-                    if ($this->isGranted($app)) {
+                    if ($app->isGranted('ROLE_USER')) {
                         // 会員の場合、購入金額を更新
                         $orderService->setCustomerUpdate($em, $Order, $app->user());
                     }
@@ -462,7 +463,7 @@ class ShoppingController extends AbstractController
         $shippings = $Order->getShippings();
 
         // 会員の場合、お届け先情報を新規登録
-        if ($this->isGranted($app)) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             $builder = $app['form.factory']->createBuilder('shopping_shipping');
         } else {
             // 非会員の場合、お届け先を追加
@@ -479,7 +480,7 @@ class ShoppingController extends AbstractController
                 $data = $form->getData();
 
                 // 会員の場合、お届け先情報を新規登録
-                if ($this->isGranted($app)) {
+                if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
                     $customerAddress = new \Eccube\Entity\CustomerAddress();
                     $customerAddress
                         ->setCustomer($app->user())
@@ -587,31 +588,26 @@ class ShoppingController extends AbstractController
             return $app->redirect($app['url_generator']->generate('cart'));
         }
 
-        if ($app['security']->isGranted('ROLE_USER')) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $app->redirect($app->url('shopping'));
         }
-        $session = $request->getSession();
 
-        $error = null;
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $builder = $app['form.factory']
+            ->createNamedBuilder('', 'customer_login');
 
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } else {
-            if ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-                $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-                $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $Customer = $app->user();
+            if ($Customer) {
+                $builder->get('login_email')->setData($Customer->getEmail());
             }
         }
 
-
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app['form.factory']
-            ->createNamedBuilder('', 'customer_login')
-            ->getForm();
+        $form = $builder->getForm();
 
         return $app->render('Shopping/login.twig', array(
+            'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
-            'error' => $error,
         ));
     }
 
@@ -631,7 +627,7 @@ class ShoppingController extends AbstractController
 
 
         // ログイン済みの場合は, 購入画面へリダイレクト.
-        if ($this->isGranted($app)) {
+        if ($app->isGranted('ROLE_USER')) {
             return $app->redirect($app->url('shopping'));
         }
 
