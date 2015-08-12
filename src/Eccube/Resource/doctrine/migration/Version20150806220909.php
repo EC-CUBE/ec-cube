@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,16 +22,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace DoctrineMigrations;
 
-namespace Eccube\Controller;
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 
-use Eccube\Application;
-
-class TopController
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20150806220909 extends AbstractMigration
 {
-
-    public function index(Application $app)
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
     {
-        return $app->render('index.twig');
+        // this up() migration is auto-generated, please modify it to your needs
+        $t=$schema->getTable('dtb_product_class');
+        if(!$t->hasColumn('stock_unlimited') && $t->hasColumn('stock_unlimited_tmp')){
+            $t->addColumn('stock_unlimited', 'smallint', array('NotNull'=>true, 'Default'=>0));
+        }
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+
     }
 }
