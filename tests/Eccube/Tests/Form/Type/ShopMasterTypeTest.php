@@ -76,7 +76,6 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'nostock_hidden' => 1,
         'option_favorite_product' => 1,
         'option_product_delivery_fee' => 1,
-        'option_delivery_fee' => 1,
     );
 
     public function setUp()
@@ -794,46 +793,6 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testInvalidOptionProductDeliveryFee_MinValid()
     {
         $this->formData['option_product_delivery_fee'] = 0;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidOptionDeliveryFee_Number()
-    {
-        $this->formData['option_delivery_fee'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidOptionDeliveryFee_MaxInvalid()
-    {
-        $this->formData['option_delivery_fee'] = 1 + 1;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidOptionDeliveryFee_MaxValid()
-    {
-        $this->formData['option_delivery_fee'] = 1;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidOptionDeliveryFee_MinInvalid()
-    {
-        $this->formData['option_delivery_fee'] = 0 - 1;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidOptionDeliveryFee_MinValid()
-    {
-        $this->formData['option_delivery_fee'] = 0;
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());

@@ -57,11 +57,7 @@ class ShoppingController extends AbstractController
         }
 
         // 受注データを取得
-        $preOrderId = $cartService->getPreOrderId();
-        $Order = $app['eccube.repository.order']->findOneBy(array(
-            'pre_order_id' => $preOrderId,
-            'OrderStatus' => $app['config']['order_processing']
-        ));
+        $Order = $app['eccube.service.shopping']->getOrder();
 
         // 初回アクセス(受注データがない)の場合は, 受注データを作成
         if (is_null($Order)) {
@@ -79,16 +75,7 @@ class ShoppingController extends AbstractController
                 $Customer = $app->user();
             }
 
-            // ランダムなpre_order_idを作成
-            $preOrderId = sha1(uniqid(mt_rand(), true));
-
-            // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer,
-                $preOrderId);
-
-            $cartService->setPreOrderId($preOrderId);
-            $cartService->save();
-
+            $Order = $app['eccube.service.shopping']->createOrder($Customer);
         } else {
             // 計算処理
             $Order = $orderService->getAmount($Order, $cartService->getCart());

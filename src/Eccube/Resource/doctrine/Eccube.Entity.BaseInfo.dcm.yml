@@ -131,11 +131,6 @@ Eccube\Entity\BaseInfo:
             nullable: true
             options:
                 default: 0
-        option_delivery_fee:
-            type: smallint
-            nullable: true
-            options:
-                default: 0
         option_customer_activate:
             type: smallint
             nullable: true

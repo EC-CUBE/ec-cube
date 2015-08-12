@@ -118,6 +118,11 @@ class ShopMasterType extends AbstractType
             ))
             ->add('address', 'address', array(
                 'required' => false,
+                'pref_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
                 'addr01_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -219,15 +224,6 @@ class ShopMasterType extends AbstractType
             ))
             ->add('option_product_delivery_fee', 'choice', array(
                 'label' => '商品ごとの送料設定を有効にする',
-                'choices' => array(
-                    '0' => '無効',
-                    '1' => '有効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->add('option_delivery_fee', 'choice', array(
-                'label' => '配送業者ごとの配送料を加算する',
                 'choices' => array(
                     '0' => '無効',
                     '1' => '有効',

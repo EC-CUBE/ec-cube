@@ -207,11 +207,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $option_delivery_fee;
-
-    /**
-     * @var integer
-     */
     private $option_customer_activate;
 
     /**
@@ -1015,29 +1010,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getOptionProductTaxRule()
     {
         return $this->option_product_tax_rule;
-    }
-
-    /**
-     * Set option_delivery_fee
-     *
-     * @param integer $optionDeliveryFee
-     * @return BaseInfo
-     */
-    public function setOptionDeliveryFee($optionDeliveryFee)
-    {
-        $this->option_delivery_fee = $optionDeliveryFee;
-
-        return $this;
-    }
-
-    /**
-     * Get option_delivery_fee
-     *
-     * @return integer 
-     */
-    public function getOptionDeliveryFee()
-    {
-        return $this->option_delivery_fee;
     }
 
     /**

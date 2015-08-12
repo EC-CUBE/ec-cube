@@ -48,6 +48,11 @@ class CartService
     private $cart;
 
     /**
+     * @var \Eccube\Entity\BaseInfo
+     */
+    private $baseInfo;
+
+    /**
      * @var array
      */
     private $errors = array();
@@ -64,10 +69,15 @@ class CartService
      */
     private $error;
 
-    public function __construct(Session $session, EntityManager $entityManager)
+    /**
+     * @var array
+     */
+    private $payments = array();
+
+    public function __construct(\Eccube\Application $app)
     {
-        $this->session = $session;
-        $this->entityManager = $entityManager;
+        $this->session = $app['session'];
+        $this->entityManager = $app['orm.em'];
 
         if ($this->session->has('cart')) {
             $this->cart = $this->session->get('cart');
@@ -84,6 +94,8 @@ class CartService
                 $this->setCanAddProductType($ProductClass->getProductType());
             }
         }
+
+        $this->baseInfo = $app['eccube.repository.base_info']->get();
 
     }
 
@@ -188,6 +200,36 @@ class CartService
         return $this->ProductType == $ProductType;
     }
 
+    /**
+     * @param \Eccube\Entity\Master\ProductType $ProductType
+     * @return bool
+     */
+    public function canAddProductPayment(\Eccube\Entity\Master\ProductType $ProductType)
+    {
+        $deliveries = $this
+            ->entityManager
+            ->getRepository('\Eccube\Entity\Delivery')
+            ->find(array('product_type_id', $ProductType->getId()));
+
+
+        foreach($deliveries as $Delivery) {
+            $paymentOptions = $Delivery->getPaymentOption();
+
+            foreach($paymentOptions as $PaymentOption) {
+                $payment = $PaymentOption->getPayment();
+
+            }
+
+
+        }
+
+
+
+        $this->payments[] = $ProductType;
+
+        return $this->ProductType == $ProductType;
+    }
+
     public function setCanAddProductType(\Eccube\Entity\Master\ProductType $ProductType)
     {
         if (is_null($this->ProductType)) {
@@ -278,8 +320,16 @@ class CartService
 
         $this->setCanAddProductType($ProductClass->getProductType());
 
-        if (!$this->canAddProduct($ProductClass->getId())) {
-            throw new CartException('cart.product.type.kind');
+        if ($this->baseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
+            if (!$this->canAddProduct($ProductClass->getId())) {
+                // 複数配送対応でなければ商品種別が異なればエラー
+                throw new CartException('cart.product.type.kind');
+            }
+        } else {
+            // 複数配送の場合、同一支払方法がなければエラー
+            if (!$this->canAddProductPayment($ProductClass->getProductType())) {
+            }
+
         }
 
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {

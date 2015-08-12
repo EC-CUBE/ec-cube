@@ -48,7 +48,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['twig'];
         });
         $app['eccube.service.cart'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
+            return new \Eccube\Service\CartService($app);
         });
         $app['eccube.service.order'] = $app->share(function () use ($app) {
             return new \Eccube\Service\OrderService($app);
@@ -72,6 +72,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $csvService->setProductRepository($app['eccube.repository.product']);
 
             return $csvService;
+        });
+        $app['eccube.service.shopping'] = $app->share(function () use ($app) {
+            return new \Eccube\Service\ShoppingService($app, $app['eccube.service.cart'], $app['eccube.service.order']);
         });
 
         // Repository
