@@ -36,8 +36,8 @@ class AdminController extends AbstractController
 {
     public function login(Application $app, Request $request)
     {
-        if ($app['security']->isGranted('ROLE_ADMIN')) {
-            return $app->redirect($app['url_generator']->generate('admin_login'));
+        if ($app->isGranted('ROLE_ADMIN')) {
+            return $app->redirect($app->url('admin_homepage'));
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
@@ -46,7 +46,6 @@ class AdminController extends AbstractController
             ->getForm();
 
         return $app['view']->render('login.twig', array(
-            'maintitle' => '',
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
         ));

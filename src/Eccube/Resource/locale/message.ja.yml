@@ -1,6 +1,6 @@
 Login email: メールアドレス
 Login pass: パスワード
-Login memory: メールアドレスをコンピューターに記憶させる
+Login memory: 次回から自動的にログインする
 Bad credentials.: ログインできませんでした。<br>入力内容に誤りがないかご確認ください。
 Invalid CSRF token.: もう一度ログイン処理をしてください。
 Your session has timed out, or you have disabled cookies.: もう一度ログイン処理をしてください。

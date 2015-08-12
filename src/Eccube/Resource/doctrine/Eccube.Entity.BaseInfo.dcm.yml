@@ -141,6 +141,11 @@ Eccube\Entity\BaseInfo:
             nullable: true
             options:
                 default: 1
+        option_remember_me:
+            type: smallint
+            nullable: true
+            options:
+                default: 0
         authentication_key:
             type: text
             nullable: true

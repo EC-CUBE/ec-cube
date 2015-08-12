@@ -215,6 +215,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $option_customer_activate;
 
     /**
+     * @var integer
+     */
+    private $option_remember_me;
+
+    /**
      * @var string
      */
     private $authentication_key;
@@ -1069,6 +1074,29 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * Set option_remember_me
+     *
+     * @param integer $optionRememberMe
+     * @return BaseInfo
+     */
+    public function setOptionRememberMe($optionRememberMe)
+    {
+        $this->option_remember_me = $optionRememberMe;
+
+        return $this;
+    }
+
+    /**
+     * Get option_remember_me
+     *
+     * @return integer
+     */
+    public function getOptionRememberMe()
+    {
+        return $this->option_remember_me;
+    }
+
+    /**
      * Set authentication_key
      *
      * @param string $authenticationKey
@@ -1077,8 +1105,6 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function setAuthenticationKey($authenticationKey)
     {
         $this->authentication_key = $authenticationKey;
-
-        return $this;
     }
 
     /**

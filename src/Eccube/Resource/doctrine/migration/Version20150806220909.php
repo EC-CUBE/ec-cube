@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,30 +22,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace DoctrineMigrations;
 
-namespace Eccube\Controller;
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 
-use Eccube\Application;
-
-class AbstractController
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20150806220909 extends AbstractMigration
 {
-    public function __construct()
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
     {
+        // this up() migration is auto-generated, please modify it to your needs
+        $t=$schema->getTable('dtb_product_class');
+        if(!$t->hasColumn('stock_unlimited') && $t->hasColumn('stock_unlimited_tmp')){
+            $t->addColumn('stock_unlimited', 'smallint', array('NotNull'=>true, 'Default'=>0));
+        }
     }
 
-    protected function getBoundForm(Application $app, $type)
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
     {
-        $form = $app['form.factory']
-            ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
-            ->getForm();
-        $form->handleRequest($app['request']);
+        // this down() migration is auto-generated, please modify it to your needs
 
-        return $form;
     }
-
-    protected function getSecurity($app)
-    {
-        return $app['security.token_storage'];
-    }
-
 }

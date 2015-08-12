@@ -91,12 +91,8 @@ class PluginController extends AbstractController
             $url = $app['config']['owners_store_url'] . '?method=list';
             list($json, $httpHeader) = $this->getRequestApi($request, $authKey, $url);
 
-            if ($json === false) {
-                // 接続失敗時
+            if ($json) {
 
-                $message = $this->getResponseErrorMessage($httpHeader);
-
-            } else {
                 // 接続成功時
 
                 $data = json_decode($json, true);

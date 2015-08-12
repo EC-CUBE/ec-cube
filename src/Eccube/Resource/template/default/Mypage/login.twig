@@ -34,10 +34,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
                             <div class="form-group">
                                 {{ form_widget(form.login_email, {'attr': {'style' : 'ime-mode: disabled;', 'placeholder' : 'メールアドレス' }}) }}
-                                {{ form_widget(form.login_memory) }}
                             </div>
                             <div class="form-group">
                                 {{ form_widget(form.login_pass,  {'attr': {'placeholder' : 'パスワード' }}) }}
+                                {% if BaseInfo.option_remember_me %}
+                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <input type="hidden" name="login_memory" value="1">
+                                    {% else %}
+                                        {{ form_widget(form.login_memory) }}
+                                    {% endif %}
+                                {% endif %}
                             </div>
                             {% if error %}
                             <div class="form-group">
@@ -56,7 +62,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div><!-- /.col -->
             </div><!-- /.row -->
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-            {{ form_rest(form) }}
         </form>
     </div>
 {% endblock %}
