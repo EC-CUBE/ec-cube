@@ -25,12 +25,13 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Response;
 class TopController
 {
 
     public function index(Application $app)
     {
-        return $app['view']->render('index.twig');
+        return $app->render('index.twig');
     }
 }
