@@ -215,6 +215,11 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     private $option_remember_me;
 
     /**
+     * @var string
+     */
+    private $authentication_key;
+
+    /**
      * @var \Eccube\Entity\Master\Country
      */
     private $Country;
@@ -1061,6 +1066,27 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     public function getOptionRememberMe()
     {
         return $this->option_remember_me;
+    }
+
+    /**
+     * Set authentication_key
+     *
+     * @param string $authenticationKey
+     * @return BaseInfo
+     */
+    public function setAuthenticationKey($authenticationKey)
+    {
+        $this->authentication_key = $authenticationKey;
+    }
+
+    /**
+     * Get authentication_keye
+     *
+     * @return string
+     */
+    public function getAuthenticationKey()
+    {
+        return $this->authentication_key;
     }
 
     /**

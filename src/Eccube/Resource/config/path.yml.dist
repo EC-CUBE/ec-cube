@@ -38,6 +38,10 @@ template_temp_realdir: ${ROOT_DIR}/app/cache/eccube/template
 # realdir::csv
 csv_temp_realdir: ${ROOT_DIR}/app/cache/eccube/csv
 
+# realdir:plugin
+plugin_realdir: ${ROOT_DIR}/app/Plugin
+plugin_temp_realdir: ${ROOT_DIR}/app/cache/plugin
+
 # urlpath
 admin_urlpath: ${ROOT_URLPATH}/template/admin
 front_urlpath: ${ROOT_URLPATH}/template/${TEMPLATE_CODE}

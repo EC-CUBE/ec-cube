@@ -141,6 +141,9 @@ Eccube\Entity\BaseInfo:
             nullable: true
             options:
                 default: 0
+        authentication_key:
+            type: text
+            nullable: true
     manyToOne:
         Country:
             targetEntity: Eccube\Entity\Master\Country

@@ -259,3 +259,4 @@ csv_export_multidata_separator: ,
 csv_import_delimiter: ,
 csv_import_enclosure: '"'
 csv_import_escape: \
+owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
