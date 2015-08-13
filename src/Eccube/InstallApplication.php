@@ -25,13 +25,7 @@
 namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
-use Monolog\Logger;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class InstallApplication extends ApplicationTrait
 {
@@ -61,7 +55,19 @@ class InstallApplication extends ApplicationTrait
         ));
         $app['translator'] = $app->share($app->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
-            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', 'ja');
+
+            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
+            $file = dirname($r->getFilename()) . '/Resources/translations/validators.' . $app['locale'] . '.xlf';
+            if (file_exists($file)) {
+                $translator->addResource('xliff', $file, $app['locale'], 'validators');
+            }
+
+            $file = __DIR__ . '/Resource/locale/validator.' . $app['locale'] . '.yml';
+            if (file_exists($file)) {
+                $translator->addResource('yaml', $file, $app['locale'], 'validators');
+            }
+
+            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', $app['locale']);
 
             return $translator;
         }));
