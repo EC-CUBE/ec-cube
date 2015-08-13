@@ -293,7 +293,7 @@ class Application extends ApplicationTrait
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
 
-                if(isset($app['profiler'])){
+                if (isset($app['profiler'])) {
                     $cacheBaseDir = __DIR__ . '/../../app/cache/twig/profiler/';
                 }else{
                     $cacheBaseDir = __DIR__ . '/../../app/cache/twig/production/';
