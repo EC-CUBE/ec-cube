@@ -41,9 +41,22 @@ class Cart extends \Eccube\Entity\AbstractEntity
      */
     private $pre_order_id = null;
 
+    /**
+     * @var array
+     */
+    private $Payments = array();
+
     public function __construct()
     {
         $this->CartItems = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLock()
+    {
+        return $this->lock;
     }
 
     /**
@@ -58,11 +71,11 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @return bool
+     * @return integer
      */
-    public function getLock()
+    public function getPreOrderId()
     {
-        return $this->lock;
+        return $this->pre_order_id;
     }
 
     /**
@@ -74,14 +87,6 @@ class Cart extends \Eccube\Entity\AbstractEntity
         $this->pre_order_id = $pre_order_id;
 
         return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPreOrderId()
-    {
-        return $this->pre_order_id;
     }
 
     /**
@@ -103,6 +108,17 @@ class Cart extends \Eccube\Entity\AbstractEntity
         if (!$find) {
             $this->addCartItem($AddCartItem);
         }
+
+        return $this;
+    }
+
+    /**
+     * @param  CartItem            $CartItem
+     * @return \Eccube\Entity\Cart
+     */
+    public function addCartItem(CartItem $CartItem)
+    {
+        $this->CartItems[] = $CartItem;
 
         return $this;
     }
@@ -145,6 +161,14 @@ class Cart extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * @return CartItem[]
+     */
+    public function getCartItems()
+    {
+        return $this->CartItems;
+    }
+
+    /**
      * @param  CartItem[]          $CartItems
      * @return \Eccube\Entity\Cart
      */
@@ -153,25 +177,6 @@ class Cart extends \Eccube\Entity\AbstractEntity
         $this->CartItems = $CartItems;
 
         return $this;
-    }
-
-    /**
-     * @param  CartItem            $CartItem
-     * @return \Eccube\Entity\Cart
-     */
-    public function addCartItem(CartItem $CartItem)
-    {
-        $this->CartItems[] = $CartItem;
-
-        return $this;
-    }
-
-    /**
-     * @return CartItem[]
-     */
-    public function getCartItems()
-    {
-        return $this->CartItems;
     }
 
     /**
@@ -198,6 +203,29 @@ class Cart extends \Eccube\Entity\AbstractEntity
         }
 
         return $totalQuantity;
+    }
+
+    /**
+     * Get Payments
+     *
+     * @return array
+     */
+    public function getPayments()
+    {
+        return $this->Payments;
+    }
+
+    /**
+     * Set Payments
+     *
+     * @param $payments
+     * @return Cart
+     */
+    public function setPayments($payments)
+    {
+        $this->Payments = $payments;
+
+        return $this;
     }
 
 }

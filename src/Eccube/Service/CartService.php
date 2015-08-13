@@ -50,7 +50,7 @@ class CartService
     /**
      * @var \Eccube\Entity\BaseInfo
      */
-    private $baseInfo;
+    private $BaseInfo;
 
     /**
      * @var array
@@ -95,8 +95,17 @@ class CartService
             }
         }
 
-        $this->baseInfo = $app['eccube.repository.base_info']->get();
+        $this->BaseInfo = $app['eccube.repository.base_info']->get();
 
+    }
+
+    public function setCanAddProductType(\Eccube\Entity\Master\ProductType $ProductType)
+    {
+        if (is_null($this->ProductType)) {
+            $this->ProductType = $ProductType;
+        }
+
+        return $this;
     }
 
     public function save()
@@ -158,87 +167,6 @@ class CartService
         return $this;
     }
 
-    public function getCart()
-    {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
-        ));
-
-        foreach ($this->cart->getCartItems() as $CartItem) {
-            $ProductClass = $this
-                ->entityManager
-                ->getRepository($CartItem->getClassName())
-                ->find($CartItem->getClassId());
-
-            // 商品情報が削除されたらカートからも削除
-            if ($ProductClass->getDelFlg() == Constant::DISABLED) {
-                $CartItem->setObject($ProductClass);
-            } else {
-                $this->setError('cart.product.delete');
-                $this->removeProduct($ProductClass->getId());
-            }
-
-        }
-
-        return $this->cart;
-    }
-
-    /**
-     * @param  string $productClassId
-     * @return boolean
-     */
-    public function canAddProduct($productClassId)
-    {
-        $ProductClass = $this
-            ->entityManager
-            ->getRepository('\Eccube\Entity\ProductClass')
-            ->find($productClassId);
-        $ProductType = $ProductClass->getProductType();
-
-        return $this->ProductType == $ProductType;
-    }
-
-    /**
-     * @param \Eccube\Entity\Master\ProductType $ProductType
-     * @return bool
-     */
-    public function canAddProductPayment(\Eccube\Entity\Master\ProductType $ProductType)
-    {
-        $deliveries = $this
-            ->entityManager
-            ->getRepository('\Eccube\Entity\Delivery')
-            ->find(array('product_type_id', $ProductType->getId()));
-
-
-        foreach($deliveries as $Delivery) {
-            $paymentOptions = $Delivery->getPaymentOption();
-
-            foreach($paymentOptions as $PaymentOption) {
-                $payment = $PaymentOption->getPayment();
-
-            }
-
-
-        }
-
-
-
-        $this->payments[] = $ProductType;
-
-        return $this->ProductType == $ProductType;
-    }
-
-    public function setCanAddProductType(\Eccube\Entity\Master\ProductType $ProductType)
-    {
-        if (is_null($this->ProductType)) {
-            $this->ProductType = $ProductType;
-        }
-
-        return $this;
-    }
-
     public function getCanAddProductType()
     {
         return $this->ProductType;
@@ -273,6 +201,190 @@ class CartService
     }
 
     /**
+     * @param  \Eccube\Entity\ProductClass|integer $ProductClass
+     * @param  integer $quantity
+     * @return \Eccube\Service\CartService
+     * @throws CartException
+     */
+    public function setProductQuantity($ProductClass, $quantity)
+    {
+        if (!$ProductClass instanceof \Eccube\Entity\ProductClass) {
+            $ProductClass = $this->entityManager
+                ->getRepository('Eccube\Entity\ProductClass')
+                ->find($ProductClass);
+        }
+        if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== 1) {
+            throw new CartException('cart.product.type.kind');
+        }
+
+        $this->setCanAddProductType($ProductClass->getProductType());
+
+        if ($this->BaseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
+            if (!$this->canAddProduct($ProductClass->getId())) {
+                // 複数配送対応でなければ商品種別が異なればエラー
+                throw new CartException('cart.product.type.kind');
+            }
+        } else {
+            // 複数配送の場合、同一支払方法がなければエラー
+            if (!$this->canAddProductPayment($ProductClass->getProductType())) {
+                throw new CartException('cart.product.payment.kind');
+            }
+
+        }
+
+        if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
+            $quantity = $ProductClass->getStock();
+            $this->addError('cart.over.stock');
+        } elseif ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
+            $quantity = $ProductClass->getSaleLimit();
+            $this->addError('cart.over.sale_limit');
+        }
+
+        $CartItem = new CartItem();
+        $CartItem
+            ->setClassName('Eccube\Entity\ProductClass')
+            ->setClassId((string)$ProductClass->getId())
+            ->setPrice($ProductClass->getPrice02IncTax())
+            ->setQuantity($quantity);
+
+        $this->cart->setCartItem($CartItem);
+
+        return $this;
+    }
+
+    /**
+     * @param  string $productClassId
+     * @return boolean
+     */
+    public function canAddProduct($productClassId)
+    {
+        $ProductClass = $this
+            ->entityManager
+            ->getRepository('\Eccube\Entity\ProductClass')
+            ->find($productClassId);
+        $ProductType = $ProductClass->getProductType();
+
+        return $this->ProductType == $ProductType;
+    }
+
+    /**
+     * @param \Eccube\Entity\Master\ProductType $ProductType
+     * @return bool
+     */
+    public function canAddProductPayment(\Eccube\Entity\Master\ProductType $ProductType)
+    {
+        $deliveries = $this
+            ->entityManager
+            ->getRepository('\Eccube\Entity\Delivery')
+            ->findBy(array('ProductType' => $ProductType));
+
+        $payments = array();
+
+        foreach ($deliveries as $Delivery) {
+            $paymentOptions = $Delivery->getPaymentOptions();
+
+            foreach ($paymentOptions as $PaymentOption) {
+                $payments[$PaymentOption->getPayment()->getId()] = $PaymentOption->getPayment()->getMethod();
+            }
+        }
+
+        if ($this->getCart()->getTotalPrice() < 1) {
+            // カートになければ支払方法を全て設定
+            $this->getCart()->setPayments($payments);
+            return true;
+        }
+
+        // カートに存在している支払方法と追加された商品の支払方法チェック
+        $arr = array_intersect_assoc($payments, $this->getCart()->getPayments());
+
+        if (count($arr) > 0) {
+            $this->getCart()->setPayments($arr);
+            return true;
+        }
+
+        // 支払条件に一致しない
+        return false;
+
+    }
+
+    public function getCart()
+    {
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass'
+        ));
+
+        foreach ($this->cart->getCartItems() as $CartItem) {
+            $ProductClass = $this
+                ->entityManager
+                ->getRepository($CartItem->getClassName())
+                ->find($CartItem->getClassId());
+
+            // 商品情報が削除されたらカートからも削除
+            if ($ProductClass->getDelFlg() == Constant::DISABLED) {
+                $CartItem->setObject($ProductClass);
+            } else {
+                $this->setError('cart.product.delete');
+                $this->removeProduct($ProductClass->getId());
+            }
+
+        }
+
+        return $this->cart;
+    }
+
+    /**
+     * @param  string $productClassId
+     * @return \Eccube\Service\CartService
+     */
+    public function removeProduct($productClassId)
+    {
+        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
+
+
+        // 支払方法の再設定
+        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+
+            $payments = array();
+
+            foreach ($this->getCart()->getCartItems() as $item) {
+                /* @var $ProductClass \Eccube\Entity\ProductClass */
+                $ProductClass = $item->getObject();
+
+                $deliveries = $this
+                    ->entityManager
+                    ->getRepository('\Eccube\Entity\Delivery')
+                    ->findBy(array('ProductType' => $ProductClass->getProductType()));
+
+                foreach ($deliveries as $Delivery) {
+                    $paymentOptions = $Delivery->getPaymentOptions();
+
+                    foreach ($paymentOptions as $PaymentOption) {
+                        $payments[$PaymentOption->getPayment()->getId()] = $PaymentOption->getPayment()->getMethod();
+                    }
+                }
+            }
+
+            $this->getCart()->setPayments($payments);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  string $error
+     * @return \Eccube\Service\CartService
+     */
+    public function addError($error = null)
+    {
+        $this->errors[] = $error;
+        $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
+
+        return $this;
+    }
+
+    /**
      * @param  string $productClassId
      * @return \Eccube\Service\CartService
      */
@@ -302,85 +414,11 @@ class CartService
     }
 
     /**
-     * @param  \Eccube\Entity\ProductClass|integer $ProductClass
-     * @param  integer $quantity
-     * @return \Eccube\Service\CartService
-     * @throws CartException
-     */
-    public function setProductQuantity($ProductClass, $quantity)
-    {
-        if (!$ProductClass instanceof \Eccube\Entity\ProductClass) {
-            $ProductClass = $this->entityManager
-                ->getRepository('Eccube\Entity\ProductClass')
-                ->find($ProductClass);
-        }
-        if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== 1) {
-            throw new CartException('cart.product.type.kind');
-        }
-
-        $this->setCanAddProductType($ProductClass->getProductType());
-
-        if ($this->baseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
-            if (!$this->canAddProduct($ProductClass->getId())) {
-                // 複数配送対応でなければ商品種別が異なればエラー
-                throw new CartException('cart.product.type.kind');
-            }
-        } else {
-            // 複数配送の場合、同一支払方法がなければエラー
-            if (!$this->canAddProductPayment($ProductClass->getProductType())) {
-            }
-
-        }
-
-        if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
-            $quantity = $ProductClass->getStock();
-            $this->addError('cart.over.stock');
-        } elseif ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
-            $quantity = $ProductClass->getSaleLimit();
-            $this->addError('cart.over.sale_limit');
-        }
-
-        $CartItem = new CartItem();
-        $CartItem
-            ->setClassName('Eccube\Entity\ProductClass')
-            ->setClassId((string)$ProductClass->getId())
-            ->setPrice($ProductClass->getPrice02IncTax())
-            ->setQuantity($quantity);
-
-        $this->cart->setCartItem($CartItem);
-
-        return $this;
-    }
-
-    /**
-     * @param  string $productClassId
-     * @return \Eccube\Service\CartService
-     */
-    public function removeProduct($productClassId)
-    {
-        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
-
-        return $this;
-    }
-
-    /**
      * @return string[]
      */
     public function getErrors()
     {
         return $this->errors;
-    }
-
-    /**
-     * @param  string $error
-     * @return \Eccube\Service\CartService
-     */
-    public function addError($error = null)
-    {
-        $this->errors[] = $error;
-        $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
-
-        return $this;
     }
 
     /**
