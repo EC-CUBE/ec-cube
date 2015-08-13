@@ -94,31 +94,6 @@
             - id: shop_csv
               name: CSV出力項目設定
               url: admin_setting_shop_csv
-      - id: store
-        name: オーナーズストア
-        has_child: true
-        child:
-            - id: plugin
-              name: インストール済プラグイン
-              url: admin_setting_store_plugin
-            - id: plugin_owners_install
-              name: プラグインインストール
-              url: admin_setting_store_plugin_owners_install
-            - id: plugin_install
-              name: プラグインのアップロード
-              url: admin_setting_store_plugin_install
-            - id: plugin_handler
-              name: プラグインハンドラ設定
-              url: admin_setting_store_plugin_handler
-            - id: template
-              name: テンプレート一覧
-              url: admin_setting_store_template
-            - id: template_install
-              name: テンプレートのアップロード
-              url: admin_setting_store_template_install
-            - id: authentication_setting
-              name: 認証キー設定
-              url: admin_setting_authentication_setting
       - id: system
         name: システム情報設定
         has_child: true
@@ -132,3 +107,34 @@
             - id: security
               name: セキュリティ管理
               url: admin_setting_system_security
+- id: store
+  name: オーナーズストア
+  has_child: true
+  icon: cb-logomark
+  child:
+  - id: plugin
+    name: プラグイン
+    has_child: true
+    child:
+        - id: plugin_list
+          name: プラグイン一覧
+          url: admin_setting_store_plugin
+        - id: plugin_owners_install
+          name: 購入済プラグイン
+          url: admin_setting_store_plugin_owners_install
+        - id: plugin_handler
+          name: 高度な設定
+          url: admin_setting_store_plugin_handler
+  - id: template
+    name: テンプレート
+    has_child: true
+    child:
+      - id: template_list
+        name: テンプレート一覧
+        url: admin_setting_store_template
+      - id: template_install
+        name: アップロード
+        url: admin_setting_store_template_install
+  - id: authentication_setting
+    name: 認証キー設定
+    url: admin_setting_authentication_setting
