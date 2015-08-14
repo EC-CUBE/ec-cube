@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require __DIR__ . '/../autoload.php';
+require __DIR__.'/../autoload.php';
 
 ini_set('display_errors', 'Off');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
@@ -35,6 +36,6 @@ if ($app['config']['eccube_install']) {
     $app->run();
 } else {
     $location = str_replace('index.php', 'install.php', $_SERVER['SCRIPT_NAME']);
-    header('Location:' . $location);
+    header('Location:'.$location);
     exit;
 }
