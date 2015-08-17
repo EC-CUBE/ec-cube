@@ -39,11 +39,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% if item.update_status == 2 %}
                     <h4><span class="label label-success">インストール済</span></h4>
                 {% elseif item.update_status == 3 %}
-                    <a class="btn btn-default btn-xs" href="{{ url('admin_setting_store_plugin_upgrade', {'action': 'update', 'id': item.product_id, 'version': item.version}) }}">今すぐ更新</a>
+                    <a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': item.product_id, 'version': item.version}) }}">今すぐ更新</a>
                 {% elseif item.update_status == 4 %}
                     <a class="btn btn-success btn-xs" href="{{ item.product_url }}" target="_blank">今すぐ購入</a>
                 {% else %}
-                    <a class="btn btn-warning btn-xs" href="{{ url('admin_setting_store_plugin_upgrade', {'action': 'install', 'id': item.product_id, 'version': item.version}) }}">今すぐインストール</a>
+                    <a class="btn btn-warning btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'install', 'id': item.product_id, 'version': item.version}) }}">今すぐインストール</a>
                 {% endif %}
                 </span>
             {% endif %}

@@ -2691,6 +2691,10 @@ a.plugin-name:hover {
     word-break: break-all;
 }
 
+.plugin-table .tu {
+    width: 400px;
+}
+
 .plugin-table .tv {
     width: 90px;
     word-break: break-all;

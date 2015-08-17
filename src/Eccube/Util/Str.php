@@ -196,5 +196,53 @@ class Str
         return $diff->s . "秒前";
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
+    public static function isBlank($value)
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        if ($value == null || $value == '') {
+            return true;
+        }
+
+        if (trim(mb_convert_kana($value, 's', 'UTF-8')) !== '') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public static function isNotBlank($value)
+    {
+        return !self::isBlank($value);
+    }
+
+
+    /**
+     * 両端にある全角スペース、半角スペースを取り除く
+     *
+     * @param $value
+     * @return string
+     */
+    public static function trimAll($value)
+    {
+        if ($value == null) {
+            return null;
+        }
+        if ($value == '') {
+            return '';
+        }
+
+        return trim(mb_convert_kana($value, 's', 'UTF-8'));
+    }
 
 }

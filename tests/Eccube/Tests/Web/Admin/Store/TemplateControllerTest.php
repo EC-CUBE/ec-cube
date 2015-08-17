@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Tests\Web\Admin\Setting\Store;
+namespace Eccube\Tests\Web\Admin\Store;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -31,13 +31,13 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminTemplate_index()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_store_template'));
+        $this->client->request('GET', $this->app->url('admin_store_template'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function test_routing_AdminTemplate_new()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_store_template_install'));
+        $this->client->request('GET', $this->app->url('admin_store_template_install'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

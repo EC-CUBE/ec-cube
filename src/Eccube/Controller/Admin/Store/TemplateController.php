@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Controller\Admin\Setting\Store;
+namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
@@ -77,11 +77,11 @@ class TemplateController
 
                 $app->addSuccess('admin.content.template.save.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_store_template'));
+                return $app->redirect($app->url('admin_store_template'));
             }
         }
 
-        return $app->render('Setting/Store/template.twig', array(
+        return $app->render('Store/template.twig', array(
             'form' => $form->createView(),
             'Templates' => $Templates,
         ));
@@ -165,14 +165,14 @@ class TemplateController
         if ($Template->isDefaultTemplate()) {
             $app->addError('admin.content.template.delete.default.error', 'admin');
 
-            return $app->redirect($app->url('admin_setting_store_template'));
+            return $app->redirect($app->url('admin_store_template'));
         }
 
         // 設定中のテンプレート
         if ($app['config']['template_code'] === $Template->getCode()) {
             $app->addError('admin.content.template.delete.current.error', 'admin');
 
-            return $app->redirect($app->url('admin_setting_store_template'));
+            return $app->redirect($app->url('admin_store_template'));
         }
 
         // テンプレートディレクトリの削除
@@ -191,7 +191,7 @@ class TemplateController
 
         $app->addSuccess('admin.content.template.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_setting_store_template'));
+        return $app->redirect($app->url('admin_store_template'));
     }
 
     public function add(Application $app, Request $request)
@@ -252,7 +252,7 @@ class TemplateController
                 } catch (\Exception $e) {
                     $form['file']->addError(new FormError('アップロードに失敗しました。圧縮ファイルを確認してください。'));
 
-                    return $app->render('Setting/Store/template_add.twig', array(
+                    return $app->render('Store/template_add.twig', array(
                         'form' => $form->createView(),
                     ));
                 }
@@ -266,7 +266,7 @@ class TemplateController
                         $fs->remove($tmpDir);
                     }
 
-                    return $app->render('Setting/Store/template_add.twig', array(
+                    return $app->render('Store/template_add.twig', array(
                         'form' => $form->createView(),
                     ));
                 }
@@ -280,7 +280,7 @@ class TemplateController
                         $fs->remove($tmpDir);
                     }
 
-                    return $app->render('Setting/Store/template_add.twig', array(
+                    return $app->render('Store/template_add.twig', array(
                         'form' => $form->createView(),
                     ));
                 }
@@ -303,11 +303,11 @@ class TemplateController
 
                 $app->addSuccess('admin.content.template.add.complete', 'admin');
 
-                return $app->redirect($app->url('admin_setting_store_template'));
+                return $app->redirect($app->url('admin_store_template'));
             }
         }
 
-        return $app->render('Setting/Store/template_add.twig', array(
+        return $app->render('Store/template_add.twig', array(
             'form' => $form->createView(),
         ));
     }
