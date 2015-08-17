@@ -30,8 +30,8 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductClassType extends AbstractType
 {
@@ -56,11 +56,6 @@ class ProductClassType extends AbstractType
             ))
             ->add('stock', 'number', array(
                 'label' => '在庫数',
-                'required' => false,
-            ))
-            ->add('stock_unlimited', 'checkbox', array(
-                'label' => '無制限',
-                'value' => '1',
                 'required' => false,
             ))
             ->add('sale_limit', 'number', array(
@@ -103,8 +98,8 @@ class ProductClassType extends AbstractType
             ))
             ->add('product_type', 'product_type', array(
                 'label' => '商品種別',
-				'multiple'=> false,
-				'expanded' => false,
+                'multiple' => false,
+                'expanded' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
@@ -127,8 +122,17 @@ class ProductClassType extends AbstractType
                     $form['stock_unlimited']->addError(new FormError('在庫数を入力、もしくは在庫無制限を設定してください。'));
                 }
             })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
-        ;
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+
+        $transformer = new DataTransformer\IntegerToBooleanTransformer();
+
+        $builder
+            ->add($builder->create('stock_unlimited', 'checkbox', array(
+                'label' => '無制限',
+                'value' => '1',
+                'required' => false,
+            ))->addModelTransformer($transformer));
+
 
         $transformer = new DataTransformer\EntityToIdTransformer(
             $app['orm.em'],
@@ -136,12 +140,11 @@ class ProductClassType extends AbstractType
         );
         $builder
             ->add($builder->create('ClassCategory1', 'hidden')
-                          ->addModelTransformer($transformer)
+                ->addModelTransformer($transformer)
             )
             ->add($builder->create('ClassCategory2', 'hidden')
-                          ->addModelTransformer($transformer)
-            )
-        ;
+                ->addModelTransformer($transformer)
+            );
     }
 
     /**
