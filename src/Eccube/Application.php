@@ -282,20 +282,29 @@ class Application extends ApplicationTrait
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
             $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
+
+                // 互換性がないのでprofiler とproduction 時のcacheを分離する
+
+                if (isset($app['profiler'])) {
+                    $cacheBaseDir = __DIR__ . '/../../app/cache/twig/profiler/';
+                }else{
+                    $cacheBaseDir = __DIR__ . '/../../app/cache/twig/production/';
+                }
+
                 if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
                     if (file_exists(__DIR__ . '/../../app/template/admin')) {
                         $paths[] = __DIR__ . '/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/admin';
+                    $cache = $cacheBaseDir . 'admin';
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
                     }
                     $paths[] = $app['config']['template_default_realdir'];
                     $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
+                    $cache = $cacheBaseDir . $app['config']['template_code'];
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
