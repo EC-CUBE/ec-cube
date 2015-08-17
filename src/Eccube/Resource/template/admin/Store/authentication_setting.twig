@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['setting', 'store', 'authentication_setting'] %}
+{% set menus = ['store', 'authentication_setting'] %}
 
 {% block title %}オーナーズストア{% endblock %}
 {% block sub_title %}認証キー設定{% endblock %}
@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
-    <form method="post" action="{{ url('admin_setting_authentication_setting') }}">
+    <form method="post" action="{{ url('admin_store_authentication_setting') }}">
     {{ form_widget(form._token) }}
     <div class="row" id="aside_wrap">
         <div class="col-md-9">

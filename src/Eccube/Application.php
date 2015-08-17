@@ -24,6 +24,7 @@
 namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
+use Eccube\Common\Constant;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\RotatingFileHandler;
@@ -45,73 +46,6 @@ class Application extends ApplicationTrait
 
         // init monolog
         $this->initLogger();
-    }
-
-    public function initialize()
-    {
-        // init locale
-        $this->initLocale();
-
-        // init session
-        $this->initSession();
-
-        // init twig
-        $this->initRendering();
-
-        // init provider
-        $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
-        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-        $this->register(new \Silex\Provider\FormServiceProvider());
-        $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-
-        $app = $this;
-        $this->error(function (\Exception $e, $code) use ($app) {
-            if ($app['debug']) {
-                return;
-            }
-
-            switch ($code) {
-                case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
-                    break;
-                default:
-                    $title = 'システムエラーが発生しました。';
-                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
-                    break;
-            }
-
-            return $app['twig']->render('error.twig', array(
-                'error_title' => $title,
-                'error_message' => $message,
-            ));
-        });
-
-        // init mailer
-        $this->initMailer();
-
-        // init doctrine orm
-        $this->initDoctrine();
-
-        // init security
-        $this->initSecurity();
-
-        // init ec-cube service provider
-        $this->register(new ServiceProvider\EccubeServiceProvider());
-
-        // mount controllers
-        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
-    }
-
-    public function initializePlugin()
-    {
-        // setup event dispatcher
-        $this->initPluginEventDispatcher();
-
-        // load plugin
-        $this->loadPlugin();
     }
 
     public function initConfig()
@@ -224,20 +158,62 @@ class Application extends ApplicationTrait
         }));
     }
 
-    public function initSession()
+    public function initialize()
     {
-        $this->register(new \Silex\Provider\SessionServiceProvider(), array(
-            'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
-            'session.storage.options' => array(
-                'name' => 'eccube',
-                'cookie_path' => $this['config']['root_urlpath'],
-                'cookie_secure' => $this['config']['force_ssl'],
-                'cookie_lifetime' => $this['config']['cookie_lifetime'],
-                'cookie_httponly' => true,
-                // cookie_domainは指定しない
-                // http://blog.tokumaru.org/2011/10/cookiedomain.html
-            ),
-        ));
+        // init locale
+        $this->initLocale();
+
+        // init session
+        $this->initSession();
+
+        // init twig
+        $this->initRendering();
+
+        // init provider
+        $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
+        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        $this->register(new \Silex\Provider\FormServiceProvider());
+        $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+
+        $app = $this;
+        $this->error(function (\Exception $e, $code) use ($app) {
+            if ($app['debug']) {
+                return;
+            }
+
+            switch ($code) {
+                case 404:
+                    $title = 'ページがみつかりません。';
+                    $message = 'URLに間違いがないかご確認ください。';
+                    break;
+                default:
+                    $title = 'システムエラーが発生しました。';
+                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+                    break;
+            }
+
+            return $app['twig']->render('error.twig', array(
+                'error_title' => $title,
+                'error_message' => $message,
+            ));
+        });
+
+        // init mailer
+        $this->initMailer();
+
+        // init doctrine orm
+        $this->initDoctrine();
+
+        // init security
+        $this->initSecurity();
+
+        // init ec-cube service provider
+        $this->register(new ServiceProvider\EccubeServiceProvider());
+
+        // mount controllers
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $this->mount('', new ControllerProvider\FrontControllerProvider());
+        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
     }
 
     public function initLocale()
@@ -272,6 +248,22 @@ class Application extends ApplicationTrait
 
             return $translator;
         }));
+    }
+
+    public function initSession()
+    {
+        $this->register(new \Silex\Provider\SessionServiceProvider(), array(
+            'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
+            'session.storage.options' => array(
+                'name' => 'eccube',
+                'cookie_path' => $this['config']['root_urlpath'],
+                'cookie_secure' => $this['config']['force_ssl'],
+                'cookie_lifetime' => $this['config']['cookie_lifetime'],
+                'cookie_httponly' => true,
+                // cookie_domainは指定しない
+                // http://blog.tokumaru.org/2011/10/cookiedomain.html
+            ),
+        ));
     }
 
     public function initRendering()
@@ -438,119 +430,6 @@ class Application extends ApplicationTrait
         ));
     }
 
-    public function initPluginEventDispatcher()
-    {
-        // EventDispatcher
-        $this['eccube.event.dispatcher'] = $this->share(function () {
-            return new EventDispatcher();
-        });
-
-        // hook point
-        $this->before(function (Request $request, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
-        }, self::EARLY_EVENT);
-
-        $this->before(function (Request $request, \Silex\Application $app) {
-            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.before';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.after';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
-        }, self::LATE_EVENT);
-
-        $this->finish(function (Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.finish';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
-
-        $app = $this;
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
-            $route = $event->getRequest()->attributes->get('_route');
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
-        });
-    }
-
-    public function loadPlugin()
-    {
-        // プラグインディレクトリを探索.
-        $basePath = __DIR__ . '/../../app/Plugin';
-        $finder = Finder::create()
-            ->in($basePath)
-            ->directories()
-            ->depth(0);
-
-        $finder->sortByName();
-
-        // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
-        $priorities = array();
-        $handlers = $this['orm.em']
-            ->getRepository('Eccube\Entity\PluginEventHandler')
-            ->getHandlers();
-        foreach ($handlers as $handler) {
-            if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
-                $priority = $handler->getPriority();
-            } else {
-                // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
-                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
-            }
-            $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
-        }
-
-        // プラグインをロードする.
-        // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
-        foreach ($finder as $dir) {
-            //config.ymlのないディレクトリは無視する
-            if (!file_exists($dir->getRealPath() . '/config.yml')) {
-                continue;
-            }
-            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
-            // Type: Event
-            if (isset($config['event'])) {
-                $class = '\\Plugin\\' . $config['code'] . '\\' . $config['event'];
-                $subscriber = new $class($this);
-
-                if (file_exists($dir->getRealPath() . '/event.yml')) {
-                    foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
-                        foreach ($handlers as $handler) {
-                            if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
-                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
-                            } else {
-                                $priority = $priorities[$config['event']][$event][$handler[0]];
-                            }
-                            // 優先度が0のプラグインは登録しない
-                            if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
-                                $this['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
-                            }
-                        }
-                    }
-                }
-            }
-            // const
-            if (isset($config['const'])) {
-                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
-                    $eccubeConfig[$config['code']] = array(
-                        'const' => $config['const'],
-                    );
-
-                    return $eccubeConfig;
-                }));
-            }
-            // Type: ServiceProvider
-            if (isset($config['service'])) {
-                foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\' . $config['code'] . '\\ServiceProvider\\' . $service;
-                    $this->register(new $class($this));
-                }
-            }
-        }
-    }
-
     public function initSecurity()
     {
         $this->register(new \Silex\Provider\SecurityServiceProvider());
@@ -631,5 +510,136 @@ class Application extends ApplicationTrait
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+    }
+
+    public function initializePlugin()
+    {
+        // setup event dispatcher
+        $this->initPluginEventDispatcher();
+
+        // load plugin
+        $this->loadPlugin();
+    }
+
+    public function initPluginEventDispatcher()
+    {
+        // EventDispatcher
+        $this['eccube.event.dispatcher'] = $this->share(function () {
+            return new EventDispatcher();
+        });
+
+        // hook point
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+        }, self::EARLY_EVENT);
+
+        $this->before(function (Request $request, \Silex\Application $app) {
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.before';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.after';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+        }, self::LATE_EVENT);
+
+        $this->finish(function (Request $request, Response $response, \Silex\Application $app) {
+            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.finish';
+            $app['eccube.event.dispatcher']->dispatch($event);
+        });
+
+        $app = $this;
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+            $route = $event->getRequest()->attributes->get('_route');
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
+        });
+    }
+
+    public function loadPlugin()
+    {
+        // プラグインディレクトリを探索.
+        $basePath = __DIR__ . '/../../app/Plugin';
+        $finder = Finder::create()
+            ->in($basePath)
+            ->directories()
+            ->depth(0);
+
+        $finder->sortByName();
+
+        // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
+        $priorities = array();
+        $handlers = $this['orm.em']
+            ->getRepository('Eccube\Entity\PluginEventHandler')
+            ->getHandlers();
+        foreach ($handlers as $handler) {
+            if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
+                $priority = $handler->getPriority();
+            } else {
+                // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
+                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
+            }
+            $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
+        }
+
+        // プラグインをロードする.
+        // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
+        foreach ($finder as $dir) {
+            //config.ymlのないディレクトリは無視する
+            if (!file_exists($dir->getRealPath() . '/config.yml')) {
+                continue;
+            }
+            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+
+            $plugin = $this['orm.em']
+                ->getRepository('Eccube\Entity\Plugin')
+                ->findOneBy(array('code' => $config['code']));
+            if ($plugin->getEnable() == Constant::DISABLED) {
+                // プラグインが無効化されていれば読み込まない
+                continue;
+            }
+
+            // Type: Event
+            if (isset($config['event'])) {
+                $class = '\\Plugin\\' . $config['code'] . '\\' . $config['event'];
+                $subscriber = new $class($this);
+
+                if (file_exists($dir->getRealPath() . '/event.yml')) {
+                    foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                        foreach ($handlers as $handler) {
+                            if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
+                                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
+                            } else {
+                                $priority = $priorities[$config['event']][$event][$handler[0]];
+                            }
+                            // 優先度が0のプラグインは登録しない
+                            if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
+                                $this['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                            }
+                        }
+                    }
+                }
+            }
+            // const
+            if (isset($config['const'])) {
+                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
+                    $eccubeConfig[$config['code']] = array(
+                        'const' => $config['const'],
+                    );
+
+                    return $eccubeConfig;
+                }));
+            }
+            // Type: ServiceProvider
+            if (isset($config['service'])) {
+                foreach ($config['service'] as $service) {
+                    $class = '\\Plugin\\' . $config['code'] . '\\ServiceProvider\\' . $service;
+                    $this->register(new $class($this));
+                }
+            }
+        }
     }
 }
