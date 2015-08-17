@@ -118,23 +118,23 @@
     child:
         - id: plugin_list
           name: プラグイン一覧
-          url: admin_setting_store_plugin
+          url: admin_store_plugin
         - id: plugin_owners_install
           name: 購入済プラグイン
-          url: admin_setting_store_plugin_owners_install
+          url: admin_store_plugin_owners_install
         - id: plugin_handler
           name: 高度な設定
-          url: admin_setting_store_plugin_handler
+          url: admin_store_plugin_handler
   - id: template
     name: テンプレート
     has_child: true
     child:
       - id: template_list
         name: テンプレート一覧
-        url: admin_setting_store_template
+        url: admin_store_template
       - id: template_install
         name: アップロード
-        url: admin_setting_store_template_install
+        url: admin_store_template_install
   - id: authentication_setting
     name: 認証キー設定
-    url: admin_setting_authentication_setting
+    url: admin_store_authentication_setting

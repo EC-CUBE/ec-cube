@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Controller\Admin\Setting\Store;
+namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
@@ -127,7 +127,7 @@ class PluginController extends AbstractController
         }
 
 
-        return $app->render('Setting/Store/plugin.twig', array(
+        return $app->render('Store/plugin.twig', array(
             'plugin_forms' => $pluginForms,
             'officialPlugins' => $officialPlugins,
             'unofficialPlugins' => $unofficialPlugins,
@@ -177,7 +177,7 @@ class PluginController extends AbstractController
 
                     $app->addSuccess('admin.plugin.update.complete', 'admin');
 
-                    return $app->redirect($app->url('admin_setting_store_plugin'));
+                    return $app->redirect($app->url('admin_store_plugin'));
 
                 } catch (PluginException $e) {
                     if (!empty($tmpDir) && file_exists($tmpDir)) {
@@ -199,7 +199,7 @@ class PluginController extends AbstractController
 
         $app->addError($message, 'admin');
 
-        return $app->redirect($app->url('admin_setting_store_plugin'));
+        return $app->redirect($app->url('admin_store_plugin'));
     }
 
 
@@ -224,7 +224,7 @@ class PluginController extends AbstractController
             $app->addSuccess('admin.plugin.enable.complete', 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_store_plugin'));
+        return $app->redirect($app->url('admin_store_plugin'));
     }
 
     /**
@@ -248,7 +248,7 @@ class PluginController extends AbstractController
             $app->addError('admin.plugin.already.disable', 'admin');
         }
 
-        return $app->redirect($app->url('admin_setting_store_plugin'));
+        return $app->redirect($app->url('admin_store_plugin'));
     }
 
 
@@ -270,7 +270,7 @@ class PluginController extends AbstractController
 
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
-        return $app->redirect($app->url('admin_setting_store_plugin'));
+        return $app->redirect($app->url('admin_store_plugin'));
     }
 
     function handler(Application $app)
@@ -283,7 +283,7 @@ class PluginController extends AbstractController
             $HandlersPerEvent[$handler->getEvent()][$handler->getHandlerType()][] = $handler;
         }
 
-        return $app->render('Setting/Store/plugin_handler.twig', array(
+        return $app->render('Store/plugin_handler.twig', array(
             'handlersPerEvent' => $HandlersPerEvent
         ));
 
@@ -294,7 +294,7 @@ class PluginController extends AbstractController
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId));
 
-        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
+        return $app->redirect($app->url('admin_store_plugin_handler'));
     }
 
     function handler_down(Application $app, $handlerId)
@@ -302,7 +302,7 @@ class PluginController extends AbstractController
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId), false);
 
-        return $app->redirect($app->url('admin_setting_store_plugin_handler'));
+        return $app->redirect($app->url('admin_store_plugin_handler'));
     }
 
     /**
@@ -342,7 +342,7 @@ class PluginController extends AbstractController
 
                     $app->addSuccess('admin.plugin.install.complete', 'admin');
 
-                    return $app->redirect($app->url('admin_setting_store_plugin'));
+                    return $app->redirect($app->url('admin_store_plugin'));
 
                 } catch (PluginException $e) {
                     if (!empty($tmpDir) && file_exists($tmpDir)) {
@@ -354,7 +354,7 @@ class PluginController extends AbstractController
             }
         }
 
-        return $app->render('Setting/Store/plugin_install.twig', array(
+        return $app->render('Store/plugin_install.twig', array(
             'form' => $form->createView(),
             'errors' => $errors,
         ));
@@ -468,7 +468,7 @@ class PluginController extends AbstractController
             $authResult = false;
         }
 
-        return $app->render('Setting/Store/plugin_owners_install.twig', array(
+        return $app->render('Store/plugin_owners_install.twig', array(
             'authResult' => $authResult,
             'success' => $success,
             'items' => $items,
@@ -549,7 +549,7 @@ class PluginController extends AbstractController
                             $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=1&version=' . $version;
                             $this->getRequestApi($request, $authKey, $url);
 
-                            return $app->redirect($app->url('admin_setting_store_plugin'));
+                            return $app->redirect($app->url('admin_store_plugin'));
 
                         } catch (PluginException $e) {
                             if (!empty($tmpDir) && file_exists($tmpDir)) {
@@ -574,7 +574,7 @@ class PluginController extends AbstractController
 
         $app->addError($message, 'admin');
 
-        return $app->redirect($app->url('admin_setting_store_plugin_owners_install'));
+        return $app->redirect($app->url('admin_store_plugin_owners_install'));
     }
 
     /**
@@ -618,7 +618,7 @@ class PluginController extends AbstractController
         }
 
 
-        return $app->render('Setting/Store/authentication_setting.twig', array(
+        return $app->render('Store/authentication_setting.twig', array(
             'form' => $form->createView(),
         ));
 

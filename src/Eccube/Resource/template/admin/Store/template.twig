@@ -41,7 +41,7 @@ function fnDelete(action) {
 
 {% block main %}
     <div class="row" id="aside_wrap">
-        <form name="form1" id="form1" method="post" action="{{ url('admin_setting_store_template') }}">
+        <form name="form1" id="form1" method="post" action="{{ url('admin_store_template') }}">
         {{ form_widget(form._token) }}
         {{ form_widget(form.selected) }}
         <div class="col-md-9">
@@ -78,13 +78,13 @@ function fnDelete(action) {
                                         <div class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                             <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="{{ url('admin_setting_store_template_download', { 'id' : Template.id }) }}" >ダウンロード</a></li>
+                                                <li><a href="{{ url('admin_store_template_download', { 'id' : Template.id }) }}" >ダウンロード</a></li>
                                                 {% if Template.default_template %}
                                                     <li>
                                                         <a>削除</a>
                                                     </li>
                                                 {% else %}
-                                                        <li><a href="#" onclick="fnDelete('{{ url('admin_setting_store_template_delete', { 'id': Template.id}) }}');return false;">削除</a></li>
+                                                        <li><a href="#" onclick="fnDelete('{{ url('admin_store_template_delete', { 'id': Template.id}) }}');return false;">削除</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>
