@@ -140,27 +140,43 @@ class CsvImportController
                             }
                         }
 
-                        if ($row['商品名'] == '') {
+                        if (Str::isBlank($row['商品名'])) {
                             $this->addErrors(($data->key() + 1) . '行目の商品名が設定されていません。');
+                            return $this->render($app, $form, $headers, $this->productTwig);
                         } else {
-                            $Product->setName($row['商品名']);
+                            $Product->setName(Str::trimAll($row['商品名']));
                         }
 
-                        if ($row['ショップ用メモ欄'] != '') {
-                            $Product->setNote($row['ショップ用メモ欄']);
+                        if (Str::isNotBlank($row['ショップ用メモ欄'])) {
+                            $Product->setNote(Str::trimAll($row['ショップ用メモ欄']));
+                        } else {
+                            $Product->setNote(null);
                         }
-                        if ($row['商品説明(一覧)'] != '') {
-                            $Product->setDescriptionList($row['商品説明(一覧)']);
+
+                        if (Str::isNotBlank($row['商品説明(一覧)'])) {
+                            $Product->setDescriptionList(Str::trimAll($row['商品説明(一覧)']));
+                        } else {
+                            $Product->setDescriptionList(null);
                         }
-                        if ($row['商品説明(詳細)'] != '') {
-                            $Product->setDescriptionDetail($row['商品説明(詳細)']);
+
+                        if (Str::isNotBlank($row['商品説明(詳細)'])) {
+                            $Product->setDescriptionDetail(Str::trimAll($row['商品説明(詳細)']));
+                        } else {
+                            $Product->setDescriptionDetail(null);
                         }
-                        if ($row['検索ワード'] != '') {
-                            $Product->setSearchWord($row['検索ワード']);
+
+                        if (Str::isNotBlank($row['検索ワード'])) {
+                            $Product->setSearchWord(Str::trimAll($row['検索ワード']));
+                        } else {
+                            $Product->setSearchWord(null);
                         }
-                        if ($row['フリーエリア'] != '') {
-                            $Product->setFreeArea($row['フリーエリア']);
+
+                        if (Str::isNotBlank($row['フリーエリア'])) {
+                            $Product->setFreeArea(Str::trimAll($row['フリーエリア']));
+                        } else {
+                            $Product->setFreeArea(null);
                         }
+
                         if ($row['商品削除フラグ'] == '') {
                             $Product->setDelFlg(Constant::DISABLED);
                         } else {
@@ -211,7 +227,7 @@ class CsvImportController
                                     $ProductClassOrg->setDelFlg(Constant::ENABLED);
 
                                     // 規格分類1、2をそれぞれセットし作成
-                                    $ClassCategory1= null;
+                                    $ClassCategory1 = null;
                                     if (is_numeric($row['規格分類1(ID)'])) {
                                         $ClassCategory1 = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
                                         if (!$ClassCategory1) {
@@ -454,10 +470,11 @@ class CsvImportController
 
                         }
 
-                        if ($row['カテゴリ名'] == '') {
+                        if (Str::isBlank($row['カテゴリ名'])) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリ名が設定されていません。');
+                            return $this->render($app, $form, $headers, $this->categoryTwig);
                         } else {
-                            $Category->setName($row['カテゴリ名']);
+                            $Category->setName(Str::trimAll($row['カテゴリ名']));
                         }
 
                         if ($row['親カテゴリID'] != '') {
@@ -647,7 +664,7 @@ class CsvImportController
             foreach ($images as $image) {
 
                 $ProductImage = new ProductImage();
-                $ProductImage->setFileName($image);
+                $ProductImage->setFileName(Str::trimAll($image));
                 $ProductImage->setProduct($Product);
                 $ProductImage->setRank($rank);
 
@@ -744,10 +761,10 @@ class CsvImportController
             }
         }
 
-        if ($row['商品コード'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品コードが設定されていません。');
+        if (Str::isNotBlank($row['商品コード'])) {
+            $ProductClass->setCode(Str::trimAll($row['商品コード']));
         } else {
-            $ProductClass->setCode($row['商品コード']);
+            $ProductClass->setCode(null);
         }
 
         if ($row['在庫数無制限フラグ'] == '') {
@@ -897,10 +914,10 @@ class CsvImportController
             }
         }
 
-        if ($row['商品コード'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品コードが設定されていません。');
+        if (Str::isNotBlank($row['商品コード'])) {
+            $ProductClass->setCode(Str::trimAll($row['商品コード']));
         } else {
-            $ProductClass->setCode($row['商品コード']);
+            $ProductClass->setCode(null);
         }
 
         if ($row['在庫数無制限フラグ'] == '') {

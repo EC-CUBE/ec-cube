@@ -32,10 +32,9 @@ use Symfony\Component\Yaml\Yaml;
 
 class PluginService
 {
-    private $app;
-
     CONST CONFIG_YML = 'config.yml';
     CONST EVENT_YML = 'event.yml';
+    private $app;
 
     public function __construct($app)
     {
@@ -77,6 +76,162 @@ class PluginService
         return true;
     }
 
+    public function createTempDir()
+    {
+
+        @mkdir($this->app['config']['plugin_temp_realdir']);
+        $d = ($this->app['config']['plugin_temp_realdir'] . '/' . sha1(Str::random(16)));
+
+        if (!mkdir($d, 0777)) {
+            throw new PluginException($php_errormsg . $d);
+        }
+        return $d;
+
+    }
+
+    public function unpackPluginArchive($archive, $dir)
+    {
+        $extension = pathinfo($archive, PATHINFO_EXTENSION);
+        try {
+            if ($extension == 'zip') {
+                $zip = new \ZipArchive();
+                $zip->open($archive);
+                $zip->extractTo($dir);
+                $zip->close();
+            } else {
+                $phar = new \PharData($archive);
+                $phar->extractTo($dir, null, true);
+            }
+        } catch (\Exception $e) {
+            throw new PluginException('アップロードに失敗しました。圧縮ファイルを確認してください。');
+        }
+    }
+
+    public function checkPluginArchiveContent($dir)
+    {
+        $meta = $this->readYml($dir . '/config.yml');
+        if (!is_array($meta)) {
+            throw new PluginException('config.yml not found or syntax error');
+        }
+        if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
+            throw new PluginException('config.yml code empty or invalid_character(\W)');
+        }
+        if (!isset($meta['name'])) {
+            // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
+            throw new PluginException('config.yml name empty');
+        }
+        if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
+            throw new PluginException('config.yml event empty or invalid_character(\W) ');
+        }
+        if (!isset($meta['version'])) {
+            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
+            throw new PluginException('config.yml version invalid_character(\W) ');
+        }
+    }
+
+    public function readYml($yml)
+    {
+        return Yaml::Parse($yml);
+    }
+
+    public function checkSymbolName($string)
+    {
+        return strlen($string) < 256 && preg_match('/^\w+$/', $string);
+        // plugin_nameやplugin_codeに使える文字のチェック
+        // a-z A-Z 0-9 _
+        // ディレクトリ名などに使われれるので厳しめ
+    }
+
+    public function deleteFile($path)
+    {
+        $f = new Filesystem();
+        $f->remove($path);
+    }
+
+    public function checkSamePlugin($code)
+    {
+        $repo = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $code));
+        if ($repo) {
+            throw new PluginException('plugin already installed.');
+        }
+
+    }
+
+    public function calcPluginDir($name)
+    {
+        return $this->app['config']['plugin_realdir'] . '/' . $name;
+    }
+
+    public function createPluginDir($d)
+    {
+        $b = mkdir($d);
+        if (!$b) {
+            throw new PluginException($php_errormsg);
+        }
+    }
+
+    public function registerPlugin($meta, $event_yml, $source = 0)
+    {
+
+        $em = $this->app['orm.em'];
+        $em->getConnection()->beginTransaction();
+        try {
+
+            $p = new \Eccube\Entity\Plugin();
+            // インストール直後はプラグインは有効にしない
+            $p->setName($meta['name'])
+                ->setEnable(Constant::DISABLED)
+                ->setClassName(isset($meta['event']) ? $meta['event'] : '')
+                ->setVersion($meta['version'])
+                ->setDelflg(Constant::DISABLED)
+                ->setSource($source)
+                ->setCode($meta['code']);
+
+            $em->persist($p);
+            $em->flush();
+
+            if (is_array($event_yml)) {
+                foreach ($event_yml as $event => $handlers) {
+                    foreach ($handlers as $handler) {
+                        if (!$this->checkSymbolName($handler[0])) {
+                            throw new PluginException('Handler name format error');
+                        }
+                        $peh = new \Eccube\Entity\PluginEventHandler();
+                        $peh->setPlugin($p)
+                            ->setEvent($event)
+                            ->setdelFlg(Constant::DISABLED)
+                            ->setHandler($handler[0])
+                            ->setHandlerType($handler[1])
+                            ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($event, $handler[1]));
+                        $em->persist($peh);
+                        $em->flush();
+                    }
+                }
+            }
+
+            $em->persist($p);
+            $em->flush();
+            $em->getConnection()->commit();
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            throw new PluginException($e->getMessage());
+        }
+
+        return $p;
+
+    }
+
+    public function callPluginManagerMethod($meta, $method)
+    {
+        $class = '\\Plugin' . '\\' . $meta['code'] . '\\' . 'PluginManager';
+        if (class_exists($class)) {
+            $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
+            if (method_exists($installer, $method)) {
+                $installer->$method($meta, $this->app);
+            }
+        }
+    }
+
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
 
@@ -91,6 +246,28 @@ class PluginService
 
     }
 
+    public function unregisterPlugin(\Eccube\Entity\Plugin $p)
+    {
+        $em = $this->app['orm.em'];
+        $em->getConnection()->beginTransaction();
+
+        $p->setDelFlg(Constant::ENABLED)->setEnable(Constant::DISABLED);
+
+        foreach ($p->getPluginEventHandlers()->toArray() as $peh) {
+            $peh->setDelFlg(Constant::ENABLED);
+        }
+
+        $em->persist($p);
+        $em->flush();
+
+        $em->getConnection()->commit();
+    }
+
+    public function disable(\Eccube\Entity\Plugin $plugin)
+    {
+        return $this->enable($plugin, false);
+    }
+
     public function enable(\Eccube\Entity\Plugin $plugin, $enable = true)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
@@ -100,11 +277,6 @@ class PluginService
         $em->flush();
         $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), $enable ? 'enable' : 'disable');
         return true;
-    }
-
-    public function disable(\Eccube\Entity\Plugin $plugin)
-    {
-        return $this->enable($plugin, false);
     }
 
     public function update(\Eccube\Entity\Plugin $plugin, $path)
@@ -142,95 +314,6 @@ class PluginService
         }
 
         return true;
-    }
-
-
-    public function calcPluginDir($name)
-    {
-        return $this->app['config']['plugin_realdir'] . '/' . $name;
-    }
-
-    public function checkSamePlugin($code)
-    {
-        $repo = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $code));
-        if ($repo) {
-            throw new PluginException('plugin already installed.');
-        }
-
-    }
-
-    public function checkPluginArchiveContent($dir)
-    {
-        $meta = $this->readYml($dir . '/config.yml');
-        if (!is_array($meta)) {
-            throw new PluginException('config.yml not found or syntax error');
-        }
-        if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
-            throw new PluginException('config.yml code empty or invalid_character(\W)');
-        }
-        if (!isset($meta['name'])) {
-            // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException('config.yml name empty');
-        }
-        if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
-            throw new PluginException('config.yml event empty or invalid_character(\W) ');
-        }
-        if (!isset($meta['version'])) {
-            // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
-            throw new PluginException('config.yml version invalid_character(\W) ');
-        }
-    }
-
-    public function checkSymbolName($string)
-    {
-        return strlen($string) < 256 && preg_match('/^\w+$/', $string);
-        // plugin_nameやplugin_codeに使える文字のチェック
-        // a-z A-Z 0-9 _
-        // ディレクトリ名などに使われれるので厳しめ
-    }
-
-    public function readYml($yml)
-    {
-        return Yaml::Parse($yml);
-    }
-
-    public function createTempDir()
-    {
-
-        @mkdir($this->app['config']['plugin_temp_realdir']);
-        $d = ($this->app['config']['plugin_temp_realdir'] . '/' . sha1(Str::random(16)));
-
-        if (!mkdir($d, 0777)) {
-            throw new PluginException($php_errormsg . $d);
-        }
-        return $d;
-
-    }
-
-    public function createPluginDir($d)
-    {
-        $b = mkdir($d);
-        if (!$b) {
-            throw new PluginException($php_errormsg);
-        }
-    }
-
-    public function unpackPluginArchive($archive, $dir)
-    {
-        $extension = pathinfo($archive, PATHINFO_EXTENSION);
-        try {
-            if ($extension == 'zip') {
-                $zip = new \ZipArchive();
-                $zip->open($archive);
-                $zip->extractTo($dir);
-                $zip->close();
-            } else {
-                $phar = new \PharData($archive);
-                $phar->extractTo($dir, null, true);
-            }
-        } catch (\Exception $e) {
-            throw new PluginException('アップロードに失敗しました。圧縮ファイルを確認してください。');
-        }
     }
 
     public function updatePlugin(\Eccube\Entity\Plugin $plugin, $meta, $event_yml)
@@ -296,90 +379,6 @@ class PluginService
         $em->persist($plugin);
         $em->flush();
         $em->getConnection()->commit();
-    }
-
-    public function registerPlugin($meta, $event_yml, $source = 0)
-    {
-
-        $em = $this->app['orm.em'];
-        $em->getConnection()->beginTransaction();
-        try {
-
-            $p = new \Eccube\Entity\Plugin();
-            $p->setName($meta['name'])
-                ->setEnable(Constant::ENABLED)
-                ->setClassName(isset($meta['event']) ? $meta['event'] : '')
-                ->setVersion($meta['version'])
-                ->setDelflg(Constant::DISABLED)
-                ->setSource($source)
-                ->setCode($meta['code']);
-
-            $em->persist($p);
-            $em->flush();
-
-            if (is_array($event_yml)) {
-                foreach ($event_yml as $event => $handlers) {
-                    foreach ($handlers as $handler) {
-                        if (!$this->checkSymbolName($handler[0])) {
-                            throw new PluginException('Handler name format error');
-                        }
-                        $peh = new \Eccube\Entity\PluginEventHandler();
-                        $peh->setPlugin($p)
-                            ->setEvent($event)
-                            ->setdelFlg(Constant::DISABLED)
-                            ->setHandler($handler[0])
-                            ->setHandlerType($handler[1])
-                            ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($event, $handler[1]));
-                        $em->persist($peh);
-                        $em->flush();
-                    }
-                }
-            }
-
-            $em->persist($p);
-            $em->flush();
-            $em->getConnection()->commit();
-        } catch (\Exception $e) {
-            $em->getConnection()->rollback();
-            throw new PluginException($e->getMessage());
-        }
-
-        return $p;
-
-    }
-
-    public function unregisterPlugin(\Eccube\Entity\Plugin $p)
-    {
-        $em = $this->app['orm.em'];
-        $em->getConnection()->beginTransaction();
-
-        $p->setDelFlg(Constant::ENABLED)->setEnable(Constant::DISABLED);
-
-        foreach ($p->getPluginEventHandlers()->toArray() as $peh) {
-            $peh->setDelFlg(Constant::ENABLED);
-        }
-
-        $em->persist($p);
-        $em->flush();
-
-        $em->getConnection()->commit();
-    }
-
-    public function callPluginManagerMethod($meta, $method)
-    {
-        $class = '\\Plugin' . '\\' . $meta['code'] . '\\' . 'PluginManager';
-        if (class_exists($class)) {
-            $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
-            if (method_exists($installer, $method)) {
-                $installer->$method($meta, $this->app);
-            }
-        }
-    }
-
-    public function deleteFile($path)
-    {
-        $f = new Filesystem();
-        $f->remove($path);
     }
 
 }
