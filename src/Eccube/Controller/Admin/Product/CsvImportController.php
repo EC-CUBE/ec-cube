@@ -146,21 +146,12 @@ class CsvImportController
                             $Product->setName($row['商品名']);
                         }
 
-                        if ($row['ショップ用メモ欄'] != '') {
-                            $Product->setNote($row['ショップ用メモ欄']);
-                        }
-                        if ($row['商品説明(一覧)'] != '') {
-                            $Product->setDescriptionList($row['商品説明(一覧)']);
-                        }
-                        if ($row['商品説明(詳細)'] != '') {
-                            $Product->setDescriptionDetail($row['商品説明(詳細)']);
-                        }
-                        if ($row['検索ワード'] != '') {
-                            $Product->setSearchWord($row['検索ワード']);
-                        }
-                        if ($row['フリーエリア'] != '') {
-                            $Product->setFreeArea($row['フリーエリア']);
-                        }
+                        $Product->setNote($row['ショップ用メモ欄'] ?: null);
+                        $Product->setDescriptionList($row['商品説明(一覧)'] ?: null);
+                        $Product->setDescriptionDetail($row['商品説明(詳細)'] ?: null);
+                        $Product->setSearchWord($row['検索ワード'] ?: null);
+                        $Product->setFreeArea($row['フリーエリア'] ?: null);
+
                         if ($row['商品削除フラグ'] == '') {
                             $Product->setDelFlg(Constant::DISABLED);
                         } else {
@@ -211,7 +202,7 @@ class CsvImportController
                                     $ProductClassOrg->setDelFlg(Constant::ENABLED);
 
                                     // 規格分類1、2をそれぞれセットし作成
-                                    $ClassCategory1= null;
+                                    $ClassCategory1 = null;
                                     if (is_numeric($row['規格分類1(ID)'])) {
                                         $ClassCategory1 = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
                                         if (!$ClassCategory1) {
