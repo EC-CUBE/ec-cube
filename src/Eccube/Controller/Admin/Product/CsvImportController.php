@@ -140,17 +140,42 @@ class CsvImportController
                             }
                         }
 
-                        if ($row['商品名'] == '') {
+                        if (Str::isBlank($row['商品名'])) {
                             $this->addErrors(($data->key() + 1) . '行目の商品名が設定されていません。');
+                            return $this->render($app, $form, $headers, $this->productTwig);
                         } else {
-                            $Product->setName($row['商品名']);
+                            $Product->setName(Str::trimAll($row['商品名']));
                         }
 
-                        $Product->setNote($row['ショップ用メモ欄'] ?: null);
-                        $Product->setDescriptionList($row['商品説明(一覧)'] ?: null);
-                        $Product->setDescriptionDetail($row['商品説明(詳細)'] ?: null);
-                        $Product->setSearchWord($row['検索ワード'] ?: null);
-                        $Product->setFreeArea($row['フリーエリア'] ?: null);
+                        if (Str::isNotBlank($row['ショップ用メモ欄'])) {
+                            $Product->setNote(Str::trimAll($row['ショップ用メモ欄']));
+                        } else {
+                            $Product->setNote(null);
+                        }
+
+                        if (Str::isNotBlank($row['商品説明(一覧)'])) {
+                            $Product->setDescriptionList(Str::trimAll($row['商品説明(一覧)']));
+                        } else {
+                            $Product->setDescriptionList(null);
+                        }
+
+                        if (Str::isNotBlank($row['商品説明(詳細)'])) {
+                            $Product->setDescriptionDetail(Str::trimAll($row['商品説明(詳細)']));
+                        } else {
+                            $Product->setDescriptionDetail(null);
+                        }
+
+                        if (Str::isNotBlank($row['検索ワード'])) {
+                            $Product->setSearchWord(Str::trimAll($row['検索ワード']));
+                        } else {
+                            $Product->setSearchWord(null);
+                        }
+
+                        if (Str::isNotBlank($row['フリーエリア'])) {
+                            $Product->setFreeArea(Str::trimAll($row['フリーエリア']));
+                        } else {
+                            $Product->setFreeArea(null);
+                        }
 
                         if ($row['商品削除フラグ'] == '') {
                             $Product->setDelFlg(Constant::DISABLED);
@@ -445,10 +470,11 @@ class CsvImportController
 
                         }
 
-                        if ($row['カテゴリ名'] == '') {
+                        if (Str::isBlank($row['カテゴリ名'])) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリ名が設定されていません。');
+                            return $this->render($app, $form, $headers, $this->categoryTwig);
                         } else {
-                            $Category->setName($row['カテゴリ名']);
+                            $Category->setName(Str::trimAll($row['カテゴリ名']));
                         }
 
                         if ($row['親カテゴリID'] != '') {
@@ -638,7 +664,7 @@ class CsvImportController
             foreach ($images as $image) {
 
                 $ProductImage = new ProductImage();
-                $ProductImage->setFileName($image);
+                $ProductImage->setFileName(Str::trimAll($image));
                 $ProductImage->setProduct($Product);
                 $ProductImage->setRank($rank);
 
@@ -735,10 +761,10 @@ class CsvImportController
             }
         }
 
-        if ($row['商品コード'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品コードが設定されていません。');
+        if (Str::isNotBlank($row['商品コード'])) {
+            $ProductClass->setCode(Str::trimAll($row['商品コード']));
         } else {
-            $ProductClass->setCode($row['商品コード']);
+            $ProductClass->setCode(null);
         }
 
         if ($row['在庫数無制限フラグ'] == '') {
@@ -888,10 +914,10 @@ class CsvImportController
             }
         }
 
-        if ($row['商品コード'] == '') {
-            $this->addErrors(($data->key() + 1) . '行目の商品コードが設定されていません。');
+        if (Str::isNotBlank($row['商品コード'])) {
+            $ProductClass->setCode(Str::trimAll($row['商品コード']));
         } else {
-            $ProductClass->setCode($row['商品コード']);
+            $ProductClass->setCode(null);
         }
 
         if ($row['在庫数無制限フラグ'] == '') {
