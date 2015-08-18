@@ -597,7 +597,8 @@ class Application extends ApplicationTrait
             $plugin = $this['orm.em']
                 ->getRepository('Eccube\Entity\Plugin')
                 ->findOneBy(array('code' => $config['code']));
-            if ($plugin->getEnable() == Constant::DISABLED) {
+
+            if ($plugin && $plugin->getEnable() == Constant::DISABLED) {
                 // プラグインが無効化されていれば読み込まない
                 continue;
             }
