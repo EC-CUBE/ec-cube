@@ -27,7 +27,6 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingController extends AbstractController
@@ -39,6 +38,14 @@ class ShoppingController extends AbstractController
     /** @var \Eccube\Service\OrderService */
     protected $orderService;
 
+    private $sessionKey = 'eccube.front.shopping.nonmember';
+
+    /**
+     * 購入画面表示
+     *
+     * @param Application $app
+     * @param Request $request
+     */
     public function index(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
@@ -56,27 +63,29 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        // 受注データを取得
+        // 登録済みの受注情報を取得
         $Order = $app['eccube.service.shopping']->getOrder();
 
-        // 初回アクセス(受注データがない)の場合は, 受注データを作成
+        // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
         if (is_null($Order)) {
 
             // 未ログインの場合は, ログイン画面へリダイレクト.
             if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
 
                 // 非会員でも一度会員登録されていればショッピング画面へ遷移
-                $arr = $app['session']->get('eccube.front.shopping.nonmember');
-                if (is_null($arr)) {
+                $Customer = $app['eccube.service.shopping']->getNonMember($this->sessionKey);
+
+                if (is_null($Customer)) {
                     return $app->redirect($app->url('shopping_login'));
                 }
-                $Customer = $arr['customer'];
-                $Customer->setPref($app['eccube.repository.master.pref']->find($arr['pref']));
+
             } else {
                 $Customer = $app->user();
             }
 
+            // 受注情報を作成
             $Order = $app['eccube.service.shopping']->createOrder($Customer);
+
         } else {
             // 計算処理
             $Order = $orderService->getAmount($Order, $cartService->getCart());
@@ -92,7 +101,7 @@ class ShoppingController extends AbstractController
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
-        // 配送業社の設定
+        // 配送業者の設定
         $orderService->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
@@ -612,7 +621,6 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($app->isGranted('ROLE_USER')) {
             return $app->redirect($app->url('shopping'));
@@ -649,31 +657,20 @@ class ShoppingController extends AbstractController
                     ->setAddr01($data['addr01'])
                     ->setAddr02($data['addr02']);
 
-                // 受注関連情報を取得
-                $preOrderId = $cartService->getPreOrderId();
-                $Order = $app['eccube.repository.order']->findOneBy(array(
-                    'pre_order_id' => $preOrderId,
-                    'OrderStatus' => $app['config']['order_processing']
-                ));
+                // 受注情報を取得
+                $Order = $app['eccube.service.shopping']->getOrder();
 
-                // 初回アクセス(受注データがない)の場合は, 受注データを作成
+                // 初回アクセス(受注データがない)の場合は, 受注情報を作成
                 if (is_null($Order)) {
-                    // ランダムなpre_order_idを作成
-                    $preOrderId = sha1(uniqid(mt_rand(), true));
-
-                    // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-                    $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(),
-                        $Customer, $preOrderId);
-
-                    $cartService->setPreOrderId($preOrderId);
-                    $cartService->save();
+                    // 受注情報を作成
+                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
                 }
 
                 // 非会員用セッションを作成
-                $arr = array();
-                $arr['customer'] = $Customer;
-                $arr['pref'] = $Customer->getPref()->getId();
-                $app['session']->set('eccube.front.shopping.nonmember', $arr);
+                $nonMember = array();
+                $nonMember['customer'] = $Customer;
+                $nonMember['pref'] = $Customer->getPref()->getId();
+                $app['session']->set($this->sessionKey, $nonMember);
 
                 return $app->redirect($app->url('shopping'));
 

@@ -298,12 +298,6 @@ class CartService
             }
         }
 
-        foreach ($arr as $a) {
-            error_log(print_r($a->getMethod(), true));
-
-        }
-
-
         if (count($arr) > 0) {
             $this->getCart()->setPayments($arr);
             return true;

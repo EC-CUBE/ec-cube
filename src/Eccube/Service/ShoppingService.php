@@ -23,12 +23,17 @@
 
 namespace Eccube\Service;
 
+use Doctrine\DBAL\LockMode;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderDetail;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Util\Str;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingService
 {
@@ -44,6 +49,7 @@ class ShoppingService
     /** @var \Eccube\Entity\BaseInfo */
     protected $BaseInfo;
 
+    /** @var  \Doctrine\ORM\EntityManager */
     protected $em;
 
     public function __construct(Application $app, $cartService, $orderService)
@@ -70,6 +76,28 @@ class ShoppingService
         ));
 
         return $Order;
+
+    }
+
+    /**
+     * 非会員情報を取得
+     *
+     * @param $sesisonKey
+     * @return $Customer|null
+     */
+    public function getNonMember($sesisonKey)
+    {
+
+        // 非会員でも一度会員登録されていればショッピング画面へ遷移
+        $nonMember = $this->app['session']->get($sesisonKey);
+        if (is_null($nonMember)) {
+            return null;
+        }
+
+        $Customer = $nonMember['customer'];
+        $Customer->setPref($this->app['eccube.repository.master.pref']->find($nonMember['pref']));
+
+        return $Customer;
 
     }
 
@@ -122,7 +150,14 @@ class ShoppingService
         $Order = $this->getNewShipping($Order, $Customer, $deliveries);
 
 
-        // 受注明細情報、配送商品情報を取得
+        // 受注明細情報を作成
+        // $Order = $this->getNewOrderDetails($Order);
+
+        // 配送商品情報を作成
+        // $Order = $this->getNewShipmentItem($Order);
+
+        $Order = $this->createDetails($Order);
+
 
         $subTotal = 0;
         $tax = 0;
@@ -130,7 +165,6 @@ class ShoppingService
         $productTypes = array();
         $productDeliveryFeeTotal = 0;
 
-        $optionProductDeliveryFee = $this->BaseInfo->getOptionProductDeliveryFee();
 
         // 受注詳細, 配送商品
         foreach ($this->cartService->getCart()->getCartItems() as $item) {
@@ -142,7 +176,7 @@ class ShoppingService
             $quantity = $item->getQuantity();
             $productTypes[] = $ProductClass->getProductType();
             $totalQuantity += $quantity;
-            if (!is_null($optionProductDeliveryFee)) {
+            if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
                 // 商品ごとの配送料が設定
                 if (!is_null($ProductClass->getDeliveryFee())) {
                     $productDeliveryFeeTotal += $ProductClass->getDeliveryFee() * $quantity;
@@ -287,33 +321,6 @@ class ShoppingService
         return $Order;
     }
 
-    public function newOrderDetail($Product, $ProductClass, $quantity)
-    {
-        $OrderDetail = new \Eccube\Entity\OrderDetail();
-        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
-        $OrderDetail->setProduct($Product)
-            ->setProductClass($ProductClass)
-            ->setProductName($Product->getName())
-            ->setProductCode($ProductClass->getCode())
-            ->setPrice($ProductClass->getPrice02())
-            ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getCalcRule()->getId())
-            ->setTaxRate($TaxRule->getTaxRate());
-
-        $ClassCategory1 = $ProductClass->getClassCategory1();
-        if (!is_null($ClassCategory1)) {
-            $OrderDetail->setClasscategoryName1($ClassCategory1->getName());
-            $OrderDetail->setClassName1($ClassCategory1->getClassName()->getName());
-        }
-        $ClassCategory2 = $ProductClass->getClassCategory2();
-        if (!is_null($ClassCategory2)) {
-            $OrderDetail->setClasscategoryName2($ClassCategory2->getName());
-            $OrderDetail->setClassName2($ClassCategory2->getClassName()->getName());
-        }
-
-        return $OrderDetail;
-    }
-
     /**
      * 受注情報を作成
      *
@@ -400,7 +407,10 @@ class ShoppingService
     public function getNewShipping(Order $Order, Customer $Customer, $deliveries)
     {
 
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+        // カートに保持されている商品種別を取得
+        $productTypes = $this->cartService->getProductTypes();
+
+        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
             // 複数配送対応
             foreach ($deliveries as $Delivery) {
                 $Shipping = new Shipping();
@@ -464,4 +474,488 @@ class ShoppingService
         return $Shipping;
     }
 
+    public function createDetails(Order $Order) {
+
+        // 受注詳細, 配送商品
+        foreach ($this->cartService->getCart()->getCartItems() as $item) {
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            $ProductClass = $item->getObject();
+            /* @var $Product \Eccube\Entity\Product */
+            $Product = $ProductClass->getProduct();
+
+            $quantity = $item->getQuantity();
+
+            // 受注明細情報を作成
+            $OrderDetail = $this->getNewOrderDetail($Product, $ProductClass, $quantity);
+            $OrderDetail->setOrder($Order);
+            $Order->addOrderDetail($OrderDetail);
+
+            // 配送商品情報を作成
+
+            // 配送商品
+            $ShipmentItem = new \Eccube\Entity\ShipmentItem();
+            $Shippings = $Order->getShippings();
+            $Shipping = $Shippings[0];
+            $ShipmentItem->setShipping($Shipping)
+                ->setOrder($Order)
+                ->setProductClass($ProductClass)
+                ->setProduct($Product)
+                ->setProductName($Product->getName())
+                ->setProductCode($ProductClass->getCode())
+                ->setPrice($ProductClass->getPrice02())
+                ->setQuantity($quantity);
+
+            $ClassCategory1 = $ProductClass->getClassCategory1();
+            if (!is_null($ClassCategory1)) {
+                $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
+                $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
+            }
+            $ClassCategory2 = $ProductClass->getClassCategory2();
+            if (!is_null($ClassCategory2)) {
+                $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
+                $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
+            }
+            $Shipping->addShipmentItem($ShipmentItem);
+            $this->em->persist($ShipmentItem);
+        }
+
+
+    }
+
+
+    /**
+     * 受注明細情報を作成
+     *
+     * @param $Order
+     * @return mixed
+     */
+
+
+    /**
+     * 受注明細情報を作成
+     *
+     * @param Product $Product
+     * @param ProductClass $ProductClass
+     * @param $quantity
+     * @return \Eccube\Entity\OrderDetail
+     */
+    public function getNewOrderDetail(Product $Product, ProductClass $ProductClass, $quantity)
+    {
+        $OrderDetail = new OrderDetail();
+        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
+        $OrderDetail->setProduct($Product)
+            ->setProductClass($ProductClass)
+            ->setProductName($Product->getName())
+            ->setProductCode($ProductClass->getCode())
+            ->setPrice($ProductClass->getPrice02())
+            ->setQuantity($quantity)
+            ->setTaxRule($TaxRule->getCalcRule()->getId())
+            ->setTaxRate($TaxRule->getTaxRate());
+
+        $ClassCategory1 = $ProductClass->getClassCategory1();
+        if (!is_null($ClassCategory1)) {
+            $OrderDetail->setClasscategoryName1($ClassCategory1->getName());
+            $OrderDetail->setClassName1($ClassCategory1->getClassName()->getName());
+        }
+        $ClassCategory2 = $ProductClass->getClassCategory2();
+        if (!is_null($ClassCategory2)) {
+            $OrderDetail->setClasscategoryName2($ClassCategory2->getName());
+            $OrderDetail->setClassName2($ClassCategory2->getClassName()->getName());
+        }
+
+        return $OrderDetail;
+    }
+
+
+
+    public function getNewShipmentItem($Order) {
+
+        // 配送商品情報を作成
+
+        foreach ($this->cartService->getCart()->getCartItems() as $item) {
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            $ProductClass = $item->getObject();
+            /* @var $Product \Eccube\Entity\Product */
+            $Product = $ProductClass->getProduct();
+
+            $quantity = $item->getQuantity();
+
+            // 配送商品
+            $ShipmentItem = new \Eccube\Entity\ShipmentItem();
+            $Shippings = $Order->getShippings();
+            $Shipping = $Shippings[0];
+            $ShipmentItem->setShipping($Shipping)
+                ->setOrder($Order)
+                ->setProductClass($ProductClass)
+                ->setProduct($Product)
+                ->setProductName($Product->getName())
+                ->setProductCode($ProductClass->getCode())
+                ->setPrice($ProductClass->getPrice02())
+                ->setQuantity($quantity);
+
+            $ClassCategory1 = $ProductClass->getClassCategory1();
+            if (!is_null($ClassCategory1)) {
+                $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
+                $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
+            }
+            $ClassCategory2 = $ProductClass->getClassCategory2();
+            if (!is_null($ClassCategory2)) {
+                $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
+                $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
+            }
+            $Shipping->addShipmentItem($ShipmentItem);
+            $this->em->persist($ShipmentItem);
+        }
+
+        return $Order;
+
+    }
+
+
+
+
+    /**
+     * 住所などの情報が変更された時に金額の再計算を行う
+     */
+    public function getAmount(\Eccube\Entity\Order $Order, \Eccube\Entity\Cart $Cart)
+    {
+
+        // 初期選択の配送業者をセット
+        $shippings = $Order->getShippings();
+        $delivery = $shippings[0]->getDelivery();
+
+        $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $delivery, 'Pref' => $shippings[0]->getPref()));
+
+        // 配送料金の設定
+        $payment = $Order->getPayment();
+
+        if (!is_null($payment)) {
+            $Order->setPayment($payment);
+            $Order->setPaymentMethod($payment->getMethod());
+            $Order->setCharge($payment->getCharge());
+        }
+        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
+
+        $baseInfo = $this->app['eccube.repository.base_info']->get();
+        // 配送料無料条件(合計金額)
+        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
+        if (!is_null($deliveryFreeAmount)) {
+            // 合計金額が設定金額以上であれば送料無料
+            if ($Order->getSubTotal() >= $deliveryFreeAmount) {
+                $Order->setDeliveryFeeTotal(0);
+            }
+        }
+
+        // 配送料無料条件(合計数量)
+        $deliveryFreeQuantity = $baseInfo->getDeliveryFreeQuantity();
+        if (!is_null($deliveryFreeQuantity)) {
+            // 合計数量が設定数量以上であれば送料無料
+            if ($Cart->getTotalQuantity() >= $deliveryFreeQuantity) {
+                $Order->setDeliveryFeeTotal(0);
+            }
+        }
+
+        $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
+
+        $Order->setTotal($total);
+        $Order->setPaymentTotal($total);
+        $this->app['orm.em']->flush();
+
+        return $Order;
+
+    }
+
+
+    /**
+     * 商品公開ステータスチェック、在庫チェック、購入制限数チェックを行い、在庫情報をロックする
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     * @return true : 成功、 false : 失敗
+     */
+    public function isOrderProduct($em, \Eccube\Entity\Order $Order)
+    {
+        // 商品公開ステータスチェック
+        $orderDetails = $Order->getOrderDetails();
+
+        foreach ($orderDetails as $orderDetail) {
+            if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
+                // 商品が非公開ならエラー
+                return false;
+            }
+
+            // 購入制限数チェック
+            if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
+                if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
+                    return false;
+                }
+            }
+
+        }
+
+        // 在庫チェック
+        foreach ($orderDetails as $orderDetail) {
+            // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
+            if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
+                // 在庫チェックあり
+                // 在庫に対してロック(select ... for update)を実行
+                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
+                    $orderDetail->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
+                );
+                // 購入数量と在庫数をチェックして在庫がなければエラー
+                if ($orderDetail->getQuantity() > $productStock->getStock()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
+    }
+
+    /**
+     * 受注情報、お届け先情報の更新
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     * @param $formData フォームデータ
+     */
+    public function setOrderUpdate($em, \Eccube\Entity\Order $Order, $formData)
+    {
+
+        // 受注情報を更新
+        $Order->setOrderDate(new \DateTime());
+        $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
+        $Order->setMessage($formData['message']);
+
+        // お届け先情報を更新
+        $shippings = $Order->getShippings();
+        foreach ($shippings as $shipping) {
+            $shipping->setShippingDeliveryName($formData['delivery']->getName());
+            if (!empty($formData['deliveryTime'])) {
+                $shipping->setShippingDeliveryTime($formData['deliveryTime']->getDeliveryTime());
+            }
+            if (!empty($formData['deliveryDate'])) {
+                $shipping->setShippingDeliveryDate(new \DateTime($formData['deliveryDate']));
+            }
+            $shipping->setShippingDeliveryFee($shipping->getDeliveryFee()->getFee());
+        }
+
+    }
+
+
+    /**
+     * 在庫情報の更新
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     */
+    public function setStockUpdate($em, \Eccube\Entity\Order $Order)
+    {
+
+        $orderDetails = $Order->getOrderDetails();
+
+        // 在庫情報更新
+        foreach ($orderDetails as $orderDetail) {
+            // 在庫が無制限かチェックし、制限ありなら在庫数を更新
+            if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
+
+                $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
+                    $orderDetail->getProductClass()->getProductStock()->getId()
+                );
+
+                // 在庫情報の在庫数を更新
+                $stock = $productStock->getStock() - $orderDetail->getQuantity();
+                $productStock->setStock($stock);
+
+                // 商品規格情報の在庫数を更新
+                $orderDetail->getProductClass()->setStock($stock);
+
+            }
+        }
+
+    }
+
+
+    /**
+     * 会員情報の更新
+     *
+     * @param $em トランザクション制御されているEntityManager
+     * @param $Order 受注情報
+     * @param $user ログインユーザ
+     */
+    public function setCustomerUpdate($em, \Eccube\Entity\Order $Order, \Eccube\Entity\Customer $user)
+    {
+
+        $orderDetails = $Order->getOrderDetails();
+
+        // 顧客情報を更新
+        $now = new \DateTime();
+        $firstBuyDate = $user->getFirstBuyDate();
+        if (empty($firstBuyDate)) {
+            $user->setFirstBuyDate($now);
+        }
+        $user->setLastBuyDate($now);
+
+        $user->setBuyTimes($user->getBuyTimes() + 1);
+        $user->setBuyTotal($user->getBuyTotal() + $Order->getTotal());
+
+    }
+
+
+    /**
+     * 支払方法選択の表示設定
+     *
+     * @param $paymentOptions 支払選択肢情報
+     * @param $subTotal 小計
+     */
+    public function getPayments($paymentOptions, $subTotal)
+    {
+        $payments = array();
+        foreach ($paymentOptions as $paymentOption) {
+            $payment = $paymentOption->getPayment();
+            // 支払方法の制限値内であれば表示
+            if (!is_null($payment)) {
+                if (intval($payment->getRuleMin()) <= $subTotal) {
+                    if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
+                        $payments[] = $payment;
+                    }
+                }
+            }
+        }
+
+        return $payments;
+
+    }
+
+    /**
+     * 配送業者を取得
+     */
+    public function findDeliveriesFromOrderDetails($app, $details)
+    {
+
+        $productTypes = array();
+        foreach ($details as $detail) {
+            $productTypes[] = $detail->getProductClass()->getProductType();
+        }
+
+        $qb = $app['orm.em']->createQueryBuilder();
+        $deliveries = $qb->select("d")
+            ->from("\Eccube\Entity\Delivery", "d")
+            ->where($qb->expr()->in('d.ProductType', ':productTypes'))
+            ->setParameter('productTypes', $productTypes)
+            ->andWhere("d.del_flg = :delFlg")
+            ->setParameter('delFlg', Constant::DISABLED)
+            ->orderBy("d.rank", "ASC")
+            ->getQuery()
+            ->getResult();
+
+        return $deliveries;
+
+    }
+
+
+    /**
+     * 配送業者のフォームを設定
+     */
+    public function setFormDelivery($form, $deliveries, $delivery = null)
+    {
+
+        // 配送業社の設定
+        $form->add('delivery', 'entity', array(
+            'class' => 'Eccube\Entity\Delivery',
+            'property' => 'name',
+            'choices' => $deliveries,
+            'data' => $delivery,
+        ));
+
+    }
+
+
+    /**
+     * お届け日のフォームを設定
+     */
+    public function setFormDeliveryDate($form, $Order, $app)
+    {
+
+        // お届け日の設定
+        $minDate = 0;
+        $deliveryDateFlag = false;
+
+        // 配送時に最大となる商品日数を取得
+        foreach ($Order->getOrderDetails() as $detail) {
+            $deliveryDate = $detail->getProductClass()->getDeliveryDate();
+            if (!is_null($deliveryDate)) {
+                if ($minDate < $deliveryDate->getValue()) {
+                    $minDate = $deliveryDate->getValue();
+                }
+                // 配送日数が設定されている
+                $deliveryDateFlag = true;
+            }
+        }
+
+        // 配達最大日数期間を設定
+        $deliveryDates = array();
+
+        // 配送日数が設定されている
+        if ($deliveryDateFlag) {
+            $period = new \DatePeriod (
+                new \DateTime($minDate . ' day'),
+                new \DateInterval('P1D'),
+                new \DateTime($minDate + $app['config']['deliv_date_end_max'] . ' day')
+            );
+
+            foreach ($period as $day) {
+                $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
+            }
+        }
+
+
+        $form->add('deliveryDate', 'choice', array(
+            'choices' => $deliveryDates,
+            'required' => false,
+            'empty_value' => '指定なし',
+        ));
+
+    }
+
+    /**
+     * お届け時間のフォームを設定
+     */
+    public function setFormDeliveryTime($form, $delivery)
+    {
+        // お届け時間の設定
+        $form->add('deliveryTime', 'entity', array(
+            'class' => 'Eccube\Entity\DeliveryTime',
+            'property' => 'deliveryTime',
+            'choices' => $delivery->getDeliveryTimes(),
+            'required' => false,
+            'empty_value' => '指定なし',
+            'empty_data' => null,
+        ));
+
+    }
+
+    /**
+     * 支払い方法のフォームを設定
+     */
+    public function setFormPayment($form, $delivery, $Order, $app)
+    {
+
+        $orderService = $app['eccube.service.order'];
+        $paymentOptions = $delivery->getPaymentOptions();
+        $payments = $orderService->getPayments($paymentOptions, $Order->getSubTotal());
+
+        $form->add('payment', 'entity', array(
+            'class' => 'Eccube\Entity\Payment',
+            'property' => 'method',
+            'choices' => $payments,
+            'data' => $Order->getPayment(),
+            'expanded' => true,
+            'constraints' => array(
+                new Assert\NotBlank(),
+            ),
+        ));
+
+    }
 }
