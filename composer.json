@@ -26,6 +26,8 @@
         "symfony/security": ">=2.7,<2.8",
         "symfony/doctrine-bridge": ">=2.7,<2.8",
         "symfony/class-loader": ">=2.7,<2.8",
+        "symfony/css-selector": ">=2.7,<2.8",
+        "symfony/dom-crawler": ">=2.7,<2.8",
         "dflydev/doctrine-orm-service-provider": "*",
         "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
         "saxulum/saxulum-webprofiler-provider": "*",
@@ -40,7 +42,6 @@
         "phpunit/phpunit": "4.6.*",
         "phing/phing": "2.*",
         "symfony/browser-kit": ">=2.7,<2.8",
-        "symfony/css-selector": ">=2.7,<2.8",
         "sorien/silex-pimple-dumper": "1.0.*",
         "fabpot/php-cs-fixer": "^1.10"
     },
