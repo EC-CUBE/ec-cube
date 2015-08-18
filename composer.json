@@ -26,6 +26,8 @@
         "symfony/security": ">=2.7,<2.8",
         "symfony/doctrine-bridge": ">=2.7,<2.8",
         "symfony/class-loader": ">=2.7,<2.8",
+        "symfony/css-selector": ">=2.7,<2.8",
+        "symfony/dom-crawler": ">=2.7,<2.8",
         "dflydev/doctrine-orm-service-provider": "*",
         "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
         "saxulum/saxulum-webprofiler-provider": "*",
@@ -34,9 +36,7 @@
         "doctrine/migrations": "v1.0.0-alpha3@dev",
         "knplabs/console-service-provider": "@dev",
         "nesbot/carbon": "~1.20",
-        "guzzle/guzzle": "~3.9",
-        "symfony/css-selector": "2.7.2",
-        "symfony/dom-crawler": "2.7.2"
+        "guzzle/guzzle": "~3.9"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
