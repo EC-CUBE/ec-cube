@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if(function_exists('apc_clear_cache')){
+if (function_exists('apc_clear_cache')) {
     apc_clear_cache('user');
     apc_clear_cache();
 }
