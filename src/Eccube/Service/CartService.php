@@ -278,15 +278,8 @@ class CartService
             ->getRepository('\Eccube\Entity\Delivery')
             ->findBy(array('ProductType' => $ProductType));
 
-        $payments = array();
-
-        foreach ($deliveries as $Delivery) {
-            $paymentOptions = $Delivery->getPaymentOptions();
-
-            foreach ($paymentOptions as $PaymentOption) {
-                $payments[$PaymentOption->getPayment()->getId()] = $PaymentOption->getPayment()->getMethod();
-            }
-        }
+        // 支払方法を取得
+        $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayment($deliveries);
 
         if ($this->getCart()->getTotalPrice() < 1) {
             // カートになければ支払方法を全て設定
@@ -295,7 +288,21 @@ class CartService
         }
 
         // カートに存在している支払方法と追加された商品の支払方法チェック
-        $arr = array_intersect_assoc($payments, $this->getCart()->getPayments());
+        $arr = array();
+        foreach ($payments as $payment) {
+            foreach ($this->getCart()->getPayments() as $p) {
+                if ($payment->getId() == $p->getId()) {
+                    $arr[] = $payment;
+                    break;
+                }
+            }
+        }
+
+        foreach ($arr as $a) {
+            error_log(print_r($a->getMethod(), true));
+
+        }
+
 
         if (count($arr) > 0) {
             $this->getCart()->setPayments($arr);
@@ -342,29 +349,22 @@ class CartService
     {
         $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
 
-
         // 支払方法の再設定
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
 
-            $payments = array();
-
+            // 複数配送対応
+            $productTypes = array();
             foreach ($this->getCart()->getCartItems() as $item) {
                 /* @var $ProductClass \Eccube\Entity\ProductClass */
                 $ProductClass = $item->getObject();
-
-                $deliveries = $this
-                    ->entityManager
-                    ->getRepository('\Eccube\Entity\Delivery')
-                    ->findBy(array('ProductType' => $ProductClass->getProductType()));
-
-                foreach ($deliveries as $Delivery) {
-                    $paymentOptions = $Delivery->getPaymentOptions();
-
-                    foreach ($paymentOptions as $PaymentOption) {
-                        $payments[$PaymentOption->getPayment()->getId()] = $PaymentOption->getPayment()->getMethod();
-                    }
-                }
+                $productTypes[] = $ProductClass->getProductType();
             }
+
+            // 配送業者を取得
+            $deliveries = $this->entityManager->getRepository('Eccube\Entity\Delivery')->getDeliveries($productTypes);
+
+            // 支払方法を取得
+            $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayment($deliveries);
 
             $this->getCart()->setPayments($payments);
         }
@@ -411,6 +411,21 @@ class CartService
         }
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductTypes() {
+
+        $productTypes = array();
+        foreach ($this->getCart()->getCartItems() as $item) {
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            $ProductClass = $item->getObject();
+            $productTypes[] = $ProductClass->getProductType();
+        }
+        return array_unique($productTypes);
+
     }
 
     /**

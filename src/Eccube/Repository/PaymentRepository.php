@@ -41,13 +41,11 @@ class PaymentRepository extends EntityRepository
             $Creator = $this
                 ->getEntityManager()
                 ->getRepository('\Eccube\Entity\Member')
-                ->find(2)
-            ;
+                ->find(2);
 
             $rank = $this
-                ->findOneBy(array(), array('rank' => 'DESC'))
-                ->getRank() + 1
-            ;
+                    ->findOneBy(array(), array('rank' => 'DESC'))
+                    ->getRank() + 1;
 
             $Payment = new \Eccube\Entity\Payment();
             $Payment
@@ -55,8 +53,7 @@ class PaymentRepository extends EntityRepository
                 ->setDelFlg(0)
                 ->setFixFlg(1)
                 ->setChargeFlg(1)
-                ->setCreator($Creator)
-            ;
+                ->setCreator($Creator);
 
         } else {
             $Payment = $this->find($id);
@@ -71,13 +68,56 @@ class PaymentRepository extends EntityRepository
 
         $query = $this
             ->getEntityManager()
-            ->createQuery('SELECT p FROM Eccube\Entity\Payment p INDEX BY p.id')
-        ;
+            ->createQuery('SELECT p FROM Eccube\Entity\Payment p INDEX BY p.id');
         $result = $query
-            ->getResult(Query::HYDRATE_ARRAY)
-        ;
+            ->getResult(Query::HYDRATE_ARRAY);
 
         return $result;
+
+    }
+
+    /**
+     * 共通の支払方法を取得
+     *
+     * @param $deliveries
+     * @return array
+     */
+    public function findAllowedPayment($deliveries)
+    {
+        $payments = array();
+        $i = 0;
+
+        foreach ($deliveries as $Delivery) {
+            $p = $this->createQueryBuilder('p')
+                ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
+                ->where('po.Delivery = (:delivery)')
+                ->setParameter('delivery', $Delivery)
+                ->getQuery()
+                ->getResult();
+
+            if ($i != 0) {
+
+                $arr = array();
+                foreach ($p as $payment) {
+                    foreach ($payments as $p) {
+                        if ($payment->getId() == $p->getId()) {
+                            $arr[] = $payment;
+                            break;
+                        }
+                    }
+                }
+
+                if (count($arr) > 0) {
+                    $payments = $arr;
+                }
+
+            } else {
+                $payments = $p;
+            }
+            $i++;
+        }
+
+        return $payments;
 
     }
 }
