@@ -16,10 +16,10 @@
         name: カテゴリ登録
         url: admin_product_category
       - id: product_csv_import
-        name: 商品CSVアップロード
+        name: 商品CSV登録
         url: admin_product_csv_import
       - id: category_csv_import
-        name: カテゴリCSVアップロード
+        name: カテゴリCSV登録
         url: admin_product_category_csv_import
 - id: order
   name: 受注管理
@@ -110,7 +110,7 @@
 - id: store
   name: オーナーズストア
   has_child: true
-  icon: cb-logomark
+  icon: cb-info-circle
   child:
   - id: plugin
     name: プラグイン
