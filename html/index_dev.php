@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -24,7 +25,6 @@
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Yaml\Yaml;
 
-
 // This check prevents access to debug front controllers that are deployed by accident to production servers.
 // Feel free to remove this, extend it, or make something more sophisticated.
 
@@ -42,7 +42,6 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
-
 require_once __DIR__.'/../vendor/autoload.php';
 
 Debug::enable();
@@ -59,31 +58,29 @@ $app->initializePlugin();
 
 // load config dev
 $conf = $app['config'];
-$app['config'] = $app->share(function () use($conf) {
+$app['config'] = $app->share(function () use ($conf) {
     $confarray = array();
-    $config_dev_file = __DIR__ . '/../app/config/eccube/config_dev.yml';
+    $config_dev_file = __DIR__.'/../app/config/eccube/config_dev.yml';
     if (file_exists($config_dev_file)) {
         $config_dev = Yaml::parse(file_get_contents($config_dev_file));
         if (isset($config_dev)) {
             $confarray = array_replace_recursive($confarray, $config_dev);
         }
     }
+
     return array_replace_recursive($conf, $confarray);
 });
-
 
 // Mail
 if (isset($app['config']['delivery_address'])) {
     $app['mailer']->registerPlugin(new \Swift_Plugins_RedirectingPlugin($app['config']['delivery_address']));
 }
 
-
 // Silex Web Profiler
 $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
-    'profiler.cache_dir' => __DIR__ . '/../app/cache/profiler',
+    'profiler.cache_dir' => __DIR__.'/../app/cache/profiler',
     'profiler.mount_prefix' => '/_profiler',
 ));
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
-
 
 $app->run();
