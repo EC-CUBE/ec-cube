@@ -130,6 +130,13 @@ $(function(){
                     {% endif %}
                     </ul>
                 </div>
+                {% if BaseInfo.optionMultipleShipping and Order.shippings|length > 1 %}
+                    <div class="message">
+                        <p class="errormsg bg-danger">
+                            配送方法が異なる商品が含まれているため、お届け先は複数となります。
+                        </p>
+                    </div>
+                {% endif %}
             </div><!-- /.col -->
         </div><!-- /.row -->
         <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">

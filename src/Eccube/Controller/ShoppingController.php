@@ -106,6 +106,8 @@ class ShoppingController extends AbstractController
         // 支払い方法選択
         $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
 
+        // $form = $app['eccube.service.shopping']->getShippingForm($Order);
+
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
@@ -251,6 +253,8 @@ class ShoppingController extends AbstractController
 
         // 支払い方法選択
         $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
+
+        // $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
         if ('POST' === $request->getMethod()) {
 

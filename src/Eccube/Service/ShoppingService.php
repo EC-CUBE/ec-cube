@@ -760,12 +760,87 @@ class ShoppingService
     }
 
     /**
+     * お届け日を取得
+     *
+     * @param Order $Order
+     * @return array
+     */
+    public function getFormDeliveryDates(Order $Order)
+    {
+
+        // お届け日の設定
+        $minDate = 0;
+        $deliveryDateFlag = false;
+
+        // 配送時に最大となる商品日数を取得
+        foreach ($Order->getOrderDetails() as $detail) {
+            $deliveryDate = $detail->getProductClass()->getDeliveryDate();
+            if (!is_null($deliveryDate)) {
+                if ($minDate < $deliveryDate->getValue()) {
+                    $minDate = $deliveryDate->getValue();
+                }
+                // 配送日数が設定されている
+                $deliveryDateFlag = true;
+            }
+        }
+
+        // 配達最大日数期間を設定
+        $deliveryDates = array();
+
+        // 配送日数が設定されている
+        if ($deliveryDateFlag) {
+            $period = new \DatePeriod (
+                new \DateTime($minDate . ' day'),
+                new \DateInterval('P1D'),
+                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'] . ' day')
+            );
+
+            foreach ($period as $day) {
+                $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
+            }
+        }
+
+        return $deliveryDates;
+
+    }
+
+    /**
+     * 支払方法を取得
+     *
+     * @param $deliveries
+     * @param Order $Order
+     * @return array
+     */
+    public function getFormPayments($deliveries, Order $Order)
+    {
+
+        $productTypes = $this->app['eccube.service.order']->getProductTypes($Order);
+
+        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
+            // 複数配送時の支払方法
+
+            $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
+            $payments = $this->getPayments($payments, $Order->getSubTotal());
+        } else {
+
+            // 配送業者をセット
+            $shippings = $Order->getShippings();
+            $Shipping = $shippings[0];
+            $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery());
+
+        }
+
+        return $payments;
+
+    }
+
+    /**
      * 配送業者のフォームを設定
      */
     public function setFormDelivery($form, $deliveries, $delivery = null)
     {
 
-        // 配送業社の設定
+        // 配送業者の設定
         $form->add('delivery', 'entity', array(
             'class' => 'Eccube\Entity\Delivery',
             'property' => 'name',
@@ -882,26 +957,28 @@ class ShoppingService
      * @param $Order
      * @param $form
      */
-    public function setShippingForm($Order, $form) {
-
-        $Order = $this->getOrder();
+    public function getShippingForm(Order $Order) {
 
         $deliveries = $this->getDeliveries();
 
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
-        // 配送業者の設定
-        $this->setFormDelivery($form, $deliveries, $delivery);
+        // お届け日を取得
+        $deliveryDates = $this->getFormDeliveryDates($Order);
 
-        // お届け日の設定
-        $this->setFormDeliveryDate($form, $Order);
+        // 配送業者の支払方法を取得
+        $payments = $this->getFormPayments($deliveries, $Order);
 
-        // お届け時間の設定
-        $this->setFormDeliveryTime($form, $delivery);
+        $form = $this->app['form.factory']->createNamedBuilder('form', 'shopping_multiple', null, array(
+            'deliveries' => $deliveries,
+            'delivery' => $delivery,
+            'deliveryDates' => $deliveryDates,
+            'payments' => $payments,
+            'payment' => $Order->getPayment(),
+        ))->getForm();
 
-        // 支払い方法選択
-        $this->setFormPayment($form, $deliveries, $Order);
+        return $form;
 
     }
 
