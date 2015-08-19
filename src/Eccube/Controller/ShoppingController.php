@@ -87,26 +87,8 @@ class ShoppingController extends AbstractController
         // 受注関連情報を最新状態に更新
         $app['orm.em']->refresh($Order);
 
-        $form = $app['form.factory']->createBuilder('shopping')->getForm();
-
-        $deliveries = $app['eccube.service.shopping']->getDeliveries();
-
-        $shippings = $Order->getShippings();
-        $delivery = $shippings[0]->getDelivery();
-
-        // 配送業者の設定
-        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
-
-        // お届け日の設定
-        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
-
-        // お届け時間の設定
-        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
-
-        // 支払い方法選択
-        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
-
-        // $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        // form作成
+        $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -132,23 +114,7 @@ class ShoppingController extends AbstractController
 
         $Order = $app['eccube.service.shopping']->getOrder();
 
-        $deliveries = $app['eccube.service.shopping']->getDeliveries();
-
-        $shippings = $Order->getShippings();
-        $delivery = $shippings[0]->getDelivery();
-
-        // 配送業者の設定
-        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
-
-        // お届け日の設定
-        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
-
-        // お届け時間の設定
-        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
-
-        // 支払い方法選択
-        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
-
+        $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -233,28 +199,9 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        $form = $app['form.factory']->createBuilder('shopping')->getForm();
-
         $Order = $app['eccube.service.shopping']->getOrder();
 
-        $deliveries = $app['eccube.service.shopping']->getDeliveries();
-
-        $shippings = $Order->getShippings();
-        $delivery = $shippings[0]->getDelivery();
-
-        // 配送業者の設定
-        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
-
-        // お届け日の設定
-        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
-
-        // お届け時間の設定
-        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
-
-        // 支払い方法選択
-        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
-
-        // $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
         if ('POST' === $request->getMethod()) {
 
@@ -306,27 +253,9 @@ class ShoppingController extends AbstractController
     public function payment(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']->createBuilder('shopping')->getForm();
-
         $Order = $app['eccube.service.shopping']->getOrder();
 
-        $deliveries = $app['eccube.service.shopping']->getDeliveries();
-
-        $shippings = $Order->getShippings();
-        $delivery = $shippings[0]->getDelivery();
-
-        // 配送業者の設定
-        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
-
-        // お届け日の設定
-        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
-
-        // お届け時間の設定
-        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
-
-        // 支払い方法選択
-        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
-
+        $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
         if ('POST' === $request->getMethod()) {
 

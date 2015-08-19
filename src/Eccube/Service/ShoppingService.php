@@ -970,7 +970,7 @@ class ShoppingService
         // 配送業者の支払方法を取得
         $payments = $this->getFormPayments($deliveries, $Order);
 
-        $form = $this->app['form.factory']->createNamedBuilder('form', 'shopping_multiple', null, array(
+        $form = $this->app['form.factory']->createBuilder('shopping_multiple', null, array(
             'deliveries' => $deliveries,
             'delivery' => $delivery,
             'deliveryDates' => $deliveryDates,
