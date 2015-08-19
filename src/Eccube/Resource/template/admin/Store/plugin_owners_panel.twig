@@ -63,7 +63,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <dt class="plugin-version">プラグインバージョン</dt><dd>{{ item.version }}</dd>
             <dt class="plugin-update">更新日</dt><dd>{{ item.last_update_date|time_ago }}</dd>
             <dt class="plugin-eccubeversion">EC-CUBE対応バージョン</dt><dd>{% for version in item.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
-            <dt class="plugin-size">ファイルサイズ</dt><dd>{{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
+            <dt class="plugin-size">ファイルサイズ</dt><dd>約 {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
         </dl>
         <p class="plugin-developer">
             <strong>提供元</strong> : <a href="{{ item.developer_url }}" target="_blank">{{ item.developer }}</a>
