@@ -279,7 +279,7 @@ class CartService
             ->findBy(array('ProductType' => $ProductType));
 
         // 支払方法を取得
-        $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayment($deliveries);
+        $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayments($deliveries);
 
         if ($this->getCart()->getTotalPrice() < 1) {
             // カートになければ支払方法を全て設定
@@ -358,7 +358,7 @@ class CartService
             $deliveries = $this->entityManager->getRepository('Eccube\Entity\Delivery')->getDeliveries($productTypes);
 
             // 支払方法を取得
-            $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayment($deliveries);
+            $payments = $this->entityManager->getRepository('Eccube\Entity\Payment')->findAllowedPayments($deliveries);
 
             $this->getCart()->setPayments($payments);
         }
@@ -410,7 +410,8 @@ class CartService
     /**
      * @return array
      */
-    public function getProductTypes() {
+    public function getProductTypes()
+    {
 
         $productTypes = array();
         foreach ($this->getCart()->getCartItems() as $item) {
@@ -419,6 +420,25 @@ class CartService
             $productTypes[] = $ProductClass->getProductType();
         }
         return array_unique($productTypes);
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductDeliveryFeeTotal()
+    {
+
+        $productDeliveryFeeTotal = 0;
+        foreach ($this->getCart()->getCartItems() as $item) {
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            $ProductClass = $item->getObject();
+            if (!is_null($ProductClass->getDeliveryFee())) {
+                $productDeliveryFeeTotal += $ProductClass->getDeliveryFee() * $item->getQuantity();
+            }
+        }
+
+        return $productDeliveryFeeTotal;
 
     }
 

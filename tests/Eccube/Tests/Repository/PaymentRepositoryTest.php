@@ -32,7 +32,7 @@ class PaymentRepositoryTest extends AbstractRepositoryTestCase
     {
         $app = $this->createApplication();
 
-        $productTypes = array(7);
+        $productTypes = array(7, 6);
         $productTypes = array_unique($productTypes);
 
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($productTypes);
@@ -44,7 +44,7 @@ class PaymentRepositoryTest extends AbstractRepositoryTestCase
         }
 
         // 支払方法を取得
-        $payments = $app['eccube.repository.payment']->findAllowedPayment($deliveries);
+        $payments = $app['eccube.repository.payment']->findAllowedPayments($deliveries);
 
         var_dump(count($payments));
         foreach ($payments as $payment) {

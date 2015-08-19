@@ -31,12 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingController extends AbstractController
 {
-    /** @var \Eccube\Service\CartService */
-    protected $cartService;
-    /** @var \Eccube\Repository\OrderRepository */
-    protected $orderRepository;
-    /** @var \Eccube\Service\OrderService */
-    protected $orderService;
 
     private $sessionKey = 'eccube.front.shopping.nonmember';
 
@@ -49,7 +43,6 @@ class ShoppingController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
-        $orderService = $app['eccube.service.order'];
 
         // カートチェック
         if (!$cartService->isLocked()) {
@@ -88,7 +81,7 @@ class ShoppingController extends AbstractController
 
         } else {
             // 計算処理
-            $Order = $orderService->getAmount($Order, $cartService->getCart());
+            $Order = $app['eccube.service.shopping']->getAmount($Order, $cartService->getCart());
         }
 
         // 受注関連情報を最新状態に更新
@@ -96,22 +89,22 @@ class ShoppingController extends AbstractController
 
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
-        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $app['eccube.service.shopping']->getDeliveries();
 
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
         // 配送業者の設定
-        $orderService->setFormDelivery($form, $deliveries, $delivery);
+        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $orderService->setFormDeliveryDate($form, $Order, $app);
+        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
 
         // お届け時間の設定
-        $orderService->setFormDeliveryTime($form, $delivery);
+        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $orderService->setFormPayment($form, $delivery, $Order, $app);
+        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -126,8 +119,6 @@ class ShoppingController extends AbstractController
     {
 
         $cartService = $app['eccube.service.cart'];
-        $orderService = $app['eccube.service.order'];
-        $orderRepository = $app['eccube.repository.order'];
 
         // カートチェック
         if (!$cartService->isLocked()) {
@@ -135,29 +126,27 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
-        $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
+        $Order = $app['eccube.service.shopping']->getOrder();
 
-        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $app['eccube.service.shopping']->getDeliveries();
 
-
-        // 配送業社の設定
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
-        // 配送業社の設定
-        $orderService->setFormDelivery($form, $deliveries, $delivery);
+        // 配送業者の設定
+        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $orderService->setFormDeliveryDate($form, $Order, $app);
+        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
 
         // お届け時間の設定
-        $orderService->setFormDeliveryTime($form, $delivery);
+        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $orderService->setFormPayment($form, $delivery, $Order, $app);
+        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
+
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -170,7 +159,7 @@ class ShoppingController extends AbstractController
                 $em->getConnection()->beginTransaction();
                 try {
                     // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
-                    $check = $orderService->isOrderProduct($em, $Order);
+                    $check = $app['eccube.service.shopping']->isOrderProduct($em, $Order);
                     if (!$check) {
                         $em->getConnection()->rollback();
                         $em->close();
@@ -179,13 +168,13 @@ class ShoppingController extends AbstractController
                     }
 
                     // 受注情報、配送情報を更新
-                    $orderService->setOrderUpdate($em, $Order, $formData);
+                    $app['eccube.service.shopping']->setOrderUpdate($em, $Order, $formData);
                     // 在庫情報を更新
-                    $orderService->setStockUpdate($em, $Order);
+                    $app['eccube.service.shopping']->setStockUpdate($em, $Order);
 
                     if ($app->isGranted('ROLE_USER')) {
                         // 会員の場合、購入金額を更新
-                        $orderService->setCustomerUpdate($em, $Order, $app->user());
+                        $app['eccube.service.shopping']->setCustomerUpdate($em, $Order, $app->user());
                     }
 
                     $em->getConnection()->commit();
@@ -235,8 +224,6 @@ class ShoppingController extends AbstractController
     public function delivery(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
-        $orderService = $app['eccube.service.order'];
-        $orderRepository = $app['eccube.repository.order'];
 
         // カートチェック
         if (!$cartService->isLocked()) {
@@ -244,27 +231,26 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
-        $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
+        $Order = $app['eccube.service.shopping']->getOrder();
 
-        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $app['eccube.service.shopping']->getDeliveries();
 
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
-        // 配送業社の設定
-        $orderService->setFormDelivery($form, $deliveries, $delivery);
+        // 配送業者の設定
+        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $orderService->setFormDeliveryDate($form, $Order, $app);
+        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
 
         // お届け時間の設定
-        $orderService->setFormDeliveryTime($form, $delivery);
+        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $orderService->setFormPayment($form, $delivery, $Order, $app);
+        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
 
         if ('POST' === $request->getMethod()) {
 
@@ -316,30 +302,27 @@ class ShoppingController extends AbstractController
     public function payment(Application $app, Request $request)
     {
 
-        $cartService = $app['eccube.service.cart'];
-        $orderService = $app['eccube.service.order'];
-        $orderRepository = $app['eccube.repository.order'];
-
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
-        $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
+        $Order = $app['eccube.service.shopping']->getOrder();
 
-        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $app['eccube.service.shopping']->getDeliveries();
 
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
-        // 配送業社の設定
-        $orderService->setFormDelivery($form, $deliveries, $delivery);
+        // 配送業者の設定
+        $app['eccube.service.shopping']->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $orderService->setFormDeliveryDate($form, $Order, $app);
+        $app['eccube.service.shopping']->setFormDeliveryDate($form, $Order);
 
         // お届け時間の設定
-        $orderService->setFormDeliveryTime($form, $delivery);
+        $app['eccube.service.shopping']->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $orderService->setFormPayment($form, $delivery, $Order, $app);
+        $app['eccube.service.shopping']->setFormPayment($form, $deliveries, $Order);
+
 
         if ('POST' === $request->getMethod()) {
 

@@ -77,23 +77,37 @@ class PaymentRepository extends EntityRepository
     }
 
     /**
+     * 支払方法を取得
+     *
+     * @param $delivery
+     * @return array
+     */
+    public function findPayments($delivery)
+    {
+        $payments = $this->createQueryBuilder('p')
+            ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
+            ->where('po.Delivery = (:delivery)')
+            ->setParameter('delivery', $delivery)
+            ->getQuery()
+            ->getResult();
+
+        return $payments;
+
+    }
+
+    /**
      * 共通の支払方法を取得
      *
      * @param $deliveries
      * @return array
      */
-    public function findAllowedPayment($deliveries)
+    public function findAllowedPayments($deliveries)
     {
         $payments = array();
         $i = 0;
 
         foreach ($deliveries as $Delivery) {
-            $p = $this->createQueryBuilder('p')
-                ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
-                ->where('po.Delivery = (:delivery)')
-                ->setParameter('delivery', $Delivery)
-                ->getQuery()
-                ->getResult();
+            $p = $this->findPayments($Delivery);
 
             if ($i != 0) {
 

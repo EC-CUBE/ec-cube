@@ -49,6 +49,7 @@ class Order extends \Eccube\Entity\AbstractEntity
 
         return false;
     }
+
     /**
      * @var integer
      */
