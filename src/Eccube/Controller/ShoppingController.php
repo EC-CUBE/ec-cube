@@ -30,6 +30,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingController extends AbstractController
@@ -87,7 +88,6 @@ class ShoppingController extends AbstractController
 
         } else {
             // 計算処理
-            // $Order = $app['eccube.service.shopping']->getAmount($Order, $cartService->getCart());
             $Order = $app['eccube.service.shopping']->getAmount($Order);
         }
 
@@ -330,6 +330,9 @@ class ShoppingController extends AbstractController
             $Order = $app['eccube.service.shopping']->getOrder();
 
             $Shipping = $Order->findShipping($id);
+            if (!$Shipping) {
+                throw new NotFoundHttpException();
+            }
 
             // お届け先情報を更新
             $Shipping
@@ -350,6 +353,9 @@ class ShoppingController extends AbstractController
                 ->setPref($customerAddress->getPref())
                 ->setAddr01($customerAddress->getAddr01())
                 ->setAddr02($customerAddress->getAddr02());
+
+            // 配送料金の設定
+            $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 
             // 配送先を更新
             $app['orm.em']->flush();
@@ -384,6 +390,9 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder();
 
         $Shipping = $Order->findShipping($id);
+        if (!$Shipping) {
+            throw new NotFoundHttpException();
+        }
 
         // 会員の場合、お届け先情報を新規登録
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -442,6 +451,9 @@ class ShoppingController extends AbstractController
                     ->setPref($data['pref'])
                     ->setAddr01($data['addr01'])
                     ->setAddr02($data['addr02']);
+
+                // 配送料金の設定
+                $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 
                 // 配送先を更新
                 $app['orm.em']->flush();

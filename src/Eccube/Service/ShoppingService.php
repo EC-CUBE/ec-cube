@@ -27,6 +27,7 @@ use Doctrine\DBAL\LockMode;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
@@ -162,29 +163,17 @@ class ShoppingService
         // 消費税のみの小計
         $tax = $this->orderService->getTotalTax($Order);
 
-        $shippingDeliveryFee = 0;
-        foreach ($Order->getShippings() as $Shipping) {
-            $shippingDeliveryFee += $Shipping->getShippingDeliveryFee();
-        }
-        $Order->setDeliveryFeeTotal($shippingDeliveryFee);
+        // 配送料合計金額
+        $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($Order->getShippings()));
+
+        // 小計
+        $Order->setSubTotal($subTotal);
 
         // 配送料無料条件(合計金額)
-        $deliveryFreeAmount = $this->BaseInfo->getDeliveryFreeAmount();
-        if (!is_null($deliveryFreeAmount)) {
-            // 合計金額が設定金額以上であれば送料無料
-            if ($subTotal >= $deliveryFreeAmount) {
-                $Order->setDeliveryFeeTotal(0);
-            }
-        }
+        $this->setDeliveryFreeAmount($Order);
 
         // 配送料無料条件(合計数量)
-        $deliveryFreeQuantity = $this->BaseInfo->getDeliveryFreeQuantity();
-        if (!is_null($deliveryFreeQuantity)) {
-            // 合計数量が設定数量以上であれば送料無料
-            if ($totalQuantity >= $deliveryFreeQuantity) {
-                $Order->setDeliveryFeeTotal(0);
-            }
-        }
+        $this->setDeliveryFreeQuantity($Order);
 
         // 初期選択の支払い方法をセット
         $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
@@ -204,7 +193,6 @@ class ShoppingService
         $total = $subTotal + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
         $Order->setTotal($total);
-        $Order->setSubTotal($subTotal);
         $Order->setPaymentTotal($total);
 
         $this->em->flush();
@@ -377,11 +365,7 @@ class ShoppingService
                         ->setDelFlg(Constant::DISABLED);
 
                     // 配送料金の設定
-                    $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
-                    $Shipping->setDelivery($Delivery);
-                    $Shipping->setDeliveryFee($deliveryFee);
-                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
-                    $Shipping->setShippingDeliveryName($Delivery->getName());
+                    $this->setShippingDeliveryFee($Shipping, $Delivery);
 
                     $this->em->persist($Shipping);
 
@@ -399,10 +383,7 @@ class ShoppingService
             $Delivery = $deliveries[0];
 
             // 配送料金の設定
-            $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
-            $Shipping->setDelivery($Delivery);
-            $Shipping->setDeliveryFee($deliveryFee);
-            $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+            $this->setShippingDeliveryFee($Shipping, $Delivery);
 
             $this->em->persist($Shipping);
 
@@ -604,38 +585,15 @@ class ShoppingService
 
         // 初期選択の配送業者をセット
         $shippings = $Order->getShippings();
-        $delivery = $shippings[0]->getDelivery();
 
-        $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $delivery, 'Pref' => $shippings[0]->getPref()));
+        // 配送料合計金額
+        $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($shippings));
 
-        // 配送料金の設定
-        $payment = $Order->getPayment();
-
-        if (!is_null($payment)) {
-            $Order->setPayment($payment);
-            $Order->setPaymentMethod($payment->getMethod());
-            $Order->setCharge($payment->getCharge());
-        }
-//        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
-
-        $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 配送料無料条件(合計金額)
-        $deliveryFreeAmount = $baseInfo->getDeliveryFreeAmount();
-        if (!is_null($deliveryFreeAmount)) {
-            // 合計金額が設定金額以上であれば送料無料
-            if ($Order->getSubTotal() >= $deliveryFreeAmount) {
-                $Order->setDeliveryFeeTotal(0);
-            }
-        }
+        $this->setDeliveryFreeAmount($Order);
 
         // 配送料無料条件(合計数量)
-        $deliveryFreeQuantity = $baseInfo->getDeliveryFreeQuantity();
-        if (!is_null($deliveryFreeQuantity)) {
-            // 合計数量が設定数量以上であれば送料無料
-            if ($Cart->getTotalQuantity() >= $deliveryFreeQuantity) {
-                $Order->setDeliveryFeeTotal(0);
-            }
-        }
+        $this->setDeliveryFreeQuantity($Order);
 
         $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
@@ -645,6 +603,68 @@ class ShoppingService
 
         return $Order;
 
+    }
+
+    /**
+     * 配送料金の設定
+     *
+     * @param Shipping $Shipping
+     * @param Delivery|null $Delivery
+     */
+    public function setShippingDeliveryFee(Shipping $Shipping, Delivery $Delivery = null)
+    {
+        // 配送料金の設定
+        if (is_null($Delivery)) {
+            $Delivery = $Shipping->getDelivery();
+        }
+        $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
+        $Shipping->setDelivery($Delivery);
+        $Shipping->setDeliveryFee($deliveryFee);
+        $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+        $Shipping->setShippingDeliveryName($Delivery->getName());
+
+    }
+
+    /**
+     * 配送料無料条件(合計金額)の条件を満たしていれば配送料金を0に設定
+     *
+     * @param Order $Order
+     */
+    public function setDeliveryFreeAmount(Order $Order) {
+        // 配送料無料条件(合計金額)
+        $deliveryFreeAmount = $this->BaseInfo->getDeliveryFreeAmount();
+        if (!is_null($deliveryFreeAmount)) {
+            // 合計金額が設定金額以上であれば送料無料
+            if ($Order->getSubTotal() >= $deliveryFreeAmount) {
+                $Order->setDeliveryFeeTotal(0);
+                // お届け先情報の配送料も0にセット
+                $shippings = $Order->getShippings();
+                foreach ($shippings as $Shipping) {
+                    $Shipping->setShippingDeliveryFee(0);
+                }
+            }
+        }
+    }
+
+    /**
+     * 配送料無料条件(合計数量)の条件を満たしていれば配送料金を0に設定
+     *
+     * @param Order $Order
+     */
+    public function setDeliveryFreeQuantity(Order $Order) {
+        // 配送料無料条件(合計数量)
+        $deliveryFreeQuantity = $this->BaseInfo->getDeliveryFreeQuantity();
+        if (!is_null($deliveryFreeQuantity)) {
+            // 合計数量が設定数量以上であれば送料無料
+            if ($this->orderService->getTotalQuantity($Order) >= $deliveryFreeQuantity) {
+                $Order->setDeliveryFeeTotal(0);
+                // お届け先情報の配送料も0にセット
+                $shippings = $Order->getShippings();
+                foreach ($shippings as $Shipping) {
+                    $Shipping->setShippingDeliveryFee(0);
+                }
+            }
+        }
     }
 
 
@@ -729,6 +749,12 @@ class ShoppingService
             $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
             $Shipping->setShippingDeliveryName($Delivery->getName());
         }
+
+        // 配送料無料条件(合計金額)
+        $this->setDeliveryFreeAmount($Order);
+
+        // 配送料無料条件(合計数量)
+        $this->setDeliveryFreeQuantity($Order);
 
     }
 

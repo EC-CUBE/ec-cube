@@ -137,7 +137,7 @@ $(function(){
                 {% if BaseInfo.optionMultipleShipping and Order.shippings|length > 1 %}
                     <div class="message">
                         <p class="errormsg bg-danger">
-                            配送方法が異なる商品が含まれているため、お届け方法は複数となります。
+                            配送方法が異なる商品が含まれているため、お届け先情報は複数となります。
                         </p>
                     </div>
                 {% endif %}
@@ -200,13 +200,11 @@ $(function(){
                         {% endif %}
                     </div>
 
-                    <h2 class="heading02">お届け先情報</h2>
+                    <h2 class="heading02">配送情報</h2>
                     {% for shipping in Order.shippings %}
                         {% set idx = loop.index0 %}
                         <div class="column is-edit">
-                            {% if BaseInfo.optionMultipleShipping %}
-                                <h3>お届け先情報({{ loop.index }})</h3>
-                            {% endif %}
+                            <h3>お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}</h3>
                             <div class="cart_item table">
                                 <div class="tbody">
                                 {% for shipmentItem in shipping.shipmentItems %}
@@ -252,8 +250,10 @@ $(function(){
                             <p class="btn_edit"><a href="{{ url('shopping_shipping_edit', {'id': shipping.id}) }}" class="btn btn-default btn-sm">変更</a></p>
                             {% endif %}
                         </div>
+                        {% if loop.last == false%}<hr>{% endif %}
                     {% endfor %}
                     {% if BaseInfo.optionMultipleShipping %}
+                        <hr>
                         <div><a href="{{ url('shopping') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
                     {% endif %}
 
