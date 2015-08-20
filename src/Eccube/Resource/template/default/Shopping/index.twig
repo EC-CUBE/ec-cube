@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script>
 $(function(){
 
-    $('#delivery').on('change', function() {
+    $('.delivery').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
     });
 
@@ -73,7 +73,6 @@ $(function(){
             input[index].remove();
         });
 
-
         var postData = {};
         $('.customer-in').each(function() {
           postData[$(this).attr('name')] = $(this).val();
@@ -84,8 +83,13 @@ $(function(){
             type: 'POST',
             data: postData,
             dataType: 'json',
-            success: function(data){
-            }
+        }).done(function(data){
+        }).fail(function(data){
+            alert('更新に失敗しました。入力内容を確認してください。');
+            $(ref).each(function(index) {
+                ref[index].empty().text(name[index]);
+                input[index].remove();
+            });
         });
 
         $('#customer').prop("disabled", false);
@@ -133,7 +137,7 @@ $(function(){
                 {% if BaseInfo.optionMultipleShipping and Order.shippings|length > 1 %}
                     <div class="message">
                         <p class="errormsg bg-danger">
-                            配送方法が異なる商品が含まれているため、お届け先は複数となります。
+                            配送方法が異なる商品が含まれているため、お届け方法は複数となります。
                         </p>
                     </div>
                 {% endif %}
@@ -174,6 +178,8 @@ $(function(){
                         〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
                         <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                         {% if is_granted('ROLE_USER') == false %}
+                            <div class="customer-edit customer-email">{{ Order.email }}</div>
+                            <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
                         <div class="mod-button" style="display:none;">
                             <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
                             <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
@@ -189,15 +195,18 @@ $(function(){
                         <input type="hidden" id="customer-tel01" class="customer-in" name="customer_tel01" value="{{ Order.tel01 }}">
                         <input type="hidden" id="customer-tel02" class="customer-in" name="customer_tel02" value="{{ Order.tel02 }}">
                         <input type="hidden" id="customer-tel03" class="customer-in" name="customer_tel03" value="{{ Order.tel03 }}">
+                        <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
+                        <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
                         {% endif %}
                     </div>
 
                     <h2 class="heading02">お届け先情報</h2>
-                    {# 複数配送対応(複数配送対応かつ商品種別が複数) #}
-                    {% if BaseInfo.optionMultipleShipping and Order.shippings|length > 1 %}
-                        {% for shipping in Order.shippings %}
+                    {% for shipping in Order.shippings %}
+                        {% set idx = loop.index0 %}
                         <div class="column is-edit">
-                            <h3>お届け先情報({{ loop.index }})</h3>
+                            {% if BaseInfo.optionMultipleShipping %}
+                                <h3>お届け先情報({{ loop.index }})</h3>
+                            {% endif %}
                             <div class="cart_item table">
                                 <div class="tbody">
                                 {% for shipmentItem in shipping.shipmentItems %}
@@ -228,49 +237,24 @@ $(function(){
                             {{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
                             <div class="form-inline form-group">
                                 <label>配送方法</label>
-                                {{ form_widget(form.delivery, {'id' : 'delivery'}) }}
+                                {{ form_widget(form.shippings[idx].delivery, {'attr': {'class': 'delivery'}}) }}
                             </div>
 
                             <div class="form-inline form-group">
                                 <label>お届け日</label>
-                                {{ form_widget(form.deliveryDate) }}<br class="sp">
+                                {{ form_widget(form.shippings[idx].shippingDeliveryDate) }}<br class="sp">
                                 <label>お届け時間</label>
-                                {{ form_widget(form.deliveryTime) }}
+                                {{ form_widget(form.shippings[idx].deliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping') }}" class="btn btn-default btn-sm">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="btn btn-default btn-sm">変更</a></p>
                             {% else %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit', {'id': shipping.id}) }}" class="btn btn-default btn-sm">変更</a></p>
                             {% endif %}
                         </div>
-                        {% endfor %}
-                    {% else %}
-                        {# 複数配送が無効または商品種別が1種類のみ #}
-                        <div class="column is-edit">
-                            {# 複数配送を実装する場合、for文で制御 #}
-                            <p class="address">{{ Order.shippings[0].name01 }} {{ Order.shippings[0].name02 }} 様<br>
-                                〒{{ Order.shippings[0].zip01 }}-{{ Order.shippings[0].zip02 }} {{ Order.shippings[0].pref }}{{ Order.shippings[0].addr01 }}{{ Order.shippings[0].addr02 }}<br>
-                                {{ Order.shippings[0].tel01 }}-{{ Order.shippings[0].tel02 }}-{{ Order.shippings[0].tel03 }}</p>
-                            <div class="form-inline form-group">
-                                <label>配送方法</label>
-                                {{ form_widget(form.delivery, {'id' : 'delivery'}) }}
-                            </div>
-
-                            <div class="form-inline form-group">
-                                <label>お届け日</label>
-                                {{ form_widget(form.deliveryDate) }}<br class="sp">
-                                <label>お届け時間</label>
-                                {{ form_widget(form.deliveryTime) }}
-                            </div>
-                            {% if is_granted('ROLE_USER') %}
-                                <p class="btn_edit"><a href="{{ url('shopping_shipping') }}" class="btn btn-default btn-sm">変更</a></p>
-                            {% else %}
-                                <p class="btn_edit"><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">変更</a></p>
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                    {% endfor %}
                     {% if BaseInfo.optionMultipleShipping %}
-                        <div><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
+                        <div><a href="{{ url('shopping') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
                     {% endif %}
 
                     <h2 class="heading02">お支払方法</h2>

@@ -26,17 +26,12 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingMultipleType extends AbstractType
 {
-    public $app;
-
-    public function __construct(\Eccube\Application $app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * {@inheritdoc}
@@ -44,13 +39,9 @@ class ShoppingMultipleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $app = $this->app;
-
         $deliveries = $options['deliveries'];
         $delivery = $options['delivery'];
         $deliveryDates = $options['deliveryDates'];
-        $payments = $options['payments'];
-        $payment = $options['payment'];
 
         $builder
             ->add('delivery', 'entity', array(
@@ -72,21 +63,12 @@ class ShoppingMultipleType extends AbstractType
                 'empty_value' => '指定なし',
                 'empty_data' => null,
             ))
-            ->add('payment', 'entity', array(
-                'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
-                'choices' => $payments,
-                'data' => $payment,
-                'expanded' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
-            ->add('message', 'textarea', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array('min' => 0, 'max' => 3000))),
-            ))
+            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) {
+                $data = $event->getData();
+
+                error_log(print_r($data, true));
+
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 
     }
@@ -97,8 +79,6 @@ class ShoppingMultipleType extends AbstractType
             'deliveries' => array(),
             'delivery' => null,
             'deliveryDates' => array(),
-            'payments' => array(),
-            'payment' => null,
         ));
 
     }

@@ -145,7 +145,7 @@ class ShoppingService
         $this->em->persist($Order);
 
         // 配送業者情報を取得
-        $deliveries = $this->getDeliveries();
+        $deliveries = $this->getDeliveriesCart();
 
         // お届け先情報を作成
         $Order = $this->getNewShipping($Order, $Customer, $deliveries);
@@ -156,25 +156,17 @@ class ShoppingService
         // 合計数量
         $totalQuantity = $this->orderService->getTotalQuantity($Order);
 
-        // 商品ごとの配送料合計
-        $productDeliveryFeeTotal = 0;
-        if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
-            $productDeliveryFeeTotal = $this->cartService->getProductDeliveryFeeTotal();
-        }
-
         // 小計
         $subTotal = $this->orderService->getSubTotal($Order);
 
         // 消費税のみの小計
         $tax = $this->orderService->getTotalTax($Order);
 
-        $productTypes = array();
-
-        // todo
-        // $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
-
-        // todo
-        // $Order->setDeliveryFeeTotal($deliveryFee->getFee() + $productDeliveryFeeTotal);
+        $shippingDeliveryFee = 0;
+        foreach ($Order->getShippings() as $Shipping) {
+            $shippingDeliveryFee += $Shipping->getShippingDeliveryFee();
+        }
+        $Order->setDeliveryFeeTotal($shippingDeliveryFee);
 
         // 配送料無料条件(合計金額)
         $deliveryFreeAmount = $this->BaseInfo->getDeliveryFreeAmount();
@@ -302,11 +294,40 @@ class ShoppingService
      *
      * @return array
      */
-    public function getDeliveries()
+    public function getDeliveriesCart()
     {
 
         // カートに保持されている商品種別を取得
         $productTypes = $this->cartService->getProductTypes();
+
+        return $this->getDeliveries($productTypes);
+
+    }
+
+    /**
+     * 配送業者情報を取得
+     *
+     * @param Order $Order
+     * @return array
+     */
+    public function getDeliveriesOrder(Order $Order)
+    {
+
+        // 受注情報から商品種別を取得
+        $productTypes = $this->orderService->getProductTypes($Order);
+
+        return $this->getDeliveries($productTypes);
+
+    }
+
+    /**
+     * 配送業者情報を取得
+     *
+     * @param $productTypes
+     * @return array
+     */
+    public function getDeliveries($productTypes)
+    {
 
         // 商品種別に紐づく配送業者を取得
         $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($productTypes);
@@ -430,9 +451,12 @@ class ShoppingService
 
     /**
      * 受注明細情報、配送商品情報を作成
+     *
      * @param Order $Order
+     * @return Order
      */
-    public function getNewDetails(Order $Order) {
+    public function getNewDetails(Order $Order)
+    {
 
         // 受注詳細, 配送商品
         foreach ($this->cartService->getCart()->getCartItems() as $item) {
@@ -502,7 +526,8 @@ class ShoppingService
      * @param $quantity
      * @return \Eccube\Entity\ShipmentItem
      */
-    public function getNewShipmentItem(Order $Order, Product $Product, ProductClass $ProductClass, $quantity) {
+    public function getNewShipmentItem(Order $Order, Product $Product, ProductClass $ProductClass, $quantity)
+    {
 
         $ShipmentItem = new ShipmentItem();
         $shippings = $Order->getShippings();
@@ -516,6 +541,14 @@ class ShoppingService
                 break;
             }
         }
+
+        // 商品ごとの配送料合計
+        $productDeliveryFeeTotal = 0;
+        if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+            $productDeliveryFeeTotal = $ProductClass->getDeliveryFee() * $quantity;
+        }
+
+        $Shipping->setShippingDeliveryFee($Shipping->getShippingDeliveryFee() + $productDeliveryFeeTotal);
 
         $ShipmentItem->setShipping($Shipping)
             ->setOrder($Order)
@@ -543,13 +576,30 @@ class ShoppingService
 
     }
 
+    /**
+     * お届け先ごとの送料合計を取得
+     *
+     * @param $shippings
+     * @return int
+     */
+    public function getShippingDeliveryFeeTotal($shippings)
+    {
+        $deliveryFeeTotal = 0;
+        foreach ($shippings as $Shipping) {
+            $deliveryFeeTotal += $Shipping->getShippingDeliveryFee();
+        }
 
+        return $deliveryFeeTotal;
 
+    }
 
     /**
      * 住所などの情報が変更された時に金額の再計算を行う
+     *
+     * @param Order $Order
+     * @return Order
      */
-    public function getAmount(\Eccube\Entity\Order $Order, \Eccube\Entity\Cart $Cart)
+    public function getAmount(Order $Order)
     {
 
         // 初期選択の配送業者をセット
@@ -566,7 +616,7 @@ class ShoppingService
             $Order->setPaymentMethod($payment->getMethod());
             $Order->setCharge($payment->getCharge());
         }
-        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
+//        $Order->setDeliveryFeeTotal($deliveryFee->getFee());
 
         $baseInfo = $this->app['eccube.repository.base_info']->get();
         // 配送料無料条件(合計金額)
@@ -648,29 +698,36 @@ class ShoppingService
     /**
      * 受注情報、お届け先情報の更新
      *
-     * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
-     * @param $formData フォームデータ
+     * @param $data フォームデータ
      */
-    public function setOrderUpdate($em, \Eccube\Entity\Order $Order, $formData)
+    public function setOrderUpdate(Order $Order, $data)
     {
 
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
-        $Order->setMessage($formData['message']);
+        $Order->setMessage($data['message']);
 
         // お届け先情報を更新
-        $shippings = $Order->getShippings();
-        foreach ($shippings as $shipping) {
-            $shipping->setShippingDeliveryName($formData['delivery']->getName());
-            if (!empty($formData['deliveryTime'])) {
-                $shipping->setShippingDeliveryTime($formData['deliveryTime']->getDeliveryTime());
+        $shippings = $data['shippings'];
+        foreach ($shippings as $Shipping) {
+
+            $Delivery = $Shipping->getDelivery();
+
+            $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array(
+                'Delivery' => $Delivery,
+                'Pref' => $Shipping->getPref()
+            ));
+
+            $deliveryTime = $Shipping->getDeliveryTime();
+            if (!empty($deliveryTime)) {
+                $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
             }
-            if (!empty($formData['deliveryDate'])) {
-                $shipping->setShippingDeliveryDate(new \DateTime($formData['deliveryDate']));
-            }
-            $shipping->setShippingDeliveryFee($shipping->getDeliveryFee()->getFee());
+
+            $Shipping->setDeliveryFee($deliveryFee);
+            $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+            $Shipping->setShippingDeliveryName($Delivery->getName());
         }
 
     }
@@ -682,7 +739,7 @@ class ShoppingService
      * @param $em トランザクション制御されているEntityManager
      * @param $Order 受注情報
      */
-    public function setStockUpdate($em, \Eccube\Entity\Order $Order)
+    public function setStockUpdate($em, Order $Order)
     {
 
         $orderDetails = $Order->getOrderDetails();
@@ -716,7 +773,7 @@ class ShoppingService
      * @param $Order 受注情報
      * @param $user ログインユーザ
      */
-    public function setCustomerUpdate($em, \Eccube\Entity\Order $Order, \Eccube\Entity\Customer $user)
+    public function setCustomerUpdate($em, Order $Order, Customer $user)
     {
 
         $orderDetails = $Order->getOrderDetails();
@@ -814,7 +871,7 @@ class ShoppingService
     public function getFormPayments($deliveries, Order $Order)
     {
 
-        $productTypes = $this->app['eccube.service.order']->getProductTypes($Order);
+        $productTypes = $this->orderService->getProductTypes($Order);
 
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
             // 複数配送時の支払方法
@@ -835,148 +892,31 @@ class ShoppingService
     }
 
     /**
-     * 配送業者のフォームを設定
-     */
-    public function setFormDelivery($form, $deliveries, $delivery = null)
-    {
-
-        // 配送業者の設定
-        $form->add('delivery', 'entity', array(
-            'class' => 'Eccube\Entity\Delivery',
-            'property' => 'name',
-            'choices' => $deliveries,
-            'data' => $delivery,
-        ));
-
-    }
-
-
-    /**
-     * お届け日のフォームを設定
-     */
-    public function setFormDeliveryDate($form, $Order)
-    {
-
-        // お届け日の設定
-        $minDate = 0;
-        $deliveryDateFlag = false;
-
-        // 配送時に最大となる商品日数を取得
-        foreach ($Order->getOrderDetails() as $detail) {
-            $deliveryDate = $detail->getProductClass()->getDeliveryDate();
-            if (!is_null($deliveryDate)) {
-                if ($minDate < $deliveryDate->getValue()) {
-                    $minDate = $deliveryDate->getValue();
-                }
-                // 配送日数が設定されている
-                $deliveryDateFlag = true;
-            }
-        }
-
-        // 配達最大日数期間を設定
-        $deliveryDates = array();
-
-        // 配送日数が設定されている
-        if ($deliveryDateFlag) {
-            $period = new \DatePeriod (
-                new \DateTime($minDate . ' day'),
-                new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'] . ' day')
-            );
-
-            foreach ($period as $day) {
-                $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
-            }
-        }
-
-
-        $form->add('deliveryDate', 'choice', array(
-            'choices' => $deliveryDates,
-            'required' => false,
-            'empty_value' => '指定なし',
-        ));
-
-    }
-
-    /**
-     * お届け時間のフォームを設定
-     */
-    public function setFormDeliveryTime($form, $delivery)
-    {
-        // お届け時間の設定
-        $form->add('deliveryTime', 'entity', array(
-            'class' => 'Eccube\Entity\DeliveryTime',
-            'property' => 'deliveryTime',
-            'choices' => $delivery->getDeliveryTimes(),
-            'required' => false,
-            'empty_value' => '指定なし',
-            'empty_data' => null,
-        ));
-
-    }
-
-    /**
-     * 支払い方法のフォームを設定
-     */
-    public function setFormPayment($form, $deliveries, Order $Order)
-    {
-
-        $productTypes = $this->app['eccube.service.order']->getProductTypes($Order);
-
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
-            // 複数配送時の支払方法
-
-            $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
-            $payments = $this->getPayments($payments, $Order->getSubTotal());
-        } else {
-
-            // 配送業者をセット
-            $shippings = $Order->getShippings();
-            $Shipping = $shippings[0];
-            $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery());
-
-        }
-
-        $form->add('payment', 'entity', array(
-            'class' => 'Eccube\Entity\Payment',
-            'property' => 'method',
-            'choices' => $payments,
-            'data' => $Order->getPayment(),
-            'expanded' => true,
-            'constraints' => array(
-                new Assert\NotBlank(),
-            ),
-        ));
-
-    }
-
-
-    /**
      * お届け先ごとにFormを作成
      *
      * @param $Order
      * @param $form
      */
-    public function getShippingForm(Order $Order) {
+    public function getShippingForm(Order $Order)
+    {
 
-        $deliveries = $this->getDeliveries();
-
-        $shippings = $Order->getShippings();
-        $delivery = $shippings[0]->getDelivery();
-
-        // お届け日を取得
-        $deliveryDates = $this->getFormDeliveryDates($Order);
+        $deliveries = $this->getDeliveriesOrder($Order);
 
         // 配送業者の支払方法を取得
         $payments = $this->getFormPayments($deliveries, $Order);
 
-        $form = $this->app['form.factory']->createBuilder('shopping_multiple', null, array(
-            'deliveries' => $deliveries,
-            'delivery' => $delivery,
-            'deliveryDates' => $deliveryDates,
+        $builder = $this->app['form.factory']->createBuilder('shopping', null, array(
             'payments' => $payments,
             'payment' => $Order->getPayment(),
-        ))->getForm();
+        ));
+
+        $builder
+            ->add('shippings', 'collection', array(
+                'type' => 'shipping_item',
+                'data' => $Order->getShippings(),
+            ));
+
+        $form = $builder->getForm();
 
         return $form;
 

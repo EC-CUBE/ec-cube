@@ -37,7 +37,7 @@ $(function() {
 {% block main %}
     <h1 class="page-heading">お届け先の追加・編集</h1>
     <div class="container-fluid">
-        <form method="post" action="{{ url('shopping_shipping_edit') }}">
+        <form method="post" action="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">
             {{ form_widget(form._token) }}
             <div class="dl_table">
                 <dl>

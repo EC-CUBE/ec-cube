@@ -57,13 +57,13 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\TaxRuleService($app['eccube.repository.tax_rule']);
         });
         $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService( $app );
+            return new \Eccube\Service\PluginService($app);
         });
         $app['eccube.service.mail'] = $app->share(function () use ($app) {
             return new \Eccube\Service\MailService($app);
         });
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
-            $csvService =  new \Eccube\Service\CsvExportService();
+            $csvService = new \Eccube\Service\CsvExportService();
             $csvService->setConfig($app['config']);
             $csvService->setCsvRepository($app['eccube.repository.csv']);
             $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
@@ -300,15 +300,14 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\MainEditType($app);
             $types[] = new \Eccube\Form\Type\BlockType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
-            $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\NonMemberType($app);
-            $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
             $types[] = new \Eccube\Form\Type\OrderType($app);
             $types[] = new \Eccube\Form\Type\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\ShippingType($app);
+            $types[] = new \Eccube\Form\Type\ShippingItemType($app);
+            $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
+            $types[] = new \Eccube\Form\Type\ShoppingType();
             $types[] = new \Eccube\Form\Type\ShoppingShippingType($app);
-            $types[] = new \Eccube\Form\Type\ShoppingMultipleType($app);
-            $types[] = new \Eccube\Form\Type\ShipmentItemType();
             $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
             $types[] = new \Eccube\Form\Type\ForgotType();
 

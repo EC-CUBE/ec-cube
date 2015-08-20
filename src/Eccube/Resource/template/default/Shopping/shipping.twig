@@ -21,15 +21,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% set body_class = 'cart_page' %}
-
 {% block main %}
     <h1 class="page-heading">お届け先の指定</h1>
     <div class="container-fluid">
-        <form method="post" action="{{ url('shopping_shipping') }}">
+        <form method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
             <div id="deliveradd_select" class="row">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <p><a href="{{ url('shopping_shipping_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
+                    <p><a href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
 
                     {% if Customer.CustomerAddresses|length > 0 %}
                      <div class="table address_table">

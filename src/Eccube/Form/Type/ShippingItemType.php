@@ -30,7 +30,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ShippingMultiType extends AbstractType
+class ShippingItemType extends AbstractType
 {
 
     public $app;
@@ -59,7 +59,18 @@ class ShippingMultiType extends AbstractType
 
                 // 配送業者
                 // 商品種別に紐づく配送業者を取得
-                $deliveries =  $app['eccube.service.shopping']->getDeliveries();
+                $delives =  $app['eccube.service.shopping']->getDeliveriesOrder($data->getOrder());
+
+                $deliveries = array();
+                foreach ($delives as $Delivery) {
+                    foreach($data->getShipmentItems() as $item) {
+                        $productType = $item->getProductClass()->getProductType();
+                        if ($Delivery->getProductType()->getId() == $productType->getId()) {
+                            $deliveries[] = $Delivery;
+                        }
+                    }
+                }
+
 
                 $delivery = $data->getDelivery();
 
@@ -101,6 +112,6 @@ class ShippingMultiType extends AbstractType
      */
     public function getName()
     {
-        return 'shipping_multi';
+        return 'shipping_item';
     }
 }

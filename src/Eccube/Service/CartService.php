@@ -424,25 +424,6 @@ class CartService
     }
 
     /**
-     * @return array
-     */
-    public function getProductDeliveryFeeTotal()
-    {
-
-        $productDeliveryFeeTotal = 0;
-        foreach ($this->getCart()->getCartItems() as $item) {
-            /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $item->getObject();
-            if (!is_null($ProductClass->getDeliveryFee())) {
-                $productDeliveryFeeTotal += $ProductClass->getDeliveryFee() * $item->getQuantity();
-            }
-        }
-
-        return $productDeliveryFeeTotal;
-
-    }
-
-    /**
      * @return string[]
      */
     public function getErrors()
