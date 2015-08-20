@@ -154,9 +154,6 @@ class ShoppingService
         // 受注明細情報、配送商品情報を作成
         $Order = $this->getNewDetails($Order);
 
-        // 合計数量
-        $totalQuantity = $this->orderService->getTotalQuantity($Order);
-
         // 小計
         $subTotal = $this->orderService->getSubTotal($Order);
 

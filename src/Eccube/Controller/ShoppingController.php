@@ -97,9 +97,13 @@ class ShoppingController extends AbstractController
         // form作成
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
+        // 合計数量
+        $totalQuantity = $app['eccube.service.order']->getTotalQuantity($Order);
+
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
+            'totalQuantity' => $totalQuantity,
         ));
     }
 
@@ -633,6 +637,89 @@ class ShoppingController extends AbstractController
         ));
     }
 
+
+    /**
+     * 複数配送処理
+     */
+    public function shippingMultiple(Application $app, Request $request)
+    {
+
+        $cartService = $app['eccube.service.cart'];
+
+        // カートチェック
+        if (!$cartService->isLocked()) {
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+        $Order = $app['eccube.service.shopping']->getOrder();
+
+        $shipmentItems = array();
+        foreach ($Order->getShippings() as $Shipping) {
+            foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
+                $shipmentItems[] = $ShipmentItem;
+            }
+        }
+
+        $form = $app->form()->getForm();
+        $form
+            ->add('shipping_multiple', 'collection', array(
+                'type' => 'shipping_multiple',
+                'data' => $shipmentItems,
+            ));
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $Customer = new Customer();
+                $Customer
+                    ->setName01($data['name01'])
+                    ->setName02($data['name02'])
+                    ->setKana01($data['kana01'])
+                    ->setKana02($data['kana02'])
+                    ->setCompanyName($data['company_name'])
+                    ->setEmail($data['email'])
+                    ->setTel01($data['tel01'])
+                    ->setTel02($data['tel02'])
+                    ->setTel03($data['tel03'])
+                    ->setZip01($data['zip01'])
+                    ->setZip02($data['zip02'])
+                    ->setZipCode($data['zip01'] . $data['zip02'])
+                    ->setPref($data['pref'])
+                    ->setAddr01($data['addr01'])
+                    ->setAddr02($data['addr02']);
+
+                // 受注情報を取得
+                $Order = $app['eccube.service.shopping']->getOrder();
+
+                // 初回アクセス(受注データがない)の場合は, 受注情報を作成
+                if (is_null($Order)) {
+                    // 受注情報を作成
+                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
+                }
+
+                // 非会員用セッションを作成
+                $nonMember = array();
+                $nonMember['customer'] = $Customer;
+                $nonMember['pref'] = $Customer->getPref()->getId();
+                $app['session']->set($this->sessionKey, $nonMember);
+
+                return $app->redirect($app->url('shopping'));
+
+            }
+        }
+
+        return $app->render('Shopping/shipping_multiple.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
+    }
 
     /**
      * 購入エラー画面表示

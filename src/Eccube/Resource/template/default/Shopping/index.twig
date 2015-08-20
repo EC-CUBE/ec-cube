@@ -137,7 +137,7 @@ $(function(){
                 {% if BaseInfo.optionMultipleShipping and Order.shippings|length > 1 %}
                     <div class="message">
                         <p class="errormsg bg-danger">
-                            配送方法が異なる商品が含まれているため、お届け先情報は複数となります。
+                            配送方法が異なる商品が含まれているため、お届け先は複数となります。
                         </p>
                     </div>
                 {% endif %}
@@ -253,8 +253,10 @@ $(function(){
                         {% if loop.last == false%}<hr>{% endif %}
                     {% endfor %}
                     {% if BaseInfo.optionMultipleShipping %}
+                        {% if totalQuantity > 1 %}
                         <hr>
-                        <div><a href="{{ url('shopping') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
+                        <div><a href="{{ url('shopping_shipping_multiple') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
+                        {% endif %}
                     {% endif %}
 
                     <h2 class="heading02">お支払方法</h2>

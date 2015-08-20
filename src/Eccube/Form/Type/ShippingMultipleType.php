@@ -30,7 +30,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ShippingMultiType extends AbstractType
+class ShippingMultipleType extends AbstractType
 {
 
     public $app;
@@ -48,20 +48,37 @@ class ShippingMultiType extends AbstractType
         $app = $this->app;
 
         $builder
+            ->add('quantity', 'integer', array(
+                'attr' => array(
+                    'min' => 1,
+                    'maxlength' => $this->app['config']['int_len'],
+                ),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\GreaterThanOrEqual(array(
+                        'value' => 1,
+                    )),
+                    new Assert\Regex(array('pattern' => '/^\d+$/')),
+                ),
+            ))
             ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) use ($app) {
-                /** @var \Eccube\Entity\Shipping $data */
+                /** @var \Eccube\Entity\ShipmentItem $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
 
-                // お届け日を取得
-                $deliveryDates = $app['eccube.service.shopping']->getFormDeliveryDates($data->getOrder());
+                $Order = $data->getShipping()->getOrder();
+                $delives = $app['eccube.service.shopping']->getDeliveriesOrder($Order);
 
-                // 配送業者
-                // 商品種別に紐づく配送業者を取得
-                $deliveries =  $app['eccube.service.shopping']->getDeliveries();
+                $deliveries = array();
+                foreach ($delives as $Delivery) {
+                    $productType = $data->getProductClass()->getProductType();
+                    if ($Delivery->getProductType()->getId() == $productType->getId()) {
+                        $deliveries[] = $Delivery;
+                    }
+                }
 
-                $delivery = $data->getDelivery();
+                $delivery = $data->getShipping()->getDelivery();
 
                 $form
                     ->add('delivery', 'entity', array(
@@ -69,19 +86,7 @@ class ShippingMultiType extends AbstractType
                         'property' => 'name',
                         'choices' => $deliveries,
                         'data' => $delivery,
-                    ))
-                    ->add('shippingDeliveryDate', 'choice', array(
-                        'choices' => $deliveryDates,
-                        'required' => false,
-                        'empty_value' => '指定なし',
-                    ))
-                    ->add('deliveryTime', 'entity', array(
-                        'class' => 'Eccube\Entity\DeliveryTime',
-                        'property' => 'deliveryTime',
-                        'choices' => $delivery->getDeliveryTimes(),
-                        'required' => false,
-                        'empty_value' => '指定なし',
-                        'empty_data' => null,
+                        'mapped' => false,
                     ));
 
             })
@@ -92,7 +97,7 @@ class ShippingMultiType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Shipping',
+            'data_class' => 'Eccube\Entity\ShipmentItem',
         ));
     }
 
@@ -101,6 +106,6 @@ class ShippingMultiType extends AbstractType
      */
     public function getName()
     {
-        return 'shipping_multi';
+        return 'shipping_multiple';
     }
 }
