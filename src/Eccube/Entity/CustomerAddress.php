@@ -29,6 +29,15 @@ namespace Eccube\Entity;
  */
 class CustomerAddress extends \Eccube\Entity\AbstractEntity
 {
+
+    /**
+     * @return string
+     */
+    public function getShippingMultipleDefaultName()
+    {
+        return $this->getName01() . ' ' . $this->getAddr02() . ' ' . $this->getPref()->getName() . $this->getAddr01();
+    }
+
     /**
      * @var integer
      */
@@ -157,7 +166,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set name01
      *
-     * @param  string     $name01
+     * @param  string $name01
      * @return CustomerAddress
      */
     public function setName01($name01)
@@ -180,7 +189,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set name02
      *
-     * @param  string     $name02
+     * @param  string $name02
      * @return CustomerAddress
      */
     public function setName02($name02)
@@ -203,7 +212,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana01
      *
-     * @param  string     $kana01
+     * @param  string $kana01
      * @return CustomerAddress
      */
     public function setKana01($kana01)
@@ -226,7 +235,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set kana02
      *
-     * @param  string     $kana02
+     * @param  string $kana02
      * @return CustomerAddress
      */
     public function setKana02($kana02)
@@ -249,7 +258,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set company_name
      *
-     * @param  string     $companyName
+     * @param  string $companyName
      * @return CustomerAddress
      */
     public function setCompanyName($companyName)
@@ -272,7 +281,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip01
      *
-     * @param  string     $zip01
+     * @param  string $zip01
      * @return CustomerAddress
      */
     public function setZip01($zip01)
@@ -295,7 +304,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set zip02
      *
-     * @param  string     $zip02
+     * @param  string $zip02
      * @return CustomerAddress
      */
     public function setZip02($zip02)
@@ -318,7 +327,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set zipcode
      *
-     * @param  string     $zipcode
+     * @param  string $zipcode
      * @return CustomerAddress
      */
     public function setZipcode($zipcode)
@@ -341,7 +350,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr01
      *
-     * @param  string     $addr01
+     * @param  string $addr01
      * @return CustomerAddress
      */
     public function setAddr01($addr01)
@@ -364,7 +373,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set addr02
      *
-     * @param  string     $addr02
+     * @param  string $addr02
      * @return CustomerAddress
      */
     public function setAddr02($addr02)
@@ -387,7 +396,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel01
      *
-     * @param  string     $tel01
+     * @param  string $tel01
      * @return CustomerAddress
      */
     public function setTel01($tel01)
@@ -410,7 +419,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel02
      *
-     * @param  string     $tel02
+     * @param  string $tel02
      * @return CustomerAddress
      */
     public function setTel02($tel02)
@@ -433,7 +442,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set tel03
      *
-     * @param  string     $tel03
+     * @param  string $tel03
      * @return CustomerAddress
      */
     public function setTel03($tel03)
@@ -456,7 +465,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax01
      *
-     * @param  string     $fax01
+     * @param  string $fax01
      * @return CustomerAddress
      */
     public function setFax01($fax01)
@@ -479,7 +488,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax02
      *
-     * @param  string     $fax02
+     * @param  string $fax02
      * @return CustomerAddress
      */
     public function setFax02($fax02)
@@ -502,7 +511,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set fax03
      *
-     * @param  string     $fax03
+     * @param  string $fax03
      * @return CustomerAddress
      */
     public function setFax03($fax03)
@@ -525,7 +534,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set create_date
      *
-     * @param  \DateTime               $createDate
+     * @param  \DateTime $createDate
      * @return CustomerAddress
      */
     public function setCreateDate($createDate)
@@ -548,7 +557,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     /**
      * Set update_date
      *
-     * @param  \DateTime               $updateDate
+     * @param  \DateTime $updateDate
      * @return CustomerAddress
      */
     public function setUpdateDate($updateDate)

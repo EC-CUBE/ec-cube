@@ -27,7 +27,6 @@ namespace Eccube\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingMultipleType extends AbstractType
@@ -48,57 +47,29 @@ class ShippingMultipleType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('quantity', 'integer', array(
-                'attr' => array(
-                    'min' => 1,
-                    'maxlength' => $this->app['config']['int_len'],
-                ),
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\GreaterThanOrEqual(array(
-                        'value' => 1,
-                    )),
-                    new Assert\Regex(array('pattern' => '/^\d+$/')),
-                ),
-            ))
             ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) use ($app) {
                 /** @var \Eccube\Entity\ShipmentItem $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
 
-                $Order = $data->getShipping()->getOrder();
-                $delives = $app['eccube.service.shopping']->getDeliveriesOrder($Order);
-
-                $deliveries = array();
-                foreach ($delives as $Delivery) {
-                    $productType = $data->getProductClass()->getProductType();
-                    if ($Delivery->getProductType()->getId() == $productType->getId()) {
-                        $deliveries[] = $Delivery;
-                    }
+                if (is_null($data)) {
+                    return;
                 }
 
-                $delivery = $data->getShipping()->getDelivery();
+                $shippings = $app['eccube.repository.shipping']->findShippingsProduct($data->getOrder(), $data->getProductClass());
 
                 $form
-                    ->add('delivery', 'entity', array(
-                        'class' => 'Eccube\Entity\Delivery',
-                        'property' => 'name',
-                        'choices' => $deliveries,
-                        'data' => $delivery,
-                        'mapped' => false,
+                    ->add('shipping', 'collection', array(
+                        'type' => 'shipping_multiple_item',
+                        'data' => $shippings,
+                        'allow_add' => true,
+                        'allow_delete' => true,
                     ));
 
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\ShipmentItem',
-        ));
     }
 
     /**

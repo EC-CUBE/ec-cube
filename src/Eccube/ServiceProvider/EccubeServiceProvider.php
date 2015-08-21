@@ -198,6 +198,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.customer_address'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerAddress');
         });
+        $app['eccube.repository.shipping'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Shipping');
+        });
         $app['eccube.repository.order_status'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         });
@@ -306,6 +309,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\ShippingType($app);
             $types[] = new \Eccube\Form\Type\ShippingItemType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleType($app);
+            $types[] = new \Eccube\Form\Type\ShippingMultipleItemType($app);
             $types[] = new \Eccube\Form\Type\ShoppingType();
             $types[] = new \Eccube\Form\Type\ShoppingShippingType($app);
             $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
