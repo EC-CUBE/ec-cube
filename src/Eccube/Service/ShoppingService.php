@@ -409,24 +409,45 @@ class ShoppingService
             'Customer' => $Customer
         ));
 
-        $Shipping
-            ->setName01($CustomerAddress->getName01())
-            ->setName02($CustomerAddress->getName02())
-            ->setKana01($CustomerAddress->getKana01())
-            ->setKana02($CustomerAddress->getKana02())
-            ->setCompanyName($CustomerAddress->getCompanyName())
-            ->setTel01($CustomerAddress->getTel01())
-            ->setTel02($CustomerAddress->getTel02())
-            ->setTel03($CustomerAddress->getTel03())
-            ->setFax01($CustomerAddress->getFax01())
-            ->setFax02($CustomerAddress->getFax02())
-            ->setFax03($CustomerAddress->getFax03())
-            ->setZip01($CustomerAddress->getZip01())
-            ->setZip02($CustomerAddress->getZip02())
-            ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
-            ->setPref($CustomerAddress->getPref())
-            ->setAddr01($CustomerAddress->getAddr01())
-            ->setAddr02($CustomerAddress->getAddr02());
+        if ($this->app->isGranted('ROLE_USER')) {
+            $Shipping
+                ->setName01($CustomerAddress->getName01())
+                ->setName02($CustomerAddress->getName02())
+                ->setKana01($CustomerAddress->getKana01())
+                ->setKana02($CustomerAddress->getKana02())
+                ->setCompanyName($CustomerAddress->getCompanyName())
+                ->setTel01($CustomerAddress->getTel01())
+                ->setTel02($CustomerAddress->getTel02())
+                ->setTel03($CustomerAddress->getTel03())
+                ->setFax01($CustomerAddress->getFax01())
+                ->setFax02($CustomerAddress->getFax02())
+                ->setFax03($CustomerAddress->getFax03())
+                ->setZip01($CustomerAddress->getZip01())
+                ->setZip02($CustomerAddress->getZip02())
+                ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+                ->setPref($CustomerAddress->getPref())
+                ->setAddr01($CustomerAddress->getAddr01())
+                ->setAddr02($CustomerAddress->getAddr02());
+        } else {
+            $Shipping
+                ->setName01($Customer->getName01())
+                ->setName02($Customer->getName02())
+                ->setKana01($Customer->getKana01())
+                ->setKana02($Customer->getKana02())
+                ->setCompanyName($Customer->getCompanyName())
+                ->setTel01($Customer->getTel01())
+                ->setTel02($Customer->getTel02())
+                ->setTel03($Customer->getTel03())
+                ->setFax01($Customer->getFax01())
+                ->setFax02($Customer->getFax02())
+                ->setFax03($Customer->getFax03())
+                ->setZip01($Customer->getZip01())
+                ->setZip02($Customer->getZip02())
+                ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+                ->setPref($Customer->getPref())
+                ->setAddr01($Customer->getAddr01())
+                ->setAddr02($Customer->getAddr02());
+        }
 
         return $Shipping;
     }
