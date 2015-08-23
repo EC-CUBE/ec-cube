@@ -23,24 +23,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block javascript %}
 <script>
-$(function(){
-
+$(function() {
     $('.add').click(function() {
         var data = $(this).data();
-        var idx = data.shipping;
-        var hoge = $('#item' + idx + '-1');
-        var hogehoge = $(hoge).clone().attr('id', 'hogeaaa');
-        console.log(hogehoge);
-        $(hogehoge).attr('id', 'gehogehgoe');
+        var idx = data.idx;
+        var item = $('#item' + idx);
+        var row = $('#item' + idx + '-0');
+        var addrow = $(row).clone();
+        var length = $('.item'+idx).length;
+        $(addrow).attr('id', 'item' + idx + '-' + length);
 
-        $('.item' + idx).after(hogehoge);
+        $(addrow).find('select').each(function() {
+            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + length + '][customer_address]');
+        });
+        $(addrow).find('input').each(function() {
+            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + length + '][quantity]');
+        });
 
-
-
-       //     var lastRow = $('#nameTable tbody > tr:last').after('<tr><td>山下</td><td>28</td></tr>')
-
+        $(item).append($(addrow));
     });
-
 });
 </script>
 {% endblock javascript %}
@@ -54,80 +55,68 @@ $(function(){
                 <div class="col-sm-10 col-sm-offset-1">
                     <p class="message">各商品のお届け先を選択してください。(※数量の合計は、カゴの中の数量と合わせてください。)</p>
 
-                        {% for shipmentItem in shipmentItems %}
-                            {% set idx = loop.index0 %}
-                            <hr>
-                    <div class="cart_item table shipping_multiple_table">
-                        <div class="tbody">
+                    {% for shipmentItem in shipmentItems %}
+                        {% set idx = loop.index0 %}
+                        <hr>
+                        <div class="cart_item table shipping_multiple_table">
+                            <div class="tbody">
                                 <div class="item_box tr">
                                     <div class="td table">
-                                        <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}" /></div>
+                                        <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}"/></div>
                                         <dl class="item_detail">
-                                            <dt class="item_name text-default"><strong>{{ shipmentItem.productName }}</strong></dt>
+                                            <dt class="item_name text-default">
+                                                <strong>{{ shipmentItem.productName }}</strong></dt>
                                             <dd class="item_pattern small">
                                                 <p>
-                                                {% if shipmentItem.productClass.classCategory1 %}
-                                                    {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}<br>
-                                                {% endif %}
-                                                {% if shipmentItem.productClass.classCategory2 %}
-                                                   {{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}<br>
-                                                {% endif %}
+                                                    {% if shipmentItem.productClass.classCategory1 %}
+                                                        {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
+                                                        <br>
+                                                    {% endif %}
+                                                    {% if shipmentItem.productClass.classCategory2 %}
+                                                        {{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
+                                                        <br>
+                                                    {% endif %}
                                                 </p>
                                             </dd>
                                             <dd>小計：{{ shipmentItem.totalPrice|price }}</dd>
                                             <dd>数量：{{ shipmentItem.quantity }}</dd>
                                         </dl>
                                     </div>
-                                </div><!--/item_box-->
-                        </div>
-                    </div><!--/cart_item-->
-
-                            {% for shipping in form.shipping_multiple[idx].shipping %}
-                                <div id="item{{ idx }}-{{ loop.index }}" class="shipping_item item{{ idx }}">
-                            <div class="form-inline form-group">
-                                <label>お届け先</label>
-                                {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
-                                {{ form_errors(shipping.customer_address) }}
-                                <label>数量</label>
-                                {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
-                                {{ form_errors(shipping.quantity) }}
+                                </div>
+                                <!--/item_box-->
                             </div>
+                        </div><!--/cart_item-->
+
+                        <div id="item{{ idx }}">
+                            {% for shipping in form.shipping_multiple[idx].shipping %}
+                                <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }}">
+                                    <div class="form-inline form-group" data-row="{{ loop.index0 }}">
+                                        <label>お届け先</label>
+                                        {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
+                                        {{ form_errors(shipping.customer_address) }}
+                                        <label>数量</label>
+                                        {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
+                                        {{ form_errors(shipping.quantity) }}
+                                    </div>
                                 </div>
                             {% endfor %}
-                            <p><button type="button" class="btn btn-default btn-sm add" data-shipping="{{ idx }}">お届け先追加</button></p>
+                        </div>
+                        <p>
+                            <button type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加
+                            </button>
+                        </p>
                     {% endfor %}
 
                     <div class="row no-padding">
                         <div class="btn_group col-sm-offset-4 col-sm-4">
-                            <p><button type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button></p>
+                            <p>
+                                <button type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button>
+                            </p>
                             <p><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
                         </div>
                     </div>
 
                 </div>
-
-
-
-                {#
-            <table summary="商品情報">
-                {% for line in form.shipping_multi %}
-                    <tr>
-                        <td class="alignC">
-                        </td>
-                        <td class="alignC">
-                            {{ form_widget(line.quantity) }}
-                            {{ form_errors(line.quantity) }}
-                        </td>
-                        <td class="alignC">
-                            {{ form_widget(line.other_deliv) }}
-                            {{ form_errors(line.other_deliv) }}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-            #}
-
-
             </div><!-- /.row -->
         </form>
     </div>

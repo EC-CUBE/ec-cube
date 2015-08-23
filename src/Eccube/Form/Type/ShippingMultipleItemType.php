@@ -24,7 +24,6 @@
 
 namespace Eccube\Form\Type;
 
-use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -77,23 +76,23 @@ class ShippingMultipleItemType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function ($event) use ($app) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
                 $form = $event->getForm();
-                $form['quantity']->setData(3);
 
-            })
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
-                /** @var \Eccube\Entity\Shipping $data */
-                $data = $event->getData();
-                error_log(get_class($data));
-                /** @var \Symfony\Component\Form\Form $form */
-                $form = $event->getForm();
-                $data1 = $form['quantity']->getData();
-                Debug::dump($data1);
-                $event->setData($data1);
+                if (is_null($data)) {
+                    return;
+                }
+
+                $quantity = 0;
+                foreach ($data->getShipmentItems() as $ShipmentItem) {
+                    $quantity += $ShipmentItem->getQuantity();
+                }
+
+                $form['quantity']->setData($quantity);
+
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 
