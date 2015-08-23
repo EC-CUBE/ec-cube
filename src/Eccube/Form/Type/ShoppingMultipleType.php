@@ -26,7 +26,6 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -63,12 +62,6 @@ class ShoppingMultipleType extends AbstractType
                 'empty_value' => '指定なし',
                 'empty_data' => null,
             ))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) {
-                $data = $event->getData();
-
-                error_log(print_r($data, true));
-
-            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 
     }

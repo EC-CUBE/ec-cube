@@ -55,6 +55,10 @@ $(function() {
                 <div class="col-sm-10 col-sm-offset-1">
                     <p class="message">各商品のお届け先を選択してください。(※数量の合計は、カゴの中の数量と合わせてください。)</p>
 
+                    {% for error in errors %}
+                        <div class="text-danger">{{ error.message }}</div>
+                    {% endfor %}
+
                     {% for shipmentItem in shipmentItems %}
                         {% set idx = loop.index0 %}
                         <hr>
@@ -79,7 +83,11 @@ $(function() {
                                                 </p>
                                             </dd>
                                             <dd>小計：{{ shipmentItem.totalPrice|price }}</dd>
-                                            <dd>数量：{{ shipmentItem.quantity }}</dd>
+                                            {% for key, value in compItemQuantities %}
+                                                {% if shipmentItem.productClass.id == key %}
+                                                    <dd>数量：{{ value }}</dd>
+                                                {% endif %}
+                                            {% endfor %}
                                         </dl>
                                     </div>
                                 </div>
@@ -90,7 +98,7 @@ $(function() {
                         <div id="item{{ idx }}">
                             {% for shipping in form.shipping_multiple[idx].shipping %}
                                 <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }}">
-                                    <div class="form-inline form-group" data-row="{{ loop.index0 }}">
+                                    <div class="form-inline form-group">
                                         <label>お届け先</label>
                                         {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
                                         {{ form_errors(shipping.customer_address) }}

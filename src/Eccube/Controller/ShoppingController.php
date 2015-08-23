@@ -670,6 +670,19 @@ class ShoppingController extends AbstractController
         }
         */
 
+        $compItemQuantities = array();
+        foreach ($Order->getShippings() as $Shipping) {
+            foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
+                $itemId = $ShipmentItem->getProductClass()->getId();
+                $quantity = $ShipmentItem->getQuantity();
+                if (array_key_exists($itemId, $compItemQuantities)) {
+                    $compItemQuantities[$itemId] = $compItemQuantities[$itemId] + $quantity;
+                } else {
+                    $compItemQuantities[$itemId] = $quantity;
+                }
+            }
+        }
+
         $shipmentItems = array();
         $productClassIds = array();
         foreach ($Order->getShippings() as $Shipping) {
@@ -689,12 +702,50 @@ class ShoppingController extends AbstractController
                 'allow_add' => true,
                 'allow_delete' => true,
             ));
-        // $form['shipping_multiple']->setData($shipmentItems);
+
+        $errors = array();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form['shipping_multiple'];
+
+
+                // 数量が超えていないか、同一でないとエラー
+                $itemQuantities = array();
+                foreach ($data as $mulitples) {
+                    /** @var \Eccube\Entity\ShipmentItem $multipleItem */
+                    $multipleItem = $mulitples->getData();
+                    foreach ($mulitples as $items) {
+                        foreach ($items as $item) {
+                            $quantity = $item['quantity']->getData();
+                            $itemId = $multipleItem->getProductClass()->getId();
+                            if (array_key_exists($itemId, $itemQuantities)) {
+                                $itemQuantities[$itemId] = $itemQuantities[$itemId] + $quantity;
+                            } else {
+                                $itemQuantities[$itemId] = $quantity;
+                            }
+                        }
+                    }
+                }
+
+                foreach ($compItemQuantities as $key => $value) {
+                    if (array_key_exists($key, $itemQuantities)) {
+                        if ($itemQuantities[$key] != $value) {
+
+                            $errors[] = array('message' => '数量の数が異なっています。');
+
+                            // 対象がなければエラー
+                            return $app->render('Shopping/shipping_multiple.twig', array(
+                                'form' => $form->createView(),
+                                'shipmentItems' => $shipmentItems,
+                                'compItemQuantities' => $compItemQuantities,
+                                'errors' => $errors,
+                            ));
+
+                        }
+                    }
+                }
 
                 foreach ($data as $mulitples) {
 
@@ -706,7 +757,42 @@ class ShoppingController extends AbstractController
                             /** @var \Eccube\Entity\Shipping $Shipping */
                             $Shipping = $item->getData();
                             if ($Shipping instanceof \Eccube\Entity\Shipping) {
-                                //                 error_log($Shipping->getId());
+
+                                // お届け先を新規追加
+                                // 会員の場合、お届け先情報を新規登録
+                                $CustomerAddress = $item['customer_address']->getData();
+
+                                $Shipping
+                                    ->setName01($CustomerAddress->getName01())
+                                    ->setName02($CustomerAddress->getName02())
+                                    ->setKana01($CustomerAddress->getKana01())
+                                    ->setKana02($CustomerAddress->getKana02())
+                                    ->setCompanyName($CustomerAddress->getCompanyName())
+                                    ->setTel01($CustomerAddress->getTel01())
+                                    ->setTel02($CustomerAddress->getTel02())
+                                    ->setTel03($CustomerAddress->getTel03())
+                                    ->setFax01($CustomerAddress->getFax01())
+                                    ->setFax02($CustomerAddress->getFax02())
+                                    ->setFax03($CustomerAddress->getFax03())
+                                    ->setZip01($CustomerAddress->getZip01())
+                                    ->setZip02($CustomerAddress->getZip02())
+                                    ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+                                    ->setPref($CustomerAddress->getPref())
+                                    ->setAddr01($CustomerAddress->getAddr01())
+                                    ->setAddr02($CustomerAddress->getAddr02());
+
+                                $sitems = $Shipping->getShipmentItems();
+                                $sitem = $multipleItem;
+                                foreach ($sitems as $s) {
+                                    if ($s->getShipping()->getId() == $Shipping->getId()) {
+                                        $sitem = $s;
+                                        break;
+                                    }
+                                }
+                                $quantity = $item['quantity']->getData();
+
+                                $sitem->setQuantity($quantity);
+
                             } else {
                                 // お届け先を新規追加
                                 // 会員の場合、お届け先情報を新規登録
@@ -771,9 +857,9 @@ class ShoppingController extends AbstractController
                                 $Shipping->addShipmentItem($ShipmentItem);
                                 $app['orm.em']->persist($ShipmentItem);
 
-                                // 配送料金の設定
-                                $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
                             }
+                            // 配送料金の設定
+                            $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 
                         }
                     }
@@ -787,6 +873,8 @@ class ShoppingController extends AbstractController
         return $app->render('Shopping/shipping_multiple.twig', array(
             'form' => $form->createView(),
             'shipmentItems' => $shipmentItems,
+            'compItemQuantities' => $compItemQuantities,
+            'errors' => $errors,
         ));
     }
 
