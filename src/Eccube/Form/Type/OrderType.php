@@ -195,7 +195,10 @@ class OrderType extends AbstractType
                 'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($this->app)
+                'type' => new ShippingType($this->app),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
             ));
         $builder
             ->add($builder->create('Customer', 'hidden')

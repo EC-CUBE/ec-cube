@@ -31,11 +31,11 @@
 namespace Eccube\Form\Type;
 
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingType extends AbstractType
 {
@@ -132,6 +132,12 @@ class ShippingType extends AbstractType
             ))
             ->add('shipping_delivery_date', null, array(
                 'label' => 'お届け日'
+            ))
+            ->add('ShipmentItems', 'collection', array(
+                'type' => 'shipment_item',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
