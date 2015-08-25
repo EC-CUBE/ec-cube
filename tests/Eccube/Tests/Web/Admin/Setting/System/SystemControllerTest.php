@@ -21,25 +21,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Tests\Service;
 
-use Eccube\Application;
+namespace Eccube\Tests\Web\Admin\Setting\System;
 
-class SystemServiceTest extends AbstractServiceTestCase
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+
+class SystemControllerTest extends AbstractAdminWebTestCase
 {
-    public function testgetDbversion()
+    public function setUp()
     {
-        $app = $this->app;
+        parent::setUp();
+    }
 
-        $version = $app['eccube.service.system']
-            ->getDbversion();
-
-        $this->assertNotNull($version);
-
-        if ($app['config']['database']['driver'] == 'pdo_mysql') {
-            $this->assertRegExp('/mysql/', strtolower($version));
-        } else {
-            $this->assertRegExp('/postgresql/', strtolower($version));
-        }
+    public function testRoutingAdminSettingSystemSystemIndex()
+    {
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_system_system')
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }
