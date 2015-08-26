@@ -35,11 +35,6 @@ class SystemServiceTest extends AbstractServiceTestCase
             ->getDbversion();
 
         $this->assertNotNull($version);
-
-        if ($app['config']['database']['driver'] == 'pdo_mysql') {
-            $this->assertRegExp('/mysql/', strtolower($version));
-        } else {
-            $this->assertRegExp('/postgresql/', strtolower($version));
-        }
+        $this->assertRegExp('/mysql|postgresql/', strtolower($version));
     }
 }
