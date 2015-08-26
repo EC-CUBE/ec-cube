@@ -112,7 +112,7 @@ class PluginController extends AbstractController
 
                                     if ($plugin->getVersion() != $item['version']) {
                                         // バージョンが異なる
-                                        if (array_search(Constant::VERSION, $item['eccube_version'])) {
+                                        if (in_array(Constant::VERSION, $item['eccube_version'])) {
                                             // 対象バージョン
                                             $plugin->setUpdateStatus(3);
                                             break;
@@ -431,7 +431,7 @@ class PluginController extends AbstractController
                         // EC-CUBEのバージョンチェック
                         // 参照渡しをして値を追加
                         foreach ($items as &$item) {
-                            if (array_search(Constant::VERSION, $item['eccube_version'])) {
+                            if (in_array(Constant::VERSION, $item['eccube_version'])) {
                                 // 対象バージョン
                                 $item['version_check'] = 1;
                             } else {
