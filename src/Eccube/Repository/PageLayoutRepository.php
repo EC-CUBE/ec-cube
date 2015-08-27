@@ -57,6 +57,11 @@ class PageLayoutRepository extends EntityRepository
             $ids[] = $ownBlockPosition->getBlock()->getId();
         }
 
+        # $idsが空配列だと、$ids以外のblockを取得するSQLが生成されないため、0(存在しないid)を入れる
+        if (empty($ids)) {
+            $ids[] = 0;
+        }
+
         return $blockRepo->createQueryBuilder('b')
             ->where('b.id not in (:ids)')
             ->setParameter(':ids', $ids)
