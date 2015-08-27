@@ -33,6 +33,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
@@ -253,10 +254,9 @@ class Application extends ApplicationTrait
     public function initSession()
     {
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
-            'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => 'eccube',
-                'cookie_path' => $this['config']['root_urlpath'],
+                'cookie_path' => $this['config']['root_urlpath'] ?: '/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
                 'cookie_httponly' => true,
@@ -264,6 +264,17 @@ class Application extends ApplicationTrait
                 // http://blog.tokumaru.org/2011/10/cookiedomain.html
             ),
         ));
+        $this['session.db_options'] = array(
+            'db_table'      => 'dtb_session',
+        );
+
+        $app = $this;
+        $this['session.storage.handler'] = function () use ($app) {
+            return new PdoSessionHandler(
+                $app['dbs']['session']->getWrappedConnection(),
+                $app['session.db_options']
+            );
+        };
     }
 
     public function initRendering()
@@ -384,8 +395,10 @@ class Application extends ApplicationTrait
     public function initDoctrine()
     {
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'db.options' => $this['config']['database']
-        ));
+            'dbs.options' => array(
+                'default' => $this['config']['database'],
+                'session' => $this['config']['database'],
+        )));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
@@ -472,7 +485,7 @@ class Application extends ApplicationTrait
                     'name' => 'eccube_rememberme',
                     // lifetimeはデフォルトの1年間にする
                     // 'lifetime' => $this['config']['cookie_lifetime'],
-                    'path' => $this['config']['root_urlpath'],
+                    'path' => $this['config']['root_urlpath'] ?: '/',
                     'secure' => $this['config']['force_ssl'],
                     'httponly' => true,
                     'always_remember_me' => false,

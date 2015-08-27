@@ -626,11 +626,11 @@ class InstallController
         $db_config = Yaml::parse($config_file);
 
         $this->setPDO();
-        $stmt = $this->PDO->query('SELECT version()');
+        $stmt = $this->PDO->query('select version() as v');
 
         $version = '';
         foreach ($stmt as $row) {
-            $version = $row['version'];
+            $version = $row['v'];
         }
 
         if ($db_config['database']['driver'] === 'pdo_mysql') {

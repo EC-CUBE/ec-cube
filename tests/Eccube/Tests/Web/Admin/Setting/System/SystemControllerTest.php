@@ -1,4 +1,6 @@
-s file is part of EC-CUBE
+<?php
+/*
+ * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
@@ -19,33 +21,24 @@ s file is part of EC-CUBE
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Service;
 
-use Eccube\Application;
+namespace Eccube\Tests\Web\Admin\Setting\System;
 
-class SystemService
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+
+class SystemControllerTest extends AbstractAdminWebTestCase
 {
-    private $app;
-
-    public function __construct(Application $app)
+    public function setUp()
     {
-        $this->app = $app;
+        parent::setUp();
     }
 
-    public function getDbversion()
+    public function testRoutingAdminSettingSystemSystemIndex()
     {
-
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-        $rsm->addScalarResult('v', 'v');
-
-        $version = $this->app['orm.em']
-            ->createNativeQuery('select version() as v', $rsm)
-            ->getSingleScalarResult();
-
-        if ($this->app['config']['database']['driver'] == 'pdo_mysql') {
-            return 'MySQL '.$version;
-        } else {
-            return $version;
-        }
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_system_system')
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }
