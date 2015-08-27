@@ -48,7 +48,8 @@ class CustomerEditController extends AbstractController
             $Customer->setPassword($app['config']['default_password']);
         // 新規登録
         } else {
-            $Customer =  $app['eccube.repository.customer']->newCustomer();
+            $Customer = $app['eccube.repository.customer']->newCustomer();
+            $CustomerAddress = new \Eccube\Entity\CustomerAddress();
         }
 
         // 会員登録フォーム
@@ -70,6 +71,27 @@ class CustomerEditController extends AbstractController
                             ->getRepository('Eccube\Entity\Customer')
                             ->getUniqueSecretKey($app)
                     );
+
+                    $CustomerAddress->setName01($Customer->getName01())
+                        ->setName02($Customer->getName02())
+                        ->setKana01($Customer->getKana01())
+                        ->setKana02($Customer->getKana02())
+                        ->setCompanyName($Customer->getCompanyName())
+                        ->setZip01($Customer->getZip01())
+                        ->setZip02($Customer->getZip02())
+                        ->setZipcode($Customer->getZip01() . $Customer->getZip02())
+                        ->setPref($Customer->getPref())
+                        ->setAddr01($Customer->getAddr01())
+                        ->setAddr02($Customer->getAddr02())
+                        ->setTel01($Customer->getTel01())
+                        ->setTel02($Customer->getTel02())
+                        ->setTel03($Customer->getTel03())
+                        ->setFax01($Customer->getFax01())
+                        ->setFax02($Customer->getFax02())
+                        ->setFax03($Customer->getFax03())
+                        ->setDelFlg(Constant::DISABLED)
+                        ->setCustomer($Customer);
+                    $app['orm.em']->persist($CustomerAddress);
                 }
 
                 if ($Customer->getPassword() === $app['config']['default_password']) {
@@ -82,29 +104,7 @@ class CustomerEditController extends AbstractController
                     );
                 }
 
-                $CustomerAddress = new \Eccube\Entity\CustomerAddress();
-                $CustomerAddress->setName01($Customer->getName01())
-                    ->setName02($Customer->getName02())
-                    ->setKana01($Customer->getKana01())
-                    ->setKana02($Customer->getKana02())
-                    ->setCompanyName($Customer->getCompanyName())
-                    ->setZip01($Customer->getZip01())
-                    ->setZip02($Customer->getZip02())
-                    ->setZipcode($Customer->getZip01() . $Customer->getZip02())
-                    ->setPref($Customer->getPref())
-                    ->setAddr01($Customer->getAddr01())
-                    ->setAddr02($Customer->getAddr02())
-                    ->setTel01($Customer->getTel01())
-                    ->setTel02($Customer->getTel02())
-                    ->setTel03($Customer->getTel03())
-                    ->setFax01($Customer->getFax01())
-                    ->setFax02($Customer->getFax02())
-                    ->setFax03($Customer->getFax03())
-                    ->setDelFlg(Constant::DISABLED)
-                    ->setCustomer($Customer);
-
                 $app['orm.em']->persist($Customer);
-                $app['orm.em']->persist($CustomerAddress);
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.customer.save.complete', 'admin');
