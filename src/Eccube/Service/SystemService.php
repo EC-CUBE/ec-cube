@@ -1,4 +1,6 @@
-s file is part of EC-CUBE
+<?php
+/*
+ * This file is part of EC-CUBE
  *
  * Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
  *
