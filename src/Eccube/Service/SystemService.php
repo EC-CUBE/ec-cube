@@ -44,8 +44,8 @@ class SystemService
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('version', 'v');
 
-        $version = $this->app['orm.em']->createNativeQuery('SELECT VERSION()', $rsm)
-                                 ->getSingleScalarResult();
+        $version = $this->app['orm.em']->createNativeQuery('SELECT version() as version', $rsm)->getSingleScalarResult();
+
         if ($this->app['config']['database']['driver'] == 'pdo_mysql') {
             return 'MySQL ' . $version;
         } else {
