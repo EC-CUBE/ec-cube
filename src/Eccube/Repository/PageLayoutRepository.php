@@ -57,9 +57,9 @@ class PageLayoutRepository extends EntityRepository
             $ids[] = $ownBlockPosition->getBlock()->getId();
         }
 
-        # $idsが空配列だと、$ids以外のblockを取得するSQLが生成されないため、0(存在しないid)を入れる
+        # $idsが空配列だと、$ids以外のblockを取得するSQLが生成されないため、存在しないidを入れる
         if (empty($ids)) {
-            $ids[] = 0;
+            $ids[] = $em->getRepository('Eccube\Entity\Block')->getUnusedBlockId();
         }
 
         return $blockRepo->createQueryBuilder('b')
