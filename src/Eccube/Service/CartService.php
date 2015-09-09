@@ -283,8 +283,13 @@ class CartService
         }
 
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
-            $quantity = $ProductClass->getStock();
-            $this->addError('cart.over.stock');
+            if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
+                $quantity = $ProductClass->getSaleLimit();
+                $this->addError('cart.over.sale_limit');
+            } else {
+                $quantity = $ProductClass->getStock();
+                $this->addError('cart.over.stock');
+            }
         } elseif ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
             $quantity = $ProductClass->getSaleLimit();
             $this->addError('cart.over.sale_limit');
