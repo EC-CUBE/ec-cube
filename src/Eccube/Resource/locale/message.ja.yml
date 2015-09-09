@@ -137,6 +137,7 @@ plugin already installed.: プラグインは既にインストールされて�
 admin.plugin.authentication.setting.complete: 認証キーを設定しました。
 admin.plugin.install.complete: プラグインをインストールしました。
 
+admin.preview.register.complete: プレビューを登録しました
 
 admin_title: 'EC-CUBE 管理機能' # 未使用
 normal_price_title: 通常価格    # 未使用
