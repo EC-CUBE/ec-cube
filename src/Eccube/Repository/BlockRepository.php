@@ -64,6 +64,13 @@ class BlockRepository extends EntityRepository
         return $Block;
     }
 
+    public function getUnusedBlockId()
+    {
+        $Block = new \Eccube\Entity\Block;
+        return $Block::UNUSED_BLOCK_ID;
+    }
+
+
     private function getNewBlockId($DeviceType)
     {
 

@@ -12,6 +12,11 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
+    const UNUSED_BLOCK_ID = 0;
+
+    /**
+     * @var integer
+     */
     private $id;
 
     /**
