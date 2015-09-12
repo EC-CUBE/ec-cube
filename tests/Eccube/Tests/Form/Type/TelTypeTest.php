@@ -23,9 +23,7 @@
 
 namespace Eccube\Tests\Form\Type;
 
-use Eccube\Form\Type\TelType;
-
-class TelTypeTest extends AbstractTypeTestCase
+class TelTypeTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -135,17 +133,28 @@ class TelTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
+        // \Eccube\Applicationは重いから呼ばない
+        // todo AbstractTypeTestCaseに移す
+        $app = new \Silex\Application();
+        $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+            $types[] = new \Eccube\Form\Type\TelType();
+
+            return $types;
+        }));
+
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
             ->add('tel', 'tel')
             ->getForm();
+    }
 
-        /* todo こうかけると単体テストになるんだけど動きません
-        $type = new TelType();
-        $this->form = $this->factory->create($type, null, array());*/
+    protected function tearDown()
+    {
+        parent::tearDown();
+        $this->form = null;
     }
 
     /**
