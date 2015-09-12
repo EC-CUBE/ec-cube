@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
@@ -31,11 +31,11 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class EntryType extends AbstractType
 {
-    public $app;
+    protected $config;
 
-    public function __construct(\Silex\Application $app)
+    public function __construct($config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
 
     /**
@@ -43,28 +43,26 @@ class EntryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('name', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $this->config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $this->config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -76,7 +74,7 @@ class EntryType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $this->config['stext_len'],
                     ))
                 ),
             ))
@@ -85,7 +83,7 @@ class EntryType extends AbstractType
                 'help' => 'form.contact.address.help',
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $this->config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -118,8 +116,8 @@ class EntryType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $app['config']['password_min_len'],
-                        'max' => $app['config']['password_max_len'],
+                        'min' => $this->config['password_min_len'],
+                        'max' => $this->config['password_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
                 ),

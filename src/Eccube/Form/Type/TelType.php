@@ -69,9 +69,9 @@ class TelType extends AbstractType
         }, 255);
 
         $builder
-            ->add($options['tel01_name'], 'text', array_merge($options['options'], $options['tel01_options']))
-            ->add($options['tel02_name'], 'text', array_merge($options['options'], $options['tel02_options']))
-            ->add($options['tel03_name'], 'text', array_merge($options['options'], $options['tel03_options']))
+            ->add($options['tel01_name'], 'text', array_merge_recursive($options['options'], $options['tel01_options']))
+            ->add($options['tel02_name'], 'text', array_merge_recursive($options['options'], $options['tel02_options']))
+            ->add($options['tel03_name'], 'text', array_merge_recursive($options['options'], $options['tel03_options']))
             ;
 
         $builder->setAttribute('tel01_name', $options['tel01_name']);
