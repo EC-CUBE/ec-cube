@@ -23,7 +23,7 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
-class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
