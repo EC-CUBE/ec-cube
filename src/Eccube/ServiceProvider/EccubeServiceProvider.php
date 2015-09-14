@@ -292,7 +292,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\CustomerAddressType($app['config']);
             $types[] = new \Eccube\Form\Type\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\ShopMasterType($app['config']);
-            $types[] = new \Eccube\Form\Type\TradelawType($app);
             $types[] = new \Eccube\Form\Type\TaxRuleType();
             $types[] = new \Eccube\Form\Type\MainEditType($app);
             $types[] = new \Eccube\Form\Type\BlockType($app);
@@ -325,6 +324,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\SecurityType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\CsvImportType($app);
+            $types[] = new \Eccube\Form\Type\Admin\TradelawType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
