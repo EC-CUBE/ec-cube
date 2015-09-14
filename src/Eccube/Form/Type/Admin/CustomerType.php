@@ -100,7 +100,14 @@ class CustomerType extends AbstractType
                     ),
                 ),
             ))
-            ->add('tel', 'tel', array())
+            ->add('tel', 'tel', array(
+                'required' => true,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,
