@@ -23,7 +23,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
@@ -94,7 +94,14 @@ class CustomerAddressType extends AbstractType
                     ),
                 ),
             ))
-            ->add('tel', 'tel', array())
+            ->add('tel', 'tel', array(
+                'required' => true,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
             ->add('fax', 'tel', array(
                 'required' => false,
             ))
