@@ -289,7 +289,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\SearchProductType();
             $types[] = new \Eccube\Form\Type\CustomerLoginType($app['session']);
             $types[] = new \Eccube\Form\Type\CustomerAddressType($app['config']);
-            $types[] = new \Eccube\Form\Type\ShopMasterType($app['config']);
             $types[] = new \Eccube\Form\Type\TaxRuleType();
             $types[] = new \Eccube\Form\Type\MainEditType($app);
             $types[] = new \Eccube\Form\Type\BlockType($app);
@@ -323,6 +322,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\SecurityType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\CsvImportType($app);
+            $types[] = new \Eccube\Form\Type\Admin\ShopMasterType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\TradelawType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\OrderType($app);
             $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
