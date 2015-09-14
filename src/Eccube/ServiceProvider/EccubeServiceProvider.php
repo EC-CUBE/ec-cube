@@ -296,9 +296,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
-            $types[] = new \Eccube\Form\Type\OrderType($app);
-            $types[] = new \Eccube\Form\Type\OrderDetailType($app);
-            $types[] = new \Eccube\Form\Type\ShippingType($app);
             $types[] = new \Eccube\Form\Type\ShoppingShippingType($app);
             $types[] = new \Eccube\Form\Type\ShipmentItemType();
             $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
@@ -327,6 +324,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\SecurityType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\CsvImportType($app);
             $types[] = new \Eccube\Form\Type\Admin\TradelawType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\OrderType($app);
+            $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
+            $types[] = new \Eccube\Form\Type\Admin\ShippingType($app);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
