@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
 use Silex\Application;
 use \Symfony\Component\Form\AbstractType;
@@ -32,39 +32,39 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class NonMemberType extends AbstractType
 {
-    public $app;
+    public $config;
 
-    public function __construct(Application $app)
+    public function __construct($config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
+        $config = $this->config;
 
         $builder
             ->add('name', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -76,7 +76,7 @@ class NonMemberType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $config['stext_len'],
                     ))
                 ),
             ))
@@ -85,7 +85,7 @@ class NonMemberType extends AbstractType
                 'help' => 'form.contact.address.help',
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -93,25 +93,10 @@ class NonMemberType extends AbstractType
                 ),
             ))
             ->add('tel', 'tel', array(
-                'tel01_options' => array(
+                'required' => true,
+                'options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel03_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                     ),
                 ),
             ))
