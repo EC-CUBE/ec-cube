@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ContactType extends AbstractType
 {
-
     public $config;
 
     public function __construct($config)
@@ -93,7 +92,6 @@ class ContactType extends AbstractType
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
-
     }
 
     /**
