@@ -21,8 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Form\Type;
-
+namespace Eccube\Form\Type\Front;
 
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
@@ -32,11 +31,11 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingShippingType extends AbstractType
 {
-    public $app;
+    protected $config;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct($config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
 
     /**
@@ -44,28 +43,28 @@ class ShoppingShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
+        $config = $this->config;
 
         $builder
             ->add('name', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -77,7 +76,7 @@ class ShoppingShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $config['stext_len'],
                     ))
                 ),
             ))
@@ -88,7 +87,7 @@ class ShoppingShippingType extends AbstractType
                 'help' => 'form.contact.address.help',
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -96,25 +95,10 @@ class ShoppingShippingType extends AbstractType
                 ),
             ))
             ->add('tel', 'tel', array(
-                'tel01_options' => array(
+                'required' => true,
+                'options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel03_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                     ),
                 ),
             ))
@@ -127,7 +111,7 @@ class ShoppingShippingType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\Shipping',
+            'data_class' => 'Eccube\Entity\Shipping',
         ));
     }
 

@@ -296,7 +296,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\ShoppingType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
-            $types[] = new \Eccube\Form\Type\ShoppingShippingType($app);
             $types[] = new \Eccube\Form\Type\ShipmentItemType();
             $types[] = new \Eccube\Form\Type\CustomerAgreementType($app);
             $types[] = new \Eccube\Form\Type\ForgotType();
@@ -305,6 +304,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Front\EntryType($app['config']);
             $types[] = new \Eccube\Form\Type\Front\ContactType($app['config']);
             $types[] = new \Eccube\Form\Type\Front\NonMemberType($app['config']);
+            $types[] = new \Eccube\Form\Type\Front\ShoppingShippingType($app['config']);
 
             // admin
             $types[] = new \Eccube\Form\Type\Admin\LoginType($app['session']);
