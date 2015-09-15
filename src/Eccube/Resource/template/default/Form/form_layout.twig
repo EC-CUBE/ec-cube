@@ -249,10 +249,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{- form_widget(form[form.vars.addr02_name]) -}}
     {%- else -%}
         <div class="form-group">
-            {{- form_widget(form[form.vars.addr01_name], {'id': 'addr01', 'attr': {'style': 'ime-mode: active;', 'placeholder' : app.config.sample_address1 }}) -}}<br />
+            {{- form_widget(form[form.vars.addr01_name], {'id': 'addr01', 'attr': {'style': 'ime-mode: active;', 'placeholder': 'form.address1.help' }}) -}}<br />
         </div>
         <div class="form-group">
-            {{- form_widget(form[form.vars.addr02_name], {'id': 'addr02', 'attr': {'style': 'ime-mode: active;', 'placeholder' : app.config.sample_address2}}) -}}<br />
+            {{- form_widget(form[form.vars.addr02_name], {'id': 'addr02', 'attr': {'style': 'ime-mode: active;', 'placeholder': 'form.address2.help'}}) -}}<br />
         </div>
         {%- for child in form %}
             {{- form_errors(child) -}}
