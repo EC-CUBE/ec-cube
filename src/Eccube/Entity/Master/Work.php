@@ -30,6 +30,11 @@ namespace Eccube\Entity\Master;
 class Work extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @var integer
+     */
+    const WORK_ACTIVE_ID = 1;
+
+    /**
      * @return string
      */
     public function __toString()

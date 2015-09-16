@@ -25,7 +25,6 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Eccube\Common\Constant;
 use Eccube\Entity\Member;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -33,6 +32,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Util\SecureRandom;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+
 /**
  * MemberRepository
  *
@@ -73,7 +73,7 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
         $Work = $this
             ->getEntityManager()
             ->getRepository('Eccube\Entity\Master\Work')
-            ->find(1);
+            ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
 
         $query = $this->createQueryBuilder('m')
             ->where('m.login_id = :login_id')
