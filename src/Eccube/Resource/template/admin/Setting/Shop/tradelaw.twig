@@ -29,6 +29,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#zip-search').click(function(event) {
+        AjaxZip3.zip2addr('tradelaw[law_zip][law_zip01]', 'tradelaw[law_zip][law_zip02]', 'tradelaw[law_address][law_pref]', 'tradelaw[law_address][law_addr01]');
+    });
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
 
 <form name="tradelaw_form" role="form" id="tradelaw_form" method="post" action="{{ url('admin_setting_shop_tradelaw') }}">
@@ -42,8 +53,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="box-body">
           {{ form_row(form.law_company) }}
           {{ form_row(form.law_manager) }}
-          {{ form_row(form.law_zip) }}
-          {{ form_row(form.law_address) }}
+
+          {# 住所：郵便番号 #}
+          <div class="form-group">
+            {{ form_label(form.law_address) }}
+            <div class="col-sm-9 col-lg-10 input_zip form-inline">
+              〒{{ form_widget(form.law_zip.law_zip01) }}-{{ form_widget(form.law_zip.law_zip02) }}
+              {{ form_errors(form.law_zip.law_zip01) }}
+              {{ form_errors(form.law_zip.law_zip02) }}
+              <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
+            </div>
+          </div>
+
+          {# 住所：住所 #}
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              {{ form_widget(form.law_address) }}
+              {{ form_errors(form.law_address) }}
+            </div>
+          </div>
 
           {# 電話番号 #}
           <div class="form-group">
