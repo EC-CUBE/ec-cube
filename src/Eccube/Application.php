@@ -20,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
@@ -35,6 +34,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\Yaml\Yaml;
+use Eccube\EventListner\CsrfTokenEventListner;
+use Eccube\Util\CsrfTokenUtil;
 
 class Application extends ApplicationTrait
 {
@@ -277,6 +278,15 @@ class Application extends ApplicationTrait
         };
     }
 
+    public function isAdminRoute()
+    {
+        if (strpos($this['request']->getPathInfo(), '/' . trim($this['config']['admin_route'], '/')) === 0) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function initRendering()
     {
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
@@ -285,7 +295,7 @@ class Application extends ApplicationTrait
         $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
-
+            $twig->addExtension(new \Eccube\Twig\Extension\CsrfTokenExtension($app['url_generator'] ,$app['form.csrf_provider'], $app->isAdminRoute() )); // urlやpathの生成部分にcsrf対策トークンを自動で付ける
             return $twig;
         }));
 
@@ -302,7 +312,7 @@ class Application extends ApplicationTrait
                     $cacheBaseDir = __DIR__ . '/../../app/cache/twig/production/';
                 }
 
-                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                if ($app->isAdminRoute($app)) {
                     if (file_exists(__DIR__ . '/../../app/template/admin')) {
                         $paths[] = __DIR__ . '/../../app/template/admin';
                     }
@@ -324,7 +334,7 @@ class Application extends ApplicationTrait
             }));
 
             // 管理画面のIP制限チェック.
-            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+            if ($app->isAdminRoute($app)) {
                 // IP制限チェック
                 $allowHost = $app['config']['admin_allow_host'];
                 if (count($allowHost) > 0) {
@@ -458,6 +468,8 @@ class Application extends ApplicationTrait
                     'password_parameter' => 'password',
                     'with_csrf' => true,
                     'use_forward' => true,
+                    'always_use_default_target_path' => true, // CSRF対策チェック導入のため管理画面のトップへ
+                    'default_target_path' => "/{$this['config']['admin_route']}/", 
                 ),
                 'logout' => array(
                     'logout_path' => "/{$this['config']['admin_route']}/logout",
@@ -517,12 +529,14 @@ class Application extends ApplicationTrait
         });
         $this['user'] = $this->share(function ($app) {
             $token = $app['security']->getToken();
-
             return ($token !== null) ? $token->getUser() : null;
         });
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+            // csrfトークンのチェックを追加
+        $this['dispatcher']->addSubscriber(new CsrfTokenEventListner($this));
+
     }
 
     public function initializePlugin()
@@ -611,6 +625,17 @@ class Application extends ApplicationTrait
                 ->getRepository('Eccube\Entity\Plugin')
                 ->findOneBy(array('code' => $config['code']));
 
+            // const
+            if (isset($config['const'])) {
+                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
+                    $eccubeConfig[$config['code']] = array(
+                        'const' => $config['const'],
+                    );
+
+                    return $eccubeConfig;
+                }));
+            }
+
             if ($plugin && $plugin->getEnable() == Constant::DISABLED) {
                 // プラグインが無効化されていれば読み込まない
                 continue;
@@ -637,16 +662,6 @@ class Application extends ApplicationTrait
                     }
                 }
             }
-            // const
-            if (isset($config['const'])) {
-                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
-                    $eccubeConfig[$config['code']] = array(
-                        'const' => $config['const'],
-                    );
-
-                    return $eccubeConfig;
-                }));
-            }
             // Type: ServiceProvider
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
@@ -656,4 +671,17 @@ class Application extends ApplicationTrait
             }
         }
     }
+
+    public function url($route, $parameters = array())
+    {
+        $parameters = CsrfTokenUtil::addToken($parameters,$this['form.csrf_provider']);
+        return parent::url( $route,$parameters );
+    }
+
+    public function path($route, $parameters = array())
+    {
+        $parameters = CsrfTokenUtil::addToken($parameters,$this['form.csrf_provider']);
+        return parent::path( $route,$parameters );
+    }
+
 }

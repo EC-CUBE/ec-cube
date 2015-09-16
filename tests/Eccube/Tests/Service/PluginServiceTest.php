@@ -25,6 +25,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 use Symfony\Component\Yaml\Yaml;
+use Eccube\Common\Constant;
 
 class PluginServiceTest extends AbstractServiceTestCase
 {
@@ -82,16 +83,21 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
 
-        $this->setExpectedException(
-          '\Eccube\Exception\PluginException', 'plugin already installed.'
-        );
+        try{
+            $service->install($tmpfile);
+            $this->fail("checkSamePlugin dont throw exception.");
+        }catch(\Eccube\Exception\PluginException $e){
+        }catch(\Exception $e){
+            $this->fail("checkSamePlugin throw unexpected exception.".$e->toString());
+        }
         // 同じプラグインの二重インストールが蹴られるか
-        $service->install($tmpfile);
 
         // アンインストールできるか
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
+        $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
         $this->assertTrue($service->uninstall($plugin));
-        
+
+
     }
 
     // 必須ファイルがないプラグインがインストール出来ないこと
@@ -391,6 +397,109 @@ EOD;
     }
 
 
+     // インストーラが例外を上げた場合ロールバックできるか
+    public function testInstallPluginWithBrokenManager()
+    {
+        // インストールするプラグインを作成する
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
+        $dummyManager=<<<'EOD'
+<?php
+namespace Plugin\@@@@ ;
+
+use Eccube\Plugin\AbstractPluginManager;
+class PluginManager extends AbstractPluginManager
+{
+    public function install($plugin,$app)
+    {
+        throw new \Exception('hoge',1);
+    }
+
+}
+
+EOD;
+        $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addFromString("PluginManager.php" , $dummyManager);
+        $service = $this->app['eccube.service.plugin']; 
+        try{
+            $this->assertTrue($service->install($tmpfile));
+            $this->fail("BrokenManager dont throw exception.");
+        }catch(\Exception $e){
+        }
+        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
+        $this->assertFalse((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+    }
+
+     // インストーラが例外を上げた場合ロールバックできるか
+    public function testInstallPluginWithBrokenManagerAfterInstall()
+    {
+        // インストールするプラグインを作成する
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['name'] = $tmpname;
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname;
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
+        $dummyManager=<<<'EOD'
+<?php
+namespace Plugin\@@@@ ;
+
+use Eccube\Plugin\AbstractPluginManager;
+class PluginManager extends AbstractPluginManager
+{
+    public function install($plugin,$app)
+    {    
+        echo "";
+    }
+    public function uninstall($config,$app)
+    {
+        throw new \Exception('hoge',1);
+    }
+    public function enable($config,$app)
+    {
+        throw new \Exception('hoge',1);
+    }
+    public function disable($config,$app)
+    {
+        throw new \Exception('hoge',1);
+    }
+    public function update($config,$app)
+    {
+        throw new \Exception('hoge',1);
+    }
+
+}
+
+EOD;
+        $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addFromString("PluginManager.php" , $dummyManager);
+        $service = $this->app['eccube.service.plugin']; 
+        $this->assertTrue($service->install($tmpfile));
+        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
+        try{
+            $this->assertTrue($service->enable($plugin));
+        }catch(\Exception $e){ }
+        $this->app['orm.em']->detach($plugin); 
+        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
+
+    }
+
      // インストーラを含むプラグインが正しくインストールできるか 
     public function testInstallPluginWithManager()
     {
@@ -450,7 +559,7 @@ EOD;
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
         $this->assertTrue($service->install($tmpfile));
-        $this->assertRegexp('/InstalledEnabled/',ob_get_contents()); ob_end_clean();
+        $this->assertRegexp('/Installed/',ob_get_contents()); ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
 
