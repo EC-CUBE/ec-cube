@@ -76,8 +76,6 @@ class ShoppingService
             'pre_order_id' => $preOrderId,
         );
 
-        error_log($status);
-
         if (!is_null($status)) {
             $condition += array(
                 'OrderStatus' => $status,
