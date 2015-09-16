@@ -29,22 +29,49 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block javascript %}
+<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+<script>
+$(function() {
+    $('#zip-search').click(function(event) {
+        AjaxZip3.zip2addr('tradelaw[law_zip][law_zip01]', 'tradelaw[law_zip][law_zip02]', 'tradelaw[law_address][law_pref]', 'tradelaw[law_address][law_addr01]');
+    });
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
 
     <form role="form" name="form1" id="form1" method="post">
         {{ form_widget(form._token) }}
-            <div class="row" id="aside_wrap">
-                <div class="col-md-9">
-                    <div class="box form-horizontal">
-                        <div class="box-header">
-                            <h3 class="box-title">特定商取引法</h3>
-                        </div><!-- /.box-header -->
-                        <div class="box-body">
-                            {{ form_row(form.law_company) }}
-                            {{ form_row(form.law_manager) }}
-                            {{ form_row(form.law_zip) }}
-                            {{ form_row(form.law_address) }}
-                            
+        <div class="row" id="aside_wrap">
+            <div class="col-md-9">
+                <div class="box form-horizontal">
+                    <div class="box-header">
+                        <h3 class="box-title">特定商取引法</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        {{ form_row(form.law_company) }}
+                        {{ form_row(form.law_manager) }}
+
+                        {# 住所：郵便番号 #}
+                        <div class="form-group">
+                            {{ form_label(form.law_address) }}
+                            <div class="col-sm-9 col-lg-10 input_zip form-inline">
+                                〒{{ form_widget(form.law_zip.law_zip01) }}-{{ form_widget(form.law_zip.law_zip02) }}
+                                {{ form_errors(form.law_zip) }}
+                                <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
+                            </div>
+                        </div>
+
+                        {# 住所：住所 #}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                {{ form_widget(form.law_address) }}
+                                {{ form_errors(form.law_address) }}
+                            </div>
+                        </div>
+
                         {# 電話番号 #}
                         <div class="form-group">
                             {{ form_label(form.law_tel) }}
@@ -61,41 +88,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.law_fax) }}
                             </div>
                         </div>
-                            
-                            {{ form_row(form.law_email) }}
-                            {{ form_row(form.law_url) }}
-                            {{ form_row(form.law_term01) }}
-                            {{ form_row(form.law_term02) }}
-                            {{ form_row(form.law_term03) }}
-                            {{ form_row(form.law_term04) }}
-                            {{ form_row(form.law_term05) }}
-                            {{ form_row(form.law_term06) }}
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div>
 
-                <div class="col-md-3">
-                    <div class="col_inner" id="aside_column">
-                        <div class="box no-header">
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <div class="form-group">
-                                            <div class="row text-center">
-                                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
-                                                </div>
+                        {{ form_row(form.law_email) }}
+                        {{ form_row(form.law_url) }}
+                        {{ form_row(form.law_term01) }}
+                        {{ form_row(form.law_term02) }}
+                        {{ form_row(form.law_term03) }}
+                        {{ form_row(form.law_term04) }}
+                        {{ form_row(form.law_term05) }}
+                        {{ form_row(form.law_term06) }}
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
+
+            <div class="col-md-3">
+                <div class="col_inner" id="aside_column">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <div class="row text-center">
+                                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                                <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div><!-- /.box-body -->
-                        </div><!-- /.box -->
-                    </div>
-                </div><!-- /.col -->
-            </div>
-
-
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div><!-- /.col -->
+        </div>
     </form>
 
 {% endblock %}
