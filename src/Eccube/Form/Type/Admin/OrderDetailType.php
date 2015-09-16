@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -94,7 +94,7 @@ class OrderDetailType extends AbstractType
                 )));
 
         $app = $this->app;
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app){
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
             // モーダルからのPOST時に、金額等をセットする.
             if ('motal' === $app['request']->get('mode')) {
                 $data = $event->getData();

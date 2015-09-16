@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
@@ -31,11 +31,11 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class TradelawType extends AbstractType
 {
-    public $app;
+    protected $config;
 
-    public function __construct (\Silex\Application $app)
+    public function __construct ($config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -68,7 +68,7 @@ class TradelawType extends AbstractType
                 'label' => '所在地',
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $this->app['config']['stext_len'],
+                        'maxlength' => $this->config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -80,37 +80,16 @@ class TradelawType extends AbstractType
             ))
             ->add('law_tel', 'tel', array(
                 'label' => 'TEL',
-                'tel01_options' => array(
+                'required' => true,
+                'options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 3)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                     ),
                 ),
-                'tel02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel03_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel01_name' => 'law_tel01',
-                'tel02_name' => 'law_tel02',
-                'tel03_name' => 'law_tel03',
             ))
-            ->add('law_fax', 'fax', array(
+            ->add('law_fax', 'tel', array(
                 'label' => 'FAX',
                 'required' => false,
-                'fax01_name' => 'law_fax01',
-                'fax02_name' => 'law_fax02',
-                'fax03_name' => 'law_fax03',
             ))
             ->add('law_email', 'email', array(
                 'label' => 'メールアドレス',
@@ -170,5 +149,4 @@ class TradelawType extends AbstractType
     {
         return 'tradelaw';
     }
-
 }

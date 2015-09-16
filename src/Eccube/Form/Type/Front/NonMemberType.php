@@ -22,78 +22,94 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Silex\Application;
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\Form\Extension\Core\Type;
+use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Validator\Constraints as Assert;
 
-class ContactType extends AbstractType
+class NonMemberType extends AbstractType
 {
-
     public $config;
 
     public function __construct($config)
     {
         $this->config = $config;
     }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $config = $this->config;
+
         $builder
             ->add('name', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
                     ),
                 ),
             ))
-            ->add('zip', 'zip', array(
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
                 'required' => false,
-            ))
-            ->add('address', 'address', array(
-                'help' => 'form.contact.address.help',
-                'required' => false,
-            ))
-            ->add('tel', 'tel', array(
-                'required' => false,
-            ))
-            ->add('email', 'email', array(
                 'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Length(array(
+                        'max' => $config['stext_len'],
+                    ))
                 ),
             ))
-            ->add('contents', 'textarea', array(
-                'help' => 'form.contact.contents.help',
-                'constraints' => array(
-                    new Assert\NotBlank(),
+            ->add('zip', 'zip', array())
+            ->add('address', 'address', array(
+                'help' => 'form.contact.address.help',
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $config['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
+            ->add('tel', 'tel', array(
+                'required' => true,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
+            ->add('email', 'repeated', array(
+                'invalid_message' => 'form.member.email.invalid',
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Email(),
+                    ),
                 ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-        ;
-
     }
 
     /**
@@ -101,6 +117,6 @@ class ContactType extends AbstractType
      */
     public function getName()
     {
-        return 'contact';
+        return 'nonmember';
     }
 }

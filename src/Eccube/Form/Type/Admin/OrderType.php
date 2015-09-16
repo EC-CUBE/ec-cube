@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -32,8 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderType extends AbstractType
 {
-    protected $app;
-
     public function __construct($app)
     {
         $this->app = $app;
@@ -108,7 +106,14 @@ class OrderType extends AbstractType
                     new Assert\Email(),
                 ),
             ))
-            ->add('tel', 'tel', array())
+            ->add('tel', 'tel', array(
+                'required' => true,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,

@@ -28,7 +28,7 @@
  * Time: 15:17
  */
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 
 use \Symfony\Component\Form\AbstractType;
