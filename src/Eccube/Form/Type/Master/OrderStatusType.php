@@ -51,6 +51,10 @@ class OrderStatusType extends AbstractType
             'expanded' => false,
             'required' => false,
             'empty_value' => '-',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('os')
+                    ->orderBy('os.rank', 'ASC');
+            },
         ));
     }
 

@@ -50,6 +50,10 @@ class ProductTypeType extends AbstractType
             'expanded' => true,
             'required' => false,
             'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('pt')
+                    ->orderBy('pt.rank', 'ASC');
+            },
         ));
     }
 

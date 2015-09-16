@@ -47,6 +47,10 @@ class SexType extends AbstractType
             'label' => false,
             'expanded' => true,
             'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('s')
+                    ->orderBy('s.rank', 'ASC');
+            },
         ));
     }
 

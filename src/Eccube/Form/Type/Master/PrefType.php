@@ -51,6 +51,10 @@ class PrefType extends AbstractType
             'expanded' => false,
             'required' => false,
             'empty_value' => 'form.pref.empty_value',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('pm')
+                    ->orderBy('pm.rank', 'ASC');
+            },
         ));
     }
 

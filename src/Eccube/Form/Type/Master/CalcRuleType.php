@@ -47,6 +47,10 @@ class CalcRuleType extends AbstractType
             'label' => false,
             'expanded' => true,
             'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('t')
+                    ->orderBy('t.rank', 'ASC');
+            },
         ));
     }
 

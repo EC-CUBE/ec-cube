@@ -51,6 +51,10 @@ class JobType extends AbstractType
             'expanded' => false,
             'required' => false,
             'empty_value' => 'form.job.empty_value',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('j')
+                    ->orderBy('j.rank', 'ASC');
+            },
         ));
     }
 

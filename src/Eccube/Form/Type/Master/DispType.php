@@ -50,6 +50,10 @@ class DispType extends AbstractType
             'expanded' => true,
             'required' => false,
             'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('d')
+                    ->orderBy('d.rank', 'ASC');
+            },
         ));
     }
 

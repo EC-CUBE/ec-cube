@@ -47,6 +47,10 @@ class CustomerStatusType extends AbstractType
             'label' => false,
             'expanded' => true,
             'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('cs')
+                    ->orderBy('cs.rank', 'ASC');
+            },
         ));
     }
 
