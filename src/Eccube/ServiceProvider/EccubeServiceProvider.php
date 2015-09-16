@@ -255,6 +255,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\NameType();
             $types[] = new \Eccube\Form\Type\TelType();
+            $types[] = new \Eccube\Form\Type\FaxType(); // 削除予定
             $types[] = new \Eccube\Form\Type\AddressType();
             $types[] = new \Eccube\Form\Type\PaymentType();
             $types[] = new \Eccube\Form\Type\DeliveryType();
@@ -280,6 +281,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
             $types[] = new \Eccube\Form\Type\Master\PageMaxType();
             $types[] = new \Eccube\Form\Type\Master\CsvType();
+            $types[] = new \Eccube\Form\Type\CustomerType($app); // 削除予定
 
             if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
                 $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
