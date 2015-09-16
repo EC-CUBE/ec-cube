@@ -50,7 +50,7 @@ class OrderRepository extends EntityRepository
             ->setOrderStatus($Status)
         ;
 
-        switch($Status->getId()) {
+        switch ($Status->getId()) {
             case '5': // 発送済へ
                 $Order->setCommitDate(new \DateTime());
                 break;
@@ -253,7 +253,7 @@ class OrderRepository extends EntityRepository
 
     /**
      *
-     * @param  array $searchData
+     * @param  array        $searchData
      * @return QueryBuilder
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
@@ -316,20 +316,10 @@ class OrderRepository extends EntityRepository
         }
 
         // tel
-        if (!empty($searchData['tel01']) && $searchData['tel01']) {
+        if (!empty($searchData['tel']) && $searchData['tel']) {
             $qb
-                ->andWhere('o.tel01 like :tel01')
-                ->setParameter('tel01', '%' . $searchData['tel01'] . '%');
-        }
-        if (!empty($searchData['tel02']) && $searchData['tel02']) {
-            $qb
-                ->andWhere('o.tel02 like :tel02')
-                ->setParameter('tel02', '%' . $searchData['tel02'] . '%');
-        }
-        if (!empty($searchData['tel03']) && $searchData['tel03']) {
-            $qb
-                ->andWhere('o.tel03 like :tel03')
-                ->setParameter('tel03', '%' . $searchData['tel03'] . '%');
+                ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
+                ->setParameter('tel', '%' . $searchData['tel'] . '%');
         }
 
         // sex

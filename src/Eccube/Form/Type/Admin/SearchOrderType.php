@@ -65,7 +65,7 @@ class SearchOrderType extends AbstractType
             ->add('email', 'email', array(
                 'required' => false,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', 'text', array(
                 'required' => false,
             ))
             ->add('sex', 'sex', array(
