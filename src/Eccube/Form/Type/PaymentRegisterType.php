@@ -52,18 +52,25 @@ class PaymentRegisterType extends AbstractType
                 'precision' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Regex(array('pattern' => '/^\d+$/')),
                 ),
             ))
             ->add('rule_min', 'money', array(
                 'label' => false,
                 'currency' => 'JPY',
                 'precision' => 0,
+                'constraints' => array(
+                    new Assert\Regex(array('pattern' => '/^\d+$/')),
+                ),
             ))
             ->add('rule_max', 'money', array(
                 'label' => false,
                 'currency' => 'JPY',
                 'precision' => 0,
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array('pattern' => '/^\d+$/')),
+                ),
             ))
             ->add('payment_image_file', 'file', array(
                 'label' => 'ロゴ画像',
@@ -80,7 +87,7 @@ class PaymentRegisterType extends AbstractType
                 $ruleMax = $form['rule_max']->getData();
                 $ruleMin = $form['rule_min']->getData();
                 if (!empty($ruleMin) && !empty($ruleMax) && $ruleMax < $ruleMin) {
-                    $form['rule_min']->addError(new FormError('利用条件(上限)は' . $ruleMin . '円以下にしてください。'));
+                    $form['rule_min']->addError(new FormError('利用条件(下限)は' . $ruleMax . '円以下にしてください。'));
                 }
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
