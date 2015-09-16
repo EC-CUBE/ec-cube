@@ -35,7 +35,6 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Util\Str;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingService
 {
@@ -67,15 +66,25 @@ class ShoppingService
      *
      * @return null|object
      */
-    public function getOrder()
+    public function getOrder($status = null)
     {
 
         // 受注データを取得
         $preOrderId = $this->cartService->getPreOrderId();
-        $Order = $this->app['eccube.repository.order']->findOneBy(array(
+
+        $condition = array(
             'pre_order_id' => $preOrderId,
-            'OrderStatus' => $this->app['config']['order_processing']
-        ));
+        );
+
+        error_log($status);
+
+        if (!is_null($status)) {
+            $condition += array(
+                'OrderStatus' => $status,
+            );
+        }
+
+        $Order = $this->app['eccube.repository.order']->findOneBy($condition);
 
         return $Order;
 
@@ -697,8 +706,8 @@ class ShoppingService
      * 商品公開ステータスチェック、在庫チェック、購入制限数チェックを行い、在庫情報をロックする
      *
      * @param $em トランザクション制御されているEntityManager
-     * @param $Order 受注情報
-     * @return true : 成功、 false : 失敗
+     * @param Order $Order 受注情報
+     * @return bool true : 成功、 false : 失敗
      */
     public function isOrderProduct($em, \Eccube\Entity\Order $Order)
     {
@@ -743,7 +752,7 @@ class ShoppingService
     /**
      * 受注情報、お届け先情報の更新
      *
-     * @param $Order 受注情報
+     * @param Order $Order 受注情報
      * @param $data フォームデータ
      */
     public function setOrderUpdate(Order $Order, $data)
@@ -788,7 +797,7 @@ class ShoppingService
      * 在庫情報の更新
      *
      * @param $em トランザクション制御されているEntityManager
-     * @param $Order 受注情報
+     * @param Order $Order 受注情報
      */
     public function setStockUpdate($em, Order $Order)
     {
@@ -821,8 +830,8 @@ class ShoppingService
      * 会員情報の更新
      *
      * @param $em トランザクション制御されているEntityManager
-     * @param $Order 受注情報
-     * @param $user ログインユーザ
+     * @param Order $Order 受注情報
+     * @param Customer $user ログインユーザ
      */
     public function setCustomerUpdate($em, Order $Order, Customer $user)
     {
@@ -848,6 +857,7 @@ class ShoppingService
      *
      * @param $payments 支払選択肢情報
      * @param $subTotal 小計
+     * @return array
      */
     public function getPayments($payments, $subTotal)
     {
@@ -945,8 +955,8 @@ class ShoppingService
     /**
      * お届け先ごとにFormを作成
      *
-     * @param $Order
-     * @param $form
+     * @param Order $Order
+     * @return \Symfony\Component\Form\Form
      */
     public function getShippingForm(Order $Order)
     {

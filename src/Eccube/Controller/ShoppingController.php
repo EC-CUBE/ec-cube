@@ -170,13 +170,12 @@ class ShoppingController extends AbstractController
                     return $app->redirect($app->url('shopping_error'));
                 }
 
-                // カート削除
-                $cartService->clear()->save();
-
                 // メール送信
                 $app['eccube.service.mail']->sendOrderMail($Order);
 
-                return $app->redirect($app->url('shopping_complete'));
+                return $app->redirect($app->url('shopping_complete', array(
+                    'status' => $app['config']['order_new'],
+                )));
 
             } else {
                 return $app->render('Shopping/index.twig', array(
@@ -194,9 +193,17 @@ class ShoppingController extends AbstractController
     /**
      * 購入完了画面表示
      */
-    public function complete(Application $app)
+    public function complete(Application $app, $status)
     {
-        return $app->render('Shopping/complete.twig');
+
+        $Order = $app['eccube.service.shopping']->getOrder($status);
+
+        // カート削除
+        $app['eccube.service.cart']->clear()->save();
+
+        return $app->render('Shopping/complete.twig', array(
+            'Order' => $Order,
+        ));
     }
 
 
