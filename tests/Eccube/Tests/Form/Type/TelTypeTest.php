@@ -222,4 +222,24 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->form->isValid());
     }
+
+
+    public function testSubmitFromZenToHan()
+    {
+        $input = array(
+            'tel' => array(
+                'tel01' => '１２３４５',
+                'tel02' => '１２３４５',
+                'tel03' => '６７８９０',
+            ));
+
+        $output = array(
+            'tel01' => '12345',
+            'tel02' => '12345',
+            'tel03' => '67890',
+        );
+
+        $this->form->submit($input);
+        $this->assertEquals($output, $this->form->getData());
+    }
 }

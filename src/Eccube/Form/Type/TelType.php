@@ -29,7 +29,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TelType extends AbstractType
@@ -59,14 +59,7 @@ class TelType extends AbstractType
         }
 
         // 全角英数を事前に半角にする
-        // todo 別ファイルに書き出せないか？
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function ($event) {
-            $data = $event->getData();
-            foreach ($data as &$value) {
-                $value = mb_convert_kana($value, 'a', 'utf-8');
-            }
-            $event->setData($data);
-        }, 255);
+        $builder->addEventSubscriber(new \Eccube\Event\ConvertKanaEventSubscriber());
 
         $builder
             ->add($options['tel01_name'], 'text', array_merge_recursive($options['options'], $options['tel01_options']))
@@ -112,7 +105,7 @@ class TelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'options' => array(),
@@ -139,6 +132,7 @@ class TelType extends AbstractType
             'tel03_name' => '',
             'error_bubbling' => false,
             'inherit_data' => true,
+            'trim' => true,
         ));
     }
 

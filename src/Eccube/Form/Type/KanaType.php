@@ -30,6 +30,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * KanaType
+ *
+ * @uses AbstractType
+ * @package
+ * @version $id$
+ * @copyright
+ * @author Nobuhiko Kimoto <info@nob-log.info>
+ * @license
+ */
 class KanaType extends AbstractType
 {
     /**
@@ -38,13 +48,8 @@ class KanaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // ひらがなをカタカナに変換する
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function ($event) {
-            $data = $event->getData();
-            foreach ($data as &$value) {
-                $value = mb_convert_kana($value, 'CV', 'utf-8');
-            }
-            $event->setData($data);
-        }, 255);
+        // 引数はmb_convert_kanaのもの
+        $builder->addEventSubscriber(new \Eccube\Event\ConvertKanaEventSubscriber('CV'));
     }
 
     /**
@@ -78,6 +83,7 @@ class KanaType extends AbstractType
     {
         return 'name';
     }
+
     /**
      * {@inheritdoc}
      */
