@@ -24,9 +24,15 @@ class ConvertKanaListener implements EventSubscriberInterface
     public function onPreSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        foreach ($data as &$value) {
-            $value = mb_convert_kana($value, $this->option, $this->encoding);
+
+        if (is_array($data)) {
+            foreach ($data as &$value) {
+                $value = mb_convert_kana($value, $this->option, $this->encoding);
+            }
+        } else {
+            $data = mb_convert_kana($data, $this->option, $this->encoding);
         }
+
         $event->setData($data);
     }
 }
