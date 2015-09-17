@@ -59,7 +59,7 @@ class TelType extends AbstractType
         }
 
         // 全角英数を事前に半角にする
-        $builder->addEventSubscriber(new \Eccube\Event\ConvertKanaEventSubscriber());
+        $builder->addEventSubscriber(new \Eccube\EventListner\ConvertKanaListener());
 
         $builder
             ->add($options['tel01_name'], 'text', array_merge_recursive($options['options'], $options['tel01_options']))
