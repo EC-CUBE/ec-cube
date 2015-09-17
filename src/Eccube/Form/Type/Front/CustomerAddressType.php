@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,18 +23,21 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ContactType extends AbstractType
+class CustomerAddressType extends AbstractType
 {
-
     public $config;
 
-    public function __construct($config)
+    /**
+     * @param array $config
+     */
+    public function __construct(array $config)
     {
         $this->config = $config;
     }
@@ -69,31 +73,39 @@ class ContactType extends AbstractType
                     ),
                 ),
             ))
-            ->add('zip', 'zip', array(
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->config['stext_len'],
+                    ))
+                ),
             ))
+            ->add('zip', 'zip', array())
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
-                'required' => false,
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $this->config['stext_len'],
+                    ),
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('tel', 'tel', array(
+                'required' => true,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
+            ->add('fax', 'tel', array(
                 'required' => false,
             ))
-            ->add('email', 'email', array(
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Email(),
-                ),
-            ))
-            ->add('contents', 'textarea', array(
-                'help' => 'form.contact.contents.help',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-        ;
-
     }
 
     /**
@@ -101,6 +113,6 @@ class ContactType extends AbstractType
      */
     public function getName()
     {
-        return 'contact';
+        return 'customer_address';
     }
 }

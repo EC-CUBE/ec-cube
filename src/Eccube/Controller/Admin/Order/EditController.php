@@ -67,7 +67,6 @@ class EditController extends AbstractController
             // 入力情報にもとづいて再計算.
             $this->calculate($app, $TargetOrder);
 
-
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':

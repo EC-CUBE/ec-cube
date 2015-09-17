@@ -22,11 +22,10 @@
  */
 
 
-namespace Eccube\Tests\Form\Type;
+namespace Eccube\Tests\Form\Type\Admin;
 
-class CustomerTypeTest extends AbstractTypeTestCase
+class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -71,10 +70,7 @@ class CustomerTypeTest extends AbstractTypeTestCase
             'month' => '2',
             'day' => '14',
         ),
-        'password' => array(
-            'first' => 'password',
-            'second' => 'password',
-        ),
+        'password' => 'password',
     );
 
     public function setUp()
@@ -82,8 +78,9 @@ class CustomerTypeTest extends AbstractTypeTestCase
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
+        // 会員管理会員登録・編集
         $this->form = $this->app['form.factory']
-            ->createBuilder('customer', null, array(
+            ->createBuilder('admin_customer', null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
@@ -95,83 +92,13 @@ class CustomerTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidNam01_NotBlank()
+    public function testInvalidTel_Blank()
     {
-        $this->formData['name01'] = '';
+        $this->formData['tel']['tel01'] = '';
+        $this->formData['tel']['tel02'] = '';
+        $this->formData['tel']['tel03'] = '';
+
         $this->form->submit($this->formData);
-
         $this->assertFalse($this->form->isValid());
     }
-
-    public function testInvalidNam02_NotBlank()
-    {
-        $this->formData['name02'] = '';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidKana01_NotBlank()
-    {
-        $this->formData['kana01'] = '';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidKana02_NotBlank()
-    {
-        $this->formData['kana02'] = '';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidEmail_NotBlank()
-    {
-        $this->formData['email'] = '';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidEmail_InvalidEmail()
-    {
-        $this->formData['email'] = 'sample.example.com';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidEmail_Duplicate()
-    {
-        $testVal = 'sampleexample.com';
-        $customer = $this->app['eccube.repository.customer']->newCustomer()
-            ->setName01($this->formData['name']['name01'])
-            ->setName02($this->formData['name']['name02'])
-            ->setKana01($this->formData['kana']['kana01'])
-            ->setKana02($this->formData['kana']['kana02'])
-            ->setPassword($this->formData['password']['first'])
-            ->setEmail($testVal);
-
-        $form = $this->app['form.factory']
-            ->createBuilder('customer', $customer, array(
-                'csrf_protection' => false,
-            ))
-            ->getForm();
-
-        $this->formData['email'] = $testVal;
-        $form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidPassword_Invalid()
-    {
-        $this->formData['password']['first'] = 'anotherPassword';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
 }

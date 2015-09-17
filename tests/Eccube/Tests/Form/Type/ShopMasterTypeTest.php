@@ -27,7 +27,6 @@ namespace Eccube\Tests\Form\Type;
 
 class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -50,15 +49,17 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'addr01' => '大阪市北区梅田2-4-9',
             'addr02' => 'ブリーゼタワー13F',
         ),
+        // fixme tel のテストは TelTypeTestで行う
+        // ここでは、必須でないことのチェックのみ
         'tel' => array(
-            'tel01' => '06',
-            'tel02' => '4795',
-            'tel03' => '7500',
+            'tel01' => '',
+            'tel02' => '',
+            'tel03' => '',
         ),
         'fax' => array(
-            'fax01' => '06',
-            'fax02' => '4795',
-            'fax03' => '7501',
+            'fax01' => '',
+            'fax02' => '',
+            'fax03' => '',
         ),
         'business_hour' => '9:00～18:00',
         'email01' => 'takahashi1@lockon.co.jp',
@@ -434,150 +435,6 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel01_Number()
-    {
-        $this->formData['tel']['tel01'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel01_MaxLengthInvalid()
-    {
-        $this->formData['tel']['tel01'] = 11111;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel01_MaxLengthValid()
-    {
-        $this->formData['tel']['tel01'] = 111;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidTel02_Number()
-    {
-        $this->formData['tel']['tel02'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel02_MaxLengthInvalid()
-    {
-        $this->formData['tel']['tel02'] = 11111;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel02_MaxLengthValid()
-    {
-        $this->formData['tel']['tel02'] = 111;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidTel03_Number()
-    {
-        $this->formData['tel']['tel03'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel03_MaxLengthInvalid()
-    {
-        $this->formData['tel']['tel03'] = 11111;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel03_MaxLengthValid()
-    {
-        $this->formData['tel']['tel03'] = 1111;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidFax01_Number()
-    {
-        $this->formData['fax']['fax01'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidFax01_MaxLengthInvalid()
-    {
-        $this->formData['fax']['fax01'] = 11111;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidFax01_MaxLengthValid()
-    {
-        $this->formData['fax']['fax01'] = 111;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidFax02_Number()
-    {
-        $this->formData['fax']['fax02'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidFax02_MaxLengthInvalid()
-    {
-        $this->formData['fax']['fax02'] = 11111;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidFax02_MaxLengthValid()
-    {
-        $this->formData['fax']['fax02'] = 1111;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidFax03_Number()
-    {
-        $this->formData['fax']['fax03'] = 'e1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidFax03_MaxLengthInvalid()
-    {
-        $this->formData['fax']['fax03'] = 11111;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidFax03_MaxLengthValid()
-    {
-        $this->formData['fax']['fax03'] = 1111;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidFreeAmount_Number()

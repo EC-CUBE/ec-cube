@@ -21,21 +21,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CustomerType extends AbstractType
+class OrderType extends AbstractType
 {
-    protected $config;
-
-    public function __construct($config)
+    public function __construct($app)
     {
-        $this->config = $config;
+        $this->app = $app;
     }
 
     /**
@@ -43,7 +42,7 @@ class CustomerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
+        $config = $this->app['config'];
 
         $builder
             ->add('name', 'name', array(
@@ -100,6 +99,13 @@ class CustomerType extends AbstractType
                     ),
                 ),
             ))
+            ->add('email', 'email', array(
+                'label' => 'メールアドレス',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Email(),
+                ),
+            ))
             ->add('tel', 'tel', array(
                 'required' => true,
                 'options' => array(
@@ -112,44 +118,17 @@ class CustomerType extends AbstractType
                 'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('email', 'email', array(
-                'label' => 'メールアドレス',
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
+                'required' => false,
                 'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Email(),
-                ),
-            ))
-            ->add('sex', 'sex', array(
-                'label' => '性別',
-                'required' => false,
-            ))
-            ->add('job', 'job', array(
-                'label' => '職業',
-                'required' => false,
-            ))
-            ->add('birth', 'birthday', array(
-                'label' => '生年月日',
-                'required' => false,
-                'input' => 'datetime',
-                'years' => range(date('Y')-80, date('Y')),
-                'widget' => 'choice',
-                'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            ->add('password', 'text', array(
-                'label' => 'パスワード',
-                'constraints' => array(
-                    new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $config['id_min_len'],
-                        'max' => $config['id_max_len'],
-                    )),
-                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
+                        'max' => $config['stext_len'],
+                    ))
                 ),
             ))
-            ->add('status', 'customer_status', array())
-            ->add('note', 'textarea', array(
-                'label' => 'SHOP用メモ',
+            ->add('message', 'textarea', array(
+                'label' => '備考',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -157,7 +136,82 @@ class CustomerType extends AbstractType
                     )),
                 ),
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ->add('discount', 'money', array(
+                'label' => '値引き',
+                'currency' => 'JPY',
+                'precision' => 0,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
+            ->add('delivery_fee_total', 'money', array(
+                'label' => '送料',
+                'currency' => 'JPY',
+                'precision' => 0,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
+            ->add('charge', 'money', array(
+                'label' => '手数料',
+                'currency' => 'JPY',
+                'precision' => 0,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $config['int_len'],
+                    )),
+                ),
+            ))
+            ->add('note', 'textarea', array(
+                'label' => 'SHOP用メモ欄',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $config['ltext_len'],
+                    )),
+                ),
+            ))
+            ->add('OrderStatus', 'entity', array(
+                'class' => 'Eccube\Entity\Master\OrderStatus',
+                'property' => 'name',
+                'empty_value' => false,
+                'empty_data' => null,
+            ))
+            ->add('Payment', 'entity', array(
+                'class' => 'Eccube\Entity\Payment',
+                'property' => 'method',
+                'empty_value' => '選択してください',
+                'empty_data' => null,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
+            ->add('OrderDetails', 'collection', array(
+                'type' => new OrderDetailType($this->app),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+            ))
+            ->add('Shippings', 'collection', array(
+                'type' => new ShippingType($this->app),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+            ));
+        $builder
+            ->add($builder->create('Customer', 'hidden')
+                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                    $this->app['orm.em'],
+                    '\Eccube\Entity\Customer'
+                )));
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
@@ -166,7 +220,7 @@ class CustomerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Customer',
+            'data_class' => 'Eccube\Entity\Order',
         ));
     }
 
@@ -175,6 +229,6 @@ class CustomerType extends AbstractType
      */
     public function getName()
     {
-        return 'admin_customer';
+        return 'order';
     }
 }

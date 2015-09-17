@@ -21,20 +21,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+/**
+ * Created by PhpStorm.
+ * User: chihiro_adachi
+ * Date: 15/04/23
+ * Time: 15:17
+ */
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
-use Eccube\Form\DataTransformer;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class OrderType extends AbstractType
+class ShippingType extends AbstractType
 {
-    protected $app;
+    public $app;
 
-    public function __construct($app)
+    public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
     }
@@ -45,7 +52,6 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->app['config'];
-
         $builder
             ->add('name', 'name', array(
                 'required' => true,
@@ -101,112 +107,39 @@ class OrderType extends AbstractType
                     ),
                 ),
             ))
-            ->add('email', 'email', array(
-                'label' => 'メールアドレス',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Email(),
-                ),
-            ))
             ->add('tel', 'tel', array())
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('company_name', 'text', array(
-                'label' => '会社名',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    ))
-                ),
-            ))
-            ->add('message', 'textarea', array(
-                'label' => '備考',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['ltext_len'],
-                    )),
-                ),
-            ))
-            ->add('discount', 'money', array(
-                'label' => '値引き',
-                'currency' => 'JPY',
-                'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $config['int_len'],
-                    )),
-                ),
-            ))
-            ->add('delivery_fee_total', 'money', array(
-                'label' => '送料',
-                'currency' => 'JPY',
-                'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $config['int_len'],
-                    )),
-                ),
-            ))
-            ->add('charge', 'money', array(
-                'label' => '手数料',
-                'currency' => 'JPY',
-                'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $config['int_len'],
-                    )),
-                ),
-            ))
-            ->add('note', 'textarea', array(
-                'label' => 'SHOP用メモ欄',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['ltext_len'],
-                    )),
-                ),
-            ))
-            ->add('OrderStatus', 'entity', array(
-                'class' => 'Eccube\Entity\Master\OrderStatus',
+            ->add('Delivery', 'entity', array(
+                'label' => '配送業者',
+                'class' => 'Eccube\Entity\Delivery',
                 'property' => 'name',
-                'empty_value' => false,
-                'empty_data' => null,
-            ))
-            ->add('Payment', 'entity', array(
-                'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
                 'empty_value' => '選択してください',
                 'empty_data' => null,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('OrderDetails', 'collection', array(
-                'type' => new OrderDetailType($this->app),
+            ->add('DeliveryTime', 'entity', array(
+                'label' => 'お届け時間',
+                'class' => 'Eccube\Entity\DeliveryTime',
+                'property' => 'delivery_time',
+                'empty_value' => '指定なし',
+                'empty_data' => null,
+                'required' => false,
+            ))
+            ->add('shipping_delivery_date', null, array(
+                'label' => 'お届け日'
+            ))
+            ->add('ShipmentItems', 'collection', array(
+                'type' => 'shipment_item',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($this->app),
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-            ));
-        $builder
-            ->add($builder->create('Customer', 'hidden')
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
-                    $this->app['orm.em'],
-                    '\Eccube\Entity\Customer'
-                )));
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
@@ -215,7 +148,7 @@ class OrderType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Order',
+                'data_class' => 'Eccube\Entity\Shipping',
         ));
     }
 
@@ -224,6 +157,6 @@ class OrderType extends AbstractType
      */
     public function getName()
     {
-        return 'order';
+        return 'shipping';
     }
 }

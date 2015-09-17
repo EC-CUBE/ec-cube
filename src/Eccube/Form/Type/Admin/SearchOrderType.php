@@ -24,10 +24,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchOrderType extends AbstractType
 {
@@ -65,7 +65,7 @@ class SearchOrderType extends AbstractType
             ->add('email', 'email', array(
                 'required' => false,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', 'text', array(
                 'required' => false,
             ))
             ->add('sex', 'sex', array(

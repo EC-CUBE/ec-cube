@@ -21,29 +21,21 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 15/04/23
- * Time: 15:17
- */
 
-namespace Eccube\Form\Type;
-
+namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ShippingType extends AbstractType
+class EntryType extends AbstractType
 {
-    public $app;
+    protected $config;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct($config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
 
     /**
@@ -51,28 +43,26 @@ class ShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->app['config'];
         $builder
             ->add('name', 'name', array(
-                'required' => true,
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $config['stext_len'],
+                        'maxlength' => $this->config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $config['stext_len'],
+                        'maxlength' => $this->config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
+                        new Assert\Length(array('max' => $this->config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -84,72 +74,73 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $config['stext_len'],
+                        'max' => $this->config['stext_len'],
                     ))
                 ),
             ))
             ->add('zip', 'zip', array())
             ->add('address', 'address', array(
-                'addr01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array(
-                            'max' => $config['mtext_len'],
-                        )),
+                'help' => 'form.contact.address.help',
+                'options' => array(
+                    'attr' => array(
+                        'maxlength' => $this->config['stext_len'],
                     ),
-                ),
-                'addr02_options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array(
-                            'max' => $config['mtext_len'],
-                        )),
                     ),
                 ),
             ))
-            ->add('tel', 'tel', array())
+            ->add('tel', 'tel', array(
+                'required' => true,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('Delivery', 'entity', array(
-                'label' => '配送業者',
-                'class' => 'Eccube\Entity\Delivery',
-                'property' => 'name',
-                'empty_value' => '選択してください',
-                'empty_data' => null,
-                'constraints' => array(
-                    new Assert\NotBlank(),
+            ->add('email', 'repeated', array(
+                'invalid_message' => 'form.member.email.invalid',
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                        new Assert\Email(),
+                    ),
                 ),
             ))
-            ->add('DeliveryTime', 'entity', array(
-                'label' => 'お届け時間',
-                'class' => 'Eccube\Entity\DeliveryTime',
-                'property' => 'delivery_time',
-                'empty_value' => '指定なし',
-                'empty_data' => null,
+            ->add('password', 'text', array(
+                'label' => 'パスワード',
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'min' => $this->config['password_min_len'],
+                        'max' => $this->config['password_max_len'],
+                    )),
+                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
+                ),
+            ))
+            ->add('birth', 'birthday', array(
+                'label' => '生年月日',
+                'required' => false,
+                'input' => 'datetime',
+                'years' => range(date('Y')-80, date('Y')),
+                'widget' => 'choice',
+                'format' => 'yyyy/MM/dd',
+                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+            ))
+            ->add('sex', 'sex', array(
+                'label' => '性別',
                 'required' => false,
             ))
-            ->add('shipping_delivery_date', null, array(
-                'label' => 'お届け日'
+            ->add('job', 'job', array(
+                'label' => '職業',
+                'required' => false,
             ))
-            ->add('ShipmentItems', 'collection', array(
-                'type' => 'shipment_item',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-            ))
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\Shipping',
-        ));
     }
 
     /**
@@ -157,6 +148,6 @@ class ShippingType extends AbstractType
      */
     public function getName()
     {
-        return 'shipping';
+        return 'entry';
     }
 }

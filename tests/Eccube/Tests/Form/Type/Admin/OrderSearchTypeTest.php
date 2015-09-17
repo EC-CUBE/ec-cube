@@ -22,26 +22,35 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Tests\Form\Type\Admin;
 
-use Symfony\Component\Form\AbstractType;
-
-// deprecated 3.1で削除予定
-class FaxType extends AbstractType
+class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    /** @var \Eccube\Application */
+    protected $app;
+
+    /** @var \Symfony\Component\Form\FormInterface */
+    protected $form;
+
+    public function setUp()
     {
-        return 'tel';
+        parent::setUp();
+
+        // CSRF tokenを無効にしてFormを作成
+        $this->form = $this->app['form.factory']
+            ->createBuilder('admin_search_order', null, array(
+                'csrf_protection' => false,
+            ))
+            ->getForm();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function testTel_ValidData()
     {
-        return 'fax';
+        $formData = array(
+            'tel' => '12345'
+        );
+
+        $this->form->submit($formData);
+        $this->assertTrue($this->form->isValid());
     }
 }

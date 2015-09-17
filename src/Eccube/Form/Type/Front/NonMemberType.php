@@ -21,51 +21,50 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Form\Type;
 
+namespace Eccube\Form\Type\Front;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Silex\Application;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class ShoppingShippingType extends AbstractType
+class NonMemberType extends AbstractType
 {
-    public $app;
+    public $config;
 
-    public function __construct(\Eccube\Application $app)
+    public function __construct($config)
     {
-        $this->app = $app;
+        $this->config = $config;
     }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
+        $config = $this->config;
 
         $builder
             ->add('name', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $app['config']['stext_len'])),
+                        new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                         )),
@@ -77,18 +76,16 @@ class ShoppingShippingType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $app['config']['stext_len'],
+                        'max' => $config['stext_len'],
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
-                'required' => true,
-            ))
+            ->add('zip', 'zip', array())
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
                 'options' => array(
                     'attr' => array(
-                        'maxlength' => $app['config']['stext_len'],
+                        'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -96,25 +93,19 @@ class ShoppingShippingType extends AbstractType
                 ),
             ))
             ->add('tel', 'tel', array(
-                'tel01_options' => array(
+                'required' => true,
+                'options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
                     ),
                 ),
-                'tel02_options' => array(
+            ))
+            ->add('email', 'repeated', array(
+                'invalid_message' => 'form.member.email.invalid',
+                'options' => array(
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
-                    ),
-                ),
-                'tel03_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 2, 'max' => 4)),
-                        new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                        new Assert\Email(),
                     ),
                 ),
             ))
@@ -124,18 +115,8 @@ class ShoppingShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\Shipping',
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
-        return 'shopping_shipping';
+        return 'nonmember';
     }
 }

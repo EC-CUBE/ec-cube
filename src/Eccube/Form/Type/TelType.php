@@ -21,21 +21,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TelType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
@@ -49,6 +47,7 @@ class TelType extends AbstractType
             $options['options']['error_bubbling'] = $options['error_bubbling'];
         }
 
+        // nameは呼び出しもので定義したものを使う
         if (empty($options['tel01_name'])) {
             $options['tel01_name'] = $builder->getName() . '01';
         }
@@ -59,16 +58,27 @@ class TelType extends AbstractType
             $options['tel03_name'] = $builder->getName() . '03';
         }
 
+        // 全角英数を事前に半角にする
+        // todo 別ファイルに書き出せないか？
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function ($event) {
+            $data = $event->getData();
+            foreach ($data as &$value) {
+                $value = mb_convert_kana($value, 'a', 'utf-8');
+            }
+            $event->setData($data);
+        }, 255);
+
         $builder
-            ->add($options['tel01_name'], 'text', array_merge($options['options'], $options['tel01_options']))
-            ->add($options['tel02_name'], 'text', array_merge($options['options'], $options['tel02_options']))
-            ->add($options['tel03_name'], 'text', array_merge($options['options'], $options['tel03_options']))
-        ;
+            ->add($options['tel01_name'], 'text', array_merge_recursive($options['options'], $options['tel01_options']))
+            ->add($options['tel02_name'], 'text', array_merge_recursive($options['options'], $options['tel02_options']))
+            ->add($options['tel03_name'], 'text', array_merge_recursive($options['options'], $options['tel03_options']))
+            ;
 
         $builder->setAttribute('tel01_name', $options['tel01_name']);
         $builder->setAttribute('tel02_name', $options['tel02_name']);
         $builder->setAttribute('tel03_name', $options['tel03_name']);
-        $builder->addEventListener(FormEvents::POST_BIND, function ($event) use($builder) {
+
+        $builder->addEventListener(FormEvents::POST_BIND, function ($event) use ($builder) {
                 $form = $event->getForm();
                 $count = 0;
                 if ($form[$builder->getName() . '01']->getData() != '') {
@@ -83,7 +93,8 @@ class TelType extends AbstractType
                 if ($count != 0 && $count != 3) {
                     $form[$builder->getName() . '01']->addError(new FormError('全て入力してください。'));
                 }
-            });
+        });
+
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -106,30 +117,21 @@ class TelType extends AbstractType
         $resolver->setDefaults(array(
             'options' => array(),
             'tel01_options' => array(
-                'attr' => array(
-                    'maxlength' => 4,
-                ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 2, 'max' => 4)),
-                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
+                    new Assert\Length(array('max' => 5)),
                 ),
             ),
             'tel02_options' => array(
-                'attr' => array(
-                    'maxlength' => 4,
-                ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 2, 'max' => 4)),
-                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                    new Assert\Length(array('max' => 5)),
                 ),
             ),
             'tel03_options' => array(
-                'attr' => array(
-                    'maxlength' => 4,
-                ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 2, 'max' => 4)),
-                    new Assert\Regex(array('pattern' => '/\A\d+\z/')),
+                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                    new Assert\Length(array('max' => 5)),
                 ),
             ),
             'tel01_name' => '',

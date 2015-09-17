@@ -136,6 +136,10 @@ $(function() {
     $('#searchProductModalButton').on('click', function() {
         var tbody = $('#searchProductModalList tbody');
         tbody.children().remove();
+
+        var data = $(this).data();
+        shipment_idx = data.idx;
+
         $.ajax({
             type: 'POST',
             dataType: 'html',
@@ -476,8 +480,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             {% if BaseInfo.optionMultipleShipping %}
             <div><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
             {% endif %}
+            {% for shippingForm in form.Shippings %}
             <div class="box accordion">
-                {% for shippingForm in form.Shippings %}
                 <div class="box-header toggle active">
                     <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
@@ -491,6 +495,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {% endif %}
                             </ul>
                         </div>
+
+                        <div class="tableish"
+                             id="shipment_item_list{{ loop.index0 }}"
+                             data-prototype="
+                                {% filter escape %}
+                                     {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': shippingForm.ShipmentItems .vars.prototype }) }}
+                                {% endfilter %}">
+
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}
                             {{ form_widget(shipmentItemForm.Product) }}
                             {{ form_widget(shipmentItemForm.ProductClass) }}
@@ -526,29 +538,16 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                     {{ form_errors(shipmentItemForm.quantity) }}
                                                 </span>
                                         </div>
-                                        <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                            	<span class="item_tax">
-                                                    税率：
-                                                    <span class="input-group">
-                                                        <span class="input-group-addon">%</span>
-                                                    </span>
-                                                </span>
-                                        </div>
                                         <div class="col-md-12 col-lg-3 item_subtotal text-right">
                                             <span>小計：</span> {{ shipmentItemForm.vars.value.total_price|price }}
                                         </div>
                                     </div>
 
                                 </div>
-                                <div class="icon_edit">
-                                    <button class="btn btn-default btn-sm delete-item">削除</button>
-                                </div>
                             </div><!-- /.item_box -->
                             <hr>
                         {% endfor %}
-
-
-
+                            </div>
 
                         <div class="form-horizontal">
                             <div class="form-group">
@@ -655,8 +654,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         </div>
                     </div>
                 </div><!-- /.box-body -->
-                {% endfor %}
            </div>
+            {% endfor %}
 
 
 
