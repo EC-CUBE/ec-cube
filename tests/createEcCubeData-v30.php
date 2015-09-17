@@ -50,6 +50,9 @@ define('CLASSCATEGORY2_VOLUME', 10);
 /** 商品の生成数 */
 define('PRODUCTS_VOLUME', 100);
 
+/** flushの間隔 */
+define('ENTITY_MANAGER_FLUSH_INTERVAL', 1000);
+
 // }}}
 // {{{ Logic
 set_time_limit(0);
@@ -93,6 +96,9 @@ class CreateEcCubeData
 
     /** entity manager */
     var $en;
+
+    /** persist実行数をカウント */
+    var $persist_count = 0;
 
     /** 大カテゴリID の配列 */
     var $arrCategory1  = array();
@@ -231,8 +237,7 @@ class CreateEcCubeData
                 ->setName(sprintf("Category%d00", $i))
                 ->setLevel(1)
                 ->setRank($this->lfGetTotalCategoryrank($existingMaxRank) - $count);
-            $this->em->persist($Category);
-
+            $this->saveEntity($Category);
             $this->arrCategory1[] = $Category;
             $count++;
             print(".");
@@ -248,8 +253,7 @@ class CreateEcCubeData
                     ->setParent($top_category)
                     ->setLevel(2)
                     ->setRank($this->lfGetTotalCategoryrank($existingMaxRank) - $count);
-                $this->em->persist($Category);
-
+                $this->saveEntity($Category);
                 $this->arrCategory2[] = $Category;
                 $count++;
                 print(".");
@@ -266,15 +270,13 @@ class CreateEcCubeData
                         ->setParent($middle_category)
                         ->setLevel(3)
                         ->setRank($this->lfGetTotalCategoryrank($existingMaxRank) - $count);
-                    $this->em->persist($Category);
-
+                    $this->saveEntity($Category);
                     $this->arrCategory3[] = $Category;
                     $count++;
                     print(".");
                 }
             }
         }
-        $this->em->flush();
         print("\n");
     }
 
@@ -319,7 +321,6 @@ class CreateEcCubeData
                 $this->arrClassName[1],
                 $existingClassCategoryMaxRank + CLASSCATEGORY1_VOLUME + $i + 1);
         }
-        $this->em->flush();
         print("\n");
     }
 
@@ -369,18 +370,18 @@ class CreateEcCubeData
                 ->setStatus($common_val['status'])
                 ->setNote($common_val['note'])
                 ->setFreeArea($common_val['free_area']);
-            $this->em->persist($Product);
+            $this->saveEntity($Product);
 
             $ProductImage = new \Eccube\Entity\ProductImage();
             $ProductImage->setCreator($common_val['creator'])
                 ->setProduct($Product)
                 ->setFileName("fork-1.jpg")
                 ->setRank($existingProductImageMaxRank + $i + 1);
-            $this->em->persist($ProductImage);
+            $this->saveEntity($ProductImage);
+
             $this->arrProduct[] = $Product;
             print("*");
         }
-        $this->em->flush();
         print("\n");
     }
 
@@ -398,7 +399,7 @@ class CreateEcCubeData
             ->setDelFlg((string) '0')
             ->setName($class_name)
             ->setRank($rank);
-        $this->em->persist($ClassName);
+        $this->saveEntity($ClassName);
 
         $this->arrClassName[] = $ClassName;
         print("+");
@@ -421,7 +422,7 @@ class CreateEcCubeData
             ->setRank($rank)
             ->setClassName($class_name)
             ->setRank($rank);
-        $this->em->persist($ClassCategory);
+        $this->saveEntity($ClassCategory);
 
         switch ($class_name->getName()) {
             case 'Size':
@@ -475,7 +476,7 @@ class CreateEcCubeData
                         . $classcategory1->getId()
                         . '_'
                         . $classcategory2->getId());
-                $this->em->persist($ProductClass);
+                $this->saveEntity($ProductClass);
                 print("#");
             }
         }
@@ -491,9 +492,7 @@ class CreateEcCubeData
             ->setPrice02($common_val['price02'])
             ->setCode('CODE_'
                 . $product->getId());
-        $this->em->persist($ProductClass);
-
-        $this->em->flush();
+        $this->saveEntity($ProductClass);
         print("\n");
     }
 
@@ -531,12 +530,10 @@ class CreateEcCubeData
                     ->setCategoryId($category->getId())
                     ->setCategory($category)
                     ->setRank($count);
-                $this->em->persist($ProductCategory);
-                $count++;
+                $this->saveEntity($ProductCategory);
                 print("$");
             }
         }
-        $this->em->flush();
         print("\n");
     }
 
@@ -756,5 +753,18 @@ class CreateEcCubeData
         $TotalCategoryrank = (TOP_CATEGORIES_VOLUME * MIDDLE_CATEGORIES_VOLUME * SMALL_CATEGORIES_VOLUME) + (MIDDLE_CATEGORIES_VOLUME * TOP_CATEGORIES_VOLUME) + TOP_CATEGORIES_VOLUME + $existingMaxRank;
 
         return $TotalCategoryrank;
+    }
+
+    /**
+     * EntityManagerにデータを登録
+     */
+    function saveEntity($entity)
+    {
+        $this->em->persist($entity);
+        $this->persist_count++;
+        if($this->persist_count > ENTITY_MANAGER_FLUSH_INTERVAL){
+            $this->em->flush();
+            $this->persist_count = 0;
+        }
     }
 }
