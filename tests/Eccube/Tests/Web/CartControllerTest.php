@@ -29,50 +29,38 @@ class CartControllerTest extends AbstractWebTestCase
 
     public function testRoutingCart()
     {
-        $client = $this->createClient();
-        $client->request('GET', '/cart');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->client->request('GET', '/cart');
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingCartAdd()
     {
-        self::markTestSkipped();
+        $this->client->request('POST', '/cart/add', array('product_class_id' => 1));
 
-        $client = $this->createClient();
-        $client->request('POST', '/cart/add', array('product_class_id' => 1));
-
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingCartUp()
     {
-        self::markTestSkipped();
-
-        $client = $this->createClient();
-        $client->request('GET', '/cart/up/1');
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->client->request('GET', '/cart/up/1');
+        $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingCartDown()
     {
-        $client = $this->createClient();
-        $client->request('GET', '/cart/down/1');
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->client->request('GET', '/cart/down/1');
+        $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingCartSetQuantity()
     {
-        self::markTestSkipped();
-
-        $client = $this->createClient();
-        $client->request('GET', '/cart/setQuantity/2/1');
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->client->request('GET', '/cart/setQuantity/2/1');
+        $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingCartRemove()
     {
-        $client = $this->createClient();
-        $client->request('GET', '/cart/remove/1');
-        $this->assertTrue($client->getResponse()->isRedirection());
+        $this->client->request('GET', '/cart/remove/1');
+        $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 }

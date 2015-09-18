@@ -21,44 +21,132 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type;
 
-use Symfony\Component\Form\Test\TypeTestCase;
-
-class TelTypeTest extends TypeTestCase
+class TelTypeTest extends \PHPUnit_Framework_TestCase
 {
-
     /** @var \Eccube\Application */
-    private $app;
+    protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
-    private $form;
+    protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
-    private $formData = array(
+    protected $formData = array(
         'tel' => array(
             'tel01' => '012',
-            'tel02' => '345',
+            'tel02' => '3456',
             'tel03' => '6789',
         ),
     );
+
+    /**
+     * getValidTestData
+     *
+     * 正常系のデータパターンを返す
+     *
+     * @access public
+     * @return array
+     */
+    public function getValidTestData()
+    {
+        return array(
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '01',
+                        'tel02' => '2345',
+                        'tel03' => '6789',
+                    ),
+                ),
+            ),
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '012',
+                        'tel02' => '345',
+                        'tel03' => '6789',
+                    ),
+                ),
+            ),
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '0124',
+                        'tel02' => '56',
+                        'tel03' => '7890',
+                    ),
+                ),
+            ),
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '01245',
+                        'tel02' => '6',
+                        'tel03' => '7890',
+                    ),
+                ),
+            ),
+            // 携帯,PHS
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '090',
+                        'tel02' => '1234',
+                        'tel03' => '5678',
+                    ),
+                ),
+            ),
+            // フリーダイヤル
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '0120',
+                        'tel02' => '123',
+                        'tel03' => '456',
+                    ),
+                ),
+            ),
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '０３',
+                        'tel02' => '１２３４',
+                        'tel03' => '５６７８',
+                    ),
+                ),
+            ),
+            // 全部空はOK
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '',
+                        'tel02' => '',
+                        'tel03' => '',
+                    ),
+                ),
+            ),
+        );
+    }
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->app = new \Eccube\Application(array(
-            'env' => 'test',
-        ));
-        $this->app->initialize();
-        $this->app->boot();
+        // \Eccube\Applicationは重いから呼ばない
+        // todo AbstractTypeTestCaseに移す
+        $app = new \Silex\Application();
+        $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+            $types[] = new \Eccube\Form\Type\TelType();
+
+            return $types;
+        }));
 
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
             ->add('tel', 'tel')
             ->getForm();
     }
@@ -66,36 +154,21 @@ class TelTypeTest extends TypeTestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->app = null;
         $this->form = null;
     }
 
-    public function testValidData()
+    /**
+     * @dataProvider getValidTestData
+     */
+    public function testValidData($data)
     {
-        $this->form->submit($this->formData);
-
+        $this->form->submit($data);
         $this->assertTrue($this->form->isValid());
-    }
-
-    public function testInvalidTel01_LengthMin()
-    {
-        $this->formData['tel']['tel01'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidTel01_LengthMax()
     {
-        $this->formData['tel']['tel01'] = '12345';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel02_LengthMin()
-    {
-        $this->formData['tel']['tel02'] = '1';
+        $this->formData['tel']['tel01'] = '12345678';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -103,15 +176,7 @@ class TelTypeTest extends TypeTestCase
 
     public function testInvalidTel02_LengthMax()
     {
-        $this->formData['tel']['tel02'] = '12345';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel03_LengthMin()
-    {
-        $this->formData['tel']['tel03'] = '1';
+        $this->formData['tel']['tel02'] = '12345678';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -119,10 +184,42 @@ class TelTypeTest extends TypeTestCase
 
     public function testInvalidTel03_LengthMax()
     {
-        $this->formData['tel']['tel03'] = '12345';
+        $this->formData['tel']['tel03'] = '12345678';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testInvalidTel01_NotNumber()
+    {
+        $this->formData['tel']['tel01'] = 'aaaa';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel02_NotNumber()
+    {
+        $this->formData['tel']['tel02'] = 'aaaa';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel03_NotNumber()
+    {
+        $this->formData['tel']['tel03'] = 'aaaa';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+
+    public function testInvalidTel_BlankOne()
+    {
+        $this->formData['tel']['tel01'] = '';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
 }

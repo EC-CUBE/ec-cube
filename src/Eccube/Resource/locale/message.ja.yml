@@ -1,8 +1,9 @@
 Login email: メールアドレス
 Login pass: パスワード
-Login memory: メールアドレスをコンピューターに記憶させる
-Bad credentials.: メールアドレスもしくはパスワードが正しくありません。
+Login memory: 次回から自動的にログインする
+Bad credentials.: ログインできませんでした。<br>入力内容に誤りがないかご確認ください。
 Invalid CSRF token.: もう一度ログイン処理をしてください。
+Your session has timed out, or you have disabled cookies.: もう一度ログイン処理をしてください。
 
 Name: お名前
 Name01: 姓
@@ -22,6 +23,7 @@ form.job.empty_value: 選択してください
 form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
 form.contact.contents.help: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 form.member.email.invalid: 同じメールアドレスを入力してください。
+form.type.numeric.invalid: 数字で入力してください。
 
 cart.over.stock: |-
     選択された商品の在庫が不足しております。
@@ -30,6 +32,7 @@ cart.over.sale_limit: |-
     選択された商品は販売制限しております。
     一度に販売制限数を超える購入はできません。
 cart.product.type.kind: この商品は同時に購入することはできません。
+cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
 
 admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
 
@@ -77,6 +80,8 @@ admin.product.product_class.update.complete: 商品規格を更新しました�
 admin.product.product_class.delete.complete: 商品規格を削除しました。
 admin.product.copy.complete: 商品を複製しました。
 admin.product.copy.failed: 商品の複製に失敗しました。
+admin.product.csv_import.save.complete: 商品登録CSVファイルをアップロードしました。
+admin.category.csv_import.save.complete: カテゴリ登録CSVファイルをアップロードしました。
 
 admin.customer.save.complete: 会員情報を保存しました。
 admin.customer.delete.complete: 会員情報を削除しました。
@@ -112,6 +117,8 @@ admin.shop.tax.delete.complete: 税率設定情報を削除しました。
 admin.shop.mail.save.complete: メールテンプレート情報を保存しました。
 admin.shop.mail.save.error: メールテンプレートの新規登録はできません。
 
+admin.shop.csv.save.complete: CSV出力を設定しました。
+
 admin.content.template.save.complete: テンプレート設定を保存しました。
 admin.content.template.add.complete: テンプレートファイルをアップロードしました。
 admin.content.template.delete.complete: テンプレートを削除しました。
@@ -121,9 +128,20 @@ admin.content.template.delete.current.error: 現在設定中のテンプレー�
 admin.sysmte.security.save.complete: セキュリティ設定を保存しました。
 admin.sysmte.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
 
-admin.plugin.enable.complete: 有効化しました。
-admin.plugin.disable.complete: 無効化しました。
+admin.plugin.enable.complete: プラグインを有効にしました。
+admin.plugin.disable.complete: プラグインを無効にしました。
 admin.plugin.already.enable: すでに有効化されています。
 admin.plugin.already.disable: すでに無効化されています。
-admin.plugin.uninstall.complete: アンインストールしました。
+admin.plugin.uninstall.complete: プラグインを削除しました。
 admin.plugin.update.complete: 更新が完了しました。
+plugin already installed.: プラグインは既にインストールされています。
+admin.plugin.authentication.setting.complete: 認証キーを設定しました。
+admin.plugin.install.complete: プラグインをインストールしました。
+
+admin.preview.register.complete: プレビューを登録しました
+
+admin_title: 'EC-CUBE 管理機能' # 未使用
+normal_price_title: 通常価格    # 未使用
+sale_price_title: 販売価格
+form.address1.help: '市区町村名 (例：千代田区神田神保町)'
+form.address2.help: '番地・ビル名 (例：1-3-5)'

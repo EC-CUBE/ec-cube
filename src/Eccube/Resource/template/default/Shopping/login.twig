@@ -33,21 +33,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <div id="login_box" class="login_cart row">
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <div class="col-sm-8 col-sm-offset-2" style="height: 330px;">
+                {% else %}
                 <div class="col-sm-8" style="height: 330px;">
+                {% endif %}
                     <div class="column">
                         <div class="column_inner clearfix">
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
                             <div class="form-group">
                                 {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
-                                <label><input type="checkbox">記憶</label>
                             </div>
                             <div class="form-group">
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
+                                {% if BaseInfo.option_remember_me %}
+                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <input type="hidden" name="login_memory" value="1">
+                                    {% else %}
+                                        {{ form_widget(form.login_memory) }}
+                                    {% endif %}
+                                {% endif %}
                             </div>
                             {% if error %}
-                            <div class="form-group">
-                                <span class="text-danger">{{ error.message|trans }}</span>
-                            </div>
+                                <div class="form-group">
+                                    <span class="text-danger">{{ error|trans|raw }}</span>
+                                </div>
                             {% endif %}
                             <div class="btn_area">
                                 <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
@@ -59,6 +69,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 </div><!-- /.col -->
+
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                {% else %}
                 <div class="col-sm-4" style="height: 330px;">
                     <div class="column">
                         <div class="column_inner">
@@ -68,6 +81,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 </div><!-- /.col -->
+                {% endif %}
             </div><!-- /.row -->
         </form>
     </div>

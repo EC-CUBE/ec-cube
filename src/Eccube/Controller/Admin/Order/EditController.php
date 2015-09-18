@@ -66,6 +66,22 @@ class EditController extends AbstractController
             $this->calculate($app, $TargetOrder);
 
             if ($form->isValid()) {
+
+                // お支払い方法の更新
+                $TargetOrder->setPaymentMethod($TargetOrder->getPayment()->getMethod());
+
+                // 配送業者・お届け時間の更新
+                $Shippings = $TargetOrder->getShippings();
+                foreach ($Shippings as $Shipping) {
+                    $Shipping->setShippingDeliveryName($Shipping->getDelivery()->getName());
+                    if (!is_null($Shipping->getDeliveryTime())) {
+                        $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
+                    } else {
+                        $Shipping->setShippingDeliveryTime(null);
+                    }
+                }
+
+                // 登録ボタン押下
                 if ('register' === $request->get('mode')) {
                     // 受注日/発送日/入金日の更新.
                     $this->updateDate($TargetOrder, $OriginOrder);
@@ -343,16 +359,6 @@ class EditController extends AbstractController
         $Order->setTotal($subtotal + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount());
         // お支払い合計は、totalと同一金額(2系ではtotal - point)
         $Order->setPaymentTotal($Order->getTotal());
-
-        // お支払い方法の更新
-        $Order->setPaymentMethod($Order->getPayment()->getMethod());
-
-        // お届け先の更新
-        $Shippings = $Order->getShippings();
-        foreach ($Shippings as $Shipping) {
-            $Shipping->setShippingDeliveryName($Shipping->getDelivery()->getName());
-            $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
-        }
     }
 
     /**

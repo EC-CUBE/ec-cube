@@ -1,0 +1,108 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['store', 'plugin', 'plugin_handler'] %}
+
+{% block title %}オーナーズストア{% endblock %}
+{% block sub_title %}高度な設定{% endblock %}
+
+{% block main %}
+
+
+    {% if handlersPerEvent|length > 0 %}
+        {% for event, handlersPerType in handlersPerEvent %}
+            {% for type,handlers in handlersPerType %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header with-arrow">
+                                {{ event }} / {{ type }}
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="table_list">
+                                    <div class="table-responsive with-border">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>プラグイン名</th>
+                                                <th>ハンドラ名</th>
+                                                <th>優先度</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            {% for handler in handlers %}
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="member_id">
+                                                            {{ handler.plugin.name }}
+                                                        </td>
+                                                        <td class="member_name">
+                                                            {{ handler.handler }}
+                                                        </td>
+                                                        <td class="member_name">
+                                                            {{ handler.priority }}
+                                                        </td>
+                                                        <td class="icon_edit">
+                                                            <div class="dropdown">
+                                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                                    {% if true != loop.first %}
+                                                                        <a href="{{ url('admin_store_plugin_handler_up',   {'handlerId': handler.id}) }}">上へ</a>
+                                                                    {% endif %}
+                                                                    {% if true != loop.last %}
+                                                                        <a href="{{ url('admin_store_plugin_handler_down', {'handlerId': handler.id}) }}">下へ</a>
+                                                                    {% endif %}
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-arrow">
+                        プラグインハンドラー管理
+                    </div><!-- /.box-header -->
+                    <div class="box-header with-arrow">
+                        <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
+                    </div><!-- /.box-header -->
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+

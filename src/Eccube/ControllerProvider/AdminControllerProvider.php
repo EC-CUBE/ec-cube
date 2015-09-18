@@ -24,6 +24,7 @@
 
 namespace Eccube\ControllerProvider;
 
+use Eccube\Entity\Master\CsvType;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 
@@ -47,6 +48,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // product
         $c->match('/product', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
+        $c->match('/product/export', '\Eccube\Controller\Admin\Product\ProductController::export')->bind('admin_product_export');
         $c->match('/product/page/{page_no}', '\Eccube\Controller\Admin\Product\ProductController::index')->assert('page_no', '\d+')->bind('admin_product_page');
         $c->match('/product/product/new', '\Eccube\Controller\Admin\Product\ProductController::edit')->bind('admin_product_product_new');
         $c->match('/product/product/{id}/edit', '\Eccube\Controller\Admin\Product\ProductController::edit')->assert('id', '\d+')->bind('admin_product_product_edit');
@@ -58,6 +60,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/product/product/image/add', '\Eccube\Controller\Admin\Product\ProductController::addImage')->bind('admin_product_image_add');
 
         $c->match('/product/category', '\Eccube\Controller\Admin\Product\CategoryController::index')->bind('admin_product_category');
+        $c->match('/product/category/export', '\Eccube\Controller\Admin\Product\CategoryController::export')->bind('admin_product_category_export');
         $c->match('/product/category/{parent_id}', '\Eccube\Controller\Admin\Product\CategoryController::index')->assert('parent_id', '\d+')->bind('admin_product_category_show');
         $c->match('/product/category/{id}/edit', '\Eccube\Controller\Admin\Product\CategoryController::index')->assert('id', '\d+')->bind('admin_product_category_edit');
         $c->post('/product/category/{id}/up', '\Eccube\Controller\Admin\Product\CategoryController::up')->assert('id', '\d+')->bind('admin_product_category_up');
@@ -79,9 +82,14 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->post('/product/class_category/{class_name_id}/{id}/delete', '\Eccube\Controller\Admin\Product\ClassCategoryController::delete')->assert('class_name_id', '\d+')->assert('id', '\d+')->bind('admin_product_class_category_delete');
         $c->post('/product/class_category/rank/move', '\Eccube\Controller\Admin\Product\ClassCategoryController::moveRank')->bind('admin_product_class_category_rank_move');
 
+        $c->match('/product/product_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvProduct')->bind('admin_product_csv_import');
+        $c->match('/product/category_csv_upload', '\Eccube\Controller\Admin\Product\CsvImportController::csvCategory')->bind('admin_product_category_csv_import');
+        $c->match('/product/csv_template/{type}', '\Eccube\Controller\Admin\Product\CsvImportController::csvTemplate')->bind('admin_product_csv_template');
+
         // customer
         $c->match('/customer', '\Eccube\Controller\Admin\Customer\CustomerController::index')->bind('admin_customer');
         $c->match('/customer/page/{page_no}', '\Eccube\Controller\Admin\Customer\CustomerController::index')->assert('page_no', '\d+')->bind('admin_customer_page');
+        $c->match('/customer/export', '\Eccube\Controller\Admin\Customer\CustomerController::export')->bind('admin_customer_export');
         $c->match('/customer/new', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->bind('admin_customer_new');
         $c->match('/customer/{id}/edit', '\Eccube\Controller\Admin\Customer\CustomerEditController::index')->assert('id', '\d+')->bind('admin_customer_edit');
         $c->post('/customer/{id}/delete', '\Eccube\Controller\Admin\Customer\CustomerController::delete')->assert('id', '\d+')->bind('admin_customer_delete');
@@ -93,6 +101,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/new', '\Eccube\Controller\Admin\Order\EditController::index')->bind('admin_order_new');
         $c->match('/order/{id}/edit', '\Eccube\Controller\Admin\Order\EditController::index')->assert('id', '\d+')->bind('admin_order_edit');
         $c->match('/order/{id}/delete', '\Eccube\Controller\Admin\Order\OrderController::delete')->assert('id', '\d+')->bind('admin_order_delete');
+        $c->match('/order/export/order', '\Eccube\Controller\Admin\Order\OrderController::exportOrder')->bind('admin_order_export_order');
+        $c->match('/order/export/shipping', '\Eccube\Controller\Admin\Order\OrderController::exportShipping')->bind('admin_order_export_shipping');
         $c->post('/order/search/customer', '\Eccube\Controller\Admin\Order\EditController::searchCustomer')->bind('admin_order_search_customer');
         $c->post('/order/search/customer/id', '\Eccube\Controller\Admin\Order\EditController::searchCustomerById')->bind('admin_order_search_customer_by_id');
         $c->post('/order/search/product', '\Eccube\Controller\Admin\Order\EditController::searchProduct')->bind('admin_order_search_product');
@@ -170,27 +180,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/mail/{id}', '\Eccube\Controller\Admin\Setting\Shop\MailController::index')->assert('id', '\d+')->bind('admin_setting_shop_mail_edit');
 
         // customer_agreement
-        $c->match('/setting/shop/customer_agreement/', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
+        $c->match('/setting/shop/customer_agreement', '\Eccube\Controller\Admin\Setting\Shop\CustomerAgreementController::index')->bind('admin_setting_shop_customer_agreement');
+
+        // csv
+        $c->match('/setting/shop/csv/{id}', '\Eccube\Controller\Admin\Setting\Shop\CsvController::index')->assert('id', '\d+')->value('id', CsvType::CSV_TYPE_ORDER)->bind('admin_setting_shop_csv');
 
         // setting/system
         $c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');
-
-        // setting/store
-        $c->match('/setting/store/template', '\Eccube\Controller\Admin\Setting\Store\TemplateController::index')->bind('admin_setting_store_template');
-        $c->match('/setting_store/template/new', '\Eccube\Controller\Admin\Setting\Store\TemplateController::add')->bind('admin_setting_store_template_new');
-        $c->match('/setting/store/template/{id}/download', '\Eccube\Controller\Admin\Setting\Store\TemplateController::download')->assert('id', '\d+')->bind('admin_setting_store_template_download');
-        $c->post('/setting/store/template/{id}/delete', '\Eccube\Controller\Admin\Setting\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_setting_store_template_delete');
-
-        $c->match('/setting/store/plugin', '\Eccube\Controller\Admin\Setting\Store\PluginController::index')->bind('admin_setting_store_plugin');
-        $c->match('/setting/store/plugin/install', '\Eccube\Controller\Admin\Setting\Store\PluginController::install')->bind('admin_setting_store_plugin_install');
-        $c->match('/setting/store/plugin/handler', '\Eccube\Controller\Admin\Setting\Store\PluginController::handler')->bind('admin_setting_store_plugin_handler');
-        $c->match('/setting/store/plugin/manage', '\Eccube\Controller\Admin\Setting\Store\PluginController::manage')->bind('admin_setting_store_plugin_manage');
-        $c->post('/setting/store/plugin/{id}/enable', '\Eccube\Controller\Admin\Setting\Store\PluginController::enable')->assert('id', '\d+')->bind('admin_setting_store_plugin_enable');
-        $c->post('/setting/store/plugin/{id}/disable', '\Eccube\Controller\Admin\Setting\Store\PluginController::disable')->assert('id', '\d+')->bind('admin_setting_store_plugin_disable');
-        $c->post('/setting/store/plugin/{id}/update', '\Eccube\Controller\Admin\Setting\Store\PluginController::update')->assert('id', '\d+')->bind('admin_setting_store_plugin_update');
-        $c->post('/setting/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Setting\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_setting_store_plugin_uninstall');
-        $c->match('/setting/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_up')->bind('admin_setting_store_plugin_handler_up');
-        $c->match('/setting/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\System\PluginController::handler_down')->bind('admin_setting_store_plugin_handler_down');
 
         // system/member
         $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');
@@ -202,6 +198,25 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // system/security
         $c->match('/setting/system/security', '\Eccube\Controller\Admin\Setting\System\SecurityController::index')->bind('admin_setting_system_security');
+
+        // store
+        $c->match('/store/template', '\Eccube\Controller\Admin\Store\TemplateController::index')->bind('admin_store_template');
+        $c->match('/store/template/install', '\Eccube\Controller\Admin\Store\TemplateController::add')->bind('admin_store_template_install');
+        $c->match('/store/template/{id}/download', '\Eccube\Controller\Admin\Store\TemplateController::download')->assert('id', '\d+')->bind('admin_store_template_download');
+        $c->post('/store/template/{id}/delete', '\Eccube\Controller\Admin\Store\TemplateController::delete')->assert('id', '\d+')->bind('admin_store_template_delete');
+        $c->match('/store/plugin', '\Eccube\Controller\Admin\Store\PluginController::index')->bind('admin_store_plugin');
+        $c->match('/store/plugin/owners_install', '\Eccube\Controller\Admin\Store\PluginController::ownersInstall')->bind('admin_store_plugin_owners_install');
+        $c->match('/store/plugin/install', '\Eccube\Controller\Admin\Store\PluginController::install')->bind('admin_store_plugin_install');
+        $c->match('/store/plugin/upgrade/{action}/{id}/{version}', '\Eccube\Controller\Admin\Store\PluginController::upgrade')->assert('id', '\d+')->bind('admin_store_plugin_upgrade');
+        $c->match('/store/plugin/handler', '\Eccube\Controller\Admin\Store\PluginController::handler')->bind('admin_store_plugin_handler');
+        $c->match('/store/plugin/manage', '\Eccube\Controller\Admin\Store\PluginController::manage')->bind('admin_store_plugin_manage');
+        $c->post('/store/plugin/{id}/enable', '\Eccube\Controller\Admin\Store\PluginController::enable')->assert('id', '\d+')->bind('admin_store_plugin_enable');
+        $c->post('/store/plugin/{id}/disable', '\Eccube\Controller\Admin\Store\PluginController::disable')->assert('id', '\d+')->bind('admin_store_plugin_disable');
+        $c->post('/store/plugin/{id}/update', '\Eccube\Controller\Admin\Store\PluginController::update')->assert('id', '\d+')->bind('admin_store_plugin_update');
+        $c->post('/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_store_plugin_uninstall');
+        $c->match('/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_up')->bind('admin_store_plugin_handler_up');
+        $c->match('/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_down')->bind('admin_store_plugin_handler_down');
+        $c->match('/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Store\PluginController::authenticationSetting')->bind('admin_store_authentication_setting');
 
         return $c;
     }

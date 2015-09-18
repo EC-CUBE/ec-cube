@@ -1,0 +1,138 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'shop', 'shop_csv'] %}
+
+{% block title %}システム設定{% endblock %}
+{% block sub_title %}CSV出力項目設定{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script>
+$(function() {
+
+    function add(event) {
+        $('#' + event.data.from + ' option:selected')
+                .appendTo($('#' + event.data.to))
+                .prop('selected', false);
+    }
+    function addAll(event) {
+        $('#' + event.data.from + ' option').each(function () {
+            $(this).appendTo($('#' + event.data.to));
+            $(this).prop('selected', false);// 選択状態の解除
+        });
+    }
+
+    $('#add').on('click', {from: 'csv-not-output', to: 'csv-output'}, add);
+    $('#add-all').on('click', {from: 'csv-not-output', to: 'csv-output'}, addAll);
+    $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, add);
+    $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, addAll);
+
+    $('.move').click(function() {
+        var $op = $('#csv-output option:selected');
+        var val = $(this).val();
+        if ($op.length) {
+            val == 'up' ? $op.first().prev().before($op) : $op.last().next().after($op);
+        }
+    });
+
+    $('.move-most').click(function() {
+        var $op = $('#csv-output option:selected');
+        var val = $(this).val();
+        if ($op.length) {
+            val == 'top' ? $op.prependTo('#csv-output') : $op.appendTo('#csv-output');
+        }
+    });
+
+    $('#csv-type').on('change', function() {
+        var id = $(this).val();
+        var href = '{{ url('admin_setting_shop_csv') }}' + '/' + id;
+        location.href = href;
+        return false;
+    });
+
+    $('#csv-form').submit(function() {
+        $('#csv-not-output').children().prop('selected', true);
+        $('#csv-output').children().prop('selected', true);
+    })
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+    <form id="csv-form" method="post" action="{{ url('admin_setting_shop_csv', {'id': id}) }}">
+        {{ form_widget(form._token) }}
+        <div class="row" id="aside_wrap">
+            <div class="col-md-9">
+                <div class="box">
+                    <div class="box-header">
+                        {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
+                    </div>
+                    <div class="box-body no-border row">
+                        <div class="col-md-4 col-xs-4">
+                            <p>CSV出力しない項目</p>
+                            {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
+                        </div><!-- /.col -->
+                        <div class="col-md-2 col-xs-2">
+                            <div class="text-center" style="padding-top: 230px;">
+                                <p><button type="button" id="add" class="btn btn-default"><span class="glyphicon glyphicon-step-forward"></span></button></p>
+                                <p><button type="button" id="add-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-forward"></span></button></p>
+                                <p><button type="button" id="remove" class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span></button></p>
+                                <p><button type="button" id="remove-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-backward"></span></button></p>
+                            </div>
+                        </div><!-- /.col -->
+                        <div class="col-md-4 col-xs-4">
+                            <p>CSV出力する項目</p>
+                            {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
+                        </div><!-- /.col -->
+                        <div class="col-md-2 col-xs-2">
+                            <div style="padding-top: 200px;">
+                                <div class="well well-sm text-center">
+                                    <p>項目順序</p>
+                                    <p><button type="button" class="btn btn-default move" value="up">一つ上</button></p>
+                                    <p><button type="button" class="btn btn-default move" value="down">一つ下</button></p>
+                                    <p><button type="button" class="btn btn-default move-most" value="top">一番上</button></p>
+                                    <p><button type="button" class="btn btn-default move-most" value="bottom">一番下</button></p>
+                                </div>
+                            </div>
+                        </div><!-- /.col -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" id="aside_column">
+                <div class="col_inner">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg" type="submit">設定</button>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div><!-- /.col -->
+        </div>
+    </form>
+{% endblock %}

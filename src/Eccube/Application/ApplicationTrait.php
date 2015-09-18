@@ -2,21 +2,54 @@
 
 namespace Eccube\Application;
 
-use Symfony\Component\Form\FormBuilder;
 use Monolog\Logger;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * TODO PHP5.4以上の対応でよくなったら消す
+ * TODO Traitが使えるようになったら不要になる
  */
 class ApplicationTrait extends \Silex\Application
 {
+    /**
+     * Application Shortcut Methods
+     */
+    public function addSuccess($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
+    }
+
+    public function addError($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
+    }
+
+    public function addDanger($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
+    }
+
+    public function addWarning($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
+    }
+
+    public function addInfo($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
+    }
+
+    public function addRequestError($message, $namespace = 'front')
+    {
+        $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
+    }
 
     /*
+     * 注意！以下コードはSilexのコードのコピーなので触らないコト
+     *
      * 以下のコードの著作権について
      *
      * (c) Fabien Potencier <fabien@symfony.com>
@@ -24,6 +57,7 @@ class ApplicationTrait extends \Silex\Application
      * For the full copyright and license information, please view the silex
      * LICENSE file that was distributed with this source code.
      */
+
     /** FormTrait */
     /**
      * Creates and returns a form builder instance
@@ -55,23 +89,16 @@ class ApplicationTrait extends \Silex\Application
 
     /** SecurityTrait */
     /**
-     * Gets a user from the Security Context.
+     * Gets a user from the Security context.
      *
      * @return mixed
      *
      * @see TokenInterface::getUser()
+     *
      */
     public function user()
     {
-        if (null === $token = $this['security']->getToken()) {
-            return;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return;
-        }
-
-        return $user;
+        return $this['user'];
     }
 
     /**
@@ -87,6 +114,21 @@ class ApplicationTrait extends \Silex\Application
     public function encodePassword(UserInterface $user, $password)
     {
         return $this['security.encoder_factory']->getEncoder($user)->encodePassword($password, $user->getSalt());
+    }
+
+    /**
+     * Checks if the attributes are granted against the current authentication token and optionally supplied object.
+     *
+     * @param mixed $attributes
+     * @param mixed $object
+     *
+     * @return bool
+     *
+     * @throws AuthenticationCredentialsNotFoundException when the token storage has no authentication token.
+     */
+    public function isGranted($attributes, $object = null)
+    {
+        return $this['security.authorization_checker']->isGranted($attributes, $object);
     }
 
     /** SwiftmailerTrait */

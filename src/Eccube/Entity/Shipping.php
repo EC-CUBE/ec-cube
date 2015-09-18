@@ -24,6 +24,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
+
 /**
  * Shipping
  */
@@ -909,6 +911,9 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     public function getDelivery()
     {
+        if (EntityUtil::isEmpty($this->Delivery)) {
+            return null;
+        }
         return $this->Delivery;
     }
 
@@ -932,6 +937,10 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     public function getDeliveryTime()
     {
+        if (EntityUtil::isEmpty($this->DeliveryTime)) {
+            return null;
+        }
+
         return $this->DeliveryTime;
     }
 
@@ -955,6 +964,10 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     public function getDeliveryFee()
     {
+        if (EntityUtil::isEmpty($this->DeliveryFee)) {
+            return null;
+        }
+
         return $this->DeliveryFee;
     }
 }

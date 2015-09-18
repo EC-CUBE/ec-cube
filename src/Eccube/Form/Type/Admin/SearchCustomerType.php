@@ -91,8 +91,7 @@ class SearchCustomerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('tel', 'tel', array(
-                'label' => '電話番号',
+            ->add('tel', 'text', array(
                 'required' => false,
             ))
             ->add('buy_total_start', 'integer', array(

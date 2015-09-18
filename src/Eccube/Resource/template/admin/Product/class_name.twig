@@ -38,6 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             document.form1.action = action;
         }
 
+
         $(function() {
             var oldRanks = [];
             // 画面の中のrank一覧を保持
@@ -45,7 +46,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 oldRanks.push(this.dataset.rank);
             });
             // rsort
-            oldRanks.sort().reverse();
+            oldRanks.sort(function(a,b){return a - b;}).reverse();
 
             $("div.tableish").sortable({
                 items: '> .item_box',

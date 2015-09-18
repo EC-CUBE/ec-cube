@@ -15,6 +15,12 @@
       - id: class_category
         name: カテゴリ登録
         url: admin_product_category
+      - id: product_csv_import
+        name: 商品CSV登録
+        url: admin_product_csv_import
+      - id: category_csv_import
+        name: カテゴリCSV登録
+        url: admin_product_category_csv_import
 - id: order
   name: 受注管理
   has_child: true
@@ -85,22 +91,9 @@
             - id: shop_mail
               name: メール設定
               url: admin_setting_shop_mail
-      - id: store
-        name: オーナーズストア
-        has_child: true
-        child:
-            - id: plugin
-              name: プラグイン一覧
-              url: admin_setting_store_plugin
-            - id: plugin_install
-              name: プラグインインストール
-              url: admin_setting_store_plugin_install
-            - id: plugin_handler
-              name: プラグインハンドラ設定
-              url: admin_setting_store_plugin_handler
-            - id: template
-              name: テンプレート
-              url: admin_setting_store_template
+            - id: shop_csv
+              name: CSV出力項目設定
+              url: admin_setting_shop_csv
       - id: system
         name: システム情報設定
         has_child: true
@@ -114,3 +107,34 @@
             - id: security
               name: セキュリティ管理
               url: admin_setting_system_security
+- id: store
+  name: オーナーズストア
+  has_child: true
+  icon: cb-info-circle
+  child:
+  - id: plugin
+    name: プラグイン
+    has_child: true
+    child:
+        - id: plugin_list
+          name: プラグイン一覧
+          url: admin_store_plugin
+        - id: plugin_owners_install
+          name: 購入済プラグイン
+          url: admin_store_plugin_owners_install
+        - id: plugin_handler
+          name: 高度な設定
+          url: admin_store_plugin_handler
+  - id: template
+    name: テンプレート
+    has_child: true
+    child:
+      - id: template_list
+        name: テンプレート一覧
+        url: admin_store_template
+      - id: template_install
+        name: アップロード
+        url: admin_store_template_install
+  - id: authentication_setting
+    name: 認証キー設定
+    url: admin_store_authentication_setting

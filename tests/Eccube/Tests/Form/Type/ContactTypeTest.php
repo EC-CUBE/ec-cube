@@ -26,7 +26,6 @@ namespace Eccube\Tests\Form\Type;
 
 class ContactTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -52,10 +51,12 @@ class ContactTypeTest extends AbstractTypeTestCase
             'addr01' => '北区',
             'addr02' => '梅田',
         ),
+        // fixme tel のテストは TelTypeTestで行う
+        // ここでは、必須でないことのチェックのみ
         'tel' => array(
-            'tel01' => '012',
-            'tel02' => '345',
-            'tel03' => '6789',
+            'tel01' => '',
+            'tel02' => '',
+            'tel03' => '',
         ),
         'email' => 'eccube@example.com',
         'contents' => 'お問い合わせ内容テスト',
@@ -152,54 +153,6 @@ class ContactTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidTel01_LengthMin()
-    {
-        $this->formData['tel']['tel01'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel01_LengthMax()
-    {
-        $this->formData['tel']['tel01'] = '12345';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel02_LengthMin()
-    {
-        $this->formData['tel']['tel02'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel02_LengthMax()
-    {
-        $this->formData['tel']['tel02'] = '12345';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel03_LengthMin()
-    {
-        $this->formData['tel']['tel03'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel03_LengthMax()
-    {
-        $this->formData['tel']['tel03'] = '12345';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
     public function testInvalidEmail_NotBlank()
     {
         $this->formData['email'] = '';
@@ -223,5 +176,4 @@ class ContactTypeTest extends AbstractTypeTestCase
 
         $this->assertFalse($this->form->isValid());
     }
-
 }

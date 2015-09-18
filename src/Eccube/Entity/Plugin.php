@@ -79,6 +79,28 @@ class Plugin
 
     private $update_date;
 
+    // local property
+    /**
+     * @var string
+     */
+    private $update_status;
+
+    /**
+     * @var string
+     */
+    private $new_version;
+
+    /**
+     * @var string
+     */
+    private $last_update_date;
+
+    /**
+     * @var string
+     */
+    private $product_url;
+
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
@@ -266,7 +288,7 @@ class Plugin
      * Set del_flg
      *
      * @param integer $delFlg
-     * @return PluginEventHandler
+     * @return Plugin
      */
     public function setDelFlg($delFlg)
     {
@@ -288,12 +310,12 @@ class Plugin
     /**
      * Set source
      *
-     * @param integer $delFlg
-     * @return PluginEventHandler
+     * @param integer $source
+     * @return Plugin
      */
-    public function setSource($delFlg)
+    public function setSource($source)
     {
-        $this->source = $delFlg;
+        $this->source = $source;
 
         return $this;
     }
@@ -306,6 +328,98 @@ class Plugin
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set update_status
+     *
+     * @param string $updateStatus
+     * @return Plugin
+     */
+    public function setUpdateStatus($updateStatus)
+    {
+        $this->update_status = $updateStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get update_status
+     *
+     * @return string
+     */
+    public function getUpdateStatus()
+    {
+        return $this->update_status;
+    }
+
+    /**
+     * Set new_version
+     *
+     * @param string $newVersion
+     * @return Plugin
+     */
+    public function setNewVersion($newVersion)
+    {
+        $this->new_version = $newVersion;
+
+        return $this;
+    }
+
+    /**
+     * Get new_version
+     *
+     * @return string
+     */
+    public function getNewVersion()
+    {
+        return $this->new_version;
+    }
+
+    /**
+     * Set last_update_date
+     *
+     * @param string $lastUpdateDate
+     * @return Plugin
+     */
+    public function setLastUpdateDate($lastUpdateDate)
+    {
+        $this->last_update_date = $lastUpdateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get last_update_date
+     *
+     * @return string
+     */
+    public function getLastUpdateDate()
+    {
+        return $this->last_update_date;
+    }
+
+    /**
+     * Set product_url
+     *
+     * @param string $productUrl
+     * @return Plugin
+     */
+    public function setProductUrl($productUrl)
+    {
+        $this->product_url = $productUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get product_url
+     *
+     * @return string
+     */
+    public function getProductUrl()
+    {
+        return $this->product_url;
     }
 
     public function getPluginEventHandlers()

@@ -24,6 +24,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Util\EntityUtil;
+
 /**
  * Order
  */
@@ -1236,6 +1238,9 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getCustomer()
     {
+        if (EntityUtil::isEmpty($this->Customer)) {
+            return null;
+        }
         return $this->Customer;
     }
 
@@ -1351,6 +1356,9 @@ class Order extends \Eccube\Entity\AbstractEntity
      */
     public function getPayment()
     {
+        if (EntityUtil::isEmpty($this->Payment)) {
+            return null;
+        }
         return $this->Payment;
     }
 

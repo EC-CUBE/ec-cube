@@ -1,0 +1,149 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'product_csv_import'] %}
+
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}商品登録CSVアップロード{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/spin.min.js"></script>
+<script>
+$(function() {
+
+    var opts = {
+        lines: 13,
+        length: 30,
+        width: 2,
+        radius: 12,
+        corners: 1,
+        rotate: 0,
+        direction: 1,
+        color: '#BBB',
+        speed: 1,
+        trail: 67,
+        shadow: true,
+        hwaccel: false,
+        className: 'spinner',
+        zIndex: 2e9,
+        top: top
+    };
+
+    ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
+    ImageSpinner.stop();
+
+    $('#upload-form').submit(function() {
+        $('#upload-button').attr('disabled', 'disabled');
+        $('#download-button').attr('disabled', 'disabled');
+        ImageSpinner.spin(document.getElementById('spinner'));
+    });
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_csv_import') }}" {{ form_enctype(form) }}>
+            {{ form_widget(form._token) }}
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">商品登録CSV</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">CSVファイル選択</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
+                            {{ form_errors(form.import_file) }}
+                        </div>
+                        {% for error in errors %}
+                            <div class="text-danger">{{ error.message }}</div>
+                        {% endfor %}
+                    </div>
+                    <div id="spinner"></div>
+                </div><!-- /.box-body -->
+                <div class="box-footer text-center">
+                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
+                </div><!-- /.box-footer -->
+            </div><!-- /.box -->
+        </form>
+    </div><!-- /.col -->
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <a href="{{ url('admin_product_csv_template', {'type': 'product'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
+                <h3 class="box-title">商品登録CSVファイルフォーマット</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="table_list">
+                    <div class="table-responsive no-border table-menu">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="text-nowrap">
+                                    {% for header in headers|keys %}
+                                        <th>{{ header }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-nowrap">
+                                    <td>新規登録時は未設定<br>既存商品の更新は商品IDを設定</td>
+                                    <td>必須</td>
+                                    <td>必須</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>設定されていない場合<br>0を登録</td>
+                                    <td>複数画像の場合<br>画像ファイル名をカンマ区切りで<br>「"」で囲んで設定</td>
+                                    <td>複数カテゴリの場合<br>商品カテゴリIDをカンマ区切りで<br>「"」で囲んで設定</td>
+                                    <td>必須</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>在庫数無制限フラグが0の場合<br>0以上の数値を設定</td>
+                                    <td>必須</td>
+                                    <td>0以上の数値を設定</td>
+                                    <td>0以上の数値を設定</td>
+                                    <td>必須<br>0以上の数値を設定</td>
+                                    <td>商品ごとの送料設定が有効の場合<br>0以上の数値を設定</td>
+                                    <td>設定されていない場合<br>0を登録</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+</div>
+
+{% endblock %}

@@ -134,6 +134,11 @@ class MailService
     public function sendrContactMail($formData)
     {
 
+        $body = $this->app->renderView('Mail/contact_mail.twig', array(
+            'data' => $formData,
+            'BaseInfo' => $this->BaseInfo,
+        ));
+        
         // 問い合わせ者にメール送信
         $message = \Swift_Message::newInstance()
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
@@ -142,7 +147,7 @@ class MailService
             ->setBcc($this->BaseInfo->getEmail01())
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
-            ->setBody($formData['contents']);
+            ->setBody($body);
 
         $this->app->mail($message);
 

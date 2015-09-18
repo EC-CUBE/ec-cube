@@ -23,7 +23,8 @@
 
 namespace Eccube\Util;
 
-class Str {
+class Str
+{
 
     /**
      * The MIT License (MIT)
@@ -50,19 +51,17 @@ class Str {
      *
      * Generate a more truly "random" alpha-numeric string.
      *
-     * @param  int  $length
+     * @param  int $length
      * @return string
      *
      * @throws \RuntimeException
      */
     public static function random($length = 16)
     {
-        if (function_exists('openssl_random_pseudo_bytes'))
-        {
+        if (function_exists('openssl_random_pseudo_bytes')) {
             $bytes = openssl_random_pseudo_bytes($length * 2);
 
-            if ($bytes === false)
-            {
+            if ($bytes === false) {
                 throw new \RuntimeException('Unable to generate random string.');
             }
 
@@ -99,7 +98,7 @@ class Str {
      *
      * Should not be considered sufficient for cryptography, etc.
      *
-     * @param  int  $length
+     * @param  int $length
      * @return string
      */
     public static function quickRandom($length = 16)
@@ -110,11 +109,140 @@ class Str {
     }
 
 
-    public static function convertLineFeed($value, $lf = "\n") {
+    /**
+     * 改行コードの変換
+     *
+     * @param $value
+     * @param string $lf
+     * @return string
+     */
+    public static function convertLineFeed($value, $lf = "\n")
+    {
         if (empty($value)) {
             return '';
         }
         return strtr($value, array_fill_keys(array("\r\n", "\r", "\n"), $lf));
+    }
+
+    /**
+     * 文字コードの判定
+     *
+     * @param $value
+     * @return string
+     */
+    public static function characterEncoding($value, $encoding = array('UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'))
+    {
+        foreach ($encoding as $encode) {
+            if (mb_convert_encoding($value, $encode, $encode) == $value) {
+                return $encode;
+            }
+        }
+
+        return null;
+
+    }
+
+    /**
+     * 指定した文字列以上ある場合、「...」を付加する
+     *
+     * @param string $value
+     * @param int $length
+     * @param string $end
+     * @return string
+     */
+    public static function ellipsis($value, $length = 100, $end = '...')
+    {
+        if (mb_strlen($value) <= $length) {
+            return $value;
+        }
+
+        return rtrim(mb_substr($value, 0, $length, 'UTF-8')) . $end;
+    }
+
+
+    /**
+     *
+     * @param $date
+     * @return string
+     */
+    public static function timeAgo($date)
+    {
+        if (empty($date)) {
+            return '';
+        }
+
+        $now = new \DateTime();
+        if (!($date instanceof \DateTime)) {
+            $date = new \DateTime($date);
+        }
+        $diff = $date->diff($now, true);
+        if ($diff->y > 0) {
+            // return $date->format("Y/m/d H:i");
+            return $date->format("Y/m/d");
+        }
+        if ($diff->m == 1 || $diff->days > 0) {
+            if ($diff->days <= 31) {
+                return $diff->days . '日前';
+            }
+            // return $date->format("Y/m/d H:i");
+            return $date->format("Y/m/d");
+        }
+        if ($diff->h > 0) {
+            return $diff->h . "時間前";
+        }
+        if ($diff->i > 0) {
+            return $diff->i . "分前";
+        }
+        return $diff->s . "秒前";
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public static function isBlank($value)
+    {
+        if (!is_string($value)) {
+            return false;
+        }
+
+        if ($value == null || $value == '') {
+            return true;
+        }
+
+        if (trim(mb_convert_kana($value, 's', 'UTF-8')) !== '') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public static function isNotBlank($value)
+    {
+        return !self::isBlank($value);
+    }
+
+
+    /**
+     * 両端にある全角スペース、半角スペースを取り除く
+     *
+     * @param $value
+     * @return string
+     */
+    public static function trimAll($value)
+    {
+        if ($value == null) {
+            return null;
+        }
+        if ($value == '') {
+            return '';
+        }
+
+        return trim(mb_convert_kana($value, 's', 'UTF-8'));
     }
 
 }

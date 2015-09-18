@@ -50,6 +50,12 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
         // 受注データを取得
         $preOrderId = $cartService->getPreOrderId();
         $Order = $app['eccube.repository.order']->findOneBy(array(
@@ -61,7 +67,8 @@ class ShoppingController extends AbstractController
         if (is_null($Order)) {
 
             // 未ログインの場合は, ログイン画面へリダイレクト.
-            if (!$this->isGranted($app)) {
+            if (!$app->isGranted('IS_AUTHENTICATED_FULLY')) {
+
                 // 非会員でも一度会員登録されていればショッピング画面へ遷移
                 $arr = $app['session']->get('eccube.front.shopping.nonmember');
                 if (is_null($arr)) {
@@ -93,22 +100,22 @@ class ShoppingController extends AbstractController
 
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
-        $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries, $delivery);
+        $orderService->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $this->setFormDeliveryDate($form, $Order, $app);
+        $orderService->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $delivery);
+        $orderService->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order, $app);
+        $orderService->setFormPayment($form, $delivery, $Order, $app);
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -137,7 +144,7 @@ class ShoppingController extends AbstractController
 
         $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
 
-        $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
 
         // 配送業社の設定
@@ -145,16 +152,16 @@ class ShoppingController extends AbstractController
         $delivery = $shippings[0]->getDelivery();
 
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries, $delivery);
+        $orderService->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $this->setFormDeliveryDate($form, $Order, $app);
+        $orderService->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $delivery);
+        $orderService->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order, $app);
+        $orderService->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -180,7 +187,7 @@ class ShoppingController extends AbstractController
                     // 在庫情報を更新
                     $orderService->setStockUpdate($em, $Order);
 
-                    if ($this->isGranted($app)) {
+                    if ($app->isGranted('ROLE_USER')) {
                         // 会員の場合、購入金額を更新
                         $orderService->setCustomerUpdate($em, $Order, $app->user());
                     }
@@ -232,6 +239,7 @@ class ShoppingController extends AbstractController
     public function delivery(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
+        $orderService = $app['eccube.service.order'];
         $orderRepository = $app['eccube.repository.order'];
 
         // カートチェック
@@ -245,22 +253,22 @@ class ShoppingController extends AbstractController
 
         $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
 
-        $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries, $delivery);
+        $orderService->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $this->setFormDeliveryDate($form, $Order, $app);
+        $orderService->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $delivery);
+        $orderService->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order, $app);
+        $orderService->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
 
@@ -313,28 +321,29 @@ class ShoppingController extends AbstractController
     {
 
         $cartService = $app['eccube.service.cart'];
+        $orderService = $app['eccube.service.order'];
         $orderRepository = $app['eccube.repository.order'];
 
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
         $Order = $orderRepository->findOneBy(array('pre_order_id' => $cartService->getPreOrderId()));
 
-        $deliveries = $this->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
+        $deliveries = $orderService->findDeliveriesFromOrderDetails($app, $Order->getOrderDetails());
 
         $shippings = $Order->getShippings();
         $delivery = $shippings[0]->getDelivery();
 
         // 配送業社の設定
-        $this->setFormDelivery($form, $deliveries, $delivery);
+        $orderService->setFormDelivery($form, $deliveries, $delivery);
 
         // お届け日の設定
-        $this->setFormDeliveryDate($form, $Order, $app);
+        $orderService->setFormDeliveryDate($form, $Order, $app);
 
         // お届け時間の設定
-        $this->setFormDeliveryTime($form, $delivery);
+        $orderService->setFormDeliveryTime($form, $delivery);
 
         // 支払い方法選択
-        $this->setFormPayment($form, $delivery, $Order, $app);
+        $orderService->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
 
@@ -391,7 +400,9 @@ class ShoppingController extends AbstractController
             }
 
             // 選択されたお届け先情報を取得
-            $customerAddress = $app['eccube.repository.customer_address']->find($address);
+            $customerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
+                'Customer' => $app->user(),
+                'id' => $address));
 
             $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $app['eccube.service.cart']->getPreOrderId()));
             // お届け先情報を更新
@@ -452,7 +463,7 @@ class ShoppingController extends AbstractController
         $shippings = $Order->getShippings();
 
         // 会員の場合、お届け先情報を新規登録
-        if ($this->isGranted($app)) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             $builder = $app['form.factory']->createBuilder('shopping_shipping');
         } else {
             // 非会員の場合、お届け先を追加
@@ -469,7 +480,7 @@ class ShoppingController extends AbstractController
                 $data = $form->getData();
 
                 // 会員の場合、お届け先情報を新規登録
-                if ($this->isGranted($app)) {
+                if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
                     $customerAddress = new \Eccube\Entity\CustomerAddress();
                     $customerAddress
                         ->setCustomer($app->user())
@@ -577,31 +588,26 @@ class ShoppingController extends AbstractController
             return $app->redirect($app['url_generator']->generate('cart'));
         }
 
-        if ($app['security']->isGranted('ROLE_USER')) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $app->redirect($app->url('shopping'));
         }
-        $session = $request->getSession();
 
-        $error = null;
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $builder = $app['form.factory']
+            ->createNamedBuilder('', 'customer_login');
 
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } else {
-            if ($session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-                $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-                $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $Customer = $app->user();
+            if ($Customer) {
+                $builder->get('login_email')->setData($Customer->getEmail());
             }
         }
 
-
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app['form.factory']
-            ->createNamedBuilder('', 'customer_login')
-            ->getForm();
+        $form = $builder->getForm();
 
         return $app->render('Shopping/login.twig', array(
+            'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
-            'error' => $error,
         ));
     }
 
@@ -621,9 +627,16 @@ class ShoppingController extends AbstractController
 
 
         // ログイン済みの場合は, 購入画面へリダイレクト.
-        if ($this->isGranted($app)) {
+        if ($app->isGranted('ROLE_USER')) {
             return $app->redirect($app->url('shopping'));
         }
+
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
 
         $form = $app['form.factory']->createBuilder('nonmember')->getForm();
 
@@ -693,135 +706,4 @@ class ShoppingController extends AbstractController
     {
         return $app->render('Shopping/shopping_error.twig');
     }
-
-
-    /**
-     * 配送業者を取得
-     */
-    private function findDeliveriesFromOrderDetails($app, $details)
-    {
-
-        $productTypes = array();
-        foreach ($details as $detail) {
-            $productTypes[] = $detail->getProductClass()->getProductType();
-        }
-
-        $qb = $app['orm.em']->createQueryBuilder();
-        $deliveries = $qb->select("d")
-            ->from("\Eccube\Entity\Delivery", "d")
-            ->where($qb->expr()->in('d.ProductType', ':productTypes'))
-            ->setParameter('productTypes', $productTypes)
-            ->andWhere("d.del_flg = :delFlg")
-            ->setParameter('delFlg', Constant::DISABLED)
-            ->orderBy("d.rank", "ASC")
-            ->getQuery()
-            ->getResult();
-
-        return $deliveries;
-
-    }
-
-
-    /**
-     * 配送業者のフォームを設定
-     */
-    private function setFormDelivery($form, $deliveries, $delivery = null)
-    {
-
-        // 配送業社の設定
-        $form->add('delivery', 'entity', array(
-            'class' => 'Eccube\Entity\Delivery',
-            'property' => 'name',
-            'choices' => $deliveries,
-            'data' => $delivery,
-        ));
-
-    }
-
-
-    /**
-     * お届け日のフォームを設定
-     */
-    private function setFormDeliveryDate($form, $Order, $app)
-    {
-
-        // お届け日の設定
-        $minDate = 0;
-        $deliveryDateFlag = false;
-
-        // 配送時に最大となる商品日数を取得
-        foreach ($Order->getOrderDetails() as $detail) {
-            $deliveryDate = $detail->getProductClass()->getDeliveryDate();
-            if (!is_null($deliveryDate)) {
-                if ($minDate < $deliveryDate->getValue()) {
-                    $minDate = $deliveryDate->getValue();
-                }
-                // 配送日数が設定されている
-                $deliveryDateFlag = true;
-            }
-        }
-
-        // 配達最大日数期間を設定
-        $deliveryDates = array();
-
-        // 配送日数が設定されている
-        if ($deliveryDateFlag) {
-            $period = new \DatePeriod (
-                new \DateTime($minDate . ' day'),
-                new \DateInterval('P1D'),
-                new \DateTime($minDate + $app['config']['deliv_date_end_max'] . ' day')
-            );
-
-            foreach ($period as $day) {
-                $deliveryDates[$day->format('Y/m/d')] = $day->format('Y/m/d');
-            }
-        }
-
-
-        $form->add('deliveryDate', 'choice', array(
-            'choices' => $deliveryDates,
-            'required' => false,
-            'empty_value' => '指定なし',
-        ));
-
-    }
-
-    /**
-     * お届け時間のフォームを設定
-     */
-    private function setFormDeliveryTime($form, $delivery)
-    {
-        // お届け時間の設定
-        $form->add('deliveryTime', 'entity', array(
-            'class' => 'Eccube\Entity\DeliveryTime',
-            'property' => 'deliveryTime',
-            'choices' => $delivery->getDeliveryTimes(),
-        ));
-
-    }
-
-    /**
-     * 支払い方法のフォームを設定
-     */
-    private function setFormPayment($form, $delivery, $Order, $app)
-    {
-
-        $orderService = $app['eccube.service.order'];
-        $paymentOptions = $delivery->getPaymentOptions();
-        $payments = $orderService->getPayments($paymentOptions, $Order->getSubTotal());
-
-        $form->add('payment', 'entity', array(
-            'class' => 'Eccube\Entity\Payment',
-            'property' => 'method',
-            'choices' => $payments,
-            'data' => $Order->getPayment(),
-            'expanded' => true,
-            'constraints' => array(
-                new Assert\NotBlank(),
-            ),
-        ));
-
-    }
-
-
 }

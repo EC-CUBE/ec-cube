@@ -101,6 +101,8 @@ class BlockController
             }
         }
 
+        \Eccube\Util\Cache::clear($app,false);
+
         return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),
             'block_id' => $id,
@@ -118,7 +120,7 @@ class BlockController
         // ユーザーが作ったブロックのみ削除する
         if ($Block->getDeletableFlg() > 0) {
             $tplDir = $app['eccube.repository.page_layout']
-                ->getTemplatePath($DeviceType);
+                ->getWriteTemplatePath($DeviceType);
             $tplDir .= $app['config']['block_dir'];
             $file = $tplDir . $Block->getFileName();
             $fs = new Filesystem();
@@ -128,6 +130,8 @@ class BlockController
             $app['orm.em']->remove($Block);
             $app['orm.em']->flush();
         }
+
+        \Eccube\Util\Cache::clear($app,false);
 
         return $app->redirect($app->url('admin_content_block'));
     }

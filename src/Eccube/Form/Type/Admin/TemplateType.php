@@ -76,6 +76,13 @@ class TemplateType extends AbstractType
                 'label' => 'テンプレートファイル',
                 'mapped' => false,
                 'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
+                    new Assert\File(array(
+                        'mimeTypes' => array('application/zip', 'application/x-tar', 'application/x-gzip'),
+                        'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
+                    )),
+                ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }

@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\PageLayout;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserDataController
@@ -36,9 +37,11 @@ class UserDataController
             ->getRepository('Eccube\Entity\Master\DeviceType')
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $PageLayout = $app['eccube.repository.page_layout']->findOneBy(
-            array('url' => $route, 'DeviceType' => $DeviceType)
-        );
+        $PageLayout = $app['eccube.repository.page_layout']->findOneBy(array(
+            'url' => $route,
+            'DeviceType' => $DeviceType,
+            'edit_flg' => PageLayout::EDIT_FLG_USER,
+        ));
 
         if (is_null($PageLayout)) {
             throw new NotFoundHttpException();

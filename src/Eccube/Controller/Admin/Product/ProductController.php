@@ -26,9 +26,11 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\Master\CsvType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController
@@ -156,7 +158,7 @@ class ProductController
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
-                    $extension = $image->guessExtension();
+                    $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
@@ -181,11 +183,11 @@ class ProductController
             $ProductClass = new \Eccube\Entity\ProductClass();
             $Disp = $app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
             $Product
-                ->setDelFlg(0)
+                ->setDelFlg(Constant::DISABLED)
                 ->addProductClass($ProductClass)
-            ->setStatus($Disp);
+                ->setStatus($Disp);
             $ProductClass
-                ->setDelFlg(0)
+                ->setDelFlg(Constant::DISABLED)
                 ->setStockUnlimited(true)
                 ->setProduct($Product);
             $ProductStock = new \Eccube\Entity\ProductStock();
@@ -215,6 +217,7 @@ class ProductController
 
         $form = $builder->getForm();
         if (!$has_class) {
+            $ProductClass->setStockUnlimited((boolean) $ProductClass->getStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
@@ -300,10 +303,12 @@ class ProductController
                 foreach ($delete_images as $delete_image) {
                     $ProductImage = $app['eccube.repository.product_image']
                         ->findOneBy(array('file_name' => $delete_image));
+
                     // 追加してすぐに削除した画像は、Entityに追加されない
                     if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
                         $Product->removeProductImage($ProductImage);
                         $app['orm.em']->remove($ProductImage);
+
                     }
                     $app['orm.em']->persist($Product);
 
@@ -361,9 +366,51 @@ class ProductController
             /* @var $Product \Eccube\Entity\Product */
             $Product = $app['eccube.repository.product']->find($id);
             if ($Product instanceof \Eccube\Entity\Product) {
-                $Product->setDelFlg(1);
+                $Product->setDelFlg(Constant::ENABLED);
+
+                $ProductClasses = $Product->getProductClasses();
+                $deleteImages = array();
+                foreach ($ProductClasses as $ProductClass) {
+                    $ProductClass->setDelFlg(Constant::ENABLED);
+                    $Product->removeProductClass($ProductClass);
+
+                    $ProductClasses = $Product->getProductClasses();
+                    foreach ($ProductClasses as $ProductClass) {
+                        $ProductClass->setDelFlg(Constant::ENABLED);
+                        $Product->removeProductClass($ProductClass);
+
+                        $ProductStock = $ProductClass->getProductStock();
+                        $app['orm.em']->remove($ProductStock);
+                    }
+
+                    $ProductImages = $Product->getProductImage();
+                    foreach ($ProductImages as $ProductImage) {
+                        $Product->removeProductImage($ProductImage);
+                        $deleteImages[] = $ProductImage->getFileName();
+                        $app['orm.em']->remove($ProductImage);
+                    }
+
+                    $ProductCategories = $Product->getProductCategories();
+                    foreach ($ProductCategories as $ProductCategory) {
+                        $Product->removeProductCategory($ProductCategory);
+                        $app['orm.em']->remove($ProductCategory);
+                    }
+
+                }
+
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
+
+
+                // 画像ファイルの削除(commit後に削除させる)
+                foreach ($deleteImages as $deleteImage) {
+                    try {
+                        $fs = new Filesystem();
+                        $fs->remove($app['config']['image_save_realdir'] . '/' . $deleteImage);
+                    } catch (\Exception $e) {
+                        // エラーが発生しても無視する
+                    }
+                }
 
                 $app->addSuccess('admin.delete.complete', 'admin');
             } else {
@@ -401,6 +448,18 @@ class ProductController
                 }
                 $Images = $CopyProduct->getProductImage();
                 foreach ($Images as $Image) {
+
+                    // 画像ファイルを新規作成
+                    $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
+                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    try {
+                        $fs = new Filesystem();
+                        $fs->copy($app['config']['image_save_realdir'] . '/' . $Image->getFileName(), $app['config']['image_save_realdir'] . '/' . $filename);
+                    } catch (\Exception $e) {
+                        // エラーが発生しても無視する
+                    }
+                    $Image->setFileName($filename);
+
                     $app['orm.em']->persist($Image);
                 }
                 $Tags = $CopyProduct->getProductTag();
@@ -431,5 +490,86 @@ class ProductController
         }
 
         return $app->redirect($app->url('admin_product'));
+    }
+
+    /**
+     * 商品CSVの出力.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return StreamedResponse
+     */
+    public function export(Application $app, Request $request)
+    {
+        // タイムアウトを無効にする.
+        set_time_limit(0);
+
+        // sql loggerを無効にする.
+        $em = $app['orm.em'];
+        $em->getConfiguration()->setSQLLogger(null);
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($app, $request) {
+
+            // CSV種別を元に初期化.
+            $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_PRODUCT);
+
+            // ヘッダ行の出力.
+            $app['eccube.service.csv.export']->exportHeader();
+
+            // 商品データ検索用のクエリビルダを取得.
+            $qb = $app['eccube.service.csv.export']
+                ->getProductQueryBuilder($request);
+
+            // joinする場合はiterateが使えないため, select句をdistinctする.
+            // http://qiita.com/suin/items/2b1e98105fa3ef89beb7
+            // distinctのmysqlとpgsqlの挙動をあわせる.
+            // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
+            $qb->resetDQLPart('select')
+                ->resetDQLPart('orderBy')
+                ->select('p')
+                ->orderBy('p.update_date', 'DESC')
+                ->distinct();
+
+            // データ行の出力.
+            $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+
+                $Csvs = $csvService->getCsvs();
+
+                /** @var $Product \Eccube\Entity\Product */
+                $Product = $entity;
+
+                /** @var $Product \Eccube\Entity\ProductClass[] */
+                $ProductClassess = $Product->getProductClasses();
+
+                foreach ($ProductClassess as $ProductClass) {
+                    $row = array();
+
+                    // CSV出力項目と合致するデータを取得.
+                    foreach ($Csvs as $Csv) {
+                        // 商品データを検索.
+                        $data = $csvService->getData($Csv, $Product);
+                        if (is_null($data)) {
+                            // 商品規格情報を検索.
+                            $data = $csvService->getData($Csv, $ProductClass);
+                        }
+                        $row[] = $data;
+                    }
+
+                    //$row[] = number_format(memory_get_usage(true));
+                    // 出力.
+                    $csvService->fputcsv($row);
+                }
+            });
+        });
+
+        $now = new \DateTime();
+        $filename = 'product_' . $now->format('YmdHis') . '.csv';
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->send();
+
+        return $response;
     }
 }

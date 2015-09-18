@@ -27,6 +27,7 @@ namespace Eccube\Controller\Install;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Common\Constant;
 use Eccube\InstallApplication;
@@ -41,11 +42,7 @@ class InstallController
 {
     private $app;
 
-    private $data;
-
     private $PDO;
-
-    private $error;
 
     private $config_path;
 
@@ -55,6 +52,10 @@ class InstallController
 
     private $session_data;
 
+    private $required_modules = array('pdo', 'phar', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
+
+    private $recommended_module = array('hash', 'APC', 'mcrypt');
+
     const SESSION_KEY = 'eccube.session.install';
 
     public function __construct()
@@ -62,6 +63,12 @@ class InstallController
         $this->config_path = __DIR__ . '/../../../../app/config/eccube';
         $this->dist_path = __DIR__ . '/../../Resource/config';
         $this->cache_path = __DIR__ . '/../../../../app/cache';
+
+        // timezone
+        $config = Yaml::parse($this->dist_path . '/config.yml.dist');
+        if (!empty($config['timezone'])) {
+            date_default_timezone_set($config['timezone']);
+        }
     }
 
     private function isValid(Request $request, Form $form)
@@ -107,6 +114,8 @@ class InstallController
             return $app->redirect($app->url('install_step2'));
         }
 
+        $this->checkModules($app);
+
         return $app['twig']->render('step1.twig', array(
             'form' => $form->createView(),
         ));
@@ -115,6 +124,8 @@ class InstallController
     // 権限チェック
     public function step2(InstallApplication $app, Request $request)
     {
+        $this->getSessionData($request);
+
         $protectedDirs = $this->getProtectedDirs();
 
         // 権限がある場合, キャッシュディレクトリをクリア
@@ -161,6 +172,7 @@ class InstallController
         $form = $app['form.factory']
             ->createBuilder('install_step4')
             ->getForm();
+
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
 
@@ -187,16 +199,16 @@ class InstallController
 
         if ($this->isValid($request, $form)) {
             if (!$form['no_update']->getData()) {
+                set_time_limit(0);
+                
                 $this
                     ->setPDO()
                     ->dropTables()
-                    ->revertMigrate()
                     ->createTables()
-                    ->insert()
-                    ->doMigrate();
+                    ->doMigrate()
+                    ->insert();
             }
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
-
                 $host = $request->getSchemeAndHttpHost();
                 $basePath = $request->getBasePath();
                 $params = array(
@@ -237,31 +249,56 @@ class InstallController
     private function resetNatTimer()
     {
         // NATの無通信タイマ対策（仮）
-        echo str_repeat(" ", 4 * 1024);
+        echo str_repeat(' ', 4 * 1024);
         ob_flush();
         flush();
+    }
+
+
+    private function checkModules($app)
+    {
+        foreach ($this->required_modules as $module) {
+            if (!extension_loaded($module)) {
+                $app->addDanger('[必須] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
+        if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
+            $app->addDanger('[必須] ' . 'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+        }
+
+        foreach ($this->recommended_module as $module) {
+            if (!extension_loaded($module)) {
+                $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
+        if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
+            if (!function_exists('apache_get_modules')) {
+                $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+            } elseif (!in_array('mod_rewrite', apache_get_modules())) {
+                $app->addDanger('[必須] ' . 'mod_rewriteを有効にしてください。', 'install');
+            }
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Microsoft-IIS', $_SERVER['SERVER_SOFTWARE']) !== false) {
+            // iis
+        } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('nginx', $_SERVER['SERVER_SOFTWARE']) !== false) {
+            // nginx
+        }
     }
 
     private function setPDO()
     {
         $config_file = $this->config_path . '/database.yml';
         $config = Yaml::parse($config_file);
-        $data = $config['database'];
 
-        $dsn = str_replace('pdo_', '', $data['driver'])
-            . ':host=' . $data['host']
-            . ';dbname=' . $data['dbname'];
-        if (!empty($data['port'])) {
-            $dsn .= ';port=' . $data['port'];
+        try {
+            $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
+            $this->PDO->connect();
+
+        } catch (\Exception $e) {
+            $this->PDO->close();
+            throw $e;
         }
-        if ($data['driver'] == 'pdo_mysql') {
-            $dsn .= ';charset=utf8';
-        }
-        $this->PDO = new \PDO(
-            $dsn,
-            $data['user'],
-            $data['password']
-        );
 
         return $this;
     }
@@ -276,9 +313,14 @@ class InstallController
 
         $schemaTool->dropSchema($metadatas);
 
+        $em->getConnection()->executeQuery('DROP TABLE IF EXISTS doctrine_migration_versions');
+
         return $this;
     }
 
+    /**
+     * @return EntityManager
+     */
     private function getEntityManager()
     {
         $config_file = $this->config_path . '/database.yml';
@@ -289,7 +331,7 @@ class InstallController
         ));
 
         $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => array(
                     array(
@@ -333,60 +375,50 @@ class InstallController
         $baseConfig = Yaml::parse($config_file);
         $config['config'] = $baseConfig;
 
-        if ($config['database']['driver'] == 'pdo_pgsql') {
-            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data_pgsql.sql';
-        } elseif ($config['database']['driver'] == 'pdo_mysql') {
-            $sqlFile = __DIR__ . '/../../Resource/sql/insert_data_mysql.sql';
-        } else {
-            die('database type invalid.');
-        }
-
-        $fp = fopen($sqlFile, 'r');
-        $sql = fread($fp, filesize($sqlFile));
-        fclose($fp);
-        $sqls = explode(';', $sql);
-
         $this->PDO->beginTransaction();
-        foreach ($sqls as $sql) {
-            $this->PDO->query(trim($sql));
-        }
 
-        $config = array(
-            'auth_type' => '',
-            'auth_magic' => $config['config']['auth_magic'],
-            'password_hash_algos' => 'sha256',
-        );
-        $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
-        $salt = \Eccube\Util\Str::random();
+        try {
 
-        $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
-        $sth = $this->PDO->prepare("INSERT INTO dtb_base_info (
-            id,
-            shop_name,
-            email01,
-            email02,
-            email03,
-            email04,
-            update_date,
-            option_product_tax_rule
+            $config = array(
+                'auth_type' => '',
+                'auth_magic' => $config['config']['auth_magic'],
+                'password_hash_algos' => 'sha256',
+            );
+            $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
+            $salt = \Eccube\Util\Str::random();
+
+            $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
+            $sth = $this->PDO->prepare('INSERT INTO dtb_base_info (
+                id,
+                shop_name,
+                email01,
+                email02,
+                email03,
+                email04,
+                update_date,
+                option_product_tax_rule
             ) VALUES (
-            1,
-            :shop_name,
-            :admin_mail,
-            :admin_mail,
-            :admin_mail,
-            :admin_mail,
-            current_timestamp,
-            0);");
-        $sth->execute(array(
-            ':shop_name' => $this->session_data['shop_name'],
-            ':admin_mail' => $this->session_data['email']
-        ));
+                1,
+                :shop_name,
+                :admin_mail,
+                :admin_mail,
+                :admin_mail,
+                :admin_mail,
+                current_timestamp,
+                0);');
+            $sth->execute(array(
+                ':shop_name' => $this->session_data['shop_name'],
+                ':admin_mail' => $this->session_data['email']
+            ));
 
-        $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
-        $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
+            $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+            $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
 
-        $this->PDO->commit();
+            $this->PDO->commit();
+        } catch (\Exception $e) {
+            $this->PDO->rollback();
+            throw $e;
+        }
 
         return $this;
     }
@@ -413,17 +445,6 @@ class InstallController
             $migration = $this->getMigration();
             // nullを渡すと最新バージョンまでマイグレートする
             $migration->migrate(null, false);
-        } catch (MigrationException $e) {
-        }
-
-        return $this;
-    }
-
-    private function revertMigrate()
-    {
-        try {
-            $migration = $this->getMigration();
-            $migration->migrate('first', false);
         } catch (MigrationException $e) {
         }
 
@@ -509,13 +530,13 @@ class InstallController
         }
 
         switch ($data['database']) {
-            case 'pgsql':
+            case 'pdo_pgsql':
                 if (empty($data['db_port'])) {
                     $data['db_port'] = '5432';
                 }
                 $data['db_driver'] = 'pdo_pgsql';
                 break;
-            case 'mysql':
+            case 'pdo_mysql':
                 if (empty($data['db_port'])) {
                     $data['db_port'] = '3306';
                 }
@@ -605,11 +626,11 @@ class InstallController
         $db_config = Yaml::parse($config_file);
 
         $this->setPDO();
-        $stmt = $this->PDO->query('SELECT version()');
+        $stmt = $this->PDO->query('select version() as v');
 
         $version = '';
         foreach ($stmt as $row) {
-            $version = $row['version'];
+            $version = $row['v'];
         }
 
         if ($db_config['database']['driver'] === 'pdo_mysql') {
@@ -630,8 +651,8 @@ class InstallController
         );
 
         $header = array(
-            "Content-Type: application/x-www-form-urlencoded",
-            "Content-Length: " . strlen($data),
+            'Content-Type: application/x-www-form-urlencoded',
+            'Content-Length: ' . strlen($data),
         );
         $context = stream_context_create(
             array(
@@ -645,5 +666,23 @@ class InstallController
         file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
 
         return $this;
+    }
+
+
+    public function migration(InstallApplication $app, Request $request)
+    {
+        return $app['twig']->render('migration.twig');
+    }
+
+    public function migration_end(InstallApplication $app, Request $request)
+    {
+        $this->doMigrate();
+
+        $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
+        $config_app->initialize();
+        $config_app->boot();
+        \Eccube\Util\Cache::clear($config_app, true);
+
+        return $app['twig']->render('migration_end.twig');
     }
 }

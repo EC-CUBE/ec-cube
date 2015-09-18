@@ -24,6 +24,7 @@
 namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
+use Eccube\Common\Constant;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\RotatingFileHandler;
@@ -32,6 +33,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
@@ -47,72 +49,6 @@ class Application extends ApplicationTrait
         $this->initLogger();
     }
 
-    public function initialize()
-    {
-        // init locale
-        $this->initLocale();
-
-        // init session
-        $this->initSession();
-
-        // init twig
-        $this->initRendering();
-
-        // init provider
-        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-        $this->register(new \Silex\Provider\FormServiceProvider());
-        $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-
-        $app = $this;
-        $this->error(function (\Exception $e, $code) use ($app) {
-            if ($app['debug']) {
-                return;
-            }
-
-            switch ($code) {
-                case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
-                    break;
-                default:
-                    $title = 'システムエラーが発生しました。';
-                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
-                    break;
-            }
-
-            return $app['twig']->render('error.twig', array(
-                'error_title' => $title,
-                'error_message' => $message,
-            ));
-        });
-
-        // init mailer
-        $this->initMailer();
-
-        // init doctrine orm
-        $this->initDoctrine();
-
-        // init security
-        $this->initSecurity();
-
-        // init ec-cube service provider
-        $this->register(new ServiceProvider\EccubeServiceProvider());
-
-        // mount controllers
-        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
-    }
-
-    public function initializePlugin()
-    {
-        // setup event dispatcher
-        $this->initPluginEventDispatcher();
-
-        // load plugin
-        $this->loadPlugin();
-    }
-
     public function initConfig()
     {
         // load config
@@ -124,6 +60,12 @@ class Application extends ApplicationTrait
             $config_yml = $ymlPath . '/config.yml';
             if (file_exists($config_yml)) {
                 $config = Yaml::parse($config_yml);
+            }
+
+            $config_dist = array();
+            $config_yml_dist = $distPath . '/config.yml.dist';
+            if (file_exists($config_yml_dist)) {
+                $config_dist = Yaml::parse($config_yml_dist);
             }
 
             $config_path = array();
@@ -139,14 +81,13 @@ class Application extends ApplicationTrait
                 $config_constant = empty($config_constant) ? array() : $config_constant;
             }
 
-
             $config_constant_dist = array();
             $constant_yml_dist = $distPath . '/constant.yml.dist';
             if (file_exists($constant_yml_dist)) {
                 $config_constant_dist = Yaml::parse($constant_yml_dist);
             }
 
-            $configAll = array_replace_recursive($config_constant_dist, $config_constant, $config_path, $config);
+            $configAll = array_replace_recursive($config_constant_dist, $config_dist, $config_constant, $config_path, $config);
 
             $database = array();
             $yml = $ymlPath . '/database.yml';
@@ -218,24 +159,72 @@ class Application extends ApplicationTrait
         }));
     }
 
-    public function initSession()
+    public function initialize()
     {
-        $this->register(new \Silex\Provider\SessionServiceProvider(), array(
-            'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
-            'session.storage.options' => array(
-                'name' => 'eccube',
-                'cookie_path' => $this['config']['root_urlpath'],
-                'cookie_secure' => $this['config']['force_ssl'],
-                'cookie_lifetime' => $this['config']['cookie_lifetime'],
-                'cookie_httponly' => true,
-                // cookie_domainは指定しない
-                // http://blog.tokumaru.org/2011/10/cookiedomain.html
-            ),
-        ));
+        // init locale
+        $this->initLocale();
+
+        // init session
+        $this->initSession();
+
+        // init twig
+        $this->initRendering();
+
+        // init provider
+        $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
+        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        $this->register(new \Silex\Provider\FormServiceProvider());
+        $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+
+        $app = $this;
+        $this->error(function (\Exception $e, $code) use ($app) {
+            if ($app['debug']) {
+                return;
+            }
+
+            switch ($code) {
+                case 404:
+                    $title = 'ページがみつかりません。';
+                    $message = 'URLに間違いがないかご確認ください。';
+                    break;
+                default:
+                    $title = 'システムエラーが発生しました。';
+                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+                    break;
+            }
+
+            return $app['twig']->render('error.twig', array(
+                'error_title' => $title,
+                'error_message' => $message,
+            ));
+        });
+
+        // init mailer
+        $this->initMailer();
+
+        // init doctrine orm
+        $this->initDoctrine();
+
+        // init security
+        $this->initSecurity();
+
+        // init ec-cube service provider
+        $this->register(new ServiceProvider\EccubeServiceProvider());
+
+        // mount controllers
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $this->mount('', new ControllerProvider\FrontControllerProvider());
+        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
     }
 
     public function initLocale()
     {
+
+        // timezone
+        if (!empty($this['config']['timezone'])) {
+            date_default_timezone_set($this['config']['timezone']);
+        }
+
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
         ));
@@ -262,12 +251,38 @@ class Application extends ApplicationTrait
         }));
     }
 
+    public function initSession()
+    {
+        $this->register(new \Silex\Provider\SessionServiceProvider(), array(
+            'session.storage.options' => array(
+                'name' => 'eccube',
+                'cookie_path' => $this['config']['root_urlpath'] ?: '/',
+                'cookie_secure' => $this['config']['force_ssl'],
+                'cookie_lifetime' => $this['config']['cookie_lifetime'],
+                'cookie_httponly' => true,
+                // cookie_domainは指定しない
+                // http://blog.tokumaru.org/2011/10/cookiedomain.html
+            ),
+        ));
+        $this['session.db_options'] = array(
+            'db_table'      => 'dtb_session',
+        );
+
+        $app = $this;
+        $this['session.storage.handler'] = function () use ($app) {
+            return new PdoSessionHandler(
+                $app['dbs']['session']->getWrappedConnection(),
+                $app['session.db_options']
+            );
+        };
+    }
+
     public function initRendering()
     {
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
-        $this['twig'] = $this->share($this->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+        $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
@@ -276,22 +291,31 @@ class Application extends ApplicationTrait
 
         $this->before(function (Request $request, \Silex\Application $app) {
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            $app['twig'] = $app->share($app->extend("twig", function (\Twig_Environment $twig, \Silex\Application $app) {
+            $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
+
+                // 互換性がないのでprofiler とproduction 時のcacheを分離する
+
+                if (isset($app['profiler'])) {
+                    $cacheBaseDir = __DIR__ . '/../../app/cache/twig/profiler/';
+                }else{
+                    $cacheBaseDir = __DIR__ . '/../../app/cache/twig/production/';
+                }
+
                 if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
                     if (file_exists(__DIR__ . '/../../app/template/admin')) {
                         $paths[] = __DIR__ . '/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/admin';
+                    $cache = $cacheBaseDir . 'admin';
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
                     }
                     $paths[] = $app['config']['template_default_realdir'];
                     $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = __DIR__ . '/../../app/cache/twig/' . $app['config']['template_code'];
+                    $cache = $cacheBaseDir . $app['config']['template_code'];
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
@@ -316,7 +340,7 @@ class Application extends ApplicationTrait
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
             // ショップ基本情報
             $BaseInfo = $app['eccube.repository.base_info']->get();
-            $app["twig"]->addGlobal("BaseInfo", $BaseInfo);
+            $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
             // 管理画面
             if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
@@ -326,20 +350,27 @@ class Application extends ApplicationTrait
                 // フロント画面
             } else {
                 $request = $event->getRequest();
+                $route = $request->attributes->get('_route');
+
+                // ユーザ作成画面
+                if ($route === trim($app['config']['user_data_route'])) {
+                    $params = $request->attributes->get('_route_params');
+                    $route = $params['route'];
+                    // プレビュー画面
+                } elseif ($request->get('preview')) {
+                    $route = 'preview';
+                }
+
                 try {
-                    $DeviceType = $app['eccube.repository.master.device_type']->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    if ($request->get('preview')) {
-                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, 'preview');
-                    } else {
-                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType,
-                            $request->attributes->get('_route'));
-                    }
+                    $DeviceType = $app['eccube.repository.master.device_type']
+                        ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
                 } catch (\Doctrine\ORM\NoResultException $e) {
                     $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
 
-                $app["twig"]->addGlobal("PageLayout", $PageLayout);
-                $app["twig"]->addGlobal("title", $PageLayout->getName());
+                $app['twig']->addGlobal('PageLayout', $PageLayout);
+                $app['twig']->addGlobal('title', $PageLayout->getName());
             }
         });
     }
@@ -356,7 +387,7 @@ class Application extends ApplicationTrait
         $transport = $this['config']['mail']['transport'];
         if ($transport == 'sendmail') {
             $this['swiftmailer.transport'] = \Swift_SendmailTransport::newInstance();
-        } else if ($transport == 'mail') {
+        } elseif ($transport == 'mail') {
             $this['swiftmailer.transport'] = \Swift_MailTransport::newInstance();
         }
     }
@@ -364,8 +395,10 @@ class Application extends ApplicationTrait
     public function initDoctrine()
     {
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'db.options' => $this['config']['database']
-        ));
+            'dbs.options' => array(
+                'default' => $this['config']['database'],
+                'session' => $this['config']['database'],
+        )));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
@@ -392,22 +425,113 @@ class Application extends ApplicationTrait
             if (isset($config['orm.path']) and is_array($config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
-                    $paths[] = $pluginBasePath . '/' . $config['name'] . $path;
+                    $paths[] = $pluginBasePath . '/' . $config['code'] . $path;
                 }
                 $ormMappings[] = array(
                     'type' => 'yml',
-                    'namespace' => 'Plugin\\' . $config['name'] . '\\Entity',
+                    'namespace' => 'Plugin\\' . $config['code'] . '\\Entity',
                     'path' => $paths,
                 );
             }
         }
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            "orm.proxies_dir" => __DIR__ . '/../../app/cache/doctrine',
+            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => $ormMappings,
             ),
         ));
+    }
+
+    public function initSecurity()
+    {
+        $this->register(new \Silex\Provider\SecurityServiceProvider());
+        $this->register(new \Silex\Provider\RememberMeServiceProvider());
+
+        $this['security.firewalls'] = array(
+            'admin' => array(
+                'pattern' => "^/{$this['config']['admin_route']}",
+                'form' => array(
+                    'login_path' => "/{$this['config']['admin_route']}/login",
+                    'check_path' => "/{$this['config']['admin_route']}/login_check",
+                    'username_parameter' => 'login_id',
+                    'password_parameter' => 'password',
+                    'with_csrf' => true,
+                    'use_forward' => true,
+                ),
+                'logout' => array(
+                    'logout_path' => "/{$this['config']['admin_route']}/logout",
+                    'target_url' => "/{$this['config']['admin_route']}/",
+                ),
+                'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
+                'anonymous' => true,
+            ),
+            'customer' => array(
+                'pattern' => '^/',
+                'form' => array(
+                    'login_path' => '/mypage/login',
+                    'check_path' => '/login_check',
+                    'username_parameter' => 'login_email',
+                    'password_parameter' => 'login_pass',
+                    'with_csrf' => true,
+                    'use_forward' => true,
+                ),
+                'logout' => array(
+                    'logout_path' => '/logout',
+                    'target_url' => '/',
+                ),
+                'remember_me' => array(
+                    'key' => sha1($this['config']['auth_magic']),
+                    'name' => 'eccube_rememberme',
+                    // lifetimeはデフォルトの1年間にする
+                    // 'lifetime' => $this['config']['cookie_lifetime'],
+                    'path' => $this['config']['root_urlpath'] ?: '/',
+                    'secure' => $this['config']['force_ssl'],
+                    'httponly' => true,
+                    'always_remember_me' => false,
+                    'remember_me_parameter' => 'login_memory',
+                ),
+                'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
+                'anonymous' => true,
+            ),
+        );
+        $this['security.access_rules'] = array(
+            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
+            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
+            array('^/mypage', 'ROLE_USER'),
+        );
+        $this['eccube.password_encoder'] = $this->share(function ($app) {
+            return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
+        });
+        $this['security.encoder_factory'] = $this->share(function ($app) {
+            return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
+                'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
+                'Eccube\Entity\Member' => $app['eccube.password_encoder'],
+            ));
+        });
+        $this['eccube.event_listner.security'] = $this->share(function ($app) {
+            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
+        });
+        $this['user'] = $this->share(function ($app) {
+            $token = $app['security']->getToken();
+
+            return ($token !== null) ? $token->getUser() : null;
+        });
+
+        // ログイン時のイベントを設定.
+        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+    }
+
+    public function initializePlugin()
+    {
+        // setup event dispatcher
+        $this->initPluginEventDispatcher();
+
+        // load plugin
+        $this->loadPlugin();
     }
 
     public function initPluginEventDispatcher()
@@ -482,13 +606,22 @@ class Application extends ApplicationTrait
                 continue;
             }
             $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+
+            $plugin = $this['orm.em']
+                ->getRepository('Eccube\Entity\Plugin')
+                ->findOneBy(array('code' => $config['code']));
+
+            if ($plugin && $plugin->getEnable() == Constant::DISABLED) {
+                // プラグインが無効化されていれば読み込まない
+                continue;
+            }
+
             // Type: Event
             if (isset($config['event'])) {
                 $class = '\\Plugin\\' . $config['code'] . '\\' . $config['event'];
                 $subscriber = new $class($this);
 
                 if (file_exists($dir->getRealPath() . '/event.yml')) {
-
                     foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
                         foreach ($handlers as $handler) {
                             if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
@@ -523,111 +656,4 @@ class Application extends ApplicationTrait
             }
         }
     }
-
-    public function initSecurity()
-    {
-        $this->register(new \Silex\Provider\SecurityServiceProvider(), array(
-            'security.firewalls' => array(
-                'admin' => array(
-                    'pattern' => "^/{$this['config']['admin_route']}",
-                    'form' => array(
-                        'login_path' => "/{$this['config']['admin_route']}/login",
-                        'check_path' => "/{$this['config']['admin_route']}/login_check",
-                        'username_parameter' => 'login_id',
-                        'password_parameter' => 'password',
-                        'with_csrf' => true,
-                        'use_forward' => true,
-                    ),
-                    'logout' => array(
-                        'logout_path' => "/{$this['config']['admin_route']}/logout",
-                        'target_url' => "/{$this['config']['admin_route']}/",
-                    ),
-                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
-                    'anonymous' => true,
-                ),
-                'customer' => array(
-                    'pattern' => '^/',
-                    'form' => array(
-                        'login_path' => '/mypage/login',
-                        'check_path' => '/login_check',
-                        'username_parameter' => 'login_email',
-                        'password_parameter' => 'login_pass',
-                        'with_csrf' => true,
-                        'use_forward' => true,
-                    ),
-                    'logout' => array(
-                        'logout_path' => '/logout',
-                        'target_url' => '/',
-                    ),
-                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
-                    'anonymous' => true,
-                ),
-            ),
-        ));
-        $this['security.access_rules'] = array(
-            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
-            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage', 'ROLE_USER'),
-        );
-        $this['eccube.password_encoder'] = $this->share(function ($app) {
-            return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
-        });
-        $this['security.encoder_factory'] = $this->share(function ($app) {
-            return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
-                'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
-                'Eccube\Entity\Member' => $app['eccube.password_encoder'],
-            ));
-        });
-        $this['eccube.event_listner.security'] = $this->share(function ($app) {
-            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
-        });
-        $this['user'] = $this->share(function ($app) {
-            $token = $app['security']->getToken();
-
-            return ($token !== null) ? $token->getUser() : null;
-        });
-
-        // ログイン時のイベントを設定.
-        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
-    }
-
-
-    /**
-     * Application Shortcut Methods
-     *
-     *
-     */
-
-    public function addSuccess($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
-    }
-
-    public function addError($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
-    }
-
-    public function addDanger($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
-    }
-
-    public function addWarning($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
-    }
-
-    public function addInfo($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
-    }
-
-    public function addRequestError($message, $namespace = 'front')
-    {
-        $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
-    }
-
 }
