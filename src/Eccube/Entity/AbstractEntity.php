@@ -59,10 +59,11 @@ abstract class AbstractEntity implements \ArrayAccess
      * 引数の連想配列を元にプロパティを設定します.
      * DBから取り出した連想配列を, プロパティへ設定する際に使用します.
      *
-     * @param array プロパティの情報を格納した連想配列
+     * @param array $arrProps プロパティの情報を格納した連想配列
      * @param ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
+     * @param array $excludeAttribute 除外したいフィールド名の配列
      */
-    public function setPropertiesFromArray(array $arrProps, \ReflectionClass $parentClass = null)
+    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = array(), \ReflectionClass $parentClass = null)
     {
         $objReflect = null;
         if (is_object($parentClass)) {
@@ -70,12 +71,11 @@ abstract class AbstractEntity implements \ArrayAccess
         } else {
             $objReflect = new \ReflectionClass($this);
         }
-        $arrProps = array_change_key_case($arrProps);
         $arrProperties = $objReflect->getProperties();
         foreach ($arrProperties as $objProperty) {
             $objProperty->setAccessible(true);
             $name = $objProperty->getName();
-            if (!isset($arrProps[$name])) {
+            if (in_array($name, $excludeAttribute) || !isset($arrProps[$name])) {
                 continue;
             }
             $objProperty->setValue($this, $arrProps[$name]);
@@ -84,7 +84,7 @@ abstract class AbstractEntity implements \ArrayAccess
         // 親クラスがある場合は再帰的にプロパティを取得
         $parentClass = $objReflect->getParentClass();
         if (is_object($parentClass)) {
-            self::setPropertiesFromArray($arrProps, $parentClass);
+            self::setPropertiesFromArray($arrProps, $excludeAttribute, $parentClass);
         }
     }
 
@@ -93,9 +93,10 @@ abstract class AbstractEntity implements \ArrayAccess
      * DBを更新する場合などで, 連想配列の値を取得したい場合に使用します.
      *
      * @param ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
+     * @param array $excludeAttribute 除外したいフィールド名の配列
      * @return array 連想配列のプロパティの値
      */
-    public function toArray(\ReflectionClass $parentClass = null)
+    public function toArray(array $excludeAttribute = array(), \ReflectionClass $parentClass = null)
     {
         $objReflect = null;
         if (is_object($parentClass)) {
@@ -108,12 +109,15 @@ abstract class AbstractEntity implements \ArrayAccess
         foreach ($arrProperties as $objProperty) {
             $objProperty->setAccessible(true);
             $name = $objProperty->getName();
+            if (in_array($name, $excludeAttribute)) {
+                continue;
+            }
             $arrResults[$name] = $objProperty->getValue($this);
         }
 
         $parentClass = $objReflect->getParentClass();
         if (is_object($parentClass)) {
-            $arrParents = self::toArray($parentClass);
+            $arrParents = self::toArray($excludeAttribute, $parentClass);
             if (!is_array($arrParents)) {
                 $arrParents = array();
             }
@@ -123,5 +127,18 @@ abstract class AbstractEntity implements \ArrayAccess
             $arrResults = array_merge($arrParents, $arrResults);
         }
         return $arrResults;
+    }
+
+    /**
+     * コピー元のオブジェクトのフィールド名を指定して、同名のフィールドに値をコピー
+     *
+     * @param object $srcObject コピー元のオブジェクト
+     * @param array $excludeAttribute 除外したいフィールド名の配列
+     * @return object
+     */
+    public function copyProperties($srcObject, array $excludeAttribute = array())
+    {
+        $this->setPropertiesFromArray($srcObject->toArray($excludeAttribute), $excludeAttribute);
+        return $this;
     }
 }
