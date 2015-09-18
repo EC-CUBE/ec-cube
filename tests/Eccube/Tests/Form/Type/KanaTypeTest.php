@@ -21,16 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type;
 
-class KanaTypeTest extends AbstractTypeTestCase
+class KanaTypeTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Eccube\Application */
     protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
+
+    protected $maxLength = 50;
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
@@ -75,6 +76,14 @@ class KanaTypeTest extends AbstractTypeTestCase
                     ),
                 ),
             ),
+            array(
+                'data' => array(
+                    'kana' => array(
+                        'kana01' => str_repeat('ア', $this->maxLength),
+                        'kana02' => str_repeat('ア', $this->maxLength),
+                    ),
+                ),
+            ),
         );
     }
 
@@ -87,8 +96,10 @@ class KanaTypeTest extends AbstractTypeTestCase
         $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
-            $types[] = new \Eccube\Form\Type\NameType(); // Nameに依存する
-            $types[] = new \Eccube\Form\Type\KanaType();
+            $config['config']['name_len'] = $this->maxLength;
+            $config['config']['kana_len'] = $this->maxLength;
+            $types[] = new \Eccube\Form\Type\NameType($config['config']); // Nameに依存する
+            $types[] = new \Eccube\Form\Type\KanaType($config['config']);
             return $types;
         }));
 
@@ -111,6 +122,30 @@ class KanaTypeTest extends AbstractTypeTestCase
     {
         $this->form->submit($data);
         $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidData_Kana01_MaxLength()
+    {
+        $data = array(
+            'kana' => array(
+                'kana01' => str_repeat('ア', $this->maxLength+1),
+                'kana02' => 'にゅうりょく',
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidData_Kana02_MaxLength()
+    {
+        $data = array(
+            'kana' => array(
+                'kana01' => 'にゅうりょく',
+                'kana02' => str_repeat('ア', $this->maxLength+1),
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
     }
 
     /**

@@ -42,6 +42,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class KanaType extends AbstractType
 {
+    public function __construct($config = array('kana_len' => 50))
+    {
+        $this->config = $config;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -58,12 +63,14 @@ class KanaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'inherit_data' => true,
             'lastname_options' => array(
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
+                    new Assert\Length(array(
+                        'max' => $this->config['kana_len'],
+                    ))
                 ),
             ),
             'firstname_options' => array(
@@ -71,6 +78,9 @@ class KanaType extends AbstractType
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
+                    new Assert\Length(array(
+                        'max' => $this->config['kana_len'],
+                    ))
                 ),
             ),
         ));

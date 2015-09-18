@@ -33,6 +33,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NameType extends AbstractType
 {
+    public function __construct($config = array('name_len' => 50))
+    {
+        $this->config = $config;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -90,8 +95,20 @@ class NameType extends AbstractType
     {
         $resolver->setDefaults(array(
             'options' => array(),
-            'lastname_options' => array('constraints' => array()),
-            'firstname_options' => array('constraints' => array()),
+            'lastname_options' => array(
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->config['name_len'],
+                    ))
+                ),
+            ),
+            'firstname_options' => array(
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->config['name_len'],
+                    ))
+                ),
+            ),
             'lastname_name' => '',
             'firstname_name' => '',
             'error_bubbling' => false,
