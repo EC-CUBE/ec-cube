@@ -47,7 +47,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set price01 IncTax
      *
-     * @param  string       $price01_inc_tax
+     * @param  integer       $price01_inc_tax
      * @return ProductClass
      */
     public function setPrice01IncTax($price01_inc_tax)
@@ -60,7 +60,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get price01 IncTax
      *
-     * @return string
+     * @return integer
      */
     public function getPrice01IncTax()
     {
@@ -70,7 +70,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set price02 IncTax
      *
-     * @param  string       $price02
+     * @param  integer       $price02_inc_tax
      * @return ProductClass
      */
     public function setPrice02IncTax($price02_inc_tax)
@@ -83,7 +83,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get price02 IncTax
      *
-     * @return string
+     * @return integer
      */
     public function getPrice02IncTax()
     {
@@ -164,7 +164,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $code;
 
     /**
-     * @var string
+     * @var integer
      */
     private $stock;
 
@@ -174,22 +174,22 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $stock_unlimited;
 
     /**
-     * @var string
+     * @var integer
      */
     private $sale_limit;
 
     /**
-     * @var string
+     * @var integer
      */
     private $price01;
 
     /**
-     * @var string
+     * @var integer
      */
     private $price02;
 
     /**
-     * @var string
+     * @var integer
      */
     private $delivery_fee;
 
@@ -279,7 +279,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set stock
      *
-     * @param  string       $stock
+     * @param  integer       $stock
      * @return ProductClass
      */
     public function setStock($stock)
@@ -292,7 +292,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get stock
      *
-     * @return string
+     * @return integer
      */
     public function getStock()
     {
@@ -325,7 +325,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set sale_limit
      *
-     * @param  string       $saleLimit
+     * @param  integer       $saleLimit
      * @return ProductClass
      */
     public function setSaleLimit($saleLimit)
@@ -338,7 +338,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get sale_limit
      *
-     * @return string
+     * @return integer
      */
     public function getSaleLimit()
     {
@@ -348,7 +348,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set price01
      *
-     * @param  string       $price01
+     * @param  integer       $price01
      * @return ProductClass
      */
     public function setPrice01($price01)
@@ -361,7 +361,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get price01
      *
-     * @return string
+     * @return integer
      */
     public function getPrice01()
     {
@@ -371,7 +371,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set price02
      *
-     * @param  string       $price02
+     * @param  integer       $price02
      * @return ProductClass
      */
     public function setPrice02($price02)
@@ -384,7 +384,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get price02
      *
-     * @return string
+     * @return integer
      */
     public function getPrice02()
     {
@@ -394,7 +394,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Set delivery_fee
      *
-     * @param  string       $deliveryFee
+     * @param  integer       $deliveryFee
      * @return ProductClass
      */
     public function setDeliveryFee($deliveryFee)
@@ -407,7 +407,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * Get delivery_fee
      *
-     * @return string
+     * @return integer
      */
     public function getDeliveryFee()
     {
