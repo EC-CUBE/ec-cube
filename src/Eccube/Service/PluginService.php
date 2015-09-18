@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Service;
 
 use Eccube\Common\Constant;
@@ -32,8 +32,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class PluginService
 {
-    CONST CONFIG_YML = 'config.yml';
-    CONST EVENT_YML = 'event.yml';
+    const CONFIG_YML = 'config.yml';
+    const EVENT_YML = 'event.yml';
     private $app;
 
     public function __construct($app)
@@ -43,19 +43,17 @@ class PluginService
 
     public function install($path, $source = 0)
     {
-
         $pluginBaseDir = null;
         $tmp = null;
 
         try {
-
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
 
-            $config = $this->readYml($tmp . '/' . self::CONFIG_YML);
-            $event = $this->readYml($tmp . '/' . self::EVENT_YML);
+            $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
+            $event = $this->readYml($tmp.'/'.self::EVENT_YML);
             $this->deleteFile($tmp); // テンポラリのファイルを削除
 
             $this->checkSamePlugin($config['code']); // 重複していないかチェック
@@ -66,15 +64,12 @@ class PluginService
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
             $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
-
         } catch (PluginException $e) {
-
-            $this->deleteDirs(array($tmp,$pluginBaseDir));
+            $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
-
         } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
-  
-            $this->deleteDirs(array($tmp,$pluginBaseDir));
+
+            $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
         }
 
@@ -83,20 +78,19 @@ class PluginService
 
     public function createTempDir()
     {
-
         @mkdir($this->app['config']['plugin_temp_realdir']);
-        $d = ($this->app['config']['plugin_temp_realdir'] . '/' . sha1(Str::random(16)));
+        $d = ($this->app['config']['plugin_temp_realdir'].'/'.sha1(Str::random(16)));
 
         if (!mkdir($d, 0777)) {
-            throw new PluginException($php_errormsg . $d);
+            throw new PluginException($php_errormsg.$d);
         }
-        return $d;
 
+        return $d;
     }
 
     public function deleteDirs($arr)
     {
-        foreach($arr as $dir){
+        foreach ($arr as $dir) {
             if (file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
@@ -124,7 +118,7 @@ class PluginService
 
     public function checkPluginArchiveContent($dir)
     {
-        $meta = $this->readYml($dir . '/config.yml');
+        $meta = $this->readYml($dir.'/config.yml');
         if (!is_array($meta)) {
             throw new PluginException('config.yml not found or syntax error');
         }
@@ -169,12 +163,11 @@ class PluginService
         if ($repo) {
             throw new PluginException('plugin already installed.');
         }
-
     }
 
     public function calcPluginDir($name)
     {
-        return $this->app['config']['plugin_realdir'] . '/' . $name;
+        return $this->app['config']['plugin_realdir'].'/'.$name;
     }
 
     public function createPluginDir($d)
@@ -187,11 +180,9 @@ class PluginService
 
     public function registerPlugin($meta, $event_yml, $source = 0)
     {
-
         $em = $this->app['orm.em'];
         $em->getConnection()->beginTransaction();
         try {
-
             $p = new \Eccube\Entity\Plugin();
             // インストール直後はプラグインは有効にしない
             $p->setName($meta['name'])
@@ -224,7 +215,6 @@ class PluginService
                 }
             }
 
-
             $em->persist($p);
 
             $this->callPluginManagerMethod($meta, 'install');
@@ -237,12 +227,11 @@ class PluginService
         }
 
         return $p;
-
     }
 
     public function callPluginManagerMethod($meta, $method)
     {
-        $class = '\\Plugin' . '\\' . $meta['code'] . '\\' . 'PluginManager';
+        $class = '\\Plugin'.'\\'.$meta['code'].'\\'.'PluginManager';
         if (class_exists($class)) {
             $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
             if (method_exists($installer, $method)) {
@@ -253,21 +242,19 @@ class PluginService
 
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
-
         $pluginDir = $this->calcPluginDir($plugin->getCode());
 
-        $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), 'disable');
-        $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), 'uninstall');
+        $this->callPluginManagerMethod(Yaml::Parse($pluginDir.'/'.self::CONFIG_YML), 'disable');
+        $this->callPluginManagerMethod(Yaml::Parse($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
 
         return true;
-
     }
 
     public function unregisterPlugin(\Eccube\Entity\Plugin $p)
     {
-        try{
+        try {
             $em = $this->app['orm.em'];
             $em->getConnection()->beginTransaction();
 
@@ -276,15 +263,14 @@ class PluginService
             foreach ($p->getPluginEventHandlers()->toArray() as $peh) {
                 $peh->setDelFlg(Constant::ENABLED);
             }
-  
+
             $em->persist($p);
             $em->flush();
             $em->getConnection()->commit();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
         }
-
     }
 
     public function disable(\Eccube\Entity\Plugin $plugin)
@@ -294,26 +280,26 @@ class PluginService
 
     public function enable(\Eccube\Entity\Plugin $plugin, $enable = true)
     {
-        try{
+        $em = $this->app['orm.em'];
+        try {
             $pluginDir = $this->calcPluginDir($plugin->getCode());
-            $em = $this->app['orm.em'];
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
             $em->persist($plugin);
-            $this->callPluginManagerMethod(Yaml::Parse($pluginDir . '/' . self::CONFIG_YML), $enable ? 'enable' : 'disable');
+            $this->callPluginManagerMethod(Yaml::Parse($pluginDir.'/'.self::CONFIG_YML), $enable ? 'enable' : 'disable');
             $em->flush();
             $em->getConnection()->commit();
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
         }
+
         return true;
     }
 
     public function update(\Eccube\Entity\Plugin $plugin, $path)
     {
-        $pluginBaseDir = null; 
+        $pluginBaseDir = null;
         $tmp = null;
         try {
             $tmp = $this->createTempDir();
@@ -321,8 +307,8 @@ class PluginService
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
 
-            $config = $this->readYml($tmp . '/' . self::CONFIG_YML);
-            $event = $this->readYml($tmp . '/event.yml');
+            $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
+            $event = $this->readYml($tmp.'/event.yml');
 
             if ($plugin->getCode() != $config['code']) {
                 throw new PluginException('new/old plugin code is different.');
@@ -337,10 +323,8 @@ class PluginService
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
-
         } catch (PluginException $e) {
-
-            foreach(array($tmp)as $dir){
+            foreach (array($tmp)as $dir) {
                 if (file_exists($dir)) {
                     $fs = new Filesystem();
                     $fs->remove($dir);
@@ -354,7 +338,7 @@ class PluginService
 
     public function updatePlugin(\Eccube\Entity\Plugin $plugin, $meta, $event_yml)
     {
-        try{
+        try {
             $em = $this->app['orm.em'];
             $em->getConnection()->beginTransaction();
             $plugin->setVersion($meta['version'])
@@ -369,7 +353,7 @@ class PluginService
             if (is_array($event_yml)) {
                 foreach ($event_yml as $event => $handlers) {
                     foreach ($handlers as $handler) {
-                       if (!$this->checkSymbolName($handler[0])) {
+                        if (!$this->checkSymbolName($handler[0])) {
                             throw new PluginException('Handler name format error');
                         }
                         // updateで追加されたハンドラかどうか調べる
@@ -377,7 +361,7 @@ class PluginService
                         'plugin_id' => $plugin->getId(),
                         'event' => $event,
                         'handler' => $handler[0],
-                        'handler_type' => $handler[1]));
+                        'handler_type' => $handler[1], ));
 
                         if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                             $peh = new \Eccube\Entity\PluginEventHandler();
@@ -389,7 +373,6 @@ class PluginService
                                 ->setPriority($rep->calcNewPriority($event, $handler[1]));
                             $em->persist($peh);
                             $em->flush();
-
                         }
                     }
                 }
@@ -418,10 +401,9 @@ class PluginService
             $this->callPluginManagerMethod($meta, 'update');
             $em->flush();
             $em->getConnection()->commit();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
         }
     }
-
 }
