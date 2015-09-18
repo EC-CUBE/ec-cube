@@ -95,9 +95,11 @@ class KanaTypeTest extends \PHPUnit_Framework_TestCase
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
-            $config['config']['name_len'] = $this->maxLength;
-            $config['config']['kana_len'] = $this->maxLength;
+        # $this を変数に代入して無名関数に引き渡す。
+        $self = $this;
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
+            $config['config']['name_len'] = $self->maxLength;
+            $config['config']['kana_len'] = $self->maxLength;
             $types[] = new \Eccube\Form\Type\NameType($config['config']); // Nameに依存する
             $types[] = new \Eccube\Form\Type\KanaType($config['config']);
             return $types;
