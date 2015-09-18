@@ -99,14 +99,14 @@ class NameType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->config['name_len'],
-                    ))
+                    )),
                 ),
             ),
             'firstname_options' => array(
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->config['name_len'],
-                    ))
+                    )),
                 ),
             ),
             'lastname_name' => '',

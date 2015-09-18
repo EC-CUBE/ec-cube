@@ -70,7 +70,7 @@ class KanaType extends AbstractType
                     )),
                     new Assert\Length(array(
                         'max' => $this->config['kana_len'],
-                    ))
+                    )),
                 ),
             ),
             'firstname_options' => array(
@@ -80,7 +80,7 @@ class KanaType extends AbstractType
                     )),
                     new Assert\Length(array(
                         'max' => $this->config['kana_len'],
-                    ))
+                    )),
                 ),
             ),
         ));
