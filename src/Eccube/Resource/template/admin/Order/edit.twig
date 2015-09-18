@@ -190,7 +190,7 @@ $(function() {
     onChangeOrderDetailCount();
 });
 var setModeAndSubmit = function(mode, keyname, keyid) {
-    document.form1.mode.value = mode;
+    document.form1.modal.value = mode;
     if(keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
         document.form1[keyname].value = keyid;
     }
@@ -203,7 +203,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 {% block main %}
 <div class="row" id="aside_wrap">
     <form name="form1" method="post" action="{{ url('admin_order_new') }}">
-    <input type="hidden" name="mode" value="">
+    <input type="hidden" name="modal" value="">
     {{ form_widget(form._token) }}
         <div class="col-md-12">
             <div class="col_inner">
@@ -421,8 +421,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         </div>
 
                         <div class="row with-border2 no-margin text-right">
-                            <div class="col-lg-9 col-lg-offset-3">
-                                <dl class="dl-horizontal amount_area">
+                            <div class="col-lg-7 col-lg-offset-5">
+                                <dl class="dl-horizontal">
                                     <dt>小計：</dt>
                                     <dd>{{ Order.subtotal|price }}</dd>
                                     <dt>値引き：</dt>
@@ -445,8 +445,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         </div>
 
                         <div class="row with-border2 no-margin text-right  ta">
-                            <div class="col-lg-9 col-lg-offset-3">
-                                <dl class="dl-horizontal amount_area">
+                            <div class="col-lg-7 col-lg-offset-5">
+                                <dl class="dl-horizontal">
                                     <dt>合計：</dt>
                                     <dd>{{ Order.total|price }}</dd>
                                     <dt>お支払合計：</dt>
@@ -527,28 +527,22 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                                <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
-                                                    {{ form_widget(shipmentItemForm.price) }}
-                                                    {{ form_errors(shipmentItemForm.price) }}
-                                                </span>
+                                            <p class="form-control-static">{{ shipmentItemForm.vars.value.price|price }}</p>
+                                            <p class="form-control-static">{{ form_widget(shipmentItemForm.price, {'type': 'hidden'}) }}</p>
                                         </div>
                                         <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                                <span class="item_quantity">
-                                                    数量：{{ form_widget(shipmentItemForm.quantity) }}
-                                                    {{ form_errors(shipmentItemForm.quantity) }}
-                                                </span>
-                                        </div>
-                                        <div class="col-md-12 col-lg-3 item_subtotal text-right">
-                                            <span>小計：</span> {{ shipmentItemForm.vars.value.total_price|price }}
+                                            <span class="item_quantity">
+                                                数量：{{ form_widget(shipmentItemForm.quantity) }}
+                                                {{ form_errors(shipmentItemForm.quantity) }}
+                                            </span>
                                         </div>
                                     </div>
-
                                 </div>
                             </div><!-- /.item_box -->
-                            <hr>
                         {% endfor %}
                             </div>
 
+                        <hr>
                         <div class="form-horizontal">
                             <div class="form-group">
                                 {{ form_label(shippingForm.name) }}
@@ -625,7 +619,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% if shippingForm.vars.value.shipping_delivery_name is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_name }}<br/>
                                     {% endif %}
-                                    {{ form_widget(shippingForm.Delivery) }}
+                                    {{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto'}}) }}
                                     {{ form_errors(shippingForm.Delivery) }}
                                 </div>
                             </div>
@@ -638,7 +632,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% else %}
                                         指定なし
                                     {% endif %}
-                                    {{ form_widget(shippingForm.DeliveryTime) }}
+                                    {{ form_widget(shippingForm.DeliveryTime, {'attr': {'style': 'width:auto'}}) }}
                                     {{ form_errors(shippingForm.DeliveryTime) }}
                                 </div>
                             </div>
@@ -646,7 +640,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="form-group">
                                 {{ form_label(shippingForm.shipping_delivery_date) }}
                                 <div class="col-sm-9 col-lg-10">
-                                    {{ shippingForm.shipping_delivery_date.date.year.vars.value }}/{{ shippingForm.shipping_delivery_date.date.month.vars.value }}/{{ shippingForm.shipping_delivery_date.date.day.vars.value }}<br/>
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}
                                     {{ form_errors(shippingForm.shipping_delivery_date) }}
                                 </div>

@@ -97,7 +97,7 @@ class ShipmentItemType extends AbstractType
         $app = $this->app;
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app){
             // モーダルからのPOST時に、金額等をセットする.
-            if ('modal' === $app['request']->get('mode')) {
+            if ('modal' === $app['request']->get('modal')) {
                 $data = $event->getData();
                 // 新規明細行の場合にセット.
                 if (isset($data['new'])) {

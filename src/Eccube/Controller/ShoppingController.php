@@ -48,6 +48,7 @@ class ShoppingController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function index(Application $app, Request $request)
     {
@@ -66,7 +67,7 @@ class ShoppingController extends AbstractController
         }
 
         // 登録済みの受注情報を取得
-        $Order = $app['eccube.service.shopping']->getOrder();
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
         // 初回アクセス(受注情報がない)の場合は, 受注情報を作成
         if (is_null($Order)) {
@@ -123,7 +124,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        $Order = $app['eccube.service.shopping']->getOrder();
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
         // form作成
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
@@ -196,6 +197,7 @@ class ShoppingController extends AbstractController
     public function complete(Application $app, $status)
     {
 
+        // 購入ステータスを指定しなければpre_order_idのみで検索
         $Order = $app['eccube.service.shopping']->getOrder($status);
 
         // カート削除
@@ -219,7 +221,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        $Order = $app['eccube.service.shopping']->getOrder();
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
@@ -277,7 +279,7 @@ class ShoppingController extends AbstractController
     public function payment(Application $app, Request $request)
     {
 
-        $Order = $app['eccube.service.shopping']->getOrder();
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
@@ -340,7 +342,7 @@ class ShoppingController extends AbstractController
                 'Customer' => $app->user(),
                 'id' => $address));
 
-            $Order = $app['eccube.service.shopping']->getOrder();
+            $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
             $Shipping = $Order->findShipping($id);
             if (!$Shipping) {
@@ -400,7 +402,7 @@ class ShoppingController extends AbstractController
         }
 
 
-        $Order = $app['eccube.service.shopping']->getOrder();
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
@@ -492,7 +494,7 @@ class ShoppingController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             try {
                 $data = $request->request->all();
-                $Order = $app['eccube.service.shopping']->getOrder();
+                $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
                 $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
                 if (!$pref) {
@@ -622,7 +624,7 @@ class ShoppingController extends AbstractController
                     ->setAddr02($data['addr02']);
 
                 // 受注情報を取得
-                $Order = $app['eccube.service.shopping']->getOrder();
+                $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
                 // 初回アクセス(受注データがない)の場合は, 受注情報を作成
                 if (is_null($Order)) {
@@ -666,7 +668,7 @@ class ShoppingController extends AbstractController
             // カートが存在しない時はエラー
             return $app->redirect($app->url('cart'));
         }
-        $Order = $app['eccube.service.shopping']->getOrder();
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
 
         /*
         $shipmentItems = array();

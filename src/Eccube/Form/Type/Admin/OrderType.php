@@ -32,6 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderType extends AbstractType
 {
+
+    protected $app;
+
     public function __construct($app)
     {
         $this->app = $app;

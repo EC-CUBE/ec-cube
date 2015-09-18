@@ -130,8 +130,10 @@ class ShippingType extends AbstractType
                 'empty_data' => null,
                 'required' => false,
             ))
-            ->add('shipping_delivery_date', null, array(
-                'label' => 'お届け日'
+            ->add('shipping_delivery_date', 'date', array(
+                'label' => 'お届け日',
+                'placeholder' => '',
+                'format' => 'yyyy-MM-dd',
             ))
             ->add('ShipmentItems', 'collection', array(
                 'type' => 'shipment_item',

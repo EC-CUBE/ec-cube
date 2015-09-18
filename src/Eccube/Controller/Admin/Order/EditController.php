@@ -146,18 +146,18 @@ class EditController extends AbstractController
                 case 'add_delivery':
                     // お届け先情報の新規追加
 
-                    $Order = $form->getData();
+                    // $Order = $form->getData();
 
                     $form = $builder->getForm();
 
                     $Shipping = new \Eccube\Entity\Shipping();
                     $Shipping->setDelFlg(Constant::DISABLED);
 
-                    $Order->addShipping($Shipping);
+                    $TargetOrder->addShipping($Shipping);
 
-                    $Shipping->setOrder($Order);
+                    $Shipping->setOrder($TargetOrder);
 
-                    $form->setData($Order);
+                    $form->setData($TargetOrder);
 
                     break;
 
@@ -286,6 +286,7 @@ class EditController extends AbstractController
             $searchData = array(
                 'id' => $request->get('id'),
             );
+
             if ($categoryId = $request->get('category_id')) {
                 $Category = $app['eccube.repository.category']->find($categoryId);
                 $searchData['category_id'] = $Category;
@@ -381,6 +382,35 @@ class EditController extends AbstractController
             // 小計
             $subtotal += $OrderDetail->getTotalPrice();
         }
+
+
+        $shippings = $Order->getShippings();
+        /** @var \Eccube\Entity\Shipping $Shipping */
+        foreach ($shippings as $Shipping) {
+            $shipmentItems = $Shipping->getShipmentItems();
+            $Shipping->setDelFlg(Constant::DISABLED);
+            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
+            if (!$Shipping->getId()) {
+                foreach ($shipmentItems as $ShipmentItem) {
+                    $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
+                    $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
+                    $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
+                        : null);
+                    $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
+                        : null);
+                    $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
+                        : null);
+                    $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
+                        : null);
+                }
+            }
+
+        }
+
 
         // 受注データの税・小計・合計を再計算
         $Order->setTax($taxtotal);

@@ -64,6 +64,7 @@ class ShoppingService
     /**
      * セッションにセットされた受注情報を取得
      *
+     * @param null $status
      * @return null|object
      */
     public function getOrder($status = null)
