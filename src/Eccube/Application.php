@@ -611,6 +611,17 @@ class Application extends ApplicationTrait
                 ->getRepository('Eccube\Entity\Plugin')
                 ->findOneBy(array('code' => $config['code']));
 
+            // const
+            if (isset($config['const'])) {
+                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
+                    $eccubeConfig[$config['code']] = array(
+                        'const' => $config['const'],
+                    );
+
+                    return $eccubeConfig;
+                }));
+            }
+
             if ($plugin && $plugin->getEnable() == Constant::DISABLED) {
                 // プラグインが無効化されていれば読み込まない
                 continue;
@@ -636,16 +647,6 @@ class Application extends ApplicationTrait
                         }
                     }
                 }
-            }
-            // const
-            if (isset($config['const'])) {
-                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
-                    $eccubeConfig[$config['code']] = array(
-                        'const' => $config['const'],
-                    );
-
-                    return $eccubeConfig;
-                }));
             }
             // Type: ServiceProvider
             if (isset($config['service'])) {
