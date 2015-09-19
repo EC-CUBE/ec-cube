@@ -152,7 +152,7 @@ class AddressTypeTest extends AbstractTypeTestCase
             ->getForm();
 
 
-        $this->formData['address']['addr01'] = '';
+        $this->formData['address']['addr02'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
