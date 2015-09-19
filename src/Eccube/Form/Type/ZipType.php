@@ -50,13 +50,9 @@ class ZipType extends AbstractType
 
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['zip01_options']['constraints'] = array_merge(array(
+            $options['options']['constraints'] = array_merge(array(
                 new Assert\NotBlank(array()),
-            ), $options['zip01_options']['constraints']);
-
-            $options['zip02_options']['constraints'] = array_merge(array(
-                new Assert\NotBlank(array()),
-            ), $options['zip02_options']['constraints']);
+            ), $options['options']['constraints']);
         }
 
         if (!isset($options['options']['error_bubbling'])) {
@@ -96,7 +92,7 @@ class ZipType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'options' => array(),
+            'options' => array('constraints' => array()),
             'zip01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
