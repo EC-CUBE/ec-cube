@@ -95,10 +95,7 @@ class AddressType extends AbstractType
     {
         $resolver->setDefaults(array(
             'options' => array(),
-            'pref_options' => array(
-                'constraints' => array(
-                ),
-            ),
+            'pref_options' => array('constraints' => array()),
             'addr01_options' => array(
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['address1_len'])),

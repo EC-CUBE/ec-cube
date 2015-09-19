@@ -103,4 +103,58 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
+    public function testRequiredAddNotBlank_Pref()
+    {
+        $this->form = $this->app['form.factory']
+            ->createBuilder('form', null, array(
+                'csrf_protection' => false,
+            ))
+            ->add('address', 'address', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+
+        $this->formData['address']['pref'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testRequiredAddNotBlank_Addr01()
+    {
+        $this->form = $this->app['form.factory']
+            ->createBuilder('form', null, array(
+                'csrf_protection' => false,
+            ))
+            ->add('address', 'address', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+
+        $this->formData['address']['addr01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testRequiredAddNotBlank_Addr02()
+    {
+        $this->form = $this->app['form.factory']
+            ->createBuilder('form', null, array(
+                'csrf_protection' => false,
+            ))
+            ->add('address', 'address', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+
+        $this->formData['address']['addr01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }
