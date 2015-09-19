@@ -26,7 +26,6 @@ namespace Eccube\Tests\Form\Type;
 
 class AddressTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -62,4 +61,46 @@ class AddressTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+
+    public function testInvalidData_Addr01_MaxLength()
+    {
+        $data = array(
+            'address' => array(
+                'pref' => '1',
+                'addr01' => str_repeat('ア', $this->app['config']['address1_len']+1),
+                'addr02' => 'にゅうりょく',
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidData_Addr02_MaxLength()
+    {
+        $data = array(
+            'address' => array(
+                'pref' => '1',
+                'addr01' => 'にゅうりょく',
+                'addr02' => str_repeat('ア', $this->app['config']['address2_len']+1),
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidData_Pref_String()
+    {
+        $this->formData['address']['pref'] = 'aa';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidData_Pref_NonexistentValue()
+    {
+        $this->formData['address']['pref'] = '1111111';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }
