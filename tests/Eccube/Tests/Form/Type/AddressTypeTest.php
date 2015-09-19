@@ -98,7 +98,7 @@ class AddressTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_Pref_NonexistentValue()
     {
-        $this->formData['address']['pref'] = '1111111';
+        $this->formData['address']['pref'] = '99'; // smallint以上の値だとpostgresが落ちる
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
