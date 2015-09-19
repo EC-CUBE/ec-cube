@@ -211,8 +211,7 @@ sql_query_log_mode: 1
 start_birth_year: 1970
 stext_len: 50
 tax_rule_priority: 'product_id,product_class_id,pref_id,country_id'
-tel_item_len: 6
-tel_len: 12
+tel_len: 5
 template_admin_realdir: /PATH/TO/WEB_ROOT/data/template/admin/
 template_name: default
 template_realdir: /PATH/TO/WEB_ROOT/data/template/default/

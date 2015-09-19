@@ -37,11 +37,26 @@ class TelType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function __construct($config = array('tel_len' => 5))
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $options['tel01_options']['required'] = $options['required'];
         $options['tel02_options']['required'] = $options['required'];
         $options['tel03_options']['required'] = $options['required'];
+
+        // required の場合は NotBlank も追加する
+        if ($options['required']) {
+            $options['options']['constraints'] = array_merge(array(
+                new Assert\NotBlank(array()),
+            ), $options['options']['constraints']);
+        }
 
         if (!isset($options['options']['error_bubbling'])) {
             $options['options']['error_bubbling'] = $options['error_bubbling'];
@@ -49,13 +64,13 @@ class TelType extends AbstractType
 
         // nameは呼び出しもので定義したものを使う
         if (empty($options['tel01_name'])) {
-            $options['tel01_name'] = $builder->getName() . '01';
+            $options['tel01_name'] = $builder->getName().'01';
         }
         if (empty($options['tel02_name'])) {
-            $options['tel02_name'] = $builder->getName() . '02';
+            $options['tel02_name'] = $builder->getName().'02';
         }
         if (empty($options['tel03_name'])) {
-            $options['tel03_name'] = $builder->getName() . '03';
+            $options['tel03_name'] = $builder->getName().'03';
         }
 
         // 全角英数を事前に半角にする
@@ -71,20 +86,22 @@ class TelType extends AbstractType
         $builder->setAttribute('tel02_name', $options['tel02_name']);
         $builder->setAttribute('tel03_name', $options['tel03_name']);
 
+        // todo 変
         $builder->addEventListener(FormEvents::POST_BIND, function ($event) use ($builder) {
                 $form = $event->getForm();
                 $count = 0;
-                if ($form[$builder->getName() . '01']->getData() != '') {
+                if ($form[$builder->getName().'01']->getData() != '') {
                     $count++;
                 }
-                if ($form[$builder->getName() . '02']->getData() != '') {
+                if ($form[$builder->getName().'02']->getData() != '') {
                     $count++;
                 }
-                if ($form[$builder->getName() . '03']->getData() != '') {
+                if ($form[$builder->getName().'03']->getData() != '') {
                     $count++;
                 }
                 if ($count != 0 && $count != 3) {
-                    $form[$builder->getName() . '01']->addError(new FormError('全て入力してください。'));
+                    // todo メッセージをymlに入れる
+                    $form[$builder->getName().'01']->addError(new FormError('全て入力してください。'));
                 }
         });
 
@@ -108,23 +125,23 @@ class TelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'options' => array(),
+            'options' => array('constraints' => array()),
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => 5)),
+                    new Assert\Length(array('max' => $this->config['tel_len'])),
                 ),
             ),
             'tel02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => 5)),
+                    new Assert\Length(array('max' => $this->config['tel_len'])),
                 ),
             ),
             'tel03_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => 5)),
+                    new Assert\Length(array('max' => $this->config['tel_len'])),
                 ),
             ),
             'tel01_name' => '',
