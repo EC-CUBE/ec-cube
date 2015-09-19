@@ -24,7 +24,7 @@ user_data_realdir: ${ROOT_DIR}/html/user_data
 # realdir::block
 block_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default/Block
 block_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}/Block
-user_block_realdir: ${ROOT_DIR}/html/user_data/block
+user_block_realdir: ${ROOT_DIR}/html/user_data/Block
 
 # realdir::template
 template_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default
