@@ -45,29 +45,10 @@ class EntryType extends AbstractType
     {
         $builder
             ->add('name', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
-                    ),
-                ),
+                'required' => true,
             ))
-            ->add('kana', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    ),
-                ),
+            ->add('kana', 'kana', array(
+                'required' => true,
             ))
             ->add('company_name', 'text', array(
                 'label' => '会社名',
