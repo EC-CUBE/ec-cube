@@ -38,7 +38,7 @@ class Pref extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * @var integer
+     * @var smallint
      */
     private $id;
 
@@ -48,7 +48,7 @@ class Pref extends \Eccube\Entity\AbstractEntity
     private $name;
 
     /**
-     * @var integer
+     * @var smallint
      */
     private $rank;
 
@@ -111,7 +111,7 @@ class Pref extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @param integer $id
+     * @param  integer $id
      * @return Pref
      */
     public function setId($id)
