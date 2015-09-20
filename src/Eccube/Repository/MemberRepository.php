@@ -71,9 +71,18 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
+        $Work = $this
+            ->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\Work')
+            ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
+
         $query = $this->createQueryBuilder('m')
             ->where('m.login_id = :login_id')
-            ->setParameter('login_id', $username)
+            ->andWhere('m.Work = :Work')
+            ->setParameters(array(
+                    'login_id' => $username,
+                    'Work' => $Work,
+            ))
             ->getQuery();
         $Member = $query->getOneOrNullResult();
         if (!$Member) {
