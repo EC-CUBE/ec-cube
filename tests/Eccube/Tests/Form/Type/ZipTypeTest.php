@@ -21,19 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Tests\Form\Type\Master;
 
-use Eccube\Tests\Form\Type\AbstractTypeTestCase;
-
-class ZipTypeTest extends AbstractTypeTestCase
+class ZipTypeTest extends \PHPUnit_Framework_TestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
+
+    public $config = array('zip01_len' => 3, 'zip02_len' => 4);
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
@@ -47,11 +45,9 @@ class ZipTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
+        $app = $this->createApplication();
         // CSRF tokenを無効にしてFormを作成
-        $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
             ->add('zip', 'zip')
             ->getForm();
     }
@@ -65,7 +61,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip01_LengthMin()
     {
-        $this->formData['zip']['zip01'] = '1';
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -73,7 +69,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip01_LengthMax()
     {
-        $this->formData['zip']['zip01'] = '1234';
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -81,7 +77,7 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip02_LengthMin()
     {
-        $this->formData['zip']['zip02'] = '1';
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']-1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -89,10 +85,57 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testInvalidZip02_LengthMax()
     {
-        $this->formData['zip']['zip02'] = '12345';
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']+1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
     }
 
+
+    public function testRequiredAddNotBlank_Zip01()
+    {
+        $app = $this->createApplication();
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
+            ->add('zip', 'zip', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+        $this->formData['zip']['zip01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testRequiredAddNotBlank_Zip02()
+    {
+        $app = $this->createApplication();
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
+            ->add('zip', 'zip', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+        $this->formData['zip']['zip02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function createApplication()
+    {
+        $app = new \Silex\Application();
+        $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+
+        // fix php5.3
+        $self = $this;
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
+            $types[] = new \Eccube\Form\Type\ZipType($self->config);
+
+            return $types;
+        }));
+
+        return $app;
+    }
 }
