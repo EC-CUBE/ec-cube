@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -47,6 +48,10 @@ class CalcRuleType extends AbstractType
             'label' => false,
             'expanded' => true,
             'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('t')
+                    ->orderBy('t.rank', 'ASC');
+            },
         ));
     }
 

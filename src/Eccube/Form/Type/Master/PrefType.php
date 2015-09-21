@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -51,6 +52,10 @@ class PrefType extends AbstractType
             'expanded' => false,
             'required' => false,
             'empty_value' => 'form.pref.empty_value',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('pm')
+                    ->orderBy('pm.rank', 'ASC');
+            },
         ));
     }
 

@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -50,6 +51,10 @@ class StatusType extends AbstractType
             'expanded' => true,
             'required' => false,
             'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('s')
+                    ->orderBy('s.rank', 'ASC');
+            },
         ));
     }
 
