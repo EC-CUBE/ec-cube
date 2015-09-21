@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AddressType extends AbstractType
 {
-    public function __construct($config = array('address1_len' => 50, 'address2_len' => 50))
+    public function __construct($config = array('address1_len' => 32, 'address2_len' => 32))
     {
         $this->config = $config;
     }
