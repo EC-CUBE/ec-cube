@@ -269,6 +269,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\MailTemplateType();
             $types[] = new \Eccube\Form\Type\CategoryType();
 
+            $types[] = new \Eccube\Form\Type\MasterType();
             $types[] = new \Eccube\Form\Type\Master\JobType();
             $types[] = new \Eccube\Form\Type\Master\CustomerStatusType();
             $types[] = new \Eccube\Form\Type\Master\OrderStatusType();

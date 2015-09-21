@@ -26,7 +26,7 @@ namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Doctrine\ORM\EntityRepository;
@@ -59,21 +59,10 @@ class ProductListMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\ProductListMax',
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('pn')
-                    ->orderBy('pn.rank', 'ASC');
-            },
-            'property' => 'name',
-            'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
-            'empty_value' => false,
             'empty_data' => null,
         ));
     }
@@ -91,6 +80,6 @@ class ProductListMaxType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 }

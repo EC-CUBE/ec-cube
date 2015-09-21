@@ -27,35 +27,18 @@ namespace Eccube\Form\Type\Master;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderStatusType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\OrderStatus',
-            'property' => 'name',
-            'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
             'empty_value' => '-',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('os')
-                    ->orderBy('os.rank', 'ASC');
-            },
         ));
     }
 
@@ -72,6 +55,6 @@ class OrderStatusType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 }

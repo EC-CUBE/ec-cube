@@ -27,11 +27,10 @@ namespace Eccube\Form\Type\Master;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SexType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
@@ -40,24 +39,18 @@ class SexType extends AbstractType
         $options['sex_options']['required'] = $options['required'];
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\Sex',
-            'property' => 'name',
-            'label' => false,
             'expanded' => true,
             'empty_value' => false,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('s')
-                    ->orderBy('s.rank', 'ASC');
-            },
         ));
     }
 
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 
     public function getName()
