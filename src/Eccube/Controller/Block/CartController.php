@@ -34,6 +34,7 @@ class CartController
         $Cart = $app['eccube.service.cart']->getCart();
         return $app->render('Block/cart.twig', array(
             'Cart' => $Cart,
+            'errors' => $app['eccube.service.cart']->getErrors(),
         ));
     }
 }
