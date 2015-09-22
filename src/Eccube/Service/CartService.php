@@ -167,9 +167,11 @@ class CartService
                 $this->removeProduct($ProductClass->getId());
             } else {
                 $quantity = $CartItem->getQuantity();
-                if (empty($ProductClass->getStockUnlimited()) && $ProductClass->getStock() < $quantity) {
+                $stockUnlimited = $ProductClass->getStockUnlimited();
+                $saleLimit = $ProductClass->getSaleLimit();
+                if (empty($stockUnlimited) && $ProductClass->getStock() < $quantity) {
                     $this->addError('cart.over.stock');
-                } elseif (!empty($ProductClass->getSaleLimit()) && $ProductClass->getSaleLimit() < $quantity) {
+                } elseif (!empty($saleLimit) && $ProductClass->getSaleLimit() < $quantity) {
                     $this->addError('cart.over.sale_limit');
                 }
                 $CartItem->setObject($ProductClass);
