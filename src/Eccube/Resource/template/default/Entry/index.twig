@@ -45,8 +45,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
           <dl>
             <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
             <dd class="form-group input_name">
-              {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
-              {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+              {{ form_widget(form.name.name01) }}
+              {{ form_widget(form.name.name02) }}
               {{ form_errors(form.name.name01) }}
               {{ form_errors(form.name.name02) }}
             </dd>
@@ -54,8 +54,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
           <dl>
             <dt>{{ form_label(form.kana) }}<span class="required">必須</span></dt>
             <dd class="form-group input_name">
-              {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
-              {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+              {{ form_widget(form.kana.kana01) }}
+              {{ form_widget(form.kana.kana02) }}
               {{ form_errors(form.kana.kana01) }}
               {{ form_errors(form.kana.kana02) }}
             </dd>
