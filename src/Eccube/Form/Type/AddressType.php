@@ -30,8 +30,21 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * AddressType
+ *
+ * @uses AbstractType
+ * @package
+ * @version $id$
+ * @copyright
+ * @author Nobuhiko Kimoto <info@nob-log.info>
+ * @license
+ */
 class AddressType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($config = array('address1_len' => 32, 'address2_len' => 32))
     {
         $this->config = $config;
@@ -95,6 +108,7 @@ class AddressType extends AbstractType
     {
         $resolver->setDefaults(array(
             'options' => array(),
+            'help' => 'form.contact.address.help',
             'pref_options' => array('constraints' => array()),
             'addr01_options' => array(
                 'constraints' => array(
