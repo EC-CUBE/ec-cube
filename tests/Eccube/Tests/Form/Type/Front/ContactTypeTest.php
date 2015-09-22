@@ -77,7 +77,39 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidTel_Blank()
+    public function testInvalid_Blank_Name01()
+    {
+        $this->formData['name']['name01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Name02()
+    {
+        $this->formData['name']['name02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Kana01()
+    {
+        $this->formData['kana']['kana01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Kana02()
+    {
+        $this->formData['kana']['kana02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidTel_Blank()
     {
         $this->formData['tel']['tel01'] = '';
         $this->formData['tel']['tel02'] = '';
@@ -85,8 +117,13 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
+    }
 
-        // エラーメッセージデバッグ用
-        //var_dump($this->form->getErrorsAsString());die;
+    public function testInvalid_Blank_Contents()
+    {
+        $this->formData['contents'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
     }
 }
