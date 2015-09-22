@@ -47,7 +47,7 @@ class ContactType extends AbstractType
                 'required' => true,
             ))
             ->add('kana', 'kana', array(
-                'required' => true,
+                'required' => false,
             ))
             ->add('zip', 'zip', array(
                 'required' => false,

@@ -98,7 +98,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['kana']['kana01'] = '';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalid_Blank_Kana02()
@@ -106,7 +106,7 @@ class ContactTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['kana']['kana02'] = '';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testValidTel_Blank()
