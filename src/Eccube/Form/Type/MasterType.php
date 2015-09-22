@@ -37,7 +37,6 @@ class MasterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'label' => false,
             'multiple'=> false,
             'expanded' => false,
             'required' => false,
