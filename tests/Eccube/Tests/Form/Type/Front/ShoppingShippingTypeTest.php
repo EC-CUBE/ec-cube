@@ -23,6 +23,9 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
+/**
+ * CustomerAddressTypeと同じものなので基本不要
+ */
 class ShoppingShippingType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -55,6 +58,11 @@ class ShoppingShippingType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'tel01' => '03',
             'tel02' => '1111',
             'tel03' => '1111',
+        ),
+        'fax' => array(
+            'fax01' => '03',
+            'fax02' => '1111',
+            'fax03' => '1111',
         ),
     );
 
