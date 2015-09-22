@@ -8,6 +8,16 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTrans
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * RepeatedEmailType
+ *
+ * @uses AbstractType
+ * @package
+ * @version $id$
+ * @copyright
+ * @author Nobuhiko Kimoto <info@nob-log.info>
+ * @license
+ */
 class RepeatedEmailType extends AbstractType
 {
     /**

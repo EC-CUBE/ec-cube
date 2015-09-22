@@ -8,8 +8,21 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTrans
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * RepeatedPasswordType
+ *
+ * @uses AbstractType
+ * @package
+ * @version $id$
+ * @copyright
+ * @author Nobuhiko Kimoto <info@nob-log.info>
+ * @license
+ */
 class RepeatedPasswordType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($config = array('password_min_len' => 8, 'password_max_len' => '32'))
     {
         $this->config = $config;

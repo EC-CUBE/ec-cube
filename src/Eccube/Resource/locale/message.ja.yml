@@ -14,8 +14,13 @@ Kana02: メイ
 Zip: 郵便番号
 Address: 住所
 Tel: 電話番号
+Fax: FAX番号
 Email: メールアドレス
 Password: パスワード
+Job: 職業
+Sex: 性別
+Birth: 生年月日
+Company name : 会社名
 Contents: お問い合わせ内容
 form.empty_value: 選択してください
 form.pref.empty_value: 都道府県を選択

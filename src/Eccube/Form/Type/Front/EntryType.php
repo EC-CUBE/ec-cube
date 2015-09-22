@@ -51,7 +51,6 @@ class EntryType extends AbstractType
                 'required' => true,
             ))
             ->add('company_name', 'text', array(
-                'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -67,15 +66,11 @@ class EntryType extends AbstractType
                 'required' => true,
             ))
             ->add('fax', 'tel', array(
-                'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('email', 'repeated_email', array(
-            ))
-            ->add('password', 'repeated_password', array(
-            ))
+            ->add('email', 'repeated_email')
+            ->add('password', 'repeated_password')
             ->add('birth', 'birthday', array(
-                'label' => '生年月日',
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y')-80, date('Y')),
@@ -84,11 +79,9 @@ class EntryType extends AbstractType
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('sex', 'sex', array(
-                'label' => '性別',
                 'required' => false,
             ))
             ->add('job', 'job', array(
-                'label' => '職業',
                 'required' => false,
             ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'))
