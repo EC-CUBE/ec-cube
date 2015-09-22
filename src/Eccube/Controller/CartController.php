@@ -82,7 +82,7 @@ class CartController
     public function up(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
-        $app['eccube.service.cart']->saveError();
+        $app['eccube.service.cart']->saveErrors();
 
         return $app->redirect($app->url('cart'));
     }
@@ -90,7 +90,7 @@ class CartController
     public function down(Application $app, $productClassId)
     {
         $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
-        $app['eccube.service.cart']->saveError();
+        $app['eccube.service.cart']->saveErrors();
 
         return $app->redirect($app->url('cart'));
     }
@@ -105,7 +105,7 @@ class CartController
     public function setQuantity(Application $app, $productClassId, $quantity)
     {
         $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity)->save();
-        $app['eccube.service.cart']->saveError();
+        $app['eccube.service.cart']->saveErrors();
 
         return $app->redirect($app->url('cart'));
     }
