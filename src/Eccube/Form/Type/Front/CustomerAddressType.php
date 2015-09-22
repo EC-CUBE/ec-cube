@@ -59,7 +59,7 @@ class CustomerAddressType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->config['stext_len'],
-                    ))
+                    )),
                 ),
             ))
             ->add('zip', 'zip')
