@@ -55,13 +55,11 @@ class EntryType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->config['stext_len'],
-                    ))
+                    )),
                 ),
             ))
-            ->add('zip', 'zip', array())
-            ->add('address', 'address', array(
-                'help' => 'form.contact.address.help',
-            ))
+            ->add('zip', 'zip')
+            ->add('address', 'address')
             ->add('tel', 'tel', array(
                 'required' => true,
             ))
