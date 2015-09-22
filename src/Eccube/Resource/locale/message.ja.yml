@@ -15,6 +15,7 @@ Zip: 郵便番号
 Address: 住所
 Tel: 電話番号
 Email: メールアドレス
+Password: パスワード
 Contents: お問い合わせ内容
 form.empty_value: 選択してください
 form.pref.empty_value: 都道府県を選択
@@ -23,7 +24,10 @@ form.job.empty_value: 選択してください
 form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
 form.contact.contents.help: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 form.member.email.invalid: 同じメールアドレスを入力してください。
+form.member.password.invalid: 同じパスワードを入力してください。
 form.type.numeric.invalid: 数字で入力してください。
+form.member.repeated.confirm: 確認のためもう一度入力してください
+form.type.graph.invalid: 半角英数字で入力してください。
 
 cart.over.stock: |-
     選択された商品の在庫が不足しております。

@@ -62,46 +62,17 @@ class EntryType extends AbstractType
             ->add('zip', 'zip', array())
             ->add('address', 'address', array(
                 'help' => 'form.contact.address.help',
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
             ))
             ->add('tel', 'tel', array(
                 'required' => true,
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
             ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('email', 'repeated', array(
-                'invalid_message' => 'form.member.email.invalid',
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Email(),
-                    ),
-                ),
+            ->add('email', 'repeated_email', array(
             ))
-            ->add('password', 'text', array(
-                'label' => 'パスワード',
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'min' => $this->config['password_min_len'],
-                        'max' => $this->config['password_max_len'],
-                    )),
-                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
-                ),
+            ->add('password', 'repeated_password', array(
             ))
             ->add('birth', 'birthday', array(
                 'label' => '生年月日',
@@ -129,6 +100,7 @@ class EntryType extends AbstractType
      */
     public function getName()
     {
+        // todo entry,mypageで共有されているので名前を変更する
         return 'entry';
     }
 }

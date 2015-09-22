@@ -65,7 +65,10 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'first' =>'eccube@example.com',
             'second' =>'eccube@example.com',
         ),
-        'password' => '111111111',
+        'password' => array(
+            'first' =>'12345678',
+            'second' =>'12345678',
+        ),
         'birth' => array(
             'year' => '1980',
             'month' => '1',
