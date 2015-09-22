@@ -111,7 +111,7 @@ class Pref extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @param integer $id
+     * @param  integer $id
      * @return Pref
      */
     public function setId($id)
