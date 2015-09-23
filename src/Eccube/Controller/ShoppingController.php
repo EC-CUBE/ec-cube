@@ -462,8 +462,6 @@ class ShoppingController extends AbstractController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                // todo ここの実装はどうかしてる
-
                 // 会員の場合、お届け先情報を新規登録
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
                     $customerAddress = new \Eccube\Entity\CustomerAddress();
