@@ -448,10 +448,13 @@ class ShoppingController extends AbstractController
 
         // 会員の場合、お届け先情報を新規登録
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $builder = $app['form.factory']->createBuilder('shopping_shipping');
+            $customer = $app['user'];
+            $delivery = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($customer);
+            $builder = $app['form.factory']->createBuilder('customer_address', $delivery);
         } else {
             // 非会員の場合、お届け先を追加
-            $builder = $app['form.factory']->createBuilder('shopping_shipping', $shippings[0]);
+            $delivery = $shippings[0];
+            $builder = $app['form.factory']->createBuilder('shopping_shipping', $delivery);
         }
 
         $form = $builder->getForm();
@@ -460,53 +463,15 @@ class ShoppingController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $data = $form->getData();
+                // 振る舞いが違うのでわかりにくい
+                $app['orm.em']->persist($delivery);
 
-                // 会員の場合、お届け先情報を新規登録
+                // 会員の場合、shippingsをアドレスで上書きする
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
-                    $customerAddress = new \Eccube\Entity\CustomerAddress();
-                    $customerAddress
-                        ->setCustomer($app->user())
-                        ->setName01($data['name01'])
-                        ->setName02($data['name02'])
-                        ->setKana01($data['kana01'])
-                        ->setKana02($data['kana02'])
-                        ->setCompanyName($data['company_name'])
-                        ->setTel01($data['tel01'])
-                        ->setTel02($data['tel02'])
-                        ->setTel03($data['tel03'])
-                        ->setFax01($data['Fax01'])
-                        ->setFax02($data['Fax02'])
-                        ->setFax03($data['Fax03'])
-                        ->setZip01($data['zip01'])
-                        ->setZip02($data['zip02'])
-                        ->setZipCode($data['zip01'] . $data['zip02'])
-                        ->setPref($data['pref'])
-                        ->setAddr01($data['addr01'])
-                        ->setAddr02($data['addr02'])
-                        ->setDelFlg(Constant::DISABLED);
-
-                    $app['orm.em']->persist($customerAddress);
-                }
-                foreach ($shippings as $shipping) {
-                    $shipping
-                        ->setName01($data['name01'])
-                        ->setName02($data['name02'])
-                        ->setKana01($data['kana01'])
-                        ->setKana02($data['kana02'])
-                        ->setCompanyName($data['company_name'])
-                        ->setTel01($data['tel01'])
-                        ->setTel02($data['tel02'])
-                        ->setTel03($data['tel03'])
-                        ->setFax01($data['Fax01'])
-                        ->setFax02($data['Fax02'])
-                        ->setFax03($data['Fax03'])
-                        ->setZip01($data['zip01'])
-                        ->setZip02($data['zip02'])
-                        ->setZipCode($data['zip01'] . $data['zip02'])
-                        ->setPref($data['pref'])
-                        ->setAddr01($data['addr01'])
-                        ->setAddr02($data['addr02']);
+                    $data = $form->getData();
+                    // todo copyPropertiesがバグっているのでformがNULLの場合に上書きしてくれない
+                    $shippings[0]->copyProperties($data);
+                    $app['orm.em']->persist($shippings[0]);
                 }
 
                 // 配送先を更新
