@@ -311,7 +311,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {{ form_label(form.tel) }}
                             <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                 {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
-                                {{ form_errors(form.tel) }}
+                                {{ form_errors(form.tel.tel01) }}
+                                {{ form_errors(form.tel.tel02) }}
+                                {{ form_errors(form.tel.tel03) }}
                             </div>
                         </div>
                         {# FAX番号 #}
@@ -554,7 +556,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.name.name01, { attr : { placeholder: '姓' }}) }}
                                     {{ form_widget(shippingForm.name.name02, { attr : { placeholder: '名' }}) }}
-                                    {{ form_errors(shippingForm.name) }}
+                                    {{ form_errors(shippingForm.name.name01) }}
+                                    {{ form_errors(shippingForm.name.name02) }}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -562,7 +565,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
                                     {{ form_widget(shippingForm.kana.kana02, { attr : { placeholder : 'メイ' }}) }}
-                                    {{ form_errors(shippingForm.kana) }}
+                                    {{ form_errors(shippingForm.kana.kana01) }}
+                                    {{ form_errors(shippingForm.kana.kana02) }}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -606,7 +610,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {{ form_label(shippingForm.tel) }}
                                 <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                     {{ form_widget(shippingForm.tel.tel01) }}-{{ form_widget(shippingForm.tel.tel02) }}-{{ form_widget(shippingForm.tel.tel03) }}
-                                    {{ form_errors(shippingForm.tel) }}
+                                    {{ form_errors(shippingForm.tel.tel01) }}
+                                    {{ form_errors(shippingForm.tel.tel02) }}
+                                    {{ form_errors(shippingForm.tel.tel03) }}
                                 </div>
                             </div>
                             {# FAX番号 #}

@@ -60,7 +60,6 @@ class ShippingType extends AbstractType
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
@@ -71,7 +70,6 @@ class ShippingType extends AbstractType
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
@@ -92,7 +90,6 @@ class ShippingType extends AbstractType
             ->add('address', 'address', array(
                 'addr01_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
@@ -100,14 +97,15 @@ class ShippingType extends AbstractType
                 ),
                 'addr02_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
                     ),
                 ),
             ))
-            ->add('tel', 'tel', array())
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,

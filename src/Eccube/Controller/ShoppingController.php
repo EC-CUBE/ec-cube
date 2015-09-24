@@ -44,6 +44,11 @@ class ShoppingController extends AbstractController
     private $sessionKey = 'eccube.front.shopping.nonmember';
 
     /**
+     * @var string 複数配送警告メッセージ
+     */
+    private $sessionMultipleKey = 'eccube.front.shopping.multiple';
+
+    /**
      * 購入画面表示
      *
      * @param Application $app
@@ -89,6 +94,8 @@ class ShoppingController extends AbstractController
             // 受注情報を作成
             $Order = $app['eccube.service.shopping']->createOrder($Customer);
 
+            $app['session']->remove($this->sessionMultipleKey);
+
         } else {
             // 計算処理
             $Order = $app['eccube.service.shopping']->getAmount($Order);
@@ -102,6 +109,15 @@ class ShoppingController extends AbstractController
 
         // 合計数量
         $totalQuantity = $app['eccube.service.order']->getTotalQuantity($Order);
+
+        // 複数配送の場合、エラーメッセージを一度だけ表示
+        if (!$app['session']->has($this->sessionMultipleKey)) {
+            if (count($Order->getShippings()) > 1) {
+                $app->addRequestError('shopping.multiple.delivery');
+            }
+            $app['session']->set($this->sessionMultipleKey, 'multiple');
+        }
+
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -155,7 +171,7 @@ class ShoppingController extends AbstractController
 
                     if ($app->isGranted('ROLE_USER')) {
                         // 会員の場合、購入金額を更新
-                        $app['eccube.service.shopping']->setCustomerUpdate($em, $Order, $app->user());
+                        $app['eccube.service.shopping']->setCustomerUpdate($Order, $app->user());
                     }
 
                     $em->getConnection()->commit();

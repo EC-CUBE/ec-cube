@@ -134,13 +134,13 @@ $(function(){
                     {% endif %}
                     </ul>
                 </div>
-                {% if BaseInfo.optionMultipleShipping and Order.shippings|length > 1 %}
+                {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
                     <div class="message">
                         <p class="errormsg bg-danger">
-                            配送方法が異なる商品が含まれているため、お届け先は複数となります。
+                            <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
                         </p>
                     </div>
-                {% endif %}
+                {% endfor %}
             </div><!-- /.col -->
         </div><!-- /.row -->
         <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
@@ -300,7 +300,7 @@ $(function(){
                         </dl>
                         <div class="total_amount">
                             <p class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
-                            <p><button id="order-button" type="submit" class="btn btn-primary btn-block">注文する</button></p>
+                            <p><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn">注文する</button></p>
                         </div>
                     </div>
                 </div>

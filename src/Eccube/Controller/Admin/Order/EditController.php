@@ -302,7 +302,7 @@ class EditController extends AbstractController
             $app['monolog']->addDebug('search product start.');
 
             $searchData = array(
-                'id' => $request->get('id'),
+                'name' => $request->get('id'),
             );
 
             if ($categoryId = $request->get('category_id')) {

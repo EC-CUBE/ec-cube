@@ -828,11 +828,10 @@ class ShoppingService
     /**
      * 会員情報の更新
      *
-     * @param $em トランザクション制御されているEntityManager
      * @param Order $Order 受注情報
      * @param Customer $user ログインユーザ
      */
-    public function setCustomerUpdate($em, Order $Order, Customer $user)
+    public function setCustomerUpdate(Order $Order, Customer $user)
     {
 
         $orderDetails = $Order->getOrderDetails();
