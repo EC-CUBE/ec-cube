@@ -52,6 +52,31 @@ class PrefTypeTest extends AbstractTypeTestCase
         $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.pref']->find(47));
     }
 
+    public function testViewData()
+    {
+        $view = $this->form->createView();
+        $choices = $view->vars['choices'];
+
+        // empty_value
+        $this->assertEquals($view->vars['empty_value'], 'form.pref.empty_value');
+
+        $data = array();
+        // attrなど含まれているので
+        foreach ($choices as $choice) {
+            $data[] = $choice->data;
+        }
+
+        $query = $this->app['eccube.repository.master.pref']->createQueryBuilder('p')
+            ->orderBy('p.rank', 'ASC')
+            ->getQuery();
+
+        $pref = $query->getResult();
+
+        // order by されているか
+        $this->assertEquals($data, $pref);
+    }
+
+
     /**
      * 範囲外の値のテスト
      */
