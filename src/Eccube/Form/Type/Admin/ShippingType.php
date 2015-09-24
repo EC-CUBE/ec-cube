@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\Constant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,9 +38,15 @@ class ShippingType extends AbstractType
 {
     public $app;
 
+    /**
+     * @var \Eccube\Entity\BaseInfo
+     */
+    protected $BaseInfo;
+
     public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
+        $this->BaseInfo = $app['eccube.repository.base_info']->get();
     }
 
     /**
@@ -129,19 +136,26 @@ class ShippingType extends AbstractType
                 'placeholder' => '',
                 'format' => 'yyyy-MM-dd',
             ))
-            ->add('ShipmentItems', 'collection', array(
-                'type' => 'shipment_item',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-            ))
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+                    $form = $event->getForm();
+                    $form->add('ShipmentItems', 'collection', array(
+                        'type' => 'shipment_item',
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'prototype' => true,
+                    ));
+                }
+            })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                $form = $event->getForm();
-                $shipmentItems = $form['ShipmentItems']->getData();
+                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+                    $form = $event->getForm();
+                    $shipmentItems = $form['ShipmentItems']->getData();
 
-                if (empty($shipmentItems) || count($shipmentItems) < 1) {
-                    // 画面下部にエラーメッセージを表示させる
-                    $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
+                    if (empty($shipmentItems) || count($shipmentItems) < 1) {
+                        // 画面下部にエラーメッセージを表示させる
+                        $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
+                    }
                 }
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());

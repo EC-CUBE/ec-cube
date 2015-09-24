@@ -103,7 +103,7 @@
         list = $('#shipment_item_list' + shipment_idx);
 
         // prototype templateを取得.
-        if (typeof(list) !== 'undefined') {
+        if (typeof(list) !== 'undefined' && list.length > 0) {
             newWidget = list.attr('data-prototype');
             // レコード数カウンタで置換.
             newWidget = newWidget.replace(/__name__/g, shipmentItem_idx);
