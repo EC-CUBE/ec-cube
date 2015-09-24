@@ -89,7 +89,6 @@ class ShoppingController extends AbstractController
 
             $cartService->setPreOrderId($preOrderId);
             $cartService->save();
-
         } else {
             // 計算処理
             $Order = $orderService->getAmount($Order, $cartService->getCart());
@@ -128,7 +127,6 @@ class ShoppingController extends AbstractController
      */
     public function confirm(Application $app, Request $request)
     {
-
         $cartService = $app['eccube.service.cart'];
         $orderService = $app['eccube.service.order'];
         $orderRepository = $app['eccube.repository.order'];
@@ -195,7 +193,6 @@ class ShoppingController extends AbstractController
                     $em->getConnection()->commit();
                     $em->flush();
                     $em->close();
-
                 } catch (\Exception $e) {
                     $em->getConnection()->rollback();
                     $em->close();
@@ -210,7 +207,6 @@ class ShoppingController extends AbstractController
                 $app['eccube.service.mail']->sendOrderMail($Order);
 
                 return $app->redirect($app->url('shopping_complete'));
-
             } else {
                 return $app->render('Shopping/index.twig', array(
                     'form' => $form->createView(),
@@ -220,7 +216,6 @@ class ShoppingController extends AbstractController
         }
 
         return $app->redirect($app->url('cart'));
-
     }
 
 
@@ -271,11 +266,9 @@ class ShoppingController extends AbstractController
         $orderService->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $data = $form->getData();
                 $delivery = $data['delivery'];
 
@@ -306,12 +299,10 @@ class ShoppingController extends AbstractController
 
                 // 受注関連情報を最新状態に更新
                 $app['orm.em']->flush();
-
             }
         }
 
         return $app->redirect($app->url('shopping'));
-
     }
 
     /**
@@ -319,7 +310,6 @@ class ShoppingController extends AbstractController
      */
     public function payment(Application $app, Request $request)
     {
-
         $cartService = $app['eccube.service.cart'];
         $orderService = $app['eccube.service.order'];
         $orderRepository = $app['eccube.repository.order'];
@@ -346,11 +336,9 @@ class ShoppingController extends AbstractController
         $orderService->setFormPayment($form, $delivery, $Order, $app);
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $data = $form->getData();
                 $payment = $data['payment'];
 
@@ -365,12 +353,10 @@ class ShoppingController extends AbstractController
 
                 // 受注関連情報を最新状態に更新
                 $app['orm.em']->flush();
-
             }
         }
 
         return $app->redirect($app->url('shopping'));
-
     }
 
     /**
@@ -432,7 +418,6 @@ class ShoppingController extends AbstractController
             $app['orm.em']->flush();
 
             return $app->redirect($app->url('shopping'));
-
         }
 
         return $app->render(
@@ -449,7 +434,6 @@ class ShoppingController extends AbstractController
      */
     public function shippingEdit(Application $app, Request $request)
     {
-
         $cartService = $app['eccube.service.cart'];
 
         // カートチェック
@@ -464,75 +448,41 @@ class ShoppingController extends AbstractController
 
         // 会員の場合、お届け先情報を新規登録
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $builder = $app['form.factory']->createBuilder('shopping_shipping');
+            $customer = $app['user'];
+            $delivery = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($customer);
+            $builder = $app['form.factory']->createBuilder('customer_address', $delivery);
         } else {
             // 非会員の場合、お届け先を追加
-            $builder = $app['form.factory']->createBuilder('shopping_shipping', $shippings[0]);
+            $delivery = $shippings[0];
+            $builder = $app['form.factory']->createBuilder('shopping_shipping', $delivery);
         }
 
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $data = $form->getData();
+                // 振る舞いが違うのでわかりにくい
+                $app['orm.em']->persist($delivery);
 
-                // 会員の場合、お届け先情報を新規登録
+                // 会員の場合、shippingsをアドレスで上書きする
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
-                    $customerAddress = new \Eccube\Entity\CustomerAddress();
-                    $customerAddress
-                        ->setCustomer($app->user())
-                        ->setName01($data['name01'])
-                        ->setName02($data['name02'])
-                        ->setKana01($data['kana01'])
-                        ->setKana02($data['kana02'])
-                        ->setCompanyName($data['company_name'])
-                        ->setTel01($data['tel01'])
-                        ->setTel02($data['tel02'])
-                        ->setTel03($data['tel03'])
-                        ->setZip01($data['zip01'])
-                        ->setZip02($data['zip02'])
-                        ->setZipCode($data['zip01'] . $data['zip02'])
-                        ->setPref($data['pref'])
-                        ->setAddr01($data['addr01'])
-                        ->setAddr02($data['addr02'])
-                        ->setDelFlg(Constant::DISABLED);
-
-                    $app['orm.em']->persist($customerAddress);
-
-                }
-                foreach ($shippings as $shipping) {
-                    $shipping
-                        ->setName01($data['name01'])
-                        ->setName02($data['name02'])
-                        ->setKana01($data['kana01'])
-                        ->setKana02($data['kana02'])
-                        ->setCompanyName($data['company_name'])
-                        ->setTel01($data['tel01'])
-                        ->setTel02($data['tel02'])
-                        ->setTel03($data['tel03'])
-                        ->setZip01($data['zip01'])
-                        ->setZip02($data['zip02'])
-                        ->setZipCode($data['zip01'] . $data['zip02'])
-                        ->setPref($data['pref'])
-                        ->setAddr01($data['addr01'])
-                        ->setAddr02($data['addr02']);
+                    $data = $form->getData();
+                    $shippings[0]->copyProperties($data);
+                    $app['orm.em']->persist($shippings[0]);
                 }
 
                 // 配送先を更新
                 $app['orm.em']->flush();
 
                 return $app->redirect($app->url('shopping'));
-
             }
         }
 
         return $app->render('Shopping/shipping_edit.twig', array(
             'form' => $form->createView(),
         ));
-
     }
 
 
@@ -541,7 +491,6 @@ class ShoppingController extends AbstractController
      */
     public function customer(Application $app, Request $request)
     {
-
         if ($request->isXmlHttpRequest()) {
             $data = $request->request->all();
             $Order = $app['eccube.repository.order']->findOneBy(array('pre_order_id' => $app['eccube.service.cart']->getPreOrderId()));
@@ -570,9 +519,7 @@ class ShoppingController extends AbstractController
             $response->headers->set('Content-Type', 'application/json');
 
             return $response;
-
         }
-
     }
 
 
@@ -581,7 +528,6 @@ class ShoppingController extends AbstractController
      */
     public function login(Application $app, Request $request)
     {
-
         $cartService = $app['eccube.service.cart'];
 
         if (!$cartService->isLocked()) {
@@ -616,7 +562,6 @@ class ShoppingController extends AbstractController
      */
     public function nonmember(Application $app, Request $request)
     {
-
         $cartService = $app['eccube.service.cart'];
 
         // カートチェック
@@ -689,7 +634,6 @@ class ShoppingController extends AbstractController
                 $app['session']->set('eccube.front.shopping.nonmember', $arr);
 
                 return $app->redirect($app->url('shopping'));
-
             }
         }
 

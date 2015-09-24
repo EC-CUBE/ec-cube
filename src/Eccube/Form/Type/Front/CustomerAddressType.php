@@ -49,58 +49,23 @@ class CustomerAddressType extends AbstractType
     {
         $builder
             ->add('name', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
-                    ),
-                ),
+                'required' => true,
             ))
-            ->add('kana', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    ),
-                ),
+            ->add('kana', 'kana', array(
+                'required' => true,
             ))
             ->add('company_name', 'text', array(
-                'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->config['stext_len'],
-                    ))
+                    )),
                 ),
             ))
-            ->add('zip', 'zip', array())
-            ->add('address', 'address', array(
-                'help' => 'form.contact.address.help',
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
-            ))
+            ->add('zip', 'zip')
+            ->add('address', 'address')
             ->add('tel', 'tel', array(
                 'required' => true,
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
             ))
             ->add('fax', 'tel', array(
                 'required' => false,
