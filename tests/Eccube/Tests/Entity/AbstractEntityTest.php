@@ -45,6 +45,29 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testSetPropertiesFromArray()
+    {
+        $arrProps = array(
+            'field2' => null,
+            'field3' => 3,
+            'field4' => 4,
+            'testField4' => 5,
+            'fieldXXX' => 'XXX'
+        );
+
+        $this->objEntity = new TestEntity();
+        $this->objEntity->setField1('a');
+        $this->objEntity->setField2('b');
+        $this->objEntity->field3 = 'c';
+
+        $this->objEntity->setPropertiesFromArray($arrProps);
+
+        $this->assertEquals($this->objEntity->getField1(), 'a');
+        $this->assertNull($this->objEntity->getField2(), 'field2 is null');
+        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals($this->objEntity->getTestField4(), 5);
+    }
+
     public function testGetter()
     {
         $arrProps = array(
@@ -154,6 +177,31 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase
         $expected['field1'] = null;
         $actual = $destEntity->toArray();
         $this->assertEquals($expected, $actual);
+    }
+
+
+    public function testCopyPropertiesWithNull()
+    {
+        $destEntity = new TestExtendsEntity();
+        $destEntity->setField2(2);
+
+        // field2 は NULL で上書きする
+        $arrProps = array(
+            'field1' => 1,
+            'field2' => null,
+            'field3' => 3,
+            'field4' => 4,
+            'testField4' => 5,
+            'fieldXXX' => 'XXX'
+        );
+        $srcEntity = new TestExtendsEntity($arrProps);
+
+        $destEntity->copyProperties($srcEntity);
+        $this->assertEquals($destEntity->getField1(), 1);
+        $this->assertNull($destEntity->getField2(), 'field2 is null');
+        $this->assertEquals($destEntity->field3, 3);
+        $this->assertEquals($destEntity->getField4(), 4);
+        $this->assertEquals($destEntity->getTestField4(), 5);
     }
 }
 
