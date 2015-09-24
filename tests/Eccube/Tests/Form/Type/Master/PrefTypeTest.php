@@ -28,17 +28,11 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class PrefTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
-
-    /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array(
-        'pref' => '5',
-    );
 
     public function setUp()
     {
@@ -46,18 +40,33 @@ class PrefTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
-            ->add('pref', 'pref')
+            ->createBuilder('pref', null)
             ->getForm();
     }
 
     public function testValidData()
     {
-        $this->form->submit($this->formData);
-
+        $this->form->submit(47);
         $this->assertTrue($this->form->isValid());
+
+        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.pref']->find(47));
     }
 
+    /**
+     * 範囲外の値のテスト
+     */
+    public function testInvalidData_Int()
+    {
+        $this->form->submit(50);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * 範囲外の値のテスト
+     */
+    public function testInvalidData_String()
+    {
+        $this->form->submit('a');
+        $this->assertFalse($this->form->isValid());
+    }
 }
