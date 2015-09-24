@@ -300,7 +300,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\MainEditType($app);
             $types[] = new \Eccube\Form\Type\BlockType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
-            $types[] = new \Eccube\Form\Type\ShipmentItemType($app);
             $types[] = new \Eccube\Form\Type\ShippingItemType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleItemType($app);
@@ -337,6 +336,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\OrderType($app);
             $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShippingType($app);
+            $types[] = new \Eccube\Form\Type\Admin\ShipmentItemType($app);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();

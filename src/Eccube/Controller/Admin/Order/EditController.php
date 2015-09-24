@@ -87,7 +87,7 @@ class EditController extends AbstractController
 
 
                         // 受注日/発送日/入金日の更新.
-                        $this->updateDate($TargetOrder, $OriginOrder);
+                        $this->updateDate($app, $TargetOrder, $OriginOrder);
 
                         // 受注明細で削除されているものをremove
                         foreach ($OriginalOrderDetails as $OrderDetail) {
@@ -337,7 +337,6 @@ class EditController extends AbstractController
         }
     }
 
-    // todo serviceを利用する.
     protected function newOrder()
     {
         $Order = new \Eccube\Entity\Order();
@@ -369,7 +368,6 @@ class EditController extends AbstractController
         $OrderDetails = $Order->getOrderDetails();
         foreach ($OrderDetails as $OrderDetail) {
             // 新規登録の場合は, 入力されたproduct_id/produc_class_idから明細にセットする.
-            // todo 別メソッドに切り出す
             if (!$OrderDetail->getId()) {
                 $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
                     $OrderDetail->getProductClass());
@@ -450,19 +448,19 @@ class EditController extends AbstractController
      * - 受注ステータスが発送済に設定された場合に発送日を更新
      * - 受注ステータスが入金済に設定された場合に入金日を更新
      *
-     * TODO 受注ステータスの定数化.
      *
+     * @param $app
      * @param $TargetOrder
      * @param $OriginOrder
      */
-    protected function updateDate($TargetOrder, $OriginOrder)
+    protected function updateDate($app, $TargetOrder, $OriginOrder)
     {
         $dateTime = new \DateTime();
 
         // 編集
         if ($TargetOrder->getId()) {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == 5) {
+            if ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_deliv']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setCommitDate($dateTime);
@@ -473,7 +471,7 @@ class EditController extends AbstractController
                     }
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == 6) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_pre_end']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setPaymentDate($dateTime);
@@ -482,7 +480,7 @@ class EditController extends AbstractController
             // 新規
         } else {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == 5) {
+            if ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_deliv']) {
                 $TargetOrder->setCommitDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
@@ -490,7 +488,7 @@ class EditController extends AbstractController
                     $Shipping->setShippingCommitDate($dateTime);
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == 6) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_pre_end']) {
                 $TargetOrder->setPaymentDate($dateTime);
             }
             // 受注日時

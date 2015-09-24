@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -72,14 +72,6 @@ class ShipmentItemType extends AbstractType
                     )),
                 ),
             ))
-   //         ->add('tax_rate', 'text', array(
-    //            'constraints' => array(
-     //               new Assert\NotBlank(),
-      //              new Assert\Length(array(
-       //                 'max' => $config['int_len'],
-        //            )),
-         //       )
-          //  ))
         ;
 
         $builder
@@ -95,7 +87,7 @@ class ShipmentItemType extends AbstractType
                 )));
 
         $app = $this->app;
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app){
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
             // モーダルからのPOST時に、金額等をセットする.
             if ('modal' === $app['request']->get('modal')) {
                 $data = $event->getData();

@@ -508,7 +508,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              id="shipment_item_list{{ loop.index0 }}"
                              data-prototype="
                                 {% filter escape %}
-                                     {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': shippingForm.ShipmentItems .vars.prototype }) }}
+                                     {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': shippingForm.ShipmentItems.vars.prototype }) }}
                                 {% endfilter %}">
 
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}

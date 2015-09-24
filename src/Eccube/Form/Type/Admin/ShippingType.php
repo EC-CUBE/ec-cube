@@ -21,19 +21,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 15/04/23
- * Time: 15:17
- */
 
 namespace Eccube\Form\Type\Admin;
-
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -139,6 +135,15 @@ class ShippingType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+                $shipmentItems = $form['ShipmentItems']->getData();
+
+                if (empty($shipmentItems) || count($shipmentItems) < 1) {
+                    // 画面下部にエラーメッセージを表示させる
+                    $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
+                }
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -148,7 +153,7 @@ class ShippingType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\Shipping',
+            'data_class' => 'Eccube\Entity\Shipping',
         ));
     }
 
