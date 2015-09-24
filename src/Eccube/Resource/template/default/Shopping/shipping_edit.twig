@@ -24,14 +24,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'cart_page' %}
 
 {% block javascript %}
-<script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-<script>
-$(function() {
-    $('#zip-search').click(function() {
-        AjaxZip3.zip2addr('shopping_shipping[zip][zip01]', 'shopping_shipping[zip][zip02]', 'shopping_shipping[address][pref]', 'shopping_shipping[address][addr01]');
-    });
-});
-</script>
+    <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+    <script>
+        $(function() {
+            $('#zip-search').click(function() {
+                AjaxZip3.zip2addr('shopping_shipping[zip][zip01]', 'shopping_shipping[zip][zip02]', 'shopping_shipping[address][pref]', 'shopping_shipping[address][addr01]');
+            });
+        });
+    </script>
 {% endblock javascript %}
 
 {% block main %}
@@ -43,8 +43,8 @@ $(function() {
                 <dl>
                     <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
                     <dd class="form-group input_name">
-                        {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
-                        {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
+                        {{ form_widget(form.name.name01) }}
+                        {{ form_widget(form.name.name02) }}
                         {{ form_errors(form.name.name01) }}
                         {{ form_errors(form.name.name02) }}
                     </dd>
@@ -52,8 +52,8 @@ $(function() {
                 <dl>
                     <dt>{{ form_label(form.kana) }}<span class="required">必須</span></dt>
                     <dd class="form-group input_name">
-                        {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
-                        {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+                        {{ form_widget(form.kana.kana01) }}
+                        {{ form_widget(form.kana.kana02) }}
                         {{ form_errors(form.kana.kana01) }}
                         {{ form_errors(form.kana.kana02) }}
                     </dd>
@@ -81,6 +81,15 @@ $(function() {
                         <div class="form-inline form-group input_tel">
                             {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
                             {{ form_errors(form.tel) }}
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>{{ form_label(form.fax) }}</dt>
+                    <dd>
+                        <div class="form-inline form-group input_tel">
+                            {{ form_widget(form.fax, {attr : {class : 'short'}}) }}
+                            {{ form_errors(form.fax) }}
                         </div>
                     </dd>
                 </dl>

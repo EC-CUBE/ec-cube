@@ -31,80 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingShippingType extends AbstractType
 {
-    protected $config;
-
-    public function __construct($config)
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $config = $this->config;
-
-        $builder
-            ->add('name', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                    ),
-                ),
-            ))
-            ->add('kana', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    ),
-                ),
-            ))
-            ->add('company_name', 'text', array(
-                'label' => '会社名',
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    ))
-                ),
-            ))
-            ->add('zip', 'zip', array(
-                'required' => true,
-            ))
-            ->add('address', 'address', array(
-                'help' => 'form.contact.address.help',
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->add('tel', 'tel', array(
-                'required' => true,
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -113,6 +39,14 @@ class ShoppingShippingType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Shipping',
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'customer_address';
     }
 
     /**

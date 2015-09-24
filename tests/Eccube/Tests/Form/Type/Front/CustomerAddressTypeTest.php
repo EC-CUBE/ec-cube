@@ -81,6 +81,62 @@ class CustomerAddressTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testInvalid_Blank_Name01()
+    {
+        $this->formData['name']['name01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Name02()
+    {
+        $this->formData['name']['name02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Kana01()
+    {
+        $this->formData['kana']['kana01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Kana02()
+    {
+        $this->formData['kana']['kana02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Pref()
+    {
+        $this->formData['address']['pref'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Addr01()
+    {
+        $this->formData['address']['addr01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalid_Blank_Addr02()
+    {
+        $this->formData['address']['addr02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testInvalidTel_Blank()
     {
         $this->formData['tel']['tel01'] = '';
