@@ -469,7 +469,6 @@ class ShoppingController extends AbstractController
                 // 会員の場合、shippingsをアドレスで上書きする
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
                     $data = $form->getData();
-                    // todo copyPropertiesがバグっているのでformがNULLの場合に上書きしてくれない
                     $shippings[0]->copyProperties($data);
                     $app['orm.em']->persist($shippings[0]);
                 }
