@@ -120,7 +120,7 @@ $(function() {
                 }
             },
             error: function() {
-                console.log('search customer failed.');
+                alert('search customer failed.');
             }
         });
     });
@@ -139,6 +139,7 @@ $(function() {
 
         var data = $(this).data();
         shipment_idx = data.idx;
+        shipmentItem_idx = $('.shipment_item_idx' + shipment_idx).length;
 
         $.ajax({
             type: 'POST',
@@ -393,12 +394,16 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="item_quantity">
-                                                    数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                    {% if BaseInfo.optionMultipleShipping %}
+                                                        数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
+                                                    {% else %}
+                                                        数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                    {% endif %}
                                                     {{ form_errors(orderDetailForm.quantity) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                            	<span class="item_tax">
+                                                <span class="item_tax">
                                                     税率：
                                                     <span class="input-group">
                                                     {{ form_widget(orderDetailForm.tax_rate) }}
@@ -481,6 +486,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             <div><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
             {% endif %}
             {% for shippingForm in form.Shippings %}
+            {% set shippingIndex = loop.index0 %}
             <div class="box accordion">
                 <div class="box-header toggle active">
                     <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
@@ -506,7 +512,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}
                             {{ form_widget(shipmentItemForm.Product) }}
                             {{ form_widget(shipmentItemForm.ProductClass) }}
-                            <div class="item_box">
+                            <div class="item_box shipment_item_idx{{ shippingIndex }}">
                                 <div class="item_detail">
                                     <div class="item_name_area">
                                         <strong class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
@@ -527,12 +533,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                            <p class="form-control-static">{{ shipmentItemForm.vars.value.price|price }}</p>
-                                            <p class="form-control-static">{{ form_widget(shipmentItemForm.price, {'type': 'hidden'}) }}</p>
+                                            {{ form_widget(shipmentItemForm.price, {'read_only': 'readonly'}) }}
                                         </div>
                                         <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             <span class="item_quantity">
-                                                数量：{{ form_widget(shipmentItemForm.quantity) }}
+                                                数量：{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
                                                 {{ form_errors(shipmentItemForm.quantity) }}
                                             </span>
                                         </div>

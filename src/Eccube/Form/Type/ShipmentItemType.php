@@ -108,12 +108,10 @@ class ShipmentItemType extends AbstractType
 
                     $data['price'] = $ProductClass->getPrice02();
                     $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
-                   // $data['tax_rate'] = $TaxRule->getTaxRate();
                     $event->setData($data);
                 }
             }
         });
-
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 

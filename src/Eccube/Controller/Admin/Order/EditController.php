@@ -27,7 +27,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\ShipmentItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -97,12 +96,12 @@ class EditController extends AbstractController
                             }
                         }
 
-                        $NewShipimentItems = new ArrayCollection();
 
                         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
                             /** @var $OrderDetail \Eccube\Entity\OrderDetail */
                             $OrderDetail->setOrder($TargetOrder);
 
+                            /*
                             $NewShipmentItem = new ShipmentItem();
                             $NewShipmentItem
                                 ->setProduct($OrderDetail->getProduct())
@@ -117,9 +116,29 @@ class EditController extends AbstractController
                                 ->setQuantity($OrderDetail->getQuantity())
                                 ->setOrder($TargetOrder);
                             $NewShipimentItems[] = $NewShipmentItem;
+                            */
+                            $app['orm.em']->persist($OrderDetail);
                         }
 
+                        $NewShipmentItems = new ArrayCollection();
+                   //     $shippings = $TargetOrder->getShippings();
+                        /** @var \Eccube\Entity\Shipping $Shipping */
+                        foreach ($Shippings as $Shipping) {
+                            $shipmentItems = $Shipping->getShipmentItems();
+                            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
+                            foreach ($shipmentItems as $ShipmentItem) {
+                                $ShipmentItem->setOrder($TargetOrder);
+                                $ShipmentItem->setShipping($Shipping);
+                                $NewShipmentItems[] = $ShipmentItem;
+                                $app['orm.em']->persist($ShipmentItem);
+                            }
+                            $Shipping->setOrder($TargetOrder);
+                            $app['orm.em']->persist($Shipping);
+                        }
+
+
                         // 配送商品の更新. delete/insert.
+                        /*
                         $Shippings = $TargetOrder->getShippings();
                         foreach ($Shippings as $Shipping) {
                             $ShipimentItems = $Shipping->getShipmentItems();
@@ -127,11 +146,12 @@ class EditController extends AbstractController
                                 $app['orm.em']->remove($ShipmentItem);
                             }
                             $ShipimentItems->clear();
-                            foreach ($NewShipimentItems as $NewShipimentItem) {
+                            foreach ($NewShipmentItems as $NewShipimentItem) {
                                 $NewShipimentItem->setShipping($Shipping);
                                 $ShipimentItems->add($NewShipimentItem);
                             }
                         }
+                        */
 
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
@@ -165,8 +185,6 @@ class EditController extends AbstractController
                     break;
             }
         }
-
-
 
         // 会員検索フォーム
         $searchCustomerModalForm = $app['form.factory']
@@ -410,7 +428,6 @@ class EditController extends AbstractController
             }
 
         }
-
 
         // 受注データの税・小計・合計を再計算
         $Order->setTax($taxtotal);
