@@ -324,7 +324,7 @@ class PluginService
 
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
         } catch (PluginException $e) {
-            foreach (array($tmp)as $dir) {
+            foreach (array($tmp) as $dir) {
                 if (file_exists($dir)) {
                     $fs = new Filesystem();
                     $fs->remove($dir);
@@ -358,10 +358,10 @@ class PluginService
                         }
                         // updateで追加されたハンドラかどうか調べる
                         $peh = $rep->findBy(array('del_flg' => Constant::DISABLED,
-                        'plugin_id' => $plugin->getId(),
-                        'event' => $event,
-                        'handler' => $handler[0],
-                        'handler_type' => $handler[1], ));
+                            'plugin_id' => $plugin->getId(),
+                            'event' => $event,
+                            'handler' => $handler[0],
+                            'handler_type' => $handler[1], ));
 
                         if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                             $peh = new \Eccube\Entity\PluginEventHandler();
