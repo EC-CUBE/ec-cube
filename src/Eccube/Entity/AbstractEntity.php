@@ -75,7 +75,7 @@ abstract class AbstractEntity implements \ArrayAccess
         foreach ($arrProperties as $objProperty) {
             $objProperty->setAccessible(true);
             $name = $objProperty->getName();
-            if (in_array($name, $excludeAttribute) || !isset($arrProps[$name])) {
+            if (in_array($name, $excludeAttribute) || !array_key_exists($name, $arrProps)) {
                 continue;
             }
             $objProperty->setValue($this, $arrProps[$name]);
