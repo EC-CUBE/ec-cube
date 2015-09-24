@@ -27,37 +27,30 @@ namespace Eccube\Form\Type\Master;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CalcRuleType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // todo ???
         $options['sex_options']['required'] = $options['required'];
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\Taxrule',
-            'property' => 'name',
-            'label' => false,
             'expanded' => true,
-            'empty_value' => false,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('t')
-                    ->orderBy('t.rank', 'ASC');
-            },
         ));
     }
 
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 
     public function getName()

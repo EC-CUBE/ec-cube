@@ -28,33 +28,18 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DispType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\Disp',
-            'label' => false,
-            'multiple'=> false,
             'expanded' => true,
-            'required' => false,
-            'empty_value' => false,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('d')
-                    ->orderBy('d.rank', 'ASC');
-            },
         ));
     }
 
@@ -63,7 +48,7 @@ class DispType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 
     /**
