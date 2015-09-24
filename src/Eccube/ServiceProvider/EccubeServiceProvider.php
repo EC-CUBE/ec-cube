@@ -259,10 +259,12 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $extensions;
         }));
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
-            $types[] = new \Eccube\Form\Type\NameType();
-            $types[] = new \Eccube\Form\Type\TelType();
+            $types[] = new \Eccube\Form\Type\NameType($app['config']);
+            $types[] = new \Eccube\Form\Type\KanaType($app['config']);
+            $types[] = new \Eccube\Form\Type\TelType($app['config']);
             $types[] = new \Eccube\Form\Type\FaxType(); // 削除予定
-            $types[] = new \Eccube\Form\Type\AddressType();
+            $types[] = new \Eccube\Form\Type\ZipType($app['config']);
+            $types[] = new \Eccube\Form\Type\AddressType($app['config']);
             $types[] = new \Eccube\Form\Type\PaymentType();
             $types[] = new \Eccube\Form\Type\DeliveryType();
             $types[] = new \Eccube\Form\Type\DeliveryDateType();
@@ -274,6 +276,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\MailTemplateType();
             $types[] = new \Eccube\Form\Type\CategoryType();
 
+            $types[] = new \Eccube\Form\Type\MasterType();
             $types[] = new \Eccube\Form\Type\Master\JobType();
             $types[] = new \Eccube\Form\Type\Master\CustomerStatusType();
             $types[] = new \Eccube\Form\Type\Master\OrderStatusType();
@@ -281,7 +284,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\SexType();
             $types[] = new \Eccube\Form\Type\Master\DispType();
             $types[] = new \Eccube\Form\Type\Master\PrefType();
-            $types[] = new \Eccube\Form\Type\Master\ZipType();
             $types[] = new \Eccube\Form\Type\Master\ProductTypeType();
             $types[] = new \Eccube\Form\Type\Master\ProductListMaxType();
             $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();

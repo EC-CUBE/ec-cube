@@ -21,18 +21,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
-namespace Eccube\Form\Type\Master;
+namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ZipType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($config = array('zip01_len' => 3, 'zip02_len' => 4))
+    {
+        $this->config = $config;
+    }
 
     /**
      * {@inheritdoc}
@@ -42,20 +48,27 @@ class ZipType extends AbstractType
         $options['zip01_options']['required'] = $options['required'];
         $options['zip02_options']['required'] = $options['required'];
 
+        // required の場合は NotBlank も追加する
+        if ($options['required']) {
+            $options['options']['constraints'] = array_merge(array(
+                new Assert\NotBlank(array()),
+            ), $options['options']['constraints']);
+        }
+
         if (!isset($options['options']['error_bubbling'])) {
             $options['options']['error_bubbling'] = $options['error_bubbling'];
         }
 
         if (empty($options['zip01_name'])) {
-            $options['zip01_name'] = $builder->getName() . '01';
+            $options['zip01_name'] = $builder->getName().'01';
         }
         if (empty($options['zip02_name'])) {
-            $options['zip02_name'] = $builder->getName() . '02';
+            $options['zip02_name'] = $builder->getName().'02';
         }
 
         $builder
-            ->add($options['zip01_name'], 'text', array_merge($options['options'], $options['zip01_options']))
-            ->add($options['zip02_name'], 'text', array_merge($options['options'], $options['zip02_options']))
+            ->add($options['zip01_name'], 'text', array_merge_recursive($options['options'], $options['zip01_options']))
+            ->add($options['zip02_name'], 'text', array_merge_recursive($options['options'], $options['zip02_options']))
         ;
 
         $builder->setAttribute('zip01_name', $options['zip01_name']);
@@ -76,32 +89,27 @@ class ZipType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'options' => array(),
+            'options' => array('constraints' => array()),
             'zip01_options' => array(
-                'attr' => array(
-                    'maxlength' => 3,
-                ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 3, 'max' => 3)),
-                    new Assert\Regex(array('pattern' => '/^\d{3}$/')),
+                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                    new Assert\Length(array('min' => $this->config['zip01_len'], 'max' => $this->config['zip01_len'])),
                 ),
             ),
             'zip02_options' => array(
-                'attr' => array(
-                    'maxlength' => 4,
-                ),
                 'constraints' => array(
-                    new Assert\Length(array('min' => 4, 'max' => 4)),
-                    new Assert\Regex(array('pattern' => '/^\d{4}$/')),
+                    new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+                    new Assert\Length(array('min' => $this->config['zip02_len'], 'max' => $this->config['zip02_len'])),
                 ),
             ),
             'zip01_name' => '',
             'zip02_name' => '',
             'error_bubbling' => false,
             'inherit_data' => true,
+            'trim' => true,
         ));
     }
 

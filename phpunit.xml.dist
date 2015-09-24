@@ -23,9 +23,6 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src/Eccube/</directory>
-            <exclude>
-                <directory>./src/Eccube/Entity/</directory>
-            </exclude>
         </whitelist>
     </filter>
 </phpunit>

@@ -22,14 +22,14 @@
  */
 
 
-namespace Eccube\Form\Type\Master;
+namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PrefType extends AbstractType
+class MasterType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -37,8 +37,14 @@ class PrefType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\Pref',
-            'empty_value' => 'form.pref.empty_value',
+            'multiple'=> false,
+            'expanded' => false,
+            'required' => false,
+            'empty_value' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('m')
+                    ->orderBy('m.rank', 'ASC');
+            },
         ));
     }
 
@@ -47,7 +53,7 @@ class PrefType extends AbstractType
      */
     public function getName()
     {
-        return 'pref';
+        return 'master';
     }
 
     /**
@@ -55,6 +61,6 @@ class PrefType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return 'entity';
     }
 }

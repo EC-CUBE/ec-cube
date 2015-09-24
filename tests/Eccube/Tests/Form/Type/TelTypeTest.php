@@ -133,21 +133,13 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        // \Eccube\Applicationは重いから呼ばない
-        // todo AbstractTypeTestCaseに移す
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
-            $types[] = new \Eccube\Form\Type\TelType();
-
-            return $types;
-        }));
+        $app = $this->createApplication();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel')
+            ->add('tel', 'tel', array(
+                'required' => false,
+            ))
             ->getForm();
     }
 
@@ -221,5 +213,86 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
+    }
+
+    public function testSubmitFromZenToHan()
+    {
+        $input = array(
+            'tel' => array(
+                'tel01' => '１２３４５',
+                'tel02' => '１２３４５',
+                'tel03' => '６７８９０',
+            ));
+
+        $output = array(
+            'tel01' => '12345',
+            'tel02' => '12345',
+            'tel03' => '67890',
+        );
+
+        $this->form->submit($input);
+        $this->assertEquals($output, $this->form->getData());
+    }
+
+    public function testRequiredAddNotBlank_Tel01()
+    {
+        $app = $this->createApplication();
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+        $this->formData['tel']['tel01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testRequiredAddNotBlank_Tel02()
+    {
+        $app = $this->createApplication();
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+        $this->formData['tel']['tel02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testRequiredAddNotBlank_Tel03()
+    {
+        $app = $this->createApplication();
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
+            ->getForm();
+
+        $this->formData['tel']['tel03'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function createApplication()
+    {
+
+        // \Eccube\Applicationは重いから呼ばない
+        $app = new \Silex\Application();
+        $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+            $types[] = new \Eccube\Form\Type\TelType();
+
+            return $types;
+        }));
+
+        return $app;
     }
 }

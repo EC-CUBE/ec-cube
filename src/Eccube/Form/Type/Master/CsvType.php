@@ -27,35 +27,20 @@ namespace Eccube\Form\Type\Master;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CsvType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\CsvType',
+            // todo toStringがない？
             'property' => 'name',
-            'label' => false,
-            'multiple' => false,
-            'expanded' => false,
-            'required' => false,
             'empty_value' => false,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('ct')
-                    ->orderBy('ct.rank', 'ASC');
-            },
         ));
     }
 
@@ -72,6 +57,6 @@ class CsvType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 }
