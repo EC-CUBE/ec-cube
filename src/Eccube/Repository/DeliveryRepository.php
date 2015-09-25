@@ -91,8 +91,6 @@ class DeliveryRepository extends EntityRepository
      */
     public function findAllowedDeliveries($productTypes, $payments)
     {
-        $deliveries = array();
-        $i = 0;
 
         $d = $this->getDeliveries($productTypes);
         $arr = array();
@@ -111,9 +109,7 @@ class DeliveryRepository extends EntityRepository
 
         }
 
-        $deliveries = array_values($arr);
-
-        return $deliveries;
+        return array_values($arr);
 
     }
 }

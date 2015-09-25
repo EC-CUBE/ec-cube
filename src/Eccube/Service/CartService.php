@@ -69,11 +69,6 @@ class CartService
      */
     private $error;
 
-    /**
-     * @var array
-     */
-    private $payments = array();
-
     public function __construct(\Eccube\Application $app)
     {
         $this->session = $app['session'];

@@ -142,10 +142,6 @@ class EditController extends AbstractController
                                 $NewShipmentItems[] = $NewShipmentItem;
 
                             }
-                        }
-
-                        if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-                        } else {
                             // 配送商品の更新. delete/insert.
                             $Shippings = $TargetOrder->getShippings();
                             foreach ($Shippings as $Shipping) {

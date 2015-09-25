@@ -645,7 +645,7 @@ class ShoppingController extends AbstractController
                 // 初回アクセス(受注データがない)の場合は, 受注情報を作成
                 if (is_null($Order)) {
                     // 受注情報を作成
-                    $Order = $app['eccube.service.shopping']->createOrder($Customer);
+                    $app['eccube.service.shopping']->createOrder($Customer);
                 }
 
                 // 非会員用セッションを作成
@@ -685,15 +685,6 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-
-        /*
-        $shipmentItems = array();
-        foreach ($Order->getShippings() as $Shipping) {
-            foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
-                $shipmentItems[] = $ShipmentItem;
-            }
-        }
-        */
 
         $compItemQuantities = array();
         foreach ($Order->getShippings() as $Shipping) {

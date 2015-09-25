@@ -359,7 +359,7 @@ class ShoppingService
 
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
             // 複数配送対応
-            $productType[] = array();
+            $productType = array();
             foreach ($deliveries as $Delivery) {
 
                 if (!in_array($Delivery->getProductType()->getId(), $productType)) {
@@ -485,7 +485,7 @@ class ShoppingService
             $Order->addOrderDetail($OrderDetail);
 
             // 配送商品情報を作成
-            $ShipmentItem = $this->getNewShipmentItem($Order, $Product, $ProductClass, $quantity);
+            $this->getNewShipmentItem($Order, $Product, $ProductClass, $quantity);
         }
 
         return $Order;
