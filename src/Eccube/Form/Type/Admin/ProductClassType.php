@@ -71,6 +71,9 @@ class ProductClassType extends AbstractType
                     new Assert\Length(array(
                         'max' => 10,
                     )),
+                    new Assert\GreaterThanOrEqual(array(
+                        'value' => 0,
+                    )),
                 ),
             ))
             ->add('price02', 'money', array(
@@ -81,6 +84,9 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => 10,
+                    )),
+                    new Assert\GreaterThanOrEqual(array(
+                        'value' => 0,
                     )),
                 ),
             ))
