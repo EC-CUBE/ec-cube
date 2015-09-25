@@ -378,4 +378,21 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::isBlank($text, false);
         $this->assertTrue($this->actual);
     }
+
+    public function testTrimAll()
+    {
+        $text = '     a　';
+        $this->expected = 'a';
+        $this->actual = Str::trimAll($text);
+        $this->assertEquals($this->expected, $this->actual);
+
+        $text = '';
+        $this->actual = Str::trimAll($text);
+        $this->assertNotNull($this->actual);
+        $this->assertEmpty($this->actual);
+
+        $text = null;
+        $this->actual = Str::trimAll($text);
+        $this->assertNull($this->actual);
+    }
 }

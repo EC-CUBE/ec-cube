@@ -271,14 +271,14 @@ class Str
      */
     public static function trimAll($value)
     {
+        if ($value === '') {
+            return '';
+        }
+
         if ($value == null) {
             return null;
-        }
-        if ($value == '') {
-            return '';
         }
 
         return trim(mb_convert_kana($value, 's', 'UTF-8'));
     }
-
 }
