@@ -275,7 +275,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::isBlank($text);
         $this->assertTrue($this->actual);
 
-        $text = 1;
+        $text = 0;
         $this->actual = Str::isBlank($text);
         $this->assertFalse($this->actual);
 
@@ -283,9 +283,99 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::isBlank($text);
         $this->assertFalse($this->actual);
 
-        // $text = new \stdClass();
-        // $this->actual = Str::isBlank($text);
-        // $this->assertFalse($this->actual);
+        $text = new \stdClass();
+        $this->actual = Str::isBlank($text);
+        $this->assertFalse($this->actual);
 
+        $text = array(array('aa' => array('aa' => 'a')));
+        $this->actual = Str::isBlank($text);
+        $this->assertFalse($this->actual);
+
+        $text = '      ';
+        $this->actual = Str::isBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = '　';
+        $this->actual = Str::isBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = '　a　';
+        $this->actual = Str::isBlank($text);
+        $this->assertFalse($this->actual);
+
+        $text = "　\n\t　";
+        $this->actual = Str::isBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = " \t　\n\r\x0B\0"; // 全ての空白文字
+        $this->actual = Str::isBlank($text);
+        $this->assertTrue($this->actual);
+    }
+
+    public function testIsNotBlank()
+    {
+        $text = '';
+        $this->actual = Str::isNotBlank($text);
+        $this->assertFalse($this->actual);
+
+        $text = null;
+        $this->actual = Str::isNotBlank($text);
+        $this->assertFalse($this->actual);
+
+        $text = array();
+        $this->actual = Str::isNotBlank($text);
+        $this->assertFalse($this->actual);
+
+        $text = array(array('aa' => array('aa' => '')));
+        $this->actual = Str::isNotBlank($text);
+        $this->assertFalse($this->actual);
+
+        $text = 1;
+        $this->actual = Str::isNotBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = '1';
+        $this->actual = Str::isNotBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = new \stdClass();
+        $this->actual = Str::isNotBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = array(array('aa' => array('aa' => 'a')));
+        $this->actual = Str::isNotBlank($text);
+        $this->assertTrue($this->actual);
+    }
+
+    public function testIsBlankWithNotGreedy()
+    {
+        // greedy = false のテスト
+        $text = '      ';
+        $this->actual = Str::isBlank($text, false);
+        $this->assertTrue($this->actual);
+
+        $text = array(array('aa' => array('aa' => '')));
+        $this->actual = Str::isBlank($text, false);
+        $this->assertFalse($this->actual);
+
+        $text = '　';
+        $this->actual = Str::isBlank($text, false);
+        $this->assertFalse($this->actual);
+
+        $text = '　a　';
+        $this->actual = Str::isBlank($text, false);
+        $this->assertFalse($this->actual);
+
+        $text = "　\n\t　";
+        $this->actual = Str::isBlank($text, false);
+        $this->assertFalse($this->actual);
+
+        $text = " \t　\n\r\x0B\0"; // 全ての空白文字
+        $this->actual = Str::isBlank($text, false);
+        $this->assertFalse($this->actual);
+
+        $text = " \t\n\r\x0B\0"; // ASCII の空白文字
+        $this->actual = Str::isBlank($text, false);
+        $this->assertTrue($this->actual);
     }
 }

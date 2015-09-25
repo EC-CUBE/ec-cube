@@ -220,6 +220,9 @@ class Str
      */
     public static function isBlank($value, $greedy = true)
     {
+        if (is_object($value)) {
+            return false;
+        }
         if (is_array($value)) {
             if ($greedy) {
                 if (empty($value)) {
