@@ -161,6 +161,7 @@ class Str
 
 
     /**
+     * 現在からの経過時間を書式化する.
      *
      * @param $date
      * @return string
