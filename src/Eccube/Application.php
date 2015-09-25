@@ -52,37 +52,37 @@ class Application extends ApplicationTrait
     public function initConfig()
     {
         // load config
-        $this['config'] = $this->share(function () {
-            $ymlPath = __DIR__ . '/../../app/config/eccube';
-            $distPath = __DIR__ . '/../../src/Eccube/Resource/config';
+        $this['config'] = $this->share(function() {
+            $ymlPath = __DIR__.'/../../app/config/eccube';
+            $distPath = __DIR__.'/../../src/Eccube/Resource/config';
 
             $config = array();
-            $config_yml = $ymlPath . '/config.yml';
+            $config_yml = $ymlPath.'/config.yml';
             if (file_exists($config_yml)) {
                 $config = Yaml::parse($config_yml);
             }
 
             $config_dist = array();
-            $config_yml_dist = $distPath . '/config.yml.dist';
+            $config_yml_dist = $distPath.'/config.yml.dist';
             if (file_exists($config_yml_dist)) {
                 $config_dist = Yaml::parse($config_yml_dist);
             }
 
             $config_path = array();
-            $path_yml = $ymlPath . '/path.yml';
+            $path_yml = $ymlPath.'/path.yml';
             if (file_exists($path_yml)) {
                 $config_path = Yaml::parse($path_yml);
             }
 
             $config_constant = array();
-            $constant_yml = $ymlPath . '/constant.yml';
+            $constant_yml = $ymlPath.'/constant.yml';
             if (file_exists($constant_yml)) {
                 $config_constant = Yaml::parse($constant_yml);
                 $config_constant = empty($config_constant) ? array() : $config_constant;
             }
 
             $config_constant_dist = array();
-            $constant_yml_dist = $distPath . '/constant.yml.dist';
+            $constant_yml_dist = $distPath.'/constant.yml.dist';
             if (file_exists($constant_yml_dist)) {
                 $config_constant_dist = Yaml::parse($constant_yml_dist);
             }
@@ -90,25 +90,25 @@ class Application extends ApplicationTrait
             $configAll = array_replace_recursive($config_constant_dist, $config_dist, $config_constant, $config_path, $config);
 
             $database = array();
-            $yml = $ymlPath . '/database.yml';
+            $yml = $ymlPath.'/database.yml';
             if (file_exists($yml)) {
                 $database = Yaml::parse($yml);
             }
 
             $mail = array();
-            $yml = $ymlPath . '/mail.yml';
+            $yml = $ymlPath.'/mail.yml';
             if (file_exists($yml)) {
                 $mail = Yaml::parse($yml);
             }
             $configAll = array_replace_recursive($configAll, $database, $mail);
 
             $config_log = array();
-            $yml = $ymlPath . '/log.yml';
+            $yml = $ymlPath.'/log.yml';
             if (file_exists($yml)) {
                 $config_log = Yaml::parse($yml);
             }
             $config_log_dist = array();
-            $log_yml_dist = $distPath . '/log.yml.dist';
+            $log_yml_dist = $distPath.'/log.yml.dist';
             if (file_exists($log_yml_dist)) {
                 $config_log_dist = Yaml::parse($log_yml_dist);
             }
@@ -116,12 +116,12 @@ class Application extends ApplicationTrait
             $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
 
             $config_nav = array();
-            $yml = $ymlPath . '/nav.yml';
+            $yml = $ymlPath.'/nav.yml';
             if (file_exists($yml)) {
                 $config_nav = array('nav' => Yaml::parse($yml));
             }
             $config_nav_dist = array();
-            $nav_yml_dist = $distPath . '/nav.yml.dist';
+            $nav_yml_dist = $distPath.'/nav.yml.dist';
             if (file_exists($nav_yml_dist)) {
                 $config_nav_dist = array('nav' => Yaml::parse($nav_yml_dist));
             }
@@ -134,17 +134,17 @@ class Application extends ApplicationTrait
 
     public function initLogger()
     {
-        $file = __DIR__ . '/../../app/log/site.log';
+        $file = __DIR__.'/../../app/log/site.log';
         $this->register(new \Silex\Provider\MonologServiceProvider(), array(
             'monolog.logfile' => $file,
         ));
 
         $levels = Logger::getLevels();
-        $this['monolog'] = $this->share($this->extend('monolog', function ($monolog, $this) use ($levels, $file) {
+        $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $this) use ($levels, $file) {
 
             $RotateHandler = new RotatingFileHandler($file, $this['config']['log']['max_files'], $this['config']['log']['log_level']);
             $RotateHandler->setFilenameFormat(
-                $this['config']['log']['prefix'] . '{date}' . $this['config']['log']['suffix'],
+                $this['config']['log']['prefix'].'{date}'.$this['config']['log']['suffix'],
                 $this['config']['log']['format']
             );
 
@@ -177,7 +177,7 @@ class Application extends ApplicationTrait
         $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
         $app = $this;
-        $this->error(function (\Exception $e, $code) use ($app) {
+        $this->error(function(\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;
             }
@@ -214,7 +214,7 @@ class Application extends ApplicationTrait
         // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+        $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
     }
 
     public function initLocale()
@@ -228,21 +228,21 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
         ));
-        $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
+        $this['translator'] = $this->share($this->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-            $file = dirname($r->getFilename()) . '/Resources/translations/validators.' . $app['locale'] . '.xlf';
+            $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
             if (file_exists($file)) {
                 $translator->addResource('xliff', $file, $app['locale'], 'validators');
             }
 
-            $file = __DIR__ . '/Resource/locale/validator.' . $app['locale'] . '.yml';
+            $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
             if (file_exists($file)) {
                 $translator->addResource('yaml', $file, $app['locale'], 'validators');
             }
 
-            $file = __DIR__ . '/Resource/locale/message.' . $app['locale'] . '.yml';
+            $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.yml';
             if (file_exists($file)) {
                 $translator->addResource('yaml', $file, $app['locale']);
             }
@@ -269,7 +269,7 @@ class Application extends ApplicationTrait
         );
 
         $app = $this;
-        $this['session.storage.handler'] = function () use ($app) {
+        $this['session.storage.handler'] = function() use ($app) {
             return new PdoSessionHandler(
                 $app['dbs']['session']->getWrappedConnection(),
                 $app['session.db_options']
@@ -282,40 +282,40 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
-        $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+        $this['twig'] = $this->share($this->extend('twig', function(\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
             return $twig;
         }));
 
-        $this->before(function (Request $request, \Silex\Application $app) {
+        $this->before(function(Request $request, \Silex\Application $app) {
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+            $app['twig'] = $app->share($app->extend('twig', function(\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
 
                 if (isset($app['profiler'])) {
-                    $cacheBaseDir = __DIR__ . '/../../app/cache/twig/profiler/';
-                }else{
-                    $cacheBaseDir = __DIR__ . '/../../app/cache/twig/production/';
+                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
+                } else {
+                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
 
-                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
-                        $paths[] = __DIR__ . '/../../app/template/admin';
+                if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                    if (file_exists(__DIR__.'/../../app/template/admin')) {
+                        $paths[] = __DIR__.'/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
-                    $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = $cacheBaseDir . 'admin';
+                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $cache = $cacheBaseDir.'admin';
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
                     }
                     $paths[] = $app['config']['template_default_realdir'];
-                    $paths[] = __DIR__ . '/../../app/Plugin';
-                    $cache = $cacheBaseDir . $app['config']['template_code'];
+                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $cache = $cacheBaseDir.$app['config']['template_code'];
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
@@ -324,7 +324,7 @@ class Application extends ApplicationTrait
             }));
 
             // 管理画面のIP制限チェック.
-            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+            if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
                 // IP制限チェック
                 $allowHost = $app['config']['admin_allow_host'];
                 if (count($allowHost) > 0) {
@@ -337,13 +337,13 @@ class Application extends ApplicationTrait
 
         // twigのグローバル変数を定義.
         $app = $this;
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function(\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
             // ショップ基本情報
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
             // 管理画面
-            if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+            if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
@@ -402,7 +402,7 @@ class Application extends ApplicationTrait
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
-        $pluginBasePath = __DIR__ . '/../../app/Plugin';
+        $pluginBasePath = __DIR__.'/../../app/Plugin';
         $finder = Finder::create()
             ->in($pluginBasePath)
             ->directories()
@@ -413,30 +413,30 @@ class Application extends ApplicationTrait
             'type' => 'yml',
             'namespace' => 'Eccube\Entity',
             'path' => array(
-                __DIR__ . '/Resource/doctrine',
-                __DIR__ . '/Resource/doctrine/master',
+                __DIR__.'/Resource/doctrine',
+                __DIR__.'/Resource/doctrine/master',
             ),
         );
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+            $config = Yaml::parse($dir->getRealPath().'/config.yml');
 
             // Doctrine Extend
             if (isset($config['orm.path']) and is_array($config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
-                    $paths[] = $pluginBasePath . '/' . $config['code'] . $path;
+                    $paths[] = $pluginBasePath.'/'.$config['code'].$path;
                 }
                 $ormMappings[] = array(
                     'type' => 'yml',
-                    'namespace' => 'Plugin\\' . $config['code'] . '\\Entity',
+                    'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
                     'path' => $paths,
                 );
             }
         }
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
+            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => $ormMappings,
             ),
@@ -503,19 +503,19 @@ class Application extends ApplicationTrait
             array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
             array('^/mypage', 'ROLE_USER'),
         );
-        $this['eccube.password_encoder'] = $this->share(function ($app) {
+        $this['eccube.password_encoder'] = $this->share(function($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
         });
-        $this['security.encoder_factory'] = $this->share(function ($app) {
+        $this['security.encoder_factory'] = $this->share(function($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
                 'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
                 'Eccube\Entity\Member' => $app['eccube.password_encoder'],
             ));
         });
-        $this['eccube.event_listner.security'] = $this->share(function ($app) {
+        $this['eccube.event_listner.security'] = $this->share(function($app) {
             return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
         });
-        $this['user'] = $this->share(function ($app) {
+        $this['user'] = $this->share(function($app) {
             $token = $app['security']->getToken();
 
             return ($token !== null) ? $token->getUser() : null;
@@ -537,45 +537,45 @@ class Application extends ApplicationTrait
     public function initPluginEventDispatcher()
     {
         // EventDispatcher
-        $this['eccube.event.dispatcher'] = $this->share(function () {
+        $this['eccube.event.dispatcher'] = $this->share(function() {
             return new EventDispatcher();
         });
 
         // hook point
-        $this->before(function (Request $request, \Silex\Application $app) {
+        $this->before(function(Request $request, \Silex\Application $app) {
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
         }, self::EARLY_EVENT);
 
-        $this->before(function (Request $request, \Silex\Application $app) {
-            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.before';
+        $this->before(function(Request $request, \Silex\Application $app) {
+            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.before';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
-        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.after';
+        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
+            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.after';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
-        $this->after(function (Request $request, Response $response, \Silex\Application $app) {
+        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
         }, self::LATE_EVENT);
 
-        $this->finish(function (Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.' . $request->attributes->get('_route') . '.finish';
+        $this->finish(function(Request $request, Response $response, \Silex\Application $app) {
+            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.finish';
             $app['eccube.event.dispatcher']->dispatch($event);
         });
 
         $app = $this;
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
             $route = $event->getRequest()->attributes->get('_route');
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.' . $route . '.before', $event);
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
         });
     }
 
     public function loadPlugin()
     {
         // プラグインディレクトリを探索.
-        $basePath = __DIR__ . '/../../app/Plugin';
+        $basePath = __DIR__.'/../../app/Plugin';
         $finder = Finder::create()
             ->in($basePath)
             ->directories()
@@ -602,10 +602,10 @@ class Application extends ApplicationTrait
         // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
         foreach ($finder as $dir) {
             //config.ymlのないディレクトリは無視する
-            if (!file_exists($dir->getRealPath() . '/config.yml')) {
+            if (!file_exists($dir->getRealPath().'/config.yml')) {
                 continue;
             }
-            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+            $config = Yaml::parse($dir->getRealPath().'/config.yml');
 
             $plugin = $this['orm.em']
                 ->getRepository('Eccube\Entity\Plugin')
@@ -613,7 +613,7 @@ class Application extends ApplicationTrait
 
             // const
             if (isset($config['const'])) {
-                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
+                $this['config'] = $this->share($this->extend('config', function($eccubeConfig) use ($config) {
                     $eccubeConfig[$config['code']] = array(
                         'const' => $config['const'],
                     );
@@ -629,11 +629,11 @@ class Application extends ApplicationTrait
 
             // Type: Event
             if (isset($config['event'])) {
-                $class = '\\Plugin\\' . $config['code'] . '\\' . $config['event'];
+                $class = '\\Plugin\\'.$config['code'].'\\'.$config['event'];
                 $subscriber = new $class($this);
 
-                if (file_exists($dir->getRealPath() . '/event.yml')) {
-                    foreach (Yaml::Parse($dir->getRealPath() . '/event.yml') as $event => $handlers) {
+                if (file_exists($dir->getRealPath().'/event.yml')) {
+                    foreach (Yaml::Parse($dir->getRealPath().'/event.yml') as $event => $handlers) {
                         foreach ($handlers as $handler) {
                             if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
                                 $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;
@@ -651,7 +651,7 @@ class Application extends ApplicationTrait
             // Type: ServiceProvider
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\' . $config['code'] . '\\ServiceProvider\\' . $service;
+                    $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
                     $this->register(new $class($this));
                 }
             }
