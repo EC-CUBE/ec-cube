@@ -161,13 +161,17 @@ class CartService
                 ->getRepository($CartItem->getClassName())
                 ->find($CartItem->getClassId());
 
+            $stockUnlimited = $ProductClass->getStockUnlimited();
+
             // 商品情報が削除されたらカートからも削除
             if ($ProductClass->getDelFlg() == Constant::ENABLED) {
                 $this->addError('cart.product.delete');
                 $this->removeProduct($ProductClass->getId());
+            } elseif (empty($stockUnlimited) && $ProductClass->getStock() < 1) { // 在庫がなければカートから削除
+                $this->addError('cart.zero.stock');
+                $this->removeProduct($ProductClass->getId());
             } else {
                 $quantity = $CartItem->getQuantity();
-                $stockUnlimited = $ProductClass->getStockUnlimited();
                 $saleLimit = $ProductClass->getSaleLimit();
                 if (empty($stockUnlimited) && $ProductClass->getStock() < $quantity) {
                     $this->addError('cart.over.stock');
