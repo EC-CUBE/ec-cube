@@ -95,7 +95,6 @@ class ShipmentItemType extends AbstractType
                 if (isset($data['new'])) {
                     $ProductClass = $app['eccube.repository.product_class']
                         ->find($data['ProductClass']);
-                    $Product = $ProductClass->getProduct();
 
                     $data['price'] = $ProductClass->getPrice02();
                     $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];

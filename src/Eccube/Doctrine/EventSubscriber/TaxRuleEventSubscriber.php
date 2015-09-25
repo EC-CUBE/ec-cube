@@ -27,6 +27,9 @@ namespace Eccube\Doctrine\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Eccube\Entity\OrderDetail;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\ShipmentItem;
 
 class TaxRuleEventSubscriber implements EventSubscriber
 {
@@ -54,14 +57,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof \Eccube\Entity\ProductClass) {
+        if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+        if ($entity instanceof OrderDetail) {
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
-        if ($entity instanceof \Eccube\Entity\ShipmentItemt) {
+        if ($entity instanceof ShipmentItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
         }
     }
@@ -70,14 +73,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof \Eccube\Entity\ProductClass) {
+        if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+        if ($entity instanceof OrderDetail) {
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
-        if ($entity instanceof \Eccube\Entity\ShipmentItem) {
+        if ($entity instanceof ShipmentItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
         }
     }
@@ -86,14 +89,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof \Eccube\Entity\ProductClass) {
+        if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+        if ($entity instanceof OrderDetail) {
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
-        if ($entity instanceof \Eccube\Entity\ShipmentItem) {
+        if ($entity instanceof ShipmentItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
         }
     }
@@ -102,14 +105,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
 
-        if ($entity instanceof \Eccube\Entity\ProductClass) {
+        if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->taxRateService->getPriceIncTax($entity->getPrice01(), $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->taxRateService->getPriceIncTax($entity->getPrice02(), $entity->getProduct(), $entity));
         }
-        if ($entity instanceof \Eccube\Entity\OrderDetail) {
+        if ($entity instanceof OrderDetail) {
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
-        if ($entity instanceof \Eccube\Entity\ShipmentItem) {
+        if ($entity instanceof ShipmentItem) {
             $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
         }
     }

@@ -772,7 +772,7 @@ class ShoppingController extends AbstractController
                         foreach ($items as $item) {
                             /** @var \Eccube\Entity\Shipping $Shipping */
                             $Shipping = $item->getData();
-                            if ($Shipping instanceof \Eccube\Entity\Shipping) {
+                            if ($Shipping instanceof Shipping) {
 
                                 // お届け先を新規追加
                                 // 会員の場合、お届け先情報を新規登録
