@@ -38,15 +38,9 @@ class ShippingType extends AbstractType
 {
     public $app;
 
-    /**
-     * @var \Eccube\Entity\BaseInfo
-     */
-    protected $BaseInfo;
-
     public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
-        $this->BaseInfo = $app['eccube.repository.base_info']->get();
     }
 
     /**
@@ -55,6 +49,8 @@ class ShippingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->app['config'];
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+
         $builder
             ->add('name', 'name', array(
                 'required' => true,
@@ -136,8 +132,8 @@ class ShippingType extends AbstractType
                 'placeholder' => '',
                 'format' => 'yyyy-MM-dd',
             ))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
+                if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
                     $form->add('ShipmentItems', 'collection', array(
                         'type' => 'shipment_item',
@@ -147,8 +143,8 @@ class ShippingType extends AbstractType
                     ));
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-                if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
+                if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
                     $shipmentItems = $form['ShipmentItems']->getData();
 
