@@ -361,7 +361,7 @@ class PluginService
                             'plugin_id' => $plugin->getId(),
                             'event' => $event,
                             'handler' => $handler[0],
-                            'handler_type' => $handler[1], ));
+                            'handler_type' => $handler[1],));
 
                         if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                             $peh = new \Eccube\Entity\PluginEventHandler();
