@@ -198,23 +198,55 @@ class Str
     }
 
     /**
-     * @param $value
-     * @return bool
+     * 変数が空白かどうかをチェックする.
+     *
+     * 引数 $val が空白かどうかをチェックする. 空白の場合は true.
+     * 以下の文字は空白と判断する.
+     * - ' ' (ASCII 32 (0x20)), 通常の空白
+     * - "\t" (ASCII 9 (0x09)), タブ
+     * - "\n" (ASCII 10 (0x0A)), リターン
+     * - "\r" (ASCII 13 (0x0D)), 改行
+     * - "\0" (ASCII 0 (0x00)), NULバイト
+     * - "\x0B" (ASCII 11 (0x0B)), 垂直タブ
+     *
+     * 引数 $val が配列の場合は, 空の配列の場合 true を返す.
+     *
+     * 引数 $greedy が true の場合は, 全角スペース, ネストした空の配列も
+     * 空白と判断する.
+     *
+     * @param  mixed   $value    チェック対象の変数
+     * @param  boolean $greedy '貧欲'にチェックを行う場合 true
+     * @return boolean $value が空白と判断された場合 true
      */
-    public static function isBlank($value)
+    public static function isBlank($value, $greedy = true)
     {
-        if (!is_string($value)) {
+        if (is_array($value)) {
+            if ($greedy) {
+                if (empty($value)) {
+                    return true;
+                }
+                $array_result = true;
+                foreach ($value as $in) {
+                    $array_result = self::isBlank($in, $greedy);
+                    if (!$array_result) {
+                        return false;
+                    }
+                }
+
+                return $array_result;
+            } else {
+                return empty($value);
+            }
+        }
+
+        if ($greedy) {
+            $value = preg_replace('/　/', '', $value);
+        }
+
+        $value = trim($value);
+        if (strlen($value) > 0) {
             return false;
         }
-
-        if ($value == null || $value == '') {
-            return true;
-        }
-
-        if (trim(mb_convert_kana($value, 's', 'UTF-8')) !== '') {
-            return false;
-        }
-
         return true;
     }
 

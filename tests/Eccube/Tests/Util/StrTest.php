@@ -263,9 +263,17 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::isBlank($text);
         $this->assertTrue($this->actual);
 
-        // $text = null;
-        // $this->actual = Str::isBlank($text);
-        // $this->assertTrue($this->actual);
+        $text = null;
+        $this->actual = Str::isBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = array();
+        $this->actual = Str::isBlank($text);
+        $this->assertTrue($this->actual);
+
+        $text = array(array('aa' => array('aa' => '')));
+        $this->actual = Str::isBlank($text);
+        $this->assertTrue($this->actual);
 
         $text = 1;
         $this->actual = Str::isBlank($text);
@@ -275,12 +283,9 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::isBlank($text);
         $this->assertFalse($this->actual);
 
-        $text = new \stdClass();
-        $this->actual = Str::isBlank($text);
-        $this->assertFalse($this->actual);
+        // $text = new \stdClass();
+        // $this->actual = Str::isBlank($text);
+        // $this->assertFalse($this->actual);
 
-        $text = array();
-        $this->actual = Str::isBlank($text);
-        $this->assertFalse($this->actual);
     }
 }
