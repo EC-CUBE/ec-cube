@@ -65,6 +65,10 @@ class Step3Type extends AbstractType
                         'min' => 4,
                         'max' => 50,
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
+                    )),
                 ),
             ))
             ->add('login_pass', 'password', array(
@@ -74,6 +78,10 @@ class Step3Type extends AbstractType
                     new Assert\Length(array(
                         'min' => 4,
                         'max' => 50,
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
                     )),
                 ),
             ))
@@ -129,7 +137,6 @@ class Step3Type extends AbstractType
                 'required' => false,
             ))
         ;
-
     }
 
     /**
