@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * Foundation, Inc., 59 Temple Place - Suite $this->app['config']['id_min_len']-130, Boston, MA  02111-1307, USA.
  */
 
 
@@ -36,9 +36,9 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
     protected $formData = array(
         'shop_name' => '店舗名',
         'email' => 'eccube@example.com',
-        'login_id' => 'admin',
-        'login_pass' => 'admin',
-        'admin_dir' => 'admin',
+        'login_id' => 'administrator',
+        'login_pass' => 'administrator',
+        'admin_dir' => 'administrator',
         'admin_force_ssl' => true,
         'admin_allow_hosts' => '1.1.1.1',
         'mail_backend' => 'mail',
@@ -99,7 +99,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalid_LoginId_Min()
     {
-        $this->formData['login_id'] = str_repeat('a', 3);
+        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_min_len']-1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -107,7 +107,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalid_LoginId_Max()
     {
-        $this->formData['login_id'] = str_repeat('a', 51);
+        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_max_len']+1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -115,7 +115,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testValid_LoginId_Min()
     {
-        $this->formData['login_id'] = str_repeat('a', 4);
+        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_min_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -123,7 +123,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testValid_LoginId_Max()
     {
-        $this->formData['login_id'] = str_repeat('a', 50);
+        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -131,7 +131,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalid_LoginId_Hiragana()
     {
-        $this->formData['login_id'] = str_repeat('あ', 50);
+        $this->formData['login_id'] = str_repeat('あ', $this->app['config']['id_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -145,17 +145,17 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalpass_LoginPass_Min()
+    public function testInvalid_LoginPass_Min()
     {
-        $this->formData['login_pass'] = str_repeat('a', 3);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_min_len']-1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalpass_LoginPass_Max()
+    public function testInvalid_LoginPass_Max()
     {
-        $this->formData['login_pass'] = str_repeat('a', 51);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_max_len']+1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -163,7 +163,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testVallid_LoginPass_Min()
     {
-        $this->formData['login_pass'] = str_repeat('a', 4);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_min_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -171,7 +171,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testVallid_LoginPass_Max()
     {
-        $this->formData['login_pass'] = str_repeat('a', 50);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -179,7 +179,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalid_LoginPass_Hiragana()
     {
-        $this->formData['login_pass'] = str_repeat('あ', 50);
+        $this->formData['login_pass'] = str_repeat('あ', $this->app['config']['password_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -193,17 +193,17 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalpass_AdminDir_Min()
+    public function testInvalid_AdminDir_Min()
     {
-        $this->formData['login_pass'] = str_repeat('a', 3);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_min_len']-1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalpass_AdminDir_Max()
+    public function testInvalid_AdminDir_Max()
     {
-        $this->formData['login_pass'] = str_repeat('a', 51);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_max_len']+1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -211,7 +211,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testVallid_AdminDir_Min()
     {
-        $this->formData['login_pass'] = str_repeat('a', 4);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_min_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -219,7 +219,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testVallid_AdminDir_Max()
     {
-        $this->formData['login_pass'] = str_repeat('a', 50);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -227,7 +227,7 @@ class Step3TypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalid_AdminDir_Hiragana()
     {
-        $this->formData['admin_dir'] = str_repeat('あ', 50);
+        $this->formData['admin_dir'] = str_repeat('あ', $this->app['config']['id_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

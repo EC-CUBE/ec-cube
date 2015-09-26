@@ -26,6 +26,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 class InstallApplication extends ApplicationTrait
 {
@@ -38,6 +39,28 @@ class InstallApplication extends ApplicationTrait
         $app->register(new \Silex\Provider\MonologServiceProvider(), array(
             'monolog.logfile' => __DIR__ . '/../../app/log/install.log',
         ));
+
+        // load config
+        $app['config'] = $app->share(function () {
+            $ymlPath = __DIR__ . '/../../app/config/eccube';
+            $distPath = __DIR__ . '/../../src/Eccube/Resource/config';
+
+            $configConstant = array();
+            $constantYamlPath = $distPath . '/constant.yml.dist';
+            if (file_exists($constantYamlPath)) {
+                $configConstant = Yaml::parse($constantYamlPath);
+            }
+
+            $configLog = array();
+            $logYamlPath = $distPath . '/log.yml.dist';
+            if (file_exists($logYamlPath)) {
+                $configLog = Yaml::parse($logYamlPath);
+            }
+
+            $config = array_replace_recursive($configConstant, $configLog);
+
+            return $config;
+        });
 
         $app->register(new \Silex\Provider\SessionServiceProvider());
 
