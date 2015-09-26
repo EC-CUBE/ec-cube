@@ -21,12 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Tests\Form\Type\Master;
 
-namespace Eccube\Tests\Form\Type;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class CalcRuleTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -49,5 +49,4 @@ class CalcRuleTypeTest extends AbstractTypeTestCase
     {
         $this->assertSame('calc_rule', $this->form->getName());
     }
-
 }

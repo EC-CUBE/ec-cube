@@ -30,6 +30,7 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+// deprecated 3.1で削除予定
 class StatusType extends AbstractType
 {
     /**
