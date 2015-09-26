@@ -37,7 +37,6 @@ class PaymentType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Payment',
-            'data_class' => 'Eccube\Entity\Payment',
             'property' => 'method',
             'empty_value' => '-',
             // fixme 何故かここはDESC
