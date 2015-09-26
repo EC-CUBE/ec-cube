@@ -63,7 +63,7 @@ class NonMemberType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $config['stext_len'],
-                    ))
+                    )),
                 ),
             ))
             ->add('zip', 'zip', array(
