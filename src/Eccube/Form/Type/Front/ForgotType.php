@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
@@ -31,10 +31,6 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class ForgotType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -42,7 +38,7 @@ class ForgotType extends AbstractType
     {
         $builder->add('login_email', 'text', array(
             'attr' => array(
-                'max_length' => 50,
+                'max_length' => 320, // todo 必要？
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
