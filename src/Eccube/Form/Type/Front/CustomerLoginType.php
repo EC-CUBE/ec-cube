@@ -22,11 +22,11 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,12 +44,13 @@ class CustomerLoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', 'text', array(
+        $builder->add('login_email', 'text', array( // todo text -> email ?
             'attr' => array(
-                'max_length' => 50,
+                'max_length' => 320, // todo
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
+                new Assert\Email(),
             ),
             'data' => $this->session->get('_security.last_username'),
         ));
@@ -58,7 +59,7 @@ class CustomerLoginType extends AbstractType
         ));
         $builder->add('login_pass', 'password', array(
             'attr' => array(
-                'max_length' => 50,
+                'max_length' => 320, // todo
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
@@ -70,7 +71,7 @@ class CustomerLoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
