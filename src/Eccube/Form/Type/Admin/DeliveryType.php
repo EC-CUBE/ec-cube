@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -70,6 +70,7 @@ class DeliveryType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
+            // todo type paymentに変更
             ->add('payments', 'entity', array(
                 'label' => '支払方法',
                 'class' => 'Eccube\Entity\Payment',
@@ -79,7 +80,7 @@ class DeliveryType extends AbstractType
                 'required' => false,
                 'query_builder' => function ($er) {
                     return $er->createQueryBuilder('p')
-                        ->orderBy('p.rank', 'ASC');
+                        ->orderBy('p.rank', 'DESC');
                 },
                 'mapped' => false,
             ))

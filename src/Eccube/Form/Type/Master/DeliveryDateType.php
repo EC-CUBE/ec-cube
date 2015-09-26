@@ -22,34 +22,22 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductTypeType extends AbstractType
+class DeliveryDateType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\ProductType',
-            'property' => 'name',
-            'label' => '商品種別',
-            'multiple'=> false,
-            'expanded' => true,
-            'required' => true,
+            'class' => 'Eccube\Entity\DeliveryDate',
+            'empty_value' => 'form.delivery_date.empty_value',
         ));
     }
 
@@ -58,7 +46,7 @@ class ProductTypeType extends AbstractType
      */
     public function getName()
     {
-        return 'product_type';
+        return 'delivery_date';
     }
 
     /**
@@ -66,6 +54,6 @@ class ProductTypeType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 }

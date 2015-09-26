@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class DeliveryDate extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
      * @var integer
      */
     private $id;
@@ -33,7 +41,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -43,7 +51,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string       $name
      * @return DeliveryDate
      */
     public function setName($name)
@@ -56,7 +64,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -66,7 +74,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * Set value
      *
-     * @param integer $value
+     * @param  integer      $value
      * @return DeliveryDate
      */
     public function setValue($value)
@@ -79,7 +87,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * Get value
      *
-     * @return integer 
+     * @return integer
      */
     public function getValue()
     {
@@ -89,7 +97,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * Set rank
      *
-     * @param integer $rank
+     * @param  integer      $rank
      * @return DeliveryDate
      */
     public function setRank($rank)
@@ -102,7 +110,7 @@ class DeliveryDate extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {

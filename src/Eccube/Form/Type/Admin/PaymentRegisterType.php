@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -92,7 +92,6 @@ class PaymentRegisterType extends AbstractType
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
-
     }
 
     /**

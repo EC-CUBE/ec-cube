@@ -22,35 +22,51 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CustomerAgreementType extends AbstractType
+class MailType extends AbstractType
 {
-    public $app;
-
-    public function __construct(\Silex\Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('customer_agreement', 'textarea', array(
+            ->add('template', 'mail_template', array(
+                'label' => 'テンプレート',
                 'required' => true,
-                'label' => '会員規約',
                 'constraints' => array(
-                    new Assert\NotBlank()),
+                    new Assert\NotBlank(),
+                ),
+                'mapped' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->add('subject', 'text', array(
+                'label' => '件名',
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
+            ->add('header', 'textarea', array(
+                'label' => 'ヘッダー',
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
+            ->add('footer', 'textarea', array(
+                'label' => 'フッター',
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        ;
     }
 
     /**
@@ -58,6 +74,6 @@ class CustomerAgreementType extends AbstractType
      */
     public function getName()
     {
-        return 'customer_agreement';
+        return 'mail';
     }
 }

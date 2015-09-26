@@ -22,36 +22,35 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class DeliveryDateType extends AbstractType
+class CustomerAgreementType extends AbstractType
 {
+    public $app;
+
+    public function __construct(\Silex\Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\DeliveryDate',
-            'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
-            'property' => 'name',
-            'empty_value' => 'form.delivery_date.empty_value',
-        ));
+        $builder
+            ->add('customer_agreement', 'textarea', array(
+                'required' => true,
+                'label' => '会員規約',
+                'constraints' => array(
+                    new Assert\NotBlank()),
+            ))
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
@@ -59,14 +58,6 @@ class DeliveryDateType extends AbstractType
      */
     public function getName()
     {
-        return 'delivery_date';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'entity';
+        return 'customer_agreement';
     }
 }

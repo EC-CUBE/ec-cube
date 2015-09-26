@@ -22,56 +22,38 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 
-class MailTemplateType extends AbstractType
+class CategoryType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\MailTemplate',
-            'property' => 'name',
-            'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
-            'empty_value' => '-',
+            'class' => 'Eccube\Entity\Category',
+            'property' => 'NameWithLevel',
+            // なぜかDESC
             'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('mt')
-                    ->orderBy('mt.id', 'ASC');
+                return $er->createQueryBuilder('c')
+                    ->orderBy('c.rank', 'DESC');
             },
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'mail_template';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
+    }
+
+    public function getName()
+    {
+        return 'category';
     }
 }

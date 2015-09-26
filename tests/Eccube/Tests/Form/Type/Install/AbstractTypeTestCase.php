@@ -22,38 +22,28 @@
  */
 
 
-namespace Eccube\Form\Type\Master;
+namespace Eccube\Tests\Form\Type\Install;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class ProductTypeType extends AbstractType
+abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function setUp()
     {
-        $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\ProductType',
-            'label' => '商品種別',
-        ));
+        parent::setUp();
+
+        $this->app = new \Eccube\InstallApplication();
+        $this->app['session.test'] = true;
+        $this->app['exception_handler']->disable();
+
+        $this->app->boot();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    protected function tearDown()
     {
-        return 'product_type';
-    }
+        parent::tearDown();
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'master';
+        // 初期化
+        $this->app = null;
+        $this->form = null;
+        $this->formData = null;
     }
 }

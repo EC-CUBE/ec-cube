@@ -22,35 +22,28 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
-class PaymentType extends AbstractType
+class MailTemplateType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Payment',
-            'property' => 'method',
-            'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
+            'class' => 'Eccube\Entity\MailTemplate',
             'empty_value' => '-',
+            // なぜかrankを持っていない
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('mt')
+                    ->orderBy('mt.id', 'ASC');
+            },
         ));
     }
 
@@ -59,7 +52,7 @@ class PaymentType extends AbstractType
      */
     public function getName()
     {
-        return 'payment';
+        return 'mail_template';
     }
 
     /**
@@ -67,6 +60,6 @@ class PaymentType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 }

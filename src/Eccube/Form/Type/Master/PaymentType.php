@@ -21,49 +21,46 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Form\Type\Master;
 
-namespace Eccube\Form\Type;
-
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoryType extends AbstractType
+class PaymentType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Category',
-            'property' => 'NameWithLevel',
+            'class' => 'Eccube\Entity\Payment',
+            'data_class' => 'Eccube\Entity\Payment',
+            'property' => 'method',
+            'empty_value' => '-',
+            // fixme 何故かここはDESC
             'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('c')
-                    ->orderBy('c.rank', 'DESC');
+                return $er->createQueryBuilder('m')
+                    ->orderBy('m.rank', 'DESC');
             },
-            'label' => false,
-            'expanded' => false,
-            'empty_value' => false,
         ));
     }
 
-    public function getParent()
-    {
-        return 'entity';
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
-        return 'category';
+        return 'payment';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'master';
     }
 }
