@@ -80,6 +80,24 @@ class RepeatedEmailTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testInvalidEmail_Nihongo()
+    {
+        $this->formData['email']['first'] = 'あいうえお@example.com';
+        $this->formData['email']['second'] = 'あいうえお@example.com';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidEmail_RFC2822()
+    {
+        $this->formData['email']['first'] = 'abc..@example.com';
+        $this->formData['email']['second'] = 'abc..@example.com';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function createApplication()
     {
         $app = new \Silex\Application();

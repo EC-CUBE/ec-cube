@@ -32,7 +32,11 @@ class RepeatedEmailType extends AbstractType
             'options' => array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
+                    )),
                 ),
             ),
             'second_options' => array(
