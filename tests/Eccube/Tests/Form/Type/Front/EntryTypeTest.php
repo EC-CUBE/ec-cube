@@ -114,8 +114,110 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
 
-        // エラーメッセージデバッグ用
-        //var_dump($this->form->getErrorsAsString());die;
+    public function testInvalidName01_Blank()
+    {
+        $this->formData['name']['name01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidName02_Blank()
+    {
+        $this->formData['name']['name02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidKana01_Blank()
+    {
+        $this->formData['kana']['kana01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidKana02_Blank()
+    {
+        $this->formData['kana']['kana02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidKana01_NotKana()
+    {
+        $this->formData['kana']['kana01'] = 'aaaa';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidKana02_NotKana()
+    {
+        $this->formData['kana']['kana02'] = 'aaaaa';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidCompanyName_Blank()
+    {
+        $this->formData['company_name'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidZip01_Blank()
+    {
+        $this->formData['zip']['zip01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidZip02_Blank()
+    {
+        $this->formData['zip']['zip02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPref_Blank()
+    {
+        $this->formData['address']['pref'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidAddr01_Blank()
+    {
+        $this->formData['address']['addr01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidAddr02_Blank()
+    {
+        $this->formData['address']['addr02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidemail_Blank()
+    {
+        $this->formData['email']['first'] = '';
+        $this->formData['email']['second'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
     }
 }

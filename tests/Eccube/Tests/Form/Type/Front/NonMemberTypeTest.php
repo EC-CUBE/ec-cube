@@ -122,6 +122,22 @@ class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testInvalidKana01_NotKana()
+    {
+        $this->formData['kana']['kana01'] = 'aaaa';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidKana02_NotKana()
+    {
+        $this->formData['kana']['kana02'] = 'aaaaa';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testValidCompanyName_Blank()
     {
         $this->formData['company_name'] = '';
