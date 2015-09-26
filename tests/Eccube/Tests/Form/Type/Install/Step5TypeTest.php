@@ -24,7 +24,7 @@
 
 namespace Eccube\Tests\Form\Type\Install;
 
-class Step5TypeTest extends \PHPUnit_Framework_TestCase
+class Step5TypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -70,11 +70,6 @@ class Step5TypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->app = new \Eccube\InstallApplication();
-        $this->app['session.test'] = true;
-        $this->app['exception_handler']->disable();
-
-        $this->app->boot();
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
             ->createBuilder('install_step5', null, array(
