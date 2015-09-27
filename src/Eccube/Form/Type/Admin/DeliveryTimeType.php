@@ -22,13 +22,13 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DeliveryTimeType extends AbstractType
 {
@@ -48,7 +48,7 @@ class DeliveryTimeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\DeliveryTime',

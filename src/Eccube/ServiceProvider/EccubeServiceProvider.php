@@ -262,7 +262,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\RepeatedEmailType();
             $types[] = new \Eccube\Form\Type\RepeatedPasswordType($app['config']);
             $types[] = new \Eccube\Form\Type\PriceType($app['config']);
-            $types[] = new \Eccube\Form\Type\DeliveryTimeType($app['config']);
 
             $types[] = new \Eccube\Form\Type\MasterType();
             $types[] = new \Eccube\Form\Type\Master\JobType();
@@ -333,6 +332,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\BlockType($app);
             $types[] = new \Eccube\Form\Type\Admin\DeliveryType();
             $types[] = new \Eccube\Form\Type\Admin\DeliveryFeeType();
+            $types[] = new \Eccube\Form\Type\Admin\DeliveryTimeType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
