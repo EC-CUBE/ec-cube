@@ -21,11 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 class InstallApplication extends ApplicationTrait
@@ -37,21 +35,21 @@ class InstallApplication extends ApplicationTrait
         parent::__construct($values);
 
         $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__ . '/../../app/log/install.log',
+            'monolog.logfile' => __DIR__.'/../../app/log/install.log',
         ));
 
         // load config
         $app['config'] = $app->share(function () {
-            $distPath = __DIR__ . '/../../src/Eccube/Resource/config';
+            $distPath = __DIR__.'/../../src/Eccube/Resource/config';
 
             $configConstant = array();
-            $constantYamlPath = $distPath . '/constant.yml.dist';
+            $constantYamlPath = $distPath.'/constant.yml.dist';
             if (file_exists($constantYamlPath)) {
                 $configConstant = Yaml::parse($constantYamlPath);
             }
 
             $configLog = array();
-            $logYamlPath = $distPath . '/log.yml.dist';
+            $logYamlPath = $distPath.'/log.yml.dist';
             if (file_exists($logYamlPath)) {
                 $configLog = Yaml::parse($logYamlPath);
             }
@@ -64,7 +62,7 @@ class InstallApplication extends ApplicationTrait
         $app->register(new \Silex\Provider\SessionServiceProvider());
 
         $app->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.path' => array(__DIR__ . '/Resource/template/install'),
+            'twig.path' => array(__DIR__.'/Resource/template/install'),
             'twig.form.templates' => array('bootstrap_3_horizontal_layout.html.twig'),
         ));
 
@@ -79,17 +77,17 @@ class InstallApplication extends ApplicationTrait
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-            $file = dirname($r->getFilename()) . '/Resources/translations/validators.' . $app['locale'] . '.xlf';
+            $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
             if (file_exists($file)) {
                 $translator->addResource('xliff', $file, $app['locale'], 'validators');
             }
 
-            $file = __DIR__ . '/Resource/locale/validator.' . $app['locale'] . '.yml';
+            $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
             if (file_exists($file)) {
                 $translator->addResource('yaml', $file, $app['locale'], 'validators');
             }
 
-            $translator->addResource('yaml', __DIR__ . '/Resource/locale/ja.yml', $app['locale']);
+            $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', $app['locale']);
 
             return $translator;
         }));
