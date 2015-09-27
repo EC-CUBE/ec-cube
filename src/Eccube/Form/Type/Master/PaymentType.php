@@ -40,7 +40,7 @@ class PaymentType extends AbstractType
             'property' => 'method',
             'empty_value' => '-',
             // fixme 何故かここはDESC
-            'query_builder' => function (EntityRepository $er) {
+            'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('m')
                     ->orderBy('m.rank', 'DESC');
             },
