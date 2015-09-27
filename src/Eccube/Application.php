@@ -513,7 +513,7 @@ class Application extends ApplicationTrait
             ));
         });
         $this['eccube.event_listner.security'] = $this->share(function($app) {
-            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
+            return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         });
         $this['user'] = $this->share(function($app) {
             $token = $app['security']->getToken();

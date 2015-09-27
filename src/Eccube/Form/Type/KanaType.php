@@ -54,7 +54,7 @@ class KanaType extends AbstractType
     {
         // ひらがなをカタカナに変換する
         // 引数はmb_convert_kanaのもの
-        $builder->addEventSubscriber(new \Eccube\EventListner\ConvertKanaListener('CV'));
+        $builder->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'));
     }
 
     /**
