@@ -261,10 +261,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\AddressType($app['config']);
             $types[] = new \Eccube\Form\Type\RepeatedEmailType();
             $types[] = new \Eccube\Form\Type\RepeatedPasswordType($app['config']);
-            $types[] = new \Eccube\Form\Type\PaymentType();
-            $types[] = new \Eccube\Form\Type\DeliveryType();
-            $types[] = new \Eccube\Form\Type\DeliveryDateType();
-            $types[] = new \Eccube\Form\Type\DeliveryFeeType();
+            $types[] = new \Eccube\Form\Type\DeliveryFeeType($app['config']);
             $types[] = new \Eccube\Form\Type\DeliveryTimeType();
 
             $types[] = new \Eccube\Form\Type\MasterType();
