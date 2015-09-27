@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Tests\Form\Type\Master;
+namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 

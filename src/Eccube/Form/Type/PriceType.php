@@ -30,7 +30,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DeliveryFeeType extends AbstractType
+class PriceType extends AbstractType
 {
     public function __construct($config = array('price_len' => 8))
     {
@@ -40,33 +40,25 @@ class DeliveryFeeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $builder
-            ->add('fee', 'money', array(
-                'label' => false,
-                'currency' => 'JPY',
-                'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    // 金額はprice_lenの桁数よりすくなく、0以上の数字で無くてはならない？
-                    // todo 共通化する
-                    new Assert\Length(array('max' => $this->config['price_len'])),
-                    new Assert\GreaterThanOrEqual(array('value' => 0)),
-                ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
-        ;
+        $resolver->setDefaults(array(
+            'currency' => 'JPY',
+            'precision' => 0,
+            'constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $this->config['price_len'])),
+                new Assert\GreaterThanOrEqual(array('value' => 0)),
+            ),
+        ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function getParent()
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\DeliveryFee',
-        ));
+        return 'money';
     }
 
     /**
@@ -74,6 +66,6 @@ class DeliveryFeeType extends AbstractType
      */
     public function getName()
     {
-        return 'delivery_fee';
+        return 'price';
     }
 }
