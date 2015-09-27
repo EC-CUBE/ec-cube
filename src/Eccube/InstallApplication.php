@@ -42,7 +42,6 @@ class InstallApplication extends ApplicationTrait
 
         // load config
         $app['config'] = $app->share(function () {
-            $ymlPath = __DIR__ . '/../../app/config/eccube';
             $distPath = __DIR__ . '/../../src/Eccube/Resource/config';
 
             $configConstant = array();
