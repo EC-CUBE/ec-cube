@@ -51,7 +51,7 @@ class Step3Type extends AbstractType
                     new Assert\Length(array(
                         'max' => $this->app['config']['stext_len'],
                     )),
-                )
+                ),
             ))
             ->add('email', 'email', array(
                 'label' => 'メールアドレス（受注メールなどの宛先になります）',
