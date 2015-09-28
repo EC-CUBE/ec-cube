@@ -386,6 +386,11 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::trimAll($text);
         $this->assertEquals($this->expected, $this->actual);
 
+        $text = '     a　a　';
+        $this->expected = 'a　a';
+        $this->actual = Str::trimAll($text);
+        $this->assertEquals($this->expected, $this->actual);
+
         $text = '';
         $this->actual = Str::trimAll($text);
         $this->assertNotNull($this->actual);
@@ -394,5 +399,20 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $text = null;
         $this->actual = Str::trimAll($text);
         $this->assertNull($this->actual);
+
+        $text = 0;
+        $this->expected = 0;
+        $this->actual = Str::trimAll($text);
+        $this->assertTrue($this->expected === $this->actual);
+
+        $text = '0';
+        $this->expected = '0';
+        $this->actual = Str::trimAll($text);
+        $this->assertTrue($this->expected === $this->actual);
+
+        $text = " 0\n0\r\n\t";
+        $this->expected = "0\n0";
+        $this->actual = Str::trimAll($text);
+        $this->assertTrue($this->expected === $this->actual);
     }
 }

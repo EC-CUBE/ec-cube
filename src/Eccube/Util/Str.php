@@ -235,7 +235,6 @@ class Str
                         return false;
                     }
                 }
-
                 return $array_result;
             } else {
                 return empty($value);
@@ -262,7 +261,6 @@ class Str
         return !self::isBlank($value);
     }
 
-
     /**
      * 両端にある全角スペース、半角スペースを取り除く
      *
@@ -274,11 +272,12 @@ class Str
         if ($value === '') {
             return '';
         }
-
+        if ($value === 0) {
+            return 0;
+        }
         if ($value == null) {
             return null;
         }
-
-        return trim(mb_convert_kana($value, 's', 'UTF-8'));
+        return preg_replace('/(^\s+)|(\s+$)/u', '', $value);
     }
 }
