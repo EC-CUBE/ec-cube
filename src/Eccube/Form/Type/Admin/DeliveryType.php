@@ -78,7 +78,7 @@ class DeliveryType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-                'query_builder' => function ($er) {
+                'query_builder' => function($er) {
                     return $er->createQueryBuilder('p')
                         ->orderBy('p.rank', 'DESC');
                 },
@@ -107,7 +107,7 @@ class DeliveryType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) {
                 $form = $event->getForm();
                 $payments = $form['payments']->getData();
 
