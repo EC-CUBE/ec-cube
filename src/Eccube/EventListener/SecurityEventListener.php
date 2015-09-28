@@ -22,11 +22,11 @@
  */
 
 
-namespace Eccube\EventListner;
+namespace Eccube\EventListener;
 
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-class SecurityEventListner
+class SecurityEventListener
 {
     public $entityManager;
 
