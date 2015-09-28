@@ -366,9 +366,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {% endfilter %}">
 
                             {% for orderDetailForm in form.OrderDetails %}
-                                {{ form_widget(orderDetailForm.Product) }}
-                                {{ form_widget(orderDetailForm.ProductClass) }}
                                 <div class="item_box">
+                                    {{ form_widget(orderDetailForm.Product) }}
+                                    {{ form_widget(orderDetailForm.ProductClass) }}
                                     <div class="item_detail">
                                         <div class="item_name_area">
                                             <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
