@@ -44,41 +44,22 @@ class ContactType extends AbstractType
     {
         $builder
             ->add('name', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
-                    ),
-                ),
+                'required' => true,
             ))
-            ->add('kana', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $this->config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $this->config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    ),
-                ),
+            ->add('kana', 'kana', array(
+                'required' => false,
             ))
             ->add('zip', 'zip', array(
                 'required' => false,
             ))
             ->add('address', 'address', array(
-                'help' => 'form.contact.address.help',
                 'required' => false,
             ))
             ->add('tel', 'tel', array(
                 'required' => false,
             ))
             ->add('email', 'email', array(
+                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Email(),
@@ -91,7 +72,6 @@ class ContactType extends AbstractType
                 ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-        ;
     }
 
     /**
