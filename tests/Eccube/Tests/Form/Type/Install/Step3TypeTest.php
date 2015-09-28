@@ -206,7 +206,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testVallid_AdminDir_Min()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_min_len']);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_min_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -214,7 +214,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testVallid_AdminDir_Max()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_max_len']);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
