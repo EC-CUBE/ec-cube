@@ -220,8 +220,8 @@ class Str
      * 引数 $greedy が true の場合は, 全角スペース, ネストした空の配列も
      * 空白と判断する.
      *
-     * @param  string $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
-     * @param  boolean $greedy '貧欲'にチェックを行う場合 true, デフォルト false
+     * @param string $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
+     * @param boolean $greedy '貧欲'にチェックを行う場合 true, デフォルト false
      * @return boolean $value が空白と判断された場合 true
      */
     public static function isBlank($value, $greedy = false)
@@ -232,9 +232,11 @@ class Str
             if ($value instanceof ArrayCollection) {
                 if ($value->isEmpty()) {
                     trigger_error($deprecated, E_USER_DEPRECATED);
+
                     return true;
                 } else {
                     trigger_error($deprecated, E_USER_DEPRECATED);
+
                     return false;
                 }
             }
@@ -245,6 +247,7 @@ class Str
             if ($greedy) {
                 if (empty($value)) {
                     trigger_error($deprecated, E_USER_DEPRECATED);
+
                     return true;
                 }
                 $array_result = true;
@@ -252,13 +255,16 @@ class Str
                     $array_result = self::isBlank($in, $greedy);
                     if (!$array_result) {
                         trigger_error($deprecated, E_USER_DEPRECATED);
+
                         return false;
                     }
                 }
                 trigger_error($deprecated, E_USER_DEPRECATED);
+
                 return $array_result;
             } else {
                 trigger_error($deprecated, E_USER_DEPRECATED);
+
                 return empty($value);
             }
         }
@@ -269,8 +275,10 @@ class Str
 
         $value = trim($value);
         if (strlen($value) > 0) {
+
             return false;
         }
+
         return true;
     }
 
