@@ -131,6 +131,7 @@ class ShippingType extends AbstractType
                 'label' => 'お届け日',
                 'placeholder' => '',
                 'format' => 'yyyy-MM-dd',
+                'required' => false,
             ))
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
