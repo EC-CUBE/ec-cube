@@ -170,6 +170,10 @@ class CartServiceTest extends AbstractServiceTestCase
         $cartService->addError('bar');
 
         $this->assertCount(2, $cartService->getErrors());
+
+        $cartService->saveErrors();
+
+        $this->assertCount(0, $cartService->getErrors());
     }
 
     public function testGetMessages()

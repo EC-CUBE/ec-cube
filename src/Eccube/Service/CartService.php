@@ -154,20 +154,32 @@ class CartService
             'Eccube\Entity\ProductClass'
         ));
 
+        $this->errors = array();
         foreach ($this->cart->getCartItems() as $CartItem) {
             $ProductClass = $this
                 ->entityManager
                 ->getRepository($CartItem->getClassName())
                 ->find($CartItem->getClassId());
 
-            // 商品情報が削除されたらカートからも削除
-            if ($ProductClass->getDelFlg() == Constant::DISABLED) {
-                $CartItem->setObject($ProductClass);
-            } else {
-                $this->setError('cart.product.delete');
-                $this->removeProduct($ProductClass->getId());
-            }
+            $stockUnlimited = $ProductClass->getStockUnlimited();
 
+            // 商品情報が削除されたらカートからも削除
+            if ($ProductClass->getDelFlg() == Constant::ENABLED) {
+                $this->addError('cart.product.delete');
+                $this->removeProduct($ProductClass->getId());
+            } elseif (empty($stockUnlimited) && $ProductClass->getStock() < 1) { // 在庫がなければカートから削除
+                $this->addError('cart.zero.stock');
+                $this->removeProduct($ProductClass->getId());
+            } else {
+                $quantity = $CartItem->getQuantity();
+                $saleLimit = $ProductClass->getSaleLimit();
+                if (empty($stockUnlimited) && $ProductClass->getStock() < $quantity) {
+                    $this->addError('cart.over.stock');
+                } elseif (!empty($saleLimit) && $ProductClass->getSaleLimit() < $quantity) {
+                    $this->addError('cart.over.sale_limit');
+                }
+                $CartItem->setObject($ProductClass);
+            }
         }
 
         return $this->cart;
@@ -333,7 +345,6 @@ class CartService
     public function addError($error = null)
     {
         $this->errors[] = $error;
-        $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
 
         return $this;
     }
@@ -359,6 +370,7 @@ class CartService
 
     /**
      * @return string
+     * @deprecated use getErrors()
      */
     public function getError()
     {
@@ -368,6 +380,7 @@ class CartService
     /**
      * @param  string $error
      * @return \Eccube\Service\CartService
+     * @deprecated use addError($error = null) and saveErrors()
      */
     public function setError($error = null)
     {
@@ -377,4 +390,19 @@ class CartService
         return $this;
     }
 
+    /**
+     * @return boolean
+     */
+    public function hasError()
+    {
+        return 0 < count($this->getErrors());
+    }
+
+    public function saveErrors()
+    {
+        foreach ($this->errors as $error) {
+            $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
+        }
+        $this->errors = array();
+    }
 }

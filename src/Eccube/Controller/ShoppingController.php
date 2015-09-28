@@ -50,9 +50,15 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
+        $Cart = $cartService->getCart();
+
         // カートチェック
-        if (count($cartService->getCart()->getCartItems()) <= 0) {
+        if (count($Cart->getCartItems()) <= 0) {
             // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+        if ($cartService->hasError()) {
+            // カート内の商品に異常があればエラー
             return $app->redirect($app->url('cart'));
         }
 
@@ -84,14 +90,14 @@ class ShoppingController extends AbstractController
             $preOrderId = sha1(uniqid(mt_rand(), true));
 
             // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-            $Order = $orderService->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(), $Customer,
+            $Order = $orderService->registerPreOrderFromCartItems($Cart->getCartItems(), $Customer,
                 $preOrderId);
 
             $cartService->setPreOrderId($preOrderId);
             $cartService->save();
         } else {
             // 計算処理
-            $Order = $orderService->getAmount($Order, $cartService->getCart());
+            $Order = $orderService->getAmount($Order, $Cart);
         }
 
         // 受注関連情報を最新状態に更新
@@ -137,6 +143,11 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
+        // カートチェック
+        if ($cartService->hasError()) {
+            // カート内の商品に異常があればエラー
+            return $app->redirect($app->url('cart'));
+        }
 
         $form = $app['form.factory']->createBuilder('shopping')->getForm();
 
@@ -576,9 +587,15 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
+        $Cart = $cartService->getCart();
+
         // カートチェック
-        if (count($cartService->getCart()->getCartItems()) <= 0) {
+        if (count($Cart->getCartItems()) <= 0) {
             // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+        if ($cartService->hasError()) {
+            // カート内の商品に異常があればエラー
             return $app->redirect($app->url('cart'));
         }
 
@@ -620,7 +637,7 @@ class ShoppingController extends AbstractController
                     $preOrderId = sha1(uniqid(mt_rand(), true));
 
                     // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
-                    $app['eccube.service.order']->registerPreOrderFromCartItems($cartService->getCart()->getCartItems(),
+                    $app['eccube.service.order']->registerPreOrderFromCartItems($Cart->getCartItems(),
                         $Customer, $preOrderId);
 
                     $cartService->setPreOrderId($preOrderId);
