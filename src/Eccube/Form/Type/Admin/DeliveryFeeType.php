@@ -22,58 +22,34 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CustomerLoginType extends AbstractType
+class DeliveryFeeType extends AbstractType
 {
-    public $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', 'text', array(
-            'attr' => array(
-                'max_length' => 50,
-            ),
-            'constraints' => array(
-                new Assert\NotBlank(),
-            ),
-            'data' => $this->session->get('_security.last_username'),
-        ));
-        $builder->add('login_memory', 'checkbox', array(
-            'required' => false,
-        ));
-        $builder->add('login_pass', 'password', array(
-            'attr' => array(
-                'max_length' => 50,
-            ),
-            'constraints' => array(
-                new Assert\NotBlank(),
-            ),
-        ));
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        $builder
+            ->add('fee', 'price', array(
+                'label' => false,
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
+        ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'csrf_protection' => false,
+            'data_class' => 'Eccube\Entity\DeliveryFee',
         ));
     }
 
@@ -82,6 +58,6 @@ class CustomerLoginType extends AbstractType
      */
     public function getName()
     {
-        return 'customer_login';
+        return 'delivery_fee';
     }
 }

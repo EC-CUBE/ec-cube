@@ -21,36 +21,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
-class DeliveryDateType extends AbstractType
+class MailTemplateType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\DeliveryDate',
-            'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
-            'property' => 'name',
-            'empty_value' => 'form.delivery_date.empty_value',
+            'class' => 'Eccube\Entity\MailTemplate',
+            'empty_value' => '-',
+            // なぜかrankを持っていない
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('mt')
+                    ->orderBy('mt.id', 'ASC');
+            },
         ));
     }
 
@@ -59,7 +50,7 @@ class DeliveryDateType extends AbstractType
      */
     public function getName()
     {
-        return 'delivery_date';
+        return 'mail_template';
     }
 
     /**
@@ -67,6 +58,6 @@ class DeliveryDateType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 }

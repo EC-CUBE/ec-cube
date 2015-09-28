@@ -21,32 +21,32 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Tests\Form\Type\Master;
 
-namespace Eccube\Tests\Form\Type;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-use Symfony\Component\Form\Test\TypeTestCase;
-
-abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
+class CalcRuleTypeTest extends AbstractTypeTestCase
 {
+    /** @var \Eccube\Application */
+    protected $app;
+
+    /** @var array デフォルト値（正常系）を設定 */
+    protected $formData = array();
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->app = new \Eccube\Application();
-        $this->app->initialize();
-        $this->app['session.test'] = true;
-        $this->app['exception_handler']->disable();
-
-        $this->app->boot();
+        // CSRF tokenを無効にしてFormを作成
+        $this->form = $this->app['form.factory']
+            ->createBuilder('calc_rule', null, array(
+                'csrf_protection' => false,
+            ))
+            ->getForm();
     }
 
-    protected function tearDown()
+    public function test_getName_is_calc_rule()
     {
-        parent::tearDown();
-
-        // 初期化
-        $this->app = null;
-        $this->form = null;
-        $this->formData = null;
+        $this->assertSame('calc_rule', $this->form->getName());
     }
 }

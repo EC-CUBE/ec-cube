@@ -22,9 +22,7 @@
  */
 
 
-namespace Eccube\Tests\Form\Type;
-
-use Symfony\Component\Form\Test\TypeTestCase;
+namespace Eccube\Tests\Form\Type\Install;
 
 abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -32,8 +30,7 @@ abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->app = new \Eccube\Application();
-        $this->app->initialize();
+        $this->app = new \Eccube\InstallApplication();
         $this->app['session.test'] = true;
         $this->app['exception_handler']->disable();
 

@@ -22,16 +22,49 @@
  */
 
 
-namespace Eccube\Tests\Form\Type;
+namespace Eccube\Tests\Form\Type\Install;
 
-class CalcRuleTypeTest extends AbstractTypeTestCase
+class Step1TypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
-    /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = array();
+    /** @var \Symfony\Component\Form\FormInterface */
+    protected $form;
+
+    /**
+     * getValidTestData
+     *
+     * 正常系のデータパターンを返す
+     *
+     * @access public
+     * @return array
+     */
+    public function getValidTestData()
+    {
+        return array(
+            array(
+                'data' => array(
+                    'agree' => true,
+                ),
+            ),
+            array(
+                'data' => array(
+                    'agree' => false,
+                ),
+            ),
+            array(
+                'data' => array(
+                    'agree' => null,
+                ),
+            ),
+            array(
+                'data' => array(
+                    'agree' => '',
+                ),
+            ),
+        );
+    }
 
     public function setUp()
     {
@@ -39,15 +72,18 @@ class CalcRuleTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('calc_rule', null, array(
+            ->createBuilder('install_step1', null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
     }
 
-    public function test_getName_is_calc_rule()
+    /**
+     * @dataProvider getValidTestData
+     */
+    public function testValidData($data)
     {
-        $this->assertSame('calc_rule', $this->form->getName());
+        $this->form->submit($data);
+        $this->assertTrue($this->form->isValid());
     }
-
 }

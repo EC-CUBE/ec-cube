@@ -21,42 +21,36 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Tests\Form\Type\Admin;
 
-namespace Eccube\Form\Type;
-
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
-
-class ForgotType extends AbstractType
+class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    public function __construct()
+    /** @var \Eccube\Application */
+    protected $app;
+
+    /** @var \Symfony\Component\Form\FormInterface */
+    protected $form;
+
+    /** @var array デフォルト値（正常系）を設定 */
+    protected $formData = array(
+        'delivery_time' => '午前中',
+    );
+
+    public function setUp()
     {
+        parent::setUp();
+
+        // CSRF tokenを無効にしてFormを作成
+        $this->form = $this->app['form.factory']
+            ->createBuilder('delivery_time', null, array(
+                'csrf_protection' => false,
+            ))
+            ->getForm();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function testValidData()
     {
-        $builder->add('login_email', 'text', array(
-            'attr' => array(
-                'max_length' => 50,
-            ),
-            'constraints' => array(
-                new Assert\NotBlank(),
-                new Assert\Email(),
-            ),
-        ))
-        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'forgot';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
     }
 }
