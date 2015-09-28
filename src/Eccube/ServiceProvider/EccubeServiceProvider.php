@@ -265,6 +265,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\FaxType(); // 削除予定
             $types[] = new \Eccube\Form\Type\ZipType($app['config']);
             $types[] = new \Eccube\Form\Type\AddressType($app['config']);
+            $types[] = new \Eccube\Form\Type\RepeatedEmailType();
+            $types[] = new \Eccube\Form\Type\RepeatedPasswordType($app['config']);
             $types[] = new \Eccube\Form\Type\PaymentType();
             $types[] = new \Eccube\Form\Type\DeliveryType();
             $types[] = new \Eccube\Form\Type\DeliveryDateType();

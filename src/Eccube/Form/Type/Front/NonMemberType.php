@@ -24,20 +24,26 @@
 
 namespace Eccube\Form\Type\Front;
 
-use Silex\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * ゲスト購入のお客様情報入力画面
+ */
 class NonMemberType extends AbstractType
 {
     public $config;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($config)
     {
         $this->config = $config;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -47,68 +53,29 @@ class NonMemberType extends AbstractType
 
         $builder
             ->add('name', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                    ),
-                ),
+                'required' => true,
             ))
-            ->add('kana', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    ),
-                ),
+            ->add('kana', 'kana', array(
+                'required' => true,
             ))
             ->add('company_name', 'text', array(
-                'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $config['stext_len'],
-                    ))
+                    )),
                 ),
             ))
-            ->add('zip', 'zip', array())
+            ->add('zip', 'zip', array(
+                'required' => true,
+            ))
             ->add('address', 'address', array(
-                'help' => 'form.contact.address.help',
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
+                'required' => true,
             ))
             ->add('tel', 'tel', array(
                 'required' => true,
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
             ))
-            ->add('email', 'repeated', array(
-                'invalid_message' => 'form.member.email.invalid',
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Email(),
-                    ),
-                ),
-            ))
+            ->add('email', 'repeated_email')
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 

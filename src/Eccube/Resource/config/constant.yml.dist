@@ -155,8 +155,8 @@ ostore_url: 'http://www.ec-cube.net/'
 p_detail_urlpath: '/products/detail.php?product_id='
 page_display_time_log_min_exec_time: 2
 page_display_time_log_mode: 1
-password_max_len: 50
-password_min_len: 4
+password_max_len: 32
+password_min_len: 8
 pear_db_debug: 0
 pear_db_persistent: false
 pending_order_cancel_flag: true
