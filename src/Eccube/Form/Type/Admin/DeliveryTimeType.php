@@ -32,6 +32,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DeliveryTimeType extends AbstractType
 {
+    public function __construct($config = array())
+    {
+        $this->config = $config;
+    }
+
     /**
      * {@inheritdoc}
      */
