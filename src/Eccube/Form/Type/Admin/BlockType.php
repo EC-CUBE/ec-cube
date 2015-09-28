@@ -82,7 +82,7 @@ class BlockType extends AbstractType
                 'property' => 'id',
             ))
             ->add('id', 'hidden')
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();

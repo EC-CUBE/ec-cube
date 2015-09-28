@@ -131,7 +131,7 @@ class MainEditType extends AbstractType
                 'property' => 'id',
             ))
             ->add('id', 'hidden')
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $url = $form['url']->getData();
                 $DeviceType = $form['DeviceType']->getData();
