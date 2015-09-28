@@ -29,6 +29,7 @@ use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
 use \Symfony\Component\Validator\Constraints as Assert;
 
+// deprecated 3.1で削除予定
 class OrderSearchType extends AbstractType
 {
     public $app;

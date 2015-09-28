@@ -31,15 +31,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CalcRuleType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        // todo ???
-        $options['sex_options']['required'] = $options['required'];
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

@@ -22,41 +22,28 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Tests\Form\Type\Install;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
-
-class ForgotType extends AbstractType
+abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
 {
-    public function __construct()
+    public function setUp()
     {
+        parent::setUp();
+
+        $this->app = new \Eccube\InstallApplication();
+        $this->app['session.test'] = true;
+        $this->app['exception_handler']->disable();
+
+        $this->app->boot();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected function tearDown()
     {
-        $builder->add('login_email', 'text', array(
-            'attr' => array(
-                'max_length' => 50,
-            ),
-            'constraints' => array(
-                new Assert\NotBlank(),
-                new Assert\Email(),
-            ),
-        ))
-        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-    }
+        parent::tearDown();
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'forgot';
+        // 初期化
+        $this->app = null;
+        $this->form = null;
+        $this->formData = null;
     }
 }

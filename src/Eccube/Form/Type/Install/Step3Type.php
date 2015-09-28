@@ -48,6 +48,9 @@ class Step3Type extends AbstractType
                 'label' => 'あなたの店名',
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->app['config']['stext_len'],
+                    )),
                 ),
             ))
             ->add('email', 'email', array(
@@ -58,32 +61,40 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_id', 'text', array(
-                'label' => '管理画面ログインID（半角英数字4～50文字）',
+                'label' => '管理画面ログインID（半角英数字'.$this->app['config']['id_min_len'].'～'.$this->app['config']['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 4,
-                        'max' => 50,
+                        'min' => $this->app['config']['id_min_len'],
+                        'max' => $this->app['config']['id_max_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
                     )),
                 ),
             ))
             ->add('login_pass', 'password', array(
-                'label' => '管理画面パスワード（半角英数字4～50文字）',
+                'label' => '管理画面パスワード（半角英数字'.$this->app['config']['password_min_len'].'～'.$this->app['config']['password_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 4,
-                        'max' => 50,
+                        'min' => $this->app['config']['password_min_len'],
+                        'max' => $this->app['config']['password_max_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
                     )),
                 ),
             ))
             ->add('admin_dir', 'text', array(
-                'label' => '管理画面のディレクトリ名（半角英数字4～50文字）',
+                'label' => '管理画面のディレクトリ名（半角英数字'.$this->app['config']['id_min_len'].'～'.$this->app['config']['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 4,
-                        'max' => 50,
+                        'min' => $this->app['config']['id_min_len'],
+                        'max' => $this->app['config']['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/\A\w+\z/')),
                 ),
@@ -129,7 +140,6 @@ class Step3Type extends AbstractType
                 'required' => false,
             ))
         ;
-
     }
 
     /**

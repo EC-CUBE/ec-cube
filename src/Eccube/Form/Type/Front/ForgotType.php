@@ -22,41 +22,30 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Front;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
+use \Symfony\Component\Form\AbstractType;
+use \Symfony\Component\Form\Extension\Core\Type;
+use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Validator\Constraints as Assert;
 
-class MailTemplateType extends AbstractType
+class ForgotType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\MailTemplate',
-            'property' => 'name',
-            'label' => false,
-            'multiple'=> false,
-            'expanded' => false,
-            'required' => false,
-            'empty_value' => '-',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('mt')
-                    ->orderBy('mt.id', 'ASC');
-            },
-        ));
+        $builder->add('login_email', 'text', array(
+            'attr' => array(
+                'max_length' => 320, // todo 必要？
+            ),
+            'constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Email(),
+            ),
+        ))
+        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
@@ -64,14 +53,6 @@ class MailTemplateType extends AbstractType
      */
     public function getName()
     {
-        return 'mail_template';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'entity';
+        return 'forgot';
     }
 }

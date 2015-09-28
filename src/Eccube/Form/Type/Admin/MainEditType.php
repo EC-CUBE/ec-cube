@@ -22,16 +22,16 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class BlockType extends AbstractType
+class MainEditType extends AbstractType
 {
     public $app;
 
@@ -49,13 +49,26 @@ class BlockType extends AbstractType
 
         $builder
             ->add('name', 'text', array(
-                'label' => 'ブロック名',
+                'label' => '名称',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $app['config']['stext_len'],
                     ))
+                )
+            ))
+            ->add('url', 'text', array(
+                'label' => 'URL',
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $app['config']['stext_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[0-9a-zA-Z_]+$/',
+                    )),
                 )
             ))
             ->add('file_name', 'text', array(
@@ -71,42 +84,81 @@ class BlockType extends AbstractType
                     )),
                 )
             ))
-            ->add('block_html', 'textarea', array(
-                'label' => 'ブロックデータ',
+            ->add('tpl_data', 'textarea', array(
+                'label' => false,
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => array()
+            ))
+            ->add('author', 'text', array(
+                'label' => 'author',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['stext_len'],
+                    ))
+                )
+            ))
+            ->add('description', 'text', array(
+                'label' => 'description',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['stext_len'],
+                    ))
+                )
+            ))
+            ->add('keyword', 'text', array(
+                'label' => 'keyword',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['stext_len'],
+                    ))
+                )
+            ))
+            ->add('meta_robots', 'text', array(
+                'label' => 'robots',
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['stext_len'],
+                    ))
+                )
             ))
             ->add('DeviceType', 'entity', array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
                 'property' => 'id',
             ))
             ->add('id', 'hidden')
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
-                $file_name = $form['file_name']->getData();
+                $url = $form['url']->getData();
                 $DeviceType = $form['DeviceType']->getData();
-                $block_id = $form['id']->getData();
+                $page_id = $form['id']->getData();
 
                 $qb = $app['orm.em']->createQueryBuilder();
-                $qb->select('b')
-                    ->from('Eccube\\Entity\\Block', 'b')
-                    ->where('b.file_name = :file_name')
-                    ->setParameter('file_name', $file_name)
-                    ->andWhere('b.DeviceType = :DeviceType')
+                $qb->select('p')
+                    ->from('Eccube\\Entity\\PageLayout', 'p')
+                    ->where('p.url = :url')
+                    ->setParameter('url', $url)
+                    ->andWhere('p.DeviceType = :DeviceType')
                     ->setParameter('DeviceType', $DeviceType)
                 ;
-                if (isset($block_id)) {
+                if (is_null($page_id)) {
                     $qb
-                        ->andWhere('b.id <> :block_id')
-                        ->setParameter('block_id', $block_id);
+                        ->andWhere('p.id IS NOT NULL');
+                } else {
+                    $qb
+                        ->andWhere('p.id <> :page_id')
+                        ->setParameter('page_id', $page_id);
                 }
 
-                $Block = $qb
+                $PageLayout = $qb
                     ->getQuery()
                     ->getResult();
-                if (count($Block) > 0) {
-                    $form['file_name']->addError(new FormError('※ 同じファイル名のデータが存在しています。別のファイル名を入力してください。'));
+                if (count($PageLayout) > 0) {
+                    $form['url']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
@@ -118,7 +170,7 @@ class BlockType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Block',
+            'data_class' => 'Eccube\Entity\PageLayout',
         ));
     }
 
@@ -127,6 +179,6 @@ class BlockType extends AbstractType
      */
     public function getName()
     {
-        return 'block';
+        return 'main_edit';
     }
 }

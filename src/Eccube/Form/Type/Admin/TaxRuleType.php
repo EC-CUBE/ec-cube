@@ -22,15 +22,14 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DeliveryFeeType extends AbstractType
+class TaxRuleType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -38,16 +37,44 @@ class DeliveryFeeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fee', 'money', array(
-                'label' => false,
-                'currency' => 'JPY',
-                'precision' => 0,
+            ->add('option_product_tax_rule', 'choice', array(
+                'label' => '商品別税率機能',
+                'choices' => array(
+                    '1' => '有効',
+                    '0' => '無効',
+                ),
+                'expanded' => true,
+                'multiple' => false,
+                'mapped' => false,
+            ))
+            ->add('tax_rate', 'integer', array(
+                'label' => '消費税率',
+                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Range(array('min' => 0, 'max' => 100))
                 ),
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
-        ;
+            ->add('calc_rule', 'calc_rule', array(
+                'label' => '課税規則',
+                'required' => true,
+            ))
+            ->add('apply_date', 'date', array(
+                'label' => '適用日時',
+                'required' => 'false',
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd HH:mm',
+                'years' => range(date('Y'), date('Y') + 2),
+                'empty_value' => array(
+                    'year' => '----',
+                    'month' => '--',
+                    'day' => '--',
+                    'hours' => '--',
+                    'minutes' => '--'
+                ),
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
@@ -56,7 +83,7 @@ class DeliveryFeeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\DeliveryFee',
+            'allow_extra_fields' => true,
         ));
     }
 
@@ -65,6 +92,6 @@ class DeliveryFeeType extends AbstractType
      */
     public function getName()
     {
-        return 'delivery_fee';
+        return 'tax_rule';
     }
 }

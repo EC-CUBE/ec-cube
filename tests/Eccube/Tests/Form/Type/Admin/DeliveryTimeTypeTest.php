@@ -21,35 +21,36 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Tests\Form\Type\Admin;
 
-namespace Eccube\EventListner;
-
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-
-class SecurityEventListner
+class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-    public $entityManager;
+    /** @var \Eccube\Application */
+    protected $app;
 
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     */
-    public function __construct(\Doctrine\ORM\EntityManager $entityManager)
+    /** @var \Symfony\Component\Form\FormInterface */
+    protected $form;
+
+    /** @var array デフォルト値（正常系）を設定 */
+    protected $formData = array(
+        'delivery_time' => '午前中',
+    );
+
+    public function setUp()
     {
-        $this->entityManager = $entityManager;
+        parent::setUp();
+
+        // CSRF tokenを無効にしてFormを作成
+        $this->form = $this->app['form.factory']
+            ->createBuilder('delivery_time', null, array(
+                'csrf_protection' => false,
+            ))
+            ->getForm();
     }
 
-    /**
-     * @param InteractiveLoginEvent $event
-     */
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    public function testValidData()
     {
-        $token = $event->getAuthenticationToken();
-
-        $user = $token->getUser();
-        if ($user instanceof \Eccube\Entity\Member) {
-            $user->setLoginDate(new \DateTime());
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-        }
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
     }
 }

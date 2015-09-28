@@ -22,14 +22,13 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class TaxRuleType extends AbstractType
+class MailType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -37,54 +36,37 @@ class TaxRuleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('option_product_tax_rule', 'choice', array(
-                'label' => '商品別税率機能',
-                'choices' => array(
-                    '1' => '有効',
-                    '0' => '無効',
-                ),
-                'expanded' => true,
-                'multiple' => false,
-                'mapped' => false,
-            ))
-            ->add('tax_rate', 'integer', array(
-                'label' => '消費税率',
+            ->add('template', 'mail_template', array(
+                'label' => 'テンプレート',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Range(array('min' => 0, 'max' => 100))
+                ),
+                'mapped' => false,
+            ))
+            ->add('subject', 'text', array(
+                'label' => '件名',
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
                 ),
             ))
-            ->add('calc_rule', 'calc_rule', array(
-                'label' => '課税規則',
+            ->add('header', 'textarea', array(
+                'label' => 'ヘッダー',
                 'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
-            ->add('apply_date', 'date', array(
-                'label' => '適用日時',
-                'required' => 'false',
-                'input' => 'datetime',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm',
-                'years' => range(date('Y'), date('Y') + 2),
-                'empty_value' => array(
-                    'year' => '----',
-                    'month' => '--',
-                    'day' => '--',
-                    'hours' => '--',
-                    'minutes' => '--'
+            ->add('footer', 'textarea', array(
+                'label' => 'フッター',
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
                 ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'allow_extra_fields' => true,
-        ));
+        ;
     }
 
     /**
@@ -92,6 +74,6 @@ class TaxRuleType extends AbstractType
      */
     public function getName()
     {
-        return 'tax_rule';
+        return 'mail';
     }
 }

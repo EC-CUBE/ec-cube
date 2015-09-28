@@ -24,9 +24,7 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,16 +37,8 @@ class ProductTypeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\ProductType',
-            'expanded' => true,
+            'label' => '商品種別',
         ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'master';
     }
 
     /**
@@ -57,5 +47,13 @@ class ProductTypeType extends AbstractType
     public function getName()
     {
         return 'product_type';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'master';
     }
 }

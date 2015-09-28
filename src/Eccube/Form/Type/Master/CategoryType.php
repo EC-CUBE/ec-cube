@@ -22,31 +22,38 @@
  */
 
 
-namespace Eccube\Tests\Form\Type;
+namespace Eccube\Form\Type\Master;
 
-use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
-abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
+class CategoryType extends AbstractType
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setUp();
-
-        $this->app = new \Eccube\Application();
-        $this->app->initialize();
-        $this->app['session.test'] = true;
-        $this->app['exception_handler']->disable();
-
-        $this->app->boot();
+        $resolver->setDefaults(array(
+            'class' => 'Eccube\Entity\Category',
+            'property' => 'NameWithLevel',
+            // なぜかDESC
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('c')
+                    ->orderBy('c.rank', 'DESC');
+            },
+        ));
     }
 
-    protected function tearDown()
+    public function getParent()
     {
-        parent::tearDown();
+        return 'master';
+    }
 
-        // 初期化
-        $this->app = null;
-        $this->form = null;
-        $this->formData = null;
+    public function getName()
+    {
+        return 'category';
     }
 }
