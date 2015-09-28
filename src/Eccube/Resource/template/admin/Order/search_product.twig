@@ -96,9 +96,6 @@
         // 明細行に追加.
         list.append($newWidget);
 
-        // カウンタを更新.
-        order_details_count++;
-
         // 受注明細行を取得.
         list = $('#shipment_item_list' + shipment_idx);
 
@@ -113,10 +110,14 @@
             $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_ProductClass').val(product_class_id);
             $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_price').val(price);
             $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
+            $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_itemidx').val(order_details_count);
 
             // 明細行に追加.
             list.append($newWidget);
         }
+
+        // カウンタを更新.
+        order_details_count++;
 
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');

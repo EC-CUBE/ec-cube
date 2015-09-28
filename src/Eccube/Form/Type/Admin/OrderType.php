@@ -27,6 +27,8 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -205,6 +207,47 @@ class OrderType extends AbstractType
                     $this->app['orm.em'],
                     '\Eccube\Entity\Customer'
                 )));
+
+        $app = $this->app;
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+
+            if ('calc' === $app['request']->get('mode')) {
+
+                $data = $event->getData();
+                $form = $event->getForm();
+
+                $orderDetails = &$data['OrderDetails'];
+                $shippings = &$data['Shippings'];
+
+                $shipmentItems = array();
+                foreach ($shippings as &$shipping) {
+                    $items = &$shipping['ShipmentItems'];
+                    if (count($items) > 0) {
+                        foreach ($items as &$item) {
+                            $shipmentItems[] = &$item;
+                        }
+                    }
+                }
+
+                if (count($orderDetails) > 0) {
+                    for ($i = 0; $i < count($orderDetails); $i++) {
+                        for ($j = 0; $j < count($shipmentItems); $j++) {
+                            $itemidx = &$shipmentItems[$j]['itemidx'];
+                            if ($itemidx == $i) {
+                                $shipmentItem = &$shipmentItems[$j];
+                                $shipmentItem['price'] = $orderDetails[$i]['price'];
+                                $orderDetail = &$orderDetails[$i];
+                                $orderDetail['quantity'] = $shipmentItems[$j]['quantity'];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                $event->setData($data);
+            }
+
+        });
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
