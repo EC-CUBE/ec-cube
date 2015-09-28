@@ -215,10 +215,10 @@ class Str
      * 空白と判断する.
      *
      * @param  mixed   $value    チェック対象の変数
-     * @param  boolean $greedy '貧欲'にチェックを行う場合 true
+     * @param  boolean $greedy '貧欲'にチェックを行う場合 true, デフォルト false
      * @return boolean $value が空白と判断された場合 true
      */
-    public static function isBlank($value, $greedy = true)
+    public static function isBlank($value, $greedy = false)
     {
         if (is_object($value)) {
             return false;
@@ -256,9 +256,9 @@ class Str
      * @param $value
      * @return bool
      */
-    public static function isNotBlank($value)
+    public static function isNotBlank($value, $greedy = false)
     {
-        return !self::isBlank($value);
+        return !self::isBlank($value, $greedy);
     }
 
     /**
