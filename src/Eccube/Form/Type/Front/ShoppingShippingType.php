@@ -40,9 +40,11 @@ class ShoppingShippingType extends AbstractType
         $builder
             ->add('company_name', 'text', array(
                 'label' => '会社名',
+                'required' => false,
             ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
+                'required' => false,
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
