@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Util;
 
 use Eccube\Util\Str;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Str test cases.
@@ -267,30 +268,12 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::isBlank($text);
         $this->assertTrue($this->actual);
 
-        $text = array();
-        $this->actual = Str::isBlank($text);
-        $this->assertTrue($this->actual);
-
-        // $greedy = true のテスト
-        $text = array(array('aa' => array('aa' => '')));
-        $this->actual = Str::isBlank($text, true);
-        $this->assertTrue($this->actual);
-
         $text = 0;
         $this->actual = Str::isBlank($text);
         $this->assertFalse($this->actual);
 
         $text = '1';
         $this->actual = Str::isBlank($text);
-        $this->assertFalse($this->actual);
-
-        $text = new \stdClass();
-        $this->actual = Str::isBlank($text);
-        $this->assertFalse($this->actual);
-
-        // $greedy = true のテスト
-        $text = array(array('aa' => array('aa' => 'a')));
-        $this->actual = Str::isBlank($text, true);
         $this->assertFalse($this->actual);
 
         $text = '      ';
@@ -328,14 +311,6 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $this->actual = Str::isNotBlank($text);
         $this->assertFalse($this->actual);
 
-        $text = array();
-        $this->actual = Str::isNotBlank($text);
-        $this->assertFalse($this->actual);
-
-        $text = array(array('aa' => array('aa' => '')));
-        $this->actual = Str::isNotBlank($text, true);
-        $this->assertFalse($this->actual);
-
         $text = 1;
         $this->actual = Str::isNotBlank($text);
         $this->assertTrue($this->actual);
@@ -343,14 +318,97 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $text = '1';
         $this->actual = Str::isNotBlank($text);
         $this->assertTrue($this->actual);
+    }
 
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsBlankWithObject()
+    {
         $text = new \stdClass();
-        $this->actual = Str::isNotBlank($text);
-        $this->assertTrue($this->actual);
+        $this->actual = Str::isBlank($text);
+        // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
+        $this->assertFalse($this->actual);
+    }
 
-        $text = array(array('aa' => array('aa' => 'a')));
-        $this->actual = Str::isNotBlank($text, true);
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsBlankWithArray()
+    {
+        $text = array();
+        $this->actual = Str::isBlank($text);
+        // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
         $this->assertTrue($this->actual);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsBlankWithArrayGreedy()
+    {
+        // $greedy = true のテスト
+        $text = array(array('aa' => array('aa' => '')));
+        $this->actual = Str::isBlank($text, true);
+        // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
+        $this->assertTrue($this->actual);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsBlankWithArrayGreedy2()
+    {
+        // $greedy = true のテスト
+        $text = array();
+        $this->actual = Str::isBlank($text, true);
+        // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
+        $this->assertTrue($this->actual);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsBlankWithArrayGreedy3()
+    {
+        // $greedy = true のテスト
+        $text = array(array('aa' => array('aa' => 'a')));
+        $this->actual = Str::isBlank($text, true);
+        // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
+        $this->assertFalse($this->actual);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsNotBlankWithArray()
+    {
+        $text = array();
+        $this->actual = Str::isNotBlank($text);
+        // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
+        $this->assertFalse($this->actual);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsBlankWithArrayCollectionEmpty()
+    {
+        $value = new ArrayCollection();
+        $this->actual = Str::isBlank($value);
+        // E_USER_DEPRECATED がスローされるのでテストできないが true になるはず
+        $this->assertTrue($this->actual);
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Deprecated
+     */
+    public function testIsBlankWithArrayCollectionNotEmpty()
+    {
+        $value = new ArrayCollection(array('a'));
+        $this->actual = Str::isBlank($value);
+        // E_USER_DEPRECATED がスローされるのでテストできないが false になるはず
+        $this->assertFalse($this->actual);
     }
 
     public function testIsBlankWithNotGreedy()
@@ -359,10 +417,6 @@ class StrTest extends \PHPUnit_Framework_TestCase
         $text = '      ';
         $this->actual = Str::isBlank($text);
         $this->assertTrue($this->actual);
-
-        $text = array(array('aa' => array('aa' => '')));
-        $this->actual = Str::isBlank($text);
-        $this->assertFalse($this->actual);
 
         $text = '　';
         $this->actual = Str::isBlank($text);
