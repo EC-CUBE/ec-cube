@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Admin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Validator\Constraints as EccubeAssert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SecurityType extends AbstractType
@@ -56,9 +57,10 @@ class SecurityType extends AbstractType
             ))
             ->add('admin_allow_host', 'textarea', array(
                 'required' => false,
-                'label' => 'SSL制限',
+                'label' => 'IP制限',
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['stext_len'])),
+                    new EccubeAssert\MultiLineIps(),
                 ),
             ))
             ->add('force_ssl', 'checkbox', array(
