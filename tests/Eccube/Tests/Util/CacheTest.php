@@ -32,13 +32,13 @@ class CacheTest extends \PHPUnit_Framework_TestCase
             )
         );
         mkdir($this->app['config']['root_dir'].'/app/cache', 0777, true);
-        touch($this->app['config']['root_dir'].'/app/cache/.gitkeep');
+        file_put_contents($this->app['config']['root_dir'].'/app/cache/.gitkeep', 'test');
         // ランダムなファイルを生成しておく
         foreach ($this->dirs as $dir) {
             mkdir($this->app['config']['root_dir'].'/app/cache/'.$dir, 0777, true);
             $n = mt_rand(5, 10);
             for ($i = 0; $i < $n; $i++) {
-                touch($this->app['config']['root_dir'].'/app/cache/'.$dir.'/'.$i);
+                file_put_contents($this->app['config']['root_dir'].'/app/cache/'.$dir.'/'.$i, 'test');
             }
         }
     }
@@ -62,7 +62,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     public function testClear()
     {
-        touch($this->app['config']['root_dir'].'/app/cache/.dummykeep');
+        file_put_contents($this->app['config']['root_dir'].'/app/cache/.dummykeep', 'test');
         // 'doctrine', 'profiler', 'twig' ディレクトリを削除
         Cache::clear($this->app, false);
 
