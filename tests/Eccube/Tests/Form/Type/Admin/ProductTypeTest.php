@@ -72,6 +72,14 @@ class ProductTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testValidPrice1_Blank()
+    {
+        $this->formData['class']['price01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
     public function testValidPrice1_Zero()
     {
         $this->formData['class']['price01'] = '0';
@@ -88,9 +96,17 @@ class ProductTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testInvalidPrice2_Blank()
+    {
+        $this->formData['class']['price02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testValidPrice2_Zero()
     {
-        $this->formData['class']['price01'] = '0';
+        $this->formData['class']['price02'] = '0';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -99,6 +115,30 @@ class ProductTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function testInvalidPrice2_Minus()
     {
         $this->formData['class']['price02'] = '-1';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidDeliveryFee_Blank()
+    {
+        $this->formData['class']['delivery_fee'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidDeliveryFee_Zero()
+    {
+        $this->formData['class']['delivery_fee'] = '0';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidDeliveryFee_Minus()
+    {
+        $this->formData['class']['delivery_fee'] = '-1';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
