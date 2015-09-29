@@ -161,8 +161,8 @@ class ProductController
             if ($form->isValid()) {
                 $addCartData = $form->getData();
                 if ($addCartData['mode'] === 'add_favorite') {
-                    if ($app['security']->isGranted('ROLE_USER')) {
-                        $Customer = $app['security']->getToken()->getUser();
+                    if ($app->isGranted('ROLE_USER')) {
+                        $Customer = $app->user();
                         $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
                         $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
                     }
@@ -180,8 +180,8 @@ class ProductController
             }
         }
 
-        if ($app['security']->isGranted('ROLE_USER')) {
-            $Customer = $app['security']->getToken()->getUser();
+        if ($app->isGranted('ROLE_USER')) {
+            $Customer = $app->user();
             $is_favorite = $app['eccube.repository.customer_favorite_product']->isFavorite($Customer, $Product);
         } else {
             $is_favorite = false;

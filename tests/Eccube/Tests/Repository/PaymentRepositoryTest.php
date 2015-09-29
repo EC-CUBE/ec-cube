@@ -38,28 +38,12 @@ class PaymentRepositoryTest extends AbstractRepositoryTestCase
         // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($productTypes);
         $deliveries = $app['eccube.repository.delivery']->getDeliveries($productTypes);
 
-        var_dump(count($deliveries));
-        foreach ($deliveries as $delivery) {
-            var_dump($delivery->getName());
-        }
-
         // 支払方法を取得
         $payments = $app['eccube.repository.payment']->findAllowedPayments($deliveries);
 
-        var_dump(count($payments));
-        foreach ($payments as $payment) {
-            var_dump($payment->getMethod());
-        }
-
-
         if (count($productTypes) > 1) {
             $deliveries = $app['eccube.repository.delivery']->findAllowedDeliveries($productTypes, $payments);
-            var_dump(count($deliveries));
-            foreach ($deliveries as $delivery) {
-                var_dump($delivery->getName());
-            }
         }
-
 
     }
 
