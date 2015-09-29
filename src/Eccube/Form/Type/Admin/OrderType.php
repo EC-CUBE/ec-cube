@@ -214,7 +214,6 @@ class OrderType extends AbstractType
             if ('calc' === $app['request']->get('mode')) {
 
                 $data = $event->getData();
-                $form = $event->getForm();
 
                 $orderDetails = &$data['OrderDetails'];
                 $shippings = &$data['Shippings'];
