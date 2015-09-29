@@ -230,8 +230,10 @@ class OrderType extends AbstractType
                 }
 
                 if (count($orderDetails) > 0) {
-                    for ($i = 0; $i < count($orderDetails); $i++) {
-                        for ($j = 0; $j < count($shipmentItems); $j++) {
+                    $orderDetailsCount = count($orderDetails);
+                    $shipmentItemsCount = count($shipmentItems);
+                    for ($i = 0; $i < $orderDetailsCount; $i++) {
+                        for ($j = 0; $j < $shipmentItemsCount; $j++) {
                             $itemidx = &$shipmentItems[$j]['itemidx'];
                             if ($itemidx == $i) {
                                 $shipmentItem = &$shipmentItems[$j];
