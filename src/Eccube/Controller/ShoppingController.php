@@ -958,9 +958,6 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-
-        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
-
         $form = $app['form.factory']->createBuilder('shopping_shipping')->getForm();
 
         if ('POST' === $request->getMethod()) {
