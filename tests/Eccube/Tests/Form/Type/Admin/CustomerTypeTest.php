@@ -71,6 +71,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'day' => '14',
         ),
         'password' => 'password',
+        'status' => 1,
+        'note' => 'note',
     );
 
     public function setUp()
@@ -100,5 +102,191 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidFax_Blank()
+    {
+        $this->formData['fax']['fax01'] = '';
+        $this->formData['fax']['fax02'] = '';
+        $this->formData['fax']['fax03'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidName01_Blank()
+    {
+        $this->formData['name']['name01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidName02_Blank()
+    {
+        $this->formData['name']['name02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidKana01_Blank()
+    {
+        $this->formData['kana']['kana01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidKana02_Blank()
+    {
+        $this->formData['kana']['kana02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidCompanyName_Blank()
+    {
+        $this->formData['company_name'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidZip01_Blank()
+    {
+        $this->formData['zip']['zip01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidZip02_Blank()
+    {
+        $this->formData['zip']['zip02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPref_Blank()
+    {
+        $this->formData['address']['pref'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidAddr01_Blank()
+    {
+        $this->formData['address']['addr01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidAddr02_Blank()
+    {
+        $this->formData['address']['addr02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidemail_Blank()
+    {
+        $this->formData['email'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidEmail_Nihongo()
+    {
+        $this->formData['email'] = 'あいうえお@example.com';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidEmail_RFC2822()
+    {
+        $this->formData['email'] = 'abc..@example.com';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidJob_Blank()
+    {
+        $this->formData['job'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidSex_Blank()
+    {
+        $this->formData['sex'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidPassword_Blank()
+    {
+        $this->formData['password'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidPassword_MinLength()
+    {
+        $this->formData['password'] = str_repeat('a', $this->app['config']['password_min_len']);
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidPassword_MinLength()
+    {
+        $this->formData['password'] = str_repeat('a', $this->app['config']['password_min_len']-1);
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidPassword_MaxLength()
+    {
+        $this->formData['password'] = str_repeat('a', $this->app['config']['password_max_len']);
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidPassword_MaxLength()
+    {
+        $this->formData['password'] = str_repeat('a', $this->app['config']['password_max_len']+1);
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidStatus_Blank()
+    {
+        $this->formData['status'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidNote_Blank()
+    {
+        $this->formData['note'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
     }
 }

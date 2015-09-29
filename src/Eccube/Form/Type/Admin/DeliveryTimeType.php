@@ -22,34 +22,46 @@
  */
 
 
-namespace Eccube\Form\Type;
+namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductTypeType extends AbstractType
+class DeliveryTimeType extends AbstractType
 {
+    public function __construct($config = array())
+    {
+        $this->config = $config;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder
+            ->add('delivery_time', 'text', array(
+                'label' => false,
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
+        ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Master\ProductType',
-            'property' => 'name',
-            'label' => '商品種別',
-            'multiple'=> false,
-            'expanded' => true,
-            'required' => true,
+            'data_class' => 'Eccube\Entity\DeliveryTime',
+            'query_builder' => function(EntityRepository $er) {
+                return $er
+                    ->createQueryBuilder('dt')
+                    ->orderBy('dt.time_id', 'ASC');
+            },
         ));
     }
 
@@ -58,14 +70,6 @@ class ProductTypeType extends AbstractType
      */
     public function getName()
     {
-        return 'product_type';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'entity';
+        return 'delivery_time';
     }
 }

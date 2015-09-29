@@ -23,15 +23,13 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class TelTypeTest extends \PHPUnit_Framework_TestCase
+class FaxTypeTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Eccube\Application */
     protected $app;
 
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
-
-    public $config = array('tel_len' => 5);
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
@@ -139,7 +137,7 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+            ->add('tel', 'fax', array(
                 'required' => false,
             ))
             ->getForm();
@@ -236,7 +234,7 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($output, $this->form->getData());
     }
 
-    public function testRequiredAddNotBlank_Tel()
+    public function testRequiredAddNotBlank_Tel01()
     {
         $app = $this->createApplication();
         $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
@@ -246,7 +244,35 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
             ->getForm();
 
         $this->formData['tel']['tel01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testRequiredAddNotBlank_Tel02()
+    {
+        $app = $this->createApplication();
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
+            ->getForm();
+
         $this->formData['tel']['tel02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testRequiredAddNotBlank_Tel03()
+    {
+        $app = $this->createApplication();
+        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
+            ->getForm();
+
         $this->formData['tel']['tel03'] = '';
 
         $this->form->submit($this->formData);
@@ -255,14 +281,15 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
 
     public function createApplication()
     {
+
+        // \Eccube\Applicationは重いから呼ばない
         $app = new \Silex\Application();
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
-        // fix php5.3
-        $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
-            $types[] = new \Eccube\Form\Type\TelType($self->config);
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+            $types[] = new \Eccube\Form\Type\TelType();
+            $types[] = new \Eccube\Form\Type\FaxType();
 
             return $types;
         }));

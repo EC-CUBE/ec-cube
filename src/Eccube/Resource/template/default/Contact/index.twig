@@ -24,46 +24,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block javascript %}
 <script src="//ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 <script>
-$(function() {
-    $('#zip-search').click(function() {
-        AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
+    $(function() {
+        $('#zip-search').click(function() {
+            AjaxZip3.zip2addr('contact[zip][zip01]', 'contact[zip][zip02]', 'contact[address][pref]', 'contact[address][addr01]');
+        });
     });
-});
 </script>
 {% endblock javascript %}
 
 {% block main %}
 
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">お問い合わせ</h1>
+<div id="contents" class="main_only">
+    <div class="container-fluid inner no-padding">
+        <div id="main">
+            <h1 class="page-heading">お問い合わせ</h1>
 
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br/>
-                                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br/>
+                            また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
 
-                            <form name="form1" id="form1" method="post" action="{{ url('contact') }}">
-                                {{ form_widget(form._token) }}
-                                <div class="dl_table">
-                                    <dl>
-                                        <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
+                        <form name="form1" id="form1" method="post" action="{{ url('contact') }}">
+                            {{ form_widget(form._token) }}
+                            <div class="dl_table">
+                                <dl>
+                                    <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
+                                    <dd class="form-group input_name">
+                                        {{ form_widget(form.name.name01) }}
+                                        {{ form_widget(form.name.name02) }}
+                                        {{ form_errors(form.name.name01) }}
+                                        {{ form_errors(form.name.name02) }}
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>{{ form_label(form.kana) }}
                                         <dd class="form-group input_name">
-                                            {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
-                                            {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
-                                            {{ form_errors(form.name.name01) }}
-                                            {{ form_errors(form.name.name02) }}
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            {{ form_label(form.kana) }}
-                                        </dt>
-                                        <dd class="form-group input_name">
-                                            {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
-                                            {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
+                                            {{ form_widget(form.kana.kana01) }}
+                                            {{ form_widget(form.kana.kana02) }}
                                             {{ form_errors(form.kana.kana01) }}
                                             {{ form_errors(form.kana.kana02) }}
                                         </dd>
@@ -126,6 +124,6 @@ $(function() {
         </div>
     </div>
 
-{% endblock %}
+    {% endblock %}
 
 

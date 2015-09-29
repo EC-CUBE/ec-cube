@@ -26,7 +26,7 @@ namespace Eccube\Tests\Form\Type\Master;
 
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-class PrefTypeTest extends AbstractTypeTestCase
+class DispTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -40,16 +40,17 @@ class PrefTypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('pref', null)
+            ->createBuilder('disp', null, array(
+                'csrf_protection' => false,
+            ))
             ->getForm();
     }
 
     public function testValidData()
     {
-        $this->form->submit(47);
+        $this->form->submit(1);
         $this->assertTrue($this->form->isValid());
-
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.pref']->find(47));
+        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.disp']->find(1));
     }
 
     public function testViewData()
@@ -57,26 +58,17 @@ class PrefTypeTest extends AbstractTypeTestCase
         $view = $this->form->createView();
         $choices = $view->vars['choices'];
 
-        // empty_value
-        $this->assertEquals($view->vars['empty_value'], 'form.pref.empty_value');
-
         $data = array();
-        // attrなど含まれているので
         foreach ($choices as $choice) {
             $data[] = $choice->data;
         }
-
-        $query = $this->app['eccube.repository.master.pref']->createQueryBuilder('p')
-            ->orderBy('p.rank', 'ASC')
+        $query = $this->app['eccube.repository.master.disp']->createQueryBuilder('m')
+            ->orderBy('m.rank', 'ASC')
             ->getQuery();
-
         $pref = $query->getResult();
-
         // order by されているか
         $this->assertEquals($data, $pref);
     }
-
-
     /**
      * 範囲外の値のテスト
      */
@@ -85,7 +77,6 @@ class PrefTypeTest extends AbstractTypeTestCase
         $this->form->submit(50);
         $this->assertFalse($this->form->isValid());
     }
-
     /**
      * 範囲外の値のテスト
      */

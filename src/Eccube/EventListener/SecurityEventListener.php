@@ -22,31 +22,34 @@
  */
 
 
-namespace Eccube\Tests\Form\Type;
+namespace Eccube\EventListener;
 
-use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
+class SecurityEventListener
 {
-    public function setUp()
+    public $entityManager;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     */
+    public function __construct(\Doctrine\ORM\EntityManager $entityManager)
     {
-        parent::setUp();
-
-        $this->app = new \Eccube\Application();
-        $this->app->initialize();
-        $this->app['session.test'] = true;
-        $this->app['exception_handler']->disable();
-
-        $this->app->boot();
+        $this->entityManager = $entityManager;
     }
 
-    protected function tearDown()
+    /**
+     * @param InteractiveLoginEvent $event
+     */
+    public function onInteractiveLogin(InteractiveLoginEvent $event)
     {
-        parent::tearDown();
+        $token = $event->getAuthenticationToken();
 
-        // 初期化
-        $this->app = null;
-        $this->form = null;
-        $this->formData = null;
+        $user = $token->getUser();
+        if ($user instanceof \Eccube\Entity\Member) {
+            $user->setLoginDate(new \DateTime());
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
     }
 }

@@ -25,45 +25,46 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class CategoryType extends AbstractType
+class PriceType extends AbstractType
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function __construct($config = array('price_len' => 8))
     {
+        $this->config = $config;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'Eccube\Entity\Category',
-            'property' => 'NameWithLevel',
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('c')
-                    ->orderBy('c.rank', 'DESC');
-            },
-            'label' => false,
-            'expanded' => false,
-            'empty_value' => false,
+            'currency' => 'JPY',
+            'precision' => 0,
+            'constraints' => array(
+                new Assert\NotBlank(),
+                new Assert\Length(array('max' => $this->config['price_len'])),
+                new Assert\GreaterThanOrEqual(array('value' => 0)),
+            ),
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return 'entity';
+        return 'money';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
-        return 'category';
+        return 'price';
     }
 }

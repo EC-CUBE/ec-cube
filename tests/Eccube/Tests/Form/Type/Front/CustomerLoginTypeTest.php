@@ -21,12 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Tests\Form\Type\Front;
 
-namespace Eccube\Tests\Form\Type\Master;
-
-use Eccube\Tests\Form\Type\AbstractTypeTestCase;
-
-class PrefTypeTest extends AbstractTypeTestCase
+class CustomerLoginTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -34,64 +31,42 @@ class PrefTypeTest extends AbstractTypeTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
+    /** @var array デフォルト値（正常系）を設定 */
+    protected $formData = array(
+        'login_email' => 'eccube@example.com',
+        'login_pass' => '111111111',
+    );
+
     public function setUp()
     {
         parent::setUp();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('pref', null)
+            ->createBuilder('customer_login', null, array(
+            ))
             ->getForm();
     }
 
     public function testValidData()
     {
-        $this->form->submit(47);
+        $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
-
-        $this->assertEquals($this->form->getData(), $this->app['eccube.repository.master.pref']->find(47));
     }
 
-    public function testViewData()
+    public function testInvalidEmail_Blank()
     {
-        $view = $this->form->createView();
-        $choices = $view->vars['choices'];
+        $this->formData['login_email'] = '';
 
-        // empty_value
-        $this->assertEquals($view->vars['empty_value'], 'form.pref.empty_value');
-
-        $data = array();
-        // attrなど含まれているので
-        foreach ($choices as $choice) {
-            $data[] = $choice->data;
-        }
-
-        $query = $this->app['eccube.repository.master.pref']->createQueryBuilder('p')
-            ->orderBy('p.rank', 'ASC')
-            ->getQuery();
-
-        $pref = $query->getResult();
-
-        // order by されているか
-        $this->assertEquals($data, $pref);
-    }
-
-
-    /**
-     * 範囲外の値のテスト
-     */
-    public function testInvalidData_Int()
-    {
-        $this->form->submit(50);
+        $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    /**
-     * 範囲外の値のテスト
-     */
-    public function testInvalidData_String()
+    public function testInvalidPass_Blank()
     {
-        $this->form->submit('a');
+        $this->formData['login_pass'] = '';
+
+        $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 }

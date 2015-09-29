@@ -96,6 +96,9 @@ class NameType extends AbstractType
         $resolver->setDefaults(array(
             'options' => array(),
             'lastname_options' => array(
+                'attr' => array(
+                    'placeholder' => 'Name01',
+                ),
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->config['name_len'],
@@ -103,6 +106,9 @@ class NameType extends AbstractType
                 ),
             ),
             'firstname_options' => array(
+                'attr' => array(
+                    'placeholder' => 'Name02',
+                ),
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => $this->config['name_len'],

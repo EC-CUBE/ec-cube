@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\EventListner;
+namespace Eccube\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

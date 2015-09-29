@@ -54,7 +54,7 @@ class KanaType extends AbstractType
     {
         // ひらがなをカタカナに変換する
         // 引数はmb_convert_kanaのもの
-        $builder->addEventSubscriber(new \Eccube\EventListner\ConvertKanaListener('CV'));
+        $builder->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'));
     }
 
     /**
@@ -64,6 +64,9 @@ class KanaType extends AbstractType
     {
         $resolver->setDefaults(array(
             'lastname_options' => array(
+                'attr' => array(
+                    'placeholder' => 'Kana01',
+                ),
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
@@ -74,6 +77,9 @@ class KanaType extends AbstractType
                 ),
             ),
             'firstname_options' => array(
+                'attr' => array(
+                    'placeholder' => 'Kana02',
+                ),
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
