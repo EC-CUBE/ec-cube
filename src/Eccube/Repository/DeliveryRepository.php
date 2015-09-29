@@ -46,16 +46,15 @@ class DeliveryRepository extends EntityRepository
                 ->find(1);
 
             $rank = $this
-                ->findOneBy(array(), array('rank' => 'DESC'))
-                ->getRank() + 1;
+                    ->findOneBy(array(), array('rank' => 'DESC'))
+                    ->getRank() + 1;
 
             $Delivery = new \Eccube\Entity\Delivery();
             $Delivery
                 ->setRank($rank)
                 ->setDelFlg(0)
                 ->setCreator($Creator)
-                ->setProductType($ProductType)
-            ;
+                ->setProductType($ProductType);
 
         } else {
             $Delivery = $this->find($id);
@@ -63,5 +62,54 @@ class DeliveryRepository extends EntityRepository
         }
 
         return $Delivery;
+    }
+
+    /**
+     * 複数の商品種別から配送業者を取得
+     *
+     * @param $productTypes
+     * @return array
+     */
+    public function getDeliveries($productTypes)
+    {
+
+        $deliveries = $this->createQueryBuilder('d')
+            ->where('d.ProductType in (:productTypes)')
+            ->setParameter('productTypes', $productTypes)
+            ->getQuery()
+            ->getResult();
+
+        return $deliveries;
+
+    }
+
+    /**
+     * 選択可能な配送業者を取得
+     *
+     * @param $payments
+     * @return array
+     */
+    public function findAllowedDeliveries($productTypes, $payments)
+    {
+
+        $d = $this->getDeliveries($productTypes);
+        $arr = array();
+
+        foreach ($d as $Delivery) {
+            $paymentOptions = $Delivery->getPaymentOptions();
+
+            foreach ($paymentOptions as $PaymentOption) {
+                foreach ($payments as $Payment) {
+                    if ($PaymentOption->getPayment()->getId() == $Payment->getId()) {
+                        $arr[$Delivery->getId()] = $Delivery;
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        return array_values($arr);
+
     }
 }

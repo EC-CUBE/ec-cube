@@ -22,61 +22,58 @@
  */
 
 
-namespace Eccube\Form\Type\Front;
+namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * ゲスト購入のお客様情報入力画面
- */
-class NonMemberType extends AbstractType
+class ShoppingMultipleType extends AbstractType
 {
-    public $config;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($config)
-    {
-        $this->config = $config;
-    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
+
+        $deliveries = $options['deliveries'];
+        $delivery = $options['delivery'];
+        $deliveryDates = $options['deliveryDates'];
 
         $builder
-            ->add('name', 'name', array(
-                'required' => true,
+            ->add('delivery', 'entity', array(
+                'class' => 'Eccube\Entity\Delivery',
+                'property' => 'name',
+                'choices' => $deliveries,
+                'data' => $delivery,
             ))
-            ->add('kana', 'kana', array(
-                'required' => true,
-            ))
-            ->add('company_name', 'text', array(
+            ->add('deliveryDate', 'choice', array(
+                'choices' => $deliveryDates,
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    )),
-                ),
+                'empty_value' => '指定なし',
             ))
-            ->add('zip', 'zip', array(
-                'required' => true,
+            ->add('deliveryTime', 'entity', array(
+                'class' => 'Eccube\Entity\DeliveryTime',
+                'property' => 'deliveryTime',
+                'choices' => $delivery->getDeliveryTimes(),
+                'required' => false,
+                'empty_value' => '指定なし',
+                'empty_data' => null,
             ))
-            ->add('address', 'address', array(
-                'required' => true,
-            ))
-            ->add('tel', 'tel', array(
-                'required' => true,
-            ))
-            ->add('email', 'repeated_email')
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'deliveries' => array(),
+            'delivery' => null,
+            'deliveryDates' => array(),
+        ));
+
     }
 
     /**
@@ -84,6 +81,6 @@ class NonMemberType extends AbstractType
      */
     public function getName()
     {
-        return 'nonmember';
+        return 'shopping_multiple';
     }
 }

@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -84,6 +86,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidData()
     {
+        $this->app['request'] = new Request();
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
 
@@ -92,6 +95,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidTel_Blank()
     {
+        $this->app['request'] = new Request();
         $this->formData['tel']['tel01'] = '';
         $this->formData['tel']['tel02'] = '';
         $this->formData['tel']['tel03'] = '';

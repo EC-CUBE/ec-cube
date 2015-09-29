@@ -112,7 +112,7 @@ class ProductRepository extends EntityRepository
                 $key = sprintf('keyword%s', $index);
                 $qb
                     ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s', $key, $key))
-                    ->setParameter($key, '%'.$keyword.'%');
+                    ->setParameter($key, '%' . $keyword . '%');
             }
         }
 
@@ -121,15 +121,15 @@ class ProductRepository extends EntityRepository
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.price02', 'DESC');
-        // 新着順
-        } elseif (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
+            // 新着順
+        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.create_date', 'DESC');
         } else {
             if ($categoryJoin == false) {
                 $qb
-                    ->innerJoin('p.ProductCategories', 'pct')
-                    ->innerJoin('pct.Category', 'c');
+                    ->leftJoin('p.ProductCategories', 'pct')
+                    ->leftJoin('pct.Category', 'c');
             }
             $qb
                 ->orderBy('c.rank', 'DESC')
@@ -149,9 +149,9 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-                ->select(array('p', 'pi'))
-                ->leftJoin('p.ProductImage', 'pi')
-                ->innerJoin('p.ProductClasses', 'pc');
+            ->select(array('p', 'pi'))
+            ->leftJoin('p.ProductImage', 'pi')
+            ->innerJoin('p.ProductClasses', 'pc');
 
         // id
         if (!empty($searchData['id']) && $searchData['id']) {

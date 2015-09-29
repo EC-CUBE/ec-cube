@@ -26,16 +26,11 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingType extends AbstractType
 {
-    public $app;
-
-    public function __construct(\Eccube\Application $app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * {@inheritdoc}
@@ -43,16 +38,35 @@ class ShoppingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $app = $this->app;
+        $payments = $options['payments'];
+        $payment = $options['payment'];
 
         $builder
+            ->add('payment', 'entity', array(
+                'class' => 'Eccube\Entity\Payment',
+                'property' => 'method',
+                'choices' => $payments,
+                'data' => $payment,
+                'expanded' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
             ->add('message', 'textarea', array(
-                    'required' => false,
-                    'constraints' => array(
-                        new Assert\Length(array('min' => 0, 'max' => 3000))),
+                'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array('min' => 0, 'max' => 3000))),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'payments' => array(),
+            'payment' => null,
+        ));
     }
 
     /**

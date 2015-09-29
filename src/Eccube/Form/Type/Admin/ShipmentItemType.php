@@ -32,7 +32,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class OrderDetailType extends AbstractType
+class ShipmentItemType extends AbstractType
 {
     protected $app;
 
@@ -72,14 +72,11 @@ class OrderDetailType extends AbstractType
                     )),
                 ),
             ))
-            ->add('tax_rate', 'text', array(
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => $config['int_len'],
-                    )),
-                )
-            ));
+            ->add('itemidx', 'hidden', array(
+                'required' => false,
+                'mapped' => false,
+            ))
+        ;
 
         $builder
             ->add($builder->create('Product', 'hidden')
@@ -102,17 +99,13 @@ class OrderDetailType extends AbstractType
                 if (isset($data['new'])) {
                     $ProductClass = $app['eccube.repository.product_class']
                         ->find($data['ProductClass']);
-                    $Product = $ProductClass->getProduct();
-                    $TaxRule = $app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
 
                     $data['price'] = $ProductClass->getPrice02();
                     $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
-                    $data['tax_rate'] = $TaxRule->getTaxRate();
                     $event->setData($data);
                 }
             }
         });
-
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -122,7 +115,7 @@ class OrderDetailType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\OrderDetail',
+            'data_class' => 'Eccube\Entity\ShipmentItem',
         ));
     }
 
@@ -131,6 +124,6 @@ class OrderDetailType extends AbstractType
      */
     public function getName()
     {
-        return 'order_detail';
+        return 'shipment_item';
     }
 }

@@ -48,7 +48,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['twig'];
         });
         $app['eccube.service.cart'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\CartService($app['session'], $app['orm.em']);
+            return new \Eccube\Service\CartService($app);
         });
         $app['eccube.service.order'] = $app->share(function () use ($app) {
             return new \Eccube\Service\OrderService($app);
@@ -57,13 +57,13 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return new \Eccube\Service\TaxRuleService($app['eccube.repository.tax_rule']);
         });
         $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService( $app );
+            return new \Eccube\Service\PluginService($app);
         });
         $app['eccube.service.mail'] = $app->share(function () use ($app) {
             return new \Eccube\Service\MailService($app);
         });
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
-            $csvService =  new \Eccube\Service\CsvExportService();
+            $csvService = new \Eccube\Service\CsvExportService();
             $csvService->setConfig($app['config']);
             $csvService->setCsvRepository($app['eccube.repository.csv']);
             $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
@@ -72,6 +72,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $csvService->setProductRepository($app['eccube.repository.product']);
 
             return $csvService;
+        });
+        $app['eccube.service.shopping'] = $app->share(function () use ($app) {
+            return new \Eccube\Service\ShoppingService($app, $app['eccube.service.cart'], $app['eccube.service.order']);
         });
 
         // Repository
@@ -195,6 +198,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.customer_address'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerAddress');
         });
+        $app['eccube.repository.shipping'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Shipping');
+        });
         $app['eccube.repository.order_status'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
         });
@@ -276,7 +282,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\ProductListOrderByType();
             $types[] = new \Eccube\Form\Type\Master\PageMaxType();
             $types[] = new \Eccube\Form\Type\Master\CsvType();
-
             $types[] = new \Eccube\Form\Type\Master\DeliveryDateType();
             $types[] = new \Eccube\Form\Type\Master\PaymentType();
             $types[] = new \Eccube\Form\Type\Master\MailTemplateType();
@@ -288,10 +293,11 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
             }
             $types[] = new \Eccube\Form\Type\SearchProductType();
-            $types[] = new \Eccube\Form\Type\OrderSearchType($app); // 使われていないので削除予定
-            $types[] = new \Eccube\Form\Type\ShoppingType($app);
-            $types[] = new \Eccube\Form\Type\ShippingMultiType($app);
-            $types[] = new \Eccube\Form\Type\ShipmentItemType();
+            $types[] = new \Eccube\Form\Type\OrderSearchType($app);
+            $types[] = new \Eccube\Form\Type\ShippingItemType($app);
+            $types[] = new \Eccube\Form\Type\ShippingMultipleType($app);
+            $types[] = new \Eccube\Form\Type\ShippingMultipleItemType($app);
+            $types[] = new \Eccube\Form\Type\ShoppingType();
 
             // front
             $types[] = new \Eccube\Form\Type\Front\EntryType($app['config']);
@@ -324,6 +330,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\OrderType($app);
             $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShippingType($app);
+            $types[] = new \Eccube\Form\Type\Admin\ShipmentItemType($app);
             $types[] = new \Eccube\Form\Type\Admin\PaymentRegisterType();
             $types[] = new \Eccube\Form\Type\Admin\TaxRuleType();
             $types[] = new \Eccube\Form\Type\Admin\MainEditType($app);

@@ -31,6 +31,39 @@ use Eccube\Util\EntityUtil;
  */
 class ShipmentItem extends \Eccube\Entity\AbstractEntity
 {
+    private $price_inc_tax = null;
+
+    /**
+     * Set price IncTax
+     *
+     * @param  string       $price_inc_tax
+     * @return ProductClass
+     */
+    public function setPriceIncTax($price_inc_tax)
+    {
+        $this->price_inc_tax = $price_inc_tax;
+
+        return $this;
+    }
+
+    /**
+     * Get price IncTax
+     *
+     * @return string
+     */
+    public function getPriceIncTax()
+    {
+        return $this->price_inc_tax;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTotalPrice()
+    {
+        return $this->getPriceIncTax() * $this->getQuantity();
+    }
+
     /**
      * @var integer
      */

@@ -27,11 +27,16 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderType extends AbstractType
 {
+
+    protected $app;
+
     public function __construct($app)
     {
         $this->app = $app;
@@ -52,7 +57,6 @@ class OrderType extends AbstractType
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
@@ -63,7 +67,6 @@ class OrderType extends AbstractType
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
@@ -84,7 +87,6 @@ class OrderType extends AbstractType
             ->add('address', 'address', array(
                 'addr01_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
@@ -92,7 +94,6 @@ class OrderType extends AbstractType
                 ),
                 'addr02_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
@@ -108,11 +109,6 @@ class OrderType extends AbstractType
             ))
             ->add('tel', 'tel', array(
                 'required' => true,
-                'options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
             ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
@@ -200,7 +196,10 @@ class OrderType extends AbstractType
                 'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($this->app)
+                'type' => new ShippingType($this->app),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
             ));
         $builder
             ->add($builder->create('Customer', 'hidden')
@@ -208,6 +207,48 @@ class OrderType extends AbstractType
                     $this->app['orm.em'],
                     '\Eccube\Entity\Customer'
                 )));
+
+        $app = $this->app;
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+
+            if ('calc' === $app['request']->get('mode')) {
+
+                $data = $event->getData();
+
+                $orderDetails = &$data['OrderDetails'];
+                $shippings = &$data['Shippings'];
+
+                $shipmentItems = array();
+                foreach ($shippings as &$shipping) {
+                    $items = &$shipping['ShipmentItems'];
+                    if (count($items) > 0) {
+                        foreach ($items as &$item) {
+                            $shipmentItems[] = &$item;
+                        }
+                    }
+                }
+
+                if (count($orderDetails) > 0) {
+                    $orderDetailsCount = count($orderDetails);
+                    $shipmentItemsCount = count($shipmentItems);
+                    for ($i = 0; $i < $orderDetailsCount; $i++) {
+                        for ($j = 0; $j < $shipmentItemsCount; $j++) {
+                            $itemidx = &$shipmentItems[$j]['itemidx'];
+                            if ($itemidx == $i) {
+                                $shipmentItem = &$shipmentItems[$j];
+                                $shipmentItem['price'] = $orderDetails[$i]['price'];
+                                $orderDetail = &$orderDetails[$i];
+                                $orderDetail['quantity'] = $shipmentItems[$j]['quantity'];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                $event->setData($data);
+            }
+
+        });
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 

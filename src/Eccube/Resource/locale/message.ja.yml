@@ -41,7 +41,10 @@ cart.over.sale_limit: |-
     選択された商品は販売制限しております。
     一度に販売制限数を超える購入はできません。
 cart.product.type.kind: この商品は同時に購入することはできません。
+cart.product.payment.kind: お支払方法が異なるためこの商品は同時に購入することはできません。
 cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
+
+shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
 
 admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
 

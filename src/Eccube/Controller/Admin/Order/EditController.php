@@ -25,6 +25,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ShipmentItem;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,9 +56,10 @@ class EditController extends AbstractController
             $OriginalOrderDetails->add($OrderDetail);
         }
 
-        $form = $app['form.factory']
-            ->createBuilder('order', $TargetOrder)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('order', $TargetOrder);
+
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -65,77 +67,124 @@ class EditController extends AbstractController
             // 入力情報にもとづいて再計算.
             $this->calculate($app, $TargetOrder);
 
-            if ($form->isValid()) {
+            // 登録ボタン押下
+            switch ($request->get('mode')) {
+                case 'register':
+                    if ($form->isValid()) {
 
-                // お支払い方法の更新
-                $TargetOrder->setPaymentMethod($TargetOrder->getPayment()->getMethod());
+                        $BaseInfo = $app['eccube.repository.base_info']->get();
 
-                // 配送業者・お届け時間の更新
-                $Shippings = $TargetOrder->getShippings();
-                foreach ($Shippings as $Shipping) {
-                    $Shipping->setShippingDeliveryName($Shipping->getDelivery()->getName());
-                    if (!is_null($Shipping->getDeliveryTime())) {
-                        $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
-                    } else {
-                        $Shipping->setShippingDeliveryTime(null);
-                    }
-                }
+                        // お支払い方法の更新
+                        $TargetOrder->setPaymentMethod($TargetOrder->getPayment()->getMethod());
 
-                // 登録ボタン押下
-                if ('register' === $request->get('mode')) {
-                    // 受注日/発送日/入金日の更新.
-                    $this->updateDate($TargetOrder, $OriginOrder);
-
-                    // 受注明細で削除されているものをremove
-                    foreach ($OriginalOrderDetails as $OrderDetail) {
-                        if (false === $TargetOrder->getOrderDetails()->contains($OrderDetail)) {
-                            $app['orm.em']->remove($OrderDetail);
+                        // 配送業者・お届け時間の更新
+                        $Shippings = $TargetOrder->getShippings();
+                        foreach ($Shippings as $Shipping) {
+                            $Shipping->setShippingDeliveryName($Shipping->getDelivery()->getName());
+                            if (!is_null($Shipping->getDeliveryTime())) {
+                                $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
+                            } else {
+                                $Shipping->setShippingDeliveryTime(null);
+                            }
                         }
-                    }
 
-                    $NewShipimentItems = new ArrayCollection();
 
-                    foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                        /** @var $OrderDetail \Eccube\Entity\OrderDetail */
-                        $OrderDetail->setOrder($TargetOrder);
+                        // 受注日/発送日/入金日の更新.
+                        $this->updateDate($app, $TargetOrder, $OriginOrder);
 
-                        $NewShipmentItem = new ShipmentItem();
-                        $NewShipmentItem
-                            ->setProduct($OrderDetail->getProduct())
-                            ->setProductClass($OrderDetail->getProductClass())
-                            ->setProductName($OrderDetail->getProduct()->getName())
-                            ->setProductCode($OrderDetail->getProductClass()->getCode())
-                            ->setClassCategoryName1($OrderDetail->getClassCategoryName1())
-                            ->setClassCategoryName2($OrderDetail->getClassCategoryName2())
-                            ->setClassName1($OrderDetail->getClassName1())
-                            ->setClassName2($OrderDetail->getClassName2())
-                            ->setPrice($OrderDetail->getPrice())
-                            ->setQuantity($OrderDetail->getQuantity())
-                            ->setOrder($TargetOrder);
-                        $NewShipimentItems[] = $NewShipmentItem;
-                    }
-
-                    // 配送商品の更新. delete/insert.
-                    $Shippings = $TargetOrder->getShippings();
-                    foreach ($Shippings as $Shipping) {
-                        $ShipimentItems = $Shipping->getShipmentItems();
-                        foreach ($ShipimentItems as $ShipmentItem) {
-                            $app['orm.em']->remove($ShipmentItem);
+                        // 受注明細で削除されているものをremove
+                        foreach ($OriginalOrderDetails as $OrderDetail) {
+                            if (false === $TargetOrder->getOrderDetails()->contains($OrderDetail)) {
+                                $app['orm.em']->remove($OrderDetail);
+                            }
                         }
-                        $ShipimentItems->clear();
-                        foreach ($NewShipimentItems as $NewShipimentItem) {
-                            $NewShipimentItem->setShipping($Shipping);
-                            $ShipimentItems->add($NewShipimentItem);
+
+
+                        if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+                            foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+                                /** @var $OrderDetail \Eccube\Entity\OrderDetail */
+                                $OrderDetail->setOrder($TargetOrder);
+                            }
+
+                            /** @var \Eccube\Entity\Shipping $Shipping */
+                            foreach ($Shippings as $Shipping) {
+                                $shipmentItems = $Shipping->getShipmentItems();
+                                /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
+                                foreach ($shipmentItems as $ShipmentItem) {
+                                    $ShipmentItem->setOrder($TargetOrder);
+                                    $ShipmentItem->setShipping($Shipping);
+                                    $app['orm.em']->persist($ShipmentItem);
+                                }
+                                $Shipping->setOrder($TargetOrder);
+                                $app['orm.em']->persist($Shipping);
+                            }
+                        } else {
+
+                            $NewShipmentItems = new ArrayCollection();
+
+                            foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
+                                /** @var $OrderDetail \Eccube\Entity\OrderDetail */
+                                $OrderDetail->setOrder($TargetOrder);
+
+                                $NewShipmentItem = new ShipmentItem();
+                                $NewShipmentItem
+                                    ->setProduct($OrderDetail->getProduct())
+                                    ->setProductClass($OrderDetail->getProductClass())
+                                    ->setProductName($OrderDetail->getProduct()->getName())
+                                    ->setProductCode($OrderDetail->getProductClass()->getCode())
+                                    ->setClassCategoryName1($OrderDetail->getClassCategoryName1())
+                                    ->setClassCategoryName2($OrderDetail->getClassCategoryName2())
+                                    ->setClassName1($OrderDetail->getClassName1())
+                                    ->setClassName2($OrderDetail->getClassName2())
+                                    ->setPrice($OrderDetail->getPrice())
+                                    ->setQuantity($OrderDetail->getQuantity())
+                                    ->setOrder($TargetOrder);
+                                $NewShipmentItems[] = $NewShipmentItem;
+
+                            }
+                            // 配送商品の更新. delete/insert.
+                            $Shippings = $TargetOrder->getShippings();
+                            foreach ($Shippings as $Shipping) {
+                                $ShipmentItems = $Shipping->getShipmentItems();
+                                foreach ($ShipmentItems as $ShipmentItem) {
+                                    $app['orm.em']->remove($ShipmentItem);
+                                }
+                                $ShipmentItems->clear();
+                                foreach ($NewShipmentItems as $NewShipmentItem) {
+                                    $NewShipmentItem->setShipping($Shipping);
+                                    $ShipmentItems->add($NewShipmentItem);
+                                }
+                            }
                         }
+
+                        $app['orm.em']->persist($TargetOrder);
+                        $app['orm.em']->flush();
+
+                        $app->addSuccess('admin.order.save.complete', 'admin');
+
+                        return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
                     }
 
-                    $app['orm.em']->persist($TargetOrder);
-                    $app['orm.em']->flush();
+                    break;
 
-                    $app->addSuccess('admin.order.save.complete', 'admin');
+                case 'add_delivery':
+                    // お届け先情報の新規追加
 
-                    return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
-                }
+                    $form = $builder->getForm();
+
+                    $Shipping = new \Eccube\Entity\Shipping();
+                    $Shipping->setDelFlg(Constant::DISABLED);
+
+                    $TargetOrder->addShipping($Shipping);
+
+                    $Shipping->setOrder($TargetOrder);
+
+                    $form->setData($TargetOrder);
+
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -255,8 +304,9 @@ class EditController extends AbstractController
             $app['monolog']->addDebug('search product start.');
 
             $searchData = array(
-                'id' => $request->get('id'),
+                'name' => $request->get('id'),
             );
+
             if ($categoryId = $request->get('category_id')) {
                 $Category = $app['eccube.repository.category']->find($categoryId);
                 $searchData['category_id'] = $Category;
@@ -289,7 +339,6 @@ class EditController extends AbstractController
         }
     }
 
-    // todo serviceを利用する.
     protected function newOrder()
     {
         $Order = new \Eccube\Entity\Order();
@@ -321,7 +370,6 @@ class EditController extends AbstractController
         $OrderDetails = $Order->getOrderDetails();
         foreach ($OrderDetails as $OrderDetail) {
             // 新規登録の場合は, 入力されたproduct_id/produc_class_idから明細にセットする.
-            // todo 別メソッドに切り出す
             if (!$OrderDetail->getId()) {
                 $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
                     $OrderDetail->getProductClass());
@@ -353,6 +401,34 @@ class EditController extends AbstractController
             $subtotal += $OrderDetail->getTotalPrice();
         }
 
+
+        $shippings = $Order->getShippings();
+        /** @var \Eccube\Entity\Shipping $Shipping */
+        foreach ($shippings as $Shipping) {
+            $shipmentItems = $Shipping->getShipmentItems();
+            $Shipping->setDelFlg(Constant::DISABLED);
+            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
+            if (!$Shipping->getId()) {
+                foreach ($shipmentItems as $ShipmentItem) {
+                    $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
+                    $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
+                    $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
+                        : null);
+                    $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
+                        : null);
+                    $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
+                        : null);
+                    $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
+                        : null);
+                }
+            }
+
+        }
+
         // 受注データの税・小計・合計を再計算
         $Order->setTax($taxtotal);
         $Order->setSubtotal($subtotal);
@@ -374,19 +450,19 @@ class EditController extends AbstractController
      * - 受注ステータスが発送済に設定された場合に発送日を更新
      * - 受注ステータスが入金済に設定された場合に入金日を更新
      *
-     * TODO 受注ステータスの定数化.
      *
+     * @param $app
      * @param $TargetOrder
      * @param $OriginOrder
      */
-    protected function updateDate($TargetOrder, $OriginOrder)
+    protected function updateDate($app, $TargetOrder, $OriginOrder)
     {
         $dateTime = new \DateTime();
 
         // 編集
         if ($TargetOrder->getId()) {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == 5) {
+            if ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_deliv']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setCommitDate($dateTime);
@@ -397,7 +473,7 @@ class EditController extends AbstractController
                     }
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == 6) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_pre_end']) {
                 // 編集前と異なる場合のみ更新
                 if ($TargetOrder->getOrderStatus()->getId() != $OriginOrder->getOrderStatus()->getId()) {
                     $TargetOrder->setPaymentDate($dateTime);
@@ -406,7 +482,7 @@ class EditController extends AbstractController
             // 新規
         } else {
             // 発送済
-            if ($TargetOrder->getOrderStatus()->getId() == 5) {
+            if ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_deliv']) {
                 $TargetOrder->setCommitDate($dateTime);
                 // お届け先情報の発送日も更新する.
                 $Shippings = $TargetOrder->getShippings();
@@ -414,7 +490,7 @@ class EditController extends AbstractController
                     $Shipping->setShippingCommitDate($dateTime);
                 }
                 // 入金済
-            } elseif ($TargetOrder->getOrderStatus()->getId() == 6) {
+            } elseif ($TargetOrder->getOrderStatus()->getId() == $app['config']['order_pre_end']) {
                 $TargetOrder->setPaymentDate($dateTime);
             }
             // 受注日時

@@ -22,26 +22,21 @@
  */
 
 
-namespace Eccube\Form\Type\Front;
+namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * ゲスト購入のお客様情報入力画面
- */
-class NonMemberType extends AbstractType
+class ShippingMultipleType extends AbstractType
 {
-    public $config;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($config)
+    public $app;
+
+    public function __construct(\Eccube\Application $app)
     {
-        $this->config = $config;
+        $this->app = $app;
     }
 
     /**
@@ -49,34 +44,32 @@ class NonMemberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->config;
+        $app = $this->app;
 
         $builder
-            ->add('name', 'name', array(
-                'required' => true,
-            ))
-            ->add('kana', 'kana', array(
-                'required' => true,
-            ))
-            ->add('company_name', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    )),
-                ),
-            ))
-            ->add('zip', 'zip', array(
-                'required' => true,
-            ))
-            ->add('address', 'address', array(
-                'required' => true,
-            ))
-            ->add('tel', 'tel', array(
-                'required' => true,
-            ))
-            ->add('email', 'repeated_email')
+            ->addEventListener(FormEvents::POST_SET_DATA, function ($event) use ($app) {
+                /** @var \Eccube\Entity\ShipmentItem $data */
+                $data = $event->getData();
+                /** @var \Symfony\Component\Form\Form $form */
+                $form = $event->getForm();
+
+                if (is_null($data)) {
+                    return;
+                }
+
+                $shippings = $app['eccube.repository.shipping']->findShippingsProduct($data->getOrder(), $data->getProductClass());
+
+                $form
+                    ->add('shipping', 'collection', array(
+                        'type' => 'shipping_multiple_item',
+                        'data' => $shippings,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                    ));
+
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+
     }
 
     /**
@@ -84,6 +77,6 @@ class NonMemberType extends AbstractType
      */
     public function getName()
     {
-        return 'nonmember';
+        return 'shipping_multiple';
     }
 }
