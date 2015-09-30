@@ -96,6 +96,14 @@ case "${DBTYPE}" in
     export DBPORT=3306
     export DBDRIVER=pdo_mysql
 ;;
+"sqlite3" )
+    #-- DB Seting sqlite3
+    SQLITE3=sqlite3
+    DATABASE_YML_DIST="${DIST_DIR}/database.yml.sqlite3.dist"
+    export DBPATH=${CONFIG_DIR}/eccube.db
+    export DBPORT=
+    export DBDRIVER=pdo_sqlite
+;;
 * )
     echo "argument is invaid."
     echo ""
@@ -226,6 +234,19 @@ case "${DBTYPE}" in
 
     echo "execute optional SQL..."
     get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+;;
+"sqlite3" )
+    # sqlite3
+    echo "removedb..."
+    rm -v ${DBPATH}
+    echo "create table..."
+   ./vendor/bin/doctrine orm:schema-tool:create
+
+    echo "migration..."
+   php app/console migrations:migrate  --no-interaction
+
+    echo "execute optional SQL..."
+    get_optional_sql | ${SQLITE3} ${DBPATH}
 ;;
 esac
 

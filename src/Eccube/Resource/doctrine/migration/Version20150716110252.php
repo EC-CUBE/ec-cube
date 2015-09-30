@@ -28,7 +28,7 @@ class Version20150716110252 extends AbstractMigration
         $app->initialize();
         $app->boot();
         $em = $app["orm.em"];
-
+        /*
         $CsvType = new CsvType();
         $CsvType->setId(1);
         $CsvType->setName('商品CSV');
@@ -60,6 +60,7 @@ class Version20150716110252 extends AbstractMigration
         $em->persist($CsvType);
 
         $em->flush();
+        */
     }
 
     /**
