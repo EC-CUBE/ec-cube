@@ -100,7 +100,7 @@ class MultiLineIpsValidator extends ConstraintValidator
         }
 
         // 改行でパースして、すべての行が指定のIPアドレスであるかチェック
-        $ips = preg_split("/\R/", $value);
+        $ips = preg_split("/\R/", $value, NULL, PREG_SPLIT_NO_EMPTY);
         $is_ips = true;
         foreach($ips as $ip) {
             if (!filter_var($ip, FILTER_VALIDATE_IP, $flag)) {
