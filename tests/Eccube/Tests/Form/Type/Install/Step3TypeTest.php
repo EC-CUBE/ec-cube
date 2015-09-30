@@ -244,6 +244,27 @@ class Step3TypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testValidAdminAllowHost_OneLineIp()
+    {
+        $this->formData['admin_allow_hosts'] = "127.0.0.1";
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidAdminAllowHost_MultiLineIps()
+    {
+        $this->formData['admin_allow_hosts'] = "127.0.0.1\n1.1.1.1";
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidAdminAllowHost_NotIp()
+    {
+        $this->formData['admin_allow_hosts'] = "255.255.255,256";
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testValid_MailBackend_Blank()
     {
         $this->formData['mail_backend'] = '';
