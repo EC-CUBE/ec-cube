@@ -706,7 +706,7 @@ class ShoppingService
      *
      * @param $em トランザクション制御されているEntityManager
      * @param Order $Order 受注情報
-     * @return bool true : 成功、 false : 失敗
+     * @return bool true : 成功、false : 失敗
      */
     public function isOrderProduct($em, \Eccube\Entity\Order $Order)
     {
