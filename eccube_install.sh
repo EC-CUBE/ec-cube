@@ -103,6 +103,12 @@ case "${DBTYPE}" in
     export DBPATH=${CONFIG_DIR}/eccube.db
     export DBPORT=
     export DBDRIVER=pdo_sqlite
+    ;;
+"sqlite3-in-memory" )
+    #-- DB Seting sqlite3
+    SQLITE3=sqlite3
+    DATABASE_YML_DIST="${DIST_DIR}/database.yml.sqlite3-in-memory.dist"
+    export DBDRIVER=pdo_sqlite
 ;;
 * )
     echo "argument is invaid."
