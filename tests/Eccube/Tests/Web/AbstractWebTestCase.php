@@ -26,6 +26,7 @@ namespace Eccube\Tests\Web;
 
 use Silex\WebTestCase;
 use Eccube\Application;
+use Eccube\Tests\EccubeTestCase;
 
 abstract class AbstractWebTestCase extends WebTestCase
 {
@@ -63,14 +64,6 @@ abstract class AbstractWebTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        $app = new Application();
-        $app->initialize();
-        $app->initPluginEventDispatcher();
-        $app['session.test'] = true;
-        $app['exception_handler']->disable();
-
-        $app->boot();
-
-        return $app;
+        return EccubeTestCase::createApplication();
     }
 }
