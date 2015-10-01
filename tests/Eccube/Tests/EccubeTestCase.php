@@ -7,7 +7,7 @@ use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
 use Silex\WebTestCase;
-
+ use Faker\Factory as Faker;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -16,6 +16,10 @@ use Silex\WebTestCase;
  */
 abstract class EccubeTestCase extends WebTestCase
 {
+
+    protected $actual;
+    protected $expected;
+
     /**
      * {@inheritdoc}
      */
@@ -85,6 +89,28 @@ abstract class EccubeTestCase extends WebTestCase
         $sql = "INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, option_product_tax_rule) VALUES (1, 'SHOP_NAME', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'admin@example.com', current_timestamp, 0)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+    }
+
+    /**
+     * Faker を生成する.
+     *
+     * @param string $locale ロケールを指定する. デフォルト ja_JP
+     * @return Faker\Generator
+     * @link https://github.com/fzaninotto/Faker
+     */
+    public function getFaker($locale = 'ja_JP')
+    {
+        return Faker::create($locale);
+    }
+
+    /**
+     * Expected と Actual を比較する.
+     *
+     * @param string $message エラーメッセージ
+     */
+    public function verify($message = '')
+    {
+        $this->assertEquals($this->expected, $this->actual, $message);
     }
 
     /**
