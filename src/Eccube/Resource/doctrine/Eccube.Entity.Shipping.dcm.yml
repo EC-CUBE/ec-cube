@@ -113,7 +113,7 @@ Eccube\Entity\Shipping:
         ShipmentItems:
             targetEntity: Eccube\Entity\ShipmentItem
             mappedBy: Shipping
-            cascade: ["persist"]
+            cascade: ["persist", "remove"]
     manyToOne:
         Country:
             targetEntity: Eccube\Entity\Master\Country
