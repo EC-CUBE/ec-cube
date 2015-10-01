@@ -208,8 +208,9 @@ class CartService
                 ->getRepository('Eccube\Entity\ProductClass')
                 ->find($ProductClass);
         }
-        if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== 1) {
-            throw new CartException('cart.product.type.kind');
+        if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== Constant::ENABLED) {
+            $this->removeProduct($ProductClass->getId());
+            throw new CartException('cart.product.not.status');
         }
 
         $this->setCanAddProductType($ProductClass->getProductType());
@@ -230,14 +231,14 @@ class CartService
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
             if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
                 $quantity = $ProductClass->getSaleLimit();
-                $this->addError('cart.over.sale_limit');
+                $this->setError('cart.over.sale_limit');
             } else {
                 $quantity = $ProductClass->getStock();
-                $this->addError('cart.over.stock');
+                $this->setError('cart.over.stock');
             }
         } elseif ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
             $quantity = $ProductClass->getSaleLimit();
-            $this->addError('cart.over.sale_limit');
+            $this->setError('cart.over.sale_limit');
         }
 
         $CartItem = new CartItem();
@@ -322,11 +323,34 @@ class CartService
                 ->getRepository($CartItem->getClassName())
                 ->find($CartItem->getClassId());
 
-            // 商品情報が削除されたらカートからも削除
+            $stockUnlimited = $ProductClass->getStockUnlimited();
+
             if ($ProductClass->getDelFlg() == Constant::DISABLED) {
-                $CartItem->setObject($ProductClass);
+                // 商品情報が有効
+
+                if ($stockUnlimited == Constant::DISABLED && $ProductClass->getStock() < 1) {
+                    // 在庫がなければカートから削除
+                    $this->setError('cart.zero.stock');
+                    $this->removeProduct($ProductClass->getId());
+                } else {
+
+                    $quantity = $CartItem->getQuantity();
+                    $saleLimit = $ProductClass->getSaleLimit();
+                    if ($stockUnlimited == Constant::DISABLED && $ProductClass->getStock() < $quantity) {
+                        // 在庫数が購入数を超えている場合、メッセージを表示
+                        $this->setError('cart.over.stock');
+                    } else if (!is_null($saleLimit) && $saleLimit < $quantity) {
+                        // 販売制限数が購入数を超えている場合、メッセージを表示
+                        $this->setError('cart.over.sale_limit');
+                    }
+
+                    // カートに追加
+                    $CartItem->setObject($ProductClass);
+                }
             } else {
+                // 商品情報が削除されていたらエラー
                 $this->setError('cart.product.delete');
+                // カートから削除
                 $this->removeProduct($ProductClass->getId());
             }
 
@@ -465,7 +489,6 @@ class CartService
     public function setError($error = null)
     {
         $this->error = $error;
-        $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
         $this->session->getFlashBag()->set('eccube.front.request.error', $error);
         return $this;
     }
