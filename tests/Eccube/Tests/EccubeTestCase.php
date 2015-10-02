@@ -21,7 +21,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected $expected;
 
     /**
-     * {@inheritdoc}
+     * Applicaiton を生成しトランザクションを開始する.
      */
     public function setUp()
     {
@@ -37,7 +37,7 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
-     * {@inheritdoc}
+     * トランザクションをロールバックする.
      */
     public function tearDown()
     {
@@ -107,6 +107,7 @@ abstract class EccubeTestCase extends WebTestCase
      * Expected と Actual を比較する.
      *
      * @param string $message エラーメッセージ
+     * @link http://objectclub.jp/community/memorial/homepage3.nifty.com/masarl/article/junit/scenario-based-testcase.html#verify%20%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89
      */
     public function verify($message = '')
     {
