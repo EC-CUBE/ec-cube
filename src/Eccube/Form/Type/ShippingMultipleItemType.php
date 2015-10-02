@@ -27,6 +27,7 @@ namespace Eccube\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,7 +48,6 @@ class ShippingMultipleItemType extends AbstractType
     {
         $app = $this->app;
 
-        $Customer = $this->app->user();
 
         $builder
             ->add('quantity', 'integer', array(
@@ -63,20 +63,48 @@ class ShippingMultipleItemType extends AbstractType
                     new Assert\Regex(array('pattern' => '/^\d+$/')),
                 ),
             ))
-            ->add('customer_address', 'entity', array(
-                'class' => 'Eccube\Entity\CustomerAddress',
-                'property' => 'shippingMultipleDefaultName',
-                'query_builder' => function (EntityRepository $er) use ($Customer) {
-                    return $er->createQueryBuilder('ca')
-                        ->where('ca.Customer = :Customer')
-                        ->orderBy("ca.id", "ASC")
-                        ->setParameter('Customer', $Customer);
-                },
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-            ))
-            ->addEventListener(FormEvents::POST_SET_DATA, function ($event) use ($app) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($app) {
+                $form = $event->getForm();
+
+                if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+                    // 会員の場合、CustomerAddressを設定
+                    $Customer = $app->user();
+                    $form->add('customer_address', 'entity', array(
+                        'class' => 'Eccube\Entity\CustomerAddress',
+                        'property' => 'shippingMultipleDefaultName',
+                        'query_builder' => function (EntityRepository $er) use ($Customer) {
+                            return $er->createQueryBuilder('ca')
+                                ->where('ca.Customer = :Customer')
+                                ->orderBy("ca.id", "ASC")
+                                ->setParameter('Customer', $Customer);
+                        },
+                        'constraints' => array(
+                            new Assert\NotBlank(),
+                        ),
+                    ));
+                } else {
+                    // 非会員の場合、セッションに設定されたCustomerAddressを設定
+                    if ($app['session']->has('eccube.front.shopping.nonmember.customeraddress')) {
+                        $customerAddresses = $this->app['session']->get('eccube.front.shopping.nonmember.customeraddress');
+                        $customerAddresses = unserialize($customerAddresses);
+
+                        $addresses = array();
+                        $i = 0;
+                        /** @var \Eccube\Entity\CustomerAddress $CustomerAddress */
+                        foreach ($customerAddresses as $CustomerAddress) {
+                            $addresses[$i] = $CustomerAddress->getShippingMultipleDefaultName();
+                            $i++;
+                        }
+                        $form->add('customer_address', 'choice', array(
+                            'choices' => $addresses,
+                            'constraints' => array(
+                                new Assert\NotBlank(),
+                            ),
+                        ));
+                    }
+                }
+            })
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */

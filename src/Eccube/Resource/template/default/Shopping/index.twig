@@ -252,13 +252,11 @@ $(function(){
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
                     {% endfor %}
-                    {% if is_granted('ROLE_USER') %}
                     {% if BaseInfo.optionMultipleShipping %}
                         {% if totalQuantity != Order.shippings|length %}
                         <hr>
                         <div><a href="{{ url('shopping_shipping_multiple') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
                         {% endif %}
-                    {% endif %}
                     {% endif %}
 
                     <h2 class="heading02">お支払方法</h2>

@@ -120,6 +120,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/customer', '\Eccube\Controller\ShoppingController::customer')->bind('shopping_customer');
         $c->match('/shopping/shopping_error', '\Eccube\Controller\ShoppingController::shoppingError')->bind('shopping_error');
         $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
+        $c->match('/shopping/shipping_multiple_edit', '\Eccube\Controller\ShoppingController::shippingMultipleEdit')->bind('shopping_shipping_multiple_edit');
 
         return $c;
     }
