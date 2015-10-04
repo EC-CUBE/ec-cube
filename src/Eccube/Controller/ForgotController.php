@@ -111,6 +111,8 @@ class ForgotController extends AbstractController
             $encPass = $app['eccube.repository.customer']->encryptPassword($app, $Customer);
             $Customer->setPassword($encPass);
 
+            $Customer->setResetKey(null);
+
             // パスワードを更新
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
