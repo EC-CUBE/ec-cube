@@ -27,8 +27,9 @@ namespace Eccube\Form\Type\Install;
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Form\FormError;
+use \Symfony\Component\Form\FormEvents;
 use \Symfony\Component\Validator\Constraints as Assert;
-use \Eccube\Validator\Constraints as EcccubeAssert;
 
 class Step3Type extends AbstractType
 {
@@ -108,9 +109,6 @@ class Step3Type extends AbstractType
                 'label' => '管理画面へのアクセスを、以下のIPに制限します',
                 'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
                 'required' => false,
-                'constraints' => array(
-                    new EcccubeAssert\MultiLineIps(),
-                ),
             ))
             ->add('mail_backend', 'choice', array(
                 'label' => 'メーラーバックエンド',
@@ -143,6 +141,22 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+                $form = $event->getForm();
+                $data = $form->getData();
+
+                $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
+
+                foreach($ips as $ip) {
+                    $errors = $this->app['validator']->validateValue($ip, array(
+                            new Assert\Ip(),
+                        )
+                    );
+                    if ($errors->count() != 0) {
+                        $form['admin_allow_hosts']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
+                    }
+                }
+            })
         ;
     }
 

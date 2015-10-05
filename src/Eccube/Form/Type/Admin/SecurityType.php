@@ -25,18 +25,21 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Validator\Constraints as EccubeAssert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SecurityType extends AbstractType
 {
+    private $app;
     private $config;
 
-    public function __construct($config)
+    public function __construct($app)
     {
-        $this->config = $config;
+        $this->app = $app;
+        $this->config = $app['config'];
     }
 
     /**
@@ -60,13 +63,28 @@ class SecurityType extends AbstractType
                 'label' => 'IP制限',
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['stext_len'])),
-                    new EccubeAssert\MultiLineIps(),
                 ),
             ))
             ->add('force_ssl', 'checkbox', array(
                 'label' => 'SSLを強制',
                 'required' => false,
             ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+                $form = $event->getForm();
+                $data = $form->getData();
+
+                $ips = preg_split("/\R/", $data['admin_allow_host'], null, PREG_SPLIT_NO_EMPTY);
+
+                foreach($ips as $ip) {
+                    $errors = $this->app['validator']->validateValue($ip, array(
+                            new Assert\Ip(),
+                        )
+                    );
+                    if ($errors->count() != 0) {
+                        $form['admin_allow_host']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
+                    }
+                }
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
