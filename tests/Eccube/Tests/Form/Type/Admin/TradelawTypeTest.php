@@ -62,10 +62,6 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'law_term04' => 'law_term01',
         'law_term05' => 'law_term01',
         'law_term06' => 'law_term01',
-        'law_term07' => 'law_term01',
-        'law_term08' => 'law_term01',
-        'law_term09' => 'law_term01',
-        'law_term10' => 'law_term01',
     );
 
     public function setUp()
@@ -106,5 +102,142 @@ class TradelawTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+
+    public function testInvalidLawTerm01_Blank()
+    {
+        $this->formData['law_term01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawTerm02_Blank()
+    {
+        $this->formData['law_term02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawTerm03_Blank()
+    {
+        $this->formData['law_term03'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawTerm04_Blank()
+    {
+        $this->formData['law_term04'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawTerm05_Blank()
+    {
+        $this->formData['law_term05'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawTerm06_Blank()
+    {
+        $this->formData['law_term06'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawCompany_Blank()
+    {
+        $this->formData['law_company'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawManager_Blank()
+    {
+        $this->formData['law_manager'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawZip01_Blank()
+    {
+        $this->formData['law_zip']['law_zip01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawZip02_Blank()
+    {
+        $this->formData['law_zip']['law_zip02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawPref_Blank()
+    {
+        $this->formData['law_address']['law_pref'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawAddr01_Blank()
+    {
+        $this->formData['law_address']['law_addr01'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawAddr02_Blank()
+    {
+        $this->formData['law_address']['law_addr02'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawEmail_Blank()
+    {
+        $this->formData['law_email'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawUrl_Blank()
+    {
+        $this->formData['law_url'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidLawUrl()
+    {
+        $this->formData['law_url'] = 'hogehoge';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidLawUrl_Nihongo()
+    {
+        $this->formData['law_url'] = 'http://日本語.com';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
     }
 }
