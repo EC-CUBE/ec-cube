@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FileController
 {
@@ -40,10 +41,15 @@ class FileController
             ->add('file', 'file')
             ->getForm();
 
-        $htmlDir = realpath(str_replace($app['config']['user_data_route'], '', $app['config']['user_data_realdir']));
-        $topDir = realpath($app['config']['user_data_realdir']);
-        $nowDir = $request->get('tree_select_file') ?: $topDir . '/';
-
+        // user_data_dir
+        $topDir = $this->normalizePath($app['config']['user_data_realdir']);
+        // user_data_dirの親ディレクトリ
+        $htmlDir = $this->normalizePath($topDir.'/../');
+        // カレントディレクトリ
+        $nowDir = $this->checkDir($request->get('tree_select_file'), $topDir)
+            ? $this->normalizePath($request->get('tree_select_file'))
+            : $topDir;
+        // パンくず表示用データ
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
 
         $isTopDir = ($topDir === $nowDir);
@@ -58,11 +64,6 @@ class FileController
                 break;
             case 'upload':
                 $this->upload($app, $request);
-                break;
-            case 'download':
-                if ($res = $this->download($app, $request)) {
-                    return $res;
-                }
                 break;
             default:
                 break;
@@ -91,7 +92,12 @@ class FileController
 
     public function view(Application $app, Request $request)
     {
-        return $app->sendFile($request->get('file'));
+        $topDir = $app['config']['user_data_realdir'];
+        if ($this->checkDir($request->get('file'), $topDir)) {
+            return $app->sendFile($request->get('file'));
+        }
+
+        throw new NotFoundHttpException();
     }
 
     public function create(Application $app, Request $request)
@@ -105,29 +111,38 @@ class FileController
         } else if (strlen($filename) > 0 && preg_match($pattern, $filename)) {
             $this->error = array('message' => 'ファイル名には、英数字、記号（_ - .）のみを入力して下さい。');
         } else  {
-            $fs->mkdir($request->get('now_dir') . '/' . $filename);
+            $topDir = $app['config']['user_data_realdir'];
+            $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
+                ? $this->normalizePath($request->get('now_dir'))
+                : $topDir;
+            $fs->mkdir($nowDir.'/'.$filename);
         }
     }
 
     public function delete(Application $app, Request $request)
     {
-        $fs = new Filesystem();
-        if ($fs->exists($request->get('select_file'))) {
-            $fs->remove($request->get('select_file'));
+        $topDir = $app['config']['user_data_realdir'];
+        if ($this->checkDir($request->get('select_file'), $topDir)) {
+            $fs = new Filesystem();
+            if ($fs->exists($request->get('select_file'))) {
+                $fs->remove($request->get('select_file'));
+            }
         }
     }
 
     public function download(Application $app, Request $request)
     {
-        if ($file = $request->get('select_file')) {
+        $topDir = $app['config']['user_data_realdir'];
+        $file = $request->get('select_file');
+        if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
                 $pathParts = pathinfo($file);
 
                 $patterns = array(
-                        '/[a-zA-Z0-9!"#$%&()=~^|@`:*;+{}]/',
-                        '/[- ,.<>?_[\]\/\\\\]/',
-                        "/['\r\n\t\v\f]/",
-                    );
+                    '/[a-zA-Z0-9!"#$%&()=~^|@`:*;+{}]/',
+                    '/[- ,.<>?_[\]\/\\\\]/',
+                    "/['\r\n\t\v\f]/",
+                );
 
                 $str = preg_replace($patterns, '', $pathParts['basename']);
                 if (strlen($str) === 0) {
@@ -135,11 +150,9 @@ class FileController
                 } else {
                     return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, ord($pathParts['basename']));
                 }
-
             }
         }
-
-        return;
+        throw new NotFoundHttpException();
     }
 
     public function upload(Application $app, Request $request)
@@ -152,11 +165,14 @@ class FileController
 
         if ($form->isValid()) {
             $data = $form->getData();
-            if (!empty($data['file'])) {
-                $filename = $data['file']->getClientOriginalName();
-                $data['file']->move($request->get('now_dir'), $filename);
-            } else {
+            if (empty($data['file'])) {
                 $this->error = array('message' => 'ファイルが選択されていません。');
+            } else {
+                $topDir = $app['config']['user_data_realdir'];
+                if ($this->checkDir($request->get('now_dir'), $topDir)) {
+                    $filename = $data['file']->getClientOriginalName();
+                    $data['file']->move($request->get('now_dir'), $filename);
+                }
             }
         }
     }
@@ -181,7 +197,6 @@ class FileController
         $finder = Finder::create()->in($topDir)
             ->directories()
             ->sortByName();
-        $dirs = iterator_to_array($finder);
 
         $tree = array();
         $tree[] = array(
@@ -199,7 +214,7 @@ class FileController
         }
 
         foreach ($finder as $dirs) {
-            $path = $dirs->getRealPath();
+            $path = $this->normalizePath($dirs->getRealPath());
             $type = (iterator_count(Finder::create()->in($path)->directories())) ? '_parent' : '_child';
             $rank = count(explode('/', $path)) - $defaultRank;
 
@@ -216,12 +231,21 @@ class FileController
 
     private function getFileList($app, $nowDir)
     {
+        $topDir = $app['config']['user_data_realdir'];
+        $filter = function (\SplFileInfo $file) use ($topDir) {
+            $acceptPath = realpath($topDir);
+            $targetPath = $file->getRealPath();
+            return (strpos($targetPath, $acceptPath) === 0);
+        };
+
         $dirFinder = Finder::create()
+            ->filter($filter)
             ->in($nowDir)
             ->directories()
             ->sortByName()
             ->depth(0);
         $fileFinder = Finder::create()
+            ->filter($filter)
             ->in($nowDir)
             ->files()
             ->sortByName()
@@ -233,7 +257,7 @@ class FileController
         foreach ($dirs as $dir) {
             $arrFileList[] = array(
                 'file_name' => $dir->getFilename(),
-                'file_path' => $dir->getRealPath(),
+                'file_path' => $this->normalizePath($dir->getRealPath()),
                 'file_size' => $dir->getSize(),
                 'file_time' => date("Y/m/d", $dir->getmTime()),
                 'is_dir' => true,
@@ -242,7 +266,7 @@ class FileController
         foreach ($files as $file) {
             $arrFileList[] = array(
                 'file_name' => $file->getFilename(),
-                'file_path' => $file->getRealPath(),
+                'file_path' => $this->normalizePath($file->getRealPath()),
                 'file_size' => $file->getSize(),
                 'file_time' => date("Y/m/d", $file->getmTime()),
                 'is_dir' => false,
@@ -250,5 +274,17 @@ class FileController
         }
 
         return $arrFileList;
+    }
+
+    protected function normalizePath($path)
+    {
+        return str_replace('\\', '/', realpath($path));
+    }
+
+    protected function checkDir($targetDir, $topDir)
+    {
+        $targetDir = realpath($targetDir);
+        $topDir = realpath($topDir);
+        return (strpos($targetDir, $topDir) === 0);
     }
 }
