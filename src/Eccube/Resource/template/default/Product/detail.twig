@@ -138,11 +138,9 @@ $(function(){
 
                     <!--▼商品コード-->
                     <p class="item_code">商品コード： <span id="item_code_default">
-                        {%- if Product.hasProductClass -%}
-                            {{ Product.code_min }} ～ {{ Product.code_max }}
-                        {%- else -%}
-                            {{ Product.code_min }}
-                        {%- endif -%} </span> </p>
+                        {{ Product.code_min }}
+                        {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
+                        </span> </p>
                     <!--▲商品コード-->
 
                     <!-- ▼関連カテゴリ▼ -->

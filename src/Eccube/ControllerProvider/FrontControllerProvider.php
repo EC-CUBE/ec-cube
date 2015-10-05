@@ -69,6 +69,7 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         // forgot
         $c->match('/forgot', '\Eccube\Controller\ForgotController::index')->bind('forgot');
+        $c->match('/forgot/complete', '\Eccube\Controller\ForgotController::complete')->bind('forgot_complete');
         $c->match('/forgot/reset/{reset_key}', '\Eccube\Controller\ForgotController::reset')->bind('forgot_reset');
 
         // block

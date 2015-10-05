@@ -236,7 +236,7 @@ $(function() {
                                                     <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"></svg></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_product_product_class', { id : Product.id }) }}">規格</a></li>
-                                                    <li><a href="#" onclick="fnConfirm('{{ url('admin_product_product_display', {'id' : Product.id}) }}');return false;">確認</a></li>
+                                                    <li><a href="{{ url('admin_product_product_display', {'id' : Product.id}) }}" target="_blank">確認</a></li>
                                                     <li><a href="#" onclick="fnCopy('{{ url('admin_product_product_copy', {'id' : Product.id}) }}');return false;">複製</a></li>
                                                     <li><a href="#" onclick="fnDelete('{{ url('admin_product_product_delete', {'id' : Product.id}) }}');return false;">削除</a></li>
                                                     </ul>
