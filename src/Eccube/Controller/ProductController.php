@@ -204,7 +204,7 @@ class ProductController
      */
     private function getPageTitle($searchData)
     {
-        if (isset($searchData['mode']) && $searchData['mode'] === 'search') {
+        if (isset($searchData['name']) && !empty($searchData['name'])) {
             return '検索結果';
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
