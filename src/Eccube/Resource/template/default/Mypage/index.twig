@@ -74,7 +74,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             / {{ OrderDetail.class_category_name2 }}
                                                         {% endif %}
                                                     </dd>
-                                                    <dd class="item_price">{{ OrderDetail.total_price|price }} ×{{ OrderDetail.quantity }}</dd>
+                                                    <dd class="item_price">{{ OrderDetail.price_inc_tax|price }} ×{{ OrderDetail.quantity }}</dd>
                                                 </dl>
                                             </div>
                                         </div>
