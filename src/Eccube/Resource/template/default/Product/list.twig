@@ -54,6 +54,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <li><a href="{{ url('product_list') }}?category_id={{ Path.id }}">{{ Path.name }}</a></li>
                 {% endfor %}
             {% endif %}
+            {% if search_form.vars.value.name %}
+            <li>「{{ search_form.vars.value.name }}」の検索結果</li>
+            {% endif %}
         </ol>
     </div>
     <!-- ▲topicpath▲ -->
