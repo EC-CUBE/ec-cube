@@ -99,6 +99,8 @@ class DeliveryController extends AbstractController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Customer = $app['user'];
 
         // 別のお届け先削除

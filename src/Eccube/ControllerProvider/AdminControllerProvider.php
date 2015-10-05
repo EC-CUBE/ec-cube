@@ -54,7 +54,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/product/product/{id}/edit', '\Eccube\Controller\Admin\Product\ProductController::edit')->assert('id', '\d+')->bind('admin_product_product_edit');
         $c->match('/product/product/class/{id}', '\Eccube\Controller\Admin\Product\ProductClassController::index')->assert('id', '\d+')->bind('admin_product_product_class');
         $c->match('/product/product/{id}/display', '\Eccube\Controller\Admin\Product\ProductController::display')->assert('id', '\d+')->bind('admin_product_product_display');
-        $c->post('/product/product/{id}/delete', '\Eccube\Controller\Admin\Product\ProductController::delete')->assert('id', '\d+')->bind('admin_product_product_delete');
+        $c->delete('/product/product/{id}/delete', '\Eccube\Controller\Admin\Product\ProductController::delete')->assert('id', '\d+')->bind('admin_product_product_delete');
         $c->post('/product/product/{id}/copy', '\Eccube\Controller\Admin\Product\ProductController::copy')->assert('id', '\d+')->bind('admin_product_product_copy');
         $c->post('/product/product/class/edit/{id}', '\Eccube\Controller\Admin\Product\ProductClassController::edit')->assert('id', '\d+')->bind('admin_product_product_class_edit');
         $c->post('/product/product/image/add', '\Eccube\Controller\Admin\Product\ProductController::addImage')->bind('admin_product_image_add');
@@ -151,9 +151,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/setting/shop/delivery', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::index')->bind('admin_setting_shop_delivery');
         $c->match('/setting/shop/delivery/new', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::edit')->bind('admin_setting_shop_delivery_new');
         $c->match('/setting/shop/delivery/{id}/edit', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::edit')->assert('id', '\d+')->bind('admin_setting_shop_delivery_edit');
-        $c->match('/setting/shop/delivery/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::delete')->assert('id', '\d+')->bind('admin_setting_shop_delivery_delete');
-        $c->match('/setting/shop/delivery/{id}/up', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::up')->assert('id', '\d+')->bind('admin_setting_shop_delivery_up');
-        $c->match('/setting/shop/delivery/{id}/down', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::down')->assert('id', '\d+')->bind('admin_setting_shop_delivery_down');
+        $c->delete('/setting/shop/delivery/{id}/delete', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::delete')->assert('id', '\d+')->bind('admin_setting_shop_delivery_delete');
         $c->post('/setting/shop/delivery/rank/move', '\Eccube\Controller\Admin\Setting\Shop\DeliveryController::moveRank')->bind('admin_setting_shop_delivery_rank_move');
 
         // payment

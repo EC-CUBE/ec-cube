@@ -162,6 +162,8 @@ class DeliveryController extends AbstractController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $repo = $app['eccube.repository.delivery'];
         $Deliv = $repo->find($id);
 
@@ -185,44 +187,6 @@ class DeliveryController extends AbstractController
         $app['orm.em']->flush();
 
         $app->addSuccess('admin.delete.complete', 'admin');
-
-        return $app->redirect($app->url('admin_setting_shop_delivery'));
-    }
-
-    public function up(Application $app, $id)
-    {
-        $repo = $app['eccube.repository.delivery'];
-
-        $current = $repo->find($id);
-        $currentRank = $current->getRank();
-
-        $targetRank = $currentRank + 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
-
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
-        $app['orm.em']->flush();
-
-        $app->addSuccess('admin.register.complete', 'admin');
-
-        return $app->redirect($app->url('admin_setting_shop_delivery'));
-    }
-
-    public function down(Application $app, $id)
-    {
-        $repo = $app['eccube.repository.delivery'];
-
-        $current = $repo->find($id);
-        $currentRank = $current->getRank();
-
-        $targetRank = $currentRank - 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
-
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
-        $app['orm.em']->flush();
-
-        $app->addSuccess('admin.register.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_delivery'));
     }

@@ -40,4 +40,9 @@ class Constant {
      */
     const DISABLED = 0;
 
+    /**
+     * Csrf Token Name.
+     */
+    const TOKEN_NAME = '_token';
+
 }
