@@ -119,10 +119,9 @@ class BlockController
 
         // ユーザーが作ったブロックのみ削除する
         if ($Block->getDeletableFlg() > 0) {
-            $tplDir = $app['eccube.repository.page_layout']
+            $tplDir = $app['eccube.repository.block']
                 ->getWriteTemplatePath($DeviceType);
-            $tplDir .= $app['config']['block_dir'];
-            $file = $tplDir . $Block->getFileName();
+            $file = $tplDir . '/' . $Block->getFileName() . '.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
