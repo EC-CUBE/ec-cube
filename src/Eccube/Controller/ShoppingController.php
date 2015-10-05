@@ -806,11 +806,8 @@ class ShoppingController extends AbstractController
 
                     foreach ($mulitples as $items) {
                         foreach ($items as $item) {
-                            /** @var \Eccube\Entity\Shipping $Shipping */
-                            $Shipping = $item->getData();
 
                             // 追加された配送先情報を作成
-
                             $Delivery = $multipleItem->getShipping()->getDelivery();
 
                             // 選択された情報を取得
