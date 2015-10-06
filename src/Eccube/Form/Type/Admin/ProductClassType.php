@@ -62,27 +62,12 @@ class ProductClassType extends AbstractType
                 'label' => '販売制限数',
                 'required' => false,
             ))
-            ->add('price01', 'money', array(
+            ->add('price01', 'price', array(
                 'label' => '通常価格',
-                'currency' => 'JPY',
-                'precision' => 0,
                 'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => 10,
-                    )),
-                ),
             ))
-            ->add('price02', 'money', array(
+            ->add('price02', 'price', array(
                 'label' => '販売価格',
-                'currency' => 'JPY',
-                'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'max' => 10,
-                    )),
-                ),
             ))
             ->add('tax_rate', 'text', array(
                 'label' => '消費税率',
@@ -90,10 +75,8 @@ class ProductClassType extends AbstractType
                 'constraints' => array(
                     new Assert\Range(array('min' => 0, 'max' => 100))),
             ))
-            ->add('delivery_fee', 'money', array(
+            ->add('delivery_fee', 'price', array(
                 'label' => '商品送料',
-                'currency' => 'JPY',
-                'precision' => 0,
                 'required' => false,
             ))
             ->add('product_type', 'product_type', array(
