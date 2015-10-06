@@ -33,7 +33,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SecurityType extends AbstractType
 {
-    public $app;
+    private $app;
     private $config;
 
     public function __construct($app)
@@ -47,7 +47,7 @@ class SecurityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $self = $this;
+        $app = $this->app;
         $builder
             ->add('admin_route_dir', 'text', array(
                 'label' => 'ディレクトリ名',
@@ -70,14 +70,14 @@ class SecurityType extends AbstractType
                 'label' => 'SSLを強制',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($self) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($app) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_host'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $self->app['validator']->validateValue($ip, array(
+                    $errors = $app['validator']->validateValue($ip, array(
                             new Assert\Ip(),
                         )
                     );
