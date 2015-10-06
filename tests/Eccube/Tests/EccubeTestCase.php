@@ -7,7 +7,7 @@ use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
 use Silex\WebTestCase;
- use Faker\Factory as Faker;
+use Faker\Factory as Faker;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
