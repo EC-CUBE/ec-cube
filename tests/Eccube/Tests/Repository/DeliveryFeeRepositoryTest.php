@@ -14,7 +14,7 @@ use Eccube\Entity\Master\Pref;
  *
  * @author Kentaro Ohkouchi
  */
-class DeliveryFeeRepository extends EccubeTestCase
+class DeliveryFeeRepositoryTest extends EccubeTestCase
 {
     public function setUp()
     {
