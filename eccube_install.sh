@@ -187,10 +187,10 @@ case "${DBTYPE}" in
 "pgsql" )
     # PostgreSQL
     echo "dropdb..."
-    sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
+    ${PSQL} -U ${PGUSER} -c "drop database ${DBNAME}"
 
     echo "createdb..."
-    sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
+    ${PSQL} -U ${PGUSER} -c "create database ${DBNAME} owner ${DBUSER}"
 
     echo "create table..."
     ./vendor/bin/doctrine orm:schema-tool:create
@@ -199,7 +199,7 @@ case "${DBTYPE}" in
     php app/console migrations:migrate  --no-interaction
 
     echo "execute optional SQL..."
-    get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
+    get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME}
 ;;
 "mysql" )
     DBPASS=`echo $DBPASS | tr -d " "`
