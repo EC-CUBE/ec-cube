@@ -45,6 +45,7 @@ class Step3Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $self = $this;
         $builder
             ->add('shop_name', 'text', array(
                 'label' => 'あなたの店名',
@@ -141,14 +142,14 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($self)  {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $this->app['validator']->validateValue($ip, array(
+                    $errors = $self->app['validator']->validateValue($ip, array(
                             new Assert\Ip(),
                         )
                     );

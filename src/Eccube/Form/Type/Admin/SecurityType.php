@@ -47,6 +47,7 @@ class SecurityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $self = $this;
         $builder
             ->add('admin_route_dir', 'text', array(
                 'label' => 'ディレクトリ名',
@@ -69,14 +70,14 @@ class SecurityType extends AbstractType
                 'label' => 'SSLを強制',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($self) {
                 $form = $event->getForm();
                 $data = $form->getData();
 
                 $ips = preg_split("/\R/", $data['admin_allow_host'], null, PREG_SPLIT_NO_EMPTY);
 
                 foreach($ips as $ip) {
-                    $errors = $this->app['validator']->validateValue($ip, array(
+                    $errors = $self->app['validator']->validateValue($ip, array(
                             new Assert\Ip(),
                         )
                     );
