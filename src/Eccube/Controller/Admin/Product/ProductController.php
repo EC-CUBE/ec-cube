@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -33,7 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductController
+class ProductController extends AbstractController
 {
     public function index(Application $app, Request $request, $page_no = null)
     {
@@ -362,6 +363,8 @@ class ProductController
 
     public function delete(Application $app, Request $request, $id = null)
     {
+        $this->isTokenValid($app);
+
         if (!is_null($id)) {
             /* @var $Product \Eccube\Entity\Product */
             $Product = $app['eccube.repository.product']->find($id);

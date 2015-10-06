@@ -133,15 +133,14 @@ class ContentsController extends AbstractController
 
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetNews = $app['eccube.repository.news']->find($id);
         if (!$TargetNews) {
             throw new NotFoundHttpException();
         }
 
-        $status = false;
-        if ('POST' === $request->getMethod()) {
-            $status = $app['eccube.repository.news']->delete($TargetNews);
-        }
+        $status = $app['eccube.repository.news']->delete($TargetNews);
 
         if ($status) {
             $app->addSuccess('admin.news.delete.complete', 'admin');

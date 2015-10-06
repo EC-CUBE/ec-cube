@@ -75,7 +75,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         </li>
                                                     {% else %}
                                                         <li>
-                                                            <a href="?" onclick="changeAction('{{ url('admin_setting_system_member_delete', {id: Member.id}) }}'); document.form1.submit(); return false;">削除</a>
+                                                            <a href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
                                                         </li>
                                                     {% endif %}
                                                     {% if loop.first == false %}

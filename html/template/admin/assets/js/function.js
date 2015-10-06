@@ -161,7 +161,7 @@ $(function () {
         e.preventDefault();
         var $this = $(this);
         var data = $this.data();
-        if (data.confirm != 'false') {
+        if (data.confirm != false) {
             if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
                 return false;
             }

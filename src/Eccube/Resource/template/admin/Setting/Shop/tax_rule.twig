@@ -133,7 +133,7 @@ $(function() {
                                             {% if TaxRule.default_tax_rule %}
                                                 <li><a>削除</a></li>
                                             {% else %}
-                                                <li><a href="#" onclick="fnChange('{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}'); return false;">削除</a></li>
+                                                <li><a href="{{ url('admin_setting_shop_tax_delete', { id : TaxRule.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a></li>
                                             {% endif %}
                                         </ul>
                                     </div>

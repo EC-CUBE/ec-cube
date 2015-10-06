@@ -91,18 +91,6 @@ function fnChangeActionSubmit(action) {
     document.search_form.action = action;
     document.search_form.submit();
 }
-function fnDelete(action) {
-    if (confirm('この会員情報を削除しても宜しいですか？')) {
-        document.search_form.action = action;
-        document.search_form.submit();
-    }
-}
-function fnReSendMail(action) {
-    if (confirm('仮登録メールを再送しても宜しいですか？')) {
-        document.search_form.action = action;
-        document.search_form.submit();
-    }
-}
 </script>
 {% endblock javascript %}
 
@@ -276,9 +264,9 @@ function fnReSendMail(action) {
                                             <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                             <ul class="dropdown-menu dropdown-menu-right">
                                                 <li><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">編集</a></li>
-                                                <li><a href="#" onclick="fnDelete('{{ url('admin_customer_delete', { 'id': Customer.id}) }}');return false;">削除</a></li>
+                                                <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この会員情報を削除してもよろしいですか？">削除</a></li>
                                                 {% if Customer.Status.id == 1 %}
-                                                <li><a href="#" onclick="fnReSendMail('{{ url('admin_customer_resend', { 'id': Customer.id}) }}');return false;">仮会員メール再送</a></li>
+                                                <li><a href="{{ url('admin_customer_resend', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="仮登録メールを再送してもよろしいですか？">仮会員メール再送</a></li>
                                                 {% endif %}
                                             </ul>
                                         </div>

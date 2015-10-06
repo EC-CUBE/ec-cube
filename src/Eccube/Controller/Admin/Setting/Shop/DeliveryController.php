@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -168,14 +169,14 @@ class DeliveryController extends AbstractController
         $Deliv = $repo->find($id);
 
         $Deliv
-            ->setDelFlg(1)
+            ->setDelFlg(Constant::ENABLED)
             ->setRank(0);
         $app['orm.em']->persist($Deliv);
 
         $rank = 1;
         $Delivs = $repo
             ->findBy(
-                array('del_flg' => 0),
+                array('del_flg' => Constant::DISABLED),
                 array('rank' => 'ASC')
             );
         foreach ($Delivs as $Deliv) {
