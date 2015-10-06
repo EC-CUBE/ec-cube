@@ -33,7 +33,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SecurityType extends AbstractType
 {
-    private $app;
+    public $app;
     private $config;
 
     public function __construct($app)
