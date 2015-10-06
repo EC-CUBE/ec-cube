@@ -75,7 +75,7 @@ class CsvImportController
                 if (!empty($formFile)) {
 
                     $data = $this->getImportData($app, $formFile);
-                    if($data===false) {
+                    if ($data === false) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
                         return $this->render($app, $form, $headers, $this->productTwig);
                     }
@@ -422,7 +422,7 @@ class CsvImportController
                 if (!empty($formFile)) {
 
                     $data = $this->getImportData($app, $formFile);
-                    if($data===false) {
+                    if ($data === false) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
                         return $this->render($app, $form, $headers, $this->categoryTwig);
                     }
@@ -644,7 +644,7 @@ class CsvImportController
 
         $ret = $data->setHeaderRowNumber(0);
 
-        return ($ret!==false)?$data:false;
+        return ($ret !== false) ? $data : false;
     }
 
 

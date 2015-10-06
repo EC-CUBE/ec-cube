@@ -203,7 +203,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         $this->headerRowNumber = $rowNumber;
         $headers = $this->readHeaderRow($rowNumber);
 
-        if($headers===false) {
+        if ($headers === false) {
             return false;            
         }
         $this->setColumnHeaders($headers);
