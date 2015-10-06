@@ -791,6 +791,14 @@ class ShoppingController extends AbstractController
                     }
                 }
 
+                // お届け先情報をdelete/insert
+
+                $shippings = $Order->getShippings();
+                foreach ($shippings as $Shipping) {
+                    $Order->removeShipping($Shipping);
+                    $app['orm.em']->remove($Shipping);
+                }
+
                 foreach ($data as $mulitples) {
 
                     /** @var \Eccube\Entity\ShipmentItem $multipleItem */
@@ -798,134 +806,81 @@ class ShoppingController extends AbstractController
 
                     foreach ($mulitples as $items) {
                         foreach ($items as $item) {
-                            /** @var \Eccube\Entity\Shipping $Shipping */
-                            $Shipping = $item->getData();
-                            if ($Shipping instanceof Shipping) {
 
-                                // 既存の配送商品情報を更新
+                            // 追加された配送先情報を作成
+                            $Delivery = $multipleItem->getShipping()->getDelivery();
 
-                                // 選択された情報を取得
-                                $data = $item['customer_address']->getData();
-                                if ($data instanceof CustomerAddress) {
-                                    // 会員の場合、CustomerAddressオブジェクトを取得される
-                                    $CustomerAddress = $data;
-                                } else {
-                                    // 非会員の場合、選択されたindexが取得される
-                                    $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
-                                    $customerAddresses = unserialize($customerAddresses);
-                                    $CustomerAddress = $customerAddresses[$data];
-                                    $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
-                                    $CustomerAddress->setPref($pref);
-                                }
-
-                                $Shipping
-                                    ->setName01($CustomerAddress->getName01())
-                                    ->setName02($CustomerAddress->getName02())
-                                    ->setKana01($CustomerAddress->getKana01())
-                                    ->setKana02($CustomerAddress->getKana02())
-                                    ->setCompanyName($CustomerAddress->getCompanyName())
-                                    ->setTel01($CustomerAddress->getTel01())
-                                    ->setTel02($CustomerAddress->getTel02())
-                                    ->setTel03($CustomerAddress->getTel03())
-                                    ->setFax01($CustomerAddress->getFax01())
-                                    ->setFax02($CustomerAddress->getFax02())
-                                    ->setFax03($CustomerAddress->getFax03())
-                                    ->setZip01($CustomerAddress->getZip01())
-                                    ->setZip02($CustomerAddress->getZip02())
-                                    ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
-                                    ->setPref($CustomerAddress->getPref())
-                                    ->setAddr01($CustomerAddress->getAddr01())
-                                    ->setAddr02($CustomerAddress->getAddr02());
-                                $sitems = $Shipping->getShipmentItems();
-                                $sitem = $multipleItem;
-                                foreach ($sitems as $s) {
-                                    if ($s->getShipping()->getId() == $Shipping->getId()) {
-                                        $sitem = $s;
-                                        break;
-                                    }
-                                }
-                                $quantity = $item['quantity']->getData();
-
-                                $sitem->setQuantity($quantity);
-
+                            // 選択された情報を取得
+                            $data = $item['customer_address']->getData();
+                            if ($data instanceof CustomerAddress) {
+                                // 会員の場合、CustomerAddressオブジェクトを取得される
+                                $CustomerAddress = $data;
                             } else {
-
-                                // 追加された配送先情報を作成
-
-                                $Delivery = $multipleItem->getShipping()->getDelivery();
-
-                                // 選択された情報を取得
-                                $data = $item['customer_address']->getData();
-                                if ($data instanceof CustomerAddress) {
-                                    // 会員の場合、CustomerAddressオブジェクトを取得される
-                                    $CustomerAddress = $data;
-                                } else {
-                                    // 非会員の場合、選択されたindexが取得される
-                                    $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
-                                    $customerAddresses = unserialize($customerAddresses);
-                                    $CustomerAddress = $customerAddresses[$data];
-                                    $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
-                                    $CustomerAddress->setPref($pref);
-                                }
-
-                                $Shipping = new Shipping();
-
-                                $Shipping
-                                    ->setName01($CustomerAddress->getName01())
-                                    ->setName02($CustomerAddress->getName02())
-                                    ->setKana01($CustomerAddress->getKana01())
-                                    ->setKana02($CustomerAddress->getKana02())
-                                    ->setCompanyName($CustomerAddress->getCompanyName())
-                                    ->setTel01($CustomerAddress->getTel01())
-                                    ->setTel02($CustomerAddress->getTel02())
-                                    ->setTel03($CustomerAddress->getTel03())
-                                    ->setFax01($CustomerAddress->getFax01())
-                                    ->setFax02($CustomerAddress->getFax02())
-                                    ->setFax03($CustomerAddress->getFax03())
-                                    ->setZip01($CustomerAddress->getZip01())
-                                    ->setZip02($CustomerAddress->getZip02())
-                                    ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
-                                    ->setPref($CustomerAddress->getPref())
-                                    ->setAddr01($CustomerAddress->getAddr01())
-                                    ->setAddr02($CustomerAddress->getAddr02())
-                                    ->setDelivery($Delivery)
-                                    ->setDelFlg(Constant::DISABLED)
-                                    ->setOrder($Order);
-
-                                $app['orm.em']->persist($Shipping);
-
-
-                                $ShipmentItem = new ShipmentItem();
-
-                                $ProductClass = $multipleItem->getProductClass();
-                                $Product = $multipleItem->getProduct();
-
-
-                                $quantity = $item['quantity']->getData();
-
-                                $ShipmentItem->setShipping($Shipping)
-                                    ->setOrder($Order)
-                                    ->setProductClass($ProductClass)
-                                    ->setProduct($Product)
-                                    ->setProductName($Product->getName())
-                                    ->setProductCode($ProductClass->getCode())
-                                    ->setPrice($ProductClass->getPrice02())
-                                    ->setQuantity($quantity);
-
-                                $ClassCategory1 = $ProductClass->getClassCategory1();
-                                if (!is_null($ClassCategory1)) {
-                                    $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
-                                    $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
-                                }
-                                $ClassCategory2 = $ProductClass->getClassCategory2();
-                                if (!is_null($ClassCategory2)) {
-                                    $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
-                                    $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
-                                }
-                                $Shipping->addShipmentItem($ShipmentItem);
-                                $app['orm.em']->persist($ShipmentItem);
-
+                                // 非会員の場合、選択されたindexが取得される
+                                $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
+                                $customerAddresses = unserialize($customerAddresses);
+                                $CustomerAddress = $customerAddresses[$data];
+                                $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
+                                $CustomerAddress->setPref($pref);
                             }
+
+                            $Shipping = new Shipping();
+
+                            $Shipping
+                                ->setName01($CustomerAddress->getName01())
+                                ->setName02($CustomerAddress->getName02())
+                                ->setKana01($CustomerAddress->getKana01())
+                                ->setKana02($CustomerAddress->getKana02())
+                                ->setCompanyName($CustomerAddress->getCompanyName())
+                                ->setTel01($CustomerAddress->getTel01())
+                                ->setTel02($CustomerAddress->getTel02())
+                                ->setTel03($CustomerAddress->getTel03())
+                                ->setFax01($CustomerAddress->getFax01())
+                                ->setFax02($CustomerAddress->getFax02())
+                                ->setFax03($CustomerAddress->getFax03())
+                                ->setZip01($CustomerAddress->getZip01())
+                                ->setZip02($CustomerAddress->getZip02())
+                                ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+                                ->setPref($CustomerAddress->getPref())
+                                ->setAddr01($CustomerAddress->getAddr01())
+                                ->setAddr02($CustomerAddress->getAddr02())
+                                ->setDelivery($Delivery)
+                                ->setDelFlg(Constant::DISABLED)
+                                ->setOrder($Order);
+
+                            $app['orm.em']->persist($Shipping);
+
+
+                            $ShipmentItem = new ShipmentItem();
+
+                            $ProductClass = $multipleItem->getProductClass();
+                            $Product = $multipleItem->getProduct();
+
+
+                            $quantity = $item['quantity']->getData();
+
+                            $ShipmentItem->setShipping($Shipping)
+                                ->setOrder($Order)
+                                ->setProductClass($ProductClass)
+                                ->setProduct($Product)
+                                ->setProductName($Product->getName())
+                                ->setProductCode($ProductClass->getCode())
+                                ->setPrice($ProductClass->getPrice02())
+                                ->setQuantity($quantity);
+
+                            $ClassCategory1 = $ProductClass->getClassCategory1();
+                            if (!is_null($ClassCategory1)) {
+                                $ShipmentItem->setClasscategoryName1($ClassCategory1->getName());
+                                $ShipmentItem->setClassName1($ClassCategory1->getClassName()->getName());
+                            }
+                            $ClassCategory2 = $ProductClass->getClassCategory2();
+                            if (!is_null($ClassCategory2)) {
+                                $ShipmentItem->setClasscategoryName2($ClassCategory2->getName());
+                                $ShipmentItem->setClassName2($ClassCategory2->getClassName()->getName());
+                            }
+                            $Shipping->addShipmentItem($ShipmentItem);
+                            $app['orm.em']->persist($ShipmentItem);
+
                             // 配送料金の設定
                             $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 

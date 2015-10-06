@@ -85,7 +85,7 @@ class ShippingMultipleItemType extends AbstractType
                 } else {
                     // 非会員の場合、セッションに設定されたCustomerAddressを設定
                     if ($app['session']->has('eccube.front.shopping.nonmember.customeraddress')) {
-                        $customerAddresses = $this->app['session']->get('eccube.front.shopping.nonmember.customeraddress');
+                        $customerAddresses = $app['session']->get('eccube.front.shopping.nonmember.customeraddress');
                         $customerAddresses = unserialize($customerAddresses);
 
                         $addresses = array();
