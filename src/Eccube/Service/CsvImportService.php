@@ -195,6 +195,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *                        - CsvReader::DUPLICATE_HEADERS_MERGE; merges
      *                        values for duplicate headers into an array
      *                        (dup => [value1, value2, value3])
+     * @return boolean
      */
     public function setHeaderRowNumber($rowNumber, $duplicates = null)
     {
@@ -202,7 +203,11 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         $this->headerRowNumber = $rowNumber;
         $headers = $this->readHeaderRow($rowNumber);
 
+        if ($headers === false) {
+            return false;            
+        }
         $this->setColumnHeaders($headers);
+        return true;
     }
 
     /**
