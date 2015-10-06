@@ -34,6 +34,7 @@ class CustomerController
 {
     public function index(Application $app, Request $request)
     {
+        $session = $request->getSession();
         $pagination = null;
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_customer')
@@ -43,6 +44,8 @@ class CustomerController
         $searchData = array();
         if ($searchForm->isValid()) {
             $searchData = $searchForm->getData();
+            // sessionのデータ保持
+            $session->set('eccube.admin.customer.search', $searchData);
         }
 
         if ('POST' === $request->getMethod()) {
