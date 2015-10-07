@@ -323,8 +323,9 @@ class ProductClassController
                     // 登録対象と更新対象の行か判断する
                     $addProductClasses = array();
                     $updateProductClasses = array();
-                    $flag = false;
                     foreach ($checkProductClasses as $cp) {
+                        $flag = false;
+                        
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
@@ -349,7 +350,6 @@ class ProductClassController
                         if (!$flag) {
                             $addProductClasses[] = $cp;
                         }
-                        $flag = false;
                     }
 
                     foreach ($removeProductClasses as $rc) {
@@ -556,8 +556,11 @@ class ProductClassController
     private function setDefualtProductClass($productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
         $productClassDest->setProduct($productClassOrig->getProduct());
+        $productClassDest->setProductType($productClassOrig->getProductType());
+        $productClassDest->setCode($productClassOrig->getCode());
         $productClassDest->setStock($productClassOrig->getStock());
         $productClassDest->setStockUnlimited($productClassOrig->getStockUnlimited());
+        $productClassDest->setSaleLimit($productClassOrig->getSaleLimit());
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
