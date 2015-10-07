@@ -29,8 +29,8 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends AbstractController
 {
@@ -147,7 +147,7 @@ class CategoryController extends AbstractController
 
 
     /**
-     * ���iCSV�̏o��.
+     * 商品CSVの出力.
      *
      * @param Application $app
      * @param Request $request
@@ -155,27 +155,27 @@ class CategoryController extends AbstractController
      */
     public function export(Application $app, Request $request)
     {
-        // �^�C���A�E�g�𖳌�ɂ���.
+        // タイムアウトを無効にする.
         set_time_limit(0);
 
-        // sql logger�𖳌�ɂ���.
+        // sql loggerを無効にする.
         $em = $app['orm.em'];
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($app, $request) {
 
-            // CSV��ʂ����ɏ���.
+            // CSV種別を元に初期化.
             $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_CATEGORY);
 
-            // �w�b�_�s�̏o��.
+            // ヘッダ行の出力.
             $app['eccube.service.csv.export']->exportHeader();
 
             $qb = $app['eccube.repository.category']
                 ->createQueryBuilder('c')
                 ->orderBy('c.rank', 'DESC');
 
-            // �f�[�^�s�̏o��.
+            // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
             $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
 
@@ -184,14 +184,14 @@ class CategoryController extends AbstractController
                 /** @var $Category \Eccube\Entity\Category */
                 $Category = $entity;
 
-                // CSV�o�͍��ڂƍ��v����f�[�^���擾.
+                // CSV出力項目と合致するデータを取得.
                 $row = array();
                 foreach ($Csvs as $Csv) {
                     $row[] = $csvService->getData($Csv, $Category);
                 }
 
                 //$row[] = number_format(memory_get_usage(true));
-                // �o��.
+                // 出力.
                 $csvService->fputcsv($row);
             });
         });

@@ -25,12 +25,13 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class FileController
+class FileController extends AbstractController
 {
     private $error = null;
 
@@ -111,10 +112,15 @@ class FileController
 
     public function delete(Application $app, Request $request)
     {
+
+        $this->isTokenValid($app);
+
         $fs = new Filesystem();
         if ($fs->exists($request->get('select_file'))) {
             $fs->remove($request->get('select_file'));
         }
+
+        return $app->redirect($app->url('admin_content_file'));
     }
 
     public function download(Application $app, Request $request)
