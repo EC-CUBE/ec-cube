@@ -80,8 +80,7 @@ class BlockController
                 $app['orm.em']->flush();
 
                 // ファイル生成・更新
-                $tplDir = $app['eccube.repository.block']
-                    ->getWriteTemplatePath($deletable);
+                $tplDir = $app['config']['block_realdir'];
 
                 $filePath = $tplDir . '/' . $Block->getFileName() . '.twig';
 
@@ -119,19 +118,19 @@ class BlockController
 
         // ユーザーが作ったブロックのみ削除する
         if ($Block->getDeletableFlg() > 0) {
-            $tplDir = $app['eccube.repository.page_layout']
-                ->getWriteTemplatePath($DeviceType);
-            $tplDir .= $app['config']['block_dir'];
-            $file = $tplDir . $Block->getFileName();
+            $tplDir = $app['config']['block_realdir'];
+            $file = $tplDir . '/' . $Block->getFileName() . '.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
             }
             $app['orm.em']->remove($Block);
             $app['orm.em']->flush();
+
+            $app->addSuccess('admin.delete.complete', 'admin');
+            \Eccube\Util\Cache::clear($app,false);
         }
 
-        \Eccube\Util\Cache::clear($app,false);
 
         return $app->redirect($app->url('admin_content_block'));
     }
