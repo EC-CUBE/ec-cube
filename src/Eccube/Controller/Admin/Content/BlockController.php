@@ -25,11 +25,12 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 
-class BlockController
+class BlockController extends AbstractController
 {
     public function index(Application $app)
     {
@@ -112,6 +113,8 @@ class BlockController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(DeviceType::DEVICE_TYPE_PC);
 

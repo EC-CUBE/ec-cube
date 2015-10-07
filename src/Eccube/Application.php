@@ -214,6 +214,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+        Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
     }
 
     public function initLocale()
@@ -256,7 +257,7 @@ class Application extends ApplicationTrait
             'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => 'eccube',
-                'cookie_path' => $this['config']['root_urlpath'],
+                'cookie_path' => $this['config']['root_urlpath'] ?: '/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
                 'cookie_httponly' => true,

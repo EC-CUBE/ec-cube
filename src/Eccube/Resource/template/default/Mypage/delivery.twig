@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for CustomerAddress in Customer.CustomerAddresses %}
                                         <div class="addr_box tr">
                                             <div class="icon_edit td">
-                                                <a href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}">
+                                                <a href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                     <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
                                                 </a>
                                             </div>

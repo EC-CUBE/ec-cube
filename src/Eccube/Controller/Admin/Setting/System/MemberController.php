@@ -144,15 +144,14 @@ class MemberController extends AbstractController
 
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetMember = $app['eccube.repository.member']->find($id);
         if (!$TargetMember) {
             throw new NotFoundHttpException();
         }
 
-        $status = false;
-        if ('POST' === $request->getMethod()) {
-            $status = $app['eccube.repository.member']->delete($TargetMember);
-        }
+        $status = $app['eccube.repository.member']->delete($TargetMember);
 
         if ($status) {
             $app->addSuccess('admin.member.delete.complete', 'admin');

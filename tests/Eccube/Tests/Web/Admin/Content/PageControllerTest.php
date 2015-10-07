@@ -54,7 +54,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $redirectUrl = $this->app->url('admin_content_page');
 
-        $this->client->request('POST',
+        $this->client->request('DELETE',
             $this->app->url(
                 'admin_content_page_delete',
                 array('id' => 1)

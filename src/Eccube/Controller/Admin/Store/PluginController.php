@@ -190,7 +190,6 @@ class PluginController extends AbstractController
                 $errors = $form->getErrors();
                 foreach ($errors as $error) {
                     $message = $error->getMessage();
-                    error_log($message);
                 }
 
             }
@@ -211,6 +210,8 @@ class PluginController extends AbstractController
      */
     public function enable(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         if (!$Plugin) {
@@ -235,6 +236,8 @@ class PluginController extends AbstractController
      */
     public function disable(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         if (!$Plugin) {
@@ -260,6 +263,8 @@ class PluginController extends AbstractController
      */
     public function uninstall(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         if (!$Plugin) {
