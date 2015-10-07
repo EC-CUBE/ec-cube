@@ -40,6 +40,7 @@ class ChangeController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $Customer = $app->user();
+        $CustomerForRestore = clone $app->user();
 
         $previous_password = $Customer->getPassword();
         $Customer->setPassword($app['config']['default_password']);
@@ -70,6 +71,10 @@ class ChangeController extends AbstractController
 
                         return $app->redirect($app->url('mypage_change_complete'));
                 }
+            } else {
+                // invalidでもSession上の$app->user()が置き換えられてしまうため復元する
+                $Customer = $CustomerForRestore;
+                $this->getSecurity($app)->getToken()->setUser($Customer);
             }
         }
 
