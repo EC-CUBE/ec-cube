@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   {{ form_widget(searchForm.birth_month) }}
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-6">
                 <label>誕生日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.birth_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.birth_end, {'attr': {'class': 'input_cal'}}) }}
@@ -182,7 +182,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
               </div>
               {#
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-6">
                 <div class="form-group">
                   <label>購入商品カテゴリー</label>
                   {{ form_widget(searchForm.buy_category) }}
@@ -190,13 +190,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               </div>
             </div>
             #}
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6">
               <div class="form-group">
                 <label>購入商品名・コード</label>
                 {{ form_widget(searchForm.buy_product_code) }}
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-12 col-md-6">
               <label>最終購入日</label>
               <div class="form-group range">
                 {{ form_widget(searchForm.last_buy_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.last_buy_end, {'attr': {'class': 'input_cal'}}) }}
