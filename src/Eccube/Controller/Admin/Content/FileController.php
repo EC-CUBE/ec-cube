@@ -25,13 +25,14 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class FileController
+class FileController extends AbstractController
 {
     private $error = null;
 
@@ -39,6 +40,7 @@ class FileController
     {
         $form = $app['form.factory']->createBuilder('form')
             ->add('file', 'file')
+            ->add('create_file', 'text')
             ->getForm();
 
         // user_data_dir
@@ -58,9 +60,6 @@ class FileController
         switch ($request->get('mode')) {
             case 'create':
                 $this->create($app, $request);
-                break;
-            case 'delete':
-                $this->delete($app, $request);
                 break;
             case 'upload':
                 $this->upload($app, $request);
@@ -102,25 +101,41 @@ class FileController
 
     public function create(Application $app, Request $request)
     {
-        $fs = new Filesystem();
-        $filename = $request->get('create_file');
 
-        $pattern = "/[^[:alnum:]_.\\-]/";
-        if (empty($filename)) {
-            $this->error = array('message' => 'フォルダ作成名が入力されていません。');
-        } else if (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-            $this->error = array('message' => 'ファイル名には、英数字、記号（_ - .）のみを入力して下さい。');
-        } else  {
-            $topDir = $app['config']['user_data_realdir'];
-            $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
-                ? $this->normalizePath($request->get('now_dir'))
-                : $topDir;
-            $fs->mkdir($nowDir.'/'.$filename);
+        $form = $app['form.factory']->createBuilder('form')
+            ->add('file', 'file')
+            ->add('create_file', 'text')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $fs = new Filesystem();
+            $filename = $form->get('create_file')->getData();
+
+            $pattern = "/[^[:alnum:]_.\\-]/";
+            if (empty($filename)) {
+                $this->error = array('message' => 'フォルダ作成名が入力されていません。');
+            } else if (strlen($filename) > 0 && preg_match($pattern, $filename)) {
+                $this->error = array('message' => 'ファイル名には、英数字、記号（_ - .）のみを入力して下さい。');
+            } else {
+                $topDir = $app['config']['user_data_realdir'];
+                $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
+                    ? $this->normalizePath($request->get('now_dir'))
+                    : $topDir;
+                $fs->mkdir($nowDir . '/' . $filename);
+            }
         }
+
+        return $app->redirect($app->url('admin_content_file'));
     }
 
     public function delete(Application $app, Request $request)
     {
+
+        $this->isTokenValid($app);
+
         $topDir = $app['config']['user_data_realdir'];
         if ($this->checkDir($request->get('select_file'), $topDir)) {
             $fs = new Filesystem();
@@ -128,6 +143,8 @@ class FileController
                 $fs->remove($request->get('select_file'));
             }
         }
+
+        return $app->redirect($app->url('admin_content_file'));
     }
 
     public function download(Application $app, Request $request)
@@ -159,6 +176,7 @@ class FileController
     {
         $form = $app['form.factory']->createBuilder('form')
             ->add('file', 'file')
+            ->add('create_file', 'text')
             ->getForm();
 
         $form->handleRequest($request);
