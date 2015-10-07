@@ -143,7 +143,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </td>
                         {% endif %}
                         <td class="text-center">
-                            <a href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="一度削除したデータは、元に戻せません。削除しても宜しいですか？">削除</a>
+                            <a href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="一度削除したデータは元に戻せません。削除してもよろしいですか？">削除</a>
                         </td>
                     </tr>
                 {% endfor %}
