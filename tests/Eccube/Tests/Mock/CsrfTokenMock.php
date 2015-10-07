@@ -20,29 +20,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
-namespace Eccube\Tests\Service;
+namespace Eccube\Tests\Mock;
 
 use Eccube\Application;
-use Eccube\Tests\Mock\CsrfTokenMock;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class AbstractServiceTestCase extends \PHPUnit_Framework_TestCase
+class CsrfTokenMock implements CsrfTokenManagerInterface
 {
-    protected $app;
-
-    public function setUp()
+    public function __construct()
     {
-        parent::setUp();
-        $this->app = new Application();
-        $this->app->initialize();
-        $this->app['session.test'] = true;
-        $this->app['exception_handler']->disable();
+    }
 
-        $this->app['form.csrf_provider'] = $this->app->share(function () {
-            return new CsrfTokenMock();
-        });
+    /**
+     * {@inheritdoc}
+     */
+    public function getToken($tokenId)
+    {
+        return new CsrfToken('', '');
+    }
 
-        $this->app->boot();
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshToken($tokenId)
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeToken($tokenId)
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTokenValid(CsrfToken $token)
+    {
+        return true;
     }
 }

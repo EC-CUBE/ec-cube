@@ -56,7 +56,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
         $redirectUrl = $this->app->url('admin_content_block');
 
-        $this->client->request('GET',
+        $this->client->request('DELETE',
             $this->app->url(
                 'admin_content_block_delete',
                 array('id' => 1)
