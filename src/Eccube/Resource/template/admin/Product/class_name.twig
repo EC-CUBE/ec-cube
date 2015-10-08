@@ -72,6 +72,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     data: newRanks,
                 }).done(function(data) {
                     console.log(data);
+                    $("div.tableish > .item_box").each(function(index, obj) {
+                        var dropdownmenu = ($(this).find(".icon_edit .dropdown .dropdown-menu"))[0];
+                        $(this).find(".icon_edit .dropdown .dropdown-menu .item-up").remove();
+                        $(this).find(".icon_edit .dropdown .dropdown-menu .item-down").remove();
+                        var upcontents = '<li><a href="?" onclick="changeAction(\''+dropdownmenu.dataset.upAction+'\'); document.form1.submit(); return false;">上へ</a></li>';
+                        var downcontents = '<li><a href="?" onclick="changeAction(\''+dropdownmenu.dataset.downAction+'\'); document.form1.submit(); return false;">下へ</a></li>';
+                        if(index == 0) {
+                            $(this).find(".icon_edit .dropdown .dropdown-menu").append(downcontents);
+                        } else if((index + 1) == oldRanks.length) {
+                            $(this).find(".icon_edit .dropdown .dropdown-menu").append(upcontents);
+                        } else {
+                            $(this).find(".icon_edit .dropdown .dropdown-menu").append(upcontents);
+                            $(this).find(".icon_edit .dropdown .dropdown-menu").append(downcontents);
+                        }
+                    });
                     $(".modal-backdrop").remove();
                 }).fail(function() {
                     console.log('fail');
@@ -114,7 +129,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <div class="icon_edit td">
                                             <div class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                {% set up_action = url('admin_product_class_name_up', {id: ClassName.id}) %}
+                                                {% set down_action = url('admin_product_class_name_down', {id: ClassName.id}) %}
+                                                <ul class="dropdown-menu dropdown-menu-right" data-up-action="{{ up_action }}" data-down-action="{{ down_action }}">
                                                     <li>
                                                         <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">
                                                             分類登録
@@ -137,8 +154,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% endif %}
 
                                                     {% if loop.first == false %}
-                                                        {% set up_action = url('admin_product_class_name_up', {id: ClassName.id}) %}
-                                                        <li>
+                                                        <li class="item-up">
                                                             <a href="?" onclick="changeAction('{{ up_action }}'); document.form1.submit(); return false;">
                                                                 上へ
                                                             </a>
@@ -146,8 +162,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% endif %}
 
                                                     {% if loop.last == false %}
-                                                        {% set down_action = url('admin_product_class_name_down', {id: ClassName.id}) %}
-                                                        <li>
+                                                        <li class="item-down">
                                                             <a href="?" onclick="changeAction('{{ down_action }}'); document.form1.submit(); return false;">
                                                                 下へ
                                                             </a>
