@@ -95,13 +95,14 @@ class BlockController
                     }
                 }
 
+                \Eccube\Util\Cache::clear($app,false);
+
                 $app->addSuccess('admin.register.complete', 'admin');
 
                 return $app->redirect($app->url('admin_content_block_edit', array('id' => $Block->getId())));
             }
         }
 
-        \Eccube\Util\Cache::clear($app,false);
 
         return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),
