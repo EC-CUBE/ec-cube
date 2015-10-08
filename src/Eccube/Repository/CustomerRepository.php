@@ -144,7 +144,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->andWhere('c.del_flg = 0');
 
         if (!empty($searchData['multi']) && $searchData['multi']) {
-            if (is_int($searchData['multi'])) {
+            if (preg_match('/^\d+$/', $searchData['multi'])) {
                 $qb
                     ->andWhere('c.id = :customer_id')
                     ->setParameter('customer_id', $searchData['multi']);
