@@ -135,6 +135,8 @@ class PaymentController extends AbstractController
 
     public function up(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $repo = $app['orm.em']->getRepository('Eccube\Entity\Payment');
 
         $current = $repo->find($id);
@@ -154,6 +156,8 @@ class PaymentController extends AbstractController
 
     public function down(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $repo = $app['orm.em']->getRepository('Eccube\Entity\Payment');
 
         $current = $repo->find($id);

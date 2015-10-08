@@ -71,12 +71,12 @@ function changeAction(action) {
                                                         <li><a href="{{ url('admin_content_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この新着情報を削除してもよろしいですか？">削除</a></li>
                                                         {% if loop.first == false %}
                                                             <li>
-                                                                <a href="?" onclick="changeAction('{{ url('admin_content_up', {id: News.id}) }}'); document.form1.submit(); return false;">上へ</a>
+                                                                <a href="{{ url('admin_content_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a>
                                                             </li>
                                                         {% endif %}
                                                         {% if loop.last == false %}
                                                             <li>
-                                                                <a href="?" onclick="changeAction('{{ url('admin_content_down', {id: News.id}) }}'); document.form1.submit(); return false;">下へ</a>
+                                                                <a href="{{ url('admin_content_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a>
                                                             </li>
                                                         {% endif %}
 
