@@ -4,7 +4,11 @@ git:
   submodules: false
 
 language: php
-sudo: required
+sudo: false
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
 php:
   - 5.3.3
   - 5.3
