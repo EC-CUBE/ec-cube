@@ -64,6 +64,9 @@ class BlockRepository extends EntityRepository
         return $Block;
     }
 
+    /**
+     * @deprecated since 3.0.0, to be removed in 3.1
+     */
     private function getNewBlockId($DeviceType)
     {
 
@@ -126,6 +129,7 @@ class BlockRepository extends EntityRepository
      * @param  string                            $where 追加の検索条件
      * @param  string[]                          $parameters 追加の検索パラメーター
      * @return array                             ページ属性の配列
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getPageList(DeviceType $DeviceType, $where = null, $parameters = array())
     {
