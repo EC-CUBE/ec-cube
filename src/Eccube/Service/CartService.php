@@ -227,6 +227,25 @@ class CartService
             }
 
         }
+        
+        $tmp_subtotal = 0;
+        $tmp_quantity = 0;
+        foreach ($this->getCart()->getCartItems() as $cartitem) {
+            $pc = $cartitem->getObject();
+            if ($pc->getId() != $ProductClass->getId()) {
+                // まず、追加された商品以外のtotal priceをセット
+                $tmp_subtotal += $cartitem->getTotalPrice();
+            }
+        }
+        for ($i = 0; $i < $quantity; $i++) {
+            $tmp_subtotal += $ProductClass->getPrice02IncTax();
+            if ($tmp_subtotal > 9999999999) {
+                $this->setError('cart.over.price_limit');
+                break;
+            }
+            $tmp_quantity++;
+        }
+        $quantity = $tmp_quantity;
 
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
             if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
