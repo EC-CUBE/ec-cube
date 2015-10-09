@@ -21,18 +21,7 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
     public function setUp()
     {
         parent::setUp();
-        $faker = $this->getFaker();
-        $this->Customer = new Customer();
-        $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
-        $this->Customer
-            ->setName01($faker->lastName)
-            ->setName02($faker->firstName)
-            ->setEmail($faker->email)
-            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app)) // app を渡さなくていいはず
-            ->setStatus($Status)
-            ->setDelFlg(0);
-        $this->app['orm.em']->persist($this->Customer);
-        $this->app['orm.em']->flush();
+        $this->Customer = $this->createCustomer();
     }
 
     public function testFindOrCreateByCustomerAndId()

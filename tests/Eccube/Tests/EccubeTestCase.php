@@ -6,6 +6,8 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Master\CustomerStatus;
 use Silex\WebTestCase;
 use Faker\Factory as Faker;
 
@@ -112,6 +114,28 @@ abstract class EccubeTestCase extends WebTestCase
     public function verify($message = '')
     {
         $this->assertEquals($this->expected, $this->actual, $message);
+    }
+
+    /**
+     * Customer オブジェクトを生成して返す.
+     *
+     * @return \Eccube\Entity\Customer
+     */
+    public function createCustomer()
+    {
+        $faker = $this->getFaker();
+        $Customer = new Customer();
+        $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Customer
+            ->setName01($faker->lastName)
+            ->setName02($faker->firstName)
+            ->setEmail($faker->email)
+            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app)) // TODO app を渡さなくていいはず
+            ->setStatus($Status)
+            ->setDelFlg(0);
+        $this->app['orm.em']->persist($Customer);
+        $this->app['orm.em']->flush();
+        return $Customer;
     }
 
     /**
