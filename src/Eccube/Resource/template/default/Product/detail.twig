@@ -75,6 +75,9 @@ $(function(){
 
     $("#addcartbutton").on("click",function() {
         $("#addcartbutton").attr('disabled',true);
+        $("#addcartbutton").delay(2000).queue(function() {
+            $("#addcartbutton").attr('disabled',false);
+        });
         $("#form1").submit();
     });
 });
