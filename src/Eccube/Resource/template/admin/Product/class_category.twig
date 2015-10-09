@@ -34,10 +34,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
     <script>
-        function changeAction(action) {
-            document.form1.action = action;
-        }
-
         $(function() {
             var oldRanks = [];
             // 画面の中のrank一覧を保持
@@ -124,25 +120,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% else %}
                                                         <li><a>編集中</a></li>
                                                     {% endif %}
-
-                                                    {% set delete_action = url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) %}
                                                     <li>
-                                                        <a href="?" onclick="if(window.confirm('分類名を削除すると、その分類を利用している商品規格が無効になります。\n整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。')){ changeAction('{{ delete_action }}'); document.form1.submit(); } return false;">削除</a>
+                                                        <a href="{{ url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete"
+                                                           data-message="分類名を削除すると、その分類を利用している商品規格が無効になります。整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。">削除</a>
                                                     </li>
-
-                                                    {% if loop.first == false %}
-                                                        {% set up_action = url('admin_product_class_category_up', {class_name_id: ClassName.id, id: ClassCategory.id }) %}
-                                                        <li>
-                                                            <a href="?" onclick="changeAction('{{ up_action }}'); document.form1.submit(); return false;">上へ</a>
-                                                        </li>
-                                                    {% endif %}
-
-                                                    {% if loop.last == false %}
-                                                        {% set down_action = url('admin_product_class_category_down', {class_name_id: ClassName.id, id: ClassCategory.id }) %}
-                                                        <li>
-                                                            <a href="?" onclick="changeAction('{{ down_action }}'); document.form1.submit(); return false;">下へ</a>
-                                                        </li>
-                                                    {% endif %}
                                                 </ul>
                                             </div>
                                         </div>

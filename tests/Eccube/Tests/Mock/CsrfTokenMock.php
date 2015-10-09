@@ -20,44 +20,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
-namespace Eccube\Controller;
+namespace Eccube\Tests\Mock;
 
 use Eccube\Application;
-use Eccube\Common\Constant;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class AbstractController
+class CsrfTokenMock implements CsrfTokenManagerInterface
 {
     public function __construct()
     {
     }
 
-    protected function getBoundForm(Application $app, $type)
+    /**
+     * {@inheritdoc}
+     */
+    public function getToken($tokenId)
     {
-        $form = $app['form.factory']
-            ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
-            ->getForm();
-        $form->handleRequest($app['request']);
-
-        return $form;
+        return new CsrfToken('', '');
     }
 
-    protected function getSecurity($app)
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshToken($tokenId)
     {
-        return $app['security.token_storage'];
+        return '';
     }
 
-    protected function isTokenValid($app)
+    /**
+     * {@inheritdoc}
+     */
+    public function removeToken($tokenId)
     {
-        $csrf = $app['form.csrf_provider'];
-        $name = Constant::TOKEN_NAME;
-        if (!$csrf->isTokenValid(new CsrfToken($name, $app['request']->request->get($name)))) {
-            throw new AccessDeniedHttpException('CSRF token is invalid.');
-        }
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTokenValid(CsrfToken $token)
+    {
         return true;
     }
-
 }

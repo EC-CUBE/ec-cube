@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,15 +109,17 @@ class PaymentController extends AbstractController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $repo = $app['eccube.repository.payment'];
         $Payment = $repo
             ->find($id)
-            ->setDelFlg(1)
+            ->setDelFlg(Constant::ENABLED)
             ->setRank(0);
         $app['orm.em']->persist($Payment);
 
         $rank = 1;
-        $Payments = $repo->findBy(array('del_flg' => 0), array('rank' => 'ASC'));
+        $Payments = $repo->findBy(array('del_flg' => Constant::DISABLED), array('rank' => 'ASC'));
         foreach ($Payments as $Payment) {
             if ($Payment->getId() != $id) {
                 $Payment->setRank($rank);
@@ -132,6 +135,8 @@ class PaymentController extends AbstractController
 
     public function up(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $repo = $app['orm.em']->getRepository('Eccube\Entity\Payment');
 
         $current = $repo->find($id);
@@ -151,6 +156,8 @@ class PaymentController extends AbstractController
 
     public function down(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $repo = $app['orm.em']->getRepository('Eccube\Entity\Payment');
 
         $current = $repo->find($id);

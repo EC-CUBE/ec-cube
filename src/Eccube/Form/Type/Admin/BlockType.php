@@ -94,8 +94,7 @@ class BlockType extends AbstractType
                     ->where('b.file_name = :file_name')
                     ->setParameter('file_name', $file_name)
                     ->andWhere('b.DeviceType = :DeviceType')
-                    ->setParameter('DeviceType', $DeviceType)
-                ;
+                    ->setParameter('DeviceType', $DeviceType);
                 if (isset($block_id)) {
                     $qb
                         ->andWhere('b.id <> :block_id')

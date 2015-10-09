@@ -91,18 +91,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     document.search_form.action = action;
     document.search_form.submit();
   }
-  function fnDelete(action) {
-    if (confirm('この会員情報を削除しても宜しいですか？')) {
-      document.search_form.action = action;
-      document.search_form.submit();
-    }
-  }
-  function fnReSendMail(action) {
-    if (confirm('仮登録メールを再送しても宜しいですか？')) {
-      document.search_form.action = action;
-      document.search_form.submit();
-    }
-  }
 </script>
 {% endblock javascript %}
 
@@ -250,43 +238,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </ul>
           </div>
         </div>
-        <div class="table_list">
-          <div class="table-responsive with-border">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>会員ID</th>
-                  <th>会員名</th>
-                  <th>電話番号</th>
-                  <th>メールアドレス</th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for Customer in pagination %}
-                <tr>
-                  <td class="member_id">{{ Customer.id }}</td>
-                  <td class="member_name"><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                  <td class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
-                  <td class="member_mail">{{ Customer.email }}</td>
-                  <td class="icon_edit">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                      <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">編集</a></li>
-                        <li><a href="#" onclick="fnDelete('{{ url('admin_customer_delete', { 'id': Customer.id}) }}');return false;">削除</a></li>
-                        {% if Customer.Status.id == 1 %}
-                        <li><a href="#" onclick="fnReSendMail('{{ url('admin_customer_resend', { 'id': Customer.id}) }}');return false;">仮会員メール再送</a></li>
-                        {% endif %}
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {% for Customer in pagination %}
+            <div class="table_list">
+                <div class="table-responsive with-border">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>会員ID</th>
+                            <th>会員名</th>
+                            <th>電話番号</th>
+                            <th>メールアドレス</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for Customer in pagination %}
+                        <tr>
+                            <td class="member_id">{{ Customer.id }}</td>
+                            <td class="member_name"><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                            <td class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                            <td class="member_mail">{{ Customer.email }}</td>
+                            <td class="icon_edit">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">編集</a></li>
+                                        <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この会員情報を削除してもよろしいですか？">削除</a></li>
+                                        {% if Customer.Status.id == 1 %}
+                                        <li><a href="{{ url('admin_customer_resend', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="仮登録メールを再送してもよろしいですか？">仮会員メール再送</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
       </div><!-- /.box-body -->
       {% if pagination.totalItemCount > 0 %}
       {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}

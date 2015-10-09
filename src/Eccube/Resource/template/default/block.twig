@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% if Block.logic_flg %}
         {{ render(path('block_' ~ Block.file_name)) }}
     {% else %}
-        {{ include('Block/' ~ Block.file_name~ '.twig', ignore_missing = true ) }}
+        {{ include('Block/' ~ Block.file_name~ '.twig', ignore_missing = true) }}
     {% endif %}
     <!-- ▲{{ Block.name }} -->
 {% endfor %}
