@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   {{ form_widget(searchForm.birth_month) }}
                 </div>
               </div>
-              <div class="col-sm-12 col-md-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label>誕生日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.birth_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.birth_end, {'attr': {'class': 'input_cal'}}) }}
@@ -151,38 +151,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   {{ form_widget(searchForm.pref) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-6 col-sm-6">
                 <div class="form-group">
                   <label>電話番号</label>
                   {{ form_widget(searchForm.tel) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <label>登録日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.create_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.create_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <label>更新日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <div class="form-group range">
                   <label>購入金額</label>
                   {{ form_widget(searchForm.buy_total_start) }} ～ {{ form_widget(searchForm.buy_total_end) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <div class="form-group range">
                   <label>購入回数</label>
                   {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
                 </div>
               </div>
               {#
-              <div class="col-sm-12 col-md-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <div class="form-group">
                   <label>購入商品カテゴリー</label>
                   {{ form_widget(searchForm.buy_category) }}
@@ -190,19 +190,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               </div>
             </div>
             #}
-            <div class="col-sm-12 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-6">
               <div class="form-group">
                 <label>購入商品名・コード</label>
                 {{ form_widget(searchForm.buy_product_code) }}
               </div>
             </div>
-            <div class="col-sm-12 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-6">
               <label>最終購入日</label>
               <div class="form-group range">
                 {{ form_widget(searchForm.last_buy_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.last_buy_end, {'attr': {'class': 'input_cal'}}) }}
               </div>
             </div>
-            <div class="col-sm-12">
+            <div class="col-xs-12 col-sm-12">
               <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
             </div>
           </div>
