@@ -34,9 +34,9 @@ class BlockRepositoryTest extends EccubeTestCase
                 ->setDeletableFlg(0)
                 ->setDeviceType($this->DeviceType);
             $this->app['orm.em']->persist($Block);
+            $this->app['orm.em']->flush(); // ここで flush しないと, MySQL で ID が取得できない
             $this->block_id = $Block->getId();
         }
-        $this->app['orm.em']->flush();
     }
 
     protected function removeBlock()
