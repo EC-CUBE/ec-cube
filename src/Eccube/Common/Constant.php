@@ -28,7 +28,7 @@ class Constant {
     /**
      * EC-CUBE VERSION.
      */
-    const VERSION = '3.0.3';
+    const VERSION = '3.0.4';
 
     /**
      * Enable value.
