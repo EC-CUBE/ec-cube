@@ -228,17 +228,30 @@ class CartService
 
         }
 
+        $tmp_quantity = 0;
+        $product_str = $ProductClass->getProduct()->getName();
+        if($ProductClass->hasClassCategory1()) {
+            $product_str .= " - ".$ProductClass->getClassCategory1()->getName();
+        }
+        if($ProductClass->hasClassCategory2()) {
+            $product_str .= " - ".$ProductClass->getClassCategory2()->getName();
+        }
+        $this->session->getFlashBag()->set('eccube.front.request.product', $product_str);
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
             if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
-                $quantity = $ProductClass->getSaleLimit();
-                $this->setError('cart.over.sale_limit');
+                $tmp_quantity = $ProductClass->getSaleLimit();
+                $this->addError('cart.over.sale_limit');
             } else {
-                $quantity = $ProductClass->getStock();
-                $this->setError('cart.over.stock');
+                $tmp_quantity = $ProductClass->getStock();
+                $this->addError('cart.over.stock');
             }
-        } elseif ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
-            $quantity = $ProductClass->getSaleLimit();
-            $this->setError('cart.over.sale_limit');
+        }
+        if ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
+            $tmp_quantity = $ProductClass->getSaleLimit();
+            $this->addError('cart.over.sale_limit');
+        }
+        if ($tmp_quantity) {
+            $quantity = $tmp_quantity;
         }
 
         $CartItem = new CartItem();
@@ -397,7 +410,7 @@ class CartService
     public function addError($error = null)
     {
         $this->errors[] = $error;
-        $this->session->getFlashBag()->add('eccube.front.cart.error', $error);
+        $this->session->getFlashBag()->add('eccube.front.request.error', $error);
 
         return $this;
     }
