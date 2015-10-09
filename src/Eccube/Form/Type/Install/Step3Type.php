@@ -27,6 +27,8 @@ namespace Eccube\Form\Type\Install;
 use \Symfony\Component\Form\AbstractType;
 use \Symfony\Component\Form\Extension\Core\Type;
 use \Symfony\Component\Form\FormBuilderInterface;
+use \Symfony\Component\Form\FormError;
+use \Symfony\Component\Form\FormEvents;
 use \Symfony\Component\Validator\Constraints as Assert;
 
 class Step3Type extends AbstractType
@@ -43,11 +45,15 @@ class Step3Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $app = $this->app;
         $builder
             ->add('shop_name', 'text', array(
                 'label' => 'あなたの店名',
                 'constraints' => array(
                     new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'max' => $this->app['config']['stext_len'],
+                    )),
                 ),
             ))
             ->add('email', 'email', array(
@@ -58,32 +64,40 @@ class Step3Type extends AbstractType
                 ),
             ))
             ->add('login_id', 'text', array(
-                'label' => '管理画面ログインID（半角英数字4～50文字）',
+                'label' => '管理画面ログインID（半角英数字'.$this->app['config']['id_min_len'].'～'.$this->app['config']['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 4,
-                        'max' => 50,
+                        'min' => $this->app['config']['id_min_len'],
+                        'max' => $this->app['config']['id_max_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
                     )),
                 ),
             ))
             ->add('login_pass', 'password', array(
-                'label' => '管理画面パスワード（半角英数字4～50文字）',
+                'label' => '管理画面パスワード（半角英数字'.$this->app['config']['password_min_len'].'～'.$this->app['config']['password_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 4,
-                        'max' => 50,
+                        'min' => $this->app['config']['password_min_len'],
+                        'max' => $this->app['config']['password_max_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
                     )),
                 ),
             ))
             ->add('admin_dir', 'text', array(
-                'label' => '管理画面のディレクトリ名（半角英数字4～50文字）',
+                'label' => '管理画面のディレクトリ名（半角英数字'.$this->app['config']['id_min_len'].'～'.$this->app['config']['id_max_len'].'文字）',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 4,
-                        'max' => 50,
+                        'min' => $this->app['config']['id_min_len'],
+                        'max' => $this->app['config']['id_max_len'],
                     )),
                     new Assert\Regex(array('pattern' => '/\A\w+\z/')),
                 ),
@@ -128,8 +142,23 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
-        ;
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($app)  {
+                $form = $event->getForm();
+                $data = $form->getData();
 
+                $ips = preg_split("/\R/", $data['admin_allow_hosts'], null, PREG_SPLIT_NO_EMPTY);
+
+                foreach($ips as $ip) {
+                    $errors = $app['validator']->validateValue($ip, array(
+                            new Assert\Ip(),
+                        )
+                    );
+                    if ($errors->count() != 0) {
+                        $form['admin_allow_hosts']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
+                    }
+                }
+            })
+        ;
     }
 
     /**

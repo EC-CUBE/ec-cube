@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 
 class CartController extends AbstractController
@@ -73,7 +74,11 @@ class CartController extends AbstractController
     {
         $productClassId = $request->get('product_class_id');
         $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
-        $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
+        try {
+            $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
+        } catch (CartException $e) {
+            $app->addRequestError($e->getMessage());
+        }
 
         return $app->redirect($app->url('cart'));
     }
@@ -82,7 +87,11 @@ class CartController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
+        try {
+            $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
+        } catch (CartException $e) {
+            $app->addRequestError($e->getMessage());
+        }
 
         return $app->redirect($app->url('cart'));
     }
@@ -91,7 +100,11 @@ class CartController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
+        try {
+            $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
+        } catch (CartException $e) {
+            $app->addRequestError($e->getMessage());
+        }
 
         return $app->redirect($app->url('cart'));
     }

@@ -69,12 +69,18 @@ class MemberController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if (!is_null($previous_password) 
+                if (!is_null($previous_password)
                     && $Member->getpassword() === $app['config']['default_password']) {
                     // 編集時にPWを変更していなければ
                     // 変更前のパスワード(暗号化済み)をセット
                     $Member->setPassword($previous_password);
                 } else {
+                    $salt = $Member->getSalt();
+                    if (!isset($salt)) {
+                        $salt = $app['eccube.repository.member']->createSalt(5);
+                        $Member->setSalt($salt);
+                    }
+
                     // 入力されたPWを暗号化してセット
                     $password = $app['eccube.repository.member']->encryptPassword($Member);
                     $Member->setPassword($password);

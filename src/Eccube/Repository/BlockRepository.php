@@ -160,7 +160,7 @@ class BlockRepository extends EntityRepository
      */
     public function getWriteTemplatePath($isUser = false)
     {
-        return ($isUser) ? $this->app['config']['user_block_realdir'] : $this->app['config']['block_realdir'];
+        return $this->app['config']['block_realdir'];
     }
 
     /**

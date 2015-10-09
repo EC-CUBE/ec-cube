@@ -48,32 +48,11 @@ class CustomerType extends AbstractType
         $builder
             ->add('name', 'name', array(
                 'required' => true,
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                    ),
-                ),
             ))
-            ->add('kana', 'name', array(
-                'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
-                    ),
-                ),
+            ->add('kana', 'kana', array(
+                'required' => true,
             ))
             ->add('company_name', 'text', array(
-                'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -81,47 +60,37 @@ class CustomerType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array())
-            ->add('address', 'address', array(
-                'addr01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array(
-                            'max' => $config['mtext_len'],
-                        )),
-                    ),
-                ),
-                'addr02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array(
-                            'max' => $config['mtext_len'],
-                        )),
-                    ),
-                ),
+            ->add('zip', 'zip', array(
+                'required' => true,
             ))
-            ->add('tel', 'tel', array())
+            ->add('address', 'address', array(
+                'required' => true,
+            ))
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
             ->add('fax', 'tel', array(
-                'label' => 'FAX番号',
                 'required' => false,
             ))
             ->add('email', 'email', array(
-                'label' => 'メールアドレス',
+                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    // configでこの辺りは変えられる方が良さそう
+                    new Assert\Email(array('strict' => true)),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
+                    )),
                 ),
             ))
             ->add('sex', 'sex', array(
-                'label' => '性別',
                 'required' => false,
             ))
             ->add('job', 'job', array(
-                'label' => '職業',
                 'required' => false,
             ))
             ->add('birth', 'birthday', array(
-                'label' => '生年月日',
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y')-80, date('Y')),
@@ -129,18 +98,31 @@ class CustomerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
+            // RepeatedPasswordTypeと共通化したい
             ->add('password', 'text', array(
-                'label' => 'パスワード',
+                'required' => true,
+                'invalid_message' => 'form.member.password.invalid',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => $config['id_min_len'],
-                        'max' => $config['id_max_len'],
+                        'min' => $this->config['password_min_len'],
+                        'max' => $this->config['password_max_len'],
                     )),
-                    new Assert\Regex(array('pattern' => '/^[[:graph:][:space:]]+$/i')),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[[:graph:][:space:]]+$/i',
+                        'message' => 'form.type.graph.invalid',
+                    )),
+                ),
+                'attr' => array(
+                    'placeholder' => '半角英数字記号'.$this->config['password_min_len'].'～'.$this->config['password_max_len'].'文字',
                 ),
             ))
-            ->add('status', 'customer_status', array())
+            ->add('status', 'customer_status', array(
+                'required' => true,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
+            ))
             ->add('note', 'textarea', array(
                 'label' => 'SHOP用メモ',
                 'required' => false,

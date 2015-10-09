@@ -24,10 +24,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchCustomerType extends AbstractType
 {
@@ -91,8 +91,7 @@ class SearchCustomerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('tel', 'tel', array(
-                'label' => '電話番号',
+            ->add('tel', 'text', array(
                 'required' => false,
             ))
             ->add('buy_total_start', 'integer', array(

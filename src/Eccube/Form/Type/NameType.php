@@ -29,9 +29,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class NameType extends AbstractType
 {
+    public function __construct($config = array('name_len' => 50))
+    {
+        $this->config = $config;
+    }
 
     /**
      * {@inheritdoc}
@@ -40,6 +45,17 @@ class NameType extends AbstractType
     {
         $options['lastname_options']['required'] = $options['required'];
         $options['firstname_options']['required'] = $options['required'];
+
+        // required の場合は NotBlank も追加する
+        if ($options['required']) {
+            $options['lastname_options']['constraints'] = array_merge(array(
+                new Assert\NotBlank(array()),
+            ), $options['lastname_options']['constraints']);
+
+            $options['firstname_options']['constraints'] = array_merge(array(
+                new Assert\NotBlank(array()),
+            ), $options['firstname_options']['constraints']);
+        }
 
         if (!isset($options['options']['error_bubbling'])) {
             $options['options']['error_bubbling'] = $options['error_bubbling'];
@@ -53,8 +69,8 @@ class NameType extends AbstractType
         }
 
         $builder
-            ->add($options['lastname_name'], 'text', array_merge($options['options'], $options['lastname_options']))
-            ->add($options['firstname_name'], 'text', array_merge($options['options'], $options['firstname_options']))
+            ->add($options['lastname_name'], 'text', array_merge_recursive($options['options'], $options['lastname_options']))
+            ->add($options['firstname_name'], 'text', array_merge_recursive($options['options'], $options['firstname_options']))
         ;
 
         $builder->setAttribute('lastname_name', $options['lastname_name']);
@@ -79,12 +95,31 @@ class NameType extends AbstractType
     {
         $resolver->setDefaults(array(
             'options' => array(),
-            'lastname_options' => array(),
-            'firstname_options' => array(),
+            'lastname_options' => array(
+                'attr' => array(
+                    'placeholder' => 'Name01',
+                ),
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->config['name_len'],
+                    )),
+                ),
+            ),
+            'firstname_options' => array(
+                'attr' => array(
+                    'placeholder' => 'Name02',
+                ),
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $this->config['name_len'],
+                    )),
+                ),
+            ),
             'lastname_name' => '',
             'firstname_name' => '',
             'error_bubbling' => false,
             'inherit_data' => true,
+            'trim' => true,
         ));
     }
 

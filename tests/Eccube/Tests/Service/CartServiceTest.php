@@ -95,6 +95,16 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $cartService->addProduct(1);
         $this->assertEquals(1, $cartService->getProductQuantity(1));
+
+        $cartService->clear();
+
+        $cartService->addProduct(10, 6);
+        $this->assertEquals(5, $cartService->getProductQuantity(10));
+
+        $cartService->clear();
+
+        $cartService->addProduct(10, 101);
+        $this->assertEquals(5, $cartService->getProductQuantity(10));
     }
 
     public function testUpProductQuantity()

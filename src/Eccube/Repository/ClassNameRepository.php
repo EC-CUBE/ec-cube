@@ -34,6 +34,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClassNameRepository extends EntityRepository
 {
+    /**
+     * ‹KŠiˆê——‚ğæ“¾‚·‚é.
+     *
+     * @return array ‹KŠi‚Ì”z—ñ
+     */
     public function getList()
     {
         $qb = $this->createQueryBuilder('cn')
@@ -45,8 +50,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
+     * ‹KŠi‚Ì‡ˆÊ‚ğ1ã‚°‚é.
+     *
      * @param  \Eccube\Entity\ClassName $ClassName
-     * @return void
+     * @return boolean ¬Œ÷‚µ‚½ê‡ true
      */
     public function up(\Eccube\Entity\ClassName $ClassName)
     {
@@ -80,8 +87,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassName $ClassName
-     * @return bool
+     * ‹KŠi‚Ì‡ˆÊ‚ğ1‰º‚°‚é.
+     *
+     * @param \Eccube\Entity\ClassName $ClassName
+     * @return boolean ¬Œ÷‚µ‚½ê‡ true
      */
     public function down(\Eccube\Entity\ClassName $ClassName)
     {
@@ -115,8 +124,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassName $ClassName
-     * @return bool
+     * ‹KŠi‚ğ•Û‘¶‚·‚é.
+     *
+     * @param \Eccube\Entity\ClassName $ClassName
+     * @return boolean ¬Œ÷‚µ‚½ê‡ true
      */
     public function save(\Eccube\Entity\ClassName $ClassName)
     {
@@ -149,8 +160,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassName $ClassName
-     * @return bool
+     * ‹KŠi‚ğíœ‚·‚é.
+     *
+     * @param \Eccube\Entity\ClassName $ClassName
+     * @return boolean ¬Œ÷‚µ‚½ê‡ true
      */
     public function delete(\Eccube\Entity\ClassName $ClassName)
     {

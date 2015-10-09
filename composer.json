@@ -36,10 +36,13 @@
         "doctrine/migrations": "v1.0.0-alpha3@dev",
         "knplabs/console-service-provider": "@dev",
         "nesbot/carbon": "~1.20",
-        "guzzle/guzzle": "~3.9"
+        "guzzle/guzzle": "~3.9",
+        "egulias/email-validator": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
+        "mikey179/vfsStream": "~1",
+        "fzaninotto/faker":"1.*",
         "phing/phing": "2.*",
         "symfony/browser-kit": ">=2.7,<2.8",
         "sorien/silex-pimple-dumper": "1.0.*",

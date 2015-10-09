@@ -27,11 +27,14 @@ use Eccube\Application;
 
 class SystemServiceTest extends AbstractServiceTestCase
 {
-    private $system;
-
     public function testgetDbversion()
     {
-        $system = $this->app['eccube.service.system'];
-        $this->assertNotNull($system->getDbversion());
+        $app = $this->app;
+
+        $version = $app['eccube.service.system']
+            ->getDbversion();
+
+        $this->assertNotNull($version);
+        $this->assertRegExp('/mysql|postgresql/', strtolower($version));
     }
 }

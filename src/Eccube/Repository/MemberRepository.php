@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Common\Constant;
 use Eccube\Entity\Member;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -32,6 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Util\SecureRandom;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+
 /**
  * MemberRepository
  *
@@ -69,9 +71,18 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
+        $Work = $this
+            ->getEntityManager()
+            ->getRepository('Eccube\Entity\Master\Work')
+            ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
+
         $query = $this->createQueryBuilder('m')
             ->where('m.login_id = :login_id')
-            ->setParameter('login_id', $username)
+            ->andWhere('m.Work = :Work')
+            ->setParameters(array(
+                    'login_id' => $username,
+                    'Work' => $Work,
+            ))
             ->getQuery();
         $Member = $query->getOneOrNullResult();
         if (!$Member) {
@@ -205,8 +216,7 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
                 }
                 $Member
                     ->setRank($rank + 1)
-                    ->setDelFlg(0)
-                    ->setSalt($this->createSalt(5));
+                    ->setDelFlg(Constant::DISABLED);
             }
 
             $em->persist($Member);
@@ -240,7 +250,7 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
                 ->execute();
 
             $Member
-                ->setDelFlg(1)
+                ->setDelFlg(Constant::ENABLED)
                 ->setRank(0);
 
             $em->persist($Member);

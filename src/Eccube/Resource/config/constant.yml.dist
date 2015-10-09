@@ -10,7 +10,6 @@ admin_order_mail_urlpath: /admin/order/mail.php
 admin_order_urlpath: /admin/order/
 admin_products_urlpath: /admin/products/
 admin_system_urlpath: /admin/system/
-admin_title: 'EC-CUBE 管理機能'
 amount_len: 6
 api_enable_flag: false
 auth_type: HMAC
@@ -38,7 +37,7 @@ db_log_realfile: /PATH/TO/WEB_ROOT/data/logs/db.log
 debug_log_realfile: ''
 debug_mode: false
 default_country_id: 392
-default_password: '******'
+default_password: '**********'
 default_product_disp: 2
 default_product_down: 1
 default_template_name: default
@@ -133,7 +132,6 @@ navi_pmax: 4
 no_image_realfile: /PATH/TO/WEB_ROOT/src/Eccube/Repository/Master/user_data/packages/default/img/picture/img_blank.gif
 normal_image_height: 260
 normal_image_width: 260
-normal_price_title: 通常価格
 normal_subimage_height: 200
 normal_subimage_width: 200
 nostock_hidden: false
@@ -157,8 +155,8 @@ ostore_url: 'http://www.ec-cube.net/'
 p_detail_urlpath: '/products/detail.php?product_id='
 page_display_time_log_min_exec_time: 2
 page_display_time_log_mode: 1
-password_max_len: 50
-password_min_len: 4
+password_max_len: 32
+password_min_len: 8
 pear_db_debug: 0
 pear_db_persistent: false
 pending_order_cancel_flag: true
@@ -186,9 +184,6 @@ release_year: 2005
 review_allow_url: 0
 review_regist_max: 5
 rfc_compliant_email_check: false
-sale_price_title: 販売価格
-sample_address1: '市区町村名 (例：千代田区神田神保町)'
-sample_address2: '番地・ビル名 (例：1-3-5)'
 search_category_len: 18
 search_pmax: 10
 select_rgb: '#ffffdf'
@@ -216,8 +211,8 @@ sql_query_log_mode: 1
 start_birth_year: 1970
 stext_len: 50
 tax_rule_priority: 'product_id,product_class_id,pref_id,country_id'
-tel_item_len: 6
-tel_len: 12
+tel_len: 5
+tel_item_len: 12
 template_admin_realdir: /PATH/TO/WEB_ROOT/data/template/admin/
 template_name: default
 template_realdir: /PATH/TO/WEB_ROOT/data/template/default/
@@ -260,3 +255,7 @@ csv_import_delimiter: ,
 csv_import_enclosure: '"'
 csv_import_escape: \
 owners_store_url: https://www.ec-cube.net/upgrade/api/index.php
+name_len: 16
+kana_len: 25
+address1_len: 32
+address2_len: 32

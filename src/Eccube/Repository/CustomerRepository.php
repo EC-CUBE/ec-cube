@@ -26,12 +26,12 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 use Eccube\Entity\Customer;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 
 /**
  * CustomerRepository
@@ -144,7 +144,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->andWhere('c.del_flg = 0');
 
         if (!empty($searchData['multi']) && $searchData['multi']) {
-            if (is_int($searchData['multi'])) {
+            if (preg_match('/^\d+$/', $searchData['multi'])) {
                 $qb
                     ->andWhere('c.id = :customer_id')
                     ->setParameter('customer_id', $searchData['multi']);
@@ -178,7 +178,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         // birth_month
         if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
-//            TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
+            //            TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
 //            $qb
 //                ->andWhere('extract(month from c.birth) = :birth_month')
 //                ->setParameter('birth_month', $searchData['birth_month']);
@@ -202,20 +202,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // tel
-        if (!empty($searchData['tel01']) && $searchData['tel01']) {
+        if (!empty($searchData['tel']) && $searchData['tel']) {
             $qb
-                ->andWhere('c.tel01 = :tel01')
-                ->setParameter('tel01', $searchData['tel01']);
-        }
-        if (!empty($searchData['tel02']) && $searchData['tel02']) {
-            $qb
-                ->andWhere('c.tel02 = :tel02')
-                ->setParameter('tel02', $searchData['tel02']);
-        }
-        if (!empty($searchData['tel03']) && $searchData['tel03']) {
-            $qb
-                ->andWhere('c.tel03 = :tel03')
-                ->setParameter('tel03', $searchData['tel03']);
+                ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
+                ->setParameter('tel', '%' . $searchData['tel'] . '%');
         }
 
         // buy_total
@@ -425,5 +415,4 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         // TODO : これで良いか？(大文字込みならもうちょっと別のやりかたで）
         return substr(base_convert(md5(uniqid()), 16, 36), 0, 8);
     }
-
 }

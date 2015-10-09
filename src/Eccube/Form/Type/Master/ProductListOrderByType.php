@@ -29,7 +29,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductListOrderByType extends AbstractType
 {
@@ -59,21 +59,10 @@ class ProductListOrderByType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\ProductListOrderBy',
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('pn')
-                    ->orderBy('pn.rank', 'ASC');
-            },
-            'property' => 'name',
-            'label' => false,
-            'multiple' => false,
-            'expanded' => false,
-            'required' => false,
-            'empty_value' => false,
             'empty_data' => null,
         ));
     }
@@ -91,6 +80,6 @@ class ProductListOrderByType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'master';
     }
 }

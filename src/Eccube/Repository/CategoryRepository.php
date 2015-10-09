@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\Category;
 
 /**
  * CategoryRepository
@@ -35,7 +36,9 @@ use Doctrine\ORM\EntityRepository;
 class CategoryRepository extends EntityRepository
 {
     /**
-     * @return int
+     * 全カテゴリの合計を取得する.
+     *
+     * @return int 全カテゴリの合計数
      */
     public function getTotalCount()
     {
@@ -50,10 +53,14 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Category|null $Parent
-     * @return \Eccube\Entity\Category[]
+     * カテゴリ一覧を取得する.
+     *
+     * 引数 $Parent を指定した場合は, 指定したカテゴリの子以下を取得する.
+     *
+     * @param \Eccube\Entity\Category|null $Parent 指定の親カテゴリ
+     * @return \Eccube\Entity\Category[] カテゴリの配列
      */
-    public function getList($Parent = null)
+    public function getList(Category $Parent = null)
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.rank', 'DESC');
@@ -69,8 +76,10 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Category $Category
-     * @return void
+     * カテゴリの順位を1上げる.
+     *
+     * @param  \Eccube\Entity\Category $Category カテゴリ
+     * @return boolean 成功した場合 true
      */
     public function up(\Eccube\Entity\Category $Category)
     {
@@ -117,8 +126,10 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Category $Category
-     * @return bool
+     * カテゴリの順位を1下げる.
+     *
+     * @param  \Eccube\Entity\Category $Category カテゴリ
+     * @return boolean 成功した場合 true
      */
     public function down(\Eccube\Entity\Category $Category)
     {
@@ -165,8 +176,10 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Category $Category
-     * @return bool
+     * カテゴリを保存する.
+     *
+     * @param  \Eccube\Entity\Category $Category カテゴリ
+     * @return boolean 成功した場合 true
      */
     public function save(\Eccube\Entity\Category $Category)
     {
@@ -212,8 +225,10 @@ class CategoryRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Category $Category
-     * @return bool
+     * カテゴリを削除する.
+     *
+     * @param  \Eccube\Entity\Category $Category 削除対象のカテゴリ
+     * @return boolean 成功した場合 true, 子カテゴリが存在する場合, 商品カテゴリが紐づいている場合は false
      */
     public function delete(\Eccube\Entity\Category $Category)
     {

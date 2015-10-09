@@ -271,7 +271,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Set id
      *
-     * @param string $id
+     * @param integer $id
      * @return PageLayout
      */
     public function setId($id)
@@ -283,7 +283,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -306,7 +306,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -329,7 +329,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -352,7 +352,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get file_name
      *
-     * @return string 
+     * @return string
      */
     public function getFileName()
     {
@@ -375,7 +375,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get edit_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getEditFlg()
     {
@@ -398,7 +398,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get author
      *
-     * @return string 
+     * @return string
      */
     public function getAuthor()
     {
@@ -421,7 +421,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -444,7 +444,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get keyword
      *
-     * @return string 
+     * @return string
      */
     public function getKeyword()
     {
@@ -467,7 +467,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_url
      *
-     * @return string 
+     * @return string
      */
     public function getUpdateUrl()
     {
@@ -490,7 +490,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -513,7 +513,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -536,7 +536,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get meta_robots
      *
-     * @return string 
+     * @return string
      */
     public function getMetaRobots()
     {
@@ -569,7 +569,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get BlockPositions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBlockPositions()
     {
@@ -592,7 +592,7 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * Get DeviceType
      *
-     * @return \Eccube\Entity\Master\DeviceType 
+     * @return \Eccube\Entity\Master\DeviceType
      */
     public function getDeviceType()
     {

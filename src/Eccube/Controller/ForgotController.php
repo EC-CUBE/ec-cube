@@ -70,13 +70,18 @@ class ForgotController extends AbstractController
                         );
                 }
 
-                return $app->render('Forgot/complete.twig');
+                return $app->redirect($app->url('forgot_complete'));
             }
         }
 
         return $app->render('Forgot/index.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    public function complete(Application $app, Request $request)
+    {
+        return $app->render('Forgot/complete.twig');
     }
 
     public function reset(Application $app, Request $request, $reset_key)
@@ -105,6 +110,8 @@ class ForgotController extends AbstractController
             // 発行したパスワードの暗号化
             $encPass = $app['eccube.repository.customer']->encryptPassword($app, $Customer);
             $Customer->setPassword($encPass);
+
+            $Customer->setResetKey(null);
 
             // パスワードを更新
             $app['orm.em']->persist($Customer);
