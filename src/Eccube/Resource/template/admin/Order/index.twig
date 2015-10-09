@@ -86,12 +86,6 @@ $(function() {
     });
 
 });
-function fnDelete(action) {
-    if (confirm('この受注情報を削除しても宜しいですか？')) {
-        document.search_form.action = action;
-        document.search_form.submit();
-    }
-}
 </script>
 {% endblock javascript %}
 
@@ -309,7 +303,7 @@ function fnDelete(action) {
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                 <li><a href="{{ url('admin_order_edit', { id : Order.id }) }}">編集</a></li>
-                                                <li><a href="#" onclick="fnDelete('{{ url('admin_order_delete', { id : Order.id }) }}');return false;">削除</a></li>
+                                                <li><a href="{{ url('admin_order_delete', { id : Order.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この受注情報を削除してもよろしいですか？">削除</a></li>
                                                 <li><a href="{{ url('admin_order_mail', { id : Order.id }) }}">メール通知</a></li>
                                                 </ul>
                                             </div>

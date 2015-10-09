@@ -26,8 +26,8 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -64,14 +64,17 @@ class BlockType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => $app['config']['lltext_len'],
+                        'max' => $app['config']['stext_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^[0-9a-zA-Z\/_]+$/',
                     )),
                 )
             ))
             ->add('block_html', 'textarea', array(
                 'label' => 'ブロックデータ',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => array()
             ))
             ->add('DeviceType', 'entity', array(
@@ -91,10 +94,13 @@ class BlockType extends AbstractType
                     ->where('b.file_name = :file_name')
                     ->setParameter('file_name', $file_name)
                     ->andWhere('b.DeviceType = :DeviceType')
-                    ->setParameter('DeviceType', $DeviceType)
-                    ->andWhere('b.id <> :block_id')
-                    ->setParameter('block_id', $block_id)
-                ;
+                    ->setParameter('DeviceType', $DeviceType);
+
+                if (isset($block_id)) {
+                    $qb
+                        ->andWhere('b.id <> :block_id')
+                        ->setParameter('block_id', $block_id);
+                }
 
                 $Block = $qb
                     ->getQuery()

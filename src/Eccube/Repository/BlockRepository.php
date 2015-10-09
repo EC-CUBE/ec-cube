@@ -80,7 +80,7 @@ class BlockRepository extends EntityRepository
     /**
      * ブロックの情報を取得.
      *
-     * @param  integer $block_id       ブロックID
+     * @param  integer $block_id ブロックID
      * @param  \Eccube\Entity\Master\DeviceType $DeviceType
      * @return array
      */
@@ -105,8 +105,7 @@ class BlockRepository extends EntityRepository
         $qb = $this->createQueryBuilder('b')
             ->orderBy('b.id', 'DESC')
             ->where('b.DeviceType = :DeviceType')
-            ->setParameter('DeviceType', $DeviceType)
-        ;
+            ->setParameter('DeviceType', $DeviceType);
 
         $Blocks = $qb
             ->getQuery()
@@ -122,9 +121,9 @@ class BlockRepository extends EntityRepository
      * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
      *
      * @access public
-     * @param  DeviceType  $DeviceType 端末種別ID
-     * @param  string                            $where 追加の検索条件
-     * @param  string[]                          $parameters 追加の検索パラメーター
+     * @param  DeviceType $DeviceType 端末種別ID
+     * @param  string $where 追加の検索条件
+     * @param  string[] $parameters 追加の検索パラメーター
      * @return array                             ページ属性の配列
      */
     public function getPageList(DeviceType $DeviceType, $where = null, $parameters = array())
@@ -156,6 +155,8 @@ class BlockRepository extends EntityRepository
      *
      * @param  boolean $isUser
      * @return string
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getWriteTemplatePath($isUser = false)
     {
@@ -177,17 +178,10 @@ class BlockRepository extends EntityRepository
      */
     public function getReadTemplateFile($fileName, $isUser = false)
     {
-        if ($isUser) {
-        // User定義
-            $readPaths = array(
-                $this->app['config']['user_block_realdir'],
-            );
-        } else {
-            $readPaths = array(
-                $this->app['config']['block_realdir'],
-                $this->app['config']['block_default_realdir'],
-            );
-        }
+        $readPaths = array(
+            $this->app['config']['block_realdir'],
+            $this->app['config']['block_default_realdir'],
+        );
         foreach ($readPaths as $readPath) {
             $filePath = $readPath . '/' . $fileName . '.twig';
             $fs = new Filesystem();

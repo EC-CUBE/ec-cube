@@ -24,6 +24,7 @@
 
 namespace Eccube\Twig\Extension;
 
+use Eccube\Common\Constant;
 use Eccube\Util\Str;
 use Silex\Application;
 
@@ -46,6 +47,7 @@ class EccubeExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
             new \Twig_SimpleFunction('active_menus', array($this, 'getActiveMenus')),
+            new \Twig_SimpleFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
         );
     }
 
@@ -99,6 +101,17 @@ class EccubeExtension extends \Twig_Extension
         }
 
         return $menus;
+    }
+
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getCsrfTokenForAnchor()
+    {
+        $token = $this->app['form.csrf_provider']->getToken(Constant::TOKEN_NAME)->getValue();
+        return 'token-for-anchor=\'' . $token . '\'';
     }
 
     /**

@@ -45,6 +45,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <!-- for original theme CSS -->
 {% block stylesheet %}{% endblock %}
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ app.config.front_urlpath }}/js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+
 {# ▼Head COLUMN #}
 {% if PageLayout.Head %}
     {# ▼上ナビ #}
@@ -52,6 +55,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {# ▲上ナビ #}
 {% endif %}
 {# ▲Head COLUMN #}
+
 </head>
 <body class="{{ body_class|default('other_page') }}">
 <div id="wrapper">
@@ -155,8 +159,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 <div class="overlay"></div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{{ app.config.front_urlpath }}/js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
 <script src="{{ app.config.front_urlpath }}/js/vendor/bootstrap.custom.min.js"></script>
 <script src="{{ app.config.front_urlpath }}/js/vendor/slick.min.js"></script>
 <script src="{{ app.config.front_urlpath }}/js/function.js"></script>

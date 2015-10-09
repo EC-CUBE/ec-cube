@@ -112,7 +112,7 @@ class PluginController extends AbstractController
 
                                     if ($plugin->getVersion() != $item['version']) {
                                         // バージョンが異なる
-                                        if (array_search(Constant::VERSION, $item['eccube_version'])) {
+                                        if (in_array(Constant::VERSION, $item['eccube_version'])) {
                                             // 対象バージョン
                                             $plugin->setUpdateStatus(3);
                                             break;
@@ -190,7 +190,6 @@ class PluginController extends AbstractController
                 $errors = $form->getErrors();
                 foreach ($errors as $error) {
                     $message = $error->getMessage();
-                    error_log($message);
                 }
 
             }
@@ -211,6 +210,8 @@ class PluginController extends AbstractController
      */
     public function enable(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         if (!$Plugin) {
@@ -235,6 +236,8 @@ class PluginController extends AbstractController
      */
     public function disable(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         if (!$Plugin) {
@@ -260,6 +263,8 @@ class PluginController extends AbstractController
      */
     public function uninstall(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         if (!$Plugin) {
@@ -431,7 +436,7 @@ class PluginController extends AbstractController
                         // EC-CUBEのバージョンチェック
                         // 参照渡しをして値を追加
                         foreach ($items as &$item) {
-                            if (array_search(Constant::VERSION, $item['eccube_version'])) {
+                            if (in_array(Constant::VERSION, $item['eccube_version'])) {
                                 // 対象バージョン
                                 $item['version_check'] = 1;
                             } else {

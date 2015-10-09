@@ -52,10 +52,10 @@ class FrontControllerProvider implements ControllerProviderInterface
         // cart
         $c->match('/cart', '\Eccube\Controller\CartController::index')->bind('cart');
         $c->post('/cart/add', '\Eccube\Controller\CartController::add')->bind('cart_add');
-        $c->match('/cart/up/{productClassId}', '\Eccube\Controller\CartController::up')->bind('cart_up')->assert('productClassId', '\d+');
-        $c->match('/cart/down/{productClassId}', '\Eccube\Controller\CartController::down')->bind('cart_down')->assert('productClassId', '\d+');
-        $c->match('/cart/setQuantity/{productClassId}/{quantity}', '\Eccube\Controller\CartController::setQuantity')->bind('cart_set_quantity')->assert('productClassId', '\d+')->assert('quantity', '\d+');
-        $c->match('/cart/remove/{productClassId}', '\Eccube\Controller\CartController::remove')->bind('cart_remove')->assert('productClassId', '\d+');
+        $c->put('/cart/up/{productClassId}', '\Eccube\Controller\CartController::up')->bind('cart_up')->assert('productClassId', '\d+');
+        $c->put('/cart/down/{productClassId}', '\Eccube\Controller\CartController::down')->bind('cart_down')->assert('productClassId', '\d+');
+        $c->put('/cart/setQuantity/{productClassId}/{quantity}', '\Eccube\Controller\CartController::setQuantity')->bind('cart_set_quantity')->assert('productClassId', '\d+')->assert('quantity', '\d+');
+        $c->put('/cart/remove/{productClassId}', '\Eccube\Controller\CartController::remove')->bind('cart_remove')->assert('productClassId', '\d+');
         $c->match('/cart/buystep', '\Eccube\Controller\CartController::buystep')->bind('cart_buystep');
 
         // contact
@@ -94,7 +94,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/delivery', '\Eccube\Controller\Mypage\DeliveryController::index')->bind('mypage_delivery');
         $c->match('/mypage/delivery/new', '\Eccube\Controller\Mypage\DeliveryController::edit')->bind('mypage_delivery_new');
         $c->match('/mypage/delivery/{id}/edit', '\Eccube\Controller\Mypage\DeliveryController::edit')->assert('id', '\d+')->bind('mypage_delivery_edit');
-        $c->match('/mypage/delivery/{id}/delete', '\Eccube\Controller\Mypage\DeliveryController::delete')->assert('id', '\d+')->bind('mypage_delivery_delete');
+        $c->delete('/mypage/delivery/{id}/delete', '\Eccube\Controller\Mypage\DeliveryController::delete')->assert('id', '\d+')->bind('mypage_delivery_delete');
 
         $c->match('/mypage/favorite', '\Eccube\Controller\Mypage\MypageController::favorite')->bind('mypage_favorite');
         $c->match('/mypage/history/{id}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('id', '\d+');

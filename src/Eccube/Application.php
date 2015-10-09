@@ -214,6 +214,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+        Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
     }
 
     public function initLocale()
@@ -256,7 +257,7 @@ class Application extends ApplicationTrait
             'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => 'eccube',
-                'cookie_path' => $this['config']['root_urlpath'],
+                'cookie_path' => $this['config']['root_urlpath'] ?: '/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
                 'cookie_httponly' => true,
@@ -291,9 +292,13 @@ class Application extends ApplicationTrait
                     $cacheBaseDir = __DIR__ . '/../../app/cache/twig/production/';
                 }
 
+                if (file_exists($app['config']['user_data_realdir'])){
+                    $paths[] = $app['config']['user_data_realdir'];
+                }
+
                 if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
-                        $paths[] = __DIR__ . '/../../app/template/admin';
+                    if (file_exists($app['config']['template_admin_html_realdir'])) {
+                        $paths[] = $app['config']['template_admin_html_realdir'];
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__ . '/../../app/Plugin';

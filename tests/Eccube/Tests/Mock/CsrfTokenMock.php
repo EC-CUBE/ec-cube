@@ -20,29 +20,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+namespace Eccube\Tests\Mock;
 
-namespace Eccube\Common;
+use Eccube\Application;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class Constant {
-
-    /**
-     * EC-CUBE VERSION.
-     */
-    const VERSION = '3.0.3';
-
-    /**
-     * Enable value.
-     */
-    const ENABLED = 1;
+class CsrfTokenMock implements CsrfTokenManagerInterface
+{
+    public function __construct()
+    {
+    }
 
     /**
-     * Disable value.
+     * {@inheritdoc}
      */
-    const DISABLED = 0;
+    public function getToken($tokenId)
+    {
+        return new CsrfToken('', '');
+    }
 
     /**
-     * Csrf Token Name.
+     * {@inheritdoc}
      */
-    const TOKEN_NAME = '_token';
+    public function refreshToken($tokenId)
+    {
+        return '';
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function removeToken($tokenId)
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTokenValid(CsrfToken $token)
+    {
+        return true;
+    }
 }

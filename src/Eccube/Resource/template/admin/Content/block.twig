@@ -28,17 +28,6 @@
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ブロック管理{% endblock %}
 
-{% block javascript %}
-    <script>
-        function fnDelete(action) {
-            if (confirm('このブロックを削除しても宜しいですか？')) {
-                document.content_block_form.action = action;
-                document.content_block_form.submit();
-            }
-        }
-    </script>
-{% endblock javascript %}
-
 {% block main %}
 <form name="content_block_form" id="content_block_form" method="post" action="">
     <div class="container-fluid">
@@ -67,7 +56,7 @@
                                                     </li>
                                                     <li>
                                                         {% if Block.deletable_flg == 1 %}
-                                                            <a href="javascript:;" onclick="fnDelete('{{ url('admin_content_block_delete', { 'id': Block.id}) }}');return false;">削除</a>
+                                                            <a href="{{ url('admin_content_block_delete', { 'id': Block.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このブロックを削除してもよろしいですか？">削除</a>
                                                         {% else %}
                                                             <a>削除</a>
                                                         {% endif %}
