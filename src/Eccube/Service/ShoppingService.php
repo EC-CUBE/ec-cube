@@ -756,7 +756,6 @@ class ShoppingService
      */
     public function setOrderUpdate(Order $Order, $data)
     {
-
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
@@ -958,6 +957,9 @@ class ShoppingService
      */
     public function getShippingForm(Order $Order)
     {
+        $message = '';
+        $message = $Order->getMessage();
+
 
         $deliveries = $this->getDeliveriesOrder($Order);
 
@@ -967,6 +969,7 @@ class ShoppingService
         $builder = $this->app['form.factory']->createBuilder('shopping', null, array(
             'payments' => $payments,
             'payment' => $Order->getPayment(),
+            'message' => $message
         ));
 
         $builder

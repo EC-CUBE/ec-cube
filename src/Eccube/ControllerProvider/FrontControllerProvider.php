@@ -122,6 +122,9 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/shopping_error', '\Eccube\Controller\ShoppingController::shoppingError')->bind('shopping_error');
         $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
         $c->match('/shopping/shipping_multiple_edit', '\Eccube\Controller\ShoppingController::shippingMultipleEdit')->bind('shopping_shipping_multiple_edit');
+        $c->match('/shopping/shipping_change/{id}', '\Eccube\Controller\ShoppingController::shippingChange')->assert('id', '\d+')->bind('shopping_shipping_change');
+        $c->match('/shopping/shipping_edit_change/{id}', '\Eccube\Controller\ShoppingController::shippingEditChange')->assert('id', '\d+')->bind('shopping_shipping_edit_change');
+        $c->match('/shopping/shipping_multiple_change', '\Eccube\Controller\ShoppingController::shippingMultipleChange')->bind('shopping_shipping_multiple_change');
 
         return $c;
     }

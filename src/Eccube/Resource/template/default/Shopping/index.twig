@@ -33,6 +33,21 @@ $(function(){
         $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
     });
 
+    $('.btn-toShipping').bind('click', function() {
+        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+		return false;
+    });
+
+    $('.btn-toShippingEdit').bind('click', function() {
+        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+		return false;
+    });
+
+    $('.btn-toShippingMultiple').bind('click', function() {
+        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+		return false;
+    });
+
     {% if is_granted('ROLE_USER') == false %}
     var ref = new Array();
     var name = new Array();
@@ -245,16 +260,16 @@ $(function(){
                                 {{ form_widget(form.shippings[idx].deliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="btn btn-default btn-sm">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-toShipping">変更</a></p>
                             {% else %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit', {'id': shipping.id}) }}" class="btn btn-default btn-sm">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-toShippingEdit">変更</a></p>
                             {% endif %}
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
                     {% endfor %}
                     {% if BaseInfo.optionMultipleShipping %}
                         <hr>
-                        <div><a href="{{ url('shopping_shipping_multiple') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
+                        <div><a href="{{ url('shopping_shipping_multiple_change') }}" class="btn btn-default btn-sm btn-toShippingMultiple">お届け先を追加する</a></div>
                     {% endif %}
 
                     <h2 class="heading02">お支払方法</h2>
