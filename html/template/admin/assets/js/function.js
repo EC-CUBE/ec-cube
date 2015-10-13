@@ -135,6 +135,15 @@ jQuery(document).ready(function ($) {
             }
         });
     });
+        
+    // ダブルクリック禁止
+    $('.prevention-btn').on('click', function() {
+        $(this).attr('disabled', 'disabled');
+        $(this).delay(2000).queue(function() {
+            $(this).attr('disabled',false);
+        });
+        $(this).parents('form').submit();
+    });
 
 });
 
