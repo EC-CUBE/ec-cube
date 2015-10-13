@@ -72,14 +72,6 @@ $(function(){
             return '<button class="thumbnail">' + $(slider.$slides[i]).find('img').prop('outerHTML') + '</button>';
         }
     });
-
-    $("#addcartbutton").on("click",function() {
-        $("#addcartbutton").attr('disabled',true);
-        $("#addcartbutton").delay(2000).queue(function() {
-            $("#addcartbutton").attr('disabled',false);
-        });
-        $("#form1").submit();
-    });
 });
 </script>
 
@@ -200,7 +192,7 @@ $(function(){
                                 {# カートボタン #}
                                 <div class="btn_area">
                                     <ul class="row">
-                                        <li class="col-xs-12 col-sm-8"><button type="button" class="btn btn-primary btn-block" id="addcartbutton">カートに入れる</button></li>
+                                        <li class="col-xs-12 col-sm-8"><button type="button" class="btn btn-primary btn-block prevention-btn">カートに入れる</button></li>
                                     </ul>
                                 </div>
                             {% else %}
