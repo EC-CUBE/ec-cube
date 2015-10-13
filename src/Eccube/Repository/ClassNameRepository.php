@@ -35,9 +35,9 @@ use Doctrine\ORM\EntityRepository;
 class ClassNameRepository extends EntityRepository
 {
     /**
-     * ‹KŠiˆê——‚ğæ“¾‚·‚é.
+     * è¦æ ¼ä¸€è¦§ã‚’å–å¾—ã™ã‚‹.
      *
-     * @return array ‹KŠi‚Ì”z—ñ
+     * @return array è¦æ ¼ã®é…åˆ—
      */
     public function getList()
     {
@@ -50,10 +50,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * ‹KŠi‚Ì‡ˆÊ‚ğ1ã‚°‚é.
+     * è¦æ ¼ã®é †ä½ã‚’1ä¸Šã’ã‚‹.
      *
      * @param  \Eccube\Entity\ClassName $ClassName
-     * @return boolean ¬Œ÷‚µ‚½ê‡ true
+     * @return boolean æˆåŠŸã—ãŸå ´åˆ true
      */
     public function up(\Eccube\Entity\ClassName $ClassName)
     {
@@ -87,10 +87,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * ‹KŠi‚Ì‡ˆÊ‚ğ1‰º‚°‚é.
+     * è¦æ ¼ã®é †ä½ã‚’1ä¸‹ã’ã‚‹.
      *
      * @param \Eccube\Entity\ClassName $ClassName
-     * @return boolean ¬Œ÷‚µ‚½ê‡ true
+     * @return boolean æˆåŠŸã—ãŸå ´åˆ true
      */
     public function down(\Eccube\Entity\ClassName $ClassName)
     {
@@ -124,10 +124,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * ‹KŠi‚ğ•Û‘¶‚·‚é.
+     * è¦æ ¼ã‚’ä¿å­˜ã™ã‚‹.
      *
      * @param \Eccube\Entity\ClassName $ClassName
-     * @return boolean ¬Œ÷‚µ‚½ê‡ true
+     * @return boolean æˆåŠŸã—ãŸå ´åˆ true
      */
     public function save(\Eccube\Entity\ClassName $ClassName)
     {
@@ -160,10 +160,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * ‹KŠi‚ğíœ‚·‚é.
+     * è¦æ ¼ã‚’å‰Šé™¤ã™ã‚‹.
      *
      * @param \Eccube\Entity\ClassName $ClassName
-     * @return boolean ¬Œ÷‚µ‚½ê‡ true
+     * @return boolean æˆåŠŸã—ãŸå ´åˆ true
      */
     public function delete(\Eccube\Entity\ClassName $ClassName)
     {
