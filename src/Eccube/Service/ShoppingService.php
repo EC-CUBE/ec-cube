@@ -957,9 +957,7 @@ class ShoppingService
      */
     public function getShippingForm(Order $Order)
     {
-        $message = '';
         $message = $Order->getMessage();
-
 
         $deliveries = $this->getDeliveriesOrder($Order);
 
@@ -969,7 +967,7 @@ class ShoppingService
         $builder = $this->app['form.factory']->createBuilder('shopping', null, array(
             'payments' => $payments,
             'payment' => $Order->getPayment(),
-            'message' => $message
+            'message' => $message,
         ));
 
         $builder
