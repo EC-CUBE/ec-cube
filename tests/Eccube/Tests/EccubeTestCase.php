@@ -127,7 +127,7 @@ abstract class EccubeTestCase extends WebTestCase
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email =$faker->email;
+            $email = $faker->email;
         }
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::ACTIVE);
         $Customer
