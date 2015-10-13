@@ -43,6 +43,7 @@ abstract class EccubeTestCase extends WebTestCase
     {
         parent::tearDown();
         $this->app['orm.em']->getConnection()->rollback();
+        $this->app['orm.em']->getConnection()->close();
     }
 
     /**
