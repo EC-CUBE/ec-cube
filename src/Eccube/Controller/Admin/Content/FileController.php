@@ -115,10 +115,13 @@ class FileController extends AbstractController
             $filename = $form->get('create_file')->getData();
 
             $pattern = "/[^[:alnum:]_.\\-]/";
+            $pattern2 = "/^\.(.*)$/";
             if (empty($filename)) {
                 $this->error = array('message' => 'フォルダ作成名が入力されていません。');
             } else if (strlen($filename) > 0 && preg_match($pattern, $filename)) {
-                $this->error = array('message' => 'ファイル名には、英数字、記号（_ - .）のみを入力して下さい。');
+                $this->error = array('message' => 'フォルダ名には、英数字、記号（_ - .）のみを入力して下さい。');
+            } else if (strlen($filename) > 0 && preg_match($pattern2, $filename)) {
+                $this->error = array('message' => '.から始まるフォルダ名は作成できません。');
             } else {
                 $topDir = $app['config']['user_data_realdir'];
                 $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
