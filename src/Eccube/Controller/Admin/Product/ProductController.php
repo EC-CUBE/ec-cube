@@ -62,6 +62,7 @@ class ProductController extends AbstractController
 
                 // paginator
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+
                 $page_no = 1;
                 $pagination = $app['paginator']()->paginate(
                     $qb,
