@@ -122,18 +122,23 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return \Eccube\Entity\Customer
      */
-    public function createCustomer()
+    public function createCustomer($email = null)
     {
         $faker = $this->getFaker();
         $Customer = new Customer();
-        $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        if (is_null($email)) {
+            $email =$faker->email;
+        }
+        $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::ACTIVE);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
-            ->setEmail($faker->email)
+            ->setEmail($email)
+            ->setPassword('password')
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app)) // TODO app を渡さなくていいはず
             ->setStatus($Status)
             ->setDelFlg(0);
+        $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush();
         return $Customer;
