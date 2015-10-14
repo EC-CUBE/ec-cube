@@ -53,7 +53,7 @@ install:
   - echo mbstring.http_input = UTF-8 >> C:\tools\php\php.ini
   - echo mbstring.http_output = pass >> C:\tools\php\php.ini
   - echo mbstring.internal_encoding = UTF-8 >> C:\tools\php\php.ini
-  - echo memory_limit = 256M >> C:\tools\php\php.ini
+  - echo memory_limit = 512M >> C:\tools\php\php.ini
 
 # cache:
   # - C:\ProgramData\chocolatey\bin -> appveyor.yml
