@@ -107,6 +107,7 @@ master_data_realdir: /PATH/TO/WEB_ROOT/data/cache/
 max_lifetime: 7200
 max_log_quantity: 5
 max_log_size: '1000000'
+max_total_fee: 9999999999
 member_pmax: 10
 mltext_len: 1000
 mobile_cart_urlpath: /cart/
