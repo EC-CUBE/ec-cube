@@ -32,6 +32,9 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService
 {
+    /** @var \Eccube\Application */
+    public $app;
+
     /**
      * @var Session
      */
@@ -71,6 +74,7 @@ class CartService
 
     public function __construct(\Eccube\Application $app)
     {
+        $this->app = $app;
         $this->session = $app['session'];
         $this->entityManager = $app['orm.em'];
 
@@ -227,7 +231,7 @@ class CartService
             }
 
         }
-        
+       
         $tmp_subtotal = 0;
         $tmp_quantity = 0;
         foreach ($this->getCart()->getCartItems() as $cartitem) {
@@ -239,7 +243,7 @@ class CartService
         }
         for ($i = 0; $i < $quantity; $i++) {
             $tmp_subtotal += $ProductClass->getPrice02IncTax();
-            if ($tmp_subtotal > 9999999999) {
+            if ($tmp_subtotal > $this->app['config']['max_total_fee']) {
                 $this->setError('cart.over.price_limit');
                 break;
             }
