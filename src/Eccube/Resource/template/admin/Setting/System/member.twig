@@ -38,77 +38,70 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">メンバー管理</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <form name="form1" id="form1" method="post" action="">
-                        <div class="table_list">
-                            <div class="table-responsive with-border">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>権限</th>
-                                        <th>名前</th>
-                                        <th>所属</th>
-                                        <th>稼働</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for Member in Members %}
-                                    <tr>
-                                        <td>{{ Member.Authority.name }}</td>
-                                        <td>{{ Member.name }}</td>
-                                        <td>{{ Member.department }}</td>
-                                        <td>{{ Member.Work.name }}</td>
-                                        <td class="icon_edit">
-                                            <div class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}" >編集</a></li>
-                                                    {% if Member.id == app.user.id %}
-                                                        <li>
-                                                            <a>削除</a>
-                                                        </li>
-                                                    {% else %}
-                                                        <li>
-                                                            <a href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
-                                                        </li>
-                                                    {% endif %}
-                                                    {% if loop.first == false %}
-                                                        <li>
-                                                            <a href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a>
-                                                        </li>
-                                                    {% endif %}
-                                                    {% if loop.last == false %}
-                                                        <li>
-                                                            <a href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a>
-                                                        </li>
-                                                    {% endif %}
+        <div class="col-md-12 box">
+            <div class="box-header">
+                <h3 class="box-title">メンバー管理</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <form name="form1" id="form1" method="post" action="">
+                    <div class="table_list table-responsive with-border">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>権限</th>
+                                <th>名前</th>
+                                <th>所属</th>
+                                <th>稼働</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for Member in Members %}
+                            <tr>
+                                <td>{{ Member.Authority.name }}</td>
+                                <td>{{ Member.name }}</td>
+                                <td>{{ Member.department }}</td>
+                                <td>{{ Member.Work.name }}</td>
+                                <td class="icon_edit">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a href="{{ url('admin_setting_system_member_edit', { 'id' : Member.id }) }}" >編集</a></li>
+                                            {% if Member.id == app.user.id %}
+                                                <li>
+                                                    <a>削除</a>
+                                                </li>
+                                            {% else %}
+                                                <li>
+                                                    <a href="{{ url('admin_setting_system_member_delete', {id: Member.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
+                                                </li>
+                                            {% endif %}
+                                            {% if loop.first == false %}
+                                                <li>
+                                                    <a href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a>
+                                                </li>
+                                            {% endif %}
+                                            {% if loop.last == false %}
+                                                <li>
+                                                    <a href="{{ url('admin_setting_system_member_up', {id: Member.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a>
+                                                </li>
+                                            {% endif %}
 
-                                                </ul>
-                                            </div>                                        
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                                        </ul>
+                                    </div>                                        
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                                <a href="{{ url('admin_setting_system_member_new') }}" class="btn btn-primary btn-block btn-lg">新規登録</a>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div><!-- /.box -->
-            <div class="row">
-                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <a href="{{ url('admin_setting_system_member_new') }}" class="btn btn-primary btn-block btn-lg">
-                            新規登録
-                    </a>
-                </div>
+                    </div>
+                </form>
             </div>
-
         </div>
     </div>
 

@@ -28,92 +28,85 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header with-arrow">
-                    <h3 class="box-title">
-                        支払方法
-                    </h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="table_list">
-                        <div class="table-responsive with-border">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>支払方法</th>
-                                    <th>手数料</th>
-                                    <th>利用条件</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <form name="delete_form" id="delete_form" action="" method="post">
-                                    </form>
-                                    {% for Payment in Payments %}
-                                    <tr>
+        <div class="col-md-12 box">
+            <div class="box-header with-arrow">
+                <h3 class="box-title">
+                    支払方法
+                </h3>
+            </div><!-- /.box-header -->
+            <div class="box-body table_list table-responsive with-border">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>支払方法</th>
+                        <th>手数料</th>
+                        <th>利用条件</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <form name="delete_form" id="delete_form" action="" method="post">
+                        </form>
+                        {% for Payment in Payments %}
+                        <tr>
 
-                                        <td class="member_name">{{ Payment.method }}</td>
-                                        <td class="member_name">
-                                            {{ Payment.charge }}
-                                        </td>
-                                        <td class="member_name">
-                                            {% if Payment.rule_min > 0 %}
-                                                {{ Payment.rule_min }}
+                            <td class="member_name">{{ Payment.method }}</td>
+                            <td class="member_name">
+                                {{ Payment.charge }}
+                            </td>
+                            <td class="member_name">
+                                {% if Payment.rule_min > 0 %}
+                                    {{ Payment.rule_min }}
+                                {% else %}
+                                    0
+                                {% endif %}円
+
+                                {% if Payment.rule_max > 0 %}
+                                    ～{{ Payment.rule_max }}円
+                                {% elseif Payment.rule_max is null %}
+                                    ～無制限
+                                {% endif %}
+                            </td>
+                            <td class="icon_edit">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            {% if Payment.fix_flg == 1 %}
+                                                <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
                                             {% else %}
-                                                0
-                                            {% endif %}円
-
-                                            {% if Payment.rule_max > 0 %}
-                                                ～{{ Payment.rule_max }}円
-                                            {% elseif Payment.rule_max is null %}
-                                                ～無制限
+                                                <a>編集</a>
                                             {% endif %}
-                                        </td>
-                                        <td class="icon_edit">
-                                            <div class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        {% if Payment.fix_flg == 1 %}
-                                                            <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
-                                                        {% else %}
-                                                            <a>編集</a>
-                                                        {% endif %}
-                                                    </li>
-                                                    <li>
-                                                        {% if Payment.fix_flg == 1 %}
-                                                            <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
-                                                        {% else %}
-                                                            <a>削除</a>
-                                                        {% endif %}
-                                                    </li>
-                                                    <li>
-                                                        {% if loop.first == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a></li>
-                                                        {% endif %}
-                                                        {% if loop.last == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a></li>
-                                                        {% endif %}
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                                        </li>
+                                        <li>
+                                            {% if Payment.fix_flg == 1 %}
+                                                <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
+                                            {% else %}
+                                                <a>削除</a>
+                                            {% endif %}
+                                        </li>
+                                        <li>
+                                            {% if loop.first == false %}
+                                                <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a></li>
+                                            {% endif %}
+                                            {% if loop.last == false %}
+                                                <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a></li>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
+                    <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">支払方法を新規入力</a>
                     </div>
-                </div><!-- /.box-body -->
-
-            </div><!-- /.box -->
+                </div>
+            </div><!-- /.box-body -->
         </div><!-- /.col -->
     </div>
 
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-            <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">支払方法を新規入力</a>
-        </div>
-    </div>
 {% endblock %}
