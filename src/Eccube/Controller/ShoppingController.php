@@ -269,9 +269,11 @@ class ShoppingController extends AbstractController
 
                 // 支払い情報をセット
                 $payment = $data['payment'];
+                $message = $data['message'];
 
                 $Order->setPayment($payment);
                 $Order->setPaymentMethod($payment->getMethod());
+                $Order->setMessage($message);
                 $Order->setCharge($payment->getCharge());
 
                 $Order->setDeliveryFeeTotal($app['eccube.service.shopping']->getShippingDeliveryFeeTotal($shippings));
@@ -307,11 +309,13 @@ class ShoppingController extends AbstractController
 
             if ($form->isValid()) {
 
-                $data = $form->getData();
+				$data = $form->getData();
                 $payment = $data['payment'];
+                $message = $data['message'];
 
                 $Order->setPayment($payment);
                 $Order->setPaymentMethod($payment->getMethod());
+                $Order->setMessage($message);
                 $Order->setCharge($payment->getCharge());
 
                 $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
@@ -970,4 +974,87 @@ class ShoppingController extends AbstractController
     {
         return $app->render('Shopping/shopping_error.twig');
     }
+    
+    /**
+     * お届け先変更がクリックされた場合の処理
+     */
+    public function shippingChange(Application $app, Request $request, $id)
+    {
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+
+        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            // バリデート処理
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $message = $data['message'];
+                $Order->setMessage($message);
+                // 受注情報を更新
+                $app['orm.em']->flush();
+                // お届け先設定一覧へリダイレクト
+			    return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
+            }
+        }
+
+	    return $app->redirect($app->url('shopping'));
+    }
+
+    /**
+     * お届け先の設定（非会員）がクリックされた場合の処理
+     */
+    public function shippingEditChange(Application $app, Request $request, $id)
+    {
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+
+        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            // バリデート処理
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $message = $data['message'];
+                $Order->setMessage($message);
+                // 受注情報を更新
+                $app['orm.em']->flush();
+                // お届け先設定一覧へリダイレクト
+			    return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
+            }
+        }
+
+	    return $app->redirect($app->url('shopping'));
+    }
+
+    /**
+     * 複数配送処理がクリックされた場合の処理
+     */
+    public function shippingMultipleChange(Application $app, Request $request)
+    {
+        $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+
+        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            // バリデート処理
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $message = $data['message'];
+                $Order->setMessage($message);
+                // 受注情報を更新
+                $app['orm.em']->flush();
+                // 複数配送設定へリダイレクト
+			    return $app->redirect($app->url('shopping_shipping_multiple'));
+            }
+        }
+
+	    return $app->redirect($app->url('shopping'));
+    }
+
+    
 }
