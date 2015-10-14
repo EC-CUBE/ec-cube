@@ -70,6 +70,7 @@ $app['config'] = $app->share(function () use ($conf) {
 
     return array_replace_recursive($conf, $confarray);
 });
+// config_dev.ymlにmailが設定されていた場合、config_dev.ymlの設定内容を反映
 $app['swiftmailer.options'] = $app['config']['mail'];
 
 // Mail
