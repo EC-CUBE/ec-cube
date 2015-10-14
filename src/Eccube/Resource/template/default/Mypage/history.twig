@@ -156,6 +156,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         支払方法：　{{ Order.PaymentMethod }}
                     </p>
                 </div>
+                <h2 class="heading02">お問い合わせ</h2>
+                <div class="column">
+                    <p>
+                        {{ Order.message|default('記載なし')|nl2br }}
+                    </p>
+                </div>
 
                 <h2 class="heading02">メール配信履歴一覧</h2>
                 <div class="column mail_list">
