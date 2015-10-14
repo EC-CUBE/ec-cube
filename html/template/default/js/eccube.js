@@ -593,6 +593,7 @@
             $(this).delay(2000).queue(function() {
                 $(this).attr('disabled',false);
             });
+            $(".loadmask").addClass('is-visible');
             $(this).parents('form').submit();
         });
     });
