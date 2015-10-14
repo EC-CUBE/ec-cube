@@ -70,6 +70,7 @@ $app['config'] = $app->share(function () use ($conf) {
 
     return array_replace_recursive($conf, $confarray);
 });
+$app['swiftmailer.options'] = $app['config']['mail'];
 
 // Mail
 if (isset($app['config']['delivery_address'])) {
