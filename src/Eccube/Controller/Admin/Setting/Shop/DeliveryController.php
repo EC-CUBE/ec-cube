@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -162,18 +163,20 @@ class DeliveryController extends AbstractController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $repo = $app['eccube.repository.delivery'];
         $Deliv = $repo->find($id);
 
         $Deliv
-            ->setDelFlg(1)
+            ->setDelFlg(Constant::ENABLED)
             ->setRank(0);
         $app['orm.em']->persist($Deliv);
 
         $rank = 1;
         $Delivs = $repo
             ->findBy(
-                array('del_flg' => 0),
+                array('del_flg' => Constant::DISABLED),
                 array('rank' => 'ASC')
             );
         foreach ($Delivs as $Deliv) {
@@ -185,44 +188,6 @@ class DeliveryController extends AbstractController
         $app['orm.em']->flush();
 
         $app->addSuccess('admin.delete.complete', 'admin');
-
-        return $app->redirect($app->url('admin_setting_shop_delivery'));
-    }
-
-    public function up(Application $app, $id)
-    {
-        $repo = $app['eccube.repository.delivery'];
-
-        $current = $repo->find($id);
-        $currentRank = $current->getRank();
-
-        $targetRank = $currentRank + 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
-
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
-        $app['orm.em']->flush();
-
-        $app->addSuccess('admin.register.complete', 'admin');
-
-        return $app->redirect($app->url('admin_setting_shop_delivery'));
-    }
-
-    public function down(Application $app, $id)
-    {
-        $repo = $app['eccube.repository.delivery'];
-
-        $current = $repo->find($id);
-        $currentRank = $current->getRank();
-
-        $targetRank = $currentRank - 1;
-        $target = $repo->findOneBy(array('rank' => $targetRank));
-
-        $app['orm.em']->persist($target->setRank($currentRank));
-        $app['orm.em']->persist($current->setRank($targetRank));
-        $app['orm.em']->flush();
-
-        $app->addSuccess('admin.register.complete', 'admin');
 
         return $app->redirect($app->url('admin_setting_shop_delivery'));
     }

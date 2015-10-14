@@ -34,4 +34,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class ShippingRepository extends EntityRepository
 {
+
+    /**
+     * 同一商品のお届け先情報を取得
+     *
+     * @param $Order
+     * @return array
+     */
+    public function findShippingsProduct($Order, $productClass)
+    {
+        $shippings = $this->createQueryBuilder('s')
+            ->innerJoin('Eccube\Entity\Order', 'o', 'WITH', 'o.id = s.Order')
+            ->innerJoin('Eccube\Entity\ShipmentItem', 'si', 'WITH', 'si.Shipping = s.id')
+            ->where('o.id = (:order)')
+            ->andWhere('si.ProductClass = (:productClass)')
+            ->setParameter('order', $Order)
+            ->setParameter('productClass', $productClass)
+            ->getQuery()
+            ->getResult();
+
+        return $shippings;
+
+    }
+
 }

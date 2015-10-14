@@ -23,14 +23,32 @@
 
 namespace Eccube\Form\Type\Front;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingShippingType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+
+        $builder
+            ->add('company_name', 'text', array(
+                'label' => '会社名',
+                'required' => false,
+            ))
+            ->add('fax', 'tel', array(
+                'label' => 'FAX番号',
+                'required' => false,
+            ))
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+    }
+
     /**
      * {@inheritdoc}
      */

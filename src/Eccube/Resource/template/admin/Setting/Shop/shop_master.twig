@@ -62,30 +62,31 @@ $(function() {
                         {{ form_row(form.shop_name_eng) }}
                         
                         {# 住所：郵便番号 #}
-                        <div class="form-group">
+                        <div class="form-group {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">
                             {{ form_label(form.address) }}
                             <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                {{ form_errors(form.zip) }}
+                                {{ form_errors(form.zip.zip01) }}
+                                {{ form_errors(form.zip.zip02) }}
                                 <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>
                         {# 住所：都道府県 #}
-                        <div class="form-group">
+                        <div class="form-group {% if form.address.pref.vars.errors is not empty %}has-error{% endif %}">
                             <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
                                 {{ form_widget(form.address.pref) }}
                                 {{ form_errors(form.address.pref) }}
                             </div>
                         </div>
                         {# 住所：住所1 #}
-                        <div class="form-group">
+                        <div class="form-group {% if form.address.addr02.vars.errors is not empty  %}has-error{% endif %}">
                             <div class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                                 {{ form_errors(form.address.addr01) }}
                             </div>
                         </div>
                         {# 住所：住所2 #}
-                        <div class="form-group">
+                        <div class="form-group {% if form.address.addr02.vars.errors is not empty  %}has-error{% endif %}">
                             <div class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                                 {{ form_errors(form.address.addr02) }}
@@ -94,17 +95,21 @@ $(function() {
                         {# 電話番号 #}
                         <div class="form-group">
                             {{ form_label(form.tel) }}
-                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
+                            <div class="col-sm-9 col-lg-10 input_tel form-inline {% if form.tel.tel01.vars.errors is not empty or form.tel.tel02.vars.errors is not empty or form.tel.tel03.vars.errors is not empty %}has-error{% endif %}">
                                 {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
-                                {{ form_errors(form.tel) }}
+                                {{ form_errors(form.tel.tel01) }}
+                                {{ form_errors(form.tel.tel02) }}
+                                {{ form_errors(form.tel.tel03) }}
                             </div>
                         </div>
                         {# FAX番号 #}
                         <div class="form-group">
                             {{ form_label(form.fax) }}
-                            <div class="col-sm-9 col-lg-10 input_tel form-inline">
+                            <div class="col-sm-9 col-lg-10 input_tel form-inline {% if form.fax.fax01.vars.errors is not empty or form.fax.fax02.vars.errors is not empty or form.fax.fax03.vars.errors is not empty %}has-error{% endif %}">
                                 {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}-{{ form_widget(form.fax.fax03) }}
-                                {{ form_errors(form.fax) }}
+                                {{ form_errors(form.fax.fax01) }}
+                                {{ form_errors(form.fax.fax02) }}
+                                {{ form_errors(form.fax.fax03) }}
                             </div>
                         </div>
                         
@@ -113,8 +118,6 @@ $(function() {
                         {{ form_row(form.email02) }}
                         {{ form_row(form.email03) }}
                         {{ form_row(form.email04) }}
-                        {{ form_row(form.good_traded) }}
-                        {{ form_row(form.message) }}
                         {{ form_row(form.good_traded) }}
                         {{ form_row(form.message) }}
 
@@ -130,10 +133,7 @@ $(function() {
                         {{ form_row(form.delivery_free_amount) }}
                         {{ form_row(form.delivery_free_quantity) }}
                         {{ form_row(form.option_product_delivery_fee) }}
-                        {# 複数配送時に設定可能とする
-                        {{ form_row(form.option_delivery_fee) }}
                         {{ form_row(form.option_multiple_shipping) }}
-                        #}
 
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->

@@ -14,7 +14,13 @@ Kana02: メイ
 Zip: 郵便番号
 Address: 住所
 Tel: 電話番号
+Fax: FAX番号
 Email: メールアドレス
+Password: パスワード
+Job: 職業
+Sex: 性別
+Birth: 生年月日
+Company name : 会社名
 Contents: お問い合わせ内容
 form.empty_value: 選択してください
 form.pref.empty_value: 都道府県を選択
@@ -23,7 +29,10 @@ form.job.empty_value: 選択してください
 form.contact.address.help: 住所は2つに分けてご記入ください。マンション名は必ず記入してください。
 form.contact.contents.help: ご注文に関するお問い合わせには、必ず「ご注文番号」をご記入くださいますようお願いいたします。
 form.member.email.invalid: 同じメールアドレスを入力してください。
+form.member.password.invalid: 同じパスワードを入力してください。
 form.type.numeric.invalid: 数字で入力してください。
+form.member.repeated.confirm: 確認のためもう一度入力してください
+form.type.graph.invalid: 半角英数字で入力してください。
 
 cart.over.stock: |-
     選択された商品の在庫が不足しております。
@@ -31,8 +40,16 @@ cart.over.stock: |-
 cart.over.sale_limit: |-
     選択された商品は販売制限しております。
     一度に販売制限数を超える購入はできません。
+cart.zero.stock: |-
+    選択された商品の在庫が不足しております。
+    該当商品をカートから削除しました。
+cart.over.price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。 
 cart.product.type.kind: この商品は同時に購入することはできません。
+cart.product.payment.kind: お支払方法が異なるためこの商品は同時に購入することはできません。
 cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
+cart.product.not.status: この商品は現在購入することはできません。
+
+shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
 
 admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
 

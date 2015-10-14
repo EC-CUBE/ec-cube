@@ -24,8 +24,9 @@
 
 namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
 use Eccube\Application;
+use Eccube\Tests\Mock\CsrfTokenMock;
+use Silex\WebTestCase;
 
 abstract class AbstractWebTestCase extends WebTestCase
 {
@@ -68,6 +69,10 @@ abstract class AbstractWebTestCase extends WebTestCase
         $app->initPluginEventDispatcher();
         $app['session.test'] = true;
         $app['exception_handler']->disable();
+
+        $app['form.csrf_provider'] = $app->share(function () {
+            return new CsrfTokenMock();
+        });
 
         $app->boot();
 

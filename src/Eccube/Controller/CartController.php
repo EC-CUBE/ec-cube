@@ -25,9 +25,10 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 
-class CartController
+class CartController extends AbstractController
 {
     public function index(Application $app)
     {
@@ -73,27 +74,45 @@ class CartController
     {
         $productClassId = $request->get('product_class_id');
         $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
-        $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
+        try {
+            $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
+        } catch (CartException $e) {
+            $app->addRequestError($e->getMessage());
+        }
 
         return $app->redirect($app->url('cart'));
     }
 
     public function up(Application $app, $productClassId)
     {
-        $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
+        $this->isTokenValid($app);
+
+        try {
+            $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
+        } catch (CartException $e) {
+            $app->addRequestError($e->getMessage());
+        }
 
         return $app->redirect($app->url('cart'));
     }
 
     public function down(Application $app, $productClassId)
     {
-        $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
+        $this->isTokenValid($app);
+
+        try {
+            $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
+        } catch (CartException $e) {
+            $app->addRequestError($e->getMessage());
+        }
 
         return $app->redirect($app->url('cart'));
     }
 
     public function remove(Application $app, $productClassId)
     {
+        $this->isTokenValid($app);
+
         $app['eccube.service.cart']->removeProduct($productClassId)->save();
 
         return $app->redirect($app->url('cart'));
@@ -101,6 +120,8 @@ class CartController
 
     public function setQuantity(Application $app, $productClassId, $quantity)
     {
+        $this->isTokenValid($app);
+
         $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity)->save();
 
         return $app->redirect($app->url('cart'));

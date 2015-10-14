@@ -34,6 +34,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClassNameRepository extends EntityRepository
 {
+    /**
+     * 規格一覧を取得する.
+     *
+     * @return array 規格の配列
+     */
     public function getList()
     {
         $qb = $this->createQueryBuilder('cn')
@@ -45,8 +50,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
+     * 規格の順位を1上げる.
+     *
      * @param  \Eccube\Entity\ClassName $ClassName
-     * @return void
+     * @return boolean 成功した場合 true
      */
     public function up(\Eccube\Entity\ClassName $ClassName)
     {
@@ -80,8 +87,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassName $ClassName
-     * @return bool
+     * 規格の順位を1下げる.
+     *
+     * @param \Eccube\Entity\ClassName $ClassName
+     * @return boolean 成功した場合 true
      */
     public function down(\Eccube\Entity\ClassName $ClassName)
     {
@@ -115,8 +124,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassName $ClassName
-     * @return bool
+     * 規格を保存する.
+     *
+     * @param \Eccube\Entity\ClassName $ClassName
+     * @return boolean 成功した場合 true
      */
     public function save(\Eccube\Entity\ClassName $ClassName)
     {
@@ -149,8 +160,10 @@ class ClassNameRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassName $ClassName
-     * @return bool
+     * 規格を削除する.
+     *
+     * @param \Eccube\Entity\ClassName $ClassName
+     * @return boolean 成功した場合 true
      */
     public function delete(\Eccube\Entity\ClassName $ClassName)
     {

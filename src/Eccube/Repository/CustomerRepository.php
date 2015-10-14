@@ -26,12 +26,12 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 use Eccube\Entity\Customer;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 
 /**
  * CustomerRepository
@@ -144,7 +144,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->andWhere('c.del_flg = 0');
 
         if (!empty($searchData['multi']) && $searchData['multi']) {
-            if (is_int($searchData['multi'])) {
+            if (preg_match('/^\d+$/', $searchData['multi'])) {
                 $qb
                     ->andWhere('c.id = :customer_id')
                     ->setParameter('customer_id', $searchData['multi']);

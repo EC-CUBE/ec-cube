@@ -587,16 +587,10 @@
             );
         });
 
-        // モーダルウィンドウ
-        if ($('a.expansion').length) {
-            $('a.expansion').colorbox();
-        }
-
         // ダブルクリック禁止
-        $(".single_click").on("click", function(){
-            $(".single_click")
-            .attr("disabled", "disabled")
-            .attr("onclick", "");
+        $('.prevention-btn').on('click', function() {
+            $(this).attr('disabled', 'disabled');
+            $(this).parents('form').submit();
         });
     });
 })(window);

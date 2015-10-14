@@ -49,6 +49,22 @@ class Order extends \Eccube\Entity\AbstractEntity
 
         return false;
     }
+
+    /**
+     * 対象となるお届け先情報を取得
+     * @param $shippingId
+     * @return mixed
+     */
+    public function findShipping($shippingId) {
+
+        foreach ($this->getShippings() as $Shipping) {
+            if ($Shipping->getId() == $shippingId) {
+                return $Shipping;
+            }
+        }
+
+    }
+
     /**
      * @var integer
      */

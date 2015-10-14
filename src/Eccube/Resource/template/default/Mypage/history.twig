@@ -106,10 +106,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div><!--/cart_item-->
 
-                <h2 class="heading02">お客様情報</h2>
+                <h2 class="heading02">配送情報</h2>
                 {% set OrderDetail = Order.OrderDetails.0 %}
                 {% for Shipping in Order.Shippings %}
-                    <div class="column">
+                    <div class="column is-edit">
+                        <h3>お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}</h3>
+                        <div class="cart_item table">
+                            <div class="tbody">
+                                {% for shipmentItem in Shipping.shipmentItems %}
+                                    <div class="item_box tr">
+                                        <div class="td table">
+                                            <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}" /></div>
+                                            <dl class="item_detail">
+                                                <dt class="item_name text-default">{{ shipmentItem.productName }}</dt>
+                                                <dd class="item_pattern small">
+                                                    {% if shipmentItem.productClass.classCategory1 %}
+                                                        {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
+                                                    {% endif %}
+                                                    {% if shipmentItem.productClass.classCategory2 %}
+                                                        <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
+                                                    {% endif %}
+                                                </dd>
+                                                <dd class="item_price">{{ shipmentItem.priceIncTax|price }} ×{{ shipmentItem.quantity }}</dd>
+                                                <dd class="item_subtotal">小計：{{ shipmentItem.totalPrice|price }}</dd>
+                                            </dl>
+                                        </div>
+                                    </div><!--/item_box-->
+                                {% endfor %}
+                            </div>
+                        </div>
+
                         <p class="address">
                             {{ Shipping.name01 }}&nbsp;{{ Shipping.name02 }}&nbsp;
                             ({{ Shipping.kana01 }}&nbsp;{{ Shipping.kana02 }})&nbsp;様<br>
@@ -117,16 +143,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ Shipping.tel01 }}-{{ Shipping.tel02 }}-{{ Shipping.tel03 }}
                         </p>
                         <p>
-                            配送方法：　{{ Shipping.shipping_delivery_name }}（＋{{ Shipping.delivery_fee.fee|price }}）<br>
+                            配送方法：　{{ Shipping.shipping_delivery_name }}{{ Shipping.delivery_fee ? '（＋' ~ Shipping.delivery_fee.fee|price ~ '）' : '' }}<br>
                             お届け日：　{{ Shipping.shipping_delivery_date|date_format|default('指定なし') }}<br>
                             お届け時間：　{{ Shipping.shipping_delivery_time|default('指定なし') }}
                         </p>
                     </div>
+                    {% if loop.last == false%}<hr>{% endif %}
                 {% endfor %}
                 <h2 class="heading02">お支払方法</h2>
                 <div class="column">
                     <p>
                         支払方法：　{{ Order.PaymentMethod }}
+                    </p>
+                </div>
+                <h2 class="heading02">お問い合わせ</h2>
+                <div class="column">
+                    <p>
+                        {{ Order.message|default('記載なし')|nl2br }}
                     </p>
                 </div>
 
@@ -203,5 +236,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         </div><!-- /.row -->
 
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <a href="{{ url('mypage') }}" class="btn btn-default btn-sm">戻る</a>
+            </div>
+        </div>
     </div>
 {% endblock %}

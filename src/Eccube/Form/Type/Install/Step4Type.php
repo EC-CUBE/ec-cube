@@ -45,7 +45,6 @@ class Step4Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $database = array();
         if (extension_loaded('pdo_pgsql')) {
             $database['pdo_pgsql'] = 'PostgreSQL';
@@ -60,6 +59,9 @@ class Step4Type extends AbstractType
                 'choices' => $database,
                 'expanded' => false,
                 'multiple' => false,
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->add('database_host', 'text', array(
                 'label' => 'データベースのホスト名',
@@ -105,12 +107,10 @@ class Step4Type extends AbstractType
                     // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
                     $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
                     $conn->connect();
-
                 } catch (\Exception $e) {
                     $form['database']->addError(new FormError('データベースに接続できませんでした。' . $e->getMessage()));
                 }
             });
-
     }
 
     /**

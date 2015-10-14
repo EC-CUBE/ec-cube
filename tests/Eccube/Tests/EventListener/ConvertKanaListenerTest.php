@@ -3,7 +3,7 @@
 namespace Eccube\Tests\EventListener;
 
 use Symfony\Component\Form\FormEvent;
-use Eccube\EventListner\ConvertKanaListener;
+use Eccube\EventListener\ConvertKanaListener;
 
 class ConvertKanaListenerTest extends \PHPUnit_Framework_TestCase
 {

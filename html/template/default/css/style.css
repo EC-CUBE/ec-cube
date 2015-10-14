@@ -2284,6 +2284,24 @@ margin-top: 5px;
     border-top: 0 none;
 }
 
+.shipping_multiple_table {
+    background-color: #f4f4f4;
+}
+
+.shipping_multiple_table .item_box > .td {
+    border-bottom: none;
+}
+
+.shipping_multiple_table .item_box .item_photo {
+    max-width: 200px;
+    min-width: 200px;
+    padding-right: 200px;
+}
+
+.shipping_item .quantity {
+    width: 100px;
+}
+
 
 .use_point {
     text-align: center;

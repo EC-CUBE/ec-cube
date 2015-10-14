@@ -25,12 +25,14 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CustomerController
+class CustomerController extends AbstractController
 {
     public function index(Application $app, Request $request, $page_no = null)
     {
@@ -110,6 +112,8 @@ class CustomerController
 
     public function resend(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $Customer = $app['orm.em']
             ->getRepository('Eccube\Entity\Customer')
             ->find($id);
@@ -130,6 +134,8 @@ class CustomerController
 
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $Customer = $app['orm.em']
             ->getRepository('Eccube\Entity\Customer')
             ->find($id);
@@ -138,7 +144,7 @@ class CustomerController
             throw new NotFoundHttpException();
         }
 
-        $Customer->setDelFlg(1);
+        $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
         $app['orm.em']->flush();
         $app->addSuccess('admin.customer.delete.complete', 'admin');

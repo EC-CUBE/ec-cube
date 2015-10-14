@@ -21,21 +21,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-/**
- * Created by PhpStorm.
- * User: chihiro_adachi
- * Date: 15/04/23
- * Time: 15:17
- */
 
 namespace Eccube\Form\Type\Admin;
 
-
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Common\Constant;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingType extends AbstractType
 {
@@ -52,6 +49,8 @@ class ShippingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->app['config'];
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+
         $builder
             ->add('name', 'name', array(
                 'required' => true,
@@ -60,7 +59,6 @@ class ShippingType extends AbstractType
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
@@ -71,7 +69,6 @@ class ShippingType extends AbstractType
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
@@ -92,7 +89,6 @@ class ShippingType extends AbstractType
             ->add('address', 'address', array(
                 'addr01_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
@@ -100,14 +96,15 @@ class ShippingType extends AbstractType
                 ),
                 'addr02_options' => array(
                     'constraints' => array(
-                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
                     ),
                 ),
             ))
-            ->add('tel', 'tel', array())
+            ->add('tel', 'tel', array(
+                'required' => true,
+            ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,
@@ -130,9 +127,34 @@ class ShippingType extends AbstractType
                 'empty_data' => null,
                 'required' => false,
             ))
-            ->add('shipping_delivery_date', null, array(
-                'label' => 'お届け日'
+            ->add('shipping_delivery_date', 'date', array(
+                'label' => 'お届け日',
+                'placeholder' => '',
+                'format' => 'yyyy-MM-dd',
+                'required' => false,
             ))
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
+                if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+                    $form = $event->getForm();
+                    $form->add('ShipmentItems', 'collection', array(
+                        'type' => 'shipment_item',
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'prototype' => true,
+                    ));
+                }
+            })
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
+                if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
+                    $form = $event->getForm();
+                    $shipmentItems = $form['ShipmentItems']->getData();
+
+                    if (empty($shipmentItems) || count($shipmentItems) < 1) {
+                        // 画面下部にエラーメッセージを表示させる
+                        $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
+                    }
+                }
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -142,7 +164,7 @@ class ShippingType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Eccube\Entity\Shipping',
+            'data_class' => 'Eccube\Entity\Shipping',
         ));
     }
 

@@ -24,6 +24,7 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -35,7 +36,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 
-class TemplateController
+class TemplateController extends AbstractController
 {
 
     /**
@@ -154,6 +155,8 @@ class TemplateController
 
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         /** @var $Template \Eccube\Entity\Template */
         $Template = $app['eccube.repository.template']->find($id);
 

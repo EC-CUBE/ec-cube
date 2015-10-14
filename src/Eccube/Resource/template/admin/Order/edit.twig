@@ -39,24 +39,26 @@ $(function() {
     });
 
     // 注文者情報をコピー
-    $('#copyCustomerToShippingButton').on('click', function() {
-        $('#order_Shippings_0_name_name01').val($('#order_name_name01').val());
-        $('#order_Shippings_0_name_name02').val($('#order_name_name02').val());
-        $('#order_Shippings_0_kana_kana01').val($('#order_kana_kana01').val());
-        $('#order_Shippings_0_kana_kana02').val($('#order_kana_kana02').val());
-        $('#order_Shippings_0_zip_zip01').val($('#order_zip_zip01').val());
-        $('#order_Shippings_0_zip_zip02').val($('#order_zip_zip02').val());
-        $('#order_Shippings_0_address_pref').val($('#order_address_pref').val());
-        $('#order_Shippings_0_address_addr01').val($('#order_address_addr01').val());
-        $('#order_Shippings_0_address_addr02').val($('#order_address_addr02').val());
-        $('#order_Shippings_0_email').val($('#order_email').val());
-        $('#order_Shippings_0_tel_tel01').val($('#order_tel_tel01').val());
-        $('#order_Shippings_0_tel_tel02').val($('#order_tel_tel02').val());
-        $('#order_Shippings_0_tel_tel03').val($('#order_tel_tel03').val());
-        $('#order_Shippings_0_fax_fax01').val($('#order_fax_fax01').val());
-        $('#order_Shippings_0_fax_fax02').val($('#order_fax_fax02').val());
-        $('#order_Shippings_0_fax_fax03').val($('#order_fax_fax03').val());
-        $('#order_Shippings_0_company_name').val($('#order_company_name').val());
+    $('.copyCustomerToShippingButton').on('click', function() {
+        var data = $(this).data();
+        var idx = data.idx;
+        $('#order_Shippings_' + idx + '_name_name01').val($('#order_name_name01').val());
+        $('#order_Shippings_' + idx + '_name_name02').val($('#order_name_name02').val());
+        $('#order_Shippings_' + idx + '_kana_kana01').val($('#order_kana_kana01').val());
+        $('#order_Shippings_' + idx + '_kana_kana02').val($('#order_kana_kana02').val());
+        $('#order_Shippings_' + idx + '_zip_zip01').val($('#order_zip_zip01').val());
+        $('#order_Shippings_' + idx + '_zip_zip02').val($('#order_zip_zip02').val());
+        $('#order_Shippings_' + idx + '_address_pref').val($('#order_address_pref').val());
+        $('#order_Shippings_' + idx + '_address_addr01').val($('#order_address_addr01').val());
+        $('#order_Shippings_' + idx + '_address_addr02').val($('#order_address_addr02').val());
+        $('#order_Shippings_' + idx + '_email').val($('#order_email').val());
+        $('#order_Shippings_' + idx + '_tel_tel01').val($('#order_tel_tel01').val());
+        $('#order_Shippings_' + idx + '_tel_tel02').val($('#order_tel_tel02').val());
+        $('#order_Shippings_' + idx + '_tel_tel03').val($('#order_tel_tel03').val());
+        $('#order_Shippings_' + idx + '_fax_fax01').val($('#order_fax_fax01').val());
+        $('#order_Shippings_' + idx + '_fax_fax02').val($('#order_fax_fax02').val());
+        $('#order_Shippings_' + idx + '_fax_fax03').val($('#order_fax_fax03').val());
+        $('#order_Shippings_' + idx + '_company_name').val($('#order_company_name').val());
     });
     // 会員検索
     $('#searchCustomerModalButton').on('click', function() {
@@ -118,14 +120,27 @@ $(function() {
                 }
             },
             error: function() {
-                console.log('search customer failed.');
+                alert('search customer failed.');
             }
         });
     });
+    $('#searchProductModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var idx = button.data('idx');
+        var modal = $(this);
+        modal.find('#searchProductModalButton').attr('data-idx', idx);
+    });
+
+
     // 商品検索
     $('#searchProductModalButton').on('click', function() {
         var tbody = $('#searchProductModalList tbody');
         tbody.children().remove();
+
+        var data = $(this).data();
+        shipment_idx = data.idx;
+        shipmentItem_idx = $('.shipment_item_idx' + shipment_idx).length;
+
         $.ajax({
             type: 'POST',
             dataType: 'html',
@@ -139,7 +154,7 @@ $(function() {
                 $('#searchProductModalList').html(data);
             },
             error: function() {
-                console.log('search product failed.');
+                alert('search product failed.');
             }
         });
     });
@@ -176,7 +191,7 @@ $(function() {
     onChangeOrderDetailCount();
 });
 var setModeAndSubmit = function(mode, keyname, keyid) {
-    document.form1.mode.value = mode;
+    document.form1.modal.value = mode;
     if(keyname !== undefined && keyname !== "" && keyid !== undefined && keyid !== "") {
         document.form1[keyname].value = keyid;
     }
@@ -188,10 +203,31 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
 {% block main %}
 <div class="row" id="aside_wrap">
-    <form role="form" name="form1" id="form1" method="post" action="?">
-    <input type="hidden" name="mode" value="">
+    <form name="form1" method="post" action="?">
+    <input type="hidden" name="modal" value="">
     {{ form_widget(form._token) }}
-        <div class="col-md-9">
+        <div class="col-md-12">
+            <div class="col_inner">
+                <div class="box no-header">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h4>注文番号 <span class="number">{{ Order.id }}</span></h4>
+                                <div class="form-group">
+                                    {{ form_widget(form.OrderStatus) }}
+                                </div>
+                                <div class="small">キャンセルの場合は在庫数を手動で戻してください</div>
+                            </div>
+                            <div class="col-sm-6 col-sm-offset-2">
+                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date|date_format }}</p>
+                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date|date_format }}</p>
+                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date|date_format }}</p>
+                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date|date_format }}</p>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
             <div class="box accordion">
                 <div class="box-header toggle active">
                     <h3 class="box-title">注文者情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
@@ -275,7 +311,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {{ form_label(form.tel) }}
                             <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                 {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
-                                {{ form_errors(form.tel) }}
+                                {{ form_errors(form.tel.tel01) }}
+                                {{ form_errors(form.tel.tel02) }}
+                                {{ form_errors(form.tel.tel03) }}
                             </div>
                         </div>
                         {# FAX番号 #}
@@ -298,7 +336,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div class="form-group">
                             {{ form_label(form.message) }}
                             <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.message, { attr : { placeholder : 'Enter ..' }}) }}
+                                {{ form_widget(form.message, { attr : { placeholder : '3000文字まで入力可能' }}) }}
                                 {{ form_errors(form.message) }}
                             </div>
                         </div>
@@ -307,15 +345,17 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             </div><!-- /.box -->
 
             <div class="box accordion">
-                <div class="box-header toggle">
+                <div class="box-header toggle active">
                     <h3 class="box-title">受注商品情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel">
+                <div class="box-body accpanel" style="display: block;">
                     <div class="order_list">
                         <div class="btn_area">
                             <ul>
+                                {% if BaseInfo.optionMultipleShipping != 1 %}
                                 <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchProductModal">商品の追加</a></li>
-                                <li><a class="btn btn-default btn-block btn-sm" onclick="setModeAndSubmit('')">計算結果の更新</a></li>
+                                {% endif %}
+                                <li><button type="submit" class="btn btn-default btn-block btn-sm" name="mode" value="calc">計算結果の更新</button></li>
                             </ul>
                         </div>
                         <div class="tableish"
@@ -326,9 +366,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {% endfilter %}">
 
                             {% for orderDetailForm in form.OrderDetails %}
-                                {{ form_widget(orderDetailForm.Product) }}
-                                {{ form_widget(orderDetailForm.ProductClass) }}
                                 <div class="item_box">
+                                    {{ form_widget(orderDetailForm.Product) }}
+                                    {{ form_widget(orderDetailForm.ProductClass) }}
                                     <div class="item_detail">
                                         <div class="item_name_area">
                                             <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
@@ -356,12 +396,16 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="item_quantity">
-                                                    数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                    {% if BaseInfo.optionMultipleShipping %}
+                                                        数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
+                                                    {% else %}
+                                                        数量：{{ form_widget(orderDetailForm.quantity) }}
+                                                    {% endif %}
                                                     {{ form_errors(orderDetailForm.quantity) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                            	<span class="item_tax">
+                                                <span class="item_tax">
                                                     税率：
                                                     <span class="input-group">
                                                     {{ form_widget(orderDetailForm.tax_rate) }}
@@ -376,16 +420,19 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                         </div>
 
                                     </div>
+                                    {% if BaseInfo.optionMultipleShipping %}
+                                    {% else %}
                                     <div class="icon_edit">
                                         <button class="btn btn-default btn-sm delete-item">削除</button>
                                     </div>
+                                    {% endif %}
                                 </div><!-- /.item_box -->
                             {% endfor %}
                         </div>
 
                         <div class="row with-border2 no-margin text-right">
-                            <div class="col-lg-9 col-lg-offset-3">
-                                <dl class="dl-horizontal amount_area">
+                            <div class="col-lg-7 col-lg-offset-5">
+                                <dl class="dl-horizontal">
                                     <dt>小計：</dt>
                                     <dd>{{ Order.subtotal|price }}</dd>
                                     <dt>値引き：</dt>
@@ -408,8 +455,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         </div>
 
                         <div class="row with-border2 no-margin text-right  ta">
-                            <div class="col-lg-9 col-lg-offset-3">
-                                <dl class="dl-horizontal amount_area">
+                            <div class="col-lg-7 col-lg-offset-5">
+                                <dl class="dl-horizontal">
                                     <dt>合計：</dt>
                                     <dd>{{ Order.total|price }}</dd>
                                     <dt>お支払合計：</dt>
@@ -423,10 +470,10 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             {# お支払情報 #}
             <div class="box accordion">
-                <div class="box-header toggle">
+                <div class="box-header toggle active">
                     <h3 class="box-title">お支払情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel">
+                <div class="box-body accpanel" style="display: block;">
                     <dl class="dl-horizontal">
                         <dt>お支払方法</dt>
                         <dd class="form-group form-inline">
@@ -440,25 +487,83 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             </div>
 
             {# お届け先情報 #}
+            {% if BaseInfo.optionMultipleShipping %}
+            <div><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
+            {% endif %}
+            {% for shippingForm in form.Shippings %}
+            {% set shippingIndex = loop.index0 %}
             <div class="box accordion">
-                <div class="box-header toggle">
-                    <h3 class="box-title">お届け先情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                <div class="box-header toggle active">
+                    <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel">
-                    {% for shippingForm in form.Shippings %}
+                    <div class="box-body accpanel" style="display: block;">
                     <div class="order_list">
                         <div class="btn_area">
                             <ul>
-                                <li><a class="btn btn-default btn-block btn-sm" id="copyCustomerToShippingButton">注文者情報をコピー</a></li>
+                                <li><a class="btn btn-default btn-block btn-sm copyCustomerToShippingButton" data-idx="{{ loop.index0 }}">注文者情報をコピー</a></li>
+                                {% if BaseInfo.optionMultipleShipping %}
+                                <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchProductModal" data-idx="{{ loop.index0 }}">商品の追加</a></li>
+                                {% endif %}
                             </ul>
                         </div>
+
+                        {% if BaseInfo.optionMultipleShipping %}
+                        <div class="tableish"
+                             id="shipment_item_list{{ loop.index0 }}"
+                             data-prototype="
+                                {% filter escape %}
+                                     {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': shippingForm.ShipmentItems.vars.prototype }) }}
+                                {% endfilter %}">
+
+                        {% for shipmentItemForm in shippingForm.ShipmentItems %}
+                            {{ form_widget(shipmentItemForm.Product) }}
+                            {{ form_widget(shipmentItemForm.ProductClass) }}
+                            <div class="item_box shipment_item_idx{{ shippingIndex }}">
+                                <div class="item_detail">
+                                    <div class="item_name_area">
+                                        <strong class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
+                                        <span class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
+                                            <span class="item_pattern small">
+                                                {% if shipmentItemForm.vars.value.class_category_name1 is not empty %}
+                                                    / (
+                                                    {{ shipmentItemForm.vars.value.class_name1 }}：
+                                                    {{ shipmentItemForm.vars.value.class_category_name1 }}
+                                                    {% if shipmentItemForm.vars.value.class_category_name2 is not empty %}
+                                                        /
+                                                        {{ shipmentItemForm.vars.value.class_name2 }}：
+                                                        {{ shipmentItemForm.vars.value.class_category_name2 }}
+                                                    {% endif %}
+                                                    )
+                                                {% endif %}
+                                            </span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                            {{ form_widget(shipmentItemForm.price, {'read_only': 'readonly'}) }}
+                                        </div>
+                                        <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                            <span class="item_quantity">
+                                                数量：{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
+                                                {{ form_errors(shipmentItemForm.quantity) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.item_box -->
+                            {{ form_widget(shipmentItemForm.itemidx) }}
+                        {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <hr>
                         <div class="form-horizontal">
                             <div class="form-group">
                                 {{ form_label(shippingForm.name) }}
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.name.name01, { attr : { placeholder: '姓' }}) }}
                                     {{ form_widget(shippingForm.name.name02, { attr : { placeholder: '名' }}) }}
-                                    {{ form_errors(shippingForm.name) }}
+                                    {{ form_errors(shippingForm.name.name01) }}
+                                    {{ form_errors(shippingForm.name.name02) }}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -466,7 +571,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
                                     {{ form_widget(shippingForm.kana.kana02, { attr : { placeholder : 'メイ' }}) }}
-                                    {{ form_errors(shippingForm.kana) }}
+                                    {{ form_errors(shippingForm.kana.kana01) }}
+                                    {{ form_errors(shippingForm.kana.kana02) }}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -510,7 +616,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {{ form_label(shippingForm.tel) }}
                                 <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                     {{ form_widget(shippingForm.tel.tel01) }}-{{ form_widget(shippingForm.tel.tel02) }}-{{ form_widget(shippingForm.tel.tel03) }}
-                                    {{ form_errors(shippingForm.tel) }}
+                                    {{ form_errors(shippingForm.tel.tel01) }}
+                                    {{ form_errors(shippingForm.tel.tel02) }}
+                                    {{ form_errors(shippingForm.tel.tel03) }}
                                 </div>
                             </div>
                             {# FAX番号 #}
@@ -528,7 +636,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% if shippingForm.vars.value.shipping_delivery_name is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_name }}<br/>
                                     {% endif %}
-                                    {{ form_widget(shippingForm.Delivery) }}
+                                    {{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto'}}) }}
                                     {{ form_errors(shippingForm.Delivery) }}
                                 </div>
                             </div>
@@ -541,7 +649,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% else %}
                                         指定なし
                                     {% endif %}
-                                    {{ form_widget(shippingForm.DeliveryTime) }}
+                                    {{ form_widget(shippingForm.DeliveryTime, {'attr': {'style': 'width:auto'}}) }}
                                     {{ form_errors(shippingForm.DeliveryTime) }}
                                 </div>
                             </div>
@@ -549,15 +657,30 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             <div class="form-group">
                                 {{ form_label(shippingForm.shipping_delivery_date) }}
                                 <div class="col-sm-9 col-lg-10">
-                                    {{ shippingForm.shipping_delivery_date.date.year.vars.value }}/{{ shippingForm.shipping_delivery_date.date.month.vars.value }}/{{ shippingForm.shipping_delivery_date.date.day.vars.value }}<br/>
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}
                                     {{ form_errors(shippingForm.shipping_delivery_date) }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div><!-- /.box-body -->
+           </div>
+            {% endfor %}
+
+
+
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">ショップ用メモ欄</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">{{ form_widget(form.note) }}</div>
+            </div><!-- /.box -->
+
+            <div class="row btn_area">
+                <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">受注情報を登録</button>
+                </p>
+                <!-- /.col -->
             </div>
 
             <div class="row hidden-xs hidden-sm">
@@ -570,46 +693,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
         </div><!-- /.col -->
 
-        <div class="col-md-3" id="aside_column">
-            <div class="col_inner">
-                <div class="box no-header">
-                    <div class="box-body">
-
-                        <div class="row">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <h4>注文番号<span class="number">{{ Order.id }}</span></h4>
-                                <div class="form-group">
-                                    {{ form_widget(form.OrderStatus) }}
-                                    <p class="small">キャンセルの場合は在庫数を手動で戻してください</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row text-center">
-                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" onclick="setModeAndSubmit('register')">受注情報を登録</button>
-                            </div>
-                        </div>
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-
-                <div class="box no-header">
-                    <div class="box-body update-area">
-                        <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date|date_format }}</p>
-                        <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date|date_format }}</p>
-                        <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date|date_format }}</p>
-                        <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date|date_format }}</p>
-                    </div>
-                </div><!-- /.box -->
-
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">ショップ用メモ欄</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">{{ form_widget(form.note) }}</div>
-                </div><!-- /.box -->
-
-            </div>
-        </div><!-- /.col -->
     </form>
 </div>
 {% endblock %}
@@ -617,11 +700,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 {% block modal %}
 
 {# 会員検索モーダル #}
-<div class="modal" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">会員検索</h4>
             </div>
             <div class="modal-body">
@@ -653,11 +736,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 </div>
 
 {# 商品検索モーダル #}
-<div class="modal" id="searchProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="searchProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">商品検索</h4>
             </div>
             <div class="modal-body">
@@ -668,7 +751,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     {{ form_widget(searchProductModalForm.category_id) }}
                 </div>
                 <div class="form-group">
-                    <button type="button" id="searchProductModalButton" class="btn btn-primary" >検索</button>
+                    <button type="button" id="searchProductModalButton" class="btn btn-primary">検索</button>
                 </div>
                 <div class="form-group" id="searchProductModalList">
                 </div>

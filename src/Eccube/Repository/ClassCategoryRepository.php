@@ -34,10 +34,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClassCategoryRepository extends EntityRepository
 {
-    public function getList($ClassName = null)
+    /**
+     * 規格カテゴリの一覧を取得します.
+     *
+     * @param \Eccube\Entity\ClassName $ClassName 検索対象の規格名オブジェクト. 指定しない場合は、すべての規格を対象に取得します.
+     * @return array 規格カテゴリの配列
+     */
+    public function getList(\Eccube\Entity\ClassName $ClassName = null)
     {
         $qb = $this->createQueryBuilder('cc')
-            ->orderBy('cc.rank', 'DESC');
+            ->orderBy('cc.rank', 'DESC'); // TODO ClassName ごとにソートした方が良いかも
         if ($ClassName) {
             $qb->where('cc.ClassName = :ClassName')->setParameter('ClassName', $ClassName);
         }
@@ -48,8 +54,10 @@ class ClassCategoryRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassCategory $ClassCategory
-     * @return void
+     * 規格カテゴリの順位を1上げる.
+     *
+     * @param \Eccube\Entity\ClassCategory $ClassCategory
+     * @return boolean 成功した場合 true
      */
     public function up(\Eccube\Entity\ClassCategory $ClassCategory)
     {
@@ -59,7 +67,6 @@ class ClassCategoryRepository extends EntityRepository
             $rank = $ClassCategory->getRank();
             $ClassName = $ClassCategory->getClassName();
 
-            //
             $ClassCategory2 = $this->findOneBy(array('rank' => $rank + 1, 'ClassName' => $ClassName));
             if (!$ClassCategory2) {
                 throw new \Exception();
@@ -84,8 +91,10 @@ class ClassCategoryRepository extends EntityRepository
     }
 
     /**
+     * 規格カテゴリの順位を1下げる.
+     *
      * @param  \Eccube\Entity\ClassCategory $ClassCategory
-     * @return bool
+     * @return boolean 成功した場合 true
      */
     public function down(\Eccube\Entity\ClassCategory $ClassCategory)
     {
@@ -120,8 +129,10 @@ class ClassCategoryRepository extends EntityRepository
     }
 
     /**
+     * 規格カテゴリを保存する.
+     *
      * @param  \Eccube\Entity\ClassCategory $ClassCategory
-     * @return bool
+     * @return boolean 成功した場合 true
      */
     public function save(\Eccube\Entity\ClassCategory $ClassCategory)
     {
@@ -156,8 +167,10 @@ class ClassCategoryRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\ClassCategory $ClassCategory
-     * @return bool
+     * 規格カテゴリを削除する.
+     *
+     * @param \Eccube\Entity\ClassCategory $ClassCategory
+     * @return boolean 成功した場合 true
      */
     public function delete(\Eccube\Entity\ClassCategory $ClassCategory)
     {

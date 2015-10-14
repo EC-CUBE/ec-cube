@@ -26,15 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}ショップ設定{% endblock %}
 {% block sub_title %}支払方法管理{% endblock %}
 
-{% block javascript %}
-<script>
-    function fnDelete(action) {
-        document.delete_form.action = action;
-        document.delete_form.submit();
-    }
-</script>
-{% endblock javascript%}
-
 {% block main %}
     <div class="row">
         <div class="col-md-12">
@@ -92,17 +83,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     </li>
                                                     <li>
                                                         {% if Payment.fix_flg == 1 %}
-                                                            <a href="javascript:;" onclick="fnDelete('{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}'); return false;">削除</a>
+                                                            <a href="{{ url('admin_setting_shop_payment_delete', { id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a>
                                                         {% else %}
                                                             <a>削除</a>
                                                         {% endif %}
                                                     </li>
                                                     <li>
                                                         {% if loop.first == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}">上へ</a></li>
+                                                            <li><a href="{{ url('admin_setting_shop_payment_up', {id: Payment.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a></li>
                                                         {% endif %}
                                                         {% if loop.last == false %}
-                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}">下へ</a></li>
+                                                            <li><a href="{{ url('admin_setting_shop_payment_down', {id: Payment.id}) }}"  {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a></li>
                                                         {% endif %}
                                                     </li>
                                                 </ul>

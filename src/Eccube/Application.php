@@ -214,7 +214,8 @@ class Application extends ApplicationTrait
         // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
+        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+        Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
     }
 
     public function initLocale()
@@ -302,9 +303,13 @@ class Application extends ApplicationTrait
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
 
-                if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__.'/../../app/template/admin')) {
-                        $paths[] = __DIR__.'/../../app/template/admin';
+                if (file_exists($app['config']['user_data_realdir'])){
+                    $paths[] = $app['config']['user_data_realdir'];
+                }
+
+                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
+                    if (file_exists($app['config']['template_admin_html_realdir'])) {
+                        $paths[] = $app['config']['template_admin_html_realdir'];
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
@@ -513,7 +518,7 @@ class Application extends ApplicationTrait
             ));
         });
         $this['eccube.event_listner.security'] = $this->share(function($app) {
-            return new \Eccube\EventListner\SecurityEventListner($app['orm.em']);
+            return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         });
         $this['user'] = $this->share(function($app) {
             $token = $app['security']->getToken();

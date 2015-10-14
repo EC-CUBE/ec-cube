@@ -26,9 +26,8 @@ namespace Eccube\Tests\Form\Type;
 
 use Symfony\Component\Form\Test\TypeTestCase;
 
-abstract class AbstractTypeTestCase extends TypeTestCase
+abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
