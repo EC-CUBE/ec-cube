@@ -88,7 +88,6 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            //->select(array('p'))
             ->andWhere('p.Status = 1');
 
         // category
