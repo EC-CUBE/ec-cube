@@ -199,10 +199,6 @@ class SearchCustomerType extends AbstractType
                 'multiple' => true,
                 'empty_value' => false,
             ))
-            ->add('pageno', 'hidden', array(
-            ))
-            ->add('pagemax', 'page_max', array(
-            ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
