@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "73e9e4552e98fdac4b9bb615d5845969",
-    "content-hash": "c8eecdf777207ba762d0101445da3f3e",
+    "hash": "de2ce4c80594a2f09de08e32061d3788",
+    "content-hash": "86433b0edfb3f27fc44116f1c0c04dc1",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -4184,48 +4184,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2015-06-21 13:59:46"
-        },
-        {
-            "name": "sorien/silex-pimple-dumper",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Sorien/silex-pimple-dumper.git",
-                "reference": "85877e437c6c1aadd100ea212f13fef754e2f9f1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Sorien/silex-pimple-dumper/zipball/85877e437c6c1aadd100ea212f13fef754e2f9f1",
-                "reference": "85877e437c6c1aadd100ea212f13fef754e2f9f1",
-                "shasum": ""
-            },
-            "require-dev": {
-                "silex/silex": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sorien\\Provider\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Stanislav Turza",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Pimple File Dumper - Helper Provider for Silex Idea Plugin",
-            "keywords": [
-                "dumper",
-                "idea",
-                "plugin",
-                "silex"
-            ],
-            "time": "2015-06-17 07:50:04"
         },
         {
             "name": "symfony/browser-kit",
