@@ -6,8 +6,8 @@ use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Product;
-use Eccube\Entity\ProductListMax;
-use Eccube\Entity\ProductListOrderBy;
+use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
 
 
 /**
