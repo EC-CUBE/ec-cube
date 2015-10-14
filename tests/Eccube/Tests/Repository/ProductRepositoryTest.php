@@ -5,7 +5,9 @@ namespace Eccube\Tests\Repository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
 use Eccube\Common\Constant;
-use Eccube\Entity\Category;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductListMax;
+use Eccube\Entity\ProductListOrderBy;
 
 
 /**

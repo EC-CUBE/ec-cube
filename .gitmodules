@@ -1,6 +1,3 @@
 [submodule "docs"]
 	path = docs
 	url = https://github.com/EC-CUBE/eccube3-doc.git
-[submodule "vagrant"]
-	path = vagrant
-	url = https://github.com/EC-CUBE/eccube-vagrant.git
