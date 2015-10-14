@@ -45,7 +45,6 @@
         "fzaninotto/faker":"1.*",
         "phing/phing": "2.*",
         "symfony/browser-kit": ">=2.7,<2.8",
-        "sorien/silex-pimple-dumper": "1.0.*",
         "fabpot/php-cs-fixer": "^1.10"
     },
     "autoload": {

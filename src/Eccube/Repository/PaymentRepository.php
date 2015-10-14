@@ -87,6 +87,7 @@ class PaymentRepository extends EntityRepository
         $payments = $this->createQueryBuilder('p')
             ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
             ->where('po.Delivery = (:delivery)')
+            ->orderBy('p.rank', 'DESC')
             ->setParameter('delivery', $delivery)
             ->getQuery()
             ->getResult();
