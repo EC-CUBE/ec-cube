@@ -66,6 +66,10 @@ class EntryType extends AbstractType
                     new Assert\Length(array(
                         'max' => $this->config['stext_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => '/^\S+$/',
+                        'message' => 'form.type.customer.company.nothasspace',
+                    ))
                 ),
             ))
             ->add('zip', 'zip')
