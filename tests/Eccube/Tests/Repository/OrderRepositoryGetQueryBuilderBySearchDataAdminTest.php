@@ -10,13 +10,14 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * OrderRepository::getQueryBuilderBySearchDataTest test cases.
+ * OrderRepository::getQueryBuilderBySearchDataForAdminTest test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
+class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
     protected $Customer;
     protected $Order;
@@ -32,12 +33,21 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->Order = $this->createOrder($this->Customer);
         $this->Order1 = $this->createOrder($this->Customer);
-        $this->Order2 = $this->createOrder($this->createCustomer());
+        $this->Order2 = $this->createOrder($this->createCustomer('test@example.com'));
+        // 新規受付にしておく
+        $NewStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $this->Order1
+            ->setOrderStatus($NewStatus)
+            ->setOrderDate(new \DateTime());
+        $this->Order2
+            ->setOrderStatus($NewStatus)
+            ->setOrderDate(new \DateTime());
+        $this->app['orm.em']->flush();
     }
 
     public function scenario()
     {
-        $this->Results = $this->app['eccube.repository.order']->getQueryBuilderBySearchData($this->searchData)
+        $this->Results = $this->app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($this->searchData)
             ->getQuery()
             ->getResult();
     }
@@ -49,10 +59,58 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
         $this->scenario();
 
-        $this->expected = 3;
+        $this->expected = 2;
         $this->actual = count($this->Results);
         $this->verify();
 
+    }
+
+    public function testMultiWithName()
+    {
+        $this->Order2
+            ->setName01('立方')
+            ->setName02('隊長');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => '立方'
+        );
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testMultiWithKana()
+    {
+        $this->Order2
+            ->setKana01('リッポウ')
+            ->setKana02('タイチョウ');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => 'タイチョウ'
+        );
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testMultiWithID()
+    {
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => $this->Order2->getId()
+        );
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testOrderIdEnd()
@@ -62,7 +120,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
         $this->scenario();
 
-        $this->expected = 1;
+        // $this->Order は購入処理中なので 0 件になる
+        $this->expected = 0;
         $this->actual = count($this->Results);
         $this->verify();
     }
@@ -86,12 +145,17 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testName()
     {
+        $this->Order2
+            ->setName01('立方')
+            ->setName02('隊長');
+        $this->app['orm.em']->flush();
+
         $this->searchData = array(
-            'name' => $this->Customer->getName01()
+            'name' => '立方隊長'
         );
         $this->scenario();
 
-        $this->expected = 2;
+        $this->expected = 1;
         $this->actual = count($this->Results);
         $this->verify();
     }
@@ -116,22 +180,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     public function testEmail()
     {
         $this->searchData = array(
-            'email' => $this->Customer->getEmail()
-        );
-        $this->scenario();
-
-        $this->expected = 2;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testTel01()
-    {
-        $this->Order1->setTel01('090');
-        $this->app['orm.em']->flush();
-
-        $this->searchData = array(
-            'tel01' => '090'
+            'email' => 'test@example.com'
         );
         $this->scenario();
 
@@ -140,28 +189,16 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testTel02()
+    public function testTel()
     {
-        $this->Order1->setTel02('090');
+        $this->Order1
+            ->setTel01('090')
+            ->setTel02('9999')
+            ->setTel03('8888');
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'tel02' => '090'
-        );
-        $this->scenario();
-
-        $this->expected = 1;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
-    public function testTel03()
-    {
-        $this->Order1->setTel03('090');
-        $this->app['orm.em']->flush();
-
-        $this->searchData = array(
-            'tel03' => '090'
+            'tel' => '090'
         );
         $this->scenario();
 
@@ -204,12 +241,26 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     {
         $Male = $this->app['eccube.repository.master.sex']->find(1);
         $Female = $this->app['eccube.repository.master.sex']->find(2);
-        $this->Customer->setSex($Male);
+        $this->Order1->setSex($Male);
         $this->app['orm.em']->flush();
 
+        $Sexs = new ArrayCollection(array($Male, $Female));
         $this->searchData = array(
-            'sex' => array($Male, $Female)
+            'sex' => $Sexs
         );
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testOrderDateStart()
+    {
+        $this->searchData = array(
+            'order_date_start' => new \DateTime('- 1 days')
+        );
+
         $this->scenario();
 
         $this->expected = 2;
@@ -217,30 +268,15 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testOrderDateStart()
-    {
-        // FIXME create_date を検索している
-        $this->searchData = array(
-            'order_date_start' => new \DateTime('- 1 days')
-        );
-
-        $this->scenario();
-
-        $this->expected = 3;
-        $this->actual = count($this->Results);
-        $this->verify();
-    }
-
     public function testOrderDateEnd()
     {
-        // FIXME create_date を検索している
         $this->searchData = array(
             'order_date_end' => new \DateTime('+ 1 days')
         );
 
         $this->scenario();
 
-        $this->expected = 3;
+        $this->expected = 2;
         $this->actual = count($this->Results);
         $this->verify();
     }
@@ -253,7 +289,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->expected = 3;
+        $this->expected = 2;
         $this->actual = count($this->Results);
         $this->verify();
     }
@@ -266,7 +302,69 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->expected = 3;
+        $this->expected = 2;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testPaymentDateStart()
+    {
+        $Status = $this->app['eccube.repository.order_status']->find(6);
+        $this->app['eccube.repository.order']->changeStatus($this->Order2->getId(), $Status);
+
+        $this->searchData = array(
+            'payment_date_start' => new \DateTime('- 1 days')
+        );
+
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testPaymentDateEnd()
+    {
+        $Status = $this->app['eccube.repository.order_status']->find(6);
+        $this->app['eccube.repository.order']->changeStatus($this->Order2->getId(), $Status);
+        $this->searchData = array(
+            'payment_date_end' => new \DateTime('+ 1 days')
+        );
+
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testCommitDateStart()
+    {
+        $Status = $this->app['eccube.repository.order_status']->find(5);
+        $this->app['eccube.repository.order']->changeStatus($this->Order2->getId(), $Status);
+
+        $this->searchData = array(
+            'commit_date_start' => new \DateTime('- 1 days')
+        );
+
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testCommitDateEnd()
+    {
+        $Status = $this->app['eccube.repository.order_status']->find(5);
+        $this->app['eccube.repository.order']->changeStatus($this->Order2->getId(), $Status);
+        $this->searchData = array(
+            'commit_date_end' => new \DateTime('+ 1 days')
+        );
+
+        $this->scenario();
+
+        $this->expected = 1;
         $this->actual = count($this->Results);
         $this->verify();
     }
@@ -303,7 +401,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->expected = 2;
+        $this->expected = 1;
         $this->actual = count($this->Results);
         $this->verify();
     }
