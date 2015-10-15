@@ -34,6 +34,11 @@ form.type.numeric.invalid: 数字で入力してください。
 form.member.repeated.confirm: 確認のためもう一度入力してください
 form.type.graph.invalid: 半角英数字で入力してください。
 
+
+form.type.name.firstname.nothasspace: お名前(名)にスペース、タブ、改行は含めないで下さい。
+form.type.name.lastname.nothasspace: お名前(性)にスペース、タブ、改行は含めないで下さい。
+form.type.customer.company.nothasspace: 会社名にスペース、タブ、改行は含めないで下さい。
+
 cart.over.stock: |-
     選択された商品の在庫が不足しております。
     一度に在庫数を超える購入はできません。
