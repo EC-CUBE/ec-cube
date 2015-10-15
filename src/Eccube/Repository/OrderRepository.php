@@ -174,7 +174,7 @@ class OrderRepository extends EntityRepository
             }
 
             $qb
-                ->andWhere($qb->expr()->in('c.sex', ':sexs'))
+                ->andWhere($qb->expr()->in('c.Sex', ':sexs'))
                 ->setParameter('sexs', $sexs);
         }
 
