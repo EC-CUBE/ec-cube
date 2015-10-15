@@ -55,7 +55,7 @@ class CustomerType extends AbstractType
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Length(array('max' => $app['config']['stext_len'])),
-                    ),
+                    )
                 ),
             ))
             ->add('kana', 'name', array(
@@ -75,6 +75,7 @@ class CustomerType extends AbstractType
             ->add('company_name', 'text', array(
                 'required' => false,
                 'constraints' => array(
+                        new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $app['config']['stext_len'],
                     ))

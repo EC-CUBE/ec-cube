@@ -44,6 +44,7 @@ class EntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            /*
             ->add('name', 'name', array(
                 'required' => true,
             ))
@@ -66,6 +67,7 @@ class EntryType extends AbstractType
             ->add('fax', 'tel', array(
                 'required' => false,
             ))
+            */
             ->add('email', 'repeated_email')
             ->add('password', 'repeated_password')
             ->add('birth', 'birthday', array(
