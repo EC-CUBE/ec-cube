@@ -178,6 +178,7 @@ abstract class EccubeTestCase extends WebTestCase
             ->setDescriptionDetail($faker->text());
 
         $this->app['orm.em']->persist($Product);
+        $this->app['orm.em']->flush();
 
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
