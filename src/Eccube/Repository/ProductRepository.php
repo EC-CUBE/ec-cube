@@ -121,8 +121,8 @@ class ProductRepository extends EntityRepository
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
             $qb
                 ->innerJoin('p.ProductClasses', 'pc')
-                ->groupBy('p.id')
-                ->orderBy('pc.price02', 'DESC');
+                ->orderBy('pc.price02', 'DESC')
+                ->groupBy('p.id');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
