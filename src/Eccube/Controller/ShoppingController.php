@@ -162,7 +162,6 @@ class ShoppingController extends AbstractController
                     if (!$check) {
                         $em->getConnection()->rollback();
                         $em->close();
-                        throw new \Exception(); 
 
                         $app['session']->getFlashBag()->add('eccube.shopping_error','選択された商品の在庫が不足しております。');
                         $app['session']->getFlashBag()->add('eccube.shopping_error','該当商品をカートから削除しました。');
