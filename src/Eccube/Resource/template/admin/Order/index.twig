@@ -310,7 +310,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </table>
                     {% if pagination.totalItemCount > 0 %}
                         {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
-                        {% endif %}
+                    {% endif %}
                 </div>
                 </form>
             </div><!-- /.box-body --> 

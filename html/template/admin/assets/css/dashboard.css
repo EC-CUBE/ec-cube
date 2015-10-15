@@ -1715,6 +1715,9 @@ dd.form-group .errormsg {
 .table_list .icon_edit .dropdown-toggle {
     padding: 8px;
 }
+.table_list .btn_area {
+    margin-top: 12px;
+}
 
 /* accordion dropdown */
 

@@ -34,7 +34,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     支払方法
                 </h3>
             </div><!-- /.box-header -->
-            <div class="box-body table_list table-responsive with-border">
+            <div class="box-body">
+            <div class="table_list table-responsive with-border">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -100,11 +101,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
-                    <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">支払方法を新規入力</a>
-                    </div>
+                <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
+                <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">支払方法を新規入力</a>
                 </div>
+            </div>
             </div><!-- /.box-body -->
         </div><!-- /.col -->
     </div>
