@@ -51,9 +51,11 @@ class ProductRepositoryTest extends EccubeTestCase
         return $ref;
     }
 
+    /*
+    *   @see https://github.com/EC-CUBE/ec-cube/issue/954
+    */
     public function testGetQueryBuilderBySearchData()
     {
-        //---------------------#670に対するテスト---------------------
         //表示件数:15件 / ソート:価格
         $searchData = $this->createSearchDatas();
 
@@ -61,9 +63,13 @@ class ProductRepositoryTest extends EccubeTestCase
 
         //ページネートの件数が正しく取得出来ているか検証
         $cq = $this->app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
-        $custom_res = $cq->getQuery()->getResult();
+        $pagination = $app['paginator']()->paginate(
+            $qb,
+            !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
+            $searchData['disp_number']->getId()
+        );
+        $items = $pagination->getItems();
 
-        $this->assertEquals(count($actual),count($custom_res));
-        //---------------------#670に対するテスト---------------------
+        $this->assertEquals(count($actual),count($items));
     }
 }
