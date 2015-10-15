@@ -6,3 +6,4 @@ mail:
     password: ${MAIL_PASS}
     encryption: null
     auth_mode: null
+    charset_iso_2022_jp: false
