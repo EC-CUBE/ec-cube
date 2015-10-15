@@ -24,9 +24,19 @@
 
 namespace Eccube\Form\Type\Front;
 
+/*
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+*/
+
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryType extends AbstractType
@@ -44,7 +54,6 @@ class EntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            /*
             ->add('name', 'name', array(
                 'required' => true,
             ))
@@ -67,7 +76,6 @@ class EntryType extends AbstractType
             ->add('fax', 'tel', array(
                 'required' => false,
             ))
-            */
             ->add('email', 'repeated_email')
             ->add('password', 'repeated_password')
             ->add('birth', 'birthday', array(
