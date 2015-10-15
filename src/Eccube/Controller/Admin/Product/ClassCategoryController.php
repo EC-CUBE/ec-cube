@@ -91,12 +91,23 @@ class ClassCategoryController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $status = $app['eccube.repository.class_category']->delete($TargetClassCategory);
-
-        if ($status === true) {
-            $app->addSuccess('admin.class_category.delete.complete', 'admin');
+        $num = $app['orm.em']->createQueryBuilder()
+            ->select('count(p.id)')
+            ->from("Eccube\\Entity\\ProductClass",'p')
+            ->where('p.ClassCategory1 = :id OR p.ClassCategory2 = :id')
+            ->setParameter('id',$id)
+            ->getQuery()
+            ->getSingleScalarResult();
+        if ($num > 0) {
+            $app->addError('admin.class_category.delete.hasproduct', 'admin');
         } else {
-            $app->addError('admin.class_category.delete.error', 'admin');
+            $status = $app['eccube.repository.class_category']->delete($TargetClassCategory);
+
+            if ($status === true) {
+                $app->addSuccess('admin.class_category.delete.complete', 'admin');
+            } else {
+                $app->addError('admin.class_category.delete.error', 'admin');
+            }
         }
 
         return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
