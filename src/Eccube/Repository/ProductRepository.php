@@ -88,6 +88,7 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('p')
+            ->select('p')
             ->distinct('p.id')
             ->andWhere('p.Status = 1');
 
@@ -122,6 +123,7 @@ class ProductRepository extends EntityRepository
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
             $qb
                 ->innerJoin('p.ProductClasses', 'pc')
+                ->addSelect('pc')
                 ->orderBy('pc.price02', 'DESC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
@@ -134,8 +136,10 @@ class ProductRepository extends EntityRepository
                     ->leftJoin('pct.Category', 'c');
             }
             $qb
+                ->addSelect('pct')
+                ->addSelect('c')
                 ->orderBy('c.rank', 'DESC')
-                //->addOrderBy('pct.rank', 'DESC')
+                ->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
         }
 
