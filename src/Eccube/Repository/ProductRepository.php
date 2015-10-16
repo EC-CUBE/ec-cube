@@ -88,7 +88,6 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('p,pc')
             ->distinct('p.id')
             ->andWhere('p.Status = 1');
 
