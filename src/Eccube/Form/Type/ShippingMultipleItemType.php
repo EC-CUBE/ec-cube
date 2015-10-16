@@ -115,8 +115,13 @@ class ShippingMultipleItemType extends AbstractType
                 }
 
                 $quantity = 0;
-                foreach ($data->getShipmentItems() as $ShipmentItem) {
-                    $quantity += $ShipmentItem->getQuantity();
+                $Order = $data->getOrder();
+                $shippings = $Order->getShippings();
+                if (count($shippings) > 1) {
+                    // お届け先を複数に分割していた場合、登録されている個数を設定
+                    foreach ($data->getShipmentItems() as $ShipmentItem) {
+                        $quantity += $ShipmentItem->getQuantity();
+                    }
                 }
 
                 $form['quantity']->setData($quantity);
