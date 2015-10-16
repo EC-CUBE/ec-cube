@@ -6,7 +6,13 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductCategory;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductImage;
+use Eccube\Entity\ProductStock;
 use Eccube\Entity\Master\CustomerStatus;
 use Silex\WebTestCase;
 use Faker\Factory as Faker;
@@ -120,6 +126,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Customer オブジェクトを生成して返す.
      *
+     * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
      * @return \Eccube\Entity\Customer
      */
     public function createCustomer($email = null)
@@ -142,6 +149,101 @@ abstract class EccubeTestCase extends WebTestCase
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush();
         return $Customer;
+    }
+
+    /**
+     * Product オブジェクトを生成して返す.
+     *
+     * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
+     * @param integer $product_class_num 商品規格の生成数
+     * @return \Eccube\Entity\Product
+     */
+    public function createProduct($product_name = null, $product_class_num = 3)
+    {
+        $faker = $this->getFaker();
+        $Member = $this->app['eccube.repository.member']->find(2);
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $Product = new Product();
+        if (is_null($product_name)) {
+            $product_name = $faker->word;
+        }
+
+        $Product
+            ->setName($product_name)
+            ->setCreator($Member)
+            ->setStatus($Disp)
+            ->setDelFlg(Constant::DISABLED)
+            ->setDescriptionList($faker->paragraph())
+            ->setDescriptionDetail($faker->text());
+
+        $this->app['orm.em']->persist($Product);
+        $this->app['orm.em']->flush();
+
+        for ($i = 0; $i < 3; $i++) {
+            $ProductImage = new ProductImage();
+            $ProductImage
+                ->setCreator($Member)
+                ->setFileName($faker->word.'.jpg')
+                ->setRank($i)
+                ->setProduct($Product);
+            $this->app['orm.em']->persist($ProductImage);
+            $Product->addProductImage($ProductImage);
+        }
+
+        for ($i = 0; $i < $product_class_num; $i++) {
+            $ProductStock = new ProductStock();
+            $ProductStock
+                ->setCreator($Member)
+                ->setStock($faker->randomNumber());
+            $this->app['orm.em']->persist($ProductStock);
+            $ProductClass = new ProductClass();
+            $ProductClass
+                ->setCreator($Member)
+                ->setProductStock($ProductStock)
+                ->setProduct($Product)
+                ->setProductType($ProductType)
+                ->setStockUnlimited(false)
+                ->setPrice02($faker->randomNumber())
+                ->setDelFlg(Constant::DISABLED);
+            $this->app['orm.em']->persist($ProductClass);
+            $Product->addProductClass($ProductClass);
+        }
+
+        $Categories = $this->app['eccube.repository.category']->findAll();
+        $i = 0;
+        foreach ($Categories as $Category) {
+            $ProductCategory = new ProductCategory();
+            $ProductCategory
+                ->setCategory($Category)
+                ->setProduct($Product)
+                ->setCategoryId($Category->getId())
+                ->setProductId($Product->getId())
+                ->setRank($i);
+            $this->app['orm.em']->persist($ProductCategory);
+            $Product->addProductCategory($ProductCategory);
+            $i++;
+        }
+
+        $this->app['orm.em']->flush();
+    }
+
+    /**
+     * テーブルのデータを全て削除する.
+     *
+     * このメソッドは、参照制約の関係で、 Doctrine ORM ではデータ削除できない場合に使用する.
+     * 通常は、 EntityManager::remove() を使用して削除すること.
+     *
+     * @param array $tables 削除対象のテーブル名の配列
+     */
+    public function deleteAllRows(array $tables)
+    {
+        $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
+        foreach ($tables as $table) {
+            $sql = 'DELETE FROM '.$table;
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+        }
     }
 
     /**
