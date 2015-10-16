@@ -135,7 +135,7 @@ normal_image_height: 260
 normal_image_width: 260
 normal_subimage_height: 200
 normal_subimage_width: 200
-nostock_hidden: false  #deprecated 3.1 delete. use dtb_base_info.nostock_hidden
+nostock_hidden: false
 option_class_regist: 1
 option_deliv_fee: 1
 option_favorite_product: 1

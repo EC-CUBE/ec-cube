@@ -25,7 +25,6 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -42,10 +41,8 @@ class ProductController
 
     public function index(Application $app, Request $request)
     {
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-
         // Doctrine SQLFilter
-        if ($BaseInfo->getNostockHidden() === Constant::ENABLED) {
+        if ($app['config']['nostock_hidden']) {
             $app['orm.em']->getFilters()->enable('nostock_hidden');
         }
 
@@ -140,17 +137,13 @@ class ProductController
 
     public function detail(Application $app, Request $request, $id)
     {
-        $BaseInfo = $app['eccube.repository.base_info']->get();
-        if ($BaseInfo->getNostockHidden() === Constant::ENABLED) {
+        if ($app['config']['nostock_hidden']) {
             $app['orm.em']->getFilters()->enable('nostock_hidden');
         }
 
         /* @var $Product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->get($id);
         if (!$request->getSession()->has('_security_admin') && $Product->getStatus()->getId() !== 1) {
-            throw new NotFoundHttpException();
-        }
-        if (count($Product->getProductClasses()) < 1) {
             throw new NotFoundHttpException();
         }
 
