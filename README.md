@@ -66,7 +66,6 @@ $allow = array(
 ### 開発の最初の1歩の参考に
 
 [EC-CUBE3のトピック@Qiita](http://qiita.com/tags/ec-cube3)
-
 ### 開発への参加
 
 EC-CUBE3の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。
