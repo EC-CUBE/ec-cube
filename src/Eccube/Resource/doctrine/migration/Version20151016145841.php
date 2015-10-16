@@ -16,7 +16,9 @@ class Version20151016145841 extends AbstractMigration
     public function up(Schema $schema)
     {
         if ($this->connection->getDatabasePlatform()->getName() == "postgresql") {
-            $this->addSql("SELECT setval('dtb_base_info_id_seq', 2);");
+            if ($schema->hasSequence('dtb_base_info_id_seq')) {
+                $this->addSql("SELECT setval('dtb_base_info_id_seq', 2);");
+            }
         }
     }
 
@@ -26,6 +28,5 @@ class Version20151016145841 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }
