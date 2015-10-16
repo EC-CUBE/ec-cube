@@ -33,7 +33,7 @@ $allow = array(
     'fe80::1',
     '::1',
 );
-/*
+
 if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     || !in_array(@$_SERVER['REMOTE_ADDR'], $allow)
@@ -41,7 +41,6 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     header('HTTP/1.0 403 Forbidden');
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
-*/
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -71,6 +70,8 @@ $app['config'] = $app->share(function () use ($conf) {
 
     return array_replace_recursive($conf, $confarray);
 });
+// config_dev.yml‚Émail‚ªİ’è‚³‚ê‚Ä‚¢‚½ê‡Aconfig_dev.yml‚Ìİ’è“à—e‚ğ”½‰f
+$app['swiftmailer.options'] = $app['config']['mail'];
 
 // Mail
 if (isset($app['config']['delivery_address'])) {
