@@ -50,6 +50,8 @@ class CustomerEditController extends AbstractController
         } else {
             $Customer = $app['eccube.repository.customer']->newCustomer();
             $CustomerAddress = new \Eccube\Entity\CustomerAddress();
+            $Customer->setBuyTimes(0);
+            $Customer->setBuyTotal(0);
         }
 
         // 会員登録フォーム
