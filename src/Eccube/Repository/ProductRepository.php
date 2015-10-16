@@ -135,7 +135,7 @@ class ProductRepository extends EntityRepository
             }
             $qb
                 ->orderBy('c.rank', 'DESC')
-                ->addOrderBy('pct.rank', 'DESC')
+                //->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
         }
 
