@@ -54,6 +54,13 @@ abstract class EccubeTestCase extends WebTestCase
         parent::tearDown();
         $this->app['orm.em']->getConnection()->rollback();
         $this->app['orm.em']->getConnection()->close();
+        $refl = new \ReflectionObject($this);
+        foreach ($refl->getProperties() as $prop) {
+            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
+                $prop->setAccessible(true);
+                $prop->setValue($this, null);
+            }
+        }
     }
 
     /**

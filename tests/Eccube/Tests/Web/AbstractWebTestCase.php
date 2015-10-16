@@ -53,8 +53,13 @@ abstract class AbstractWebTestCase extends WebTestCase
     {
         parent::tearDown();
         $this->app['orm.em']->getConnection()->close();
-        $this->app = null;
-        $this->client = null;
+        $refl = new \ReflectionObject($this);
+        foreach ($refl->getProperties() as $prop) {
+            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
+                $prop->setAccessible(true);
+                $prop->setValue($this, null);
+            }
+        }
     }
 
     public static function tearDownAfterClass()
