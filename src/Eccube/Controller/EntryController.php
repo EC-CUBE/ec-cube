@@ -50,7 +50,6 @@ class EntryController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
-
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 

@@ -24,19 +24,9 @@
 
 namespace Eccube\Form\Type\Front;
 
-/*
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-*/
-
-
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryType extends AbstractType
@@ -66,10 +56,6 @@ class EntryType extends AbstractType
                     new Assert\Length(array(
                         'max' => $this->config['stext_len'],
                     )),
-                    new Assert\Regex(array(
-                        'pattern' => '/^\S+$/',
-                        'message' => 'form.type.customer.company.nothasspace',
-                    ))
                 ),
             ))
             ->add('zip', 'zip')

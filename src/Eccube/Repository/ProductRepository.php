@@ -119,14 +119,12 @@ class ProductRepository extends EntityRepository
         // Order By
         // 価格順
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
-            $qb
-                ->innerJoin('p.ProductClasses', 'pc')
-                ->groupBy('p.id');
-                //->orderBy('pc.price02', 'DESC');
+            $qb->innerJoin('p.ProductClasses', 'pc');
+            $qb->orderBy('pc.price02', 'DESC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
-            $qb->orderBy('p.create_date', 'DESC');
+            $qb->orderBy('pc.create_date', 'DESC');
         } else {
             if ($categoryJoin == false) {
                 $qb
@@ -138,15 +136,6 @@ class ProductRepository extends EntityRepository
                 ->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
         }
-
-        $query = $qb->getQuery();
-
-        $res = $query->getResult();
-
-        echo '<pre>';
-        var_dump($res);
-        echo '</pre>';
-        exit();
 
         return $qb;
     }
