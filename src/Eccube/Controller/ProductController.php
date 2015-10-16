@@ -68,9 +68,14 @@ class ProductController
 
         // paginator
         $searchData = $searchForm->getData();
-        $pr_res = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+        $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+
+        //クエリ実行
+        $query = $qb->getQuery();
+        $res = $query->getResult();
+
         $pagination = $app['paginator']()->paginate(
-            $pr_res,
+            $res,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             $searchData['disp_number']->getId()
         );

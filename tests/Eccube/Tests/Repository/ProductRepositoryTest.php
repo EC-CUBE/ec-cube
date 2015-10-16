@@ -115,8 +115,12 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 
         //ページネートの件数が正しく取得出来ているか検証
         $cq = $this->app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+        //クエリ実行
+        $query = $cq->getQuery();
+        $res = $query->getResult();
+
         $pagination = $this->app['paginator']()->paginate(
-            $cq,
+            $res,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             $searchData['disp_number']->getId()
         );

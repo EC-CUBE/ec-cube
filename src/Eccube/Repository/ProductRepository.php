@@ -140,12 +140,7 @@ class ProductRepository extends EntityRepository
                 ->addOrderBy('p.id', 'DESC');
         }
 
-        //クエリ実行
-        $query = $qb->getQuery();
-        $res = $query->getResult();
-
-        //Productオブジェクトを返却
-        return $res;
+        return $qb;
     }
 
     /**
