@@ -76,7 +76,7 @@ class EntryController extends AbstractController
                         );
 
                         $Customer->setSecretKey(
-                            $app['eccube.repository.customer']->getUniqueSecretKey()
+                            $app['eccube.repository.customer']->getUniqueSecretKey($app)
                         );
 
                         $CustomerAddress = new \Eccube\Entity\CustomerAddress();

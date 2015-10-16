@@ -65,7 +65,7 @@ class CustomerEditController extends AbstractController
                         $app['eccube.repository.customer']->createSalt(5)
                     );
                     $Customer->setSecretKey(
-                        $app['eccube.repository.customer']->getUniqueSecretKey()
+                        $app['eccube.repository.customer']->getUniqueSecretKey($app)
                     );
 
                     $CustomerAddress->setName01($Customer->getName01())
