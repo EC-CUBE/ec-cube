@@ -46,6 +46,9 @@ abstract class AbstractWebTestCase extends WebTestCase
         }
     }
 
+    /**
+     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
+     */
     public function tearDown()
     {
         parent::tearDown();

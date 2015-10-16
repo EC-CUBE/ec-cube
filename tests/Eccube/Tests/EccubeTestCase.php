@@ -46,6 +46,8 @@ abstract class EccubeTestCase extends WebTestCase
 
     /**
      * トランザクションをロールバックする.
+     *
+     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
      */
     public function tearDown()
     {
