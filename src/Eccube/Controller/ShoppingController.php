@@ -163,6 +163,8 @@ class ShoppingController extends AbstractController
                         $em->getConnection()->rollback();
                         $em->close();
 
+                        $app['session']->getFlashBag()->add('eccube.shopping_error','選択された商品の在庫が不足しております。');
+                        $app['session']->getFlashBag()->add('eccube.shopping_error','該当商品をカートから削除しました。');
                         return $app->redirect($app->url('shopping_error'));
                     }
 
@@ -186,6 +188,8 @@ class ShoppingController extends AbstractController
 
                     $app->log($e);
 
+                    $app['session']->getFlashBag()->add('eccube.shopping_error','購入処理でシステムエラーが発生しました。');
+                    $app['session']->getFlashBag()->add('eccube.shopping_error','大変お手数ですが、サイト管理者までご連絡ください。');
                     return $app->redirect($app->url('shopping_error'));
                 }
 
