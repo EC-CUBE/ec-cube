@@ -56,7 +56,7 @@ class ShippingRepositoryTest extends EccubeTestCase
             $Shipping
                 ->setName01($faker->lastName)
                 ->setName02($faker->firstName)
-                ->setKana01('セイ-'.$i);
+                ->setKana01('セイ');
             $this->Order->addShipping($Shipping);
             $Shipping->setOrder($this->Order);
             $this->app['orm.em']->persist($Shipping);
@@ -93,7 +93,7 @@ class ShippingRepositoryTest extends EccubeTestCase
         $this->verify();
 
         for ($i = 0; $i < 3; $i++) {
-            $this->expected = 'セイ-'.$i;
+            $this->expected = 'セイ';
             $this->actual = $Shippings[$i]->getKana01();
             $this->verify();
         }
