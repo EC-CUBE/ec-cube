@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
+use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -177,6 +178,8 @@ class PluginController extends AbstractController
 
                     $app->addSuccess('admin.plugin.update.complete', 'admin');
 
+                    Cache::clear($app, false);
+
                     return $app->redirect($app->url('admin_store_plugin'));
 
                 } catch (PluginException $e) {
@@ -187,7 +190,7 @@ class PluginController extends AbstractController
                     $message = $e->getMessage();
                 }
             } else {
-                $errors = $form->getErrors();
+                $errors = $form->getErrors(true);
                 foreach ($errors as $error) {
                     $message = $error->getMessage();
                 }
@@ -545,6 +548,9 @@ class PluginController extends AbstractController
 
                                 $service->update($Plugin, $tmpDir . '/' . $tmpFile);
                                 $app->addSuccess('admin.plugin.update.complete', 'admin');
+
+                                Cache::clear($app, false);
+
                             }
 
                             $fs = new Filesystem();
