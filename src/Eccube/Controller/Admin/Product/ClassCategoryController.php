@@ -91,10 +91,9 @@ class ClassCategoryController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $num = $app['orm.em']->createQueryBuilder()
-            ->select('count(p.id)')
-            ->from("Eccube\\Entity\\ProductClass",'p')
-            ->where('p.ClassCategory1 = :id OR p.ClassCategory2 = :id')
+        $num = $app['eccube.repository.product_class']->createQueryBuilder('pc')
+            ->select('count(pc.id)')
+            ->where('pc.ClassCategory1 = :id OR pc.ClassCategory2 = :id')
             ->setParameter('id',$id)
             ->getQuery()
             ->getSingleScalarResult();
