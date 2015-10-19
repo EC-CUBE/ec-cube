@@ -108,6 +108,8 @@ class CustomerEditController extends AbstractController
                 return $app->redirect($app->url('admin_customer_edit', array(
                     'id' => $Customer->getId(),
                 )));
+            } else { 
+                $app->addError('admin.customer.save.failed','admin');
             }
         }
 

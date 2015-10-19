@@ -115,19 +115,19 @@ class TelType extends AbstractType
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?
-                    new Assert\Length(array('max' => $this->config['tel_len'])),
+                    new Assert\Length(array('max' => $this->config['tel_len'], 'min' => $this->config['tel_len_min'])),
                 ),
             ),
             'tel02_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->config['tel_len'])),
+                    new Assert\Length(array('max' => $this->config['tel_len'], 'min' => $this->config['tel_len_min'])),
                 ),
             ),
             'tel03_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                    new Assert\Length(array('max' => $this->config['tel_len'])),
+                    new Assert\Length(array('max' => $this->config['tel_len'], 'min' => $this->config['tel_len_min'])),
                 ),
             ),
             'tel01_name' => '',

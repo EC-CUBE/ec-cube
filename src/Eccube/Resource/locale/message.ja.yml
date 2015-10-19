@@ -101,6 +101,7 @@ admin.product.csv_import.save.complete: 商品登録CSVファイルをアップ�
 admin.category.csv_import.save.complete: カテゴリ登録CSVファイルをアップロードしました。
 
 admin.customer.save.complete: 会員情報を保存しました。
+admin.customer.save.failed: 会員情報を保存できませんでした。
 admin.customer.delete.complete: 会員情報を削除しました。
 admin.customer.resend.complete: 仮会員登録メールを送信しました。
 
