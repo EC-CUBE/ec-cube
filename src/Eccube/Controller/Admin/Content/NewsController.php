@@ -60,7 +60,7 @@ class NewsController extends AbstractController
      */
     public function edit(Application $app, Request $request, $id = null)
     {
-        if ($id) {
+        if (!is_null($id)) {
             $News = $app['eccube.repository.news']->find($id);
             if (!$News) {
                 throw new NotFoundHttpException();
@@ -84,6 +84,7 @@ class NewsController extends AbstractController
                 $status = $app['eccube.repository.news']->save($News);
                 if ($status) {
                     $app->addSuccess('admin.news.save.complete', 'admin');
+
                     return $app->redirect($app->url('admin_content'));
                 } else {
                     $app->addError('admin.news.save.error', 'admin');
