@@ -61,7 +61,7 @@ function changeAction(action) {
                                     {% for News in NewsList %}
                                         <tr>
                                             <td>{{ loop.index }}</td>
-                                            <td>{{ News.date|date("Y.m.d") }}</td>
+                                            <td>{{ News.date|date("Y/m/d") }}</td>
                                             <td>{{ News.title }}</td>
                                             <td class="icon_edit">
                                                 <div class="dropdown">
