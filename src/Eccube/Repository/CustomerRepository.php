@@ -330,7 +330,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      * @param $app
      * @return string
      */
-    public function getUniqueResetKey()
+    public function getUniqueResetKey($app)
     {
         $unique = Str::random(32);
         $Customer = $app['eccube.repository.customer']->findBy(array(
@@ -339,7 +339,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         if (count($Customer) == 0) {
             return $unique;
         } else {
-            return $this->getUniqueResetKey();
+            return $this->getUniqueResetKey($app);
         }
     }
 
