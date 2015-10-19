@@ -43,7 +43,7 @@ class NewsController extends AbstractController
 
         $form = $app->form()->getForm();
 
-        return $app->render('Content/index.twig', array(
+        return $app->render('Content/news.twig', array(
             'form' => $form->createView(),
             'NewsList' => $NewsList,
         ));
@@ -91,7 +91,7 @@ class NewsController extends AbstractController
             }
         }
 
-        return $app->render('Content/edit.twig', array(
+        return $app->render('Content/news_edit.twig', array(
             'form' => $form->createView(),
             'News' => $News,
         ));
