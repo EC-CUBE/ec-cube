@@ -43,7 +43,8 @@ class ContentsController extends NewsController
     }
 
     /**
-     * @param Application $app
+     * (non-PHPdoc)
+     * @see \Eccube\Controller\Admin\Content\NewsController::index()
      * @deprecated 3.1 delete. use NewsController
      */
     public function index(Application $app)
@@ -52,9 +53,8 @@ class ContentsController extends NewsController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
-     * @param integer $id
+     * (non-PHPdoc)
+     * @see \Eccube\Controller\Admin\Content\NewsController::edit()
      * @deprecated 3.1 delete. use NewsController
      */
     public function edit(Application $app, Request $request, $id = null)
@@ -63,9 +63,8 @@ class ContentsController extends NewsController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
-     * @param integer $id
+     * (non-PHPdoc)
+     * @see \Eccube\Controller\Admin\Content\NewsController::up()
      * @deprecated 3.1 delete. use NewsController
      */
     public function up(Application $app, Request $request, $id)
@@ -74,9 +73,8 @@ class ContentsController extends NewsController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
-     * @param integer $id
+     * (non-PHPdoc)
+     * @see \Eccube\Controller\Admin\Content\NewsController::down()
      * @deprecated 3.1 delete. use NewsController
      */
     public function down(Application $app, Request $request, $id)
@@ -85,9 +83,8 @@ class ContentsController extends NewsController
     }
 
     /**
-     * @param Application $app
-     * @param Request $request
-     * @param integer $id
+     * (non-PHPdoc)
+     * @see \Eccube\Controller\Admin\Content\NewsController::delete()
      * @deprecated 3.1 delete. use NewsController
      */
     public function delete(Application $app, Request $request, $id)
