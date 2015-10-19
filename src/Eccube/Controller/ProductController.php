@@ -70,6 +70,11 @@ class ProductController
         $searchData = $searchForm->getData();
         // 情報取得クエリオブジェクト
         $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+        echo '<pre>';
+        var_dump(count($qb->setFirstResult( 0 )->setMaxResults( 15 )->getQuery()->getResult()));
+        echo '</pre>';
+        exit();
+
         //$counter_q = clone $qb;
         /*
         $counter_q->$qb->getQuery()->resetDQLPart('select');
