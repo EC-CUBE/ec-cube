@@ -129,6 +129,52 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     }
 
+    public function testMultiWithNameHasSpaceEn()
+    {
+        $this->Customer->setName01('姓');
+        $this->Customer->setName02('名');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => '姓 名'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = '姓';
+        $this->actual = $this->Results[0]->getName01();
+        $this->verify();
+        $this->expected = '名';
+        $this->actual = $this->Results[0]->getName02();
+        $this->verify();
+
+    }
+
+    public function testMultiWithNameHasSpaceJa()
+    {
+        $this->Customer->setName01('姓');
+        $this->Customer->setName02('名');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => '姓　名'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = '姓';
+        $this->actual = $this->Results[0]->getName01();
+        $this->verify();
+        $this->expected = '名';
+        $this->actual = $this->Results[0]->getName02();
+        $this->verify();
+
+    }
+
     public function testMultiWithKana()
     {
         $this->Customer->setKana01('セイ')
@@ -143,6 +189,50 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->assertEquals(1, count($this->Results));
 
+        $this->expected = 'メイ';
+        $this->actual = $this->Results[0]->getKana02();
+        $this->verify();
+    }
+
+    public function testMultiWithKanaHasWhiteSpaceEn()
+    {
+        $this->Customer->setKana01('セイ')
+            ->setKana02('メイ');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => 'セイ メイ'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = 'セイ';
+        $this->actual = $this->Results[0]->getKana01();
+        $this->verify();
+        $this->expected = 'メイ';
+        $this->actual = $this->Results[0]->getKana02();
+        $this->verify();
+    }
+
+    public function testMultiWithKanaHasWhiteSpaceJa()
+    {
+        $this->Customer->setKana01('セイ')
+            ->setKana02('メイ');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => 'セイ　メイ'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = 'セイ';
+        $this->actual = $this->Results[0]->getKana01();
+        $this->verify();
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
         $this->verify();
