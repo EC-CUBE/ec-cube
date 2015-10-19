@@ -594,7 +594,6 @@
                 $(this).attr('disabled',false);
             });
             $(".loadmask").addClass('is-visible');
-            $(this).parents('form').submit();
         });
     });
 })(window);

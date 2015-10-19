@@ -2104,6 +2104,7 @@ margin-top: 5px;
 .loadmask {
     z-index: 1000;
     cursor: default;
+    background-color: rgba(0,0,0, 0.2);
 }
 .overlay.is-visible, .loadmask.is-visible {
     opacity: 1;
