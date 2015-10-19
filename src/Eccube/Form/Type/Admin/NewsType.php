@@ -51,6 +51,9 @@ class NewsType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->add('title', 'textarea', array(
                 'label' => 'タイトル',
