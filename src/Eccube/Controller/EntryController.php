@@ -73,14 +73,11 @@ class EntryController extends AbstractController
                         );
 
                         $Customer->setPassword(
-                            $app['eccube.repository.customer']
-                                ->encryptPassword($app, $Customer)
+                            $app['eccube.repository.customer']->encryptPassword($app, $Customer)
                         );
 
                         $Customer->setSecretKey(
-                            $app['orm.em']
-                                ->getRepository('Eccube\Entity\Customer')
-                                ->getUniqueSecretKey($app)
+                            $app['eccube.repository.customer']->getUniqueSecretKey($app)
                         );
 
                         $CustomerAddress = new \Eccube\Entity\CustomerAddress();
