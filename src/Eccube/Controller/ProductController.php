@@ -68,14 +68,31 @@ class ProductController
 
         // paginator
         $searchData = $searchForm->getData();
+        // 情報取得クエリオブジェクト
         $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+        //$counter_q = clone $qb;
+        /*
+        $counter_q->$qb->getQuery()->resetDQLPart('select');
+        $counter_q->$qb->addSelect('COUNT(p.id)');
+        */
+
+        /*
+        $counter_q->distinct('p.id');
+        $counter_q->addSelect('count(p.id)');
+        $max_num = $counter_q->getQuery()->getSingleScalarResult();
+
+        echo '<pre>';
+        var_dump($max_num);
+        echo '</pre>';
+        */
+
 
         //クエリ実行
-        $query = $qb->getQuery();
-        $res = $query->getResult();
+        //$query = $qb->getQuery();
+        //$res = $query->getResult();
 
         $pagination = $app['paginator']()->paginate(
-            $res,
+            $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             $searchData['disp_number']->getId()
         );
