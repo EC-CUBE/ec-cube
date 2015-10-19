@@ -70,10 +70,12 @@ class ProductController
         $searchData = $searchForm->getData();
         // 情報取得クエリオブジェクト
         $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+        /*
         echo '<pre>';
         var_dump(count($qb->setFirstResult( 0 )->setMaxResults( 15 )->getQuery()->getResult()));
         echo '</pre>';
         exit();
+        */
 
         //$counter_q = clone $qb;
         /*
@@ -101,6 +103,10 @@ class ProductController
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             $searchData['disp_number']->getId()
         );
+
+        //$items = $pagination->getItem();
+
+        //arsort($items);
 
         // addCart form
         $forms = array();

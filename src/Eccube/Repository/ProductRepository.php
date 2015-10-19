@@ -87,6 +87,26 @@ class ProductRepository extends EntityRepository
      */
     public function getQueryBuilderBySearchData($searchData)
     {
+        /*
+        SELECT 
+            DISTINCT `pp`.`product_id` 
+        FROM 
+            `dtb_product` as `pp` 
+        INNER JOIN 
+        (
+            SELECT 
+                `p`.`product_id`, `pc`.`price02` 
+            FROM 
+                `dtb_product` AS `p` 
+            LEFT JOIN 
+                `dtb_product_class` as `pc` 
+            ON 
+            `p`.`product_id` = `pc`.`product_id` ORDER BY `pc`.`price02` DESC
+        ) as `mp` 
+        ON 
+            `pp`.`product_id` = `mp`.`product_id`;
+        */
+
         $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->distinct('p.id')
@@ -117,14 +137,81 @@ class ProductRepository extends EntityRepository
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
+            //サブクエリ発行
+            //$em = $this->getEntityManager();
+            //$sbqs = "SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p INNER JOIN \Eccube\Entity\ProductClass as pc WITH p.id = pc.id order by pc.price02 DESC";
+            //$query = $em->createQuery($sbqs);
+
+            //echo '<pre>';
+            //var_dump($query->getResult());
+            //echo '</pre>';
 
         // Order By
         // 価格順
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+            //サブクエリ発行
+            //$em = $this->getEntityManager();
+            //$keys = array_keys($em->getMetadataFactory()->getMetadataFor('\Eccube\Entity\Product')->reflFields);
+            //var_dump($keys);
+            //$qb->innerJoin('p.ProductClasses', `pc`)->addSelect('pc.price02')->orderBy('pc.price02');
+            $qb->innerJoin('p.ProductClasses', 'cp')->orderBy('cp.price02', 'ASC');
+            //->innerJoin()
+            //$sbqs = "SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p INNER JOIN \Eccube\Entity\ProductClass as pc WITH p.id = pc.product.id order by pc.price02 DESC";
+            //$sbqs = "SELECT p.id, p.ProductClasses FROM Eccube\Entity\Product as p";
+            //$sbqs = "SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p JOIN p.ProductClasses as pc order by pc.price02 DESC";
+            //$query = $em->createQuery($sbqs);
+            //$qb->addSelect("(SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p JOIN p.ProductClasses as pc order by pc.price02 DESC) as ip");
+            //$qb->addSelect(sprintf('(%s) AS ip_id', $query->getDql()))->having('p.id = ip_id');
+            //$qb->innerJoin($query->getDql(), 'ip')->having('p.id = ip.id');
+                //->innerJoin('ip', 'ipp');
+            /*
+            echo '<pre>';
+            var_dump($query->getResult());
+            echo '</pre>';
+            exit();
+            */
+
+            /*
+            echo '<pre>';
+            var_dump($query->getResult());
+            echo '</pre>';
+            exit();
+            */
+
+
+            /*
+            $q2 = $this->createQueryBuilder('ip')
+                ->select('ip.id,pc.product_id')
+                ->innerJoin($sb, 'pc')
+                ->orderBy('pc.price02', 'DESC');
+            */
+
+                //echo $q2->getDql();
+                //=> SELECT o.user_id FROM Order o
+                //     GROUP BY o.user_id HAVING AVG(o.total) >= ?
+            /*
+            echo '<pre>';
+            var_dump($q2->getQuery()->getResult());
+            echo '</pre>';
+            exit();
+            */
+            /*
+            echo '<pre>';
+            var_dump($sb->getQuery()->getResult());
+            echo '</pre>';
+            exit();
+            */
+            //$qb->innerJoin(, 'mp');
+
+                // サブクエリをメインのクエリに入れる
+                //$q->where("u.id IN ({$q2->getDql()})");
+            /*
             $qb
                 ->innerJoin('p.ProductClasses', 'pc')
                 ->addSelect('pc')
                 ->orderBy('pc.price02', 'DESC');
+            */
+
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
@@ -142,6 +229,12 @@ class ProductRepository extends EntityRepository
                 ->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
         }
+        //$qb->setFirstResult(0);
+        //$qb->setMaxResults(15);
+        //echo '<pre>';
+        //var_dump($qb->getQuery()->getResult());
+        //echo '</pre>';
+        //exit();
 
         return $qb;
     }
