@@ -104,7 +104,7 @@ class NameType extends AbstractType
                         'max' => $this->config['name_len'],
                     )),
                     new Assert\Regex(array(
-                        'pattern' => '/^[\S\|^ ]+$/',
+                        'pattern' => '/^[^\s ]+$/u',
                         'message' => 'form.type.name.firstname.nothasspace'
                     ))
                 ),
@@ -118,7 +118,7 @@ class NameType extends AbstractType
                         'max' => $this->config['name_len'],
                     )),
                     new Assert\Regex(array(
-                        'pattern' => '/^[\S\|^ ]+$/',
+                        'pattern' => '/^[^\s ]+$/u',
                         'message' => 'form.type.name.lastname.nothasspace'
                     ))
                 ),
