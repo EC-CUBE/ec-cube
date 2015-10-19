@@ -29,130 +29,69 @@ use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ContentsController extends AbstractController
+/**
+ * @deprecated 3.1 delete. use NewsController
+ */
+class ContentsController extends NewsController
 {
+    /**
+     * @deprecated 3.1 delete. use NewsController
+     */
     public function __construct()
     {
+        parent::__construct();
     }
 
+    /**
+     * @param Application $app
+     * @deprecated 3.1 delete. use NewsController
+     */
     public function index(Application $app)
     {
-        $NewsList = $app['eccube.repository.news']->findBy(array(), array('rank' => 'DESC'));
-
-        $form = $app->form()->getForm();
-
-        return $app->render('Content/index.twig', array(
-            'form' => $form->createView(),
-            'NewsList' => $NewsList,
-        ));
+        return parent::index($app);
     }
 
+    /**
+     * @param Application $app
+     * @param Request $request
+     * @param integer $id
+     * @deprecated 3.1 delete. use NewsController
+     */
     public function edit(Application $app, Request $request, $id = null)
     {
-        if ($id) {
-            $News = $app['eccube.repository.news']->find($id);
-            if (!$News) {
-                throw new NotFoundHttpException();
-            }
-            $News->setLinkMethod((bool) $News->getLinkMethod());
-        } else {
-            $News = new \Eccube\Entity\News();
-        }
-
-        $form = $app['form.factory']
-            ->createBuilder('admin_news', $News)
-            ->getForm();
-
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                if (empty($data['url'])) {
-                    $News->setLinkMethod(Constant::DISABLED);
-                }
-                $status = $app['eccube.repository.news']->save($News);
-                if ($status) {
-                    $app->addSuccess('admin.news.save.complete', 'admin');
-                    return $app->redirect($app->url('admin_content'));
-                } else {
-                    $app->addError('admin.news.save.error', 'admin');
-                }
-            }
-        }
-
-        return $app->render('Content/edit.twig', array(
-            'form' => $form->createView(),
-            'News' => $News,
-        ));
-
+        return parent::edit($app, $request, $id);
     }
 
+    /**
+     * @param Application $app
+     * @param Request $request
+     * @param integer $id
+     * @deprecated 3.1 delete. use NewsController
+     */
     public function up(Application $app, Request $request, $id)
     {
-        $this->isTokenValid($app);
-
-        $TargetNews = $app['eccube.repository.news']->find($id);
-
-        if (!$TargetNews) {
-            throw new NotFoundHttpException();
-        }
-
-        $status = false;
-        if ('PUT' === $request->getMethod()) {
-            $status = $app['eccube.repository.news']->up($TargetNews);
-        }
-
-        if ($status) {
-            $app->addSuccess('admin.news.up.complete', 'admin');
-        } else {
-            $app->addError('admin.news.up.error', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_content'));
+        return parent::up($app, $request, $id);
     }
 
+    /**
+     * @param Application $app
+     * @param Request $request
+     * @param integer $id
+     * @deprecated 3.1 delete. use NewsController
+     */
     public function down(Application $app, Request $request, $id)
     {
-        $this->isTokenValid($app);
-
-        $TargetNews = $app['eccube.repository.news']->find($id);
-
-        if (!$TargetNews) {
-            throw new NotFoundHttpException();
-        }
-
-        $status = false;
-        if ('PUT' === $request->getMethod()) {
-            $status = $app['eccube.repository.news']->down($TargetNews);
-        }
-
-        if ($status) {
-            $app->addSuccess('admin.news.down.complete', 'admin');
-        } else {
-            $app->addError('admin.news.down.error', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_content'));
+        return parent::down($app, $request, $id);
     }
 
+    /**
+     * @param Application $app
+     * @param Request $request
+     * @param integer $id
+     * @deprecated 3.1 delete. use NewsController
+     */
     public function delete(Application $app, Request $request, $id)
     {
-        $this->isTokenValid($app);
-
-        $TargetNews = $app['eccube.repository.news']->find($id);
-        if (!$TargetNews) {
-            throw new NotFoundHttpException();
-        }
-
-        $status = $app['eccube.repository.news']->delete($TargetNews);
-
-        if ($status) {
-            $app->addSuccess('admin.news.delete.complete', 'admin');
-        } else {
-            // fixme : キー名を英語にする
-            $app->addSuccess('admin.news.delete.error', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_content'));
+        return parent::delete($app, $request, $id);
     }
 }
