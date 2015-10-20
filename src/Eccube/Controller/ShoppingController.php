@@ -257,6 +257,9 @@ class ShoppingController extends AbstractController
 
                 $shippings = $data['shippings'];
 
+                $productDeliveryFeeTotal = 0;
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+
                 foreach ($shippings as $Shipping) {
 
                     $Delivery = $Shipping->getDelivery();
@@ -264,10 +267,15 @@ class ShoppingController extends AbstractController
                     $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
                         'Delivery' => $Delivery,
                         'Pref' => $Shipping->getPref()
-                    ));
+                        ));
+
+                    // 商品ごとの配送料合計
+                    if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
+                        $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
+                    }
 
                     $Shipping->setDeliveryFee($deliveryFee);
-                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
                     $Shipping->setShippingDeliveryName($Delivery->getName());
                 }
 
@@ -313,7 +321,7 @@ class ShoppingController extends AbstractController
 
             if ($form->isValid()) {
 
-				$data = $form->getData();
+                $data = $form->getData();
                 $payment = $data['payment'];
                 $message = $data['message'];
 
@@ -978,7 +986,7 @@ class ShoppingController extends AbstractController
     {
         return $app->render('Shopping/shopping_error.twig');
     }
-    
+
     /**
      * お届け先変更がクリックされた場合の処理
      */
@@ -999,11 +1007,11 @@ class ShoppingController extends AbstractController
                 // 受注情報を更新
                 $app['orm.em']->flush();
                 // お届け先設定一覧へリダイレクト
-			    return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
+                return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
             }
         }
 
-	    return $app->redirect($app->url('shopping'));
+        return $app->redirect($app->url('shopping'));
     }
 
     /**
@@ -1026,11 +1034,11 @@ class ShoppingController extends AbstractController
                 // 受注情報を更新
                 $app['orm.em']->flush();
                 // お届け先設定一覧へリダイレクト
-			    return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
+                return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
             }
         }
 
-	    return $app->redirect($app->url('shopping'));
+        return $app->redirect($app->url('shopping'));
     }
 
     /**
@@ -1053,12 +1061,11 @@ class ShoppingController extends AbstractController
                 // 受注情報を更新
                 $app['orm.em']->flush();
                 // 複数配送設定へリダイレクト
-			    return $app->redirect($app->url('shopping_shipping_multiple'));
+                return $app->redirect($app->url('shopping_shipping_multiple'));
             }
         }
 
-	    return $app->redirect($app->url('shopping'));
+        return $app->redirect($app->url('shopping'));
     }
 
-    
 }

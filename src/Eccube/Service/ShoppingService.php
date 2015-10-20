@@ -606,6 +606,22 @@ class ShoppingService
     }
 
     /**
+     * 商品ごとの配送料を取得
+     *
+     * @param Shipping $Shipping
+     * @return int
+     */
+    public function getProductDeliveryFee(Shipping $Shipping)
+    {
+        $productDeliveryFeeTotal = 0;
+        $shipmentItems = $Shipping->getShipmentItems();
+        foreach ($shipmentItems as $ShipmentItem) {
+            $productDeliveryFeeTotal += $ShipmentItem->getProductClass()->getDeliveryFee() * $ShipmentItem->getQuantity();
+        }
+        return $productDeliveryFeeTotal;
+    }
+
+    /**
      * 住所などの情報が変更された時に金額の再計算を行う
      *
      * @param Order $Order
@@ -649,9 +665,17 @@ class ShoppingService
             $Delivery = $Shipping->getDelivery();
         }
         $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
-        $Shipping->setDelivery($Delivery);
+
         $Shipping->setDeliveryFee($deliveryFee);
-        $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+        $Shipping->setDelivery($Delivery);
+
+        // 商品ごとの配送料合計
+        $productDeliveryFeeTotal = 0;
+        if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+            $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
+        }
+
+        $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
         $Shipping->setShippingDeliveryName($Delivery->getName());
 
     }
@@ -778,7 +802,14 @@ class ShoppingService
             }
 
             $Shipping->setDeliveryFee($deliveryFee);
-            $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+
+            // 商品ごとの配送料合計
+            $productDeliveryFeeTotal = 0;
+            if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+                $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
+            }
+
+            $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
             $Shipping->setShippingDeliveryName($Delivery->getName());
         }
 
