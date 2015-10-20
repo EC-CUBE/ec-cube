@@ -313,7 +313,7 @@ class ShoppingController extends AbstractController
 
             if ($form->isValid()) {
 
-                               $data = $form->getData();
+               $data = $form->getData();
                 $payment = $data['payment'];
                 $message = $data['message'];
 
@@ -978,7 +978,7 @@ class ShoppingController extends AbstractController
     {
         return $app->render('Shopping/shopping_error.twig');
     }
-
+    
     /**
      * お届け先変更がクリックされた場合の処理
      */
@@ -999,11 +999,11 @@ class ShoppingController extends AbstractController
                 // 受注情報を更新
                 $app['orm.em']->flush();
                 // お届け先設定一覧へリダイレクト
-                            return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
+               return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
             }
         }
 
-              return $app->redirect($app->url('shopping'));
+     return $app->redirect($app->url('shopping'));
     }
 
     /**
@@ -1026,11 +1026,11 @@ class ShoppingController extends AbstractController
                 // 受注情報を更新
                 $app['orm.em']->flush();
                 // お届け先設定一覧へリダイレクト
-                            return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
+               return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
             }
         }
 
-           return $app->redirect($app->url('shopping'));
+        return $app->redirect($app->url('shopping'));
     }
 
     /**
@@ -1053,12 +1053,12 @@ class ShoppingController extends AbstractController
                 // 受注情報を更新
                 $app['orm.em']->flush();
                 // 複数配送設定へリダイレクト
-                             return $app->redirect($app->url('shopping_shipping_multiple'));
+              return $app->redirect($app->url('shopping_shipping_multiple'));
             }
         }
 
-             return $app->redirect($app->url('shopping'));
+      return $app->redirect($app->url('shopping'));
     }
 
-
+    
 }
