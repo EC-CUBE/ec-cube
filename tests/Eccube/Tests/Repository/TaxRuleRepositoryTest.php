@@ -209,7 +209,8 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
         $this->app['orm.em']->flush();
 
-        $ProductClass = $this->Product->getProductClasses()[1];
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[1];
         $this->TaxRule2
             ->setApplyDate(new \DateTime('-1 days'))
             ->setProductClass($ProductClass);
