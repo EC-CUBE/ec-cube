@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -41,6 +42,10 @@ class ProductRepository extends EntityRepository
      */
     private $config;
 
+    private $limit;
+
+    private $offset;
+
     /**
      * setConfig
      *
@@ -49,6 +54,74 @@ class ProductRepository extends EntityRepository
     public function setConfig(array $config)
     {
         $this->config = $config;
+        $this->offset = 0;
+        $this->limit = null;
+    }
+
+    /**
+     * set limit.
+     *
+     * @param  integer $limit
+     * @return boolean
+     *
+     * @throws none
+     */
+    public function setLimit($limit = null)
+    {
+        if(!is_null($limit)){
+            $this->limit = $limit;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * set offset.
+     *
+     * @param  integer $offset
+     * @return boolean
+     *
+     * @throws none
+     */
+    public function setoffset($offset = null)
+    {
+        if(!is_null($offset)){
+            $this->offset = $offset;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * get Limit.
+     *
+     * @param  none
+     * @return integer $limit
+     *
+     * @throws NotFoundHttpException
+     */
+    public function getLimit()
+    {
+        if(!is_null($this->limit)){
+            return $this->limit;
+        }
+        throw new NotFoundHttpException();
+    }
+
+    /**
+     * get Offset.
+     *
+     * @param  none
+     * @return integer $offset
+     *
+     * @throws NotFoundHttpException
+     */
+    public function getOffset()
+    {
+        if(!is_null($this->offset)){
+            return $this->offset;
+        }
+        throw new NotFoundHttpException();
     }
 
     /**
@@ -79,37 +152,76 @@ class ProductRepository extends EntityRepository
         return $product;
     }
 
+
     /**
-     * get query builder.
+     * get search object.
+     *
+     * @param  array $searchData
+     * @return array ProductObject
+     */
+    public function getObjectCollectionBySearchData($searchData)
+    {
+        $qb = $this->_createObjectCollectionQueryBuilderBySearchData($searchData);
+
+        $qb->setFirstResult($this->offset)
+            ->setMaxResults($this->limit);
+
+        $res = $qb->getQuery()->getResult();
+        $pids = array();
+        foreach($res as $val)
+        {
+            if(isset($val['id']) && !empty($val['id'])){
+                $pids[] = $val['id'];
+            }
+        }
+
+        $pobj = $this->createQueryBuilder('p')
+            ->andWhere('p.Status = 1')
+            ->andWhere($qb->expr()->in('p.id', ':pids'))
+            ->setParameter('pids', $pids)
+            ->getQuery()->getResult();
+
+        $ref_obj = array();
+
+        foreach($pobj as $key => $obj){
+            for($i = 0; $i < count($pids); $i++){
+                if($pids[$i] == $obj->getId()){
+                    $ref_obj[$i] = $obj;
+                    continue;
+                }
+            }
+        }
+
+        ksort($ref_obj);
+
+        return $ref_obj;
+    }
+
+    /**
+     * get object count num.
+     *
+     * @param  array $searchData
+     * @return int $count
+     */
+    public function countObjectCollectionBySearchData($searchData)
+    {
+        $qb = $this->_createObjectCollectionQueryBuilderBySearchData($searchData);
+        $count = 0;
+        //$count = $qb->getQuery()->getSingleScalarResult();
+        $count = 0;
+        $count = count($qb->getQuery()->getResult());
+        return $count;
+    }
+
+    /**
+     * create ObjectCollectionBySearchDataQueryBuilder.
      *
      * @param  array $searchData
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchData($searchData)
+    private function _createObjectCollectionQueryBuilderBySearchData($searchData)
     {
-        /*
-        SELECT 
-            DISTINCT `pp`.`product_id` 
-        FROM 
-            `dtb_product` as `pp` 
-        INNER JOIN 
-        (
-            SELECT 
-                `p`.`product_id`, `pc`.`price02` 
-            FROM 
-                `dtb_product` AS `p` 
-            LEFT JOIN 
-                `dtb_product_class` as `pc` 
-            ON 
-            `p`.`product_id` = `pc`.`product_id` ORDER BY `pc`.`price02` DESC
-        ) as `mp` 
-        ON 
-            `pp`.`product_id` = `mp`.`product_id`;
-        */
-
         $qb = $this->createQueryBuilder('p')
-            ->select('p')
-            ->distinct('p.id')
             ->andWhere('p.Status = 1');
 
         // category
@@ -137,83 +249,61 @@ class ProductRepository extends EntityRepository
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
-            //サブクエリ発行
-            //$em = $this->getEntityManager();
-            //$sbqs = "SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p INNER JOIN \Eccube\Entity\ProductClass as pc WITH p.id = pc.id order by pc.price02 DESC";
-            //$query = $em->createQuery($sbqs);
 
-            //echo '<pre>';
-            //var_dump($query->getResult());
-            //echo '</pre>';
+        // 価格の降順じゃない際のエラーハンドリング
+        if (empty($searchData['orderby']) || $searchData['orderby']->getId() != '1') {
+            return false;
+        }
 
-        // Order By
-        // 価格順
-        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
-            //サブクエリ発行
-            //$em = $this->getEntityManager();
-            //$keys = array_keys($em->getMetadataFactory()->getMetadataFor('\Eccube\Entity\Product')->reflFields);
-            //var_dump($keys);
-            //$qb->innerJoin('p.ProductClasses', `pc`)->addSelect('pc.price02')->orderBy('pc.price02');
-            $qb->innerJoin('p.ProductClasses', 'cp')->orderBy('cp.price02', 'ASC');
-            //->innerJoin()
-            //$sbqs = "SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p INNER JOIN \Eccube\Entity\ProductClass as pc WITH p.id = pc.product.id order by pc.price02 DESC";
-            //$sbqs = "SELECT p.id, p.ProductClasses FROM Eccube\Entity\Product as p";
-            //$sbqs = "SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p JOIN p.ProductClasses as pc order by pc.price02 DESC";
-            //$query = $em->createQuery($sbqs);
-            //$qb->addSelect("(SELECT p.id, pc.price02 FROM Eccube\Entity\Product AS p JOIN p.ProductClasses as pc order by pc.price02 DESC) as ip");
-            //$qb->addSelect(sprintf('(%s) AS ip_id', $query->getDql()))->having('p.id = ip_id');
-            //$qb->innerJoin($query->getDql(), 'ip')->having('p.id = ip.id');
-                //->innerJoin('ip', 'ipp');
-            /*
-            echo '<pre>';
-            var_dump($query->getResult());
-            echo '</pre>';
-            exit();
-            */
+        $qb->innerJoin('p.ProductClasses', 'pc')
+            ->select('p.id')
+            ->addSelect('p')
+            //->addSelect($qb->expr()->MAX('pc.price02'))
+            ->addSelect('pc.price02')
+            ->groupBy('p.id')
+            ->orderBy('pc.price02', 'DESC');
 
-            /*
-            echo '<pre>';
-            var_dump($query->getResult());
-            echo '</pre>';
-            exit();
-            */
+        return $qb;
+    }
 
+    /**
+     * get query builder.
+     *
+     * @param  array $searchData
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilderBySearchData($searchData)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.Status = 1');
 
-            /*
-            $q2 = $this->createQueryBuilder('ip')
-                ->select('ip.id,pc.product_id')
-                ->innerJoin($sb, 'pc')
-                ->orderBy('pc.price02', 'DESC');
-            */
+        // category
+        $categoryJoin = false;
+        if (!empty($searchData['category_id']) && $searchData['category_id']) {
+            $Categories = $searchData['category_id']->getSelfAndDescendants();
+            if ($Categories) {
+                $qb
+                    ->innerJoin('p.ProductCategories', 'pct')
+                    ->innerJoin('pct.Category', 'c')
+                    ->andWhere($qb->expr()->in('pct.Category', ':Categories'))
+                    ->setParameter('Categories', $Categories);
+                $categoryJoin = true;
+            }
+        }
 
-                //echo $q2->getDql();
-                //=> SELECT o.user_id FROM Order o
-                //     GROUP BY o.user_id HAVING AVG(o.total) >= ?
-            /*
-            echo '<pre>';
-            var_dump($q2->getQuery()->getResult());
-            echo '</pre>';
-            exit();
-            */
-            /*
-            echo '<pre>';
-            var_dump($sb->getQuery()->getResult());
-            echo '</pre>';
-            exit();
-            */
-            //$qb->innerJoin(, 'mp');
+        // name
+        if (!empty($searchData['name']) && $searchData['name']) {
+            $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
 
-                // サブクエリをメインのクエリに入れる
-                //$q->where("u.id IN ({$q2->getDql()})");
-            /*
-            $qb
-                ->innerJoin('p.ProductClasses', 'pc')
-                ->addSelect('pc')
-                ->orderBy('pc.price02', 'DESC');
-            */
+            foreach ($keywords as $index => $keyword) {
+                $key = sprintf('keyword%s', $index);
+                $qb
+                    ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s', $key, $key))
+                    ->setParameter($key, '%' . $keyword . '%');
+            }
+        }
 
-            // 新着順
-        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
+        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('p.create_date', 'DESC');
         } else {
@@ -229,12 +319,6 @@ class ProductRepository extends EntityRepository
                 ->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
         }
-        //$qb->setFirstResult(0);
-        //$qb->setMaxResults(15);
-        //echo '<pre>';
-        //var_dump($qb->getQuery()->getResult());
-        //echo '</pre>';
-        //exit();
 
         return $qb;
     }

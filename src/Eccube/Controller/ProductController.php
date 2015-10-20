@@ -68,41 +68,35 @@ class ProductController
 
         // paginator
         $searchData = $searchForm->getData();
-        // 情報取得クエリオブジェクト
-        $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
-        /*
-        echo '<pre>';
-        var_dump(count($qb->setFirstResult( 0 )->setMaxResults( 15 )->getQuery()->getResult()));
-        echo '</pre>';
-        exit();
-        */
 
-        //$counter_q = clone $qb;
-        /*
-        $counter_q->$qb->getQuery()->resetDQLPart('select');
-        $counter_q->$qb->addSelect('COUNT(p.id)');
-        */
-
-        /*
-        $counter_q->distinct('p.id');
-        $counter_q->addSelect('count(p.id)');
-        $max_num = $counter_q->getQuery()->getSingleScalarResult();
-
-        echo '<pre>';
-        var_dump($max_num);
-        echo '</pre>';
-        */
+        //ページネーション初期値設定
+        $pageno = !empty($searchData['pageno']) ? $searchData['pageno'] : 1;
+        $maxpage = $searchData['disp_number']->getId();
+        $app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
+        $app['eccube.repository.product']->setLimit($maxpage);
 
 
-        //クエリ実行
-        //$query = $qb->getQuery();
-        //$res = $query->getResult();
 
-        $pagination = $app['paginator']()->paginate(
-            $qb,
-            !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            $searchData['disp_number']->getId()
-        );
+        //ソート条件判定
+        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+            //件数カウント
+            $count = $app['eccube.repository.product']->countObjectCollectionBySearchData($searchData);
+            // ソート:価格降順ブジェクト配列取得
+            $cobj = $app['eccube.repository.product']->getObjectCollectionBySearchData($searchData);
+            $pagination = $app['paginator']()->paginate(array());
+            $pagination->setCurrentPageNumber($pageno);
+            $pagination->setItemNumberPerPage($maxpage);
+            $pagination->setTotalItemCount($count);
+            $pagination->setItems($cobj);
+        }else{
+            // ソート:新着情報・デフォルト処理時クエリブジェクト取得
+            $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $pageno,
+                $maxpage
+            );
+        }
 
         //$items = $pagination->getItem();
 
