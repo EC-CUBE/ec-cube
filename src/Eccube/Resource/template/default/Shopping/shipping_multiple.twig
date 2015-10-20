@@ -138,21 +138,30 @@ $(function() {
                             </div>
                         </div><!--/cart_item-->
 
-                        <div id="item{{ idx }}">
-                            {% for shipping in form.shipping_multiple[idx].shipping %}
-                                <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }} form-inline" style="margin-bottom: 5px;">
-                                    <div class="form-group">
-                                        <label>お届け先</label>
-                                        {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
-                                        {{ form_errors(shipping.customer_address) }}
+                        {% if itemvalue > 1 %}
+                            <div id="item{{ idx }}">
+                                {% for shipping in form.shipping_multiple[idx].shipping %}
+                                    <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }} form-inline" style="margin-bottom: 5px;">
+                                        <div class="form-group">
+                                            <label>お届け先</label>
+                                            {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
+                                            {{ form_errors(shipping.customer_address) }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>数量</label>
+                                            {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
+                                            {{ form_errors(shipping.quantity) }}
+                                        </div>
+                                    {% endfor %}
+                            </div>
+                            <p>
+                                <button type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
+                            </p>
+                        {% else %}
+                            数量が1のためお届け先の追加はできません。
+                        {% endif %}
+                                        <button type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">削除</button>
                                     </div>
-                                    <div class="form-group">
-                                        <label>数量</label>
-                                        {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
-                                        {{ form_errors(shipping.quantity) }}
-                                    </div>
-                                    <button type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">削除</button>
-                                </div>
                             {% endfor %}
                         </div>
                         <p>

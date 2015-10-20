@@ -29,7 +29,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BlockController extends AbstractController
 {
@@ -53,10 +52,6 @@ class BlockController extends AbstractController
 
         $Block = $app['eccube.repository.block']
             ->findOrCreate($id, $DeviceType);
-
-        if (!$Block) {
-            throw new NotFoundHttpException();
-        }
 
         $form = $app['form.factory']
             ->createBuilder('block', $Block)

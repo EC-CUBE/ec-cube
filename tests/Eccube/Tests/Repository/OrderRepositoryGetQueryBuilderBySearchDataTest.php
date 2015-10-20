@@ -27,16 +27,12 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         parent::setUp();
         $this->createProduct();
         $this->Customer = $this->createCustomer();
-        $this->Customer->setName01('立方体長');
-        $Customer2 = $this->createCustomer();
-        $Customer2->setName01('立方隊員');
         $this->app['orm.em']->persist($this->Customer);
-        $this->app['orm.em']->persist($Customer2);
         $this->app['orm.em']->flush();
 
         $this->Order = $this->createOrder($this->Customer);
         $this->Order1 = $this->createOrder($this->Customer);
-        $this->Order2 = $this->createOrder($Customer2);
+        $this->Order2 = $this->createOrder($this->createCustomer());
     }
 
     public function scenario()

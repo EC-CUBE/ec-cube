@@ -26,7 +26,6 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
-use Eccube\Entity\Master\CustomerStatus;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
@@ -73,11 +72,14 @@ class EntryController extends AbstractController
                         );
 
                         $Customer->setPassword(
-                            $app['eccube.repository.customer']->encryptPassword($app, $Customer)
+                            $app['eccube.repository.customer']
+                                ->encryptPassword($app, $Customer)
                         );
 
                         $Customer->setSecretKey(
-                            $app['eccube.repository.customer']->getUniqueSecretKey($app)
+                            $app['orm.em']
+                                ->getRepository('Eccube\Entity\Customer')
+                                ->getUniqueSecretKey($app)
                         );
 
                         $CustomerAddress = new \Eccube\Entity\CustomerAddress();
@@ -168,10 +170,10 @@ class EntryController extends AbstractController
                 throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
             }
 
-            $CustomerStatus = $app['eccube.repository.customer_status']->find(CustomerStatus::ACTIVE);
+            $CustomerStatus = $app['orm.em']
+                ->getRepository('Eccube\Entity\Master\CustomerStatus')
+                ->find(2);
             $Customer->setStatus($CustomerStatus);
-            $Customer->setBuyTimes(0);
-            $Customer->setBuyTotal(0);
 
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();

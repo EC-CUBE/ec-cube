@@ -50,8 +50,6 @@ class CustomerEditController extends AbstractController
         } else {
             $Customer = $app['eccube.repository.customer']->newCustomer();
             $CustomerAddress = new \Eccube\Entity\CustomerAddress();
-            $Customer->setBuyTimes(0);
-            $Customer->setBuyTotal(0);
         }
 
         // 会員登録フォーム
@@ -64,10 +62,14 @@ class CustomerEditController extends AbstractController
             if ($form->isValid()) {
                 if ($Customer->getId() === null) {
                     $Customer->setSalt(
-                        $app['eccube.repository.customer']->createSalt(5)
+                        $app['orm.em']
+                            ->getRepository('Eccube\Entity\Customer')
+                            ->createSalt(5)
                     );
                     $Customer->setSecretKey(
-                        $app['eccube.repository.customer']->getUniqueSecretKey($app)
+                        $app['orm.em']
+                            ->getRepository('Eccube\Entity\Customer')
+                            ->getUniqueSecretKey($app) 
                     );
 
                     $CustomerAddress->setName01($Customer->getName01())
@@ -96,7 +98,9 @@ class CustomerEditController extends AbstractController
                     $Customer->setPassword($previous_password);
                 } else {
                     $Customer->setPassword(
-                        $app['eccube.repository.customer']->encryptPassword($app, $Customer)
+                        $app['orm.em']
+                            ->getRepository('Eccube\Entity\Customer')
+                            ->encryptPassword($app, $Customer)
                     );
                 }
 

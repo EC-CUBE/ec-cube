@@ -58,7 +58,9 @@ class ChangeController extends AbstractController
                     $Customer->setPassword($previous_password);
                 } else {
                     $Customer->setPassword(
-                        $app['eccube.repository.customer']->encryptPassword($app, $Customer)
+                        $app['orm.em']
+                            ->getRepository('Eccube\Entity\Customer')
+                            ->encryptPassword($app, $Customer)
                         );
                 }
 
