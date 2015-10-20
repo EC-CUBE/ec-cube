@@ -125,6 +125,7 @@ class PageLayoutRepositoryTest extends AbstractRepositoryTestCase
     public function test_getTemplateFile_DefaultTemplateFile_isValid()
     {
         $app = $this->createApplication();
+
         $actual = $app['eccube.repository.page_layout']
             ->getTemplateFile('mypage/change', 10);
 

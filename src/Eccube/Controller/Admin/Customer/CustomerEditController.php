@@ -69,7 +69,7 @@ class CustomerEditController extends AbstractController
                     $Customer->setSecretKey(
                         $app['orm.em']
                             ->getRepository('Eccube\Entity\Customer')
-                            ->getUniqueSecretKey($app) 
+                            ->getUniqueSecretKey($app)
                     );
 
                     $CustomerAddress->setName01($Customer->getName01())

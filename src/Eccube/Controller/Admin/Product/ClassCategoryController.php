@@ -91,11 +91,10 @@ class ClassCategoryController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $status = $app['eccube.repository.class_category']->delete($TargetClasCategory);
+        $status = $app['eccube.repository.class_category']->delete($TargetClassCategory);
 
         if ($status === true) {
             $app->addSuccess('admin.class_category.delete.complete', 'admin');
-            $app->addError('admin.class_category.delete.hasproduct', 'admin');
         } else {
             $app->addError('admin.class_category.delete.error', 'admin');
         }

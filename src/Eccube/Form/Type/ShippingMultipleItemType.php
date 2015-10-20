@@ -118,6 +118,9 @@ class ShippingMultipleItemType extends AbstractType
                 foreach ($data->getShipmentItems() as $ShipmentItem) {
                     $quantity += $ShipmentItem->getQuantity();
                 }
+
+                $form['quantity']->setData($quantity);
+
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
 

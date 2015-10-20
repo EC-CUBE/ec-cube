@@ -152,7 +152,9 @@ $(function() {
                                             {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
                                             {{ form_errors(shipping.quantity) }}
                                         </div>
-                                    {% endfor %}
+                                        <button type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">削除</button>
+                                    </div>
+                                {% endfor %}
                             </div>
                             <p>
                                 <button type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
@@ -160,13 +162,6 @@ $(function() {
                         {% else %}
                             数量が1のためお届け先の追加はできません。
                         {% endif %}
-                                        <button type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">削除</button>
-                                    </div>
-                            {% endfor %}
-                        </div>
-                        <p>
-                            <button type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
-                        </p>
                     {% endfor %}
                     <div class="row no-padding">
                         <div class="btn_group col-sm-offset-4 col-sm-4">

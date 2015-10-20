@@ -44,5 +44,7 @@ class PaymentRepositoryTest extends AbstractRepositoryTestCase
         if (count($productTypes) > 1) {
             $deliveries = $app['eccube.repository.delivery']->findAllowedDeliveries($productTypes, $payments);
         }
+
     }
+
 }

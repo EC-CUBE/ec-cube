@@ -313,7 +313,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     public function getUniqueSecretKey($app)
     {
         $unique = md5(uniqid(rand(), 1));
-
         $Customer = $app['eccube.repository.customer']->findBy(array(
             'secret_key' => $unique,
         ));
@@ -388,7 +387,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email AND c.Status = :status')
             ->setParameter('email', $email)
-            ->setParameter('status', CustomerStatus::ACTIVE)
+            ->setParameter('status', 2)
             ->getQuery();
 
         $Customer = $query->getOneOrNullResult();
@@ -398,6 +397,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
     public function getActiveCustomerByResetKey($reset_key)
     {
+        // TODO:Customer.Status -> 先頭小文字では？
         $query = $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
             ->setParameter('reset_key', $reset_key)
