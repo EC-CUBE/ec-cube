@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -48,8 +49,9 @@ class ShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->app['config'];
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $app = $this->app;
+        $config = $app['config'];
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder
             ->add('name', 'name', array(
@@ -119,14 +121,6 @@ class ShippingType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('DeliveryTime', 'entity', array(
-                'label' => 'お届け時間',
-                'class' => 'Eccube\Entity\DeliveryTime',
-                'property' => 'delivery_time',
-                'empty_value' => '指定なし',
-                'empty_data' => null,
-                'required' => false,
-            ))
             ->add('shipping_delivery_date', 'date', array(
                 'label' => 'お届け日',
                 'placeholder' => '',
@@ -143,6 +137,61 @@ class ShippingType extends AbstractType
                         'prototype' => true,
                     ));
                 }
+            })
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+                /** @var \Eccube\Entity\Shipping $data */
+                $data = $event->getData();
+                /** @var \Symfony\Component\Form\Form $form */
+                $form = $event->getForm();
+
+                if (is_null($data)) {
+                    return;
+                }
+
+                $Delivery = $data->getDelivery();
+
+                // お届け時間を配送業者で絞り込み
+                $form->add('DeliveryTime', 'entity', array(
+                    'label' => 'お届け時間',
+                    'class' => 'Eccube\Entity\DeliveryTime',
+                    'property' => 'delivery_time',
+                    'empty_value' => '指定なし',
+                    'empty_data' => null,
+                    'required' => false,
+                    'query_builder' => function (EntityRepository $er) use($Delivery) {
+                        return $er->createQueryBuilder('dt')
+                            ->where('dt.Delivery = :Delivery')
+                            ->setParameter('Delivery', $Delivery);
+                    },
+                ));
+
+            })
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+                $data = $event->getData();
+                $form = $event->getForm();
+                if (!$data) {
+                    return;
+                }
+
+                $Delivery = $app['eccube.repository.delivery']->find($data['Delivery']);
+                if (!$Delivery) {
+                    return;
+                }
+
+                // お届け時間を配送業者で絞り込み
+                $form->add('DeliveryTime', 'entity', array(
+                    'label' => 'お届け時間',
+                    'class' => 'Eccube\Entity\DeliveryTime',
+                    'property' => 'delivery_time',
+                    'empty_value' => '指定なし',
+                    'empty_data' => null,
+                    'required' => false,
+                    'query_builder' => function (EntityRepository $er) use($Delivery) {
+                        return $er->createQueryBuilder('dt')
+                            ->where('dt.Delivery = :Delivery')
+                            ->setParameter('Delivery', $Delivery);
+                    },
+                ));
             })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
