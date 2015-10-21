@@ -124,7 +124,7 @@ class TaxRuleRepository extends EntityRepository
         } else {
             $countryId = '';
         }
-        $cacheKey = $productId . ':' . $productClassId . ':' . $prefId . ':' . $countryId;
+        $cacheKey = $productId.':'.$productClassId.':'.$prefId.':'.$countryId;
 
         // すでに取得している場合はキャッシュから
         if (isset($this->rules[$cacheKey])) {
@@ -161,7 +161,7 @@ class TaxRuleRepository extends EntityRepository
         }
 
         // ProductClass
-        if ($ProductClass && $productClassId!='') {
+        if ($ProductClass && $productClassId != '') {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $parameters['ProductClass'] = $ProductClass;
         } else {
@@ -195,7 +195,7 @@ class TaxRuleRepository extends EntityRepository
         }
 
         if ($ranked) {
-            usort($TaxRules, function ($a, $b) {
+            usort($TaxRules, function($a, $b) {
                 if ($a->getRank() == $b->getRank()) {
                     if ($a->getApplyDate() > $b->getApplyDate()) {
                         return -1;
