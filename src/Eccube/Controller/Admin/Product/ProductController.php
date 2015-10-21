@@ -47,11 +47,14 @@ class ProductController extends AbstractController
 
         $pagination = array();
 
+        //ページネーション各値初期化
         $disps = $app['eccube.repository.master.disp']->findAll();
         $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
         $page_count = $app['config']['default_page_count'];
         $page_status = null;
         $active = false;
+
+        //ページネーと処理
 
         if ('POST' === $request->getMethod()) {
 
@@ -60,14 +63,44 @@ class ProductController extends AbstractController
             if ($searchForm->isValid()) {
                 $searchData = $searchForm->getData();
 
+                /*
+                //ページネーション初期値設定
+                $pageno = !empty($searchData['pageno']) ? $searchData['pageno'] : 1;
+                $maxpage = $searchData['disp_number']->getId();
+                $app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
+                $app['eccube.repository.product']->setLimit($maxpage);
+
+                //ソート条件判定
+                if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+                    //件数カウント
+                    $count = $app['eccube.repository.product']->countObjectCollectionBySearchData($searchData);
+                    // ソート:価格降順ブジェクト配列取得
+                    $cobj = $app['eccube.repository.product']->getObjectCollectionBySearchData($searchData);
+                    $pagination = $app['paginator']()->paginate(array());
+                    $pagination->setCurrentPageNumber($pageno);
+                    $pagination->setItemNumberPerPage($maxpage);
+                   $pagination->setTotalItemCount($count);
+                    $pagination->setItems($cobj);
+                }else{
+                    // ソート:新着情報・デフォルト処理時クエリブジェクト取得
+                    $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+                    $pagination = $app['paginator']()->paginate(
+                        $qb,
+                        $pageno,
+                        $maxpage
+                    );
+                }
+                */
+
                 // paginator
-                $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                 $page_no = 1;
-                $pagination = $app['paginator']()->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-                );
+                $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+                $items = $qb->getQuery()->getResult();
+                $pagination = $app['paginator']()->paginate(array());
+                $pagination->setCurrentPageNumber($page_no);
+                $pagination->setItemNumberPerPage($pageMaxis);
+                $pagination->setTotalItemCount(count($items));
+                $pagination->setItems($items);
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
@@ -75,11 +108,16 @@ class ProductController extends AbstractController
             }
         } else {
             if (is_null($page_no)) {
+                // 初回表示
                 // sessionを削除
                 $session->remove('eccube.admin.product.search');
             } else {
+                // 初回以降ページネーション処理
                 // pagingなどの処理
                 $searchData = $session->get('eccube.admin.product.search');
+
+                //前回検索条件がある場合
+                //ページネーションの場合、検索条件を引き継ぎ
                 if (!is_null($searchData)) {
 
                     // 公開ステータス
@@ -102,12 +140,14 @@ class ProductController extends AbstractController
 
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
+                    //ページング処理(検索を一回でも行っている場合)
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
-                    $pagination = $app['paginator']()->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count
-                    );
+                    $items = $qb->getQuery()->getResult();
+                    $pagination = $app['paginator']()->paginate(array());
+                    $pagination->setCurrentPageNumber($page_no);
+                    $pagination->setItemNumberPerPage($page_count);
+                    $pagination->setTotalItemCount(count($items));
+                    $pagination->setItems($items);
 
                     // セッションから検索条件を復元
                     if (!empty($searchData['category_id'])) {
@@ -137,6 +177,25 @@ class ProductController extends AbstractController
                     $active = true;
                 }
             }
+            //ページネーション処理必要
+            //ページング処理(検索を一回でも行っている場合)
+            //$qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+            //@check here@yoshinaga add
+            /*
+            $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+            $items = $qb->getQuery()->getResult();
+            $pagination = $app['paginator']()->paginate(array());
+            $pagination->setCurrentPageNumber($page_no);
+            $pagination->setItemNumberPerPage($page_count);
+            $pagination->setTotalItemCount(count($items));
+            $pagination->setItems($items);
+            $pagination = $app['paginator']()->paginate(
+                    $qb,
+                    $page_no,
+                    $page_count
+            );
+            */
+            //@check here@yoshinaga add
         }
 
         return $app->renderView('Product/index.twig', array(
@@ -521,8 +580,7 @@ class ProductController extends AbstractController
             $app['eccube.service.csv.export']->exportHeader();
 
             // 商品データ検索用のクエリビルダを取得.
-            $qb = $app['eccube.service.csv.export']
-                ->getProductQueryBuilder($request);
+            $qb = $app['eccube.service.csv.export']->getProductQueryBuilder($request);
 
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7

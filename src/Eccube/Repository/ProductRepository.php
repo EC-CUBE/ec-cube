@@ -282,10 +282,6 @@ class ProductRepository extends EntityRepository
             ->orderBy('p.update_date', 'DESC')
             ->addOrderBy('pi.rank', 'DESC');
 
-        echo '<pre>';
-        var_dump($qb->getQuery()->getResult());
-        echo '</pre>';
-
         return $qb;
     }
 
