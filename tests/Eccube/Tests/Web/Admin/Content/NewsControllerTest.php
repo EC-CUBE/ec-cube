@@ -97,7 +97,8 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $TestCreator = $this->findMember(1);
         $TestNews1 = $this->newTestNews($TestCreator, 1);
         $TestNews2 = $this->newTestNews($TestCreator, 2);
-        $this->insertTestNews($TestNews);
+        $this->insertTestNews($TestNews1);
+        $this->insertTestNews($TestNews2);
 
         $test_news_id = $this->getTestNewsId($TestNews1);
 
@@ -121,7 +122,8 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $TestCreator = $this->findMember(1);
         $TestNews1 = $this->newTestNews($TestCreator, 1);
         $TestNews2 = $this->newTestNews($TestCreator, 2);
-        $this->insertTestNews($TestNews);
+        $this->insertTestNews($TestNews1);
+        $this->insertTestNews($TestNews2);
 
         $test_news_id = $this->getTestNewsId($TestNews2);
 
