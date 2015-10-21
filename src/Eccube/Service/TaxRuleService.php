@@ -102,15 +102,15 @@ class TaxRuleService
     {
         switch ($calcRule) {
             // 四捨五入
-            case 1:
+            case \Eccube\Entity\Master\Taxrule::ROUND:
                 $ret = round($value);
                 break;
             // 切り捨て
-            case 2:
+            case \Eccube\Entity\Master\Taxrule::FLOOR:
                 $ret = floor($value);
                 break;
             // 切り上げ
-            case 3:
+            case \Eccube\Entity\Master\Taxrule::CEIL:
                 $ret = ceil($value);
                 break;
             // デフォルト:切り上げ

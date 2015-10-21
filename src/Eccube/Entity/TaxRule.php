@@ -141,7 +141,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -164,7 +164,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_rate
      *
-     * @return string 
+     * @return string
      */
     public function getTaxRate()
     {
@@ -187,7 +187,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get tax_adjust
      *
-     * @return string 
+     * @return string
      */
     public function getTaxAdjust()
     {
@@ -210,7 +210,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get apply_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getApplyDate()
     {
@@ -233,7 +233,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -256,7 +256,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -279,7 +279,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -302,7 +302,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {
@@ -325,7 +325,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get Country
      *
-     * @return \Eccube\Entity\Master\Country 
+     * @return \Eccube\Entity\Master\Country
      */
     public function getCountry()
     {
@@ -348,7 +348,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get Pref
      *
-     * @return \Eccube\Entity\Master\Pref 
+     * @return \Eccube\Entity\Master\Pref
      */
     public function getPref()
     {
@@ -371,7 +371,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {
@@ -394,7 +394,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductClass
      *
-     * @return \Eccube\Entity\ProductClass 
+     * @return \Eccube\Entity\ProductClass
      */
     public function getProductClass()
     {
@@ -417,7 +417,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * Get CalcRule
      *
-     * @return \Eccube\Entity\Master\Taxrule 
+     * @return \Eccube\Entity\Master\Taxrule
      */
     public function getCalcRule()
     {
