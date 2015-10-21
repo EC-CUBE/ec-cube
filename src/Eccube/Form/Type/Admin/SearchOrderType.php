@@ -64,9 +64,21 @@ class SearchOrderType extends AbstractType
             ))
             ->add('email', 'email', array(
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        'message' => "テスト"
+                    )),
+                ),
             ))
             ->add('tel', 'text', array(
-                'required' => false,
+                'required' => true,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[a-zA-Z]+$/u",
+                        'message' => "テスト"
+                    )),
+                ),
             ))
             ->add('sex', 'sex', array(
                 'label' => '性別',
