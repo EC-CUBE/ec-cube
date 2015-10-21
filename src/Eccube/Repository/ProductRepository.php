@@ -225,7 +225,8 @@ class ProductRepository extends EntityRepository
         }
 
         if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
-            $date = $searchData['create_date_end']
+            $date = clone $searchData['create_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -242,7 +243,8 @@ class ProductRepository extends EntityRepository
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb

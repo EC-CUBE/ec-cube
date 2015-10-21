@@ -75,7 +75,7 @@ class CustomerController extends AbstractController
                     // 表示件数
                     $pcount = $request->get('page_count');
                     $page_count = empty($pcount) ? $page_count : $pcount;
-                    
+
                     $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
                     $pagination = $app['paginator']()->paginate(
                         $qb,
@@ -94,9 +94,8 @@ class CustomerController extends AbstractController
 
                     if (!is_null($searchData['pref'])) {
                         $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
-                        \Doctrine\Common\Util\Debug::dump($searchData['pref']);
                     }
-                    
+
                     $searchForm->setData($searchData);
                 }
             }
