@@ -57,16 +57,16 @@ class SearchOrderType extends AbstractType
                 'label' => '対応状況',
             ))
             ->add('name', 'text', array(
-                'required' => false,
+                'required' => true,
             ))
             ->add('kana', 'text', array(
-                'required' => false,
+                'required' => true,
             ))
             ->add('email', 'email', array(
-                'required' => false,
+                'required' => true,
             ))
             ->add('tel', 'text', array(
-                'required' => false,
+                'required' => true,
             ))
             ->add('sex', 'sex', array(
                 'label' => '性別',
