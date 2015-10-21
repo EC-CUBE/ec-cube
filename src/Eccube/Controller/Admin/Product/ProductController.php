@@ -96,6 +96,11 @@ class ProductController extends AbstractController
                 $page_no = 1;
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                 $items = $qb->getQuery()->getResult();
+
+                echo '<pre>';
+                var_dump($items);
+                echo '</pre>';
+                exit();
                 $pagination = $app['paginator']()->paginate(array());
                 $pagination->setCurrentPageNumber($page_no);
                 $pagination->setItemNumberPerPage($pageMaxis);
