@@ -562,12 +562,17 @@ EOD;
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
 
         // インストール後disable状態でもconstがロードされているか
-        $app = new Application();
-        $app->initialize();
-        $app->initializePlugin();
-        $app->boot();
-        $this->assertEquals('A',$app['config'][$tmpname]['const']['A']);
-        $this->assertEquals('1',$app['config'][$tmpname]['const']['C']);
+        $config = $this->app['config'];
+        $config[$tmpname]['const']['A'] = null;
+        $config[$tmpname]['const']['C'] = null;
+        // const が存在しないのを確認後, 再ロード
+        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['A']));
+        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['C']));
+
+        $this->app->initializePlugin();
+        $this->app->boot();
+        $this->assertEquals('A',$this->app['config'][$tmpname]['const']['A']);
+        $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
 
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
