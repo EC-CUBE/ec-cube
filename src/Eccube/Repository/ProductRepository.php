@@ -67,7 +67,7 @@ class ProductRepository extends EntityRepository
      */
     public function setLimit($limit = null)
     {
-        if(!is_null($limit)){
+        if(!is_null($limit) && is_numeric($limit)){
             $this->limit = $limit;
             return true;
         }
@@ -84,7 +84,7 @@ class ProductRepository extends EntityRepository
      */
     public function setoffset($offset = null)
     {
-        if(!is_null($offset)){
+        if(!is_null($offset) && is_numeric($offset)){
             $this->offset = $offset;
             return true;
         }
@@ -101,7 +101,7 @@ class ProductRepository extends EntityRepository
      */
     public function getLimit()
     {
-        if(!is_null($this->limit)){
+        if(!is_null($this->limit) && is_numeric($this->limit)){
             return $this->limit;
         }
         throw new NotFoundHttpException();
@@ -117,7 +117,7 @@ class ProductRepository extends EntityRepository
      */
     public function getOffset()
     {
-        if(!is_null($this->offset)){
+        if(!is_null($this->offset) && is_numeric($this->offset)){
             return $this->offset;
         }
         throw new NotFoundHttpException();

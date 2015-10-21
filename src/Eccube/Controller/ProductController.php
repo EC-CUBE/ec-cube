@@ -75,8 +75,6 @@ class ProductController
         $app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
         $app['eccube.repository.product']->setLimit($maxpage);
 
-
-
         //ソート条件判定
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
             //件数カウント
