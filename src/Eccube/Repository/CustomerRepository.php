@@ -27,6 +27,8 @@ namespace Eccube\Repository;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Util\Str;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -82,7 +84,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         $CustomerStatus = $this
             ->getEntityManager()
             ->getRepository('Eccube\Entity\Master\CustomerStatus')
-            ->find(\Eccube\Entity\Master\CustomerStatus::ACTIVE);
+            ->find(CustomerStatus::ACTIVE);
 
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email')
@@ -144,16 +146,18 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->andWhere('c.del_flg = 0');
 
         if (!empty($searchData['multi']) && $searchData['multi']) {
-            if (preg_match('/^\d+$/', $searchData['multi'])) {
+            //スペース除去
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '',$searchData['multi']);
+            if (preg_match('/^\d+$/', $clean_key_multi)) {
                 $qb
                     ->andWhere('c.id = :customer_id')
-                    ->setParameter('customer_id', $searchData['multi']);
+                    ->setParameter('customer_id', $clean_key_multi);
             } else {
                 $qb
                     ->andWhere('CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
-                    ->setParameter('name', '%' . $searchData['multi'] . '%')
-                    ->setParameter('kana', '%' . $searchData['multi'] . '%')
-                    ->setParameter('email', '%' . $searchData['multi'] . '%');
+                    ->setParameter('name', '%' . $clean_key_multi . '%')
+                    ->setParameter('kana', '%' . $clean_key_multi . '%')
+                    ->setParameter('email', '%' . $clean_key_multi . '%');
             }
         }
 
@@ -193,7 +197,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('birth_start', $date);
         }
         if (!empty($searchData['birth_end']) && $searchData['birth_end']) {
-            $date = $searchData['birth_end']
+            $date = clone $searchData['birth_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -241,7 +246,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('create_date_start', $date);
         }
         if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
-            $date = $searchData['create_date_end']
+            $date = clone $searchData['create_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -258,7 +264,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -275,7 +282,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('last_buy_start', $date);
         }
         if (!empty($searchData['last_buy_end']) && $searchData['last_buy_end']) {
-            $date = $searchData['last_buy_end']
+            $date = clone $searchData['last_buy_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -312,7 +320,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      */
     public function getUniqueSecretKey($app)
     {
-        $unique = md5(uniqid(rand(), 1));
+        $unique = Str::random(32);
         $Customer = $app['eccube.repository.customer']->findBy(array(
             'secret_key' => $unique,
         ));
@@ -330,7 +338,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      */
     public function getUniqueResetKey($app)
     {
-        $unique = md5(uniqid(rand(), 1));
+        $unique = Str::random(32);
         $Customer = $app['eccube.repository.customer']->findBy(array(
                         'reset_key' => $unique,
         ));
@@ -375,7 +383,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->leftJoin('c.Status', 's')
             ->andWhere('s.id = :status')
             ->setParameter('secret_key', $secret_key)
-            ->setParameter('status', 1);
+            ->setParameter('status', CustomerStatus::NONACTIVE);
         $query = $qb->getQuery();
 
         return $query->getSingleResult();
@@ -383,11 +391,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
     public function getActiveCustomerByEmail($email)
     {
-        // TODO:Customer.Status -> 先頭小文字では？
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email AND c.Status = :status')
             ->setParameter('email', $email)
-            ->setParameter('status', 2)
+            ->setParameter('status', CustomerStatus::ACTIVE)
             ->getQuery();
 
         $Customer = $query->getOneOrNullResult();
@@ -397,11 +404,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
     public function getActiveCustomerByResetKey($reset_key)
     {
-        // TODO:Customer.Status -> 先頭小文字では？
         $query = $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
             ->setParameter('reset_key', $reset_key)
-            ->setParameter('status', 2)
+            ->setParameter('status', CustomerStatus::ACTIVE)
             ->setParameter('reset_expire', new \DateTime())
             ->getQuery();
 
@@ -412,7 +418,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
     public function getResetPassword()
     {
-        // TODO : これで良いか？(大文字込みならもうちょっと別のやりかたで）
-        return substr(base_convert(md5(uniqid()), 16, 36), 0, 8);
+        return Str::random(8);
     }
 }

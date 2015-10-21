@@ -101,6 +101,11 @@ class TaxRuleRepository extends EntityRepository
         }
         if ($ProductClass instanceof \Eccube\Entity\ProductClass) {
             $productClassId = $ProductClass->getId();
+        } else if ($ProductClass instanceof \Eccube\Entity\ShipmentItem) {
+            // XXX https://github.com/EC-CUBE/ec-cube/issues/1029
+            // 注文処理時、TaxRuleEventSubscriber::prePersistからの呼び出しで、
+            // $ProductClassにShipmentItemがsetされて呼び出されるのに対応
+            $productClassId = '';
         } elseif ($ProductClass) {
             $productClassId = $ProductClass;
         } else {
@@ -120,7 +125,7 @@ class TaxRuleRepository extends EntityRepository
         } else {
             $countryId = '0';
         }
-        $cacheKey = $productId . ':' . $productClassId . ':' . $prefId . ':' . $countryId;
+        $cacheKey = $productId.':'.$productClassId.':'.$prefId.':'.$countryId;
 
         // すでに取得している場合はキャッシュから
         if (isset($this->rules[$cacheKey])) {
@@ -154,7 +159,7 @@ class TaxRuleRepository extends EntityRepository
          */
 
         // Product
-        if ($Product && $Product->getId()) {
+        if ($Product && $productId > 0) {
             $qb->andWhere('t.Product IS NULL OR t.Product = :Product');
             $parameters['Product'] = $Product;
         } else {
@@ -162,7 +167,7 @@ class TaxRuleRepository extends EntityRepository
         }
 
         // ProductClass
-        if ($ProductClass && $ProductClass->getId()) {
+        if ($ProductClass && $productClassId > 0) {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $parameters['ProductClass'] = $ProductClass;
         } else {
@@ -183,6 +188,7 @@ class TaxRuleRepository extends EntityRepository
             $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $key));
         }
 
+        $ranked = false;
         foreach ($TaxRules as $TaxRule) {
             $rank = 0;
             foreach ($priorityKeys as $index => $key) {
@@ -191,6 +197,7 @@ class TaxRuleRepository extends EntityRepository
 
                     // 配列の数値添字を重みとして利用する
                     $rank += 1 << ($index + 1);
+                    $ranked = true;
                 }
             }
 

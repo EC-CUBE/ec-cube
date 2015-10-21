@@ -24,25 +24,8 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Application;
-use Eccube\Tests\Mock\CsrfTokenMock;
+use Eccube\Tests\EccubeTestCase;
 
-class AbstractServiceTestCase extends \PHPUnit_Framework_TestCase
+class AbstractServiceTestCase extends EccubeTestCase
 {
-    protected $app;
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->app = new Application();
-        $this->app->initialize();
-        $this->app['session.test'] = true;
-        $this->app['exception_handler']->disable();
-
-        $this->app['form.csrf_provider'] = $this->app->share(function () {
-            return new CsrfTokenMock();
-        });
-
-        $this->app->boot();
-    }
 }

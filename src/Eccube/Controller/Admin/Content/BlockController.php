@@ -29,6 +29,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BlockController extends AbstractController
 {
@@ -52,6 +53,10 @@ class BlockController extends AbstractController
 
         $Block = $app['eccube.repository.block']
             ->findOrCreate($id, $DeviceType);
+
+        if (!$Block) {
+            throw new NotFoundHttpException();
+        }
 
         $form = $app['form.factory']
             ->createBuilder('block', $Block)
@@ -121,6 +126,7 @@ class BlockController extends AbstractController
         $Block = $app['eccube.repository.block']->findOrCreate($id, $DeviceType);
 
         // ユーザーが作ったブロックのみ削除する
+        // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る
         if ($Block->getDeletableFlg() > 0) {
             $tplDir = $app['config']['block_realdir'];
             $file = $tplDir . '/' . $Block->getFileName() . '.twig';
