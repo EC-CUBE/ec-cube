@@ -96,7 +96,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 
         // ソート:価格降順ブジェクト配列取得
         $cobj = $this->app['eccube.repository.product']->getObjectCollectionBySearchData($search_datas);
-        $pagination = $this->$app['paginator']()->paginate(array());
+        $pagination = $this->app['paginator']()->paginate(array());
         $pagination->setCurrentPageNumber($pageno);
         $pagination->setItemNumberPerPage($maxpage);
         $pagination->setTotalItemCount($count);
