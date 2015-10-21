@@ -71,10 +71,12 @@ class OrderController extends AbstractController
                 $session->set('eccube.admin.order.search', $searchData);
                 $active = true;
             }else{
+                /*
                 echo '<pre>';
                 var_dump($searchForm->getErrors()->getForm()->children);
                 echo '</pre>';
                 exit();
+                */
             }
 
         } else {

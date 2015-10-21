@@ -162,6 +162,7 @@ class SearchOrderType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
             ))
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
