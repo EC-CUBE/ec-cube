@@ -256,11 +256,13 @@ class ProductRepository extends EntityRepository
 
         $qb->innerJoin('p.ProductClasses', 'pc')
             ->select('p.id')
+            //->distinct('p.id')
             ->addSelect('p')
             //->addSelect($qb->expr()->MAX('pc.price02'))
             ->addSelect('pc.price02')
             ->groupBy('p.id')
-            ->orderBy('pc.price02', 'DESC');
+            ->orderBy('pc.price02', 'DESC')
+            ->orderBy('pc.id', 'ASC');
 
         return $qb;
     }
