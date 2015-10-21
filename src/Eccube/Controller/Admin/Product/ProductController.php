@@ -54,8 +54,6 @@ class ProductController extends AbstractController
         $page_status = null;
         $active = false;
 
-        //ページネーと処理
-
         if ('POST' === $request->getMethod()) {
 
             $searchForm->handleRequest($request);
@@ -63,49 +61,16 @@ class ProductController extends AbstractController
             if ($searchForm->isValid()) {
                 $searchData = $searchForm->getData();
 
-                /*
-                //ページネーション初期値設定
-                $pageno = !empty($searchData['pageno']) ? $searchData['pageno'] : 1;
-                $maxpage = $searchData['disp_number']->getId();
-                $app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
-                $app['eccube.repository.product']->setLimit($maxpage);
-
-                //ソート条件判定
-                if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
-                    //件数カウント
-                    $count = $app['eccube.repository.product']->countObjectCollectionBySearchData($searchData);
-                    // ソート:価格降順ブジェクト配列取得
-                    $cobj = $app['eccube.repository.product']->getObjectCollectionBySearchData($searchData);
-                    $pagination = $app['paginator']()->paginate(array());
-                    $pagination->setCurrentPageNumber($pageno);
-                    $pagination->setItemNumberPerPage($maxpage);
-                   $pagination->setTotalItemCount($count);
-                    $pagination->setItems($cobj);
-                }else{
-                    // ソート:新着情報・デフォルト処理時クエリブジェクト取得
-                    $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
-                    $pagination = $app['paginator']()->paginate(
-                        $qb,
-                        $pageno,
-                        $maxpage
-                    );
-                }
-                */
-
                 // paginator
                 $page_no = 1;
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                 $items = $qb->getQuery()->getResult();
-
-                echo '<pre>';
-                var_dump($items);
-                echo '</pre>';
-                exit();
-                $pagination = $app['paginator']()->paginate(array());
-                $pagination->setCurrentPageNumber($page_no);
-                $pagination->setItemNumberPerPage($pageMaxis);
+                $pagination = $app['paginator']()->paginate(
+                    $qb,
+                    $page_no,
+                    $page_count
+                );
                 $pagination->setTotalItemCount(count($items));
-                $pagination->setItems($items);
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
@@ -148,11 +113,12 @@ class ProductController extends AbstractController
                     //ページング処理(検索を一回でも行っている場合)
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                     $items = $qb->getQuery()->getResult();
-                    $pagination = $app['paginator']()->paginate(array());
-                    $pagination->setCurrentPageNumber($page_no);
-                    $pagination->setItemNumberPerPage($page_count);
+                    $pagination = $app['paginator']()->paginate(
+                        $qb,
+                        $page_no,
+                        $pcount
+                    );
                     $pagination->setTotalItemCount(count($items));
-                    $pagination->setItems($items);
 
                     // セッションから検索条件を復元
                     if (!empty($searchData['category_id'])) {
@@ -182,26 +148,7 @@ class ProductController extends AbstractController
                     $active = true;
                 }
             }
-            //ページネーション処理必要
-            //ページング処理(検索を一回でも行っている場合)
-            //$qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
-            //@check here@yoshinaga add
-            /*
-            $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
-            $items = $qb->getQuery()->getResult();
-            $pagination = $app['paginator']()->paginate(array());
-            $pagination->setCurrentPageNumber($page_no);
-            $pagination->setItemNumberPerPage($page_count);
-            $pagination->setTotalItemCount(count($items));
-            $pagination->setItems($items);
-            $pagination = $app['paginator']()->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-            );
-            */
-            //@check here@yoshinaga add
-        }
+       }
 
         return $app->renderView('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
