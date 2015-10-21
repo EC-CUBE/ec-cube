@@ -55,14 +55,14 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
     {
         $limit_bad_arg = 'a';
         $res = $this->app['eccube.repository.product']->setLimit($limit_bad_arg);
-        assertFalse($res);
+        $this->assertFalse($res);
     }
 
     public function testSetOffset()
     {
         $offset_bad_arg = 'a';
         $res = $this->app['eccube.repository.product']->setOffset($offset_bad_arg);
-        assertFalse($res);
+        $this->assertFalse($res);
     }
 
     public function testGetLimit()
@@ -70,7 +70,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $limit_good_arg = 1;
         $res = $this->app['eccube.repository.product']->setLimit($limit_good_arg);
         $res = $this->app['eccube.repository.product']->getLimit();
-        assertEquals($res, $limit_good_arg);
+        $this->assertEquals($res, $limit_good_arg);
     }
 
     public function testGetOffset()
@@ -78,7 +78,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $offset_good_arg = 10;
         $res = $this->app['eccube.repository.product']->setOffset($offset_good_arg);
         $res = $this->app['eccube.repository.product']->getOffset();
-        assertEquals($res, $offset_good_arg);
+        $this->assertEquals($res, $offset_good_arg);
     }
 
     public function testGetObjectCollectionBySearchData()
@@ -103,7 +103,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $pagination->setItems($cobj);
         $paginate_num = $pagination->getItems();
 
-        assertTrue(count($paginate_num), count($maxpage));
+        $this->assertTrue(count($paginate_num), count($maxpage));
     }
 
     public function testGetQueryBuilderBySearchData()
@@ -123,7 +123,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 
         $paginate_num = $pagination->getItems();
 
-        assertTrue(count($paginate_num), count($maxpage));
+        $this->assertTrue(count($paginate_num), count($maxpage));
     }
 
 
