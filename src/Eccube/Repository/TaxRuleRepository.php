@@ -101,6 +101,10 @@ class TaxRuleRepository extends EntityRepository
         }
         if ($ProductClass instanceof \Eccube\Entity\ProductClass) {
             $productClassId = $ProductClass->getId();
+        } else if ($ProductClass instanceof \Eccube\Entity\ShipmentItem) {
+            // 注文処理時、TaxRuleEventSubscriber::prePersistからの呼び出しで、
+            // $ProductClassにShipmentItemがsetされて呼び出されるのに対応
+            $productClassId = '';
         } elseif ($ProductClass) {
             $productClassId = $ProductClass;
         } else {
@@ -120,7 +124,7 @@ class TaxRuleRepository extends EntityRepository
         } else {
             $countryId = '';
         }
-        $cacheKey = $productId . ':' . $productClassId . ':' . $prefId . ':' . $countryId;
+        $cacheKey = $productId.':'.$productClassId.':'.$prefId.':'.$countryId;
 
         // すでに取得している場合はキャッシュから
         if (isset($this->rules[$cacheKey])) {
@@ -157,7 +161,7 @@ class TaxRuleRepository extends EntityRepository
         }
 
         // ProductClass
-        if ($ProductClass) {
+        if ($ProductClass && $productClassId != '') {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $parameters['ProductClass'] = $ProductClass;
         } else {
@@ -177,20 +181,32 @@ class TaxRuleRepository extends EntityRepository
             $priorityKeys[] = preg_replace('/_id\z/', '', $key);
         }
 
+        $ranked = false;
         foreach ($TaxRules as $TaxRule) {
             $rank = 0;
             foreach ($priorityKeys as $index => $key) {
                 if ($TaxRule[$key]) {
                     // 配列の数値添字を重みとして利用する
                     $rank += 1 << ($index + 1);
+                    $ranked = true;
                 }
             }
             $TaxRule->setRank($rank);
         }
 
-        usort($TaxRules, function ($a, $b) {
-            return strcmp($a->getRank(), $b->getRank());
-        });
+        if ($ranked) {
+            usort($TaxRules, function($a, $b) {
+                if ($a->getRank() == $b->getRank()) {
+                    if ($a->getApplyDate() > $b->getApplyDate()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                    return 0;
+                }
+                return ($a->getRank() > $b->getRank()) ? -1 : 1;
+            });
+        }
 
         if ($TaxRules) {
             $this->rules[$cacheKey] = $TaxRules[0];
