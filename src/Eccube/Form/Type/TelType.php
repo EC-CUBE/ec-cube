@@ -34,7 +34,7 @@ class TelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function __construct($config = array('tel_len' => 5))
+    public function __construct($config = array('tel_len' => 5, 'tel_len_min' => 2))
     {
         $this->config = $config;
     }
