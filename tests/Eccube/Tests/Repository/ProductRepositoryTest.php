@@ -152,10 +152,6 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $this->verify();
     }
 
-    public testGetObjectCollectionBySearchData(){
-
-    }
-
     public function testGetFavoriteProductQueryBuilderByCustomer()
     {
         $Customer = $this->createCustomer();
