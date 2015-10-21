@@ -51,21 +51,13 @@ abstract class EccubeTestCase extends WebTestCase
 
     /**
      * トランザクションをロールバックする.
-     *
-     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
      */
     public function tearDown()
     {
         parent::tearDown();
         $this->app['orm.em']->getConnection()->rollback();
         $this->app['orm.em']->getConnection()->close();
-        $refl = new \ReflectionObject($this);
-        foreach ($refl->getProperties() as $prop) {
-            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
-                $prop->setAccessible(true);
-                $prop->setValue($this, null);
-            }
-        }
+        $this->cleanUpProperties();
     }
 
     /**
@@ -347,5 +339,23 @@ abstract class EccubeTestCase extends WebTestCase
         $app->boot();
 
         return $app;
+    }
+
+    /**
+     * PHPUnit_* インスタンスのプロパティを初期化する.
+     *
+     * このメソッドは、PHPUnit のメモリリーク解消のため、 tearDown() メソッドでコールされる.
+     *
+     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
+     */
+    protected function cleanUpProperties()
+    {
+        $refl = new \ReflectionObject($this);
+        foreach ($refl->getProperties() as $prop) {
+            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
+                $prop->setAccessible(true);
+                $prop->setValue($this, null);
+            }
+        }
     }
 }
