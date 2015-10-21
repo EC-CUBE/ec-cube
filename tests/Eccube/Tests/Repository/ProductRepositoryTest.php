@@ -23,7 +23,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
     public function _getSearchData($order){
         //オブジェクト生成
-        $page_list_max_obj = new eccube\entity\master\productlistmax;
+        $page_list_max_obj = new Eccube\Entity\Master\ProductListMax;
         $page_list_max_obj->setId(15);
         $page_list_max_obj->setName('15件');
         $page_list_max_obj->setRank(0);
