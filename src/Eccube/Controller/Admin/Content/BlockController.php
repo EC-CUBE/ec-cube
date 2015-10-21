@@ -126,6 +126,7 @@ class BlockController extends AbstractController
         $Block = $app['eccube.repository.block']->findOrCreate($id, $DeviceType);
 
         // ユーザーが作ったブロックのみ削除する
+        // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る
         if ($Block->getDeletableFlg() > 0) {
             $tplDir = $app['config']['block_realdir'];
             $file = $tplDir . '/' . $Block->getFileName() . '.twig';

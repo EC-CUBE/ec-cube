@@ -73,6 +73,7 @@ class TemplateController extends AbstractController
                 $config['template_realdir'] = $config['root_dir'] . '/app/template/' . $templateCode;
                 $config['template_html_realdir'] = $config['root_dir'] . '/html/template/' . $templateCode;
                 $config['front_urlpath'] = $config['root_urlpath'] . '/template/' . $templateCode;
+                $config['block_realdir'] =$config['template_realdir'] . '/Block';
 
                 file_put_contents($file, Yaml::dump($config));
 
