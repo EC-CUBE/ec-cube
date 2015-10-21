@@ -49,13 +49,21 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     {
 //         self::markTestSkipped();
 
+        // before
+        $TestCreator = $this->findMember(1);
+        $TestNews = $this->newTestNews($TestCreator);
+        $this->insertTestNews($TestNews);
+
+        $test_news_id = $this->getTestNewsId($TestNews);
+
+        // main
         $this->client->request('GET',
-            $this->app->url(
-                'admin_content_news_edit',
-                array('id' => 1)
-            )
+            $this->app->url( 'admin_content_news_edit', array('id' => $test_news_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // after
+        $this->deleteTestNews($TestNews);
     }
 
 
@@ -63,15 +71,22 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     {
 //         self::markTestSkipped();
 
+        // before
+        $TestCreator = $this->findMember(1);
+        $TestNews = $this->newTestNews($TestCreator);
+        $this->insertTestNews($TestNews);
+
+        $test_news_id = $this->getTestNewsId($TestNews);
+
+        // main
         $redirectUrl = $this->app->url('admin_content_news');
-
         $this->client->request('DELETE',
-            $this->app->url('admin_content_news_delete', array('id' => 1))
+            $this->app->url('admin_content_news_delete', array('id' => $test_news_id))
         );
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $actual = $this->client->getResponse()->isRedirect($redirectUrl);
-
-        $this->assertSame(true, $actual);
+        // after
+        $this->deleteTestNews($TestNews);
     }
 
     public function testRoutingAdminContentNewsUp()
@@ -79,18 +94,12 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 //         self::markTestSkipped();
 
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
-        $TestNews = $this->newTestNews($TestCreator);
-        $this->app['orm.em']->persist($TestNews);
-        $this->app['orm.em']->flush();
+        $TestCreator = $this->findMember(1);
+        $TestNews1 = $this->newTestNews($TestCreator, 1);
+        $TestNews2 = $this->newTestNews($TestCreator, 2);
+        $this->insertTestNews($TestNews);
 
-        $test_news_id = $this->app['eccube.repository.news']
-            ->findOneBy(array(
-                'title' => $TestNews->getTitle()
-            ))
-            ->getId();
+        $test_news_id = $this->getTestNewsId($TestNews1);
 
         // main
         $redirectUrl = $this->app->url('admin_content_news');
@@ -100,8 +109,8 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         // after
-        $this->app['orm.em']->remove($TestNews);
-        $this->app['orm.em']->flush();
+        $this->deleteTestNews($TestNews1);
+        $this->deleteTestNews($TestNews2);
     }
 
     public function testRoutingAdminContentNewsDown()
@@ -109,18 +118,12 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 //         self::markTestSkipped();
 
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
-        $TestNews = $this->newTestNews($TestCreator);
-        $this->app['orm.em']->persist($TestNews);
-        $this->app['orm.em']->flush();
+        $TestCreator = $this->findMember(1);
+        $TestNews1 = $this->newTestNews($TestCreator, 1);
+        $TestNews2 = $this->newTestNews($TestCreator, 2);
+        $this->insertTestNews($TestNews);
 
-        $test_news_id = $this->app['eccube.repository.news']
-            ->findOneBy(array(
-                'title' => $TestNews->getTitle()
-            ))
-            ->getId();
+        $test_news_id = $this->getTestNewsId($TestNews2);
 
         // main
         $redirectUrl = $this->app->url('admin_content_news');
@@ -130,24 +133,54 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         // after
-        $this->app['orm.em']->remove($TestNews);
-        $this->app['orm.em']->flush();
+        $this->deleteTestNews($TestNews1);
+        $this->deleteTestNews($TestNews2);
     }
 
-    private function newTestNews($TestCreator)
+    private function newTestNews($TestCreator, $rank = 1)
     {
         $TestNews = new \Eccube\Entity\News();
         $TestNews
             ->setDate(new \DateTime())
-            ->setTitle('テストタイトル')
-            ->setComment('テスト内容')
+            ->setTitle('テストタイトル' . $rank)
+            ->setComment('テスト内容' . $rank)
             ->setUrl('http://example.com/')
-            ->setRank(100)
+            ->setRank(100 + $rank)
             ->setSelect(0)
             ->setLinkMethod(0)
-            ->setDelFlg(false)
+            ->setDelFlg(0)
             ->setCreator($TestCreator);
 
         return $TestNews;
+    }
+
+    private function findMember($id)
+    {
+        return $this->app['orm.em']
+            ->getRepository('Eccube\Entity\Member')
+            ->find($id);
+    }
+
+    private function insertTestNews($TestNews)
+    {
+        $this->app['orm.em']->persist($TestNews);
+        $this->app['orm.em']->flush();
+    }
+
+    private function deleteTestNews($TestNews)
+    {
+        $this->app['orm.em']->remove($TestNews);
+        $this->app['orm.em']->flush();
+    }
+
+    private function getTestNewsId($TestNews)
+    {
+        $test_news_id = $this->app['eccube.repository.news']
+            ->findOneBy(array(
+                'title' => $TestNews->getTitle()
+            ))
+            ->getId();
+
+        return $test_news_id;
     }
 }
