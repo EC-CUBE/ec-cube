@@ -153,6 +153,7 @@ class ProductRepository extends EntityRepository
             ->leftJoin('p.ProductImage', 'pi')
             ->innerJoin('p.ProductClasses', 'pc');
 
+
         // id
         if (!empty($searchData['id']) && $searchData['id']) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
@@ -201,6 +202,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Status', $searchData['status']->toArray());
         }
 
+        // @comment 本ブロック必要??
         // link_status
         if (isset($searchData['link_status'])) {
             $qb
@@ -208,6 +210,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Status', $searchData['link_status']);
         }
 
+        // @comment 本ブロック必要??
         // stock status
         if (isset($searchData['stock_status'])) {
             $qb
@@ -242,6 +245,7 @@ class ProductRepository extends EntityRepository
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
+
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
