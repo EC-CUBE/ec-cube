@@ -102,8 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <a href="#" class="toggle{% if active %} active{% endif %}">
           <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg>
         </a>
-        <!-- <div class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}> -->
-        <div class="search-box-inner" {% if active %} style="display: block;"{% endif %}>
+        <div class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
           <div class="row">
             <div class="col-sm-12 col-lg-10 col-lg-offset-1 search">
 
@@ -132,7 +131,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   <label>メールアドレス</label>
                   <div class="form-group">
                     {{ form_widget(searchForm.email) }}
-                    {{ form_errors(searchForm.email) }}
                   </div>
                 </div>
               </div><!-- /.row -->
@@ -141,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label>電話番号</label>
-                    {{ form_row(searchForm.tel) }}
+                    {{ form_widget(searchForm.tel) }}
                   </div>
                 </div>
                 <div class="col-xs-6">

@@ -43,11 +43,6 @@ class OrderController extends AbstractController
             ->createBuilder('admin_search_order')
             ->getForm();
 
-        echo '<pre>';
-        var_dump($searchForm);
-        echo '</pre>';
-        exit();
-
         $pagination = array();
 
         $disps = $app['eccube.repository.master.disp']->findAll();
