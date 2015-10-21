@@ -88,14 +88,14 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         //ページネーション初期値設定
         $pageno = !empty($search_datas['pageno']) ? $search_datas['pageno'] : 1;
         $maxpage = $search_datas['disp_number']->getId();
-        $app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
-        $app['eccube.repository.product']->setLimit($maxpage);
+        $this->app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
+        $this->app['eccube.repository.product']->setLimit($maxpage);
 
         //件数カウント
-        $count = $app['eccube.repository.product']->countObjectCollectionBySearchData($search_datas);
+        $count = $this->app['eccube.repository.product']->countObjectCollectionBySearchData($search_datas);
 
         // ソート:価格降順ブジェクト配列取得
-        $cobj = $app['eccube.repository.product']->getObjectCollectionBySearchData($search_datas);
+        $cobj = $this->app['eccube.repository.product']->getObjectCollectionBySearchData($search_datas);
         $pagination = $app['paginator']()->paginate(array());
         $pagination->setCurrentPageNumber($pageno);
         $pagination->setItemNumberPerPage($maxpage);
@@ -114,7 +114,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $pageno = !empty($search_datas['pageno']) ? $search_datas['pageno'] : 1;
         $maxpage = $search_datas['disp_number']->getId();
 
-        $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+        $qb = $this->app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
         $pagination = $app['paginator']()->paginate(
             $qb,
             $pageno,
