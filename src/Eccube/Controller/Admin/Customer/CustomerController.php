@@ -42,6 +42,9 @@ class CustomerController extends AbstractController
             ->createBuilder('admin_search_customer')
             ->getForm();
 
+        //アコーディオンの制御初期化( デフォルトでは閉じる )
+        $active = false;
+
         $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
         $page_count = $app['config']['default_page_count'];
 
@@ -64,6 +67,7 @@ class CustomerController extends AbstractController
                 // sessionのデータ保持
                 $session->set('eccube.admin.customer.search', $searchData);
             }
+            $active = true;
         } else {
             if (is_null($page_no)) {
                 // sessionを削除
@@ -75,7 +79,7 @@ class CustomerController extends AbstractController
                     // 表示件数
                     $pcount = $request->get('page_count');
                     $page_count = empty($pcount) ? $page_count : $pcount;
-                    
+
                     $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
                     $pagination = $app['paginator']()->paginate(
                         $qb,
@@ -96,8 +100,8 @@ class CustomerController extends AbstractController
                         $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
                         \Doctrine\Common\Util\Debug::dump($searchData['pref']);
                     }
-                    
                     $searchForm->setData($searchData);
+                    $active = true;
                 }
             }
         }
@@ -107,6 +111,7 @@ class CustomerController extends AbstractController
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_count' => $page_count,
+            'active' => $active,
         ));
     }
 

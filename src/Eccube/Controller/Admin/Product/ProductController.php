@@ -71,8 +71,8 @@ class ProductController extends AbstractController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
-                $active = true;
             }
+            $active = true;
         } else {
             if (is_null($page_no)) {
                 // sessionを削除

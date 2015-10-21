@@ -61,6 +61,12 @@ class SearchOrderType extends AbstractType
             ))
             ->add('kana', 'text', array(
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        'message' => 'form.type.admin.notkanastyle',
+                    )),
+                ),
             ))
             ->add('email', 'email', array(
                 'required' => false,
@@ -69,8 +75,8 @@ class SearchOrderType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        'message' => "Fuck Off!!",
+                        'pattern' => "/^[\d-]+$/u",
+                        'message' => 'form.type.admin.nottelstyle',
                     )),
                 ),
             ))
@@ -162,7 +168,6 @@ class SearchOrderType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
