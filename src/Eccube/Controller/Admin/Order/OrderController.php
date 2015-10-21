@@ -70,7 +70,13 @@ class OrderController extends AbstractController
                 // sessionのデータ保持
                 $session->set('eccube.admin.order.search', $searchData);
                 $active = true;
+            }else{
+                echo '<pre>';
+                var_dump($searchForm);
+                echo '</pre>';
+                exit();
             }
+
         } else {
             if (is_null($page_no)) {
                 // sessionを削除
