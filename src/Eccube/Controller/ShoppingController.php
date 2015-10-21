@@ -257,6 +257,9 @@ class ShoppingController extends AbstractController
 
                 $shippings = $data['shippings'];
 
+                $productDeliveryFeeTotal = 0;
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+
                 foreach ($shippings as $Shipping) {
 
                     $Delivery = $Shipping->getDelivery();
@@ -264,10 +267,15 @@ class ShoppingController extends AbstractController
                     $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
                         'Delivery' => $Delivery,
                         'Pref' => $Shipping->getPref()
-                    ));
+                        ));
+
+                    // 商品ごとの配送料合計
+                    if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
+                        $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
+                    }
 
                     $Shipping->setDeliveryFee($deliveryFee);
-                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee());
+                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
                     $Shipping->setShippingDeliveryName($Delivery->getName());
                 }
 
@@ -978,7 +986,7 @@ class ShoppingController extends AbstractController
     {
         return $app->render('Shopping/shopping_error.twig');
     }
-    
+
     /**
      * お届け先変更がクリックされた場合の処理
      */
@@ -1060,5 +1068,4 @@ class ShoppingController extends AbstractController
       return $app->redirect($app->url('shopping'));
     }
 
-    
 }

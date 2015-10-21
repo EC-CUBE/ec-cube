@@ -113,7 +113,7 @@ $(function() {
                                 $('#searchCustomerModal').modal('hide');
                             },
                             error: function() {
-                                console.log('search customer(by id) failed.');
+                                alert('search customer(by id) failed.');
                             }
                         });
                      });
@@ -189,6 +189,31 @@ $(function() {
     };
 
     onChangeOrderDetailCount();
+
+
+    // 配送業者選択時にお届け時間を設定
+    var times = {{ shippingDeliveryTimes|raw }};
+
+    $('.shipping-delivery').change(function(){
+        var data = $(this).data();
+        setShippingDeliveryTime($(this).val(), data.idx);
+    });
+
+    function setShippingDeliveryTime(val, idx){
+        var $shippingDeliveryTime = $('.shipping-delivery-time[data-idx="' + idx + '"]');
+        $shippingDeliveryTime.find('option').remove();
+        $shippingDeliveryTime.append($('<option></option>').val('').text('指定なし'));
+
+        if (typeof(times[val]) !== 'undefined') {
+            for (var key in times[val]){
+                text = times[val][key];
+                $shippingDeliveryTime.append($('<option></option>')
+                    .val(key)
+                    .text(text));
+            }
+        }
+    }
+
 });
 var setModeAndSubmit = function(mode, keyname, keyid) {
     document.form1.modal.value = mode;
@@ -636,7 +661,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% if shippingForm.vars.value.shipping_delivery_name is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_name }}<br/>
                                     {% endif %}
-                                    {{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto'}}) }}
+                                    {{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery', 'data-idx': loop.index0}}) }}
                                     {{ form_errors(shippingForm.Delivery) }}
                                 </div>
                             </div>
@@ -649,7 +674,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% else %}
                                         指定なし
                                     {% endif %}
-                                    {{ form_widget(shippingForm.DeliveryTime, {'attr': {'style': 'width:auto'}}) }}
+                                    {{ form_widget(shippingForm.DeliveryTime, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery-time', 'data-idx': loop.index0}}) }}
                                     {{ form_errors(shippingForm.DeliveryTime) }}
                                 </div>
                             </div>

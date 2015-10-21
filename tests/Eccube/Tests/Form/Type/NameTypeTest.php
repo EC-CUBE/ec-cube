@@ -96,4 +96,52 @@ class NameTypeTest extends \PHPUnit_Framework_TestCase
         $this->form->submit($data);
         $this->assertFalse($this->form->isValid());
     }
+
+    public function testInvalidData_Name01_HasWhiteSpaceEn()
+    {
+        $data = array(
+            'name' => array(
+                'name01' => 'hoge hoge',
+                'name02' => 'にゅうりょく',
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidData_Name02_HasWhiteSpaceEn()
+    {
+        $data = array(
+            'name' => array(
+                'name01' => 'にゅうりょく',
+                'name02' => 'hoge hoge',
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidData_Name01_HasWhiteSpaceJa()
+    {
+        $data = array(
+            'name' => array(
+                'name01' => 'hoge　hoge',
+                'name02' => 'にゅうりょく',
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidData_Name02_HasWhiteSpaceJa()
+    {
+        $data = array(
+            'name' => array(
+                'name01' => 'にゅうりょく',
+                'name02' => 'hoge　hoge',
+            ));
+
+        $this->form->submit($data);
+        $this->assertFalse($this->form->isValid());
+    }
 }
