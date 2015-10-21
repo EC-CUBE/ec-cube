@@ -57,24 +57,22 @@ class SearchOrderType extends AbstractType
                 'label' => '対応状況',
             ))
             ->add('name', 'text', array(
-                'required' => true,
+                'required' => false,
             ))
             ->add('kana', 'text', array(
-                'required' => true,
+                'required' => false,
             ))
             ->add('email', 'email', array(
-                'required' => true,
+                'required' => false,
             ))
             ->add('tel', 'text', array(
                 'required' => false,
-                /*
                 'constraints' => array(
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        'message' => "Fuck!!",
+                        'message' => "Fuck Off!!",
                     )),
                 ),
-                */
             ))
             ->add('sex', 'sex', array(
                 'label' => '性別',
