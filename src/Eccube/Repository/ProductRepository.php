@@ -148,11 +148,28 @@ class ProductRepository extends EntityRepository
      */
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
+        /*
+        array (size=7)
+      'id' => null
+      'category_id' => null
+      'status' => 
+        object(Doctrine\Common\Collections\ArrayCollection)[1844]
+          private 'elements' => 
+            array (size=0)
+              empty
+      'create_date_start' => null
+      'create_date_end' => null
+      'update_date_start' => null
+      'update_date_end' => null
+      */
+
         $qb = $this->createQueryBuilder('p')
             ->select(array('p', 'pi'))
             ->leftJoin('p.ProductImage', 'pi')
             ->innerJoin('p.ProductClasses', 'pc');
 
+
+        //使用さえている
         // id
         if (!empty($searchData['id']) && $searchData['id']) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
@@ -182,6 +199,7 @@ class ProductRepository extends EntityRepository
         }
        */
 
+        //使用さえている
         // category
         if (!empty($searchData['category_id']) && $searchData['category_id']) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
@@ -194,6 +212,7 @@ class ProductRepository extends EntityRepository
             }
         }
 
+        //使用さえている
         // status
         if (!empty($searchData['status']) && $searchData['status']->toArray()) {
             $qb
@@ -201,6 +220,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Status', $searchData['status']->toArray());
         }
 
+        //不明→パラメーターに渡されていない
         // link_status
         if (isset($searchData['link_status'])) {
             $qb
@@ -208,6 +228,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('Status', $searchData['link_status']);
         }
 
+        //不明→パラメーターに渡されていない
         // stock status
         if (isset($searchData['stock_status'])) {
             $qb
@@ -215,6 +236,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('StockUnlimited', $searchData['stock_status']);
         }
 
+        //使用さえている
         // crate_date
         if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
             $date = $searchData['create_date_start']
@@ -224,6 +246,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('create_date_start', $date);
         }
 
+        //使用さえている
         if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
             $date = $searchData['create_date_end']
                 ->modify('+1 days')
@@ -233,6 +256,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('create_date_end', $date);
         }
 
+        //使用さえている
         // update_date
         if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start']
@@ -241,6 +265,8 @@ class ProductRepository extends EntityRepository
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
+
+        //使用さえている
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = $searchData['update_date_end']
                 ->modify('+1 days')
@@ -255,6 +281,10 @@ class ProductRepository extends EntityRepository
         $qb
             ->orderBy('p.update_date', 'DESC')
             ->addOrderBy('pi.rank', 'DESC');
+
+        echo '<pre>';
+        var_dump($qb->getQuery()->getResult());
+        echo '</pre>';
 
         return $qb;
     }
