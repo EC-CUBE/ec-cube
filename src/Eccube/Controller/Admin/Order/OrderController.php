@@ -72,7 +72,7 @@ class OrderController extends AbstractController
                 $active = true;
             }else{
                 echo '<pre>';
-                var_dump($searchForm);
+                var_dump($searchForm->getErrors());
                 echo '</pre>';
                 exit();
             }
