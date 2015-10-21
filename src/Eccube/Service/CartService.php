@@ -187,7 +187,7 @@ class CartService
      */
     public function getProductQuantity($productClassId)
     {
-        $CartItem = $this->cart->getCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
+        $CartItem = $this->cart->getCartItemByIdentifier('Eccube\Entity\ProductClass', (string) $productClassId);
         if ($CartItem) {
             return $CartItem->getQuantity();
         } else {
@@ -230,10 +230,10 @@ class CartService
 
         $tmp_quantity = 0;
         $product_str = $ProductClass->getProduct()->getName();
-        if($ProductClass->hasClassCategory1()) {
+        if ($ProductClass->hasClassCategory1()) {
             $product_str .= " - ".$ProductClass->getClassCategory1()->getName();
         }
-        if($ProductClass->hasClassCategory2()) {
+        if ($ProductClass->hasClassCategory2()) {
             $product_str .= " - ".$ProductClass->getClassCategory2()->getName();
         }
         $this->session->getFlashBag()->set('eccube.front.request.product', $product_str);
@@ -257,7 +257,7 @@ class CartService
         $CartItem = new CartItem();
         $CartItem
             ->setClassName('Eccube\Entity\ProductClass')
-            ->setClassId((string)$ProductClass->getId())
+            ->setClassId((string) $ProductClass->getId())
             ->setPrice($ProductClass->getPrice02IncTax())
             ->setQuantity($quantity);
 
@@ -378,7 +378,7 @@ class CartService
      */
     public function removeProduct($productClassId)
     {
-        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string)$productClassId);
+        $this->cart->removeCartItemByIdentifier('Eccube\Entity\ProductClass', (string) $productClassId);
 
         // 支払方法の再設定
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
