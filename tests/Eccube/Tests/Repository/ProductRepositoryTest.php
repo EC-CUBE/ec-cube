@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
-    private _getSearchData($order){
+    public function _getSearchData($order){
         //オブジェクト生成
         $page_list_max_obj = new eccube\entity\master\productlistmax;
         $page_list_max_obj->setId(15);
