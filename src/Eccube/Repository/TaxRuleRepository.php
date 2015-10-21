@@ -205,12 +205,12 @@ class TaxRuleRepository extends EntityRepository
         }
 
         // 適用日降順, rank 降順にソートする
-        usort($TaxRules, function ($a, $b) {
+        usort($TaxRules, function($a, $b) {
             return $a->compareTo($b);
         });
 
         if ($TaxRules) {
-           $this->rules[$cacheKey] = $TaxRules[0];
+            $this->rules[$cacheKey] = $TaxRules[0];
             return $TaxRules[0];
         } else {
             throw new NoResultException();
