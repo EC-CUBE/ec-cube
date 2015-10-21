@@ -127,11 +127,6 @@ class OrderController extends AbstractController
             }
         }
 
-        echo '<pre>';
-        var_dump($searchForm);
-        echo '</pre>';
-        exit();
-
         return $app->render('Order/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
