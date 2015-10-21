@@ -18,6 +18,7 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Tests\Mock\CsrfTokenMock;
 use Silex\WebTestCase;
 use Faker\Factory as Faker;
 
@@ -50,21 +51,13 @@ abstract class EccubeTestCase extends WebTestCase
 
     /**
      * トランザクションをロールバックする.
-     *
-     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
      */
     public function tearDown()
     {
         parent::tearDown();
         $this->app['orm.em']->getConnection()->rollback();
         $this->app['orm.em']->getConnection()->close();
-        $refl = new \ReflectionObject($this);
-        foreach ($refl->getProperties() as $prop) {
-            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
-                $prop->setAccessible(true);
-                $prop->setValue($this, null);
-            }
-        }
+        $this->cleanUpProperties();
     }
 
     /**
@@ -339,8 +332,30 @@ abstract class EccubeTestCase extends WebTestCase
         $app['session.test'] = true;
         $app['exception_handler']->disable();
 
+        $app['form.csrf_provider'] = $app->share(function () {
+            return new CsrfTokenMock();
+        });
+
         $app->boot();
 
         return $app;
+    }
+
+    /**
+     * PHPUnit_* インスタンスのプロパティを初期化する.
+     *
+     * このメソッドは、PHPUnit のメモリリーク解消のため、 tearDown() メソッドでコールされる.
+     *
+     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
+     */
+    protected function cleanUpProperties()
+    {
+        $refl = new \ReflectionObject($this);
+        foreach ($refl->getProperties() as $prop) {
+            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
+                $prop->setAccessible(true);
+                $prop->setValue($this, null);
+            }
+        }
     }
 }
