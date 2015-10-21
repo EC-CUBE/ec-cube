@@ -139,18 +139,19 @@ class Application extends ApplicationTrait
             'monolog.logfile' => $file,
         ));
 
+        $app = $this;
         $levels = Logger::getLevels();
-        $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $this) use ($levels, $file) {
+        $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $this) use ($app, $levels, $file) {
 
-            $RotateHandler = new RotatingFileHandler($file, $this['config']['log']['max_files'], $this['config']['log']['log_level']);
+            $RotateHandler = new RotatingFileHandler($file, $app['config']['log']['max_files'], $app['config']['log']['log_level']);
             $RotateHandler->setFilenameFormat(
-                $this['config']['log']['prefix'].'{date}'.$this['config']['log']['suffix'],
-                $this['config']['log']['format']
+                $app['config']['log']['prefix'].'{date}'.$app['config']['log']['suffix'],
+                $app['config']['log']['format']
             );
 
             $FingerCrossedHandler = new FingersCrossedHandler(
                 $RotateHandler,
-                new ErrorLevelActivationStrategy($levels[$this['config']['log']['action_level']])
+                new ErrorLevelActivationStrategy($levels[$app['config']['log']['action_level']])
             );
             $monolog->popHandler();
             $monolog->pushHandler($FingerCrossedHandler);
@@ -174,6 +175,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
+        $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
         $app = $this;
