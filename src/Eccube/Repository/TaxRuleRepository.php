@@ -188,7 +188,6 @@ class TaxRuleRepository extends EntityRepository
             $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $key));
         }
 
-        $ranked = false;
         foreach ($TaxRules as $TaxRule) {
             $rank = 0;
             foreach ($priorityKeys as $index => $key) {
@@ -197,10 +196,8 @@ class TaxRuleRepository extends EntityRepository
 
                     // 配列の数値添字を重みとして利用する
                     $rank += 1 << ($index + 1);
-                    $ranked = true;
                 }
             }
-
             $TaxRule->setRank($rank);
         }
 
@@ -211,6 +208,7 @@ class TaxRuleRepository extends EntityRepository
 
         if ($TaxRules) {
             $this->rules[$cacheKey] = $TaxRules[0];
+
             return $TaxRules[0];
         } else {
             throw new NoResultException();
