@@ -6,7 +6,17 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Order;
+use Eccube\Entity\OrderDetail;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductCategory;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductImage;
+use Eccube\Entity\ProductStock;
+use Eccube\Entity\Shipping;
+use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Master\CustomerStatus;
 use Silex\WebTestCase;
 use Faker\Factory as Faker;
@@ -40,12 +50,21 @@ abstract class EccubeTestCase extends WebTestCase
 
     /**
      * トランザクションをロールバックする.
+     *
+     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
      */
     public function tearDown()
     {
         parent::tearDown();
         $this->app['orm.em']->getConnection()->rollback();
         $this->app['orm.em']->getConnection()->close();
+        $refl = new \ReflectionObject($this);
+        foreach ($refl->getProperties() as $prop) {
+            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
+                $prop->setAccessible(true);
+                $prop->setValue($this, null);
+            }
+        }
     }
 
     /**
@@ -120,6 +139,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Customer オブジェクトを生成して返す.
      *
+     * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
      * @return \Eccube\Entity\Customer
      */
     public function createCustomer($email = null)
@@ -135,13 +155,176 @@ abstract class EccubeTestCase extends WebTestCase
             ->setName02($faker->firstName)
             ->setEmail($email)
             ->setPassword('password')
-            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app)) // TODO app を渡さなくていいはず
+            ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
             ->setStatus($Status)
             ->setDelFlg(0);
         $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush();
         return $Customer;
+    }
+
+    /**
+     * Product オブジェクトを生成して返す.
+     *
+     * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
+     * @param integer $product_class_num 商品規格の生成数
+     * @return \Eccube\Entity\Product
+     */
+    public function createProduct($product_name = null, $product_class_num = 3)
+    {
+        $faker = $this->getFaker();
+        $Member = $this->app['eccube.repository.member']->find(2);
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $Product = new Product();
+        if (is_null($product_name)) {
+            $product_name = $faker->word;
+        }
+
+        $Product
+            ->setName($product_name)
+            ->setCreator($Member)
+            ->setStatus($Disp)
+            ->setDelFlg(Constant::DISABLED)
+            ->setDescriptionList($faker->paragraph())
+            ->setDescriptionDetail($faker->text());
+
+        $this->app['orm.em']->persist($Product);
+        $this->app['orm.em']->flush();
+
+        for ($i = 0; $i < 3; $i++) {
+            $ProductImage = new ProductImage();
+            $ProductImage
+                ->setCreator($Member)
+                ->setFileName($faker->word.'.jpg')
+                ->setRank($i)
+                ->setProduct($Product);
+            $this->app['orm.em']->persist($ProductImage);
+            $Product->addProductImage($ProductImage);
+        }
+
+        for ($i = 0; $i < $product_class_num; $i++) {
+            $ProductStock = new ProductStock();
+            $ProductStock
+                ->setCreator($Member)
+                ->setStock($faker->randomNumber());
+            $this->app['orm.em']->persist($ProductStock);
+            $ProductClass = new ProductClass();
+            $ProductClass
+                ->setCreator($Member)
+                ->setProductStock($ProductStock)
+                ->setProduct($Product)
+                ->setProductType($ProductType)
+                ->setStockUnlimited(false)
+                ->setPrice02($faker->randomNumber(5))
+                ->setDelFlg(Constant::DISABLED);
+            $this->app['orm.em']->persist($ProductClass);
+            $Product->addProductClass($ProductClass);
+        }
+
+        $Categories = $this->app['eccube.repository.category']->findAll();
+        $i = 0;
+        foreach ($Categories as $Category) {
+            $ProductCategory = new ProductCategory();
+            $ProductCategory
+                ->setCategory($Category)
+                ->setProduct($Product)
+                ->setCategoryId($Category->getId())
+                ->setProductId($Product->getId())
+                ->setRank($i);
+            $this->app['orm.em']->persist($ProductCategory);
+            $Product->addProductCategory($ProductCategory);
+            $i++;
+        }
+
+        $this->app['orm.em']->flush();
+        return $Product;
+    }
+
+    /**
+     * Order オブジェクトを生成して返す.
+     *
+     * @param \Eccube\Entity\Customer $Customer Customer インスタンス
+     * @return \Eccube\Entity\Order
+     */
+    public function createOrder(Customer $Customer)
+    {
+        $faker = $this->getFaker();
+        $quantity = $faker->randomNumber(2);
+
+        $Order = new Order();
+        $Order->setCustomer($Customer)
+            ->setCharge(0)
+            ->setDeliveryFeeTotal(0)
+            ->setDiscount(0)
+            ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
+            ->setDelFlg(Constant::DISABLED);
+        $Order->copyProperties($Customer);
+        $this->app['orm.em']->persist($Order);
+        $this->app['orm.em']->flush();
+
+        $Shipping = new Shipping();
+        $Shipping->copyProperties($Customer);
+        $Order->addShipping($Shipping);
+        $Shipping->setOrder($Order);
+        $this->app['orm.em']->persist($Shipping);
+
+        $Product = $this->createProduct();
+        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+
+        $OrderDetail = new OrderDetail();
+        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule(); // デフォルト課税規則
+        $OrderDetail->setProduct($Product)
+            ->setProductClass($ProductClass)
+            ->setProductName($Product->getName())
+            ->setProductCode($ProductClass->getCode())
+            ->setPrice($ProductClass->getPrice02())
+            ->setQuantity($quantity)
+            ->setTaxRule($TaxRule->getCalcRule()->getId())
+            ->setTaxRate($TaxRule->getTaxRate());
+        $this->app['orm.em']->persist($OrderDetail);
+        $OrderDetail->setOrder($Order);
+        $Order->addOrderDetail($OrderDetail);
+
+        $ShipmentItem = new ShipmentItem();
+        $ShipmentItem->setShipping($Shipping)
+            ->setOrder($Order)
+            ->setProductClass($ProductClass)
+            ->setProduct($Product)
+            ->setProductName($Product->getName())
+            ->setProductCode($ProductClass->getCode())
+            ->setPrice($ProductClass->getPrice02())
+            ->setQuantity($quantity);
+        $this->app['orm.em']->persist($ShipmentItem);
+
+        $subTotal = $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
+        // TODO 送料, 手数料の加算
+        $Order->setSubTotal($subTotal);
+        $Order->setTotal($subTotal);
+        $Order->setPaymentTotal($subTotal);
+
+        $this->app['orm.em']->flush();
+        return $Order;
+    }
+
+    /**
+     * テーブルのデータを全て削除する.
+     *
+     * このメソッドは、参照制約の関係で、 Doctrine ORM ではデータ削除できない場合に使用する.
+     * 通常は、 EntityManager::remove() を使用して削除すること.
+     *
+     * @param array $tables 削除対象のテーブル名の配列
+     */
+    public function deleteAllRows(array $tables)
+    {
+        $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
+        foreach ($tables as $table) {
+            $sql = 'DELETE FROM '.$table;
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+        }
     }
 
     /**

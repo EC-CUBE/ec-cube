@@ -198,12 +198,23 @@ class EditController extends AbstractController
             ->createBuilder('admin_search_product')
             ->getForm();
 
+        // 配送業者のお届け時間
+        $times = array();
+        $deliveries = $app['eccube.repository.delivery']->findAll();
+        foreach ($deliveries as $Delivery) {
+            $deliveryTiems = $Delivery->getDeliveryTimes();
+            foreach ($deliveryTiems as $DeliveryTime) {
+                $times[$Delivery->getId()][$DeliveryTime->getId()] = $DeliveryTime->getDeliveryTime();
+            }
+        }
+
         return $app->render('Order/edit.twig', array(
             'form' => $form->createView(),
             'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
             'id' => $id,
+            'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
         ));
     }
 

@@ -29,6 +29,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BlockController extends AbstractController
 {
@@ -52,6 +53,10 @@ class BlockController extends AbstractController
 
         $Block = $app['eccube.repository.block']
             ->findOrCreate($id, $DeviceType);
+
+        if (!$Block) {
+            throw new NotFoundHttpException();
+        }
 
         $form = $app['form.factory']
             ->createBuilder('block', $Block)
@@ -95,13 +100,14 @@ class BlockController extends AbstractController
                     }
                 }
 
+                \Eccube\Util\Cache::clear($app,false);
+
                 $app->addSuccess('admin.register.complete', 'admin');
 
                 return $app->redirect($app->url('admin_content_block_edit', array('id' => $Block->getId())));
             }
         }
 
-        \Eccube\Util\Cache::clear($app,false);
 
         return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),

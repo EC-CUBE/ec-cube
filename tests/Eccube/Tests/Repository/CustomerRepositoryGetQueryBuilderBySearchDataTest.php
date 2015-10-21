@@ -77,7 +77,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(0, count($this->Results));
+        $this->expected = 0;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testMultiWithEmail()
@@ -103,7 +105,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(4, count($this->Results));
+        $this->expected = 4;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testMultiWithName()
@@ -125,6 +129,52 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     }
 
+    public function testMultiWithNameHasSpaceEn()
+    {
+        $this->Customer->setName01('姓');
+        $this->Customer->setName02('名');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => '姓 名'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = '姓';
+        $this->actual = $this->Results[0]->getName01();
+        $this->verify();
+        $this->expected = '名';
+        $this->actual = $this->Results[0]->getName02();
+        $this->verify();
+
+    }
+
+    public function testMultiWithNameHasSpaceJa()
+    {
+        $this->Customer->setName01('姓');
+        $this->Customer->setName02('名');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => '姓　名'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = '姓';
+        $this->actual = $this->Results[0]->getName01();
+        $this->verify();
+        $this->expected = '名';
+        $this->actual = $this->Results[0]->getName02();
+        $this->verify();
+
+    }
+
     public function testMultiWithKana()
     {
         $this->Customer->setKana01('セイ')
@@ -139,6 +189,50 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->assertEquals(1, count($this->Results));
 
+        $this->expected = 'メイ';
+        $this->actual = $this->Results[0]->getKana02();
+        $this->verify();
+    }
+
+    public function testMultiWithKanaHasWhiteSpaceEn()
+    {
+        $this->Customer->setKana01('セイ')
+            ->setKana02('メイ');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => 'セイ メイ'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = 'セイ';
+        $this->actual = $this->Results[0]->getKana01();
+        $this->verify();
+        $this->expected = 'メイ';
+        $this->actual = $this->Results[0]->getKana02();
+        $this->verify();
+    }
+
+    public function testMultiWithKanaHasWhiteSpaceJa()
+    {
+        $this->Customer->setKana01('セイ')
+            ->setKana02('メイ');
+        $this->app['orm.em']->flush();
+
+        $this->searchData = array(
+            'multi' => 'セイ　メイ'
+        );
+
+        $this->scenario();
+
+        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = 'セイ';
+        $this->actual = $this->Results[0]->getKana01();
+        $this->verify();
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
         $this->verify();
@@ -199,7 +293,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(2, count($this->Results));
+        $this->expected = 2;
+        $this->actual = count($this->Results);
     }
 
     public function testBirthMonth()
@@ -211,7 +306,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(4, count($this->Results));
+        $this->expected = 4;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBirthStart()
@@ -226,7 +323,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBirthStartWithOut()
@@ -241,7 +340,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(0, count($this->Results));
+        $this->expected = 0;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBirthEnd()
@@ -256,7 +357,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBirthEndWithOut()
@@ -271,7 +374,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(0, count($this->Results));
+        $this->expected = 0;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testTel()
@@ -288,7 +393,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBuyTotalStart()
@@ -302,7 +409,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     /* https://github.com/EC-CUBE/ec-cube/issues/945
@@ -318,7 +427,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
     */
 
@@ -334,7 +445,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->scenario();
         // TODO buy_total = 0 で初期化されていれば, 1 ではなく 4 になる
         // https://github.com/EC-CUBE/ec-cube/issues/946
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBuyTimesStart()
@@ -348,7 +461,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     /* https://github.com/EC-CUBE/ec-cube/issues/945
@@ -364,7 +479,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
     */
 
@@ -380,7 +497,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->scenario();
         // TODO buy_times = 0 で初期化されていれば, 1 ではなく 4 になる
         // https://github.com/EC-CUBE/ec-cube/issues/946
-        $this->assertEquals(1, count($this->Results));
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testCreateDateStart()
@@ -390,7 +510,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-        $this->assertEquals(4, count($this->Results));
+
+        $this->expected = 4;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testCreateDateEnd()
@@ -400,7 +523,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-        $this->assertEquals(4, count($this->Results));
+        $this->expected = 4;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testUpdateDateStart()
@@ -410,7 +535,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-        $this->assertEquals(4, count($this->Results));
+
+        $this->expected = 4;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testUpdateDateEnd()
@@ -420,7 +548,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-        $this->assertEquals(4, count($this->Results));
+        $this->expected = 4;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testLastBuyStart()
@@ -433,7 +563,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testLastBuyEnd()
@@ -446,7 +578,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-        $this->assertEquals(1, count($this->Results));
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testStatus()
@@ -462,8 +596,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-
-        $this->assertEquals(4, count($this->Results));
+        $this->expected = 4;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testStatusWithNonActive()
@@ -478,8 +613,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         );
 
         $this->scenario();
-
-        $this->assertEquals(2, count($this->Results));
+        $this->expected = 2;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 
     public function testBuyProductCode()
@@ -490,6 +626,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
         // TODO OrderRepository のテストで正常パターンを作成する
-        $this->assertEquals(0, count($this->Results));
+        $this->expected = 0;
+        $this->actual = count($this->Results);
+        $this->verify();
     }
 }
