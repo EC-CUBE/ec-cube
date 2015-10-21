@@ -103,7 +103,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $pagination->setItems($cobj);
         $paginate_num = $pagination->getItems();
 
-        $this->assertGreaterThanOrEqual(count($paginate_num), count($maxpage));
+        $this->assertGreaterThanOrEqual(count($paginate_num), $maxpage);
     }
 
     public function testGetQueryBuilderBySearchData()
@@ -123,7 +123,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 
         $paginate_num = $pagination->getItems();
 
-        $this->assertGreaterThanOrEqual(count($paginate_num), count($maxpage));
+        $this->assertGreaterThanOrEqual(count($paginate_num), $maxpage);
     }
 
 
