@@ -151,7 +151,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             if (preg_match('/^\d+$/', $clean_key_multi)) {
                 $qb
                     ->andWhere('c.id = :customer_id')
-                    ->setParameter('customer_id', $clean_key_multi); 
+                    ->setParameter('customer_id', $clean_key_multi);
             } else {
                 $qb
                     ->andWhere('CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
@@ -197,7 +197,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('birth_start', $date);
         }
         if (!empty($searchData['birth_end']) && $searchData['birth_end']) {
-            $date = $searchData['birth_end']
+            $date = clone $searchData['birth_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -245,7 +246,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('create_date_start', $date);
         }
         if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
-            $date = $searchData['create_date_end']
+            $date = clone $searchData['create_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -262,7 +264,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -279,7 +282,8 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('last_buy_start', $date);
         }
         if (!empty($searchData['last_buy_end']) && $searchData['last_buy_end']) {
-            $date = $searchData['last_buy_end']
+            $date = clone $searchData['last_buy_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb

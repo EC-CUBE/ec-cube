@@ -98,7 +98,6 @@ class CustomerController extends AbstractController
 
                     if (!is_null($searchData['pref'])) {
                         $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
-                        \Doctrine\Common\Util\Debug::dump($searchData['pref']);
                     }
                     $searchForm->setData($searchData);
                     $active = true;

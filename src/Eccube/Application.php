@@ -305,13 +305,9 @@ class Application extends ApplicationTrait
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
 
-                if (file_exists($app['config']['user_data_realdir'])){
-                    $paths[] = $app['config']['user_data_realdir'];
-                }
-
                 if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists($app['config']['template_admin_html_realdir'])) {
-                        $paths[] = $app['config']['template_admin_html_realdir'];
+                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
+                        $paths[] = __DIR__ . '/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';

@@ -153,7 +153,8 @@ class OrderRepository extends EntityRepository
                 $joinedCustomer = true;
             }
 
-            $date = $searchData['birth_end']
+            $date = clone $searchData['birth_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -199,7 +200,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('order_date_start', $date);
         }
         if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
-            $date = $searchData['order_date_end']
+            $date = clone $searchData['order_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -216,7 +218,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -350,7 +353,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('order_date_start', $date);
         }
         if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
-            $date = $searchData['order_date_end']
+            $date = clone $searchData['order_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -367,7 +371,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('payment_date_start', $date);
         }
         if (!empty($searchData['payment_date_end']) && $searchData['payment_date_end']) {
-            $date = $searchData['payment_date_end']
+            $date = clone $searchData['payment_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -384,7 +389,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('commit_date_start', $date);
         }
         if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
-            $date = $searchData['commit_date_end']
+            $date = clone $searchData['commit_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -402,7 +408,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
