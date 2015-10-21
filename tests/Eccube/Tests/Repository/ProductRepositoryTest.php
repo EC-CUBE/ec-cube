@@ -115,7 +115,7 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $maxpage = $search_datas['disp_number']->getId();
 
         $qb = $this->app['eccube.repository.product']->getQueryBuilderBySearchData($search_datas);
-        $pagination = $app['paginator']()->paginate(
+        $pagination = $this->app['paginator']()->paginate(
             $qb,
             $pageno,
             $maxpage
