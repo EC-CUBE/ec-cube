@@ -126,15 +126,16 @@ class ProductRepository extends EntityRepository
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->orderBy('pc.create_date', 'DESC');
         } else {
-            if ($categoryJoin == false) {
-                $qb
-                    ->leftJoin('p.ProductCategories', 'pct')
-                    ->leftJoin('pct.Category', 'c');
-            }
             $qb
                 ->orderBy('c.rank', 'DESC')
                 ->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
+        }
+
+        if ($categoryJoin == false) {
+            $qb
+                ->innerJoin('p.ProductCategories', 'pct')
+                ->innerJoin('pct.Category', 'c');
         }
 
         return $qb;
