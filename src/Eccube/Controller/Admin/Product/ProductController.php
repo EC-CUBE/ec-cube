@@ -249,7 +249,7 @@ class ProductController extends AbstractController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
-
+                    
                     // 個別消費税
                     $BaseInfo = $app['eccube.repository.base_info']->get();
                     if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
@@ -271,7 +271,7 @@ class ProductController extends AbstractController
                         }
                     }
                     $app['orm.em']->persist($ProductClass);
-
+                    
                     // 在庫情報を作成
                     if (!$ProductClass->getStockUnlimited()) {
                         $ProductStock->setStock($ProductClass->getStock());
