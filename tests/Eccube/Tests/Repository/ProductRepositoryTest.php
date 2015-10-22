@@ -9,6 +9,8 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
+use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -19,6 +21,111 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
+    public function _getSearchData($order){
+        //オブジェクト生成
+        $page_list_max_obj = new \Eccube\Entity\Master\ProductListMax();
+        $page_list_max_obj->setId(15);
+        $page_list_max_obj->setName('15件');
+        $page_list_max_obj->setRank(0);
+
+        if(!empty($order) && $order === 1)
+        {
+            $sort_key = 1;
+        }else{
+            $sort_key = 2;
+        }
+
+        //オブジェクト生成
+        $orderby_obj = new \Eccube\Entity\Master\ProductListOrderBy();
+        $orderby_obj->setId($sort_key);
+        $orderby_obj->setName('価格順');
+        $orderby_obj->setRank(0);
+
+        return array(
+                'mode' => null,
+                'category_id' => null,
+                'name' => null,
+                'pageno' => null,
+                'disp_number' => $page_list_max_obj,
+                'orderby' => $orderby_obj
+        );
+    }
+
+    public function testSetLimit()
+    {
+        $limit_bad_arg = 'a';
+        $res = $this->app['eccube.repository.product']->setLimit($limit_bad_arg);
+        $this->assertFalse($res);
+    }
+
+    public function testSetOffset()
+    {
+        $offset_bad_arg = 'a';
+        $res = $this->app['eccube.repository.product']->setOffset($offset_bad_arg);
+        $this->assertFalse($res);
+    }
+
+    public function testGetLimit()
+    {
+        $limit_good_arg = 1;
+        $res = $this->app['eccube.repository.product']->setLimit($limit_good_arg);
+        $res = $this->app['eccube.repository.product']->getLimit();
+        $this->assertEquals($res, $limit_good_arg);
+    }
+
+    public function testGetOffset()
+    {
+        $offset_good_arg = 10;
+        $res = $this->app['eccube.repository.product']->setOffset($offset_good_arg);
+        $res = $this->app['eccube.repository.product']->getOffset();
+        $this->assertEquals($res, $offset_good_arg);
+    }
+
+    public function testGetObjectCollectionBySearchData()
+    {
+        $offset_good_arg = 10;
+        $search_datas = $this->_getSearchData(1);
+        //ページネーション初期値設定
+        $pageno = !empty($search_datas['pageno']) ? $search_datas['pageno'] : 1;
+        $maxpage = $search_datas['disp_number']->getId();
+        $this->app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
+        $this->app['eccube.repository.product']->setLimit($maxpage);
+
+        //件数カウント
+        $count = $this->app['eccube.repository.product']->countObjectCollectionBySearchData($search_datas);
+
+        // ソート:価格降順ブジェクト配列取得
+        $cobj = $this->app['eccube.repository.product']->getObjectCollectionBySearchData($search_datas);
+        $pagination = $this->app['paginator']()->paginate(array());
+        $pagination->setCurrentPageNumber($pageno);
+        $pagination->setItemNumberPerPage($maxpage);
+        $pagination->setTotalItemCount($count);
+        $pagination->setItems($cobj);
+        $paginate_num = $pagination->getItems();
+
+        $this->assertGreaterThanOrEqual(count($paginate_num), $maxpage);
+    }
+
+    public function testGetQueryBuilderBySearchData()
+    {
+        $offset_good_arg = 10;
+        $search_datas = $this->_getSearchData(2);
+        //ページネーション初期値設定
+        $pageno = !empty($search_datas['pageno']) ? $search_datas['pageno'] : 1;
+        $maxpage = $search_datas['disp_number']->getId();
+
+        $qb = $this->app['eccube.repository.product']->getQueryBuilderBySearchData($search_datas);
+        $pagination = $this->app['paginator']()->paginate(
+            $qb,
+            $pageno,
+            $maxpage
+        );
+
+        $paginate_num = $pagination->getItems();
+
+        $this->assertGreaterThanOrEqual(count($paginate_num), $maxpage);
+    }
+
 
     public function testGet()
     {

@@ -68,12 +68,37 @@ class ProductController
 
         // paginator
         $searchData = $searchForm->getData();
-        $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
-        $pagination = $app['paginator']()->paginate(
-            $qb,
-            !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            $searchData['disp_number']->getId()
-        );
+
+        //ページネーション初期値設定
+        $pageno = !empty($searchData['pageno']) ? $searchData['pageno'] : 1;
+        $maxpage = $searchData['disp_number']->getId();
+        $app['eccube.repository.product']->setOffset((($pageno - 1) * $maxpage));
+        $app['eccube.repository.product']->setLimit($maxpage);
+
+        //ソート条件判定
+        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+            //件数カウント
+            $count = $app['eccube.repository.product']->countObjectCollectionBySearchData($searchData);
+            // ソート:価格降順ブジェクト配列取得
+            $cobj = $app['eccube.repository.product']->getObjectCollectionBySearchData($searchData);
+            $pagination = $app['paginator']()->paginate(array());
+            $pagination->setCurrentPageNumber($pageno);
+            $pagination->setItemNumberPerPage($maxpage);
+            $pagination->setTotalItemCount($count);
+            $pagination->setItems($cobj);
+        }else{
+            // ソート:新着情報・デフォルト処理時クエリブジェクト取得
+            $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $pageno,
+                $maxpage
+            );
+        }
+
+        //$items = $pagination->getItem();
+
+        //arsort($items);
 
         // addCart form
         $forms = array();
