@@ -240,7 +240,6 @@ class ProductController extends AbstractController
             /* @var $ProductCategory \Eccube\Entity\ProductCategory */
             $categories[] = $ProductCategory->getCategory();
         }
-
         $form['Category']->setData($categories);
 
         if ('POST' === $request->getMethod()) {
@@ -295,7 +294,6 @@ class ProductController extends AbstractController
 
                 $count = 1;
 
-                //空カテゴリ非保存
                 $Categories = $form->get('Category')->getData();
                 foreach ($Categories as $Category) {
                     $ProductCategory = new \Eccube\Entity\ProductCategory();

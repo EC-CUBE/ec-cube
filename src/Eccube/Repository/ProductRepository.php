@@ -128,8 +128,8 @@ class ProductRepository extends EntityRepository
         } else {
             if ($categoryJoin == false) {
                 $qb
-                    ->innerJoin('p.ProductCategories', 'pct')
-                    ->innerJoin('pct.Category', 'c');
+                    ->leftJoin('p.ProductCategories', 'pct')
+                    ->leftJoin('pct.Category', 'c');
             }
             $qb
                 ->orderBy('c.rank', 'DESC')
