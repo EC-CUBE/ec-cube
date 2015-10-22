@@ -67,7 +67,6 @@ class CustomerController extends AbstractController
                 // sessionのデータ保持
                 $session->set('eccube.admin.customer.search', $searchData);
             }
-            $active = true;
         } else {
             if (is_null($page_no)) {
                 // sessionを削除
@@ -100,7 +99,6 @@ class CustomerController extends AbstractController
                         $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
                     }
                     $searchForm->setData($searchData);
-                    $active = true;
                 }
             }
         }
