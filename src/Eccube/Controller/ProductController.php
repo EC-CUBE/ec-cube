@@ -73,7 +73,6 @@ class ProductController
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
             $searchData['disp_number']->getId(),
-            array('wrap-queries' => true)
         );
 
         // addCart form
