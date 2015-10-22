@@ -36,7 +36,6 @@ class MailServiceTest extends AbstractServiceTestCase
         parent::setUp();
         $this->client = new Client();
         $this->checkStatus();
-        $this->app['swiftmailer.use_spool'] = false;
         $config = $this->app['config'];
         $config['mail']['transport'] = 'smtp';
         $config['mail']['host'] = '127.0.0.1';
@@ -45,6 +44,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $config['mail']['password'] = null;
         $config['mail']['encryption'] = null;
         $config['mail']['auth_mode'] = null;
+        $this->app['config'] = $config;
+        $this->app['swiftmailer.use_spool'] = false;
+        $this->app['swiftmailer.options'] = $this->app['config']['mail'];
         $paths = array($this->app['config']['template_default_realdir']);
         $this->app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
         $this->Customer = $this->createCustomer();
