@@ -245,7 +245,7 @@ abstract class EccubeTestCase extends WebTestCase
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
-
+        $Pref = $this->app['eccube.repository.master.pref']->find(1);
         $Order = new Order();
         $Order->setCustomer($Customer)
             ->setCharge(0)
@@ -254,11 +254,13 @@ abstract class EccubeTestCase extends WebTestCase
             ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
             ->setDelFlg(Constant::DISABLED);
         $Order->copyProperties($Customer);
+        $Order->setPref($Pref);
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush();
 
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
+        $Shipping->setPref($Pref);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
         $this->app['orm.em']->persist($Shipping);
