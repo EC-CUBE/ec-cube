@@ -235,13 +235,10 @@ class ProductController extends AbstractController
         $form['images']->setData($images);
 
         $categories = array();
-        //カテゴリが空であれば保存しない
         $ProductCategories = $Product->getProductCategories();
-        if(count($ProductCategories) > 0){
-            foreach ($ProductCategories as $ProductCategory) {
-                /* @var $ProductCategory \Eccube\Entity\ProductCategory */
-                $categories[] = $ProductCategory->getCategory();
-            }
+        foreach ($ProductCategories as $ProductCategory) {
+            /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+            $categories[] = $ProductCategory->getCategory();
         }
 
         $form['Category']->setData($categories);
@@ -298,22 +295,20 @@ class ProductController extends AbstractController
 
                 $count = 1;
 
-                //空カテゴリ非保存処理
+                //空カテゴリ非保存
                 $Categories = $form->get('Category')->getData();
-                if(!empty($Categories)){
-                    foreach ($Categories as $Category) {
-                        $ProductCategory = new \Eccube\Entity\ProductCategory();
-                        $ProductCategory
-                            ->setProduct($Product)
-                            ->setProductId($Product->getId())
-                            ->setCategory($Category)
-                            ->setCategoryId($Category->getId())
-                            ->setRank($count);
-                        $app['orm.em']->persist($ProductCategory);
-                        $count++;
-                        /* @var $Product \Eccube\Entity\Product */
-                        $Product->addProductCategory($ProductCategory);
-                    }
+                foreach ($Categories as $Category) {
+                    $ProductCategory = new \Eccube\Entity\ProductCategory();
+                    $ProductCategory
+                        ->setProduct($Product)
+                        ->setProductId($Product->getId())
+                        ->setCategory($Category)
+                        ->setCategoryId($Category->getId())
+                        ->setRank($count);
+                    $app['orm.em']->persist($ProductCategory);
+                    $count++;
+                    /* @var $Product \Eccube\Entity\Product */
+                    $Product->addProductCategory($ProductCategory);
                 }
 
                 // 画像の登録
@@ -350,7 +345,6 @@ class ProductController extends AbstractController
                     $fs = new Filesystem();
                     $fs->remove($app['config']['image_save_realdir'] . '/' . $delete_image);
                 }
-
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
 
@@ -428,12 +422,11 @@ class ProductController extends AbstractController
                     }
 
                     $ProductCategories = $Product->getProductCategories();
-                    if(count($ProductCategories) > 0){
-                        foreach ($ProductCategories as $ProductCategory) {
-                            $Product->removeProductCategory($ProductCategory);
-                            $app['orm.em']->remove($ProductCategory);
-                        }
+                    foreach ($ProductCategories as $ProductCategory) {
+                        $Product->removeProductCategory($ProductCategory);
+                        $app['orm.em']->remove($ProductCategory);
                     }
+
                 }
 
                 $app['orm.em']->persist($Product);
