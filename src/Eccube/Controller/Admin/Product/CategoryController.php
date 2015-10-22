@@ -36,6 +36,8 @@ class CategoryController extends AbstractController
 {
     public function index(Application $app, Request $request, $parent_id = null, $id = null)
     {
+        var_dump($parent_id);
+        var_dump($id);
         if ($parent_id) {
             $Parent = $app['eccube.repository.category']->find($parent_id);
             if (!$Parent) {
