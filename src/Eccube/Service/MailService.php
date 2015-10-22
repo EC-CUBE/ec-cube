@@ -66,9 +66,7 @@ class MailService
             ->setBody($body);
 
         $this->app->mail($message);
-
     }
-
 
     /**
      * Send customer complete mail.
@@ -138,7 +136,7 @@ class MailService
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
         ));
-        
+
         // 問い合わせ者にメール送信
         $message = \Swift_Message::newInstance()
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
@@ -253,7 +251,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更の確認')
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
