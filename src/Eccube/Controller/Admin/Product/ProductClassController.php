@@ -103,7 +103,7 @@ class ProductClassController
 
                         // 組み合わされた商品規格にデフォルト値をセット
                         foreach ($ProductClasses as $productClass) {
-                            $this->setDefualtProductClass($productClass, $sourceProduct);
+                            $this->setDefualtProductClass($app, $productClass, $sourceProduct);
                         }
 
                         $productClassForm = $app->form()
@@ -151,7 +151,7 @@ class ProductClassController
             $BaseInfo = $app['eccube.repository.base_info']->get();
             if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                 foreach ($ProductClasses as $class) {
-                    if ($class->getTaxRule()) {
+                    if ($class->getTaxRule() && !$class->getTaxRule()->getDelFlg()) {
                         $class->setTaxRate($class->getTaxRule()->getTaxRate());
                     }
                 }
@@ -182,7 +182,7 @@ class ProductClassController
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
                 // 空の商品規格にデフォルト値を設定
-                $this->setDefualtProductClass($mergeProductClass, $ProductClass);
+                $this->setDefualtProductClass($app, $mergeProductClass, $ProductClass);
                 $ProductClasses->add($mergeProductClass);
             }
 
@@ -342,7 +342,7 @@ class ProductClassController
                                 } else {
                                     $productStock->setStock(null);
                                 }
-                                $this->setDefualtProductClass($productClass, $cp);
+                                $this->setDefualtProductClass($app, $productClass, $cp);
                                 $flag = true;
                                 break;
                             }
@@ -553,7 +553,7 @@ class ProductClassController
      * @param $productClassDest コピー先となる商品規格
      * @param $productClassOrig コピー元となる商品規格
      */
-    private function setDefualtProductClass($productClassDest, $productClassOrig) {
+    private function setDefualtProductClass($app, $productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
         $productClassDest->setProduct($productClassOrig->getProduct());
         $productClassDest->setProductType($productClassOrig->getProductType());
@@ -564,6 +564,28 @@ class ProductClassController
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
+        
+        // 個別消費税
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+        if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+            if($productClassOrig->getTaxRate()) {
+                $productClassDest->setTaxRate($productClassOrig->getTaxRate());
+                if ($productClassDest->getTaxRule() && !$productClassDest->getTaxRule()->getDelFlg()) {
+                    $productClassDest->getTaxRule()->setTaxRate($productClassOrig->getTaxRate());
+                } else {
+                    $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
+                    $taxrule->setTaxRate($productClassOrig->getTaxRate());
+                    $taxrule->setApplyDate(new \DateTime());
+                    $taxrule->setProduct($productClassDest->getProduct());
+                    $taxrule->setProductClass($productClassDest);
+                    $productClassDest->setTaxRule($taxrule);
+                }
+            } else {
+                if ($productClassDest->getTaxRule()) {
+                    $productClassDest->getTaxRule()->setDelFlg(Constant::ENABLED);
+                }
+            }
+        }
     }
 
 

@@ -204,6 +204,10 @@ class ProductController extends AbstractController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+                if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED && $ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                    $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
+                }
                 $ProductStock = $ProductClasses[0]->getProductStock();
             }
         }
@@ -245,8 +249,29 @@ class ProductController extends AbstractController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
+                    
+                    // 個別消費税
+                    $BaseInfo = $app['eccube.repository.base_info']->get();
+                    if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+                        if ($ProductClass->getTaxRate()) {
+                            if ($ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                                $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
+                            } else {
+                                $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
+                                $taxrule->setTaxRate($ProductClass->getTaxRate());
+                                $taxrule->setApplyDate(new \DateTime());
+                                $taxrule->setProduct($Product);
+                                $taxrule->setProductClass($ProductClass);
+                                $ProductClass->setTaxRule($taxrule);
+                            }
+                        } else {
+                            if ($ProductClass->getTaxRule()) {
+                                $ProductClass->getTaxRule()->setDelFlg(Constant::ENABLED);
+                            }
+                        }
+                    }
                     $app['orm.em']->persist($ProductClass);
-
+                    
                     // 在庫情報を作成
                     if (!$ProductClass->getStockUnlimited()) {
                         $ProductStock->setStock($ProductClass->getStock());
