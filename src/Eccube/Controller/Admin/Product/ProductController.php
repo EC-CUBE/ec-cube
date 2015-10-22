@@ -66,7 +66,8 @@ class ProductController extends AbstractController
                 $pagination = $app['paginator']()->paginate(
                     $qb,
                     $page_no,
-                    $page_count
+                    $page_count,
+                    array('wrap-queries' => true)
                 );
 
                 // sessionのデータ保持
@@ -106,7 +107,8 @@ class ProductController extends AbstractController
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
-                        $page_count
+                        $page_count,
+                        array('wrap-queries' => true)
                     );
 
                     // セッションから検索条件を復元
