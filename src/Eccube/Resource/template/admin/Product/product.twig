@@ -175,6 +175,27 @@ $(function() {
         $('#{{ form.product_image.vars.id }}').click();
     });
 });
+//カテゴリチェック確認処理
+$(function(){
+    $('form').bind('submit', function(){
+       var obj = $('input[type=checkbox]').filter(function(){ return this.id.match(/^.*Category.*$/); });
+       var check_flg = true;
+        $.each(obj, function(){
+            if($(this).prop('checked')){
+                check_flg = false;
+                return true;
+            }
+        });
+        if(check_flg){
+            if(confirm('カテゴリが選択されていませんが問題ないですか')){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return true;
+    });
+});
 function fnConfirm(action) {
     document.form1.action = action;
     document.form1.submit();
