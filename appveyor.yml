@@ -58,7 +58,7 @@ install:
   - echo mbstring.internal_encoding = UTF-8 >> C:\tools\php\php.ini
   - echo memory_limit = 512M >> C:\tools\php\php.ini
   - php -r "readfile('http://getcomposer.org/installer');" | php
-  - php composer.phar install --dev --no-interaction
+  - php composer.phar install --dev --no-interaction -o
 
 # cache:
   # - C:\ProgramData\chocolatey\bin -> appveyor.yml
