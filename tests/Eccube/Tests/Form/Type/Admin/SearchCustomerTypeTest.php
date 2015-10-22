@@ -47,7 +47,7 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
     public function testTel_NotValidData()
     {
         $formData = array(
-            'tel' => strpos('a', 155)
+            'tel' => str_repeat('A' , 55)
         );
 
         $this->form->submit($formData);
