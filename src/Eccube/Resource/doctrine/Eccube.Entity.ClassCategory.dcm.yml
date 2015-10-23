@@ -14,10 +14,10 @@ Eccube\Entity\ClassCategory:
     fields:
         name:
             type: text
-            nullable: true
+            nullable: false
         rank:
             type: integer
-            nullable: true
+            nullable: false
             unsigned: false
         create_date:
             type: datetime
