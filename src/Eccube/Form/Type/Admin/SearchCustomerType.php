@@ -93,6 +93,12 @@ class SearchCustomerType extends AbstractType
             ))
             ->add('tel', 'text', array(
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[\d-]+$/u",
+                        'message' => 'form.type.admin.nottelstyle',
+                    )),
+                ),
             ))
             ->add('buy_total_start', 'integer', array(
                 'label' => '購入金額',
