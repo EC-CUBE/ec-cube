@@ -32,7 +32,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <input type="hidden" name="mode" value="" />
             <input type="hidden" name="pageno" value="{{ app.request.get('pageno') }}" />
             <input type="hidden" name="product_id" value="" />
-            <h3>{{ subtitle }}</h3>
 
             {% if pagination.totalItemCount > 0 %}
                 <p><span class="attention">{{ pagination.totalItemCount }}件</span>のお気に入りがあります。</p>

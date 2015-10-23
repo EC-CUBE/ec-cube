@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\ControllerProvider;
 
 use Silex\Application;
@@ -39,15 +39,12 @@ class FrontControllerProvider implements ControllerProviderInterface
         }
 
         // user定義
-        $c->match('/' . $app['config']['user_data_route'] . '/{route}', '\Eccube\Controller\UserDataController::index')->assert('route', '[0-9a-zA-Z_]+')->bind('user_data');
+        $c->match('/'.$app['config']['user_data_route'].'/{route}', '\Eccube\Controller\UserDataController::index')->assert('route', '[0-9a-zA-Z_]+')->bind('user_data');
 
         // root
         $c->match('/', '\Eccube\Controller\TopController::index')->bind('homepage');
-        $c->match('/', '\Eccube\Controller\TopController::index')->bind('top');
-        $c->match('/', '\Eccube\Controller\TopController::index')->bind('index');
-
-        // block
-        $c->match('/block', '\Eccube\Controller\BlockController::index')->bind('block');
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('top'); // deprecated since 3.0.0, to be removed in 3.1
+        $c->match('/', '\Eccube\Controller\TopController::index')->bind('index'); // deprecated since 3.0.0, to be removed in 3.1
 
         // cart
         $c->match('/cart', '\Eccube\Controller\CartController::index')->bind('cart');
@@ -99,7 +96,6 @@ class FrontControllerProvider implements ControllerProviderInterface
 
         $c->match('/mypage/favorite', '\Eccube\Controller\Mypage\MypageController::favorite')->bind('mypage_favorite');
         $c->match('/mypage/history/{id}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('id', '\d+');
-        $c->match('/mypage/mail_view/{id}', '\Eccube\Controller\Mypage\MypageController::mailView')->bind('mypage_mail_view')->assert('id', '\d+');
         $c->match('/mypage/order', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
         $c->match('/mypage/withdraw', '\Eccube\Controller\Mypage\WithdrawController::index')->bind('mypage_withdraw');
         $c->match('/mypage/withdraw_complete', '\Eccube\Controller\Mypage\WithdrawController::complete')->bind('mypage_withdraw_complete');
@@ -113,18 +109,18 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/confirm', '\Eccube\Controller\ShoppingController::confirm')->bind('shopping_confirm');
         $c->match('/shopping/delivery', '\Eccube\Controller\ShoppingController::delivery')->bind('shopping_delivery');
         $c->match('/shopping/payment', '\Eccube\Controller\ShoppingController::payment')->bind('shopping_payment');
+        $c->match('/shopping/shipping_change/{id}', '\Eccube\Controller\ShoppingController::shippingChange')->assert('id', '\d+')->bind('shopping_shipping_change');
         $c->match('/shopping/shipping/{id}', '\Eccube\Controller\ShoppingController::shipping')->assert('id', '\d+')->bind('shopping_shipping');
+        $c->match('/shopping/shipping_edit_change/{id}', '\Eccube\Controller\ShoppingController::shippingEditChange')->assert('id', '\d+')->bind('shopping_shipping_edit_change');
         $c->match('/shopping/shipping_edit/{id}', '\Eccube\Controller\ShoppingController::shippingEdit')->assert('id', '\d+')->bind('shopping_shipping_edit');
         $c->match('/shopping/complete/{status}', '\Eccube\Controller\ShoppingController::complete')->value('status', null)->bind('shopping_complete');
         $c->match('/shopping/login', '\Eccube\Controller\ShoppingController::login')->bind('shopping_login');
         $c->match('/shopping/nonmember', '\Eccube\Controller\ShoppingController::nonmember')->bind('shopping_nonmember');
         $c->match('/shopping/customer', '\Eccube\Controller\ShoppingController::customer')->bind('shopping_customer');
         $c->match('/shopping/shopping_error', '\Eccube\Controller\ShoppingController::shoppingError')->bind('shopping_error');
+        $c->match('/shopping/shipping_multiple_change', '\Eccube\Controller\ShoppingController::shippingMultipleChange')->bind('shopping_shipping_multiple_change');
         $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
         $c->match('/shopping/shipping_multiple_edit', '\Eccube\Controller\ShoppingController::shippingMultipleEdit')->bind('shopping_shipping_multiple_edit');
-        $c->match('/shopping/shipping_change/{id}', '\Eccube\Controller\ShoppingController::shippingChange')->assert('id', '\d+')->bind('shopping_shipping_change');
-        $c->match('/shopping/shipping_edit_change/{id}', '\Eccube\Controller\ShoppingController::shippingEditChange')->assert('id', '\d+')->bind('shopping_shipping_edit_change');
-        $c->match('/shopping/shipping_multiple_change', '\Eccube\Controller\ShoppingController::shippingMultipleChange')->bind('shopping_shipping_multiple_change');
 
         return $c;
     }
