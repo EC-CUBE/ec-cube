@@ -32,11 +32,14 @@ env:
   - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
   - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
 
+install: gem install mailcatcher
+
 before_script:
   - composer self-update || true
   - composer install --dev --no-interaction -o
   - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
   - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql none; fi"
+  - mailcatcher
 
 script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then phpunit --coverage-clover=coverage.clover ; fi
