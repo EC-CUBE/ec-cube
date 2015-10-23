@@ -108,8 +108,19 @@ class TemplateController extends AbstractController
         // 該当テンプレートのディレクトリ
         $config = $app['config'];
         $templateCode = $Template->getCode();
-        $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
+        $tempDir = $config['root_dir'] . '/app/template/';
+        $tempBlockDir = $tempDir . 'default/Block/';
+        $targetRealDir = $tempDir . $templateCode;
         $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+
+        //ファイルの存在確認
+        $finder = new Finder();
+        $finds = $finder->files()->in($tempBlockDir);
+
+        //ダミーファイル作成
+        if(empty($finds->count())){
+            touch($tempBlockDir . 'dummy');
+        }
 
         // 一時ディレクトリ
         $uniqId = sha1(Str::random(32));
