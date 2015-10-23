@@ -104,8 +104,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         }
         $this->app['orm.em']->flush();
 
-        // FIXME 価格降順
-        // https://github.com/EC-CUBE/ec-cube/issues/958
         $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(1);
         $this->searchData = array(
             'orderby' => $ProductListOrderBy
@@ -113,7 +111,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->scenario();
 
-        $this->expected = array('お鍋', 'アイス', 'りんご');
+        $this->expected = array('りんご', 'アイス', 'お鍋');
         $this->actual = array($this->Results[0]->getName(),
                               $this->Results[1]->getName(),
                               $this->Results[2]->getName());
