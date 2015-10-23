@@ -3144,6 +3144,7 @@ a.plugin-name:hover {
         right: 27px;
     }
 }
+
 @media (max-width: 767px) {
     .icon_edit .dropdown-menu {
         margin-top:  0;
