@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Uril\str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -76,59 +77,59 @@ class OrderRepository extends EntityRepository
         $joinedCustomer = false;
 
         // order_id_start
-        if (!empty($searchData['order_id_start']) || isset($searchData['order_id_start'])) {
+        if (Str::isBlank($searchData['order_id_start']) && isset($searchData['order_id_start'])) {
             $qb
                 ->andWhere('o.id >= :order_id_start')
                 ->setParameter('order_id_start', $searchData['order_id_start']);
         }
 
         // order_id_end
-        if (!empty($searchData['order_id_end']) || isset($searchData['order_id_end'])) {
+        if (Str::isBlank($searchData['order_id_end']) && isset($searchData['order_id_end'])) {
             $qb
                 ->andWhere('o.id <= :order_id_end')
                 ->setParameter('order_id_end', $searchData['order_id_end']);
         }
 
         // status
-        if (!empty($searchData['status']) || isset($searchData['status'])) {
+        if (Str::isBlank($searchData['status']) && isset($searchData['status'])) {
             $qb
                 ->andWhere('o.OrderStatus = :status')
                 ->setParameter('status', $searchData['status']);
         }
 
         // name
-        if (!empty($searchData['name']) || isset($searchData['name'])) {
+        if (Str::isBlank($searchData['name']) && isset($searchData['name'])) {
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
                 ->setParameter('name', '%' . $searchData['name'] . '%');
         }
 
         // kana
-        if (!empty($searchData['kana']) || isset($searchData['kana'])) {
+        if (Str::isBlank($searchData['kana']) && isset($searchData['kana'])) {
             $qb
                 ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
                 ->setParameter('kana', '%' . $searchData['kana'] . '%');
         }
 
         // email
-        if (!empty($searchData['email']) || isset($searchData['email'])) {
+        if (Str::isBlank($searchData['email']) && isset($searchData['email'])) {
             $qb
                 ->andWhere('o.email = :email')
                 ->setParameter('email', $searchData['email']);
         }
 
         // tel
-        if (!empty($searchData['tel01']) || isset($searchData['tel01'])) {
+        if (Str::isBlank($searchData['tel01']) && isset($searchData['tel01'])) {
             $qb
                 ->andWhere('o.tel01 = :tel01')
                 ->setParameter('tel01', $searchData['tel01']);
         }
-        if (!empty($searchData['tel02']) || isset($searchData['tel02'])) {
+        if (Str::isBlank($searchData['tel02']) && isset($searchData['tel02'])) {
             $qb
                 ->andWhere('o.tel02 = :tel02')
                 ->setParameter('tel02', $searchData['tel02']);
         }
-        if (!empty($searchData['tel03']) || isset($searchData['tel03'])) {
+        if (Str::isBlank($searchData['tel03']) && isset($searchData['tel03'])) {
             $qb
                 ->andWhere('o.tel03 = :tel03')
                 ->setParameter('tel03', $searchData['tel03']);
@@ -180,7 +181,7 @@ class OrderRepository extends EntityRepository
         }
 
         // payment
-        if (!empty($searchData['payment']) && count($searchData['payment'])) {
+        if (Str::isBlank($searchData['payment']) && count($searchData['payment'])) {
             $payments = array();
             foreach ($searchData['payment'] as $payment) {
                 $payments[] = $payment->getId();
@@ -228,19 +229,19 @@ class OrderRepository extends EntityRepository
         }
 
         // payment_total
-        if (!empty($searchData['payment_total_start']) || isset($searchData['payment_total_start'])) {
+        if (Str::isBlank($searchData['payment_total_start']) && isset($searchData['payment_total_start'])) {
             $qb
                 ->andWhere('o.payment_total >= :payment_total_start')
                 ->setParameter('payment_total_start', $searchData['payment_total_start']);
         }
-        if (!empty($searchData['payment_total_end']) || isset($searchData['payment_total_end'])) {
+        if (Str::isBlank($searchData['payment_total_end']) && isset($searchData['payment_total_end'])) {
             $qb
                 ->andWhere('o.payment_total <= :payment_total_end')
                 ->setParameter('payment_total_end', $searchData['payment_total_end']);
         }
 
         // buy_product_name
-        if (!empty($searchData['buy_product_name']) || isset($searchData['buy_product_name'])) {
+        if (Str::isBlank($searchData['buy_product_name']) && isset($searchData['buy_product_name'])) {
             $qb
                 ->leftJoin('o.OrderDetails', 'od')
                 ->andWhere('od.product_name LIKE :buy_product_name')
@@ -264,13 +265,13 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
 
         // order_id_start
-        if (!empty($searchData['order_id_start']) || isset($searchData['order_id_start'])) {
+        if (Str::isBlank($searchData['order_id_start']) && isset($searchData['order_id_start'])) {
             $qb
                 ->andWhere('o.id >= :order_id_start')
                 ->setParameter('order_id_start', $searchData['order_id_start']);
         }
         // multi
-        if (!empty($searchData['multi']) || isset( $searchData['multi'])) {
+        if (Str::isBlank($searchData['multi']) && isset( $searchData['multi'])) {
             $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR ' .
@@ -280,14 +281,14 @@ class OrderRepository extends EntityRepository
         }
 
         // order_id_end
-        if (!empty($searchData['order_id_end']) || isset($searchData['order_id_end'])) {
+        if (Str::isBlank($searchData['order_id_end']) && isset($searchData['order_id_end'])) {
             $qb
                 ->andWhere('o.id <= :order_id_end')
                 ->setParameter('order_id_end', $searchData['order_id_end']);
         }
 
         // status
-        if (!empty($searchData['status']) || isset($searchData['status'])) {
+        if (Str::isBlank($searchData['status']) && isset($searchData['status'])) {
             $qb
                 ->andWhere('o.OrderStatus = :status')
                 ->setParameter('status', $searchData['status']);
@@ -298,28 +299,28 @@ class OrderRepository extends EntityRepository
         }
 
         // name
-        if (!empty($searchData['name']) || isset($searchData['name'])) {
+        if (Str::isBlank($searchData['name']) && isset($searchData['name'])) {
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
                 ->setParameter('name', '%' . $searchData['name'] . '%');
         }
 
         // kana
-        if (!empty($searchData['kana']) || isset($searchData['kana'])) {
+        if (Str::isBlank($searchData['kana']) && isset($searchData['kana'])) {
             $qb
                 ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
                 ->setParameter('kana', '%' . $searchData['kana'] . '%');
         }
 
         // email
-        if (!empty($searchData['email']) || isset($searchData['email'])) {
+        if (Str::isBlank($searchData['email']) && isset($searchData['email'])) {
             $qb
                 ->andWhere('o.email like :email')
                 ->setParameter('email', '%' . $searchData['email'] . '%');
         }
 
         // tel
-        if (!empty($searchData['tel']) || isset($searchData['tel'])) {
+        if (Str::isBlank($searchData['tel']) && isset($searchData['tel'])) {
             $qb
                 ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
                 ->setParameter('tel', '%' . $searchData['tel'] . '%');
@@ -418,19 +419,19 @@ class OrderRepository extends EntityRepository
         }
 
         // payment_total
-        if (!empty($searchData['payment_total_start']) || isset($searchData['payment_total_start'])) {
+        if (Str::isBlank($searchData['payment_total_start']) && isset($searchData['payment_total_start'])) {
             $qb
                 ->andWhere('o.payment_total >= :payment_total_start')
                 ->setParameter('payment_total_start', $searchData['payment_total_start']);
         }
-        if (!empty($searchData['payment_total_end']) || isset($searchData['payment_total_end'])) {
+        if (Str::isBlank($searchData['payment_total_end']) && isset($searchData['payment_total_end'])) {
             $qb
                 ->andWhere('o.payment_total <= :payment_total_end')
                 ->setParameter('payment_total_end', $searchData['payment_total_end']);
         }
 
         // buy_product_name
-        if (!empty($searchData['buy_product_name']) || isset($searchData['buy_product_name'])) {
+        if (Str::isBlank($searchData['buy_product_name']) && isset($searchData['buy_product_name'])) {
             $qb
                 ->leftJoin('o.OrderDetails', 'od')
                 ->andWhere('od.product_name LIKE :buy_product_name')

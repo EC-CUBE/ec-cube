@@ -145,7 +145,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->select('c')
             ->andWhere('c.del_flg = 0');
 
-        if (!empty($searchData['multi']) || isset($searchData['multi'])) {
+        if (Str::isBlank($searchData['multi']) && isset($searchData['multi'])) {
             //スペース除去
             $clean_key_multi = preg_replace('/\s+|[　]+/u', '',$searchData['multi']);
             if (preg_match('/^\d+$/', $clean_key_multi)) {
@@ -162,7 +162,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // Pref
-        if (!empty($searchData['pref']) || isset($searchData['pref'])) {
+        if (Str::isBlank($searchData['pref']) && isset($searchData['pref'])) {
             $qb
                 ->andWhere('c.Pref = :pref')
                 ->setParameter('pref', $searchData['pref']->getId());
@@ -207,19 +207,19 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // tel
-        if (!empty($searchData['tel']) || isset($searchData['tel'])) {
+        if (Str::isBlank($searchData['tel']) && isset($searchData['tel'])) {
             $qb
                 ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
                 ->setParameter('tel', '%' . $searchData['tel'] . '%');
         }
 
         // buy_total
-        if (!empty($searchData['buy_total_start']) || isset($searchData['buy_total_start'])) {
+        if (Str::isBlank($searchData['buy_total_start']) && isset($searchData['buy_total_start'])) {
             $qb
                 ->andWhere('c.buy_total >= :buy_total_start')
                 ->setParameter('buy_total_start', $searchData['buy_total_start']);
         }
-        if (!empty($searchData['buy_total_end']) || isset($searchData['buy_total_end'])) {
+        if (Str::isBlank($searchData['buy_total_end']) && isset($searchData['buy_total_end'])) {
             $qb
                 ->andWhere('c.buy_total <= :buy_total_end')
                 ->setParameter('buy_total_end', $searchData['buy_total_end']);
@@ -299,7 +299,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // buy_product_name、buy_product_code
-        if (!empty($searchData['buy_product_code']) || isset($searchData['buy_product_code'])) {
+        if (Str::isBlank($searchData['buy_product_code']) && isset($searchData['buy_product_code'])) {
             $qb
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderDetails', 'od')
