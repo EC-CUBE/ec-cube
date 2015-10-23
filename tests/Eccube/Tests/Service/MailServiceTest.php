@@ -349,7 +349,7 @@ class MailServiceTest extends AbstractServiceTestCase
             $request = $this->client->delete(self::MAILCATCHER_URL.'messages');
             $request->send();
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
+            $this->app->log('['.get_class().'] '.$e->getMessage());
         }
     }
 
