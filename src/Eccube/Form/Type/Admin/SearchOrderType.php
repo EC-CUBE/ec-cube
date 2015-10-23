@@ -61,12 +61,24 @@ class SearchOrderType extends AbstractType
             ))
             ->add('kana', 'text', array(
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                        'message' => 'form.type.admin.notkanastyle',
+                    )),
+                ),
             ))
             ->add('email', 'email', array(
                 'required' => false,
             ))
             ->add('tel', 'text', array(
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[\d-]+$/u",
+                        'message' => 'form.type.admin.nottelstyle',
+                    )),
+                ),
             ))
             ->add('sex', 'sex', array(
                 'label' => '性別',

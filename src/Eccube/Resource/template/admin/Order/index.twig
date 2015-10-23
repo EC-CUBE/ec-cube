@@ -96,7 +96,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {{ form_widget(searchForm._token) }}
     <div class="row">
       <div class="col-md-12 accordion">
-
         {{ form_widget(searchForm.multi, { attr: { placeholder: '受注ID・購入者名・購入者会社名', class : 'input_search' } } ) }}
 
         <a href="#" class="toggle{% if active %} active{% endif %}">
@@ -125,12 +124,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   <div class="form-group">
                     <label>お名前(フリガナ)</label>
                     {{ form_widget(searchForm.kana) }}
+                    {{ form_errors(searchForm.kana) }}
                   </div>
                 </div>
                 <div class="col-md-6">
                   <label>メールアドレス</label>
                   <div class="form-group">
                     {{ form_widget(searchForm.email) }}
+                    {{ form_errors(searchForm.email) }}
                   </div>
                 </div>
               </div><!-- /.row -->
@@ -140,6 +141,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   <div class="form-group">
                     <label>電話番号</label>
                     {{ form_widget(searchForm.tel) }}
+                    {{ form_errors(searchForm.tel) }}
                   </div>
                 </div>
                 <div class="col-xs-6">
