@@ -146,7 +146,6 @@ $(function() {
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
-                        {% if pagination|length > 0 %}
                         <div class="box-header with-arrow">
                             <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
                         </div><!-- /.box-header -->
@@ -244,12 +243,7 @@ $(function() {
                         {% if pagination.totalItemCount > 0 %}
                             {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
                         {% endif %}
-                        {% else %}
-                        <div class="box-header with-arrow">
-                            <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
-                        </div><!-- /.box-header -->
-                        {% endif %}
-                    </div><!-- /.box --> 
+                    </div><!-- /.box -->
                 </div><!-- /.col --> 
             </div>
 
