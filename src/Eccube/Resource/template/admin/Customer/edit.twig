@@ -94,6 +94,8 @@
                             <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip) }}
+                                {{ form_errors(form.zip.zip01) }}
+                                {{ form_errors(form.zip.zip02) }}
                                 <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>

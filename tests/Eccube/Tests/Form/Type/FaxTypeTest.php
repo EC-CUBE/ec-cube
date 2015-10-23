@@ -82,7 +82,7 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
                 'data' => array(
                     'tel' => array(
                         'tel01' => '01245',
-                        'tel02' => '6',
+                        'tel02' => '60',
                         'tel03' => '7890',
                     ),
                 ),
@@ -177,6 +177,30 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     public function testInvalidTel03_LengthMax()
     {
         $this->formData['tel']['tel03'] = '12345678';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel01_LengthMin()
+    {
+        $this->formData['tel']['tel01'] = '1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel02_LengthMin()
+    {
+        $this->formData['tel']['tel02'] = '1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel03_LengthMin()
+    {
+        $this->formData['tel']['tel03'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
