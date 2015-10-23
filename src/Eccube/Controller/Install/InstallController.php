@@ -190,7 +190,6 @@ class InstallController
     //    データベースの初期化
     public function step5(InstallApplication $app, Request $request)
     {
-        set_time_limit(0); 
         $this->app = $app;
         $form = $app['form.factory']
             ->createBuilder('install_step5')
