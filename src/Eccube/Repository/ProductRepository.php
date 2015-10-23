@@ -92,7 +92,7 @@ class ProductRepository extends EntityRepository
 
         // category
         $categoryJoin = false;
-        if (!empty($searchData['category_id']) && $searchData['category_id']) {
+        if (!empty($searchData['category_id']) || isset($searchData['category_id'])) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
             if ($Categories) {
                 $qb
@@ -105,7 +105,7 @@ class ProductRepository extends EntityRepository
         }
 
         // name
-        if (!empty($searchData['name']) && $searchData['name']) {
+        if (!empty($searchData['name']) || isset($searchData['name'])) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($keywords as $index => $keyword) {
@@ -154,7 +154,7 @@ class ProductRepository extends EntityRepository
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
-        if (!empty($searchData['id']) && $searchData['id']) {
+        if (!empty($searchData['id']) || isset($searchData['id'])) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
@@ -183,7 +183,7 @@ class ProductRepository extends EntityRepository
        */
 
         // category
-        if (!empty($searchData['category_id']) && $searchData['category_id']) {
+        if (!empty($searchData['category_id']) || isset($searchData['category_id'])) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
             if ($Categories) {
                 $qb
@@ -216,7 +216,7 @@ class ProductRepository extends EntityRepository
         }
 
         // crate_date
-        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+        if (!empty($searchData['create_date_start']) || isset($searchData['create_date_start'])) {
             $date = $searchData['create_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
@@ -224,7 +224,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('create_date_start', $date);
         }
 
-        if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+        if (!empty($searchData['create_date_end']) || isset($searchData['create_date_end'])) {
             $date = clone $searchData['create_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -235,14 +235,14 @@ class ProductRepository extends EntityRepository
         }
 
         // update_date
-        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+        if (!empty($searchData['update_date_start']) || isset($searchData['update_date_start'])) {
             $date = $searchData['update_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
-        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+        if (!empty($searchData['update_date_end']) || isset($searchData['update_date_end'])) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days')
