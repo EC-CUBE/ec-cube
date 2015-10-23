@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <td class="text-center">-</td>
                         {% else %}
                             <td class="text-center">
-                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path }}" target="_blank">ダウンロード</a>
+                                <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" target="_blank">ダウンロード</a>
                             </td>
                         {% endif %}
                         <td class="text-center">
