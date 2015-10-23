@@ -72,7 +72,6 @@ class ProductController extends AbstractController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
-                $active = true;
             }
         } else {
             if (is_null($page_no)) {
@@ -126,17 +125,7 @@ class ProductController extends AbstractController
                         $searchData['link_status'] = null;
                         $searchData['stock_status'] = null;
                     }
-                    /*
-                    if (count($searchData['product_status']) > 0) {
-                        $product_status_ids = array();
-                        foreach ($searchData['product_status'] as $ProductStatus) {
-                            $product_status_ids[] = $ProductStatus->getId();
-                        }
-                        $searchData['product_status'] = $app['eccube.repository.master.product_status']->findBy(array('id' => $product_status_ids));
-                    }
-                    */
                     $searchForm->setData($searchData);
-                    $active = true;
                 }
             }
         }

@@ -136,6 +136,60 @@ jQuery(document).ready(function ($) {
         });
     });
 
+/////////// アコーディオントグル制御( フォームに値があれば、アコーディオン中止 )
+    //フォーム値確認用関数
+    var formPropStateSubscriber = function(){
+        ad_flg = false;     //アコーディオン初期値
+        return {
+            formState : function(){
+                this.chcekForm();
+                return this.getFormState();
+            },
+            chcekForm : function(){
+                $('.search-box-inner input, .search-box-inner select').each(function () {
+                    if (this.type == "checkbox" || this.type == "radio") {
+                        if(this.checked){
+                            ad_flg = true;
+                            return true;
+                        }
+                    } else {
+                        if (this.type != "hidden") {
+                            if($(this).val()){
+                                ad_flg = true;
+                                return true;
+                            }
+                        }
+                    }
+                });
+            },
+            getFormState : function(){
+                return ad_flg;
+            }
+        };
+    };
+
+    //フォーム値を確認し、アコーディオンを制御
+    //値あり : 開く / 値なし : 閉じる
+    (function($, f){
+        //フォームがないページは処理キャンセル
+        var $ac = $(".accpanel");
+        if(!$ac){
+            return false
+        }
+
+        //フォーム内全項目取得
+        var c = f();
+        //console.log($ac.css("display"));
+        if(c.formState()){
+            if ($ac.css("display") == "none") {
+                $ac.parent('li').addClass("active");
+                $ac.slideDown(0);
+            }
+        }else{
+            $ac.parent('li').removeClass("active");
+            $ac.slideUp(0);
+        }
+    })(jQuery,formPropStateSubscriber);
 });
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
