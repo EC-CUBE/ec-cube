@@ -85,6 +85,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       });
     }
 
+    // フォーム値を確認し、アコーディオンを制御
+    // 値あり : 開く / 値なし : 閉じる
+    (function($, f) {
+        //フォームがないページは処理キャンセル
+        var $ac = $(".accpanel");
+        if (!$ac) {
+            return false
+        }
+
+        //フォーム内全項目取得
+        var c = f();
+        if (c.formState()) {
+            if ($ac.css("display") == "none") {
+                $ac.parent('li').addClass("active");
+                $ac.slideDown(0);
+            }
+        } else {
+            $ac.parent('li').removeClass("active");
+            $ac.slideUp(0);
+        }
+    })($, formPropStateSubscriber);
   });
 
   function fnChangeActionSubmit(action) {
@@ -259,14 +280,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% for Customer in pagination %}
                         <tr>
                             <td class="member_id">{{ Customer.id }}</td>
-                            <td class="member_name"><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                            <td class="member_name"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
                             <td class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
                             <td class="member_mail">{{ Customer.email }}</td>
                             <td class="icon_edit">
                                 <div class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">編集</a></li>
+                                        <li><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">編集</a></li>
                                         <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この会員情報を削除してもよろしいですか？">削除</a></li>
                                         {% if Customer.Status.id == 1 %}
                                         <li><a href="{{ url('admin_customer_resend', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="仮登録メールを再送してもよろしいですか？">仮会員メール再送</a></li>

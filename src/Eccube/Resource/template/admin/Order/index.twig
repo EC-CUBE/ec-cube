@@ -85,6 +85,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       $('#dropdown-form').attr('action', href).submit();
     });
 
+    // フォーム値を確認し、アコーディオンを制御
+    // 値あり : 開く / 値なし : 閉じる
+    (function($, f) {
+        //フォームがないページは処理キャンセル
+        var $ac = $(".accpanel");
+        if (!$ac) {
+            return false
+        }
+
+        //フォーム内全項目取得
+        var c = f();
+        if (c.formState()) {
+            if ($ac.css("display") == "none") {
+                $ac.parent('li').addClass("active");
+                $ac.slideDown(0);
+            }
+        } else {
+            $ac.parent('li').removeClass("active");
+            $ac.slideUp(0);
+        }
+    })($, formPropStateSubscriber);
 });
 </script>
 {% endblock javascript %}
@@ -191,7 +212,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                   </div>
                 </div>
-              </div><!-- /.row --> 
+              </div><!-- /.row -->
 
               <div class="row">
                 <div class="col-sm-6">
@@ -315,7 +336,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     </form>
                         </div>
                     </div>
-                </div><!-- /.box-body --> 
+                </div><!-- /.box-body -->
                 {% if pagination.totalItemCount > 0 %}
                     {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_order_page' } %}
                 {% endif %}
@@ -324,8 +345,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
                 </div><!-- /.box-header -->
                 {% endif %}
-            </div><!-- /.box --> 
-        </div><!-- /.col --> 
+            </div><!-- /.box -->
+        </div><!-- /.col -->
     </div>
 
 {% endif %}
