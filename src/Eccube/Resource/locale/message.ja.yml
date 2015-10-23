@@ -39,13 +39,13 @@ form.type.name.lastname.nothasspace: お名前(性)にスペース、タブ、�
 form.type.customer.company.nothasspace: 会社名にスペース、タブ、改行は含めないで下さい。
 
 cart.over.stock: |-
-    選択された商品の在庫が不足しております。
+    選択された商品(%product%)の在庫が不足しております。
     一度に在庫数を超える購入はできません。
 cart.over.sale_limit: |-
-    選択された商品は販売制限しております。
+    選択された商品(%product%)は販売制限しております。
     一度に販売制限数を超える購入はできません。
 cart.zero.stock: |-
-    選択された商品の在庫が不足しております。
+    選択された商品(%product%)の在庫が不足しております。
     該当商品をカートから削除しました。
 cart.over.price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。 
 cart.product.type.kind: この商品は同時に購入することはできません。
