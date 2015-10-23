@@ -130,6 +130,12 @@ $(function () {
     });
 
 
+    // ダブルクリック禁止
+    $('.prevention-btn').on('click', function() {
+        $(this).attr('disabled', 'disabled');
+        $(this).parents('form').submit();
+    });
+
 });
 
 
