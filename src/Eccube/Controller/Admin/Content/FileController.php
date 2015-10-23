@@ -93,7 +93,9 @@ class FileController extends AbstractController
     {
         $topDir = $app['config']['user_data_realdir'];
         if ($this->checkDir($request->get('file'), $topDir)) {
-            return $app->sendFile($request->get('file'));
+            $file = $request->get('file');
+            setlocale(LC_ALL, 'ja_JP.UTF-8');
+            return $app->sendFile($file);
         }
 
         throw new NotFoundHttpException();
@@ -156,6 +158,7 @@ class FileController extends AbstractController
         $file = $request->get('select_file');
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
+                setlocale(LC_ALL, 'ja_JP.UTF-8');
                 $pathParts = pathinfo($file);
 
                 $patterns = array(
@@ -168,7 +171,9 @@ class FileController extends AbstractController
                 if (strlen($str) === 0) {
                     return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
                 } else {
-                    return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, ord($pathParts['basename']));
+                    return $app->sendFile($file, 200, array(
+                        "Content-Disposition" => "attachment; filename*=UTF-8\'\'".rawurlencode($pathParts['basename'])
+                    ));
                 }
             }
         }

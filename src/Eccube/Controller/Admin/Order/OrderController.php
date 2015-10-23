@@ -69,7 +69,6 @@ class OrderController extends AbstractController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.order.search', $searchData);
-                $active = true;
             }
         } else {
             if (is_null($page_no)) {
@@ -122,7 +121,6 @@ class OrderController extends AbstractController
                         $searchData['payment'] = $app['eccube.repository.payment']->findBy(array('id' => $payment_ids));
                     }
                     $searchForm->setData($searchData);
-                    $active = true;
                 }
             }
         }

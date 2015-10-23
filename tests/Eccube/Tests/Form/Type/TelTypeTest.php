@@ -31,7 +31,7 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public $config = array('tel_len' => 5);
+    public $config = array('tel_len' => 5, 'tel_len_min' => 2);
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
@@ -84,7 +84,7 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
                 'data' => array(
                     'tel' => array(
                         'tel01' => '01245',
-                        'tel02' => '6',
+                        'tel02' => '60',
                         'tel03' => '7890',
                     ),
                 ),
@@ -179,6 +179,30 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
     public function testInvalidTel03_LengthMax()
     {
         $this->formData['tel']['tel03'] = '12345678';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel01_LengthMin()
+    {
+        $this->formData['tel']['tel01'] = '1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel02_LengthMin()
+    {
+        $this->formData['tel']['tel02'] = '1';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTel03_LengthMin()
+    {
+        $this->formData['tel']['tel03'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());

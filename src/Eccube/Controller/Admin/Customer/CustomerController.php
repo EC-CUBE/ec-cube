@@ -42,6 +42,9 @@ class CustomerController extends AbstractController
             ->createBuilder('admin_search_customer')
             ->getForm();
 
+        //アコーディオンの制御初期化( デフォルトでは閉じる )
+        $active = false;
+
         $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
         $page_count = $app['config']['default_page_count'];
 
@@ -95,7 +98,6 @@ class CustomerController extends AbstractController
                     if (!is_null($searchData['pref'])) {
                         $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
                     }
-
                     $searchForm->setData($searchData);
                 }
             }
@@ -106,6 +108,7 @@ class CustomerController extends AbstractController
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_count' => $page_count,
+            'active' => $active,
         ));
     }
 
