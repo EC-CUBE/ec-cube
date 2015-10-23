@@ -93,7 +93,7 @@ class ProductRepository extends EntityRepository
 
         // category
         $categoryJoin = false;
-        if (isset($searchData['category_id']) || !empty($searchData['category_id'])) {
+        if (isset($searchData['category_id']) && Str::isBlank($searchData['category_id'])) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
             if ($Categories) {
                 $qb
@@ -183,7 +183,7 @@ class ProductRepository extends EntityRepository
        */
 
         // category
-        if (isset($searchData['category_id']) || !empty($searchData['category_id'])) {
+        if (!empty($searchData['category_id']) && $searchData['category_id']) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
             if ($Categories) {
                 $qb
@@ -216,7 +216,7 @@ class ProductRepository extends EntityRepository
         }
 
         // crate_date
-        if (isset($searchData['create_date_start']) || !empty($searchData['create_date_start'])) {
+        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
             $date = $searchData['create_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
@@ -224,7 +224,7 @@ class ProductRepository extends EntityRepository
                 ->setParameter('create_date_start', $date);
         }
 
-        if (isset($searchData['create_date_end']) || !empty($searchData['create_date_end'])) {
+        if (!empty($searchData['create_date_end']) && $searchData['create_date_end'])) {
             $date = clone $searchData['create_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -235,14 +235,14 @@ class ProductRepository extends EntityRepository
         }
 
         // update_date
-        if (isset($searchData['update_date_start']) || !empty($searchData['update_date_start'])) {
+        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
-        if (isset($searchData['update_date_end']) || !empty($searchData['update_date_end'])) {
+        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days')

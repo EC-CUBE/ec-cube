@@ -136,7 +136,7 @@ class OrderRepository extends EntityRepository
         }
 
         // birth
-        if (!empty($searchData['birth_start']) || isset($searchData['birth_start'])) {
+        if (!empty($searchData['birth_start']) && $searchData['birth_start']) {
             if (!$joinedCustomer) {
                 $qb->leftJoin('o.Customer', 'c');
                 $joinedCustomer = true;
@@ -148,7 +148,7 @@ class OrderRepository extends EntityRepository
                 ->andWhere('c.birth >= :birth_start')
                 ->setParameter('birth_start', $date);
         }
-        if (!empty($searchData['birth_end']) || isset($searchData['birth_end'])) {
+        if (!empty($searchData['birth_end']) && $searchData['birth_end']) {
             if (!$joinedCustomer) {
                 $qb->leftJoin('o.Customer', 'c');
                 $joinedCustomer = true;
@@ -193,14 +193,14 @@ class OrderRepository extends EntityRepository
         }
 
         // oreder_date
-        if (!empty($searchData['order_date_start']) || isset($searchData['order_date_start'])) {
+        if (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
             $date = $searchData['order_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('o.create_date >= :order_date_start')
                 ->setParameter('order_date_start', $date);
         }
-        if (!empty($searchData['order_date_end']) || isset($searchData['order_date_end'])) {
+        if (!empty($searchData['order_date_end']) && $searchData['order_date_end'])\) {
             $date = clone $searchData['order_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -211,14 +211,14 @@ class OrderRepository extends EntityRepository
         }
 
         // create_date
-        if (!empty($searchData['update_date_start']) || isset($searchData['update_date_start'])) {
+        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('o.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
-        if (!empty($searchData['update_date_end']) || isset($searchData['update_date_end'])) {
+        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -346,14 +346,14 @@ class OrderRepository extends EntityRepository
         }
 
         // oreder_date
-        if (!empty($searchData['order_date_start']) || isset($searchData['order_date_start'])) {
+        if (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
             $date = $searchData['order_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('o.order_date >= :order_date_start')
                 ->setParameter('order_date_start', $date);
         }
-        if (!empty($searchData['order_date_end']) || isset($searchData['order_date_end'])) {
+        if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
             $date = clone $searchData['order_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -364,14 +364,14 @@ class OrderRepository extends EntityRepository
         }
 
         // payment_date
-        if (!empty($searchData['payment_date_start']) || isset($searchData['payment_date_start'])) {
+        if (!empty($searchData['payment_date_start']) && $searchData['payment_date_start']) {
             $date = $searchData['payment_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('o.payment_date >= :payment_date_start')
                 ->setParameter('payment_date_start', $date);
         }
-        if (!empty($searchData['payment_date_end']) || isset($searchData['payment_date_end'])) {
+        if (!empty($searchData['payment_date_end']) && $searchData['payment_date_end']) {
             $date = clone $searchData['payment_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -382,14 +382,14 @@ class OrderRepository extends EntityRepository
         }
 
         // commit_date
-        if (!empty($searchData['commit_date_start']) || isset($searchData['commit_date_start'])) {
+        if (!empty($searchData['commit_date_start']) && $searchData['commit_date_start']) {
             $date = $searchData['commit_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('o.commit_date >= :commit_date_start')
                 ->setParameter('commit_date_start', $date);
         }
-        if (!empty($searchData['commit_date_end']) || isset($searchData['commit_date_end'])) {
+        if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
             $date = clone $searchData['commit_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -401,14 +401,14 @@ class OrderRepository extends EntityRepository
 
 
         // update_date
-        if (!empty($searchData['update_date_start']) || isset($searchData['update_date_start'])) {
+        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('o.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
-        if (!empty($searchData['update_date_end']) || isset($searchData['update_date_end'])) {
+        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days')

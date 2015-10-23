@@ -162,7 +162,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // Pref
-        if (!empty($searchData['pref']) || isset($searchData['pref'])) {
+        if (!empty($searchData['pref']) && $searchData['pref']) {
             $qb
                 ->andWhere('c.Pref = :pref')
                 ->setParameter('pref', $searchData['pref']->getId());
@@ -181,7 +181,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // birth_month
-        if (!empty($searchData['birth_month']) || isset($searchData['birth_month'])) {
+        if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
             //            TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
 //            $qb
 //                ->andWhere('extract(month from c.birth) = :birth_month')
@@ -189,14 +189,14 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // birth
-        if (!empty($searchData['birth_start']) || isset($searchData['birth_start'])) {
+        if (!empty($searchData['birth_start']) && $searchData['birth_start']) {
             $date = $searchData['birth_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('c.birth >= :birth_start')
                 ->setParameter('birth_start', $date);
         }
-        if (!empty($searchData['birth_end']) || isset($searchData['birth_end'])) {
+        if (!empty($searchData['birth_end']) && $searchData['birth_end']) {
             $date = clone $searchData['birth_end'];
             $date = $date
                 ->modify('+1 days')
@@ -226,26 +226,26 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // buy_times
-        if (!empty($searchData['buy_times_start']) || isset($searchData['buy_times_start'])) {
+        if (!empty($searchData['buy_times_start']) && $searchData['buy_times_start']) {
             $qb
                 ->andWhere('c.buy_times >= :buy_times_start')
                 ->setParameter('buy_times_start', $searchData['buy_times_start']);
         }
-        if (!empty($searchData['buy_times_end']) || isset($searchData['buy_times_end'])) {
+        if (!empty($searchData['buy_times_end']) && $searchData['buy_times_end']) {
             $qb
                 ->andWhere('c.buy_times <= :buy_times_end')
                 ->setParameter('buy_times_end', $searchData['buy_times_end']);
         }
 
         // create_date
-        if (!empty($searchData['create_date_start']) || isset($searchData['create_date_start'])) {
+        if (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
             $date = $searchData['create_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('c.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $date);
         }
-        if (!empty($searchData['create_date_end']) || isset($searchData['create_date_end'])) {
+        if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
             $date = clone $searchData['create_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -256,14 +256,14 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // update_date
-        if (!empty($searchData['update_date_start']) || isset($searchData['update_date_start'])) {
+        if (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
             $date = $searchData['update_date_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('c.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
-        if (!empty($searchData['update_date_end']) || isset($searchData['update_date_end'])) {
+        if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days')
@@ -274,14 +274,14 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         }
 
         // last_buy
-        if (!empty($searchData['last_buy_start']) || isset($searchData['last_buy_start'])) {
+        if (!empty($searchData['last_buy_start']) && $searchData['last_buy_start']) {
             $date = $searchData['last_buy_start']
                 ->format('Y-m-d H:i:s');
             $qb
                 ->andWhere('c.last_buy_date >= :last_buy_start')
                 ->setParameter('last_buy_start', $date);
         }
-        if (!empty($searchData['last_buy_end']) || isset($searchData['last_buy_end'])) {
+        if (!empty($searchData['last_buy_end']) && $searchData['last_buy_end']) {
             $date = clone $searchData['last_buy_end'];
             $date = $date
                 ->modify('+1 days')
