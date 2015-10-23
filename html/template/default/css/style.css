@@ -2083,7 +2083,7 @@ margin-top: 5px;
 /****** Effect Setting ********/
 
 /* Overlay */
-.overlay {
+.overlay, .loadmask {
     /* shadow layer visible when navigation is active */
     position: fixed;
     z-index: 2;
@@ -2101,7 +2101,12 @@ margin-top: 5px;
     -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s, -moz-transform 0.3s 0s;
     transition: opacity 0.3s 0s, visibility 0s 0.3s, transform 0.3s 0s;
 }
-.overlay.is-visible {
+.loadmask {
+    z-index: 1000;
+    cursor: default;
+    background-color: rgba(0,0,0, 0.2);
+}
+.overlay.is-visible, .loadmask.is-visible {
     opacity: 1;
     visibility: visible;
     -webkit-transition: opacity 0.3s 0s, visibility 0s 0s, -webkit-transform 0.3s 0s;

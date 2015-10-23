@@ -590,7 +590,10 @@
         // ダブルクリック禁止
         $('.prevention-btn').on('click', function() {
             $(this).attr('disabled', 'disabled');
-            $(this).parents('form').submit();
+            $(this).delay(2000).queue(function() {
+                $(this).attr('disabled',false);
+            });
+            $(".loadmask").addClass('is-visible');
         });
     });
 })(window);

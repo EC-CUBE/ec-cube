@@ -41,6 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             document.form1, {{ form.classcategory_id2.vars.value|json_encode|raw }}
     );
     {% endif %}
+
 </script>
 
 <script>
@@ -191,7 +192,7 @@ $(function(){
                                 {# カートボタン #}
                                 <div class="btn_area">
                                     <ul class="row">
-                                        <li class="col-xs-12 col-sm-8"><button type="submit" class="btn btn-primary btn-block">カートに入れる</button></li>
+                                        <li class="col-xs-12 col-sm-8"><button type="button" class="btn btn-primary btn-block prevention-btn" onclick="$('#form1').submit()">カートに入れる</button></li>
                                     </ul>
                                 </div>
                             {% else %}
