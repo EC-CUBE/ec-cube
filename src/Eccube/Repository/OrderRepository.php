@@ -200,7 +200,7 @@ class OrderRepository extends EntityRepository
                 ->andWhere('o.create_date >= :order_date_start')
                 ->setParameter('order_date_start', $date);
         }
-        if (!empty($searchData['order_date_end']) && $searchData['order_date_end'])) {
+        if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
             $date = clone $searchData['order_date_end'];
             $date = $date
                 ->modify('+1 days')
