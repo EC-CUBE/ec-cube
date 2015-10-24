@@ -24,7 +24,7 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Uril\str;
+use Eccube\Uril\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
