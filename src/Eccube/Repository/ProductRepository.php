@@ -93,7 +93,7 @@ class ProductRepository extends EntityRepository
 
         // category
         $categoryJoin = false;
-        if (isset($searchData['category_id']) && Str::isNotBlank($searchData['category_id'])) {
+        if (!empty($searchData['category_id']) && $searchData['category_id']) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
             if ($Categories) {
                 $qb
