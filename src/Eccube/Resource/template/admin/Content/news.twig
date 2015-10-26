@@ -61,22 +61,22 @@ function changeAction(action) {
                                     {% for News in NewsList %}
                                         <tr>
                                             <td>{{ loop.index }}</td>
-                                            <td>{{ News.date|date("Y.m.d") }}</td>
+                                            <td>{{ News.date|date("Y/m/d") }}</td>
                                             <td>{{ News.title }}</td>
                                             <td class="icon_edit">
                                                 <div class="dropdown">
                                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li><a href="{{ url('admin_content_edit', { 'id' : News.id }) }}" >編集</a></li>
-                                                        <li><a href="{{ url('admin_content_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この新着情報を削除してもよろしいですか？">削除</a></li>
+                                                        <li><a href="{{ url('admin_content_news_edit', { 'id' : News.id }) }}" >編集</a></li>
+                                                        <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この新着情報を削除してもよろしいですか？">削除</a></li>
                                                         {% if loop.first == false %}
                                                             <li>
-                                                                <a href="{{ url('admin_content_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a>
+                                                                <a href="{{ url('admin_content_news_up', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">上へ</a>
                                                             </li>
                                                         {% endif %}
                                                         {% if loop.last == false %}
                                                             <li>
-                                                                <a href="{{ url('admin_content_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a>
+                                                                <a href="{{ url('admin_content_news_down', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">下へ</a>
                                                             </li>
                                                         {% endif %}
 
@@ -94,7 +94,7 @@ function changeAction(action) {
             </div><!-- /.box -->
             <div class="row">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
-                    <a href="{{ url('admin_content_new') }}" class="btn btn-primary btn-block btn-lg">新規登録</a>
+                    <a href="{{ url('admin_content_news_new') }}" class="btn btn-primary btn-block btn-lg">新規登録</a>
                 </div>
             </div>
 
