@@ -55,7 +55,7 @@ class NewsType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('title', 'textarea', array(
+            ->add('title', 'text', array(
                 'label' => 'タイトル',
                 'required' => true,
                 'constraints' => array(

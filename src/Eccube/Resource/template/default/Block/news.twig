@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <dt>
                         <span class="date">{{ News.date|date("Y/m/d") }}</span>
                         <span class="news_title">
-                            {{ News.title | nl2br }}
+                            {{ News.title }}
                         </span>
                         {% if News.comment or News.url %}
                         <span class="angle-circle"><svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg></span>
