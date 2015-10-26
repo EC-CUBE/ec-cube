@@ -26,10 +26,30 @@ namespace Eccube\Tests\Service;
 use Eccube\Application;
 use Symfony\Component\Yaml\Yaml;
 use Eccube\Common\Constant;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PluginServiceTest extends AbstractServiceTestCase
 {
     protected $app;
+
+    public function tearDown()
+    {
+        $dirs = array();
+        $finder = new Finder();
+        $iterator = $finder
+            ->in($this->app['config']['plugin_realdir'])
+            ->name('dummy*')
+            ->directories();
+        foreach ($iterator as $dir) {
+            $dirs[] = $dir->getPathName();
+        }
+
+        foreach ($dirs as $dir) {
+            $this->deleteFile($dir);
+        }
+        parent::tearDown();
+    }
 
     /*
        正しいプラグインの条件
@@ -48,18 +68,16 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
         return $t;
     }
+
     public function deleteFile($path)
     {
-        $f=new Filesystem();
+        $f = new Filesystem();
         return $f->remove($path);
     }
-
 
     // 必要最小限のファイルのプラグインのインストールとアンインストールを検証
     public function testInstallPluginMinimum()
     {
-        #self::markTestSkipped();
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -97,8 +115,6 @@ class PluginServiceTest extends AbstractServiceTestCase
     // 必須ファイルがないプラグインがインストール出来ないこと
     public function testInstallPluginEmptyError()
     {
-        #self::markTestSkipped();
-
         $this->setExpectedException(
           '\Eccube\Exception\PluginException', 'config.yml not found or syntax error'
         );
@@ -119,7 +135,6 @@ class PluginServiceTest extends AbstractServiceTestCase
     // config.ymlのフォーマット確認
     public function testConfigYmlFormat()
     {
-#        self::markTestSkipped();
         $service = $this->app['eccube.service.plugin'];
         $tmpname='dummy'.mt_rand();
         $tmpfile=sys_get_temp_dir().'/dummy'.mt_rand();
@@ -203,7 +218,6 @@ class PluginServiceTest extends AbstractServiceTestCase
     // config.ymlに異常な項目がある場合
     public function testnstallPluginMalformedConfigError()
     {
-        #self::markTestSkipped();
         $service = $this->app['eccube.service.plugin'];
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
@@ -226,8 +240,6 @@ class PluginServiceTest extends AbstractServiceTestCase
     // イベント定義を含むプラグインのインストールとアンインストールを検証
     public function testInstallPluginWithEvent()
     {
-        #self::markTestSkipped();
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -453,12 +465,9 @@ EOD;
 
     }
 
-     // インストーラを含むプラグインが正しくインストールできるか
+    // インストーラを含むプラグインが正しくインストールできるか
     public function testInstallPluginWithManager()
     {
-        #self::markTestSkipped();
-
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -538,8 +547,6 @@ EOD;
     // const定義を含むpluginのインストール
     public function testInstallPluginWithConst()
     {
-        #self::markTestSkipped();
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -577,5 +584,4 @@ EOD;
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
     }
-
 }
