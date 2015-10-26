@@ -3144,3 +3144,21 @@ a.plugin-name:hover {
         right: 27px;
     }
 }
+
+@media (max-width: 767px) {
+    .icon_edit .dropdown-menu {
+        margin-top:  0;
+    }
+    .table-responsive .dropdown-menu {
+        left: -160px !important;
+        top: -115% !important;
+    }
+    .table-responsive .dropdown-menu-right {
+        right: 50px;
+    }
+}
+@media (min-width: 768px) {
+    .table-responsive {
+        overflow: visible;
+    }
+}

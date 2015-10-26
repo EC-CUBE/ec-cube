@@ -131,6 +131,11 @@ class TemplateController extends AbstractController
         // tar.gzファイルに圧縮する.
         $phar = new \PharData($tarFile);
         $phar->buildFromDirectory($tmpDir);
+        // appディレクトリがない場合は, 空ディレクトリを追加
+        // @see https://github.com/EC-CUBE/ec-cube/issues/742
+        if (empty($phar['app'])) {
+            $phar->addEmptyDir('app');
+        }
         $phar->compress(\Phar::GZ);
 
         // ダウンロード完了後にファイルを削除する.
