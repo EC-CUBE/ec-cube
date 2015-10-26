@@ -256,7 +256,7 @@ class ProductRepository extends EntityRepository
         // Order By
         $qb
             ->orderBy('p.update_date', 'DESC')
-            ->addOrderBy('pi.rank', 'DESC');
+            ->addOrderBy('pi.rank', 'ASC');
 
         return $qb;
     }
