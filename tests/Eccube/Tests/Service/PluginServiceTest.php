@@ -35,6 +35,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     public function tearDown()
     {
+        parent::tearDown();
         $dirs = array();
         $finder = new Finder();
         $iterator = $finder
@@ -49,6 +50,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             $this->deleteFile($dir);
         }
     }
+
     /*
        正しいプラグインの条件
        * tar/zipアーカイブである
