@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -248,6 +249,15 @@ class OrderType extends AbstractType
                 $event->setData($data);
             }
 
+        });
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $data = $event->getData();
+            $orderDetails = $form['OrderDetails']->getData();
+                    if (empty($orderDetails) || count($orderDetails) < 1) {
+                        // 画面下部にエラーメッセージを表示させる
+                        $form['charge']->addError(new FormError('商品が追加されていません。'));
+                    }
         });
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
