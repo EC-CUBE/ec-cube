@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -105,7 +106,7 @@ class ProductRepository extends EntityRepository
         }
 
         // name
-        if (!empty($searchData['name']) && $searchData['name']) {
+        if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($keywords as $index => $keyword) {
@@ -153,7 +154,7 @@ class ProductRepository extends EntityRepository
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
-        if (!empty($searchData['id']) && $searchData['id']) {
+        if (isset($searchData['id']) && Str::isNotBlank($searchData['id'])) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
