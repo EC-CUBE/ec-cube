@@ -206,7 +206,7 @@ class TaxRuleRepository extends EntityRepository
             return $a->compareTo($b);
         });
 
-        if ($TaxRules) {
+        if (!empty($TaxRules)) {
             $this->rules[$cacheKey] = $TaxRules[0];
 
             return $TaxRules[0];

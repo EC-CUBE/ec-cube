@@ -438,7 +438,7 @@ class Application extends ApplicationTrait
             $config = Yaml::parse($dir->getRealPath().'/config.yml');
 
             // Doctrine Extend
-            if (isset($config['orm.path']) and is_array($config['orm.path'])) {
+            if (isset($config['orm.path']) && is_array($config['orm.path'])) {
                 $paths = array();
                 foreach ($config['orm.path'] as $path) {
                     $paths[] = $pluginBasePath.'/'.$config['code'].$path;
