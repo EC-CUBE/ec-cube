@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +21,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 
 namespace Eccube\Controller\Mypage;
 
@@ -57,8 +57,9 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param  Application $app
-     * @param  Request $request
+     * @param Application $app
+     * @param Request     $request
+     *
      * @return string
      */
     public function index(Application $app, Request $request)
@@ -83,20 +84,19 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param  Application $app
-     * @param  Request $request
+     * @param Application $app
+     * @param Request     $request
+     *
      * @return string
      */
     public function history(Application $app, Request $request, $id)
     {
 
-
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
         $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
+            'Eccube\Entity\ProductClass',
         ));
-
 
         $Order = $app['eccube.repository.order']->findOneBy(array(
             'id' => $id,
@@ -112,8 +112,9 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param  Application $app
-     * @param  Request $request
+     * @param Application $app
+     * @param Request     $request
+     *
      * @return string
      */
     public function order(Application $app, Request $request)
@@ -143,29 +144,9 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param  Application $app
-     * @param  Request $request
-     * @return string
-     */
-    public function mailView(Application $app, Request $request, $id)
-    {
-        $Customer = $app['user'];
-
-        /* @var $MailHistory \Eccube\Entity\MailHistory */
-        try {
-            $MailHistory = $app['eccube.repository.mail_history']->getByCustomerAndId($Customer, $id);
-        } catch (\Exception $e) {
-            throw new NotFoundHttpException();
-        }
-
-        return $app->render('Mypage/mail_view.twig', array(
-            'MailHistory' => $MailHistory,
-        ));
-    }
-
-    /**
-     * @param  Application $app
-     * @param  Request $request
+     * @param Application $app
+     * @param Request     $request
+     *
      * @return string
      */
     public function favorite(Application $app, Request $request)
