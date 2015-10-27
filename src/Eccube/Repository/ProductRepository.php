@@ -126,7 +126,7 @@ class ProductRepository extends EntityRepository
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->orderBy('p.create_date', 'DESC');
         } else {
-            if ($categoryJoin == false) {
+            if ($categoryJoin === false) {
                 $qb
                     ->leftJoin('p.ProductCategories', 'pct')
                     ->leftJoin('pct.Category', 'c');
