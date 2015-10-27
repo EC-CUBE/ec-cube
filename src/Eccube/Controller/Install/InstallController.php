@@ -670,11 +670,54 @@ class InstallController
     }
 
 
+    /**
+     * マイグレーション画面を表示する.
+     * 
+     * @param InstallApplication $app
+     * @param Request $request
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function migration(InstallApplication $app, Request $request)
     {
         return $app['twig']->render('migration.twig');
     }
 
+    /**
+     * インストール済プラグインの一覧を表示する.
+     * プラグインがインストールされていない場合は, マイグレーション実行画面へリダイレクトする.
+     * 
+     * @param InstallApplication $app
+     * @param Request $request
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function migration_plugin(InstallApplication $app, Request $request)
+    {
+        $eccube = new \Eccube\Application();
+        $eccube->initDoctrine();
+        
+        $pluginRepository = $eccube['orm.em']->getRepository('Eccube\Entity\Plugin');
+        $Plugins = $pluginRepository->findBy(array('del_flg' => Constant::DISABLED));
+
+        if (empty($Plugins)) {
+            // インストール済プラグインがない場合はマイグレーション実行画面へリダイレクト.
+            return $app->redirect($app->url('migration_end'));
+        } else {
+            return $app['twig']->render('migration_plugin.twig', array(
+                'Plugins' => $Plugins,
+                'version' => Constant::VERSION));
+        }
+    }
+    
+    /**
+     * マイグレーションを実行し, 完了画面を表示させる
+     * 
+     * @param InstallApplication $app
+     * @param Request $request
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function migration_end(InstallApplication $app, Request $request)
     {
         $this->doMigrate();

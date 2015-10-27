@@ -1,0 +1,72 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'migration_frame.twig' %}
+
+{% set current = 1 %}
+
+{% block main %}
+    <div id="main" class="step1">
+        <div class="main_inner">
+            <div class="main_content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <h1>インストール済プラグインの確認</h1>
+                            </div>
+                            <div class="alert alert-warning alert-dismissable">
+                                お使いのEC-CUBEには、以下のプラグインがインストールされています。<br>
+                                EC-CUBE {{ version }} への対応状況をご確認の上、マイグレーションを実行してください。
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>プラグイン</th>
+                                        <th>バージョン</th>
+                                        <th>コード</th>
+                                        <th>ステータス</th>
+                                        <th>詳細</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for Plugin in Plugins %}
+                                    <tr>
+                                        <td>{{ Plugin.name }} </td>
+                                        <td>{{ Plugin.version }}</td>
+                                        <td>{{ Plugin.code }} </td>
+                                        <td>{% if Plugin.enable %}稼働中{% else %}停止中{% endif %}</td>
+                                        <td>{% if Plugin.source %}<a href="https://www.ec-cube.net/products/detail.php?product_id={{ Plugin.source }}" target="_blank">詳細</a>{% else %}--{% endif %}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <ul class="btn_area">
+                                <li><a href="{{ url('migration_end') }}" class="btn btn-primary btn-block btn-lg">次へ進む</a></li>
+                                <li><a href="{{ url('migration') }}" class="btn btn-prev btn-block btn-lg">戻る</a></li>
+                            </ul>
+                        </div><!-- /.col -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
