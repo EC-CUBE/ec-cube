@@ -281,7 +281,7 @@ class PluginController extends AbstractController
         return $app->redirect($app->url('admin_store_plugin'));
     }
 
-    function handler(Application $app)
+    public function handler(Application $app)
     {
         $handlers = $app['eccube.repository.plugin_event_handler']->getHandlers();
 
@@ -297,7 +297,7 @@ class PluginController extends AbstractController
 
     }
 
-    function handler_up(Application $app, $handlerId)
+    public function handler_up(Application $app, $handlerId)
     {
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId));
@@ -305,7 +305,7 @@ class PluginController extends AbstractController
         return $app->redirect($app->url('admin_store_plugin_handler'));
     }
 
-    function handler_down(Application $app, $handlerId)
+    public function handler_down(Application $app, $handlerId)
     {
         $repo = $app['eccube.repository.plugin_event_handler'];
         $repo->upPriority($repo->find($handlerId), false);

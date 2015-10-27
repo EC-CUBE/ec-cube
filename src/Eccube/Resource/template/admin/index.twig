@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <h3 class="box-title">ショップ状況</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
-                        <form id="form2" name="form2" action="{{ url('admin_product_page', { page_no : 1, status : 3}) }}" method="post">
+                        <form id="form2" name="form2" action="{{ url('admin_homepage_nonstock') }}" method="post">
                             {{ form_widget(searchProductForm._token) }}
                         </form>
                         <form id="form3" name="form3" action="{{ url('admin_customer') }}" method="post">

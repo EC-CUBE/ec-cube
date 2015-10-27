@@ -122,14 +122,14 @@ class PluginService
         if (!is_array($meta)) {
             throw new PluginException('config.yml not found or syntax error');
         }
-        if (!isset($meta['code']) or !$this->checkSymbolName($meta['code'])) {
+        if (!isset($meta['code']) || !$this->checkSymbolName($meta['code'])) {
             throw new PluginException('config.yml code empty or invalid_character(\W)');
         }
         if (!isset($meta['name'])) {
             // nameは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
             throw new PluginException('config.yml name empty');
         }
-        if (isset($meta['event']) and !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
+        if (isset($meta['event']) && !$this->checkSymbolName($meta['event'])) { // eventだけは必須ではない
             throw new PluginException('config.yml event empty or invalid_character(\W) ');
         }
         if (!isset($meta['version'])) {
@@ -385,7 +385,7 @@ class PluginService
                     } else {
                         $match = false;
                         foreach ($event_yml[$peh->getEvent()] as $handler) {
-                            if ($peh->getHandler() == $handler[0] and $peh->getHandlerType() == $handler[1]) {
+                            if ($peh->getHandler() == $handler[0] && $peh->getHandlerType() == $handler[1]) {
                                 $match = true;
                             }
                         }

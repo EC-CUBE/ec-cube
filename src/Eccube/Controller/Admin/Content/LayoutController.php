@@ -86,7 +86,8 @@ class LayoutController
                 // TODO: collection を利用
 
                 $data = $request->request->all();
-                for ($i = 0; $i < count($Blocks); $i++) {
+                $max = count($Blocks);
+                for ($i = 0; $i < $max; $i++) {
                     // block_id が取得できない場合は INSERT しない
                     if (!isset($data['id_' . $i])) {
                         continue;
