@@ -252,12 +252,11 @@ class OrderType extends AbstractType
         });
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
-            $data = $event->getData();
             $orderDetails = $form['OrderDetails']->getData();
-                    if (empty($orderDetails) || count($orderDetails) < 1) {
-                        // 画面下部にエラーメッセージを表示させる
-                        $form['charge']->addError(new FormError('商品が追加されていません。'));
-                    }
+            if (empty($orderDetails) || count($orderDetails) < 1) {
+                // 画面下部にエラーメッセージを表示させる
+                $form['charge']->addError(new FormError('商品が追加されていません。'));
+            }
         });
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
