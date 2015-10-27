@@ -144,4 +144,25 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->verify();
     }
+
+    public function testProductImage()
+    {
+        $this->searchData = array();
+
+        $this->scenario();
+
+        $Products = $this->Results;
+
+        foreach ($Products as $Product) {
+            $this->expected = array(0, 1, 2);
+            $this->actual = array();
+
+            $ProductImages = $Product->getProductImage();
+            foreach ($ProductImages as $ProductImage) {
+                $this->actual[] = $ProductImage->getRank();
+            }
+
+            $this->verify();
+        }
+    }
 }

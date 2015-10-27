@@ -149,8 +149,6 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->select(array('p', 'pi'))
-            ->leftJoin('p.ProductImage', 'pi')
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
@@ -255,8 +253,7 @@ class ProductRepository extends EntityRepository
 
         // Order By
         $qb
-            ->orderBy('p.update_date', 'DESC')
-            ->addOrderBy('pi.rank', 'DESC');
+            ->orderBy('p.update_date', 'DESC');
 
         return $qb;
     }
