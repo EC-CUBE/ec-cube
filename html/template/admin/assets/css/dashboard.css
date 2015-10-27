@@ -3162,3 +3162,8 @@ a.plugin-name:hover {
         overflow: visible;
     }
 }
+
+/* customer agreement form */
+#customer_agreement_customer_agreement {
+    height: 420px;
+}
