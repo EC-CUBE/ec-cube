@@ -50,13 +50,18 @@ cart.over.sale_limit: |-
 cart.zero.stock: |-
     選択された商品(%product%)の在庫が不足しております。
     該当商品をカートから削除しました。
-cart.over.price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。 
+cart.over.price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
 cart.product.type.kind: この商品は同時に購入することはできません。
 cart.product.payment.kind: お支払方法が異なるためこの商品は同時に購入することはできません。
 cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
 cart.product.not.status: この商品は現在購入することはできません。
 
 shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
+shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
+
+front.shopping.order.error: 購入処理でエラーが発生しました。
+front.shopping.stock.error: 選択された商品の在庫が不足しております。該当商品をカートから削除しました。
+front.shopping.system.error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
 
 admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
 
@@ -88,7 +93,7 @@ admin.class_category.save.complete: 分類を保存しました。
 admin.class_category.save.error: 分類を保存できませんでした。
 admin.class_category.delete.complete: 分類を削除しました。
 admin.class_category.delete.error: 分類を削除できませんでした。
-admin.class_category.delete.hasproduct: この分類は商品で使われているので削除できません。 
+admin.class_category.delete.hasproduct: この分類は商品で使われているので削除できません。
 
 admin.category.up.complete: カテゴリを上へ移動しました。
 admin.category.up.error: カテゴリを上へ移動できませんでした。

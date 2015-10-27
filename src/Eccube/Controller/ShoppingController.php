@@ -43,12 +43,20 @@ class ShoppingController extends AbstractController
      */
     private $sessionKey = 'eccube.front.shopping.nonmember';
 
+    /**
+     * @var string 非会員用セッションキー
+     */
     private $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
 
     /**
      * @var string 複数配送警告メッセージ
      */
     private $sessionMultipleKey = 'eccube.front.shopping.multiple';
+
+    /**
+     * @var string 受注IDキー
+     */
+    private $sessionOrderKey = 'eccube.front.shopping.order.id';
 
     /**
      * 購入画面表示
@@ -96,6 +104,8 @@ class ShoppingController extends AbstractController
             // 受注情報を作成
             $Order = $app['eccube.service.shopping']->createOrder($Customer);
 
+            // セッション情報を削除
+            $app['session']->remove($this->sessionOrderKey);
             $app['session']->remove($this->sessionMultipleKey);
 
         } else {
@@ -143,6 +153,10 @@ class ShoppingController extends AbstractController
         }
 
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         // form作成
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
@@ -163,8 +177,7 @@ class ShoppingController extends AbstractController
                         $em->getConnection()->rollback();
                         $em->close();
 
-                        $app['session']->getFlashBag()->add('eccube.shopping_error','選択された商品の在庫が不足しております。');
-                        $app['session']->getFlashBag()->add('eccube.shopping_error','該当商品をカートから削除しました。');
+                        $app->addError('front.shopping.stock.error');
                         return $app->redirect($app->url('shopping_error'));
                     }
 
@@ -188,17 +201,21 @@ class ShoppingController extends AbstractController
 
                     $app->log($e);
 
-                    $app['session']->getFlashBag()->add('eccube.shopping_error','購入処理でシステムエラーが発生しました。');
-                    $app['session']->getFlashBag()->add('eccube.shopping_error','大変お手数ですが、サイト管理者までご連絡ください。');
+                    $app->addError('front.shopping.system.error');
                     return $app->redirect($app->url('shopping_error'));
                 }
+
+                // カート削除
+                $app['eccube.service.cart']->clear()->save();
 
                 // メール送信
                 $app['eccube.service.mail']->sendOrderMail($Order);
 
-                return $app->redirect($app->url('shopping_complete', array(
-                    'status' => $app['config']['order_new'],
-                )));
+                // 受注IDをセッションにセット
+                $app['session']->set($this->sessionOrderKey, $Order->getId());
+
+                // 完了画面表示
+                return $app->redirect($app->url('shopping_complete'));
 
             } else {
                 return $app->render('Shopping/index.twig', array(
@@ -216,17 +233,17 @@ class ShoppingController extends AbstractController
     /**
      * 購入完了画面表示
      */
-    public function complete(Application $app, $status)
+    public function complete(Application $app)
     {
 
-        // 購入ステータスを指定しなければpre_order_idのみで検索
-        $Order = $app['eccube.service.shopping']->getOrder($status);
+        // 受注IDを取得
+        $orderId = $app['session']->get($this->sessionOrderKey);
 
-        // カート削除
-        $app['eccube.service.cart']->clear()->save();
+        // 受注IDセッションを削除
+        $app['session']->remove($this->sessionOrderKey);
 
         return $app->render('Shopping/complete.twig', array(
-            'Order' => $Order,
+            'orderId' => $orderId,
         ));
     }
 
@@ -244,6 +261,10 @@ class ShoppingController extends AbstractController
         }
 
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
@@ -312,6 +333,10 @@ class ShoppingController extends AbstractController
     {
 
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
@@ -377,6 +402,10 @@ class ShoppingController extends AbstractController
                 'id' => $address));
 
             $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+            if (!$Order) {
+                $app->addError('front.shopping.order.error');
+                return $app->redirect($app->url('shopping_error'));
+            }
 
             $Shipping = $Order->findShipping($id);
             if (!$Shipping) {
@@ -437,6 +466,10 @@ class ShoppingController extends AbstractController
 
 
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         $Shipping = $Order->findShipping($id);
         if (!$Shipping) {
@@ -548,6 +581,11 @@ class ShoppingController extends AbstractController
                 }
 
                 $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+                if (!$Order) {
+                    $app->addError('front.shopping.order.error');
+                    return $app->redirect($app->url('shopping_error'));
+                }
+
                 $Order
                     ->setName01($data['customer_name01'])
                     ->setName02($data['customer_name02'])
@@ -739,6 +777,10 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         // 複数配送時は商品毎でお届け先を設定する為、商品をまとめた数量を設定
         $compItemQuantities = array();
@@ -1004,6 +1046,10 @@ class ShoppingController extends AbstractController
     public function shippingChange(Application $app, Request $request, $id)
     {
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
@@ -1031,6 +1077,10 @@ class ShoppingController extends AbstractController
     public function shippingEditChange(Application $app, Request $request, $id)
     {
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
@@ -1058,6 +1108,10 @@ class ShoppingController extends AbstractController
     public function shippingMultipleChange(Application $app, Request $request)
     {
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+        if (!$Order) {
+            $app->addError('front.shopping.order.error');
+            return $app->redirect($app->url('shopping_error'));
+        }
 
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
