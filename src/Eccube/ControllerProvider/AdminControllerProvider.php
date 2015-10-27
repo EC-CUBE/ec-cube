@@ -41,6 +41,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // root
         $c->match('/', '\Eccube\Controller\Admin\AdminController::index')->bind('admin_homepage');
+        $c->post('/nonstock', '\Eccube\Controller\Admin\AdminController::searchNonStockProducts')->bind('admin_homepage_nonstock');
 
         // login
         $c->match('/login', '\Eccube\Controller\Admin\AdminController::login')->bind('admin_login');

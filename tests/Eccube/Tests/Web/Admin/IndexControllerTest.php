@@ -33,4 +33,9 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testRoutingAdminNonStock()
+    {
+        $this->client->request('POST', $this->app['url_generator']->generate('admin_homepage_nonstock'));        
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+    }
 }
