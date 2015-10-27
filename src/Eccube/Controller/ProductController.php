@@ -91,7 +91,12 @@ class ProductController
 
                 if ($addCartForm->isValid()) {
                     $addCartData = $addCartForm->getData();
-                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
+
+                    try {
+                        $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
+                    } catch (CartException $e) {
+                        $app->addRequestError($e->getMessage());
+                    }
 
                     return $app->redirect($app['url_generator']->generate('cart'));
                 }
