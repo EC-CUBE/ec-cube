@@ -173,7 +173,11 @@ class ShippingType extends AbstractType
                     return;
                 }
 
-                $Delivery = $app['eccube.repository.delivery']->find($data['Delivery']);
+                $value = $data['Delivery'];
+                if (empty($value)) {
+                    $value = 0;
+                }
+                $Delivery = $app['eccube.repository.delivery']->find($value);
 
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', 'entity', array(
