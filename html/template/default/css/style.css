@@ -3730,7 +3730,7 @@ fieldset[disabled] .btn-link:focus {
         left: 100%;
     }
     #header .category-nav li:last-child ul li ul {
-        left: -100%;
+        left: 100%;
         width: 100%;
     }
     #header .category-nav li ul li ul:before {
@@ -3743,10 +3743,17 @@ fieldset[disabled] .btn-link:focus {
     }
     #header .category-nav li:last-child ul li ul:before {
         position: absolute;
+        content: ">";
+        top: 13px;
+        left: -15px;
+        width: 0;
+        height: 0;
+        /*
         content: "<";
         top: 13px;
         left: 200%;
         margin-left: -15px;
+        */
     }
     #header .category-nav li ul li:hover > ul > li {
         overflow: visible;
