@@ -149,7 +149,6 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->select(array('p'))
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
