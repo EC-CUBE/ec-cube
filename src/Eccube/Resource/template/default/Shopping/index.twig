@@ -33,19 +33,19 @@ $(function(){
         $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
     });
 
-    $('.btn-toShipping').bind('click', function() {
+    $('.btn-shipping').click(function() {
         $('#shopping-form').attr('action', $(this).attr('href')).submit();
-		return false;
+        return false;
     });
 
-    $('.btn-toShippingEdit').bind('click', function() {
+    $('.btn-shipping-edit').click(function() {
         $('#shopping-form').attr('action', $(this).attr('href')).submit();
-		return false;
+        return false;
     });
 
-    $('.btn-toShippingMultiple').bind('click', function() {
+    $('.btn-shipping-multiple').click(function() {
         $('#shopping-form').attr('action', $(this).attr('href')).submit();
-		return false;
+        return false;
     });
 
     {% if is_granted('ROLE_USER') == false %}
@@ -260,16 +260,16 @@ $(function(){
                                 {{ form_widget(form.shippings[idx].deliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-toShipping">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
                             {% else %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-toShippingEdit">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit">変更</a></p>
                             {% endif %}
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
                     {% endfor %}
                     {% if BaseInfo.optionMultipleShipping %}
                         <hr>
-                        <div><a href="{{ url('shopping_shipping_multiple_change') }}" class="btn btn-default btn-sm btn-toShippingMultiple">お届け先を追加する</a></div>
+                        <div><a href="{{ url('shopping_shipping_multiple_change') }}" class="btn btn-default btn-sm btn-shipping-multiple">お届け先を追加する</a></div>
                     {% endif %}
 
                     <h2 class="heading02">お支払方法</h2>
@@ -311,7 +311,7 @@ $(function(){
                         </dl>
                         <div class="total_amount">
                             <p class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
-                            <p><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn">注文する</button></p>
+                            <p><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn prevention-mask">注文する</button></p>
                         </div>
                     </div>
                 </div>

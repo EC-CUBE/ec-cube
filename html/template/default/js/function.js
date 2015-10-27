@@ -129,11 +129,20 @@ $(function () {
         return false;
     });
 
+    // マスク処理
+    $('.prevention-mask').on('click', function() {
+        $overlay = $('<div class="prevention-masked">');
+        $('body').append($overlay);
+    });
 
     // ダブルクリック禁止
     $('.prevention-btn').on('click', function() {
         $(this).attr('disabled', 'disabled');
-        $(this).parents('form').submit();
+        var $form = $(this).parents('form');
+        // マスク表示させるためsetTimeoutを使って処理を遅らせる
+        setTimeout(function(){
+            $form.submit();
+        }, 0);
     });
 
 });
