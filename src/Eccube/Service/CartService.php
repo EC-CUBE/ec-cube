@@ -231,7 +231,7 @@ class CartService
             }
 
         }
-       
+
         $tmp_subtotal = 0;
         $tmp_quantity = 0;
         foreach ($this->getCart()->getCartItems() as $cartitem) {
