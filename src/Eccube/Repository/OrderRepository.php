@@ -91,7 +91,7 @@ class OrderRepository extends EntityRepository
         }
 
         // status
-        if (isset($searchData['status']) && Str::isNotBlank($searchData['status'])) {
+        if (!empty($searchData['status']) && $searchData['status']) {
             $qb
                 ->andWhere('o.OrderStatus = :status')
                 ->setParameter('status', $searchData['status']);
@@ -288,7 +288,7 @@ class OrderRepository extends EntityRepository
         }
 
         // status
-        if (isset($searchData['status']) && Str::isNotBlank($searchData['status'])) {
+        if (!empty($searchData['status']) && $searchData['status']) {
             $qb
                 ->andWhere('o.OrderStatus = :status')
                 ->setParameter('status', $searchData['status']);
