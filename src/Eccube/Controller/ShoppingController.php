@@ -528,7 +528,17 @@ class ShoppingController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             try {
                 $data = $request->request->all();
-                $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
+
+                // 入力チェック
+                $errors = $this->customerValidation($app, $data);
+
+                foreach ($errors as $error) {
+                    if ($error->count() != 0) {
+                        $response = new Response(json_encode('NG'), 500);
+                        $response->headers->set('Content-Type', 'application/json');
+                        return $response;
+                    }
+                }
 
                 $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
                 if (!$pref) {
@@ -537,6 +547,7 @@ class ShoppingController extends AbstractController
                     return $response;
                 }
 
+                $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
                 $Order
                     ->setName01($data['customer_name01'])
                     ->setName02($data['customer_name02'])
@@ -1066,6 +1077,79 @@ class ShoppingController extends AbstractController
         }
 
         return $app->redirect($app->url('shopping'));
+    }
+
+    /**
+     * 非会員でのお客様情報変更時の入力チェック
+     */
+    private function customerValidation($app, $data) {
+
+        // 入力チェック
+        $errors = array();
+
+        $errors[] = $app['validator']->validateValue($data['customer_name01'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['name_len'],)),
+            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_name02'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['name_len'], )),
+            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_company_name'], array(
+            new Assert\Length(array('max' => $app['config']['stext_len'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_tel01'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_tel02'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_tel03'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_zip01'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('min' => $app['config']['zip01_len'], 'max' => $app['config']['zip01_len'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_zip02'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('min' => $app['config']['zip02_len'], 'max' => $app['config']['zip02_len'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_addr01'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['address1_len'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_addr02'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['address2_len'])),
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_email'], array(
+            new Assert\NotBlank(),
+            new Assert\Email(),
+        ));
+
+        return $errors;
+
     }
 
 }
