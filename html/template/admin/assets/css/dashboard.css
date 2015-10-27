@@ -3162,3 +3162,18 @@ a.plugin-name:hover {
         overflow: visible;
     }
 }
+
+/* --------------------------------
+    display mask
+-------------------------------- */
+.prevention-masked {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3040;
+    background-color: #000;
+    filter: alpha(opacity=50);
+    opacity: .5;
+}
