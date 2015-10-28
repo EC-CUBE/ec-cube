@@ -3145,6 +3145,9 @@ a.plugin-name:hover {
     }
 }
 
+/* --------------------------------
+    display table-responsive dropdown-menu
+-------------------------------- */
 @media (max-width: 767px) {
     .icon_edit .dropdown-menu {
         margin-top:  0;
@@ -3160,6 +3163,9 @@ a.plugin-name:hover {
 @media (min-width: 768px) {
     .table-responsive {
         overflow: visible;
+    }
+    .table-responsive.table-responsive-overflow {
+        overflow: auto;
     }
 }
 

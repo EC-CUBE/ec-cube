@@ -375,6 +375,7 @@ body {
 
 	#search select {
 		width: auto;
+		max-width: 180px;
 	}
 	/* cart */
 
