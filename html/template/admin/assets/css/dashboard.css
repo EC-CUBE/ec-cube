@@ -876,6 +876,9 @@ dd.form-group .errormsg {
     height: 40px;
     line-height: 1.5
 }
+textarea.form-control{
+    min-height: 160px;
+}
 .form-control:focus {
     border-color:#3c8dbc !important;
     box-shadow:none
