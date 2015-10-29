@@ -47,6 +47,11 @@ class ApplicationTrait extends \Silex\Application
         $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
     }
 
+    public function clearMessage()
+    {
+        $this['session']->getFlashBag()->clear();
+    }
+
     /*
      * 注意！以下コードはSilexのコードのコピーなので触らないコト
      *

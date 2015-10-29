@@ -127,6 +127,12 @@ class PageController extends AbstractController
                 'DeviceType' => $DeviceType
             ));
 
+        if (!$PageLayout) {
+            $app['session']->getFlashBag()->clear();
+            $app->addWarning('admin.delete.warning', 'admin');
+            return $app->redirect($app->url('admin_content_page'));
+        }
+
         // ユーザーが作ったページのみ削除する
         if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_USER) {
             $templatePath = $app['eccube.repository.page_layout']

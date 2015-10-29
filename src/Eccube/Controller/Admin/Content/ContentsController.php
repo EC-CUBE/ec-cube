@@ -141,7 +141,9 @@ class ContentsController extends AbstractController
 
         $TargetNews = $app['eccube.repository.news']->find($id);
         if (!$TargetNews) {
-            throw new NotFoundHttpException();
+            $app->clearMessage();
+            $app->addWarning('admin.delete.warning', 'admin');
+            return $app->redirect($app->url('admin_content'));
         }
 
         $status = $app['eccube.repository.news']->delete($TargetNews);
