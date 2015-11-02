@@ -42,8 +42,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Order1 = $this->createOrder($this->Customer);
         $this->Order2 = $this->createOrder($Customer2);
 
-        $ProductListMax = new \Eccube\Entity\Master\ProductListMax();
-        $ProductListOrderBy = new \Eccube\Entity\Master\ProductListOrderBy();
+        $this->ProductListMax = new \Eccube\Entity\Master\ProductListMax();
+        $this->ProductListOrderBy = new \Eccube\Entity\Master\ProductListOrderBy();
     }
 
     public function scenario()
@@ -342,13 +342,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testPaginationEventByOrderPrice()
     {
-        $ProductListMax->setId(15);
-        $ProductListMax->setName('15件');
-        $ProductListMax->setRank(0);
+        $this->ProductListMax->setId(15);
+        $this->ProductListMax->setName('15件');
+        $this->ProductListMax->setRank(0);
 
-        $ProductListOrderBy->setId(1);
-        $ProductListOrderBy->setName('価格順');
-        $ProductListOrderBy->setRank(0);
+        $this->ProductListOrderBy->setId(1);
+        $this->ProductListOrderBy->setName('価格順');
+        $this->ProductListOrderBy->setRank(0);
 
 
         $this->searchData = array(
@@ -356,8 +356,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
             'category_id' => NULL,
             'name' => NULL,
             'pageno' => '1',
-            'disp_number' => $ProductListMax,
-            'orderby' => $ProductListOrderBy
+            'disp_number' => $this->ProductListMax,
+            'orderby' => $this->ProductListOrderBy
         );
         $this->scenario();
 
@@ -374,13 +374,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testPaginationEventByOrderCreated()
     {
-        $ProductListMax->setId(15);
-        $ProductListMax->setName('15件');
-        $ProductListMax->setRank(0);
+        $this->ProductListMax->setId(15);
+        $this->ProductListMax->setName('15件');
+        $this->ProductListMax->setRank(0);
 
-        $ProductListOrderBy->setId(2);
-        $ProductListOrderBy->setName('新着順');
-        $ProductListOrderBy->setRank(0);
+        $this->ProductListOrderBy->setId(2);
+        $this->ProductListOrderBy->setName('新着順');
+        $this->ProductListOrderBy->setRank(0);
 
 
         $this->searchData = array(
@@ -388,8 +388,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
             'category_id' => NULL,
             'name' => NULL,
             'pageno' => '1',
-            'disp_number' => $ProductListMax,
-            'orderby' => $ProductListOrderBy
+            'disp_number' => $this->ProductListMax,
+            'orderby' => $this->ProductListOrderBy
         );
         $this->scenario();
 
