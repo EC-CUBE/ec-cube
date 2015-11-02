@@ -10,6 +10,8 @@ use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
 
 /**
  * OrderRepository::getQueryBuilderBySearchDataTest test cases.
@@ -22,6 +24,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     protected $Order;
     protected $Results;
     protected $searchData;
+    protected $ProductListMax;
+    protected $ProductListOrderBy;
 
     public function setUp() {
         parent::setUp();
@@ -37,6 +41,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Order = $this->createOrder($this->Customer);
         $this->Order1 = $this->createOrder($this->Customer);
         $this->Order2 = $this->createOrder($Customer2);
+
+        $ProductListMax = new \Eccube\Entity\Master\ProductListMax();
+        $ProductListOrderBy = new \Eccube\Entity\Master\ProductListOrderBy();
     }
 
     public function scenario()
@@ -329,6 +336,70 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->scenario();
 
         $this->expected = 2;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testPaginationEventByOrderPrice()
+    {
+        $ProductListMax->setId(15);
+        $ProductListMax->setName('15件');
+        $ProductListMax->setRank(0);
+
+        $ProductListOrderBy->setId(1);
+        $ProductListOrderBy->setName('価格順');
+        $ProductListOrderBy->setRank(0);
+
+
+        $this->searchData = array(
+            'mode' => NULL,
+            'category_id' => NULL,
+            'name' => NULL,
+            'pageno' => '1',
+            'disp_number' => $ProductListMax,
+            'orderby' => $ProductListOrderBy
+        );
+        $this->scenario();
+
+        $pagination = $app['paginator']()->paginate(
+            $this->Results,
+            $this->searchData['pageno'],
+            $thi->searchData['disp_number']->getId()
+        );
+
+        $this->expected = count($pagination);
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testPaginationEventByOrderCreated()
+    {
+        $ProductListMax->setId(15);
+        $ProductListMax->setName('15件');
+        $ProductListMax->setRank(0);
+
+        $ProductListOrderBy->setId(2);
+        $ProductListOrderBy->setName('新着順');
+        $ProductListOrderBy->setRank(0);
+
+
+        $this->searchData = array(
+            'mode' => NULL,
+            'category_id' => NULL,
+            'name' => NULL,
+            'pageno' => '1',
+            'disp_number' => $ProductListMax,
+            'orderby' => $ProductListOrderBy
+        );
+        $this->scenario();
+
+        $pagination = $app['paginator']()->paginate(
+            $this->Results,
+            $this->searchData['pageno'],
+            $thi->searchData['disp_number']->getId()
+        );
+
+        $this->expected = count($pagination);
         $this->actual = count($this->Results);
         $this->verify();
     }
