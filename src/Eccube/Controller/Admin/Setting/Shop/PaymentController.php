@@ -113,8 +113,7 @@ class PaymentController extends AbstractController
 
         $Payment = $app['eccube.repository.payment']->find($id);
         if (!$Payment) {
-            $app->clearMessage();
-            $app->addWarning('admin.delete.warning', 'admin');
+            $app->deleteMessage();
             return $app->redirect($app->url('admin_setting_shop_payment'));
         }
 

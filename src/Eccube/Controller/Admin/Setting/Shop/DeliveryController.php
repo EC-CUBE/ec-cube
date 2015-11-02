@@ -168,8 +168,7 @@ class DeliveryController extends AbstractController
         $repo = $app['eccube.repository.delivery'];
         $Delivery = $repo->find($id);
         if (!$Delivery) {
-            $app->clearMessage();
-            $app->addWarning('admin.delete.warning', 'admin');
+            $app->deleteMessage();
             return $app->redirect($app->url('admin_setting_shop_delivery'));
         }
 

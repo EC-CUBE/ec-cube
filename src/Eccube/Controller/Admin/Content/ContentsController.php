@@ -141,8 +141,7 @@ class ContentsController extends AbstractController
 
         $TargetNews = $app['eccube.repository.news']->find($id);
         if (!$TargetNews) {
-            $app->clearMessage();
-            $app->addWarning('admin.delete.warning', 'admin');
+            $app->deleteMessage();
             return $app->redirect($app->url('admin_content'));
         }
 

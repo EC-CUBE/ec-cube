@@ -52,6 +52,12 @@ class ApplicationTrait extends \Silex\Application
         $this['session']->getFlashBag()->clear();
     }
 
+    public function deleteMessage()
+    {
+        $this->clearMessage();
+        $this->addWarning('admin.delete.warning', 'admin');
+    }
+
     /*
      * 注意！以下コードはSilexのコードのコピーなので触らないコト
      *

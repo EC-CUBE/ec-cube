@@ -88,7 +88,8 @@ class ClassCategoryController extends AbstractController
         }
         $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
         }
 
         $num = $app['eccube.repository.product_class']->createQueryBuilder('pc')

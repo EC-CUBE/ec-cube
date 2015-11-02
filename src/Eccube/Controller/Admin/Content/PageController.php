@@ -128,8 +128,7 @@ class PageController extends AbstractController
             ));
 
         if (!$PageLayout) {
-            $app['session']->getFlashBag()->clear();
-            $app->addWarning('admin.delete.warning', 'admin');
+            $app->deleteMessage();
             return $app->redirect($app->url('admin_content_page'));
         }
 
