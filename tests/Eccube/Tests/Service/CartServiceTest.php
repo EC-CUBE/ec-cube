@@ -25,10 +25,20 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Application;
+use Eccube\Exception\CartException;
 use Eccube\Service\CartService;
+use Eccube\Util\Str;
 
 class CartServiceTest extends AbstractServiceTestCase
 {
+
+    protected $Product;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->Product = $this->createProduct();
+    }
     public function testUnlock()
     {
         $cartService = $this->app['eccube.service.cart'];
@@ -168,4 +178,119 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $this->assertCount(2, $cartService->getMessages());
     }
+
+    public function testSave()
+    {
+        $cartService = $this->app['eccube.service.cart'];
+        $preOrderId = sha1(Str::random(32));
+
+        $cartService->setPreOrderId($preOrderId);
+        $cartService->save();
+
+        $this->expected = $preOrderId;
+        $this->actual = $this->app['session']->get('cart')->getPreOrderId();
+        $this->verify();
+    }
+
+    public function testAddProductType()
+    {
+        $cartService = $this->app['eccube.service.cart'];
+        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $cartService->setCanAddProductType($ProductType);
+
+        $this->expected = $ProductType;
+        $this->actual = $cartService->getCanAddProductType();
+        $this->verify();
+    }
+
+    public function testSetProductQuantityWithId()
+    {
+        $ProductClasses = $this->Product->getProductClasses();
+
+        $this->app['eccube.service.cart']->setProductQuantity($ProductClasses[0]->getId(), 1)
+            ->save();
+
+        $Cart = $this->app['session']->get('cart');
+        $CartItems = $Cart->getCartItems();
+
+        $this->expected = 1;
+        $this->actual = count($CartItems);
+        $this->verify();
+    }
+
+    public function testSetProductQuantityWithObject()
+    {
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 1)
+            ->save();
+        $Cart = $this->app['session']->get('cart');
+        $CartItems = $Cart->getCartItems();
+
+        $this->expected = 1;
+        $this->actual = count($CartItems);
+        $this->verify();
+    }
+
+    public function testSetProductQuantityWithProductNotFound()
+    {
+        try {
+            $this->app['eccube.service.cart']->setProductQuantity(999999, 1)
+                ->save();
+            $this->fail();
+        } catch (CartException $e) {
+            $this->expected = 'cart.product.delete';
+            $this->actual = $e->getMessage();
+        }
+        $this->verify();
+    }
+
+    public function testSetProductQuantityWithProductHide()
+    {
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
+        $this->Product->setStatus($Disp);
+        $this->app['orm.em']->flush();
+
+        try {
+            $ProductClasses = $this->Product->getProductClasses();
+            $ProductClass = $ProductClasses[0];
+            $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 1)
+                ->save();
+            $this->fail();
+        } catch (CartException $e) {
+            $this->expected = 'cart.product.not.status';
+            $this->actual = $e->getMessage();
+        }
+        $this->verify();
+    }
+
+    public function testSetProductQuantityWithOverPrice()
+    {
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $ProductClass->setPrice02($this->app['config']['max_total_fee']);
+        $this->app['orm.em']->flush();
+
+        $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 2)->save();
+
+        $this->actual = $this->app['eccube.service.cart']->getError();
+        $this->expected = 'cart.over.price_limit';
+        $this->verify();
+    }
+
+    public function testSetProductQuantityWithOverStock()
+    {
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $ProductClass->setStockUnlimited(0);
+        $ProductClass->setStock(10);
+        $this->app['orm.em']->flush();
+
+        $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 20)->save();
+
+        $this->actual = $this->app['eccube.service.cart']->getErrors();
+        $this->expected = array('cart.over.stock');
+        $this->verify();
+    }
+
 }
