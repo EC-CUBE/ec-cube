@@ -200,7 +200,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $pagination = $this->app['paginator']()->paginate(
             $this->Results,
             $this->searchData['pageno'],
-            $thi->searchData['disp_number']->getId()
+            $this->searchData['disp_number']->getId()
         );
 
         $this->expected = count($pagination);
@@ -232,7 +232,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $pagination = $this->app['paginator']()->paginate(
             $this->Results,
             $this->searchData['pageno'],
-            $thi->searchData['disp_number']->getId()
+            $this->searchData['disp_number']->getId()
         );
 
         $this->expected = count($pagination);
