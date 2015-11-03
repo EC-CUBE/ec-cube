@@ -21,14 +21,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class NewsType extends AbstractType
 {
@@ -44,7 +43,6 @@ class NewsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('date', 'date', array(
                 'label' => '日付',
@@ -53,13 +51,16 @@ class NewsType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
-            ->add('title', 'textarea', array(
+            ->add('title', 'text', array(
                 'label' => 'タイトル',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Length(array('max' => $this->config['ltext_len'])),
+                    new Assert\Length(array('max' => $this->config['mtext_len'])),
                 ),
             ))
             ->add('url', 'text', array(
@@ -77,29 +78,25 @@ class NewsType extends AbstractType
             ))
             ->add('comment', 'textarea', array(
                 'label' => '本文',
-                'required' => true,
+                'required' => false,
                 'constraints' => array(
-                    new Assert\NotBlank(),
                     new Assert\Length(array('max' => $this->config['ltext_len'])),
                 ),
             ))
             ->add('select', 'hidden', array(
                 'data' => '0',
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
-        ;
-
+            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\News',
         ));
-
     }
 
     /**
