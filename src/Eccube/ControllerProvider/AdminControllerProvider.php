@@ -113,7 +113,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // content
         // deprecated /content/ 3.1 delete. use /content/news
-        $c->match('/content/', '\Eccube\Controller\Admin\Content\ContentsController::index')->bind('admin_content');
+        $c->match('/content', '\Eccube\Controller\Admin\Content\ContentsController::index')->bind('admin_content');
         $c->match('/content/new', '\Eccube\Controller\Admin\Content\ContentsController::edit')->bind('admin_content_new');
         $c->match('/content/{id}/edit', '\Eccube\Controller\Admin\Content\ContentsController::edit')->assert('id', '\d+')->bind('admin_content_edit');
         $c->delete('/content/{id}/delete', '\Eccube\Controller\Admin\Content\ContentsController::delete')->assert('id', '\d+')->bind('admin_content_delete');
