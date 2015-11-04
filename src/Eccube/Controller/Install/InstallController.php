@@ -54,7 +54,7 @@ class InstallController
 
     private $required_modules = array('pdo', 'phar', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
 
-    private $recommended_module = array('hash', 'APC', 'mcrypt');
+    private $recommended_module = array('hash', 'mcrypt');
 
     const SESSION_KEY = 'eccube.session.install';
 
@@ -201,7 +201,7 @@ class InstallController
         if ($this->isValid($request, $form)) {
             if (!$form['no_update']->getData()) {
                 set_time_limit(0);
-                
+
                 $this
                     ->setPDO()
                     ->dropTables()
@@ -271,6 +271,16 @@ class InstallController
         foreach ($this->recommended_module as $module) {
             if (!extension_loaded($module)) {
                 $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+            }
+        }
+
+        if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
+            if (!extension_loaded('wincache')) {
+                $app->addWarning('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
+            }
+        } else {
+            if (!extension_loaded('apc')) {
+                $app->addWarning('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
@@ -672,10 +682,10 @@ class InstallController
 
     /**
      * マイグレーション画面を表示する.
-     * 
+     *
      * @param InstallApplication $app
      * @param Request $request
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function migration(InstallApplication $app, Request $request)
@@ -686,17 +696,17 @@ class InstallController
     /**
      * インストール済プラグインの一覧を表示する.
      * プラグインがインストールされていない場合は, マイグレーション実行画面へリダイレクトする.
-     * 
+     *
      * @param InstallApplication $app
      * @param Request $request
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function migration_plugin(InstallApplication $app, Request $request)
     {
         $eccube = new \Eccube\Application();
         $eccube->initDoctrine();
-        
+
         $pluginRepository = $eccube['orm.em']->getRepository('Eccube\Entity\Plugin');
         $Plugins = $pluginRepository->findBy(array('del_flg' => Constant::DISABLED));
 
@@ -709,13 +719,13 @@ class InstallController
                 'version' => Constant::VERSION));
         }
     }
-    
+
     /**
      * マイグレーションを実行し, 完了画面を表示させる
-     * 
+     *
      * @param InstallApplication $app
      * @param Request $request
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function migration_end(InstallApplication $app, Request $request)
