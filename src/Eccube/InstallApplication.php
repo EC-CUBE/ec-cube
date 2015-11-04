@@ -59,6 +59,12 @@ class InstallApplication extends ApplicationTrait
             return $config;
         });
 
+        $distPath = __DIR__.'/../../src/Eccube/Resource/config';
+        $config_dist = Yaml::parse($distPath.'/config.yml.dist');
+        if (!empty($config_dist['timezone'])) {
+            date_default_timezone_set($config_dist['timezone']);
+        }
+
         $app->register(new \Silex\Provider\SessionServiceProvider());
 
         $app->register(new \Silex\Provider\TwigServiceProvider(), array(
