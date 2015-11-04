@@ -293,4 +293,21 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    public function testSetProductQuantityWithOverSaleLimit()
+    {
+        $ProductClasses = $this->Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $ProductClass->setStockUnlimited(0);
+        $ProductClass->setStock(10);
+        $ProductClass->setSaleLimit(5);
+        $this->app['orm.em']->flush();
+
+        $this->app['eccube.service.cart']->setProductQuantity($ProductClass, 7)->save();
+
+        $this->actual = $this->app['eccube.service.cart']->getErrors();
+        $this->expected = array('cart.over.sale_limit');
+        $this->verify();
+    }
+
+
 }
