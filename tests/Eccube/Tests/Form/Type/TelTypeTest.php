@@ -31,7 +31,7 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public $config = array('tel_len' => 5, 'tel_len_min' => 2);
+    public $config = array('tel_len' => 5, 'tel_len_min' => 1);
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
