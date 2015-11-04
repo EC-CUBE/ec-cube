@@ -194,31 +194,6 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->isValid());
     }
 
-
-    public function testInvalidTel02_LengthMin()
-    {
-        $this->formData['tel']['tel02'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel03_LengthMin()
-    {
-        $this->formData['tel']['tel03'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testIdValidTel01_LengthMin()
-    {
-        $this->formData['tel']['tel01'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
     public function testInvalidTel01_NotNumber()
     {
         $this->formData['tel']['tel01'] = 'aaaa';
