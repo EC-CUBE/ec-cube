@@ -25,7 +25,7 @@ if (extension_loaded('apc') && ini_get('apc.enabled')) {
     $apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader('autoloader.', $loader);
     $apcLoader->register();
     $loader->unregister();
-} else if (extension_loaded('wincache') && ini_get('wincache.fcenabled')) {
+} elseif (extension_loaded('wincache') && ini_get('wincache.fcenabled')) {
     $winCacheLoader = new Symfony\Component\ClassLoader\WinCacheClassLoader('autoloader.', $loader);
     $winCacheLoader->register();
     $loader->unregister();
