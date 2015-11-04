@@ -160,6 +160,14 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testValidTel01_LengthMin()
+    {
+        $this->formData['tel']['tel01'] = '1';
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
     public function testInvalidTel01_LengthMax()
     {
         $this->formData['tel']['tel01'] = '12345678';
@@ -184,13 +192,6 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidTel01_LengthMin()
-    {
-        $this->formData['tel']['tel01'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
 
     public function testInvalidTel02_LengthMin()
     {
