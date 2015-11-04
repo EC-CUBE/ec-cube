@@ -77,7 +77,7 @@ EOF
         $collection     = $controllers->flush();
 
         foreach ($collection as $name => $route) {
-            if (!empty($filtername) && !preg_match("/$filtername/",$name) ) {
+            if (!empty($filtername) && !preg_match("/$filtername/", $name)) {
                 continue;
             }
 
@@ -120,7 +120,7 @@ EOF
         $maxName = 4;
         $maxMethod = 6;
         foreach ($routes as $name => $route) {
-            if (!empty($filtername) && !preg_match("/$filtername/",$name) ) {
+            if (!empty($filtername) && !preg_match("/$filtername/", $name)) {
                 unset($routes[$name]);
                 continue;
             }
