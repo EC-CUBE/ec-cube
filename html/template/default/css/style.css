@@ -3,7 +3,7 @@
 @import url("bootstrap.custom.min.css"); /* only Grid system CSS */
 
 
-/* -------------------------------- 
+/* --------------------------------
 	Common style
 -------------------------------- */
 
@@ -265,8 +265,8 @@ span.required {
     font-size: 1.2rem;
 }
 
-/* -------------------------------- 
-	Parts 
+/* --------------------------------
+	Parts
 -------------------------------- */
 
 /* heading */
@@ -798,8 +798,8 @@ p.message {
 }
 
 
-/* -------------------------------- 
-	Common 
+/* --------------------------------
+	Common
 -------------------------------- */
 
 .inner {
@@ -1713,7 +1713,7 @@ dl.quantity dd {
 ------------------------------------------- */
 
 #form_cart > .message:first-child {
-	padding-top: 16px; 
+	padding-top: 16px;
 }
 
 .total_box {
@@ -1941,12 +1941,8 @@ margin-top: 5px;
 .local_nav li a:hover {
     background: #f5f7f8;
 }
-.local_nav li a:not([href]){
+.local_nav li.active a {
     color: #DE5D50;
-    cursor: default;
-}
-.local_nav li a:not([href]):hover {
-    background: #fff;
 }
 .order_detail dt {
     float: left;
@@ -2076,7 +2072,7 @@ margin-top: 5px;
 }
 .error_page #contents {
 	background: inherit;
-	
+
 }
 
 
@@ -2365,6 +2361,7 @@ margin-top: 5px;
 
 .mypage .message {
     border-bottom: 1px dotted #ccc;
+    margin-bottom: 11px;
 }
 .mypage #item_list .product_item {
     padding-bottom: 8px;
@@ -4110,9 +4107,9 @@ fieldset[disabled] .btn-link:focus {
     #confirm_side {
         top: 0;
     }
-	
+
 	/* payment_list */
-	
+
 	.payment_list .radio {
 		display: inline;
 		margin-right: 16px;
@@ -4135,6 +4132,9 @@ fieldset[disabled] .btn-link:focus {
 
     .local_nav li {
         width: 25%;
+    }
+   .local_nav.favorite li {
+        width: 20%;
     }
     .historylist_column {
         border-top: 1px solid #ccc;
@@ -4401,9 +4401,9 @@ fieldset[disabled] .btn-link:focus {
     }
 
 	/* Error Page */
-	
+
 	.error_page .footer_logo_area {
 		margin-top: 0;
-		
+
 	}
 }

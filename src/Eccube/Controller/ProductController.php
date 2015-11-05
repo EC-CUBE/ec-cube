@@ -180,7 +180,7 @@ class ProductController
                         $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
                     }
 
-                    return $app->redirect($app->url('product_detail', array('productId' => $Product->getId())));
+                    return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
                 } else {
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
@@ -193,11 +193,10 @@ class ProductController
             }
         }
 
+        $is_favorite = false;
         if ($app->isGranted('ROLE_USER')) {
             $Customer = $app->user();
             $is_favorite = $app['eccube.repository.customer_favorite_product']->isFavorite($Customer, $Product);
-        } else {
-            $is_favorite = false;
         }
 
         return $app->render('Product/detail.twig', array(

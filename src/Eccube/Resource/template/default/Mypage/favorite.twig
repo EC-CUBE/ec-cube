@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set mypageno = 'favorite' %}
+
 {% set body_class = 'mypage' %}
 
 {% block main %}
@@ -59,11 +61,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     削除</a>
                             </td>
                             <td class="alignC">
-                                <a href="{{ path('product_detail', {'productId': Product.id}) }}">
+                                <a href="{{ path('product_detail', {'id': Product.id}) }}">
                                     <img src="{{ app.config.image_path }}{{ Product.main_list_image|no_image_product }}" style="max-width: 65px;max-height: 65px;" alt="{{ Product.name }}" />
                             </td>
                             <td>
-                                <a href="{{ path('product_detail', {'productId': Product.id}) }}">
+                                <a href="{{ path('product_detail', {'id': Product.id}) }}">
                                     {{ Product.name }}</a>
                             </td>
                             <td class="alignR sale_price">
