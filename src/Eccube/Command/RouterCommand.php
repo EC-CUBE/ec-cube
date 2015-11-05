@@ -47,8 +47,8 @@ class RouterCommand extends \Knp\Command\Command
             ->setDefinition(array(
                 new InputArgument('name', InputArgument::OPTIONAL, 'A route name'),
             ))
-            ->addOption('order', null, InputOption::VALUE_OPTIONAL, '[null/ASC/DESC]. If argument orderby set, Default is ASC.')
-            ->addOption('orderby', null, InputOption::VALUE_OPTIONAL, '[null/name/path]. If argument order set, Default is name.')
+            ->addOption('sort', null, InputOption::VALUE_OPTIONAL, '[null/ASC/DESC]. If argument orderby set, Default is ASC.')
+            ->addOption('orderby', null, InputOption::VALUE_OPTIONAL, '[null/name/path]. If argument sort set, Default is name.')
             ->setDescription('Displays current routes for an application')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> displays the configured routes:
@@ -66,7 +66,7 @@ EOF
         $console = new Application();
 
         $filtername = $input->getArgument('name');
-        $order = $input->getOption('order');
+        $sort = $input->getOption('sort');
         $orderby = $input->getOption('orderby');
 
         $table = $console->getHelperSet()->get('table');
@@ -98,15 +98,15 @@ EOF
         $routes = $this->app['routes']->all();
 
         // 引数で並び替える。
-        if (!empty($order)) {
+        if (!empty($sort)) {
             $orderby = (!empty($orderby)) ? $orderby : "name";
         }
         if (!empty($orderby)) {
-            $order = (!empty($order)) ? $order : "ASC";
+            $sort = (!empty($sort)) ? $sort : "ASC";
         }
 
         if (strtoupper($orderby) === "NAME") {
-            if (strtoupper($order) === "DESC") {
+            if (strtoupper($sort) === "DESC") {
                 krsort($routes);
             } else {
                 ksort($routes);
