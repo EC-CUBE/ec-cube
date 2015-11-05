@@ -27,7 +27,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <form method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
             <div id="deliveradd_select" class="row">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <p><a href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
+                    <p>
+                    {% if Customer.CustomerAddresses|length < address_max %}
+                        <a href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}" class="btn btn-default btn-sm">新規お届け先を追加する</a>
+                    {% else %}
+                        <span class="required">お届け先登録上限の20件に達しています。さらにお届け先を入力したい際は、削除か変更を行ってください</span>
+                    {% endif %}
+                    </p>
 
                     {% if Customer.CustomerAddresses|length > 0 %}
                      <div class="table address_table">

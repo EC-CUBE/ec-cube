@@ -34,6 +34,7 @@ use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingController extends AbstractController
@@ -415,6 +416,7 @@ class ShoppingController extends AbstractController
                     array(
                         'Customer' => $app->user(),
                         'shippingId' => $id,
+                        'address_max' => $app['config']['deliv_addr_max']
                     )
                 );
             }
@@ -470,6 +472,7 @@ class ShoppingController extends AbstractController
             array(
                 'Customer' => $app->user(),
                 'shippingId' => $id,
+                'address_max' => $app['config']['deliv_addr_max']
             )
         );
     }
@@ -508,6 +511,12 @@ class ShoppingController extends AbstractController
      */
     public function shippingEdit(Application $app, Request $request, $id)
     {
+        //配送先住所最大値判定 ( 不正アクセス防止/実際は画面のボタン非表示で制御 )
+        $app['eccube.repository.customer_address']->setConfig($app['config']);
+        $addressMaxFlg = $app['eccube.repository.customer_address']->checkAddressMax($app->user());
+        if (!$addressMaxFlg) {
+            throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
+        }
 
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {

@@ -27,9 +27,12 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class DeliveryController extends AbstractController
 {
+    public function __construct(){
+    }
     /**
      * Index
      *
@@ -42,6 +45,7 @@ class DeliveryController extends AbstractController
 
         return $app->render('Mypage/delivery.twig', array(
             'Customer' => $Customer,
+            'delivery_max' => $app['config']['deliv_addr_max']
         ));
     }
 
@@ -54,7 +58,17 @@ class DeliveryController extends AbstractController
      */
     public function edit(Application $app, Request $request, $id = null)
     {
+        $app['eccube.repository.customer_address']->setConfig($app['config']);
+
         $Customer = $app['user'];
+
+        //配送先住所最大値判定 ( 不正アクセス防止/実際は画面のボタン非表示で制御 )
+        if (is_null($id)) {
+            $addressMaxFlg = $app['eccube.repository.customer_address']->checkAddressMax($Customer);
+            if (!$addressMaxFlg) {
+                throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
+            }
+        }
 
         $CustomerAddress = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($Customer, $id);
 
