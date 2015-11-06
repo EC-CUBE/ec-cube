@@ -35,21 +35,6 @@ use Doctrine\ORM\EntityRepository;
 class CustomerAddressRepository extends EntityRepository
 {
     /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * setConfig
-     *
-     * @param array $config
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-    }
-
-    /**
      * @param \Eccube\Entity\Customer $Customer
      * @param null $id
      * @return \Eccube\Entity\CustomerAddress|mixed
@@ -106,29 +91,5 @@ class CustomerAddressRepository extends EntityRepository
         $em->flush();
 
         return true;
-    }
-
-    /**
-     * @param  \Eccube\Entity\Customer $Customer
-     * @param  integer                 $id
-     * @return bool
-     */
-    public function checkAddressMax(\Eccube\Entity\Customer $Customer)
-    {
-        $qb = $this->createQueryBuilder('ca')
-            ->select('count(ca)')
-            ->innerJoin('ca.Customer', 'df')
-            ->andWhere('ca.Customer = :Customer')
-            ->setParameters(array(
-                'Customer' => $Customer
-            ));
-
-        $count = $qb->getQuery()->getSingleScalarResult();
-        $addressMax = $this->config['deliv_addr_max'];
-
-        if ($count < $addressMax){
-            return true;
-        }
-        return false;
     }
 }
