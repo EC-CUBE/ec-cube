@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="link_list">
                             <div class="tableish">
                                 {% for OrderStatus in OrderStatuses %}
-                                <a href="#" class="item_box tr" onclick="$('#admin_search_order_status').val({{ OrderStatus.id }});document.form1.submit();">
+                                <a href="" class="item_box tr" onclick="$('#admin_search_order_status').val({{ OrderStatus.id }});document.form1.submit();return false;">
                                     <div class="td">{{ OrderStatus.name }}</div>
                                     <div class="item_number text-right td">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</div>
                                     <div class="icon_link td">
@@ -111,14 +111,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </form>
                         <div class="link_list">
                             <div class="tableish">
-                                <a href="#" class="item_box tr" onclick="document.form2.submit();">
+                                <a href="" class="item_box tr" onclick="document.form2.submit();return false;">
                                     <div class="icon td"><svg class="cb cb-tag-slash"><use xlink:href="#cb-tag-slash" /></svg></div>
                                     <div class="item_number td">{{ countNonStockProducts|number_format }}<div class="small">在庫切れ商品</div></div>
                                     <div class="icon_link td">
                                         <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
                                     </div>
                                 </a><!-- /.item_box -->
-                                <a href="#" class="item_box tr" onclick="document.form3.submit();">
+                                <a href="" class="item_box tr" onclick="document.form3.submit();return false;">
                                     <div class="icon td"><svg class="cb cb-users"><use xlink:href="#cb-users" /></svg></div>
                                     <div class="item_number text-left td">{{ countCustomers|number_format }}<div class="small">会員数</div></div>
                                     <div class="icon_link td">
