@@ -62,6 +62,10 @@ class OrderDetailType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('quantity', 'text', array(
@@ -70,6 +74,10 @@ class OrderDetailType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('tax_rate', 'text', array(
@@ -77,6 +85,10 @@ class OrderDetailType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $config['int_len'],
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+(\.\d+)?$/u",
+                        'message' => 'form.type.float.invalid'
                     )),
                 )
             ));

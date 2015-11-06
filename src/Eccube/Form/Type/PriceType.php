@@ -58,6 +58,7 @@ class PriceType extends AbstractType
             'currency' => 'JPY',
             'precision' => 0,
             'constraints' => $constraints,
+            'invalid_message' => 'form.type.numeric.invalid'
         ));
     }
 
