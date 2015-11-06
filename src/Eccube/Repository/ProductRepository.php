@@ -120,6 +120,7 @@ class ProductRepository extends EntityRepository
         // Order By
         // 価格順
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+            //follow in keyword HIDDEN,see the http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('p.id as HIDDEN pid');
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
