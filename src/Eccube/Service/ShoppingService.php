@@ -391,7 +391,7 @@ class ShoppingService
 
         $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(
             array('Customer' => $Customer),
-            array('customer_address_id' => 'ASC')
+            array('id' => 'ASC')
         );
 
         if (!is_null($CustomerAddress)) {
