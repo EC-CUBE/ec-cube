@@ -388,11 +388,12 @@ class ShoppingService
             return $Shipping;
         }
 
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(array(
-            'Customer' => $Customer
-        ));
+        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(
+            array('Customer' => $Customer),
+            array('customer_address_id' => 'ASC')
+        );
 
-        if ($this->app->isGranted('ROLE_USER')) {
+        if (!is_null($CustomerAddress)) {
             $Shipping
                 ->setName01($CustomerAddress->getName01())
                 ->setName02($CustomerAddress->getName02())
