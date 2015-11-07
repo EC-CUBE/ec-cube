@@ -122,9 +122,7 @@ class PaymentRepository extends EntityRepository
                     }
                 }
 
-                if (count($arr) > 0) {
-                    $payments = $arr;
-                }
+                $payments = $arr;
 
             } else {
                 $payments = $p;
