@@ -120,9 +120,6 @@ class ShoppingController extends AbstractController
         // form作成
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
-        // 合計数量
-        $totalQuantity = $app['eccube.service.order']->getTotalQuantity($Order);
-
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$app['session']->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {
@@ -135,7 +132,6 @@ class ShoppingController extends AbstractController
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
-            'totalQuantity' => $totalQuantity,
         ));
     }
 
