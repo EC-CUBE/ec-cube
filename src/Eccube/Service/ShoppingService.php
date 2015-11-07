@@ -353,51 +353,26 @@ class ShoppingService
      */
     public function getNewShipping(Order $Order, Customer $Customer, $deliveries)
     {
+        $productTypes = array();
+        foreach ($deliveries as $Delivery) {
+            if (!in_array($Delivery->getProductType()->getId(), $productTypes)) {
+                $Shipping = new Shipping();
 
-        // カートに保持されている商品種別を取得
-        $productTypes = $this->cartService->getProductTypes();
+                $this->copyToShippingFromCustomer($Shipping, $Customer)
+                    ->setOrder($Order)
+                    ->setDelFlg(Constant::DISABLED);
 
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
-            // 複数配送対応
-            $productType = array();
-            foreach ($deliveries as $Delivery) {
+                // 配送料金の設定
+                $this->setShippingDeliveryFee($Shipping, $Delivery);
 
-                if (!in_array($Delivery->getProductType()->getId(), $productType)) {
-                    $Shipping = new Shipping();
+                $this->em->persist($Shipping);
 
-                    $this->copyToShippingFromCustomer($Shipping, $Customer)
-                        ->setOrder($Order)
-                        ->setDelFlg(Constant::DISABLED);
-
-                    // 配送料金の設定
-                    $this->setShippingDeliveryFee($Shipping, $Delivery);
-
-                    $this->em->persist($Shipping);
-
-                    $Order->addShipping($Shipping);
-                }
-                $productType[] = $Delivery->getProductType()->getId();
+                $Order->addShipping($Shipping);
             }
-        } else {
-            $Shipping = new Shipping();
-
-            $this->copyToShippingFromCustomer($Shipping, $Customer)
-                ->setOrder($Order)
-                ->setDelFlg(Constant::DISABLED);
-
-            $Delivery = $deliveries[0];
-
-            // 配送料金の設定
-            $this->setShippingDeliveryFee($Shipping, $Delivery);
-
-            $this->em->persist($Shipping);
-
-            $Order->addShipping($Shipping);
-
+            $productTypes[] = $Delivery->getProductType()->getId();
         }
 
         return $Order;
-
     }
 
     /**
