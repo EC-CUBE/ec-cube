@@ -368,8 +368,9 @@ class ShoppingService
                 $this->em->persist($Shipping);
 
                 $Order->addShipping($Shipping);
+
+                $productTypes[] = $Delivery->getProductType()->getId();
             }
-            $productTypes[] = $Delivery->getProductType()->getId();
         }
 
         return $Order;
