@@ -107,6 +107,8 @@ class ProductClassController
                             $this->setDefualtProductClass($app, $productClass, $sourceProduct);
                         }
 
+                        ddd(count($ProductClasses), true);
+
                         $productClassForm = $app->form()
                             ->add('product_classes', 'collection', array(
                                 'type' => 'admin_product_class',
