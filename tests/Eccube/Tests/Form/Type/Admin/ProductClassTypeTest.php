@@ -52,7 +52,7 @@ class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->app['form.factory']
-            ->createBuilder('prduct_class', null, array(
+            ->createBuilder('product_class', null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
