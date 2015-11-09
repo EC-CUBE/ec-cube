@@ -57,7 +57,6 @@ cart.product.delete:  現時点で販売していない商品が含まれてお�
 cart.product.not.status: この商品は現在購入することはできません。
 
 shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
-shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
 
 front.shopping.order.error: 購入処理でエラーが発生しました。
 front.shopping.stock.error: 選択された商品の在庫が不足しております。該当商品をカートから削除しました。
