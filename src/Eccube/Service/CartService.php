@@ -27,6 +27,7 @@ namespace Eccube\Service;
 use Doctrine\ORM\EntityManager;
 use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Master\Disp;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -211,8 +212,11 @@ class CartService
             $ProductClass = $this->entityManager
                 ->getRepository('Eccube\Entity\ProductClass')
                 ->find($ProductClass);
+            if (!$ProductClass) {
+                throw new CartException('cart.product.delete');
+            }
         }
-        if (!$ProductClass || $ProductClass->getProduct()->getStatus()->getId() !== Constant::ENABLED) {
+        if ($ProductClass->getProduct()->getStatus()->getId() !== Disp::DISPLAY_SHOW) {
             $this->removeProduct($ProductClass->getId());
             throw new CartException('cart.product.not.status');
         }
@@ -260,6 +264,10 @@ class CartService
             $product_str .= " - ".$ProductClass->getClassCategory2()->getName();
         }
         $this->session->getFlashBag()->set('eccube.front.request.product', $product_str);
+        /*
+         * 実際の在庫は ProductClass::ProductStock だが、購入時にロックがかかるため、
+         * ここでは ProductClass::stock で在庫のチェックをする
+         */
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
             if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
                 $tmp_quantity = $ProductClass->getSaleLimit();
