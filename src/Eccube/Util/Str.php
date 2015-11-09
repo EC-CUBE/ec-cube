@@ -158,7 +158,7 @@ class Str
             return $value;
         }
 
-        return rtrim(mb_substr($value, 0, $length, 'UTF-8')) . $end;
+        return rtrim(mb_substr($value, 0, $length - mb_strlen($end), 'UTF-8')) . $end;
     }
 
 
