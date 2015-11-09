@@ -297,7 +297,7 @@ class ShoppingController extends AbstractController
 
             // 支払い情報をセット
             $payment = $data['payment'];
-            $message = $data['message'];
+            $message = Str::ellipsis($data['message'], 3000, '');
 
             $Order->setPayment($payment);
             $Order->setPaymentMethod($payment->getMethod());
