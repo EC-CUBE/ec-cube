@@ -194,9 +194,7 @@ class AddCartType extends AbstractType
             //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
             if ($this->Product->getClassName2()) {
                 $context->validateValue($data['classcategory_id2'], array(
-                    new Assert\NotBlank(array(
-                        'message' => 'form.type.select.notselect'
-                    )),
+                    new Assert\NotBlank(),
                     new Assert\NotEqualTo(array(
                         'value' => '__unselected',
                         'message' => 'form.type.select.notselect'
