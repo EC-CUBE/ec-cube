@@ -87,6 +87,23 @@ class ProductClassController
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
 
+                    $has_categories = array();
+                    $has_class = array();
+                    $has_class['class_name1'] = false;
+                    $has_class['class_name2'] = false;
+                    $has_categories['class_name1'] = false;
+                    $has_categories['class_name2'] = false;
+                    if(!empty($has_class['class_name1'])){
+                        $has_class['class_name1'] = true;
+                        $has_categories['class_name1'] = ((count($data['class_name1']->getClassCategories()) > 0) ? true : false);
+                    }
+                    if(!empty($has_class['class_name2'])){
+                        $has_class['class_name2'] = true;
+                        $has_categories['class_name2'] = ((count($data['class_name2']->getClassCategories()) > 0) ? true : false);
+                    }
+
+                   //ddd(count($data['class_name1']->getClassCategories()), true);
+
                     if (!is_null($ClassName2) && $ClassName1->getId() == $ClassName2->getId()) {
                         // 規格1と規格2が同じ値はエラー
 
@@ -107,7 +124,7 @@ class ProductClassController
                             $this->setDefualtProductClass($app, $productClass, $sourceProduct);
                         }
 
-                        ddd(count($ProductClasses), true);
+                        //ddd(count($ProductClasses), true);
 
                         $productClassForm = $app->form()
                             ->add('product_classes', 'collection', array(

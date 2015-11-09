@@ -153,6 +153,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {{ form_widget(form._token) }}
                         <button type="submit" class="btn btn-primary pull-right">商品規格の設定</button>
                         <div class="form-horizontal">
+                            {{ form.class_name1.getClassCategories }}
                             {{ form_widget(form.class_name1) }}
                             {{ form_errors(form.class_name1) }}
                             {{ form_widget(form.class_name2) }}
