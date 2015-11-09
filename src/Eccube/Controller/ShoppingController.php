@@ -418,7 +418,8 @@ class ShoppingController extends AbstractController
             // 選択されたお届け先情報を取得
             $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
                 'Customer' => $app->user(),
-                'id' => $address));
+                'id' => $address,
+            ));
             if (is_null($CustomerAddress)) {
                 throw new NotFoundHttpException();
             }
@@ -426,6 +427,7 @@ class ShoppingController extends AbstractController
             $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
             if (!$Order) {
                 $app->addError('front.shopping.order.error');
+
                 return $app->redirect($app->url('shopping_error'));
             }
 
