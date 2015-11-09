@@ -44,7 +44,7 @@ class DeliveryController extends AbstractController
         $Customer = $app['user'];
 
         return $app->render('Mypage/delivery.twig', array(
-            'Customer' => $Customer
+            'Customer' => $Customer,
         ));
     }
 

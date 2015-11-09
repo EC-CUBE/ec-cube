@@ -414,7 +414,7 @@ class ShoppingController extends AbstractController
                     'Shopping/shipping.twig',
                     array(
                         'Customer' => $app->user(),
-                        'shippingId' => $id
+                        'shippingId' => $id,
                     )
                 );
             }
@@ -469,7 +469,7 @@ class ShoppingController extends AbstractController
             'Shopping/shipping.twig',
             array(
                 'Customer' => $app->user(),
-                'shippingId' => $id
+                'shippingId' => $id,
             )
         );
     }
