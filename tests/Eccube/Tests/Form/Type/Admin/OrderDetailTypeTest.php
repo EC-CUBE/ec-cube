@@ -26,8 +26,6 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
-use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 
 class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
@@ -42,14 +40,11 @@ class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'price' => '10000',
         'quantity'=> '10000',
         'tax_rate' => '10.0',
-        'Product' => null,
-        'ProductClass' => null
     );
 
     public function setUp()
     {
         parent::setUp();
-
 
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
@@ -60,13 +55,11 @@ class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ->getForm();
     }
 
-    public function testValidData()
+    public function testInValidData()
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-
-        //var_dump($this->form->getErrorsAsString());die;
     }
 
     /*
