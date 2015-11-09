@@ -36,7 +36,6 @@ class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
-        'code' => '1',
         'stock' => '100',
         'sale_limit' => '100',
         'price01' => '100',
@@ -58,11 +57,11 @@ class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ->getForm();
     }
 
-    public function testValidData()
+    public function testInValidData()
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
+        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidStock_NotNumeric()
