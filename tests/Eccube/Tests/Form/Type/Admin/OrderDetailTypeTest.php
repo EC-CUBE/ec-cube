@@ -59,19 +59,114 @@ class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
-    /*
-    public function testInvalidTel_Blank()
+    public function testInvalidPrice_Blank()
     {
         $this->app['request'] = new Request();
-        $this->formData['tel']['tel01'] = '';
-        $this->formData['tel']['tel02'] = '';
-        $this->formData['tel']['tel03'] = '';
+        $this->formData['price'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-    */
+
+    public function testInvalidPrice_OverMaxLength()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['price'] = '12345678910'; //Max 9
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPrice_NotNumeric()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['price'] = 'abc';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPrice_HasMinus()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['price'] = '-123456';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidQuantity_Blank()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['quantity'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidQuantity_OverMaxLength()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['quantity'] = '12345678910'; //Max 9
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidQuantity_NotNumeric()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['quantity'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidQuantity_HasMinus()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['quantity'] = '-123456';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTaxRate_Blank()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['tax_rate'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTaxRate_OverMaxLength()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['tax_rate'] = '12345678910'; //Max 9
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTaxRate_NotNumeric()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['tax_rate'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTaxRate_HasMinus()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['tax_rate'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }
