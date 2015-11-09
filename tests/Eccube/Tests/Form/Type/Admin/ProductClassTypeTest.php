@@ -26,7 +26,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class ProductClassTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
