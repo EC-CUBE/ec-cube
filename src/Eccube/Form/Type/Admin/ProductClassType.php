@@ -113,7 +113,7 @@ class ProductClassType extends AbstractType
                 'constraints' => array(
                     new Assert\Range(array('min' => 0, 'max' => 100)),
                     new Assert\Regex(array(
-                        'pattern' => "^\d+(\.\d+)?$",
+                        'pattern' => "/^\d+(\.\d+)?$/",
                         'message' => 'form.type.float.invalid'
                     )),
                 ),
