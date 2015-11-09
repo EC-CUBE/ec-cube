@@ -419,6 +419,9 @@ class ShoppingController extends AbstractController
             $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
                 'Customer' => $app->user(),
                 'id' => $address));
+            if (is_null($CustomerAddress)) {
+                throw new NotFoundHttpException();
+            }
 
             $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
             if (!$Order) {
