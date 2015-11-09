@@ -112,7 +112,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/status/{statusId}', '\Eccube\Controller\Admin\Order\StatusController::index')->bind('admin_order_status');
 
         // content
-        $c->match('/content/', '\Eccube\Controller\Admin\Content\ContentsController::index')->bind('admin_content');
+        $c->match('/content', '\Eccube\Controller\Admin\Content\ContentsController::index')->bind('admin_content');
         $c->match('/content/new', '\Eccube\Controller\Admin\Content\ContentsController::edit')->bind('admin_content_new');
         $c->match('/content/{id}/edit', '\Eccube\Controller\Admin\Content\ContentsController::edit')->assert('id', '\d+')->bind('admin_content_edit');
         $c->delete('/content/{id}/delete', '\Eccube\Controller\Admin\Content\ContentsController::delete')->assert('id', '\d+')->bind('admin_content_delete');
