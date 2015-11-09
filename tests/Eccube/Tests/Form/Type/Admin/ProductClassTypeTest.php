@@ -36,7 +36,7 @@ class ProductClassTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
-        'code' => 'code01',
+        'code' => '1',
         'stock' => '100',
         'sale_limit' => '100',
         'price01' => '100',
