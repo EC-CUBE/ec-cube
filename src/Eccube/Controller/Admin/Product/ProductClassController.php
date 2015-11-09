@@ -57,7 +57,6 @@ class ProductClassController
         // 商品規格情報が存在しなければ新規登録させる
         if (!$Product->hasProductClass()) {
             // 登録画面を表示
-
             $form = $app->form()
                 ->add('class_name1', 'entity', array(
                     'class' => 'Eccube\Entity\ClassName',
@@ -84,6 +83,7 @@ class ProductClassController
                 if ($form->isValid()) {
 
                     $data = $form->getData();
+
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
 
@@ -96,6 +96,7 @@ class ProductClassController
 
                         // 規格分類が設定されていない商品規格を取得
                         $orgProductClasses = $Product->getProductClasses();
+                        //ddd(count($orgProductClasses), true);
                         $sourceProduct = $orgProductClasses[0];
 
                         // 規格分類が組み合わされた商品規格を取得
@@ -215,7 +216,6 @@ class ProductClassController
      */
     public function edit(Application $app, Request $request, $id)
     {
-
         /** @var $Product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->find($id);
 
