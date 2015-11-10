@@ -258,6 +258,7 @@ class MailServiceTest extends AbstractServiceTestCase
 
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
 
+        $builder = $this->app['form.factory']->createBuilder('mail');
         $form = $builder->getForm();
         $form->get('template')->setData($MailTemplate);
         $form->get('subject')->setData($subject);
