@@ -194,7 +194,7 @@ class ShoppingController extends AbstractController
 
                     $em->getConnection()->commit();
                     $em->flush();
-                    $em->close();
+                    //$em->close();
 
                 } catch (\Exception $e) {
                     $em->getConnection()->rollback();

@@ -24,6 +24,7 @@
 namespace Eccube\Service;
 
 use Eccube\Application;
+use Eccube\Entity\MailHistory;
 
 class MailService
 {
@@ -177,8 +178,19 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
-        $this->app->mail($message);
 
+        $MailHistory = new MailHistory();
+        $MailHistory
+            ->setSubject($message->getSubject())
+            ->setMailBody($message->getBody())
+            ->setMailTemplate($MailTemplate)
+            ->setSendDate(new \DateTime())
+            ->setOrder($Order);
+        $this->app['orm.em']->persist($MailHistory);
+        $this->app['orm.em']->flush($MailHistory);
+
+        $this->app->mail($message);
+        return compact('message', 'body', 'MailTemplate');
     }
 
 
@@ -214,19 +226,21 @@ class MailService
      * Send admin order mail.
      *
      * @param $Order 受注情報
-     * @param $formData 入力内容
+     * @param $form 入力内容
+     * @return $MailHistory 履歴
      */
-    public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
+    public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $form)
     {
+        $data = $form->getData();
 
         $body = $this->app->renderView('Mail/order.twig', array(
-            'header' => $formData['header'],
-            'footer' => $formData['footer'],
+            'header' => $data['header'],
+            'footer' => $data['footer'],
             'Order' => $Order,
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['subject'])
+            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $data['subject'])
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -236,6 +250,17 @@ class MailService
 
         $this->app->mail($message);
 
+        // 送信履歴を保存.
+        $MailTemplate = $form->get('template')->getData();
+        $MailHistory = new MailHistory();
+        $MailHistory
+            ->setSubject($message->getSubject())
+            ->setMailBody($body)
+            ->setMailTemplate($MailTemplate)
+            ->setSendDate(new \DateTime())
+            ->setOrder($Order);
+        $this->app['orm.em']->persist($MailHistory);
+        $this->app['orm.em']->flush($MailHistory);
     }
 
     /**
