@@ -4,6 +4,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\Shipping;
 use Eccube\Service\ShoppingService;
 use Eccube\Util\Str;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -52,6 +53,63 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    public function testGetOrderWithMultiple()
+    {
+        // 複数配送対応としておく
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+
+        $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
+        $Order = $this->app['eccube.service.shopping']->getOrder();
+
+        $this->expected = $NewOrder->getPreOrderId();
+        $this->actual = $Order->getPreOrderId();
+        $this->verify();
+    }
+
+    public function testGetOrderWithNonMember()
+    {
+        // 複数配送対応としておく
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+
+        $NonMember = $this->createNonMember();
+        $this->app['security']->setToken(
+            new UsernamePasswordToken(
+                $NonMember, null, 'Customer', array('IS_AUTHENTICATED_ANONYMOUSLY')
+            )
+        );
+
+        $NewOrder = $this->app['eccube.service.shopping']->createOrder($NonMember);
+        $Order = $this->app['eccube.service.shopping']->getOrder();
+
+        $this->expected = $NewOrder->getPreOrderId();
+        $this->actual = $Order->getPreOrderId();
+        $this->verify();
+    }
+
+    public function testGetOrderWithStatusAndNull()
+    {
+        $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
+        $this->app['orm.em']->flush();
+
+        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $Order = $this->app['eccube.service.shopping']->getOrder($OrderNew);
+        $this->assertNull($Order);
+    }
+
+    public function testGetOrderWithStatus()
+    {
+        $NewOrder = $this->app['eccube.service.shopping']->createOrder($this->Customer);
+        $OrderProcessing = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $Order = $this->app['eccube.service.shopping']->getOrder($OrderProcessing);
+
+        $this->expected = $NewOrder->getPreOrderId();
+        $this->actual = $Order->getPreOrderId();
+        $this->verify();
+
+    }
+
     public function testGetNonMemberIsNull()
     {
         $Customer = $this->app['eccube.service.shopping']->getNonMember('eccube.front.shopping.nonmember');
@@ -94,6 +152,62 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         $this->expected = 2;
         $this->actual = count($Deliveries);
+        $this->verify();
+    }
+
+    public function testCopyToShippingFromCustomerWithNull()
+    {
+        $Shipping = new Shipping();
+        $Shipping->copyProperties($this->Customer);
+
+        $this->expected = $Shipping;
+        $this->actual = $this->app['eccube.service.shopping']->copyToShippingFromCustomer($Shipping, null);
+        $this->verify();
+    }
+
+    public function testGetAmount()
+    {
+        $NewOrder = $this->createOrder($this->Customer);
+        $Order = $this->app['eccube.service.shopping']->getAmount($NewOrder);
+
+        $this->expected = $NewOrder->getTotal();
+        $this->actual = $Order->getTotal();
+        $this->verify();
+    }
+
+    public function testSetDeliveryFreeAmount()
+    {
+        // 送料無料条件を 0 円に設定
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setDeliveryFreeAmount(0);
+
+        $Order = $this->createOrder($this->Customer);
+        $Order->setDeliveryFeeTotal(100); // 送料 100 円に設定しておく
+        $this->assertNotEquals(0, $Order->getDeliveryFeeTotal());
+
+        // 送料 0 円に設定される
+        $this->app['eccube.service.shopping']->setDeliveryFreeAmount($Order);
+
+        $this->expected = 0;
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->verify();
+    }
+
+    public function testSetDeliveryFreeQuantity()
+    {
+        // 送料無料条件を 0 個に設定
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setDeliveryFreeQuantity(0);
+
+        $Order = $this->createOrder($this->Customer);
+        $Order->setDeliveryFeeTotal(100); // 送料 100 円に設定しておく
+        $this->assertNotEquals(0, $Order->getDeliveryFeeTotal());
+
+        // 送料 0 円に設定される
+        $this->app['eccube.service.shopping']->setDeliveryFreeQuantity($Order);
+
+        $this->expected = 0;
+        $this->actual = $Order->getDeliveryFeeTotal();
         $this->verify();
     }
 
