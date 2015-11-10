@@ -255,7 +255,18 @@ class MailServiceTest extends AbstractServiceTestCase
             'footer' => $footer,
             'subject' => $subject
         );
-        $this->app['eccube.service.mail']->sendAdminOrderMail($Order, $formData);
+
+        $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
+
+        $form = $builder->getForm();
+        $form->get('template')->setData($MailTemplate);
+        $form->get('subject')->setData($subject);
+        $form->get('header')->setData($header);
+        $form->get('footer')->setData($footer);
+
+        $builder = $app['form.factory']->createBuilder('mail');
+        $form = $builder->getForm();
+        $this->app['eccube.service.mail']->sendAdminOrderMail($Order, $form);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
