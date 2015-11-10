@@ -50,8 +50,7 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
         ));
     }
-
-    public function index(Application $app, Request $request)
+   public function index(Application $app, Request $request)
     {
         // install.phpのチェック.
         if (isset($app['config']['eccube_install']) && $app['config']['eccube_install'] == 1) {
@@ -96,12 +95,17 @@ class AdminController extends AbstractController
         $excludes[] = $app['config']['order_cancel'];
         $excludes[] = $app['config']['order_pending'];
 
+
+        //
+        $resultdata = $this->getOrderLine($app['orm.em'],$excludes);
+
+
         // 今日の売上/件数
-        $salesToday = $this->getSalesByDay($app['orm.em'], new \DateTime(), $excludes);
+        $salesToday = $resultdata['today'];
         // 昨日の売上/件数
-        $salesYesterday = $this->getSalesByDay($app['orm.em'], new \DateTime('-1 day'), $excludes);
+        $salesYesterday = $resultdata['yesterday'];
         // 今月の売上/件数
-        $salesThisMonth = $this->getSalesByMonth($app['orm.em'], new \DateTime(), $excludes);
+        $salesThisMonth = $resultdata['thismonth'];
 
         /**
          * ショップ状況
@@ -124,7 +128,87 @@ class AdminController extends AbstractController
             'countCustomers' => $countCustomers,
         ));
     }
+    protected function getOrderLine($em, array $excludes)
+    {
+        $rsm = new ResultSetMapping();;
+        $rsm->addScalarResult('max_order_id', 'max_order_id');
+        $rsm->addScalarResult('min_order_id', 'min_order_id');
 
+        $sql = '
+        SELECT
+            MAX(order_id ) as max_order_id,
+            MIN(order_id ) as min_order_id
+        FROM
+            dtb_order
+        WHERE
+            order_date BETWEEN ? AND ?
+        ';
+//        今日の売上高 / 売上件数
+        $settime = time();
+        $query = $em->createNativeQuery($sql, $rsm);
+        $query->setParameter(1, date('Y-m-d 00:00:00',$settime));
+        $query->setParameter(2, date('Y-m-d 23:59:59',$settime));
+        $result = $query->getResult();
+        if(is_null($result[0]['max_order_id'])){
+            $result[0]['max_order_id'] = 0;
+            $result[0]['min_order_id'] = 0;
+        }
+        $arrOrderResult = array();
+        $arrOrderResult['today'] = $this->getSalesFromOrderId($em, $result[0]['max_order_id'], $result[0]['min_order_id'],$excludes);
+
+//        昨日の売上高 / 売上件数
+        $query = $em->createNativeQuery($sql, $rsm);
+        $query->setParameter(1, date('Y-m-d 00:00:00',$settime - 86400));
+        $query->setParameter(2, date('Y-m-d 23:59:59',$settime - 86400));
+        $result = $query->getResult();
+        if(is_null($result[0]['max_order_id'])){
+            $result[0]['max_order_id'] = 0;
+            $result[0]['min_order_id'] = 0;
+        }
+        $arrOrderResult['yesterday'] = $this->getSalesFromOrderId($em, $result[0]['max_order_id'], $result[0]['min_order_id'],$excludes);
+//        今月の売上高 / 売上件数
+
+        $query = $em->createNativeQuery($sql, $rsm);
+        $query->setParameter(1, date('Y-m-1 00:00:00',$settime));
+        $query->setParameter(2, date('Y-m-t 23:59:59',$settime));
+        $result = $query->getResult();
+        if(is_null($result[0]['max_order_id'])){
+            $result[0]['max_order_id'] = 0;
+            $result[0]['min_order_id'] = 0;
+        }
+        $arrOrderResult['thismonth'] = $this->getSalesFromOrderId($em, $result[0]['max_order_id'], $result[0]['min_order_id'],$excludes);
+        return $arrOrderResult;
+    }
+
+
+    protected function getSalesFromOrderId($em, $max_order_id, $min_order_id, array $excludes)
+    {
+        // concat... for pgsql
+        // http://stackoverflow.com/questions/1091924/substr-does-not-work-with-datatype-timestamp-in-postgres-8-3
+        $sql = '
+        SELECT
+            SUBSTRING(CONCAT(t1.create_date, \'\'), 1, 10) AS order_day,
+            SUM(t1.payment_total) AS order_amount,
+            COUNT(t1.order_id) AS order_count
+        FROM
+            dtb_order t1
+        WHERE
+            t1.status NOT IN (:excludes) AND 
+            t1.order_id BETWEEN :min_order_id AND :max_order_id';
+        $rsm = new ResultSetMapping();;
+        $rsm->addScalarResult('order_day', 'order_day');
+        $rsm->addScalarResult('order_amount', 'order_amount');
+        $rsm->addScalarResult('order_count', 'order_count');
+        $query = $em->createNativeQuery($sql, $rsm);
+        $query->setParameters(
+        array(':excludes' => $excludes,
+            ':min_order_id' => $min_order_id,
+            ':max_order_id' => $max_order_id
+        )
+        );
+        $result = $query->getResult();
+        return $result[0];
+    }
     /**
      * 在庫なし商品の検索結果を表示する.
      * 
