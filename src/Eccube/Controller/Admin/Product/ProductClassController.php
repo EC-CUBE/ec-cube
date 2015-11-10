@@ -48,6 +48,7 @@ class ProductClassController
 
         /** @var $Product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->find($id);
+        $hasClassCategoryFlg = false;
 
         if (!$Product) {
             throw new NotFoundHttpException();
@@ -87,22 +88,14 @@ class ProductClassController
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
 
-                    $has_categories = array();
-                    $has_class = array();
-                    $has_class['class_name1'] = false;
-                    $has_class['class_name2'] = false;
-                    $has_categories['class_name1'] = false;
-                    $has_categories['class_name2'] = false;
-                    if(!empty($has_class['class_name1'])){
-                        $has_class['class_name1'] = true;
-                        $has_categories['class_name1'] = ((count($data['class_name1']->getClassCategories()) > 0) ? true : false);
-                    }
-                    if(!empty($has_class['class_name2'])){
-                        $has_class['class_name2'] = true;
-                        $has_categories['class_name2'] = ((count($data['class_name2']->getClassCategories()) > 0) ? true : false);
-                    }
+                    // 各規格が選択されている際に、分類を保有しているか確認
+                    $class1Valied = $this->_isValiedCategory($ClassName1);
+                    $class2Valied = $this->_isValiedCategory($ClassName2);
 
-                   //ddd(count($data['class_name1']->getClassCategories()), true);
+                    // 規格が選択されていないか、選択された状態で分類が保有されていれば、画面表示
+                    if($class1Valied && $class2Valied){
+                        $hasClassCategoryFlg = true;
+                    }
 
                     if (!is_null($ClassName2) && $ClassName1->getId() == $ClassName2->getId()) {
                         // 規格1と規格2が同じ値はエラー
@@ -124,8 +117,6 @@ class ProductClassController
                             $this->setDefualtProductClass($app, $productClass, $sourceProduct);
                         }
 
-                        //ddd(count($ProductClasses), true);
-
                         $productClassForm = $app->form()
                             ->add('product_classes', 'collection', array(
                                 'type' => 'admin_product_class',
@@ -145,6 +136,7 @@ class ProductClassController
                 'Product' => $Product,
                 'not_product_class' => true,
                 'error' => null,
+                'has_class_category_flg' => $hasClassCategoryFlg,
             ));
 
         } else {
@@ -344,7 +336,6 @@ class ProductClassController
                     $updateProductClasses = array();
                     foreach ($checkProductClasses as $cp) {
                         $flag = false;
-                        
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
@@ -583,7 +574,6 @@ class ProductClassController
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
-        
         // 個別消費税
         $BaseInfo = $app['eccube.repository.base_info']->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
@@ -661,4 +651,20 @@ class ProductClassController
 
     }
 
+    /**
+     * 規格の分類判定
+     *
+     * @param Eccube\Entity\ClassName $ClassesName
+     * @return boolean
+     */
+    private function _isValiedCategory($class_name)
+    {
+        if (empty($class_name)) {
+            return true;
+        }
+        if (count($class_name->getClassCategories()) < 1) {
+            return false;
+        }
+        return true;
+    }
 }

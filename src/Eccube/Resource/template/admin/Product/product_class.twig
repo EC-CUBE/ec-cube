@@ -153,7 +153,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {{ form_widget(form._token) }}
                         <button type="submit" class="btn btn-primary pull-right">商品規格の設定</button>
                         <div class="form-horizontal">
-                            {{ form.class_name1.getClassCategories }}
                             {{ form_widget(form.class_name1) }}
                             {{ form_errors(form.class_name1) }}
                             {{ form_widget(form.class_name2) }}
@@ -182,7 +181,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="row">
     <div class="col-md-12">
         <div class="box">
-            {% if classForm.product_classes|length > 0 %}
+            {% if classForm.product_classes|length > 0 and has_class_category_flg %}
             <div class="box-header">
                 <button type="button" id="copy" class="btn btn-default pull-right btn-xs">1行目のデータをコピーする</button>
                 <h3 class="box-title">検索結果 <span class="normal"><strong>{{ classForm.product_classes|length }} 件</strong> が該当しました</span></h3>
