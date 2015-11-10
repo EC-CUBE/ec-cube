@@ -58,7 +58,7 @@ class ProductClassController
         // 商品規格情報が存在しなければ新規登録させる
         if (!$Product->hasProductClass()) {
             // 登録画面を表示
-            
+
             $form = $app->form()
                 ->add('class_name1', 'entity', array(
                     'class' => 'Eccube\Entity\ClassName',
@@ -337,7 +337,7 @@ class ProductClassController
                     $updateProductClasses = array();
                     foreach ($checkProductClasses as $cp) {
                         $flag = false;
-
+                        
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
@@ -576,7 +576,7 @@ class ProductClassController
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
-
+        
         // 個別消費税
         $BaseInfo = $app['eccube.repository.base_info']->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
