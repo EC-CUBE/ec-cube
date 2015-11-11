@@ -84,7 +84,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ->getForm();
     }
 
-    public function testValidData()
+    public function testInValidData()
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
@@ -120,13 +120,13 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidDiscount_HasMinus()
+    public function testInValidDiscount_HasMinus()
     {
         $this->app['request'] = new Request();
         $this->formData['discount'] = '-12345';
 
         $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
+        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidDeliveryFeeTotal_OverMaxLength()
@@ -147,13 +147,13 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidDeliveryFeeTotal_HasMinus()
+    public function testInValidDeliveryFeeTotal_HasMinus()
     {
         $this->app['request'] = new Request();
         $this->formData['delivery_fee_total'] = '-12345';
 
         $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
+        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidCharge_OverMaxLength()
@@ -174,12 +174,12 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidCharge_HasMinus()
+    public function testInValidCharge_HasMinus()
     {
         $this->app['request'] = new Request();
         $this->formData['charge'] = '-12345';
 
         $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
+        $this->assertFalse($this->form->isValid());
     }
 }
