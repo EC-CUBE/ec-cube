@@ -27,8 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script>
 $(function(){
     $('.order-summary-detail').click(function() {
-        $('#admin_search_order_status').val($(this).attr('href'));
-        $(this).attr('href', '');
+        $('#admin_search_order_status').val($(this).attr('data-order-status'));
         $('#order-state').submit();
         return false;
     });
@@ -59,7 +58,7 @@ $(function(){
                         <div class="link_list">
                             <div class="tableish">
                                 {% for OrderStatus in OrderStatuses %}
-                                <a href="{{ OrderStatus.id }}" class="item_box tr order-summary-detail">
+                                <a href="" class="item_box tr order-summary-detail" data-order-status="{{ OrderStatus.id }}">
                                     <div class="td">{{ OrderStatus.name }}</div>
                                     <div class="item_number text-right td">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</div>
                                     <div class="icon_link td">
