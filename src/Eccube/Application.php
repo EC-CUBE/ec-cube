@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\RotatingFileHandler;
@@ -142,13 +143,17 @@ class Application extends ApplicationTrait
         $app = $this;
         $levels = Logger::getLevels();
         $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $this) use ($app, $levels, $file) {
-
-            $RotateHandler = new RotatingFileHandler($file, $app['config']['log']['max_files'], $app['config']['log']['log_level']);
+            if ($app['debug']) {
+                $level = Logger::DEBUG;
+            } else {
+                $level = $app['config']['log']['log_level'];
+            }
+            $RotateHandler = new RotatingFileHandler($file, $app['config']['log']['max_files'], $level);
             $RotateHandler->setFilenameFormat(
                 $app['config']['log']['prefix'].'{date}'.$app['config']['log']['suffix'],
                 $app['config']['log']['format']
             );
-
+            $RotateHandler->setFormatter(new LineFormatter(null, null, true));
             $FingerCrossedHandler = new FingersCrossedHandler(
                 $RotateHandler,
                 new ErrorLevelActivationStrategy($levels[$app['config']['log']['action_level']])
@@ -158,6 +163,11 @@ class Application extends ApplicationTrait
 
             return $monolog;
         }));
+
+        $app['listener.requestdump'] = $app->share(function ($app) {
+            return new \Eccube\EventListener\RequestDumpListener($app);
+        });
+        $app['dispatcher']->addSubscriber($app['listener.requestdump']);
     }
 
     public function initialize()
