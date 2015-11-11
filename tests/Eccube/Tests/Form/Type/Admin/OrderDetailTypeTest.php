@@ -89,13 +89,13 @@ class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPrice_HasMinus()
+    public function testValidPrice_HasMinus()
     {
         $this->app['request'] = new Request();
         $this->formData['price'] = '-123456';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidQuantity_Blank()
