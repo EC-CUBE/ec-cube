@@ -10,16 +10,42 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20151110174227 extends AbstractMigration
 {
+
+    const DTB_MAIL_HISTORY = 'dtb_mail_history';
+    const DTB_MEMBER = 'dtb_member';
+
     /**
      * @param Schema $schema
      */
     public function up(Schema $schema)
     {
-        $t=$schema->getTable('dtb_mail_history');
-        if($t->hasColumn('creator_id')){
-            $this->addSql('alter table dtb_mail_history change column creator_id creator_id int(11) default null;');
-            $t->dropColumn('stock_unlimited_tmp');
+        // this up() migration is auto-generated, please modify it to your needs
+        // dtb_category
+        $t_dtb_mail_history = $schema->getTable(self::DTB_MAIL_HISTORY);
+
+        $keyName = '';
+        if($t_dtb_mail_history->hasColumn('creator_id')){
+            $keys = $t_dtb_mail_history->getForeignKeys();
+            foreach ($keys as $key) {
+                $column = $key->getColumns();
+                if ($column[0] == 'creator_id') {
+                    $keyName = $key->getName();
+                    break;
+                }
+            }
         }
+
+        if (!empty($keyName)) {
+            $t_dtb_mail_history->removeForeignKey($keyName);
+        }
+        $t_dtb_mail_history->changeColumn('creator_id', array('NotNull' => true));
+
+        $targetTable = $schema->getTable(Self::DTB_MEMBER);
+        $t_dtb_mail_history->addForeignKeyConstraint(
+            $targetTable,
+            array('creator_id'),
+            array('member_id')
+        );
     }
 
     /**
@@ -27,7 +53,7 @@ class Version20151110174227 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-
+        // this up() migration is auto-generated, please modify it to your needs
+        // dtb_category
     }
 }

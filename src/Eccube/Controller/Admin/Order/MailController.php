@@ -90,8 +90,21 @@ class MailController
                         $data = $form->getData();
                         $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
-                        // メール送信 ( 履歴保存 )
-                        $app['eccube.service.mail']->sendAdminOrderMail($Order, $form);
+                        // メール送信
+                        $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
+
+                        // 送信履歴を保存.
+                        $MailTemplate = $form->get('template')->getData();
+                        $MailHistory = new MailHistory();
+                        $MailHistory
+                            ->setSubject($data['subject'])
+                            ->setMailBody($body)
+                            ->setMailTemplate($MailTemplate)
+                            ->setSendDate(new \DateTime())
+                            ->setOrder($Order);
+                        $app['orm.em']->persist($MailHistory);
+                        $app['orm.em']->flush($MailHistory);
+
 
                         return $app->redirect($app->url('admin_order_mail_complete'));
                         break;
@@ -208,9 +221,23 @@ class MailController
 
                             $body = $this->createBody($app, $data['header'], $data['footer'], $Order);
 
-                            // メール送信 ( 履歴保存 )
-                            $app['eccube.service.mail']->sendAdminOrderMail($Order, $form);
+                            // メール送信
+                            $app['eccube.service.mail']->sendAdminOrderMail($Order, $data);
+
+                            // 送信履歴を保存.
+                            $MailTemplate = $form->get('template')->getData();
+                            $MailHistory = new MailHistory();
+                            $MailHistory
+                                ->setSubject($data['subject'])
+                                ->setMailBody($body)
+                                ->setMailTemplate($MailTemplate)
+                                ->setSendDate(new \DateTime())
+                                ->setOrder($Order);
+                            $app['orm.em']->persist($MailHistory);
                         }
+
+                        $app['orm.em']->flush($MailHistory);
+
 
                         return $app->redirect($app->url('admin_order_mail_complete'));
                         break;
