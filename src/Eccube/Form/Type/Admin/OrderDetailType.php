@@ -62,10 +62,6 @@ class OrderDetailType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
                 ),
             ))
             ->add('quantity', 'text', array(

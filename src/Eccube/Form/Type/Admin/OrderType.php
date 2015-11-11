@@ -142,10 +142,6 @@ class OrderType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
                 ),
             ))
             ->add('delivery_fee_total', 'money', array(
@@ -157,10 +153,6 @@ class OrderType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['int_len'],
                     )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
                 ),
             ))
             ->add('charge', 'money', array(
@@ -171,10 +163,6 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(array(
                         'max' => $config['int_len'],
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
                     )),
                 ),
             ))
