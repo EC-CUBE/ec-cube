@@ -31,8 +31,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DeliveryController extends AbstractController
 {
-    public function __construct(){
-    }
     /**
      * Index
      *
