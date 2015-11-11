@@ -89,8 +89,8 @@ class ProductClassController
                     $ClassName2 = $data['class_name2'];
 
                     // 各規格が選択されている際に、分類を保有しているか確認
-                    $class1Valied = $this->_isValiedCategory($ClassName1);
-                    $class2Valied = $this->_isValiedCategory($ClassName2);
+                    $class1Valied = $this->isValiedCategory($ClassName1);
+                    $class2Valied = $this->isValiedCategory($ClassName2);
 
                     // 規格が選択されていないか、選択された状態で分類が保有されていれば、画面表示
                     if($class1Valied && $class2Valied){
@@ -657,7 +657,7 @@ class ProductClassController
      * @param Eccube\Entity\ClassName $ClassesName
      * @return boolean
      */
-    private function _isValiedCategory($class_name)
+    private function isValiedCategory($class_name)
     {
         if (empty($class_name)) {
             return true;
