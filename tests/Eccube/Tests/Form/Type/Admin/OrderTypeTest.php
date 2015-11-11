@@ -65,9 +65,9 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'fax03' => '6789',
         ),
         'email' => 'default@example.com',
-        'discount' => '',
-        'delivery_fee_total' => '',
-        'charge' => '',
+        'discount' => '1',
+        'delivery_fee_total' => '1',
+        'charge' => '1',
         'Payment' => '1', // dtb_payment?
     );
 
@@ -88,7 +88,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidTel_Blank()
