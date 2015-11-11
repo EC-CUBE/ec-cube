@@ -216,7 +216,7 @@ class ShoppingController extends AbstractController
                 $app['session']->set($this->sessionOrderKey, $Order->getId());
 
                 // 送信履歴を保存.
-                $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
+                $MailTemplate = $app['eccube.repository.mail_template']->find(1);
 
                 $body = $this->app->renderView($MailTemplate->getFileName(), array(
                     'header' => $MailTemplate->getHeader(),
