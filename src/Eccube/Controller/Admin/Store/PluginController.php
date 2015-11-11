@@ -271,7 +271,8 @@ class PluginController extends AbstractController
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         if (!$Plugin) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_store_plugin'));
         }
 
         $app['eccube.service.plugin']->uninstall($Plugin);
