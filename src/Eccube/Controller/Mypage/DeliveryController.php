@@ -59,8 +59,8 @@ class DeliveryController extends AbstractController
     {
         $Customer = $app['user'];
 
-        //配送先住所最大値判定 ( 不正アクセス防止/実際は画面のボタン非表示で制御 )
-        //$idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
+        // 配送先住所最大値判定
+        // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
         if (is_null($id)) {
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];

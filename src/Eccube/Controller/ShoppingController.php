@@ -508,8 +508,8 @@ class ShoppingController extends AbstractController
      */
     public function shippingEdit(Application $app, Request $request, $id)
     {
-        //配送先住所最大値判定 ( 不正アクセス防止/実際は画面のボタン非表示で制御 )
-        if (is_object($app->user())) {
+        // 配送先住所最大値判定
+        if ($app->user() instanceof \Eccube\Entity\Customer) {
             $addressCurrNum = count($app->user()->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
