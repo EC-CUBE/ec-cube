@@ -508,6 +508,14 @@ class ShoppingController extends AbstractController
      */
     public function shippingEdit(Application $app, Request $request, $id)
     {
+        // 配送先住所最大値判定
+        if ($app->user() instanceof \Eccube\Entity\Customer) {
+            $addressCurrNum = count($app->user()->getCustomerAddresses());
+            $addressMax = $app['config']['deliv_addr_max'];
+            if ($addressCurrNum >= $addressMax) {
+                throw new NotFoundHttpException();
+            }
+        }
 
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
