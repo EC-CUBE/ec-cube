@@ -218,7 +218,7 @@ class ShoppingController extends AbstractController
                 // 送信履歴を保存.
                 $MailTemplate = $app['eccube.repository.mail_template']->find(1);
 
-                $body = $this->app->renderView($MailTemplate->getFileName(), array(
+                $body = $app->renderView($MailTemplate->getFileName(), array(
                     'header' => $MailTemplate->getHeader(),
                     'footer' => $MailTemplate->getFooter(),
                     'Order' => $Order,
