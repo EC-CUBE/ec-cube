@@ -226,7 +226,7 @@ class ShoppingController extends AbstractController
 
                 $MailHistory = new MailHistory();
                 $MailHistory
-                    ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getSubject())
+                    ->setSubject('[' . $app['eccube.repository.base_info']->get()->getShopName() . '] ' . $MailTemplate->getSubject())
                     ->setMailBody($body)
                     ->setMailTemplate($MailTemplate)
                     ->setSendDate(new \DateTime())
