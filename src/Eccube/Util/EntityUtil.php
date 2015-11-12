@@ -71,5 +71,27 @@ class EntityUtil
         return !self::isEmpty($entity);
     }
 
-
+    /**
+     * エンティティのプロパティを配列で返す.
+     *
+     * このメソッドはエンティティの内容をログ出力する際などに使用する.
+     * AbstractEntity::toArray() と異なり再帰処理しない.
+     * プロパティの値がオブジェクトの場合は、クラス名を出力する.
+     *
+     * @param object $entity 対象のエンティティ
+     * @return array エンティティのプロパティの配列
+     */
+    public static function dumpToArray($entity)
+    {
+        $objReflect = new \ReflectionClass($entity);
+        $arrProperties = $objReflect->getProperties();
+        $arrResults = array();
+        foreach ($arrProperties as $objProperty) {
+            $objProperty->setAccessible(true);
+            $name = $objProperty->getName();
+            $value = $objProperty->getValue($entity);
+            $arrResults[$name] = is_object($value) ? get_class($value) : $value;
+        }
+        return $arrResults;
+    }
 }
