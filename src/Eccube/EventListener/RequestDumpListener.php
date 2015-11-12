@@ -43,7 +43,6 @@ class RequestDumpListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $request = $event->getRequest();
         $log = '** before *****************************************:'.PHP_EOL;
         $request = $event->getRequest();
         $log .= $this->logRequest($request);
@@ -135,6 +134,7 @@ class RequestDumpListener implements EventSubscriberInterface
         $log .= $this->logArray($request->attributes->all(), '[attributes]');
         $log .= $this->logArray($request->cookies->all(), '[cookie]');
         $log .= $this->logArray($request->files->all(), '[files]');
+
         return $log;
     }
 
@@ -148,6 +148,7 @@ class RequestDumpListener implements EventSubscriberInterface
     {
         $log = '';
         $log .= $this->logKeyValuePair('HTTP_STATUS', $response->getStatusCode());
+
         return $log;
     }
 
@@ -162,12 +163,13 @@ class RequestDumpListener implements EventSubscriberInterface
     /**
      * 配列をログ出力する.
      */
-    protected function logArray(array $values, $prefix = '', $context = array(), $level = Logger::DEBUG)
+    protected function logArray(array $values, $prefix = '')
     {
         $log = '';
         foreach ($values as $key => $val) {
-            $log .= $this->logKeyValuePair($key, $val, $prefix, $context, $level);
+            $log .= $this->logKeyValuePair($key, $val, $prefix);
         }
+
         return $log;
     }
 
@@ -176,7 +178,7 @@ class RequestDumpListener implements EventSubscriberInterface
      *
      * 除外キーに該当する値は, マスクをかける
      */
-    protected function logKeyValuePair($key, $value, $prefix = '', $context = array(), $level = Logger::DEBUG)
+    protected function logKeyValuePair($key, $value, $prefix = '')
     {
         $copy_value = null;
         if (in_array($key, $this->excludeKeys)) {
