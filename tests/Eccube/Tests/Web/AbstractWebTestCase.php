@@ -24,11 +24,11 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Application;
-use Eccube\Tests\Mock\CsrfTokenMock;
-use Silex\WebTestCase;
+use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-abstract class AbstractWebTestCase extends WebTestCase
+abstract class AbstractWebTestCase extends EccubeTestCase
 {
 
     protected $client = null;
@@ -38,52 +38,25 @@ abstract class AbstractWebTestCase extends WebTestCase
     {
         parent::setUp();
 
-        if ($this->client == null) {
-            if (self::$server == null) {
-                self::$server = static::createClient();
-            }
-            $this->client = self::$server;
-        }
-    }
-
-    /**
-     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->app['orm.em']->getConnection()->close();
-        $refl = new \ReflectionObject($this);
-        foreach ($refl->getProperties() as $prop) {
-            if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
-                $prop->setAccessible(true);
-                $prop->setValue($this, null);
-            }
-        }
-    }
-
-    public static function tearDownAfterClass()
-    {
-        self::$server = null;
+        self::$server = static::createClient();
+        $this->client = self::$server;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createApplication()
+    public function logIn()
     {
-        $app = new Application();
-        $app->initialize();
-        $app->initPluginEventDispatcher();
-        $app['session.test'] = true;
-        $app['exception_handler']->disable();
+        $firewall = 'customer';
 
-        $app['form.csrf_provider'] = $app->share(function () {
-            return new CsrfTokenMock();
-        });
+        $user = $this->createCustomer();
+        $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
 
-        $app->boot();
+        $this->app['security.token_storage']->setToken($token);
+        $this->app['session']->set('_security_' . $firewall, serialize($token));
+        $this->app['session']->save();
 
-        return $app;
+        $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());
+        $this->client->getCookieJar()->set($cookie);
     }
 }

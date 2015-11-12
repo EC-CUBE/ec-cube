@@ -24,24 +24,36 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
+
 class ProductControllerTest extends AbstractWebTestCase
 {
 
     public function testRoutingList()
     {
-        self::markTestSkipped();
-
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('product_list'));
+        $client = $this->client;
+        $client->request('GET', $this->app->url('product_list'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testRoutingDetail()
     {
-        self::markTestSkipped();
-
-        $client = $this->createClient();
-        $client->request('GET', $this->app['url_generator']->generate('product_detail', array('productId' => '1')));
+        $client = $this->client;
+        $client->request('GET', $this->app->url('product_detail', array('id' => '1')));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
+
+    public function testRoutingProductFavoriteAdd()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+
+        $client = $this->client;
+        $client->request('POST',
+            $this->app->url('product_detail', array('id' => '1'))
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
 }
