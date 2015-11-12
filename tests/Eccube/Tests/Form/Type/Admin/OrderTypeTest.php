@@ -88,7 +88,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
+        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidTel_Blank()
