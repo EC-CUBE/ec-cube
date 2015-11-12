@@ -177,9 +177,14 @@ class ProductController
                         $Customer = $app->user();
                         $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
                         $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+                        return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
+                    } else {
+                        // 非会員の場合、ログイン画面を表示
+                        //  ログイン後の画面遷移先を設定
+                        $app->setLoginTargetPath($app->url('product_detail', array('id' => $Product->getId())));
+                        $app['session']->getFlashBag()->set('eccube.add.favorite', true);
+                        return $app->redirect($app->url('mypage_login'));
                     }
-
-                    return $app->redirect($app->url('product_detail', array('productId' => $Product->getId())));
                 } else {
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
@@ -190,13 +195,22 @@ class ProductController
                     return $app->redirect($app->url('cart'));
                 }
             }
+        } else {
+            $addFavorite = $app['session']->getFlashBag()->get('eccube.add.favorite');
+            if (!empty($addFavorite)) {
+                // お気に入り登録時にログインされていない場合、ログイン後にお気に入り追加処理を行う
+                if ($app->isGranted('ROLE_USER')) {
+                        $Customer = $app->user();
+                        $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
+                        $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+                }
+            }
         }
 
+        $is_favorite = false;
         if ($app->isGranted('ROLE_USER')) {
             $Customer = $app->user();
             $is_favorite = $app['eccube.repository.customer_favorite_product']->isFavorite($Customer, $Product);
-        } else {
-            $is_favorite = false;
         }
 
         return $app->render('Product/detail.twig', array(

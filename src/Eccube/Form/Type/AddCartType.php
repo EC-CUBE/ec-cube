@@ -174,11 +174,7 @@ class AddCartType extends AbstractType
      */
     public function validate($data, ExecutionContext $context)
     {
-        if ($data['mode'] === 'add_favorite') {
-            if (!$this->security->isGranted('ROLE_USER')) {
-                $context->addViolationAt('', 'ログインしてください.');
-            }
-        } else {
+        if ($data['mode'] !== 'add_favorite') {
             $context->validateValue($data['product_class_id'], array(
                 new Assert\NotBlank(),
             ), '[product_class_id]');

@@ -37,11 +37,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock javascript %}
 
 {% block main %}
-<h1 class="page-heading">マイページ</h1>
+<h1 class="page-heading">マイページ/会員情報編集</h1>
 <div class="container-fluid">
     {% include 'Mypage/navi.twig' %}
-    <h2 class="heading01">会員情報編集</h2>
-
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <form method="post" action="{{ url('mypage_change') }}">

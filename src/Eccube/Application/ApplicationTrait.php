@@ -47,6 +47,11 @@ class ApplicationTrait extends \Silex\Application
         $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
     }
 
+    public function setLoginTargetPath($targetPath)
+    {
+        $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+    }
+
     /*
      * 注意！以下コードはSilexのコードのコピーなので触らないコト
      *
