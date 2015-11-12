@@ -3,7 +3,6 @@
 namespace Eccube\EventListener;
 
 use Eccube\Application;
-use Eccube\Util\EntityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,6 +62,8 @@ class RequestDumpListener implements EventSubscriberInterface
     public function onResponse(FilterResponseEvent $event)
     {
         $log = '** after *****************************************:'.PHP_EOL;
+        $response = $event->getResponse();
+        $log .= $this->logResponse($response);
         $request = $event->getRequest();
         $log .= $this->logRequest($request);
         $Session = $request->getSession();
@@ -138,6 +139,19 @@ class RequestDumpListener implements EventSubscriberInterface
     }
 
     /**
+     * Response のログを出力する.
+     *
+     * @param Response $response
+     * @return string Response のログ
+     */
+    protected function logResponse(Response $response)
+    {
+        $log = '';
+        $log .= $this->logKeyValuePair('HTTP_STATUS', $response->getStatusCode());
+        return $log;
+    }
+
+    /**
      * Session のログを出力する.
      */
     protected function logSession(SessionInterface $Session)
@@ -164,24 +178,27 @@ class RequestDumpListener implements EventSubscriberInterface
      */
     protected function logKeyValuePair($key, $value, $prefix = '', $context = array(), $level = Logger::DEBUG)
     {
+        $copy_value = null;
         if (in_array($key, $this->excludeKeys)) {
             return '';
         }
         if (is_null($value) || is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) {
-            // quiet
+            $copy_value = $value;
         } elseif (is_object($value)) {
-            $value = '[object '.serialize($value).']';
+            $copy_value = '[object '.serialize($value).']';
         } else {
-            if (is_array($value)) {
-                foreach ($value as $key => &$val) {
+            $copy_value = $value;
+            if (is_array($copy_value)) {
+                foreach ($copy_value as $key => &$val) {
                     if (in_array($key, $this->excludeKeys)
                         && $prefix != '[header]') { // XXX header にもマスクがかかってしまう
                         $val = '******';
                     }
                 }
             }
-            $value = '['.serialize($value).']';
+            $copy_value = '['.serialize($copy_value).']';
         }
-        return '  '.$prefix.' '.$key.'='.$value.PHP_EOL;
+
+        return '  '.$prefix.' '.$key.'='.$copy_value.PHP_EOL;
     }
 }

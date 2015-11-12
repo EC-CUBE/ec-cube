@@ -163,11 +163,6 @@ class Application extends ApplicationTrait
 
             return $monolog;
         }));
-
-        $app['listener.requestdump'] = $app->share(function ($app) {
-            return new \Eccube\EventListener\RequestDumpListener($app);
-        });
-        $app['dispatcher']->addSubscriber($app['listener.requestdump']);
     }
 
     public function initialize()
@@ -226,7 +221,7 @@ class Application extends ApplicationTrait
         // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+        $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
     }
 
@@ -314,10 +309,9 @@ class Application extends ApplicationTrait
                 } else {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
-
-                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
-                        $paths[] = __DIR__ . '/../../app/template/admin';
+                if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                    if (file_exists(__DIR__.'/../../app/template/admin')) {
+                        $paths[] = __DIR__.'/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
