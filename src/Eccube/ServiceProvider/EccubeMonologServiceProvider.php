@@ -40,9 +40,13 @@ class EccubeMonologServiceProvider implements ServiceProviderInterface
             );
             return $FingerCrossedHandler;
         };
+        $app['listener.requestdump'] = $app->share(function($app) {
+            return new \Eccube\EventListener\RequestDumpListener($app);
+        });
     }
 
     public function boot(Application $app)
     {
+        $app['dispatcher']->addSubscriber($app['listener.requestdump']);
     }
 }

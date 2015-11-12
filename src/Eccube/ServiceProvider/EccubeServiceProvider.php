@@ -349,10 +349,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             return $types;
         }));
-
-        $app['listener.requestdump'] = $app->share(function($app) {
-            return new \Eccube\EventListener\RequestDumpListener($app);
-        });
     }
 
     /**
@@ -364,6 +360,5 @@ class EccubeServiceProvider implements ServiceProviderInterface
      */
     public function boot(BaseApplication $app)
     {
-        $app['dispatcher']->addSubscriber($app['listener.requestdump']);
     }
 }
