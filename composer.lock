@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4ff907d4c6d5ce6970ded3cf3026e995",
+    "hash": "600ef02baad4bb30ba44d9af2eb4a471",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -896,7 +896,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -1182,6 +1182,45 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "pulse00/monolog-parser",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pulse00/monolog-parser.git",
+                "reference": "2ef54746f428f0efe959a9bdeb11294aa8872d2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pulse00/monolog-parser/zipball/2ef54746f428f0efe959a9bdeb11294aa8872d2f",
+                "reference": "2ef54746f428f0efe959a9bdeb11294aa8872d2f",
+                "shasum": ""
+            },
+            "require": {
+                "monolog/monolog": "1.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Dubture": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Gruendler",
+                    "email": "r.gruendler@gmail.com"
+                }
+            ],
+            "description": "A parser for monolog log entries",
+            "time": "2015-05-21 16:25:17"
         },
         {
             "name": "saxulum/saxulum-doctrine-orm-manager-registry-provider",
