@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
-                            {% for key, item in line %}
+                            {% for key, item in log %}
                             <tr>
                                 <td>
                                     {{item.date.format('Y/m/d H:i:s')}}
@@ -62,7 +62,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{item.level}}
                                 </td>
                                 <td>
-                                    {{item.message}}
+                                    {{item.message|raw}}
+                                </td>
+                                <td>
+                                    {{item.context|nl2br}}
+                                </td>
+                                <td>
+                                    {{item.extra|nl2br}}
                                 </td>
                             </tr>
                             {% endfor %}

@@ -27,7 +27,6 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\Request;
-use Dubture\Monolog\Reader\LogReader;
 
 class LogController
 {
@@ -35,7 +34,7 @@ class LogController
     {
         $line = array();
         // default
-        $formData['files'] = 'site.log';
+        $formData['files'] = 'site_'.date('Y-m-d').'.log';
         $formData['line_max'] = '50';
 
         $form = $app['form.factory']
@@ -50,20 +49,56 @@ class LogController
         }
 
         $logFile = $app['config']['root_dir'].'/app/log/'.$formData['files'];
-        $reader = new LogReader($logFile);
-
-        $count = $reader->count();
-        $line_max = ($count < $formData['line_max']) ? $count : $formData['line_max']+1;
-
-        // 空の1行が末尾に入るので2からスタート
-        for ($i = 2; $i <= $line_max; $i++) {
-            $count = $reader->count()-$i;
-            $line[] = $reader->offsetGet($count);
-        }
 
         return $app['view']->render('Setting/System/log.twig', array(
             'form' => $form->createView(),
-            'line' => $line,
+            'log' => $this->parseLogFile($logFile, $formData),
         ));
+    }
+
+    private function parseLogFile($logFile, $formData)
+    {
+
+        // monologのparserは下記だが例外を突っ込まれているので使えない
+        //$pattern = '/\[(?P<date>.*)\] (?P<logger>\w+).(?P<level>\w+): (?P<message>.*[^ ]+) (?P<context>[^ ]+) (?P<extra>[^ ]+)/';
+        $pattern = '/\[(?P<date>.*)\] (?P<logger>\w+).(?P<level>\w+): (?P<message>.*)$/';
+
+        $log = array();
+        $message = array();
+
+        foreach (array_reverse(file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) as $line) {
+            // 上限に達した場合、処理を抜ける
+            if (count($log) >= $formData['line_max']) {
+                break;
+            }
+
+            $line = chop($line);
+            if (preg_match($pattern, $line, $data)) {
+
+                // 内容を取得するために一時的に配列に入れる
+                $tmp = array();
+                $tmp = array(
+                    'date' => \DateTime::createFromFormat('Y-m-d H:i:s', $data['date']),
+                    'logger' => $data['logger'],
+                    'level' => $data['level'],
+                );
+
+                $message[] = $data['message'];
+                // messageをここで分解し直す
+                // 改行コードにするとややこしいのでbrで改行する
+                preg_match('/(?P<message>.*[^ ]+) (?P<context>[^ ]+) (?P<extra>[^ ]+)/', implode("<br>", array_reverse($message)), $res);
+
+                $tmp['message'] = $res['message'];
+                $tmp['context'] = var_export(json_decode($res['context'], true), true);
+                $tmp['extra'] = var_export(json_decode($res['extra'], true), true);
+                $message = array();
+
+                $log[] = $tmp;
+            } else {
+                // 内容が改行されている場合がある
+                $message[] = $line;
+            }
+        }
+        return $log;
     }
 }

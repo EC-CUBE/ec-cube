@@ -58,7 +58,7 @@ class LogType extends AbstractType
             ->add('files', 'choice', array(
                 'label' => 'ログファイル',
                 'choices' => $files,
-                'data' => 'site.log',
+                'data' => 'site_'.date('Y-m-d').'.log',
                 'expanded' => false,
                 'multiple' => false,
                 'constraints' => array(
