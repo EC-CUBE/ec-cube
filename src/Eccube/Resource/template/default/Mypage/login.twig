@@ -27,6 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <h1 class="page-heading">{{ title }}</h1>
     <div class="container-fluid">
         <form name="login_mypage" id="login_mypage" method="post" action="{{ url('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')" {{ form_enctype(form) }}>
+            {% if app.config.login_use_referer == 1 and url(app.request.attributes.get('_route')) != app.request.headers.get('referer') %}
+            <input type="hidden" name="_target_path" value="{{ app.request.headers.get('referer') }}" />
+            {% endif %}
             <div id="login_box" class="row">
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="column">
