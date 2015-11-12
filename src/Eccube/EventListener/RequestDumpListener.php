@@ -127,7 +127,7 @@ class RequestDumpListener implements EventSubscriberInterface
         $log .= $this->logKeyValuePair('REQUEST_URI', $request->getRequestUri());
         $log .= $this->logKeyValuePair('METHOD', $request->getRealMethod());
         $log .= $this->logKeyValuePair('LOCALE', $request->getLocale());
-        // $log .= $this->logArray($request->server->all(), '[server]');
+        // $log .= $this->logArray($request->server->all(), '[server]'); // 大量にログ出力される...
         $log .= $this->logArray($request->headers->all(), '[header]');
         $log .= $this->logArray($request->query->all(), '[get]');
         $log .= $this->logArray($request->request->all(), '[post]');
@@ -180,7 +180,6 @@ class RequestDumpListener implements EventSubscriberInterface
      */
     protected function logKeyValuePair($key, $value, $prefix = '')
     {
-        $copy_value = null;
         if (in_array($key, $this->excludeKeys)) {
             return '';
         }
