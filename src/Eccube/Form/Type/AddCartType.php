@@ -174,11 +174,7 @@ class AddCartType extends AbstractType
      */
     public function validate($data, ExecutionContext $context)
     {
-        if ($data['mode'] === 'add_favorite') {
-            if (!$this->security->isGranted('ROLE_USER')) {
-                $context->addViolationAt('', 'ログインしてください.');
-            }
-        } else {
+        if ($data['mode'] !== 'add_favorite') {
             $context->validateValue($data['product_class_id'], array(
                 new Assert\NotBlank(),
             ), '[product_class_id]');
@@ -187,19 +183,21 @@ class AddCartType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\NotEqualTo(array(
                         'value' => '__unselected',
-                        'message' => 'This value should be blank.',
+                        'message' => 'form.type.select.notselect'
                     )),
                 ), '[classcategory_id1]');
             }
+            //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
             if ($this->Product->getClassName2()) {
                 $context->validateValue($data['classcategory_id2'], array(
                     new Assert\NotBlank(),
                     new Assert\NotEqualTo(array(
                         'value' => '__unselected',
-                        'message' => 'This value should be blank.',
+                        'message' => 'form.type.select.notselect'
                     )),
                 ), '[classcategory_id2]');
             }
+
         }
     }
 }

@@ -151,16 +151,7 @@ class MypageController extends AbstractController
      */
     public function favorite(Application $app, Request $request)
     {
-        $Customer = $app['user'];
-
-        if ('POST' === $request->getMethod() && 'delete_favorite' === $request->get('mode')) {
-            $Product = $app['eccube.repository.product']->get($request->get('product_id'));
-            if ($Product) {
-                $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
-            }
-
-            return $app->redirect($app->url('mypage_favorite', array('page' => $request->get('pageno', 1))));
-        }
+        $Customer = $app->user();
 
         // paginator
         $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
@@ -173,5 +164,25 @@ class MypageController extends AbstractController
         return $app->render('Mypage/favorite.twig', array(
             'pagination' => $pagination,
         ));
+    }
+
+    /**
+     * @param Application $app
+     * @param Request     $request
+     *
+     * @return string
+     */
+    public function delete(Application $app, $id)
+    {
+        $this->isTokenValid($app);
+
+        $Customer = $app->user();
+
+        $Product = $app['eccube.repository.product']->find($id);
+        if ($Product) {
+            $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
+        }
+
+        return $app->redirect($app->url('mypage_favorite'));
     }
 }

@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\RotatingFileHandler;
@@ -142,13 +143,17 @@ class Application extends ApplicationTrait
         $app = $this;
         $levels = Logger::getLevels();
         $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $this) use ($app, $levels, $file) {
-
-            $RotateHandler = new RotatingFileHandler($file, $app['config']['log']['max_files'], $app['config']['log']['log_level']);
+            if ($app['debug']) {
+                $level = Logger::DEBUG;
+            } else {
+                $level = $app['config']['log']['log_level'];
+            }
+            $RotateHandler = new RotatingFileHandler($file, $app['config']['log']['max_files'], $level);
             $RotateHandler->setFilenameFormat(
                 $app['config']['log']['prefix'].'{date}'.$app['config']['log']['suffix'],
                 $app['config']['log']['format']
             );
-
+            $RotateHandler->setFormatter(new LineFormatter(null, null, true));
             $FingerCrossedHandler = new FingersCrossedHandler(
                 $RotateHandler,
                 new ErrorLevelActivationStrategy($levels[$app['config']['log']['action_level']])
@@ -216,7 +221,7 @@ class Application extends ApplicationTrait
         // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/' . trim($this['config']['admin_route'], '/') . '/', new ControllerProvider\AdminControllerProvider());
+        $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
     }
 
@@ -304,10 +309,9 @@ class Application extends ApplicationTrait
                 } else {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
-
-                if (strpos($app['request']->getPathInfo(), '/' . trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__ . '/../../app/template/admin')) {
-                        $paths[] = __DIR__ . '/../../app/template/admin';
+                if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                    if (file_exists(__DIR__.'/../../app/template/admin')) {
+                        $paths[] = __DIR__.'/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';

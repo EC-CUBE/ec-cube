@@ -28,11 +28,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testRoutingAdminProductProduct()
     {
         $this->client->request('GET',
@@ -51,22 +46,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductProductEdit()
     {
-        // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
-        $TestProduct = $this->newTestProduct($TestCreator);
-        $this->app['orm.em']->persist($TestProduct);
-        $this->app['orm.em']->flush();
 
-        $TestProductClass = $this->newTestProductClass($TestCreator, $TestProduct);
-        $this->app['orm.em']->persist($TestProductClass);
-        $this->app['orm.em']->flush();
-
-        $TestProductStock = $this->newTestProductStock($TestCreator, $TestProduct, $TestProductClass);
-        $this->app['orm.em']->persist($TestProductStock);
-        $this->app['orm.em']->flush();
-
+        $TestProduct = $this->createProduct();
 
         $test_product_id = $this->app['eccube.repository.product']
             ->findOneBy(array(
@@ -74,18 +55,11 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ))
             ->getId();
 
-
-        // main
         $this->client->request('GET',
             $this->app->url('admin_product_product_edit', array('id' => $test_product_id))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // after
-        $this->app['orm.em']->remove($TestProductClass);
-        $this->app['orm.em']->flush();
-        $this->app['orm.em']->remove($TestProduct);
-        $this->app['orm.em']->flush();
     }
 
     private function newTestProduct($TestCreator)
