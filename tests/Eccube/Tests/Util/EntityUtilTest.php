@@ -4,6 +4,7 @@ namespace Eccube\Tests\Util;
 
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
+use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Member;
@@ -114,5 +115,68 @@ class EntityUtilTest extends EccubeTestCase
          * LAZY loading しようとすると Entity was not found のエラーとなる
          */
         $this->assertFalse(EntityUtil::isNotEmpty($Member));
+    }
+
+    public function testDumpToArray()
+    {
+        $arrProps = array(
+            'field1' => 1,
+            'field2' => 2,
+            'field3' => 3,
+        );
+
+        $entity = new TestEntity($arrProps);
+
+        $arrProps['testField4'] = 'Doctrine\Common\Collections\ArrayCollection';
+        $this->expected = $arrProps;
+        $this->actual = EntityUtil::dumpToArray($entity);
+        $this->verify();
+    }
+}
+
+class TestEntity extends AbstractEntity
+{
+    private $field1;
+    private $field2;
+    /** public field */
+    public $field3;
+    /** camel case */
+    private $testField4;
+
+    public function __construct($arrProps = array())
+    {
+        $this->testField4 = new \Doctrine\Common\Collections\ArrayCollection();
+        if (is_array($arrProps) && count($arrProps) > 0) {
+            $this->setPropertiesFromArray($arrProps);
+        }
+    }
+
+    public function getField1()
+    {
+        return $this->field1;
+    }
+    public function setField1($field1)
+    {
+        $this->field1 = $field1;
+        return $this;
+    }
+    public function getField2()
+    {
+        return $this->field2;
+    }
+    public function setField2($field2)
+    {
+        $this->field2 = $field2;
+        return $this;
+    }
+
+    public function setTestField4($testField4)
+    {
+        $this->testField4 = $testField4;
+        return $this;
+    }
+    public function getTestField4()
+    {
+        return $this->testField4;
     }
 }
