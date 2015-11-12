@@ -186,7 +186,11 @@ class RequestDumpListener implements EventSubscriberInterface
         if (is_null($value) || is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) {
             $copy_value = $value;
         } elseif (is_object($value)) {
-            $copy_value = '[object '.serialize($value).']';
+            try {
+                $copy_value = '[object '.serialize($value).']';
+            } catch (\Exception $e) {
+                return $e->getMessage().PHP_EOL;
+            }
         } else {
             $copy_value = $value;
             if (is_array($copy_value)) {
@@ -197,7 +201,11 @@ class RequestDumpListener implements EventSubscriberInterface
                     }
                 }
             }
-            $copy_value = '['.serialize($copy_value).']';
+            try {
+                $copy_value = '['.serialize($copy_value).']';
+            } catch (\Exception $e) {
+                return $e->getMessage().PHP_EOL;
+            }
         }
 
         return '  '.$prefix.' '.$key.'='.$copy_value.PHP_EOL;
