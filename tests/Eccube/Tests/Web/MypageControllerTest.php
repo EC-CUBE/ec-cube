@@ -32,8 +32,41 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->logIn();
         $client = $this->client;
 
-        $client->request('GET', $this->app['url_generator']->generate('mypage_favorite'));
+        $client->request('GET', $this->app->url('mypage_favorite'));
         $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingFavoriteDelete()
+    {
+        $this->logIn();
+        $client = $this->client;
+
+        // before
+        $TestFavorite = $this->newTestFavorite();
+        $this->app['orm.em']->persist($TestFavorite);
+        $this->app['orm.em']->flush();
+
+        // main
+        $redirectUrl = $this->app->url('mypage_favorite');
+        $client->request('DELETE',
+            $this->app->url('mypage_favorite_delete', array('id' => $TestFavorite->getId()))
+        );
+        $this->assertTrue($client->getResponse()->isRedirect($redirectUrl));
+
+        // after
+        $this->app['orm.em']->remove($TestFavorite);
+        $this->app['orm.em']->flush();
+    }
+
+    private function newTestFavorite()
+    {
+        $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
+        $CustomerFavoriteProduct->setCustomer($this->app->user());
+        $Product = $this->app['eccube.repository.product']->get(1);
+        $CustomerFavoriteProduct->setProduct($Product);
+        $CustomerFavoriteProduct->setDelFlg(0);
+
+        return $CustomerFavoriteProduct;
     }
 
 }

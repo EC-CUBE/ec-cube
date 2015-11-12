@@ -24,13 +24,9 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Application;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Tests\Mock\CsrfTokenMock;
-use Silex\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
@@ -42,53 +38,8 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     {
         parent::setUp();
 
-        if ($this->client == null) {
-            if (self::$server == null) {
-                self::$server = static::createClient();
-            }
-            $this->client = self::$server;
-        }
-    }
-
-    /**
-     * @link http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
-     */
-    // public function tearDown()
-    // {
-    //     parent::tearDown();
-    //     $this->app['orm.em']->getConnection()->close();
-    //     $refl = new \ReflectionObject($this);
-    //     foreach ($refl->getProperties() as $prop) {
-    //         if (!$prop->isStatic() && 0 !== strpos($prop->getDeclaringClass()->getName(), 'PHPUnit_')) {
-    //             $prop->setAccessible(true);
-    //             $prop->setValue($this, null);
-    //         }
-    //     }
-    // }
-
-    public static function tearDownAfterClass()
-    {
-        self::$server = null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createApplication()
-    {
-        $app = new Application();
-        $app->initialize();
-        $app->initPluginEventDispatcher();
-        $app['session.test'] = true;
-        $app['exception_handler']->disable();
-
-        $app['form.csrf_provider'] = $app->share(function () {
-            return new CsrfTokenMock();
-        });
-
-        $app->boot();
-
-        return $app;
+        self::$server = static::createClient();
+        $this->client = self::$server;
     }
 
     /**
@@ -96,13 +47,12 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      */
     public function logIn()
     {
-
         $firewall = 'customer';
 
         $user = $this->createCustomer();
-
         $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
 
+        $this->app['security.token_storage']->setToken($token);
         $this->app['session']->set('_security_' . $firewall, serialize($token));
         $this->app['session']->save();
 
