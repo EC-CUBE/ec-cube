@@ -103,9 +103,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </dd>
                                         <dd class="item_price">{{ OrderDetail.price_inc_tax|price }} × {{ OrderDetail.quantity|number_format }}</dd>
                                         <dd class="item_subtotal">小計：{{ OrderDetail.total_price|price }}</dd>
-                                        {% if OrderDetail.product and OrderDetail.price_inc_tax != OrderDetail.product.price02IncTaxMin %}
+                                        {% if OrderDetail.product and OrderDetail.price_inc_tax != OrderDetail.productClass.price02IncTax %}
                                         <dd class="text-danger">
-                                            <strong>【現在価格】{{ OrderDetail.product.price02IncTaxMin|price }}</strong>
+                                            <strong>【現在価格】{{ OrderDetail.productClass.price02IncTax|price }}</strong>
                                         </dd>
                                         {% set remessage = true %}
                                         {% endif %}
@@ -233,13 +233,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                     {% endif %}
 
-                    <form method="post" action="{{ url('mypage_order') }}">
-                        <input type="hidden" name="order_id" value="{{ Order.id }}">
-                        <div class="total_amount">
-                            <p class="total_price">合計 <strong class="text-primary">{{ Order.payment_total|price }}<span class="small">税込</span></strong></p>
-                            <p><button type="submit" class="btn btn-primary btn-block">再注文する</button></p>
-                        </div>
-                    </form>
+                    <div class="total_amount">
+                        <p class="total_price">合計 <strong class="text-primary">{{ Order.payment_total|price }}<span class="small">税込</span></strong></p>
+                        <p><a href="{{ url('mypage_order', {'id': Order.id }) }}" class="btn btn-primary btn-block" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">再注文する</a></p>
+                    </div>
                     {% if remessage %}
                         <p class="text-danger"><strong>※金額が変更されている商品があるため、再注文時はご注意ください。</strong></p>
                     {% endif %}

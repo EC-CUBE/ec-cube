@@ -115,41 +115,36 @@ class MypageController extends AbstractController
     /**
      * @param Application $app
      * @param Request     $request
+     * @param id     $id
      *
      * @return string
      */
-    public function order(Application $app, Request $request)
+    public function order(Application $app, Request $request, $id)
     {
-        $Customer = $app->user();
 
-        if ($request->getMethod() === 'POST') {
-            $orderId = $request->get('order_id');
-        } else {
-        }
+        $this->isTokenValid($app);
+
+        $Customer = $app->user();
 
         /* @var $Order \Eccube\Entity\Order */
         $Order = $app['eccube.repository.order']->findOneBy(array(
-            'id' => $orderId,
+            'id' => $id,
             'Customer' => $Customer,
         ));
         if (!$Order) {
             throw new NotFoundHttpException();
         }
 
-        // foreach ($Order->getOrderDetails() as $OrderDetail) {
-        //  //   try {
-        //         $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
-        //   //  } catch (CartException $e) {
-        //         //$app->addRequestError($e->getMessage());
-        //    // }
-        // }
-
-
-
-        try {
-            $app['eccube.service.cart']->addProduct(1, 1)->save();
-        } catch (CartException $e) {
-            $app->addRequestError($e->getMessage());
+        foreach ($Order->getOrderDetails() as $OrderDetail) {
+            try {
+                if ($OrderDetail->getProduct()) {
+                    $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
+                } else {
+                    $app->addRequestError('cart.product.delete');
+                }
+            } catch (CartException $e) {
+                $app->addRequestError($e->getMessage());
+            }
         }
 
         return $app->redirect($app->url('cart'));
