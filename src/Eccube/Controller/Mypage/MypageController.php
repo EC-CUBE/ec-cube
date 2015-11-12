@@ -26,6 +26,7 @@ namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -119,7 +120,7 @@ class MypageController extends AbstractController
      */
     public function order(Application $app, Request $request)
     {
-        $Customer = $app['user'];
+        $Customer = $app->user();
 
         if ($request->getMethod() === 'POST') {
             $orderId = $request->get('order_id');
@@ -135,10 +136,21 @@ class MypageController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        foreach ($Order->getOrderDetails() as $OrderDetail) {
-            $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity());
+        // foreach ($Order->getOrderDetails() as $OrderDetail) {
+        //  //   try {
+        //         $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
+        //   //  } catch (CartException $e) {
+        //         //$app->addRequestError($e->getMessage());
+        //    // }
+        // }
+
+
+
+        try {
+            $app['eccube.service.cart']->addProduct(1, 1)->save();
+        } catch (CartException $e) {
+            $app->addRequestError($e->getMessage());
         }
-        $app['eccube.service.cart']->save();
 
         return $app->redirect($app->url('cart'));
     }
