@@ -135,34 +135,9 @@ class Application extends ApplicationTrait
 
     public function initLogger()
     {
-        $file = __DIR__.'/../../app/log/site.log';
-        $this->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => $file,
-        ));
-
         $app = $this;
-        $levels = Logger::getLevels();
-        $this['monolog'] = $this->share($this->extend('monolog', function($monolog, $this) use ($app, $levels, $file) {
-            if ($app['debug']) {
-                $level = Logger::DEBUG;
-            } else {
-                $level = $app['config']['log']['log_level'];
-            }
-            $RotateHandler = new RotatingFileHandler($file, $app['config']['log']['max_files'], $level);
-            $RotateHandler->setFilenameFormat(
-                $app['config']['log']['prefix'].'{date}'.$app['config']['log']['suffix'],
-                $app['config']['log']['format']
-            );
-            $RotateHandler->setFormatter(new LineFormatter(null, null, true));
-            $FingerCrossedHandler = new FingersCrossedHandler(
-                $RotateHandler,
-                new ErrorLevelActivationStrategy($levels[$app['config']['log']['action_level']])
-            );
-            $monolog->popHandler();
-            $monolog->pushHandler($FingerCrossedHandler);
-
-            return $monolog;
-        }));
+        $this->register(new ServiceProvider\EccubeMonologServiceProvider($app));
+        $this['monolog.logfile'] = __DIR__.'/../../app/log/site.log';
     }
 
     public function initialize()
