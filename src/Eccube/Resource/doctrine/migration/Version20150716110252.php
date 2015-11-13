@@ -24,9 +24,14 @@ class Version20150716110252 extends AbstractMigration
             return true;
         }
 
-        $app = new \Eccube\Application();
-        $app->initialize();
-        $app->boot();
+        if (is_object($GLOBALS['app'])) {
+            // ConsoleApplication で生成した Application を取得する
+            $app = $GLOBALS['app'];
+        } else {
+            $app = new \Eccube\Application();
+            $app->initialize();
+            $app->boot();
+        }
         $em = $app["orm.em"];
 
         $CsvType = new CsvType();

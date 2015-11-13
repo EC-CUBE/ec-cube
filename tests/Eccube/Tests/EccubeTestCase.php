@@ -57,6 +57,7 @@ abstract class EccubeTestCase extends WebTestCase
         parent::tearDown();
         $this->app['orm.em']->getConnection()->rollback();
         $this->app['orm.em']->getConnection()->close();
+
         $this->cleanUpProperties();
     }
 
@@ -327,7 +328,17 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        $app = new Application();
+        if (is_object($GLOBALS['app'])) {
+            /*
+             * tests/bootstrap.php で生成した Application を取得.
+             * html/index.php でやっていることをエミュレートしている.
+             * phpunit.xml で backupGlobals = false にする必要がある
+             */
+            $app = $GLOBALS['app'];
+        } else {
+            $app = new Application();
+        }
+
         $app['debug'] = true;
         $app->initialize();
         $app->initPluginEventDispatcher();
