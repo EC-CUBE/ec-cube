@@ -63,12 +63,6 @@ class InstallController
         $this->config_path = __DIR__ . '/../../../../app/config/eccube';
         $this->dist_path = __DIR__ . '/../../Resource/config';
         $this->cache_path = __DIR__ . '/../../../../app/cache';
-
-        // timezone
-        $config = Yaml::parse($this->dist_path . '/config.yml.dist');
-        if (!empty($config['timezone'])) {
-            date_default_timezone_set($config['timezone']);
-        }
     }
 
     private function isValid(Request $request, Form $form)
