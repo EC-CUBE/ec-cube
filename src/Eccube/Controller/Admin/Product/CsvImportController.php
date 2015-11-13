@@ -825,6 +825,15 @@ class CsvImportController
             }
         }
 
+        if ($row['送料'] != '') {
+            $delivery_fee = str_replace(',', '', $row['送料']);
+            if (is_numeric($delivery_fee) && $delivery_fee >= 0) {
+                $ProductClass->setDeliveryFee($delivery_fee);
+            } else {
+                $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
+            }
+        }
+
         if ($row['商品規格削除フラグ'] == '') {
             $ProductClass->setDelFlg(Constant::DISABLED);
         } else {

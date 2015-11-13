@@ -51,7 +51,7 @@
   child:
       - id: news
         name: 新着情報管理
-        url : admin_content
+        url : admin_content_news
       - id: file
         name: ファイル管理
         url: admin_content_file

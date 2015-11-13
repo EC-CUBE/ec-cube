@@ -22,84 +22,80 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block main %}
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">お問い合わせ</h1>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
-                                また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
-                            <form name="form1" id="form1" method="post" action="?">
-                                {{ form_widget(form._token) }}
-                                <div class="dl_table">
-                                    <dl>
-                                        <dt>
-                                            {{ form_label(form.name) }}
-                                        </dt>
-                                        <dd class="form-group input_name has-error">
-                                            {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
-                                            {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>
-                                            {{ form_label(form.kana) }}
-                                        </dt>
-                                        <dd class="form-group input_name has-error">
-                                            {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
-                                            {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>{{ form_label(form.address) }}</dt>
-                                        <dd>
-                                            <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                                            <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
-                                                {{ form_widget(form.address) }}
-                                            </div>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>{{ form_label(form.tel) }}</dt>
-                                        <dd>
-                                            <div class="form-inline form-group input_tel">
-                                                {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
-                                            </div>
-                                        </dd>
-                                    </dl>
+<div id="contents" class="main_only">
+    <div class="container-fluid inner no-padding">
+        <div id="main">
+            <h1 class="page-heading">お問い合わせ</h1>
 
-                                    <dl>
-                                        <dt>{{ form_label(form.email) }}</dt>
-                                        <dd>
-                                            <div class="form-group">
-                                                {{ form_widget(form.email) }}
-                                            </div>
-                                        </dd>
-                                    </dl>
-                                    <dl>
-                                        <dt>{{ form_label(form.contents) }}</dt>
-                                        <dd>
-                                            <div class="column">
-                                                {{ form_widget(form.contents) }}
-                                            </div>
-                                        </dd>
-                                    </dl>
-                                </div>
-                                <div class="row no-padding">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <p>内容によっては回答をさしあげるのにお時間をいただくこともございます。<br />
+                            また、休業日は翌営業日以降の対応となりますのでご了承ください。</p>
+
+                        <form name="form1" id="form1" method="post" action="?">
+                            {{ form_widget(form._token) }}
+                            <div class="dl_table">
+                                <dl>
+                                    <dt>{{ form_label(form.name) }}</dt>
+                                    <dd class="form-group">
+                                        {{ form_widget(form.name.name01) }}
+                                        {{ form_widget(form.name.name02) }}
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>{{ form_label(form.kana) }}</dt>
+                                    <dd class="form-group">
+                                        {{ form_widget(form.kana.kana01) }}
+                                        {{ form_widget(form.kana.kana02) }}
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>{{ form_label(form.address) }}</dt>
+                                    <dd>
+                                        <div class="form-group">
+                                            {{ form_widget(form.zip) }}<br />
+                                            {{ form_widget(form.address) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>{{ form_label(form.tel) }}</dt>
+                                    <dd>
+                                        <div class="form-group">
+                                            {{ form_widget(form.tel) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>{{ form_label(form.email) }}</dt>
+                                    <dd>
+                                        <div class="form-group">
+                                            {{ form_widget(form.email) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>{{ form_label(form.contents) }}</dt>
+                                    <dd>
+                                        <div class="column">
+                                            {{ form_widget(form.contents) }}
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="row no-padding">
                                 <div class="btn_group col-sm-offset-4 col-sm-4">
                                     <p><button type="submit" class="btn btn-primary btn-block" name="mode" value="complete">送信をする</button></p>
                                     <p><button type="submit" class="btn btn-info btn-block" name="mode" value="back">戻る</button></p>
                                 </div>
-                                </div>
-                            </form>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-
-                </div>
+                            </div>
+                        </form>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
             </div>
+
         </div>
     </div>
+</div>
 {% endblock %}
-

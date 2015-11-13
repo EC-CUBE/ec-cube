@@ -68,10 +68,11 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'email02' => 'eccube@example.com',
         'email03' => 'eccube@example.com',
         'email04' => 'eccube@example.com',
+        'delivery_free_amount' => '1000',
+        'delivery_free_quantity' => '1000',
         /*
         'good_traded' => '取り扱い商品',
         'message' => 'メッセージ',
-        'delivery_free_amount' => '1000',
         'option_product_delivery_fee' => '0',
         'option_delivery_fee' => '0',
         'option_multiple_shipping' => '0',
@@ -123,5 +124,45 @@ class ShopMasterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidDeliveryFreeAmount_OverMaxLength()
+    {
+        $this->formData['delivery_free_amount'] = '123456789'; //Max 8
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidDeliveryFreeAmount_NotNumeric()
+    {
+        $this->formData['delivery_free_amount'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidDeliveryFreeAmount_HasMinus()
+    {
+        $this->formData['delivery_free_amount'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidDeliveryFreeQuantity_NotNumeric()
+    {
+        $this->formData['delivery_free_quantity'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidDeliveryFreeQuantity_HasMinus()
+    {
+        $this->formData['delivery_free_quantity'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
     }
 }

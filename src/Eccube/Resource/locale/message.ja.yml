@@ -31,6 +31,7 @@ form.contact.contents.help: ご注文に関するお問い合わせには、必�
 form.member.email.invalid: 同じメールアドレスを入力してください。
 form.member.password.invalid: 同じパスワードを入力してください。
 form.type.numeric.invalid: 数字で入力してください。
+form.type.float.invalid : 数字と小数点のみ入力できます。
 form.member.repeated.confirm: 確認のためもう一度入力してください
 form.type.graph.invalid: 半角英数字で入力してください。
 
@@ -40,6 +41,8 @@ form.type.customer.company.nothasspace: 会社名にスペース、タブ、改�
 
 form.type.admin.nottelstyle: 電話番号は半角数字かハイフンのみを入力してください。。
 form.type.admin.notkanastyle: お名前(フリガナ)はカタカナで入力してください。
+
+form.type.select.notselect: 入力されていません。
 
 cart.over.stock: |-
     選択された商品(%product%)の在庫が不足しております。

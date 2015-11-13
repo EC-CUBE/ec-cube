@@ -71,6 +71,11 @@ $(function(){
             return '<button class="thumbnail">' + $(slider.$slides[i]).find('img').prop('outerHTML') + '</button>';
         }
     });
+
+    $('#favorite').click(function() {
+        $('#mode').val('add_favorite');
+    });
+
 });
 </script>
 
@@ -191,8 +196,17 @@ $(function(){
                                 {# カートボタン #}
                                 <div class="btn_area">
                                     <ul class="row">
-                                        <li class="col-xs-12 col-sm-8"><button type="submit" class="btn btn-primary btn-block">カートに入れる</button></li>
+                                        <li class="col-xs-12 col-sm-8"><button type="submit" id="cart" class="btn btn-primary btn-block prevention-btn prevention-mask">カートに入れる</button></li>
                                     </ul>
+                                    {% if BaseInfo.option_favorite_product == 1 %}
+                                    <ul class="row">
+                                        {% if is_favorite == false %}
+                                            <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block prevention-btn prevention-mask">お気に入りに追加</button></li>
+                                        {% else %}
+                                            <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block" disabled="disabled">お気に入りに追加済みです</button></li>
+                                        {% endif %}
+                                    </ul>
+                                    {% endif %}
                                 </div>
                             {% else %}
                                 {# 在庫がない場合は品切れボタンのみ表示 #}

@@ -183,11 +183,21 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['price_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('delivery_free_quantity', 'integer', array(
                 'label' => '送料無料条件(数量)',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
+                ),
             ))
             ->add('option_product_delivery_fee', 'choice', array(
                 'label' => '商品ごとの送料設定を有効にする',

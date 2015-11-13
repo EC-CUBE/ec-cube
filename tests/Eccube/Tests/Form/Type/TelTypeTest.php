@@ -31,7 +31,7 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $form;
 
-    public $config = array('tel_len' => 5, 'tel_len_min' => 2);
+    public $config = array('tel_len' => 5, 'tel_len_min' => 1);
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
@@ -57,6 +57,15 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
                 'data' => array(
                     'tel' => array(
                         'tel01' => '01',
+                        'tel02' => '2345',
+                        'tel03' => '6789',
+                    ),
+                ),
+            ),
+            array(
+                'data' => array(
+                    'tel' => array(
+                        'tel01' => '1',
                         'tel02' => '2345',
                         'tel03' => '6789',
                     ),
@@ -160,6 +169,7 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->form->isValid());
     }
 
+
     public function testInvalidTel01_LengthMax()
     {
         $this->formData['tel']['tel01'] = '12345678';
@@ -179,30 +189,6 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
     public function testInvalidTel03_LengthMax()
     {
         $this->formData['tel']['tel03'] = '12345678';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel01_LengthMin()
-    {
-        $this->formData['tel']['tel01'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel02_LengthMin()
-    {
-        $this->formData['tel']['tel02'] = '1';
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    public function testInvalidTel03_LengthMin()
-    {
-        $this->formData['tel']['tel03'] = '1';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
