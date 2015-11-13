@@ -94,11 +94,15 @@ class CustomerType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y')-80, date('Y')),
-                'months' => range(1, date('m')),
-                'days' => range(1, date('d')),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'constraints' => array(
+                    new Assert\LessThanOrEqual(array(
+                        'value' => date('Y-m-d'),
+                        'message' => 'form.type.select.selectisfuturedate',
+                    )),
+                ),
             ))
             // RepeatedPasswordTypeと共通化したい
             ->add('password', 'text', array(
