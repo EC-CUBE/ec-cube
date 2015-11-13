@@ -40,9 +40,9 @@ class FileController extends AbstractController
     private $encode = '';
 
     public function __construct(){
-        $this->encode = self::SJIS;
-        if (!preg_match('/WIN/i', PHP_OS)) {
-            $this->encode = self::UTF;
+        $this->encode = self::UTF;
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            $this->encode = self::SJIS;
         }
     }
 
