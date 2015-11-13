@@ -103,7 +103,7 @@ class FileController extends AbstractController
     {
         $topDir = $app['config']['user_data_realdir'];
         if ($this->checkDir($this->convertStrToServer($request->get('file')), $topDir)) {
-            $file = $request->get('file');
+            $file = $this->convertStrToServer($request->get('file'));
             setlocale(LC_ALL, "ja_JP.UTF-8");
             return $app->sendFile($file);
         }
