@@ -160,6 +160,12 @@ class EditController extends AbstractController
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
+                        $Customer = $TargetOrder->getCustomer();
+                        if ($Customer) {
+                            // 会員の場合、購入回数、購入金額などを更新
+                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
+                        }
+
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
                         return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));

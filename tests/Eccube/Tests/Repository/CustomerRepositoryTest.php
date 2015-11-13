@@ -171,6 +171,35 @@ class CustomerRepositoryTest extends EccubeTestCase
         }
         $this->verify();
     }
+
+    public function testUpdateBuyData()
+    {
+        $Order = $this->createOrder($this->Customer);
+
+        $OrderStatus = $this->app['eccube.repository.master.order_status']->find($this->app['config']['order_new']);
+
+        $Order->setOrderStatus($OrderStatus);
+        $this->app['orm.em']->persist($Order);
+        $this->app['orm.em']->flush();
+
+        $this->actual = 1;
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_new']);
+        $this->expected = $this->Customer->getBuyTimes();
+        $this->verify();
+
+
+        $OrderStatus = $this->app['eccube.repository.master.order_status']->find($this->app['config']['order_cancel']);
+
+        $Order->setOrderStatus($OrderStatus);
+        $this->app['orm.em']->persist($Order);
+        $this->app['orm.em']->flush();
+
+        $this->actual = 0;
+        $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_cancel']);
+        $this->expected = $this->Customer->getBuyTimes();
+        $this->verify();
+
+    }
 }
 
 class DummyCustomer implements UserInterface
