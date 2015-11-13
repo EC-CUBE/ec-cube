@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ShipmentItem;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -70,7 +71,9 @@ class EditController extends AbstractController
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
-                    if ($form->isValid()) {
+                    if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
+                        $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
+                    } elseif ($form->isValid()) {
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
@@ -159,6 +162,12 @@ class EditController extends AbstractController
 
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
+
+                        $Customer = $TargetOrder->getCustomer();
+                        if ($Customer) {
+                            // 会員の場合、購入回数、購入金額などを更新
+                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
+                        }
 
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
