@@ -52,22 +52,25 @@ class OrderType extends AbstractType
 
         $builder
             ->add('name', 'name', array(
-                'required' => true,
+                'required' => false,
                 'options' => array(
                     'attr' => array(
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
             ->add('kana', 'name', array(
+                'required' => false,
                 'options' => array(
                     'attr' => array(
                         'maxlength' => $config['stext_len'],
                     ),
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array('max' => $config['stext_len'])),
                         new Assert\Regex(array(
                             'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
@@ -84,17 +87,33 @@ class OrderType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array())
+            ->add('zip', 'zip', array(
+                'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
             ->add('address', 'address', array(
+                'required' => false,
+                'pref_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
                 'addr01_options' => array(
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
                     ),
                 ),
                 'addr02_options' => array(
+                    'required' => false,
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
@@ -102,6 +121,7 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('email', 'email', array(
+                'required' => false,
                 'label' => 'メールアドレス',
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -109,7 +129,12 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('tel', 'tel', array(
-                'required' => true,
+                'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
@@ -182,6 +207,7 @@ class OrderType extends AbstractType
                 'empty_data' => null,
             ))
             ->add('Payment', 'entity', array(
+                'required' => false,
                 'class' => 'Eccube\Entity\Payment',
                 'property' => 'method',
                 'empty_value' => '選択してください',
