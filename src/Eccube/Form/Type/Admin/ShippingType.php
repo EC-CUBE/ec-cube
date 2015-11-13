@@ -57,27 +57,16 @@ class ShippingType extends AbstractType
             ->add('name', 'name', array(
                 'required' => false,
                 'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
                     ),
                 ),
             ))
-            ->add('kana', 'name', array(
+            ->add('kana', 'kana', array(
                 'required' => false,
                 'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
                     'constraints' => array(
                         new Assert\NotBlank(),
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
                     ),
                 ),
             ))
