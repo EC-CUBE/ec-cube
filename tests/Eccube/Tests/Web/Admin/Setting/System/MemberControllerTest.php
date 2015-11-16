@@ -116,8 +116,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         // after
-        $this->app['orm.em']->remove($TestMember);
-        $this->app['orm.em']->flush();
+        //$this->app['orm.em']->remove($TestMember);
+        //$this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminSettingSystemMemberDown()
@@ -140,8 +140,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         // after
-        $this->app['orm.em']->remove($TestMember);
-        $this->app['orm.em']->flush();
+        // $this->app['orm.em']->remove($TestMember);
+        // $this->app['orm.em']->flush();
     }
 
     private function newTestMember()

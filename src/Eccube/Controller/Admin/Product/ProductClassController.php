@@ -48,6 +48,7 @@ class ProductClassController
 
         /** @var $Product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->find($id);
+        $hasClassCategoryFlg = false;
 
         if (!$Product) {
             throw new NotFoundHttpException();
@@ -84,8 +85,18 @@ class ProductClassController
                 if ($form->isValid()) {
 
                     $data = $form->getData();
+
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
+
+                    // 各規格が選択されている際に、分類を保有しているか確認
+                    $class1Valied = $this->isValiedCategory($ClassName1);
+                    $class2Valied = $this->isValiedCategory($ClassName2);
+
+                    // 規格が選択されていないか、選択された状態で分類が保有されていれば、画面表示
+                    if($class1Valied && $class2Valied){
+                        $hasClassCategoryFlg = true;
+                    }
 
                     if (!is_null($ClassName2) && $ClassName1->getId() == $ClassName2->getId()) {
                         // 規格1と規格2が同じ値はエラー
@@ -125,6 +136,7 @@ class ProductClassController
                 'Product' => $Product,
                 'not_product_class' => true,
                 'error' => null,
+                'has_class_category_flg' => $hasClassCategoryFlg,
             ));
 
         } else {
@@ -642,4 +654,20 @@ class ProductClassController
 
     }
 
+    /**
+     * 規格の分類判定
+     *
+     * @param Eccube\Entity\ClassName $ClassesName
+     * @return boolean
+     */
+    private function isValiedCategory($class_name)
+    {
+        if (empty($class_name)) {
+            return true;
+        }
+        if (count($class_name->getClassCategories()) < 1) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -30,6 +30,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
+use Eccube\Entity\MailHistory;
 use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -194,7 +195,6 @@ class ShoppingController extends AbstractController
 
                     $em->getConnection()->commit();
                     $em->flush();
-                    $em->close();
 
                 } catch (\Exception $e) {
                     $em->getConnection()->rollback();
@@ -214,6 +214,27 @@ class ShoppingController extends AbstractController
 
                 // 受注IDをセッションにセット
                 $app['session']->set($this->sessionOrderKey, $Order->getId());
+
+                // 送信履歴を保存.
+                $MailTemplate = $app['eccube.repository.mail_template']->find(1);
+
+                $body = $app->renderView($MailTemplate->getFileName(), array(
+                    'header' => $MailTemplate->getHeader(),
+                    'footer' => $MailTemplate->getFooter(),
+                    'Order' => $Order,
+                ));
+
+                $MailHistory = new MailHistory();
+                $MailHistory
+                    ->setSubject('[' . $app['eccube.repository.base_info']->get()->getShopName() . '] ' . $MailTemplate->getSubject())
+                    ->setMailBody($body)
+                    ->setMailTemplate($MailTemplate)
+                    ->setSendDate(new \DateTime())
+                    ->setOrder($Order);
+                $app['orm.em']->persist($MailHistory);
+                $app['orm.em']->flush($MailHistory);
+
+                $em->close();
 
                 // 完了画面表示
                 return $app->redirect($app->url('shopping_complete'));
@@ -508,6 +529,14 @@ class ShoppingController extends AbstractController
      */
     public function shippingEdit(Application $app, Request $request, $id)
     {
+        // 配送先住所最大値判定
+        if ($app->user() instanceof \Eccube\Entity\Customer) {
+            $addressCurrNum = count($app->user()->getCustomerAddresses());
+            $addressMax = $app['config']['deliv_addr_max'];
+            if ($addressCurrNum >= $addressMax) {
+                throw new NotFoundHttpException();
+            }
+        }
 
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {

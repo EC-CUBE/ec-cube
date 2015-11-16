@@ -71,10 +71,16 @@ class EntryType extends AbstractType
             ->add('birth', 'birthday', array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y')-80, date('Y')),
+                'years' => range(date('Y')-$this->config['birth_max'], date('Y')),
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'constraints' => array(
+                    new Assert\LessThanOrEqual(array(
+                        'value' => date('Y-m-d'),
+                        'message' => 'form.type.select.selectisfuturedate',
+                    )),
+                ),
             ))
             ->add('sex', 'sex', array(
                 'required' => false,

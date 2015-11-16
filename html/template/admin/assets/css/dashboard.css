@@ -114,7 +114,9 @@ small, .small {
 .no-border {
     border: 0 none !important;
 }
-
+.word-break{
+    word-wrap: break-word
+}
 
 /* grid setting
 ============================ */
@@ -876,6 +878,9 @@ dd.form-group .errormsg {
     height: 40px;
     line-height: 1.5
 }
+textarea.form-control{
+    min-height: 160px;
+}
 .form-control:focus {
     border-color:#3c8dbc !important;
     box-shadow:none
@@ -1116,16 +1121,19 @@ dd.form-group .errormsg {
 .form-horizontal .photo_files li .delete-image {
     display: block;
     font-size: 20px;
-    width: 40px; height: 40px;
+    width: 40px;
+    height: 40px;
     line-height: 40px;
     position: absolute;
-    right: 8px; top: 8px;
+    right: -13px;
+    top: -13px;
     border: 1px solid #C4CCCE;
-    background: rgba(248,248,248,1);
-    color: #C1C1C1;
+    background: rgba(248, 248, 248, 0.9);
+    color: #666666;
     text-align: center;
     vertical-align: middle;
-	border-radius: 3px;
+    border-radius: 100%;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 .form-horizontal .photo_files li a .cb {
     position: relative;

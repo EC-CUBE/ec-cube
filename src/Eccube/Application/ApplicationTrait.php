@@ -57,6 +57,11 @@ class ApplicationTrait extends \Silex\Application
         $this->clearMessage();
         $this->addWarning('admin.delete.warning', 'admin');
     }
+    
+    public function setLoginTargetPath($targetPath)
+    {
+        $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+    }
 
     /*
      * 注意！以下コードはSilexのコードのコピーなので触らないコト

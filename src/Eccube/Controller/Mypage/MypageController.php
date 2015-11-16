@@ -25,7 +25,9 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -114,21 +116,20 @@ class MypageController extends AbstractController
     /**
      * @param Application $app
      * @param Request     $request
+     * @param id     $id
      *
      * @return string
      */
-    public function order(Application $app, Request $request)
+    public function order(Application $app, Request $request, $id)
     {
-        $Customer = $app['user'];
 
-        if ($request->getMethod() === 'POST') {
-            $orderId = $request->get('order_id');
-        } else {
-        }
+        $this->isTokenValid($app);
+
+        $Customer = $app->user();
 
         /* @var $Order \Eccube\Entity\Order */
         $Order = $app['eccube.repository.order']->findOneBy(array(
-            'id' => $orderId,
+            'id' => $id,
             'Customer' => $Customer,
         ));
         if (!$Order) {
@@ -136,9 +137,16 @@ class MypageController extends AbstractController
         }
 
         foreach ($Order->getOrderDetails() as $OrderDetail) {
-            $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity());
+            try {
+                if ($OrderDetail->getProduct()) {
+                    $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
+                } else {
+                    $app->addRequestError('cart.product.delete');
+                }
+            } catch (CartException $e) {
+                $app->addRequestError($e->getMessage());
+            }
         }
-        $app['eccube.service.cart']->save();
 
         return $app->redirect($app->url('cart'));
     }
@@ -151,27 +159,44 @@ class MypageController extends AbstractController
      */
     public function favorite(Application $app, Request $request)
     {
-        $Customer = $app['user'];
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
-        if ('POST' === $request->getMethod() && 'delete_favorite' === $request->get('mode')) {
-            $Product = $app['eccube.repository.product']->get($request->get('product_id'));
-            if ($Product) {
-                $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
-            }
+        if ($BaseInfo->getOptionFavoriteProduct() == Constant::ENABLED) {
+            $Customer = $app->user();
 
-            return $app->redirect($app->url('mypage_favorite', array('page' => $request->get('pageno', 1))));
+            // paginator
+            $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $request->get('pageno', 1),
+                $app['config']['search_pmax']
+            );
+
+            return $app->render('Mypage/favorite.twig', array(
+                'pagination' => $pagination,
+            ));
+        } else {
+            throw new NotFoundHttpException();
+        }
+    }
+
+    /**
+     * @param Application $app
+     * @param Request     $request
+     *
+     * @return string
+     */
+    public function delete(Application $app, $id)
+    {
+        $this->isTokenValid($app);
+
+        $Customer = $app->user();
+
+        $Product = $app['eccube.repository.product']->find($id);
+        if ($Product) {
+            $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
         }
 
-        // paginator
-        $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
-        $pagination = $app['paginator']()->paginate(
-            $qb,
-            $request->get('pageno', 1),
-            $app['config']['search_pmax']
-        );
-
-        return $app->render('Mypage/favorite.twig', array(
-            'pagination' => $pagination,
-        ));
+        return $app->redirect($app->url('mypage_favorite'));
     }
 }

@@ -25,8 +25,9 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -36,39 +37,9 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
-        'name' => array(
-            'name01' => 'たかはし',
-            'name02' => 'しんいち',
-        ),
-        'kana'=> array(
-            'kana01' => 'タカハシ',
-            'kana02' => 'シンイチ',
-        ),
-        'company_name' => 'ロックオン',
-        'zip' => array(
-            'zip01' => '530',
-            'zip02' => '0001',
-        ),
-        'address' => array(
-            'pref' => '5',
-            'addr01' => '北区',
-            'addr02' => '梅田',
-        ),
-        'tel' => array(
-            'tel01' => '012',
-            'tel02' => '345',
-            'tel03' => '6789',
-        ),
-        'fax' => array(
-            'fax01' => '112',
-            'fax02' => '345',
-            'fax03' => '6789',
-        ),
-        'email' => 'default@example.com',
-        'discount' => '1',
-        'delivery_fee_total' => '1',
-        'charge' => '1',
-        'Payment' => '1', // dtb_payment?
+        'price' => '10000',
+        'quantity'=> '10000',
+        'tax_rate' => '10.0',
     );
 
     public function setUp()
@@ -78,7 +49,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->app['form.factory']
-            ->createBuilder('order', null, array(
+            ->createBuilder('order_detail', null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
@@ -88,96 +59,112 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
-    public function testInvalidTel_Blank()
+    public function testInvalidPrice_Blank()
     {
         $this->app['request'] = new Request();
-        $this->formData['tel']['tel01'] = '';
-        $this->formData['tel']['tel02'] = '';
-        $this->formData['tel']['tel03'] = '';
+        $this->formData['price'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDiscount_OverMaxLength()
+    public function testInvalidPrice_OverMaxLength()
     {
         $this->app['request'] = new Request();
-        $this->formData['discount'] = '12345678910'; //Max 9
+        $this->formData['price'] = '12345678910'; //Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDiscount_NotNumeric()
+    public function testInvalidPrice_NotNumeric()
     {
         $this->app['request'] = new Request();
-        $this->formData['discount'] = 'abcde';
+        $this->formData['price'] = 'abc';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDiscount_HasMinus()
+    public function testValidPrice_HasMinus()
     {
         $this->app['request'] = new Request();
-        $this->formData['discount'] = '-12345';
+        $this->formData['price'] = '-123456';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidQuantity_Blank()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['quantity'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDeliveryFeeTotal_OverMaxLength()
+    public function testInvalidQuantity_OverMaxLength()
     {
         $this->app['request'] = new Request();
-        $this->formData['delivery_fee_total'] = '12345678910'; //Max 9
+        $this->formData['quantity'] = '12345678910'; //Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidDeliveryFeeTotal_NotNumeric()
+    public function testInvalidQuantity_NotNumeric()
     {
         $this->app['request'] = new Request();
-        $this->formData['delivery_fee_total'] = 'abcde';
+        $this->formData['quantity'] = 'abcde';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidDeliveryFeeTotal_HasMinus()
+    public function testInvalidQuantity_HasMinus()
     {
         $this->app['request'] = new Request();
-        $this->formData['delivery_fee_total'] = '-12345';
+        $this->formData['quantity'] = '-123456';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidCharge_OverMaxLength()
+    public function testInvalidTaxRate_Blank()
     {
         $this->app['request'] = new Request();
-        $this->formData['charge'] = '12345678910'; //Max 9
+        $this->formData['tax_rate'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidCharge_NotNumeric()
+    public function testInvalidTaxRate_OverMaxLength()
     {
         $this->app['request'] = new Request();
-        $this->formData['charge'] = 'abcde';
+        $this->formData['tax_rate'] = '12345678910'; //Max 9
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidCharge_HasMinus()
+    public function testInvalidTaxRate_NotNumeric()
     {
         $this->app['request'] = new Request();
-        $this->formData['charge'] = '-12345';
+        $this->formData['tax_rate'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidTaxRate_HasMinus()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['tax_rate'] = '-12345';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

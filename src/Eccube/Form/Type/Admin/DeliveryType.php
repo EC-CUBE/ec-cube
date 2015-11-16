@@ -92,12 +92,12 @@ class DeliveryType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('free_all', 'money', array(
+            ->add('free_all', 'price', array(
                 'label' => false,
                 'currency' => 'JPY',
                 'precision' => 0,
                 'required' => false,
-                'mapped' => false,
+                'mapped' => false
             ))
             ->add('delivery_fees', 'collection', array(
                 'label' => '都道府県別設定',
