@@ -154,8 +154,13 @@ class OrderController extends AbstractController
         $app['orm.em']->persist($Order);
         $app['orm.em']->flush();
 
-        $app->addSuccess('admin.order.delete.complete', 'admin');
+        $Customer = $Order->getCustomer();
+        if ($Customer) {
+            // 会員の場合、購入回数、購入金額などを更新
+            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
+        }
 
+        $app->addSuccess('admin.order.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_order'));
     }
