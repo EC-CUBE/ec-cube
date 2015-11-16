@@ -473,7 +473,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_name1
      *
-     * @return string 
+     * @return string
      */
     public function getClassName1()
     {
@@ -496,7 +496,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     /**
      * Get class_name2
      *
-     * @return string 
+     * @return string
      */
     public function getClassName2()
     {

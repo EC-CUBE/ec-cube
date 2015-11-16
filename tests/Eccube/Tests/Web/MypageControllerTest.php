@@ -58,6 +58,22 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->app['orm.em']->flush();
     }
 
+
+    public function testRoutingOrder()
+    {
+        $this->logIn();
+        $client = $this->client;
+
+        $Order = $this->createOrder($this->app->user());
+
+        $client->request('PUT',
+            $this->app->url('mypage_order', array('id' => $Order->getId()))
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirection());
+    }
+
+
     private function newTestFavorite()
     {
         $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
