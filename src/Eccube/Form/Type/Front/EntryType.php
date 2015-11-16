@@ -75,6 +75,12 @@ class EntryType extends AbstractType
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'constraints' => array(
+                    new Assert\LessThanOrEqual(array(
+                        'value' => date('Y-m-d'),
+                        'message' => 'form.type.select.selectisfuturedate',
+                    )),
+                ),
             ))
             ->add('sex', 'sex', array(
                 'required' => false,
