@@ -40,7 +40,7 @@ class Version20151110174227 extends AbstractMigration
         }
         $t_dtb_mail_history->changeColumn('creator_id', array('NotNull' => false));
 
-        $targetTable = $schema->getTable(Self::DTB_MEMBER);
+        $targetTable = $schema->getTable(self::DTB_MEMBER);
         $t_dtb_mail_history->addForeignKeyConstraint(
             $targetTable,
             array('creator_id'),
