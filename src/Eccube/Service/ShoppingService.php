@@ -760,7 +760,7 @@ class ShoppingService
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
-        $Order->setMessage(Str::ellipsis($data['message'], 3000, ''));
+        $Order->setMessage($data['message']);
 
         // お届け先情報を更新
         $shippings = $data['shippings'];
