@@ -146,6 +146,7 @@ class Str
 
     /**
      * 指定した文字列以上ある場合、「...」を付加する
+     * lengthに7を指定すると、「1234567890」は「1234567...」と「...」を付与して出力される
      *
      * @param string $value
      * @param int $length
@@ -158,7 +159,7 @@ class Str
             return $value;
         }
 
-        return rtrim(mb_substr($value, 0, $length - mb_strlen($end), 'UTF-8')) . $end;
+        return rtrim(mb_substr($value, 0, $length, 'UTF-8')) . $end;
     }
 
 
