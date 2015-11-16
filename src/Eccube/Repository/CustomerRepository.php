@@ -441,15 +441,9 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
         $result = $app['eccube.repository.order']->getCustomerCount($Customer, $arr);
 
-        $data = $result[0];
+        if (!empty($result)) {
+            $data = $result[0];
 
-        if ($data['buy_times'] == 0) {
-            // 受注データが存在しなければ初期化
-            $Customer->setFirstBuyDate(null);
-            $Customer->setLastBuyDate(null);
-            $Customer->setBuyTimes(0);
-            $Customer->setBuyTotal(0);
-        } else {
             $now = new \DateTime();
 
             $firstBuyDate = $Customer->getFirstBuyDate();
@@ -467,6 +461,13 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
             $Customer->setBuyTimes($data['buy_times']);
             $Customer->setBuyTotal($data['buy_total']);
+
+        } else {
+            // 受注データが存在しなければ初期化
+            $Customer->setFirstBuyDate(null);
+            $Customer->setLastBuyDate(null);
+            $Customer->setBuyTimes(0);
+            $Customer->setBuyTotal(0);
         }
 
         $app['orm.em']->persist($Customer);
