@@ -158,7 +158,8 @@ class MemberController extends AbstractController
 
         $TargetMember = $app['eccube.repository.member']->find($id);
         if (!$TargetMember) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_setting_system_member'));
         }
 
         $status = $app['eccube.repository.member']->delete($TargetMember);
