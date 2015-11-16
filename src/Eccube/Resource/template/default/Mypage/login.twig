@@ -31,6 +31,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% for targetPath in app.session.flashBag.get('eccube.login.target.path') %}
                     <input type="hidden" name="_target_path" value="{{ targetPath }}" />
                 {% endfor %}
+            {% elseif app.config.login_use_referer == 1 and url(app.request.attributes.get('_route')) != app.request.headers.get('referer') %}
+            <input type="hidden" name="_target_path" value="{{ app.request.headers.get('referer') }}" />
             {% endif %}
             <div id="login_box" class="row">
                 <div class="col-sm-8 col-sm-offset-2">

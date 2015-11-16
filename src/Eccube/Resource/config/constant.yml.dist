@@ -261,3 +261,5 @@ name_len: 16
 kana_len: 25
 address1_len: 32
 address2_len: 32
+# ログイン後の遷移先にリファラーを使用する場合は「1」
+login_use_referer: 1

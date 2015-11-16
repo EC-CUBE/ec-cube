@@ -466,6 +466,7 @@ class Application extends ApplicationTrait
                 'form' => array(
                     'login_path' => '/mypage/login',
                     'check_path' => '/login_check',
+                    'default_target_path' => '/mypage',
                     'username_parameter' => 'login_email',
                     'password_parameter' => 'login_pass',
                     'with_csrf' => true,
