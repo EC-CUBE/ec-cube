@@ -76,7 +76,8 @@ class ClassNameController extends AbstractController
 
         $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_product_class_name'));
         }
 
         $status = $app['eccube.repository.class_name']->delete($TargetClassName);

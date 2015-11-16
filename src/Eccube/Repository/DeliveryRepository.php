@@ -45,9 +45,12 @@ class DeliveryRepository extends EntityRepository
                 ->getRepository('\Eccube\Entity\Master\ProductType')
                 ->find(1);
 
-            $rank = $this
-                    ->findOneBy(array(), array('rank' => 'DESC'))
-                    ->getRank() + 1;
+            $Delivery = $this->findOneBy(array(), array('rank' => 'DESC'));
+
+            $rank = 1;
+            if ($Delivery) {
+                $rank = $Delivery->getRank() + 1;
+            }
 
             $Delivery = new \Eccube\Entity\Delivery();
             $Delivery

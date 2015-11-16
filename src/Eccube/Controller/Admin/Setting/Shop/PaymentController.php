@@ -111,15 +111,19 @@ class PaymentController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        $repo = $app['eccube.repository.payment'];
-        $Payment = $repo
-            ->find($id)
+        $Payment = $app['eccube.repository.payment']->find($id);
+        if (!$Payment) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_setting_shop_payment'));
+        }
+
+        $Payment
             ->setDelFlg(Constant::ENABLED)
             ->setRank(0);
         $app['orm.em']->persist($Payment);
 
         $rank = 1;
-        $Payments = $repo->findBy(array('del_flg' => Constant::DISABLED), array('rank' => 'ASC'));
+        $Payments = $app['eccube.repository.payment']->findBy(array('del_flg' => Constant::DISABLED), array('rank' => 'ASC'));
         foreach ($Payments as $Payment) {
             if ($Payment->getId() != $id) {
                 $Payment->setRank($rank);
