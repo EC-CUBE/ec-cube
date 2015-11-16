@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -151,19 +152,25 @@ class MypageController extends AbstractController
      */
     public function favorite(Application $app, Request $request)
     {
-        $Customer = $app->user();
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
-        // paginator
-        $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
-        $pagination = $app['paginator']()->paginate(
-            $qb,
-            $request->get('pageno', 1),
-            $app['config']['search_pmax']
-        );
+        if ($BaseInfo->getOptionFavoriteProduct() == Constant::ENABLED) {
+            $Customer = $app->user();
 
-        return $app->render('Mypage/favorite.twig', array(
-            'pagination' => $pagination,
-        ));
+            // paginator
+            $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $request->get('pageno', 1),
+                $app['config']['search_pmax']
+            );
+
+            return $app->render('Mypage/favorite.twig', array(
+                'pagination' => $pagination,
+            ));
+        } else {
+            throw new NotFoundHttpException();
+        }
     }
 
     /**
