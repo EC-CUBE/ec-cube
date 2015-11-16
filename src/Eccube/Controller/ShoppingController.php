@@ -121,9 +121,6 @@ class ShoppingController extends AbstractController
         // form作成
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
-        // 合計数量
-        $totalQuantity = $app['eccube.service.order']->getTotalQuantity($Order);
-
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$app['session']->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {
@@ -136,7 +133,6 @@ class ShoppingController extends AbstractController
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
-            'totalQuantity' => $totalQuantity,
         ));
     }
 
@@ -322,7 +318,7 @@ class ShoppingController extends AbstractController
 
             // 支払い情報をセット
             $payment = $data['payment'];
-            $message = $data['message'];
+            $message = Str::ellipsis($data['message'], 3000, '');
 
             $Order->setPayment($payment);
             $Order->setPaymentMethod($payment->getMethod());
@@ -443,11 +439,16 @@ class ShoppingController extends AbstractController
             // 選択されたお届け先情報を取得
             $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
                 'Customer' => $app->user(),
-                'id' => $address));
+                'id' => $address,
+            ));
+            if (is_null($CustomerAddress)) {
+                throw new NotFoundHttpException();
+            }
 
             $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
             if (!$Order) {
                 $app->addError('front.shopping.order.error');
+
                 return $app->redirect($app->url('shopping_error'));
             }
 

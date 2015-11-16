@@ -353,51 +353,27 @@ class ShoppingService
      */
     public function getNewShipping(Order $Order, Customer $Customer, $deliveries)
     {
+        $productTypes = array();
+        foreach ($deliveries as $Delivery) {
+            if (!in_array($Delivery->getProductType()->getId(), $productTypes)) {
+                $Shipping = new Shipping();
 
-        // カートに保持されている商品種別を取得
-        $productTypes = $this->cartService->getProductTypes();
+                $this->copyToShippingFromCustomer($Shipping, $Customer)
+                    ->setOrder($Order)
+                    ->setDelFlg(Constant::DISABLED);
 
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
-            // 複数配送対応
-            $productType = array();
-            foreach ($deliveries as $Delivery) {
+                // 配送料金の設定
+                $this->setShippingDeliveryFee($Shipping, $Delivery);
 
-                if (!in_array($Delivery->getProductType()->getId(), $productType)) {
-                    $Shipping = new Shipping();
+                $this->em->persist($Shipping);
 
-                    $this->copyToShippingFromCustomer($Shipping, $Customer)
-                        ->setOrder($Order)
-                        ->setDelFlg(Constant::DISABLED);
+                $Order->addShipping($Shipping);
 
-                    // 配送料金の設定
-                    $this->setShippingDeliveryFee($Shipping, $Delivery);
-
-                    $this->em->persist($Shipping);
-
-                    $Order->addShipping($Shipping);
-                }
-                $productType[] = $Delivery->getProductType()->getId();
+                $productTypes[] = $Delivery->getProductType()->getId();
             }
-        } else {
-            $Shipping = new Shipping();
-
-            $this->copyToShippingFromCustomer($Shipping, $Customer)
-                ->setOrder($Order)
-                ->setDelFlg(Constant::DISABLED);
-
-            $Delivery = $deliveries[0];
-
-            // 配送料金の設定
-            $this->setShippingDeliveryFee($Shipping, $Delivery);
-
-            $this->em->persist($Shipping);
-
-            $Order->addShipping($Shipping);
-
         }
 
         return $Order;
-
     }
 
     /**
@@ -413,11 +389,12 @@ class ShoppingService
             return $Shipping;
         }
 
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(array(
-            'Customer' => $Customer
-        ));
+        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(
+            array('Customer' => $Customer),
+            array('id' => 'ASC')
+        );
 
-        if ($this->app->isGranted('ROLE_USER')) {
+        if (!is_null($CustomerAddress)) {
             $Shipping
                 ->setName01($CustomerAddress->getName01())
                 ->setName02($CustomerAddress->getName02())
@@ -783,7 +760,7 @@ class ShoppingService
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
-        $Order->setMessage($data['message']);
+        $Order->setMessage(Str::ellipsis($data['message'], 3000, ''));
 
         // お届け先情報を更新
         $shippings = $data['shippings'];
