@@ -27,6 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg>マイページ
                 </a>
             </li>
+            {% if BaseInfo.option_favorite_product == 1 %}
+                <li><a href="{{ url('mypage_favorite') }}"><svg class="cb cb-heart-circle"><use xlink:href="#cb-heart-circle"></use></svg>お気に入り</a></li>
+            {% endif %}
             <li>
                 <a href="{{ url('logout') }}">
                     <svg class="cb cb-lock-circle"><use xlink:href="#cb-lock-circle" /></svg>ログアウト
@@ -42,6 +45,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg>新規会員登録
                 </a>
             </li>
+            {% if BaseInfo.option_favorite_product == 1 %}
+                <li><a href="{{ url('mypage_favorite') }}"><svg class="cb cb-heart-circle"><use xlink:href="#cb-heart-circle"></use></svg>お気に入り</a></li>
+            {% endif %}
             <li>
                 <a href="{{ url('mypage_login') }}">
                     <svg class="cb cb-lock-circle"><use xlink:href="#cb-lock-circle" /></svg>ログイン

@@ -34,7 +34,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FileController extends AbstractController
 {
+    const SJIS = 'sjis-win';
+    const UTF = 'UTF-8';
     private $error = null;
+    private $encode = '';
+
+    public function __construct(){
+        $this->encode = self::UTF;
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            $this->encode = self::SJIS;
+        }
+    }
 
     public function index(Application $app, Request $request)
     {
@@ -92,9 +102,9 @@ class FileController extends AbstractController
     public function view(Application $app, Request $request)
     {
         $topDir = $app['config']['user_data_realdir'];
-        if ($this->checkDir($request->get('file'), $topDir)) {
-            $file = $request->get('file');
-            setlocale(LC_ALL, 'ja_JP.UTF-8');
+        if ($this->checkDir($this->convertStrToServer($request->get('file')), $topDir)) {
+            $file = $this->convertStrToServer($request->get('file'));
+            setlocale(LC_ALL, "ja_JP.UTF-8");
             return $app->sendFile($file);
         }
 
@@ -142,10 +152,10 @@ class FileController extends AbstractController
         $this->isTokenValid($app);
 
         $topDir = $app['config']['user_data_realdir'];
-        if ($this->checkDir($request->get('select_file'), $topDir)) {
+        if ($this->checkDir($this->convertStrToServer($request->get('select_file')), $topDir)) {
             $fs = new Filesystem();
-            if ($fs->exists($request->get('select_file'))) {
-                $fs->remove($request->get('select_file'));
+            if ($fs->exists($this->convertStrToServer($request->get('select_file')))) {
+                $fs->remove($this->convertStrToServer($request->get('select_file')));
             }
         }
 
@@ -155,9 +165,10 @@ class FileController extends AbstractController
     public function download(Application $app, Request $request)
     {
         $topDir = $app['config']['user_data_realdir'];
-        $file = $request->get('select_file');
+        $file = $this->convertStrToServer($request->get('select_file'));
         if ($this->checkDir($file, $topDir)) {
             if (!is_dir($file)) {
+                $filename = $this->convertStrFromServer($file);
                 setlocale(LC_ALL, 'ja_JP.UTF-8');
                 $pathParts = pathinfo($file);
 
@@ -172,7 +183,8 @@ class FileController extends AbstractController
                     return $app->sendFile($file)->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
                 } else {
                     return $app->sendFile($file, 200, array(
-                        "Content-Disposition" => "attachment; filename*=UTF-8\'\'".rawurlencode($pathParts['basename'])
+                        "Content-Type" => "aplication/octet-stream;",
+                        "Content-Disposition" => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename']))
                     ));
                 }
             }
@@ -196,7 +208,7 @@ class FileController extends AbstractController
             } else {
                 $topDir = $app['config']['user_data_realdir'];
                 if ($this->checkDir($request->get('now_dir'), $topDir)) {
-                    $filename = $data['file']->getClientOriginalName();
+                    $filename = $this->convertStrToServer($data['file']->getClientOriginalName());
                     $data['file']->move($request->get('now_dir'), $filename);
                 }
             }
@@ -282,8 +294,8 @@ class FileController extends AbstractController
         $arrFileList = array();
         foreach ($dirs as $dir) {
             $arrFileList[] = array(
-                'file_name' => $dir->getFilename(),
-                'file_path' => $this->normalizePath($dir->getRealPath()),
+                'file_name' => $this->convertStrFromServer($dir->getFilename()),
+                'file_path' => $this->convertStrFromServer($this->normalizePath($dir->getRealPath())),
                 'file_size' => $dir->getSize(),
                 'file_time' => date("Y/m/d", $dir->getmTime()),
                 'is_dir' => true,
@@ -291,8 +303,8 @@ class FileController extends AbstractController
         }
         foreach ($files as $file) {
             $arrFileList[] = array(
-                'file_name' => $file->getFilename(),
-                'file_path' => $this->normalizePath($file->getRealPath()),
+                'file_name' => $this->convertStrFromServer($file->getFilename()),
+                'file_path' => $this->convertStrFromServer($this->normalizePath($file->getRealPath())),
                 'file_size' => $file->getSize(),
                 'file_time' => date("Y/m/d", $file->getmTime()),
                 'is_dir' => false,
@@ -312,5 +324,21 @@ class FileController extends AbstractController
         $targetDir = realpath($targetDir);
         $topDir = realpath($topDir);
         return (strpos($targetDir, $topDir) === 0);
+    }
+
+    private function convertStrFromServer($target)
+    {
+        if ($this->encode == self::SJIS) {
+            return mb_convert_encoding($target, self::UTF, self::SJIS);
+        }
+        return $target;
+    }
+
+    private function convertStrToServer($target)
+    {
+        if ($this->encode == self::SJIS) {
+            return mb_convert_encoding($target, self::SJIS, self::UTF);
+        }
+        return $target;
     }
 }

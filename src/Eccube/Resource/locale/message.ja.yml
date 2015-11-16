@@ -44,6 +44,8 @@ form.type.admin.notkanastyle: お名前(フリガナ)はカタカナで入力し
 
 form.type.select.notselect: 入力されていません。
 
+form.type.select.selectisfuturedate: 未来の日付は選択出来ません。
+
 cart.over.stock: |-
     選択された商品(%product%)の在庫が不足しております。
     一度に在庫数を超える購入はできません。
@@ -57,9 +59,8 @@ cart.over.price_limit: 商品を購入できる金額の上限を超えており
 cart.product.type.kind: この商品は同時に購入することはできません。
 cart.product.payment.kind: お支払方法が異なるためこの商品は同時に購入することはできません。
 cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
-cart.product.not.status: この商品は現在購入することはできません。
+cart.product.not.status: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
 
-shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
 shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
 
 front.shopping.order.error: 購入処理でエラーが発生しました。

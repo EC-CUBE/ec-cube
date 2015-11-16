@@ -173,7 +173,7 @@ class StrTest extends \PHPUnit_Framework_TestCase
     public function testEllipsis()
     {
         $value = '一弍三4567890あいうえお';
-        $this->expected = '一弍三4567890...';
+        $this->expected = '一弍三4567...';
         $this->actual = Str::ellipsis($value, 10, '...');
         $this->assertEquals($this->expected, $this->actual);
     }
