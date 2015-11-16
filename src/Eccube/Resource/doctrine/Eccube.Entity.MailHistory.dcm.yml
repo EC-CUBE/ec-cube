@@ -39,5 +39,5 @@ Eccube\Entity\MailHistory:
             joinColumn:
                 name: creator_id
                 referencedColumnName: member_id
-                nullable: false
+                nullable: true
     lifecycleCallbacks: {  }
