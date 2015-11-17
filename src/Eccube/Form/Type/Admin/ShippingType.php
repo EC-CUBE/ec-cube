@@ -55,26 +55,18 @@ class ShippingType extends AbstractType
 
         $builder
             ->add('name', 'name', array(
-                'required' => true,
+                'required' => false,
                 'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
                     'constraints' => array(
-                        new Assert\Length(array('max' => $config['stext_len'])),
+                        new Assert\NotBlank(),
                     ),
                 ),
             ))
-            ->add('kana', 'name', array(
+            ->add('kana', 'kana', array(
+                'required' => false,
                 'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
                     'constraints' => array(
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
+                        new Assert\NotBlank(),
                     ),
                 ),
             ))
@@ -87,17 +79,33 @@ class ShippingType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array())
+            ->add('zip', 'zip', array(
+                'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
             ->add('address', 'address', array(
+                'required' => false,
+                'pref_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
                 'addr01_options' => array(
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
                     ),
                 ),
                 'addr02_options' => array(
+                    'required' => false,
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
@@ -105,13 +113,19 @@ class ShippingType extends AbstractType
                 ),
             ))
             ->add('tel', 'tel', array(
-                'required' => true,
+                'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
                 'required' => false,
             ))
             ->add('Delivery', 'entity', array(
+                'required' => false,
                 'label' => '配送業者',
                 'class' => 'Eccube\Entity\Delivery',
                 'property' => 'name',

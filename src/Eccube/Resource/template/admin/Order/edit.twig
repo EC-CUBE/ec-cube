@@ -298,7 +298,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {{ form_label(form.address) }}
                             <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                {{ form_errors(form.zip) }}
+                                {{ form_errors(form.zip.zip01) }}
+                                {{ form_errors(form.zip.zip02) }}
                                 <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>
@@ -612,7 +613,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {{ form_label(shippingForm.address) }}
                                 <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                     〒{{ form_widget(shippingForm.zip.zip01) }}-{{ form_widget(shippingForm.zip.zip02) }}
-                                    {{ form_errors(shippingForm.zip) }}
+                                    {{ form_errors(shippingForm.zip.zip01) }}
+                                    {{ form_errors(shippingForm.zip.zip02) }}
                                 </div>
                             </div>
                             {# 住所：都道府県 #}

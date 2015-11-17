@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block main %}
-    <h1 class="page-heading">{{ title }}</h1>
+    <h1 class="page-heading">ログイン</h1>
     <div class="container-fluid">
         <form name="login_mypage" id="login_mypage" method="post" action="{{ url('login_check') }}" onsubmit="return eccube.checkLoginFormInputted('login_mypage')" {{ form_enctype(form) }}>
             {% if app.session.flashBag.has('eccube.login.target.path') %}

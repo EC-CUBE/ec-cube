@@ -261,3 +261,4 @@ name_len: 16
 kana_len: 25
 address1_len: 32
 address2_len: 32
+birth_max: 110

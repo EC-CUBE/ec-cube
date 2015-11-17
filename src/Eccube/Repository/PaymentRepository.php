@@ -43,9 +43,12 @@ class PaymentRepository extends EntityRepository
                 ->getRepository('\Eccube\Entity\Member')
                 ->find(2);
 
-            $rank = $this
-                    ->findOneBy(array(), array('rank' => 'DESC'))
-                    ->getRank() + 1;
+            $Payment = $this->findOneBy(array(), array('rank' => 'DESC'));
+
+            $rank = 1;
+            if ($Payment) {
+                $rank = $Payment->getRank() + 1;
+            }
 
             $Payment = new \Eccube\Entity\Payment();
             $Payment
@@ -122,9 +125,7 @@ class PaymentRepository extends EntityRepository
                     }
                 }
 
-                if (count($arr) > 0) {
-                    $payments = $arr;
-                }
+                $payments = $arr;
 
             } else {
                 $payments = $p;

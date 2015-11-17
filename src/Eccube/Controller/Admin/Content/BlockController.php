@@ -123,7 +123,15 @@ class BlockController extends AbstractController
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Block = $app['eccube.repository.block']->findOrCreate($id, $DeviceType);
+        $Block = $app['eccube.repository.block']->findOneBy(array(
+                'id' => $id,
+                'DeviceType' => $DeviceType
+            ));
+
+        if (!$Block) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_content_block'));
+        }
 
         // ユーザーが作ったブロックのみ削除する
         // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る

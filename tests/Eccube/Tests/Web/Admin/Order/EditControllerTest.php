@@ -27,12 +27,32 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class EditControllerTest extends AbstractAdminWebTestCase
 {
-    public function test_routeing_AdminOrderEdit_index()
+
+    public function testRoutingAdminOrderNew()
     {
-        self::markTestSkipped();
-        $this->client->request(
-            'GET',
-            $this->app['url_generator']->generate('admin_order_edit', array('id' => 0)));
+        $this->client->request('GET', $this->app->url('admin_order_new'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingAdminOrderNewPost()
+    {
+        $this->client->request('POST', $this->app->url('admin_order_new'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingAdminOrderEdit()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingAdminOrderEditPost()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->client->request('POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

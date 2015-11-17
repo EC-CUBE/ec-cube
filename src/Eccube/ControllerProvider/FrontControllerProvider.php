@@ -97,7 +97,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/mypage/favorite', '\Eccube\Controller\Mypage\MypageController::favorite')->bind('mypage_favorite');
         $c->delete('/mypage/favorite/{id}/delete', '\Eccube\Controller\Mypage\MypageController::delete')->assert('id', '\d+')->bind('mypage_favorite_delete');
         $c->match('/mypage/history/{id}', '\Eccube\Controller\Mypage\MypageController::history')->bind('mypage_history')->assert('id', '\d+');
-        $c->match('/mypage/order', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order');
+        $c->put('/mypage/order/{id}', '\Eccube\Controller\Mypage\MypageController::order')->bind('mypage_order')->assert('id', '\d+');
         $c->match('/mypage/withdraw', '\Eccube\Controller\Mypage\WithdrawController::index')->bind('mypage_withdraw');
         $c->match('/mypage/withdraw_complete', '\Eccube\Controller\Mypage\WithdrawController::complete')->bind('mypage_withdraw_complete');
 

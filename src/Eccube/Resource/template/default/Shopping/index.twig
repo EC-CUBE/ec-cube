@@ -178,7 +178,7 @@ $(function(){
                                                 <br>{{ orderDetail.productClass.classCategory2.className }}：{{ orderDetail.productClass.classCategory2 }}
                                             {% endif %}
                                         </dd>
-                                        <dd class="item_price">{{ orderDetail.priceIncTax|price }} ×{{ orderDetail.quantity }}</dd>
+                                        <dd class="item_price">{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}</dd>
                                         <dd class="item_subtotal">小計：{{ orderDetail.totalPrice|price }}</dd>
                                     </dl>
                                 </div>
@@ -193,8 +193,8 @@ $(function(){
                         〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
                         <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                         {% if is_granted('ROLE_USER') == false %}
-                            <div class="customer-edit customer-email">{{ Order.email }}</div>
-                            <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
+                        <div class="customer-edit customer-email">{{ Order.email }}</div>
+                        <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
                         <div class="mod-button" style="display:none;">
                             <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
                             <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
@@ -236,7 +236,7 @@ $(function(){
                                                         <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
                                                     {% endif %}
                                                 </dd>
-                                                <dd class="item_price">{{ shipmentItem.priceIncTax|price }} ×{{ shipmentItem.quantity }}</dd>
+                                                <dd class="item_price">{{ shipmentItem.priceIncTax|price }} × {{ shipmentItem.quantity|number_format }}</dd>
                                                 <dd class="item_subtotal">小計：{{ shipmentItem.totalPrice|price }}</dd>
                                             </dl>
                                         </div>
@@ -298,16 +298,16 @@ $(function(){
                 <div id="confirm_side" class="col-sm-4">
                     <div class="total_box">
                         <dl>
-                        <dt>小計</dt>
-                        <dd class="text-primary">{{ Order.subtotal|price }}</dd>
+                            <dt>小計</dt>
+                            <dd class="text-primary">{{ Order.subtotal|price }}</dd>
                         </dl>
                         <dl>
-                        <dt>手数料</dt>
-                        <dd>{{ Order.charge|price }}</dd>
+                            <dt>手数料</dt>
+                            <dd>{{ Order.charge|price }}</dd>
                         </dl>
                         <dl>
-                        <dt>送料</dt>
-                        <dd>{{ Order.deliveryFeeTotal|price }}</dd>
+                            <dt>送料</dt>
+                            <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                         </dl>
                         <div class="total_amount">
                             <p class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>

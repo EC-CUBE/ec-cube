@@ -42,12 +42,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="addr_box tr">
                             <div class="icon_radio td"><input type="radio" id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" /></div>
                             <div class="column td">
-                                            <label for="address{{ CustomerAddress.id }}">
-                                            <p class="address">
-                                                {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
-                                                〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
-                                                {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
-                                            </label>
+                                <label for="address{{ CustomerAddress.id }}">
+                                    <p class="address">
+                                        {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
+                                        〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }} {{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
+                                        {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}
+                                    </p>
+                                </label>
                             </div>
                             </div>
                             {% endfor %}

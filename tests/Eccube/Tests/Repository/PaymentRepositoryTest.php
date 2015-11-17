@@ -82,9 +82,10 @@ class PaymentRepositoryTest extends EccubeTestCase
     }
 
     /**
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1162
-     * #1162 の修正後, コメントアウトをはずす.
+     * 共通する支払い方法が存在しない場合.
      *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1162
+     */
     public function testFindAllowedPaymentWithExclusion()
     {
         $productTypes = array(1, 2);
@@ -113,7 +114,6 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->actual = count($payments);
         $this->verify('商品種別共通の支払い方法は'.$this->expected.'種類です');
     }
-    */
 
     public function testFindAllArray()
     {

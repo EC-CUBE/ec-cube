@@ -167,7 +167,8 @@ class TemplateController extends AbstractController
         $Template = $app['eccube.repository.template']->find($id);
 
         if (!$Template) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_store_template'));
         }
 
         // デフォルトテンプレート

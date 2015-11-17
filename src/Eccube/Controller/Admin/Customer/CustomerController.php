@@ -142,8 +142,9 @@ class CustomerController extends AbstractController
             ->getRepository('Eccube\Entity\Customer')
             ->find($id);
 
-        if (is_null($Customer)) {
-            throw new NotFoundHttpException();
+        if (!$Customer) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_customer'));
         }
 
         $Customer->setDelFlg(Constant::ENABLED);

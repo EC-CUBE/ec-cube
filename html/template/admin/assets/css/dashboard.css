@@ -114,7 +114,9 @@ small, .small {
 .no-border {
     border: 0 none !important;
 }
-
+.word-break{
+    word-wrap: break-word
+}
 
 /* grid setting
 ============================ */
