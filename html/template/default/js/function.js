@@ -143,6 +143,7 @@ $(function () {
         setTimeout(function(){
             $form.submit();
         }, 0);
+        return false;
     });
 
 });
