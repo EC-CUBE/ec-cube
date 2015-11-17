@@ -215,6 +215,7 @@ class ProductClassController
                 'class_name2' => $ClassName2,
                 'not_product_class' => false,
                 'error' => null,
+                'has_class_category_flg' => true,
             ));
 
         }
@@ -471,6 +472,7 @@ class ProductClassController
             'class_name2' => $ClassName2,
             'not_product_class' => $not_product_class,
             'error' => $error,
+            'has_class_category_flg' => true,
         ));
     }
 
