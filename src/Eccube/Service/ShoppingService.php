@@ -870,9 +870,10 @@ class ShoppingService
         foreach ($payments as $payment) {
             // 支払方法の制限値内であれば表示
             if (!is_null($payment)) {
-                if (intval($payment->getRuleMin()) <= $subTotal) {
-                    if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
-                        $pays[] = $payment;
+                $pay = $this->app['eccube.repository.payment']->find($payment['id']);
+                if (intval($pay->getRuleMin()) <= $subTotal) {
+                    if (is_null($pay->getRuleMax()) || $pay->getRuleMax() >= $subTotal) {
+                        $pays[] = $pay;
                     }
                 }
             }
@@ -949,7 +950,7 @@ class ShoppingService
             // 配送業者をセット
             $shippings = $Order->getShippings();
             $Shipping = $shippings[0];
-            $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery());
+            $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery(), true);
 
         }
 
