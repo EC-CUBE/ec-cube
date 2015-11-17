@@ -81,22 +81,31 @@ class PaymentRepository extends EntityRepository
 
     /**
      * 支払方法を取得
+     * 条件によってはDoctrineのキャッシュが返されるため、arrayで結果を返すパターンも用意
      *
      * @param $delivery
+     * @param $returnType true : Object、false: arrayが戻り値
      * @return array
      */
-    public function findPayments($delivery)
+    public function findPayments($delivery, $returnType = false)
     {
-        $payments = $this->createQueryBuilder('p')
+
+        $query = $this->createQueryBuilder('p')
             ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
             ->where('po.Delivery = (:delivery)')
             ->orderBy('p.rank', 'DESC')
             ->setParameter('delivery', $delivery)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+
+        $query->expireResultCache(false);
+
+        if ($returnType) {
+            $payments = $query->getResult();
+        } else {
+            $payments = $query->getArrayResult();
+        }
 
         return $payments;
-
     }
 
     /**
@@ -117,8 +126,8 @@ class PaymentRepository extends EntityRepository
 
                 $arr = array();
                 foreach ($p as $payment) {
-                    foreach ($payments as $p) {
-                        if ($payment->getId() == $p->getId()) {
+                    foreach ($payments as $pay) {
+                        if ($payment['id'] == $pay['id']) {
                             $arr[] = $payment;
                             break;
                         }
