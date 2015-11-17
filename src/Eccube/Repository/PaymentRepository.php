@@ -93,7 +93,7 @@ class PaymentRepository extends EntityRepository
             ->orderBy('p.rank', 'DESC')
             ->setParameter('delivery', $delivery)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         return $payments;
 
@@ -117,8 +117,8 @@ class PaymentRepository extends EntityRepository
 
                 $arr = array();
                 foreach ($p as $payment) {
-                    foreach ($payments as $p) {
-                        if ($payment->getId() == $p->getId()) {
+                    foreach ($payments as $pay) {
+                        if ($payment['id'] == $pay['id']) {
                             $arr[] = $payment;
                             break;
                         }

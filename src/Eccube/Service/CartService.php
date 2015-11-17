@@ -336,7 +336,7 @@ class CartService
         $arr = array();
         foreach ($payments as $payment) {
             foreach ($this->getCart()->getPayments() as $p) {
-                if ($payment->getId() == $p->getId()) {
+                if ($payment['id'] == $p['id']) {
                     $arr[] = $payment;
                     break;
                 }
