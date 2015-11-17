@@ -263,7 +263,7 @@ class CartService
         if ($ProductClass->hasClassCategory2()) {
             $product_str .= " - ".$ProductClass->getClassCategory2()->getName();
         }
-        $this->session->getFlashBag()->set('eccube.front.request.product', $product_str);
+
         /*
          * 実際の在庫は ProductClass::ProductStock だが、購入時にロックがかかるため、
          * ここでは ProductClass::stock で在庫のチェックをする
@@ -271,15 +271,15 @@ class CartService
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
             if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
                 $tmp_quantity = $ProductClass->getSaleLimit();
-                $this->addError('cart.over.sale_limit');
+                $this->addError('cart.over.sale_limit', $product_str);
             } else {
                 $tmp_quantity = $ProductClass->getStock();
-                $this->addError('cart.over.stock');
+                $this->addError('cart.over.stock',  $product_str);
             }
         }
         if ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
             $tmp_quantity = $ProductClass->getSaleLimit();
-            $this->addError('cart.over.sale_limit');
+            $this->addError('cart.over.sale_limit', $product_str);
         }
         if ($tmp_quantity) {
             $quantity = $tmp_quantity;
@@ -436,13 +436,16 @@ class CartService
 
     /**
      * @param  string $error
+     * @param  string $productName
      * @return \Eccube\Service\CartService
      */
-    public function addError($error = null)
+    public function addError($error = null, $productName = null)
     {
         $this->errors[] = $error;
         $this->session->getFlashBag()->add('eccube.front.request.error', $error);
-
+        if (!is_null($productName)) {
+            $this->session->getFlashBag()->add('eccube.front.request.product', $productName);
+        }
         return $this;
     }
 

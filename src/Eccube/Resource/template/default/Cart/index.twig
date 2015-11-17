@@ -48,11 +48,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                 {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
                 {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
-                    {% if productStr[0] is defined %}
+                    {% set idx = loop.index0 %}
+                    {% if productStr[idx] is defined %}
                     <div class="message">
                         <p class="errormsg bg-danger">
                             <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>
-                            {{ error|trans({'%product%':productStr[0]})|nl2br }}
+                            {{ error|trans({'%product%':productStr[idx]})|nl2br }}
                         </p>
                     </div>
                     {% else %}
