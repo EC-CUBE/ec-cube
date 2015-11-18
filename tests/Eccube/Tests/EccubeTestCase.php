@@ -311,9 +311,12 @@ abstract class EccubeTestCase extends WebTestCase
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush();
 
+        $Delivery = $this->app['eccube.repository.delivery']->find(1);
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
-        $Shipping->setPref($Pref);
+        $Shipping
+            ->setPref($Pref)
+            ->setDelivery($Delivery);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
         $this->app['orm.em']->persist($Shipping);

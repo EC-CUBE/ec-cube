@@ -213,8 +213,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
     /**
      * @link https://github.com/EC-CUBE/ec-cube/issues/1162
-     * #1162 の修正後, コメントアウトをはずす.
-     *
+     */
     public function testGetDeliveriesMultipleShipping()
     {
         // 複数配送対応としておく
@@ -242,5 +241,205 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->actual = count($Deliveries);
         $this->verify();
     }
-    */
+
+    public function testIsOrderProduct()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $this->expected = true;
+        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
+            $this->app['orm.em'],
+            $Order
+        );
+
+        $this->verify();
+    }
+
+    public function testIsOrderProductWithHide()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_HIDE);
+
+        // 商品を非表示に設定
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->getProduct()->setStatus($Disp);
+            break;
+        }
+        $this->app['orm.em']->flush();
+
+        $this->expected = false;
+        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
+            $this->app['orm.em'],
+            $Order
+        );
+        $this->verify();
+    }
+
+    public function testIsOrderProductWithSaleLimit()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->getProduct()->setStatus($Disp);
+        }
+
+        // 販売制限1, 注文数量2 に設定
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->getProductClass()->setSaleLimit(1);
+            $Detail->setQuantity(2);
+            break;
+        }
+        $this->app['orm.em']->flush();
+
+        $this->expected = false;
+        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
+            $this->app['orm.em'],
+            $Order
+        );
+        $this->verify();
+    }
+
+    public function testIsOrderProductWithStock()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->getProduct()->setStatus($Disp);
+            $Detail->getProductClass()->setStockUnlimited(Constant::DISABLED);
+            $productStock = $this->app['orm.em']->getRepository('Eccube\Entity\ProductStock')->find(
+                $Detail->getProductClass()->getProductStock()->getId()
+            );
+            $productStock->setStock(1);
+        }
+
+        // 在庫1, 注文数量2 に設定
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->setQuantity(2);
+            break;
+        }
+        $this->app['orm.em']->flush();
+
+        $this->expected = false;
+        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
+            $this->app['orm.em'],
+            $Order
+        );
+        $this->verify();
+    }
+
+    public function testSetOrderUpdate()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $data = array(
+            'shippings' => $Order->getShippings(),
+            'message' => 'testtest'
+        );
+
+        $this->app['eccube.service.shopping']->setOrderUpdate($Order, $data);
+
+        $this->expected = $this->app['config']['order_new'];
+        $this->actual = $Order->getOrderStatus()->getId();
+        $this->verify();
+
+        $this->expected = 'testtest';
+        $this->actual = $Order->getMessage();
+        $this->verify();
+
+        $this->assertNotNull($Order->getOrderDate());
+    }
+
+    public function testSetStockUpdate()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->getProduct()->setStatus($Disp);
+            $Detail->getProductClass()->setStockUnlimited(Constant::DISABLED);
+            $productStock = $this->app['orm.em']->getRepository('Eccube\Entity\ProductStock')->find(
+                $Detail->getProductClass()->getProductStock()->getId()
+            );
+            $productStock->setStock(5);
+        }
+
+        // 在庫5, 注文数量2 に設定
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->setQuantity(2);
+        }
+        $this->app['orm.em']->flush();
+
+        $this->app['eccube.service.shopping']->setStockUpdate(
+            $this->app['orm.em'],
+            $Order
+        );
+        $this->app['orm.em']->flush();
+
+        foreach ($Order->getOrderDetails() as $Detail) {
+            // ProductClass を取得し直して, 在庫を比較
+            $ProductClass = $this->app['eccube.repository.product_class']->find($Detail->getProductClass()->getId());
+
+            $this->expected = 3;
+            $this->actual = $ProductClass->getStock();
+            $this->verify();
+        }
+    }
+
+    public function testSetCustomerUpdate()
+    {
+        $Order = $this->createOrder($this->Customer);
+
+        $this->app['eccube.service.shopping']->setCustomerUpdate(
+            $Order,
+            $this->Customer
+        );
+
+        $this->assertNotNull($this->Customer->getFirstBuyDate());
+        $this->assertNotNull($this->Customer->getLastBuyDate());
+        $this->assertNotNull($this->Customer->getBuyTimes());
+        $this->assertNotNull($this->Customer->getBuyTotal());
+    }
+
+    public function testGetPayments()
+    {
+        $Payments = $this->app['eccube.repository.payment']->findAll();
+        $data = array();
+        foreach ($Payments as $Payment) {
+            $data[] = array('id' => $Payment->getId());
+        }
+
+        // TODO 境界値チェック
+        $Pays = $this->app['eccube.service.shopping']->getPayments(
+            $data,
+            100000
+        );
+
+        $this->expected = count($Payments);
+        $this->actual = count($Pays);
+        $this->verify();
+    }
+
+    public function testGetFormDeliveryDates()
+    {
+        $DeliveryDate = $this->app['eccube.repository.delivery_date']->find(1);
+        $Order = $this->createOrder($this->Customer);
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->getProductClass()->setDeliveryDate($DeliveryDate);
+        }
+        $this->app['orm.em']->flush();
+
+        $DeliveryDates = $this->app['eccube.service.shopping']->getFormDeliveryDates($Order);
+
+        $this->expected = $this->app['config']['deliv_date_end_max'];
+        $this->actual = count($DeliveryDates);
+        $this->verify();
+
+        $dates = array();
+        $today = new \DateTime();
+        for ($i = 0; $i < $this->app['config']['deliv_date_end_max']; $i++) {
+            $dates[$today->format('Y/m/d')] = $today->format('Y/m/d');
+            $today->add(new \DateInterval('P1D'));
+        }
+
+        $this->expected = $dates;
+        $this->actual = $DeliveryDates;
+        $this->verify();
+    }
 }
