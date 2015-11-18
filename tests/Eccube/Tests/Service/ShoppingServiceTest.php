@@ -245,6 +245,14 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     public function testIsOrderProduct()
     {
         $Order = $this->createOrder($this->Customer);
+        $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
+
+        // 商品を表示に設定
+        foreach ($Order->getOrderDetails() as $Detail) {
+            $Detail->getProduct()->setStatus($Disp);
+        }
+        $this->app['orm.em']->flush();
+
         $this->expected = true;
         $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
             $this->app['orm.em'],
