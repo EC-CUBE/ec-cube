@@ -247,9 +247,12 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $Order = $this->createOrder($this->Customer);
         $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
 
-        // 商品を表示に設定
+        // 商品を購入可能な状態に設定
         foreach ($Order->getOrderDetails() as $Detail) {
             $Detail->getProduct()->setStatus($Disp);
+            $Detail->getProductClass()->setSaleLimit(100);
+            $Detail->setQuantity(2);
+            $Detail->getProductClass()->setStockUnlimited(Constant::ENABLED);
         }
         $this->app['orm.em']->flush();
 
