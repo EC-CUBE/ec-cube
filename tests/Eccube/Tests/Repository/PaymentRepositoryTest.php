@@ -140,5 +140,25 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->expected = 4;
         $this->actual = count($payments);
         $this->verify();
+
+        $this->assertTrue(is_array($payments[0]));
+    }
+
+    public function testFindPaymentsAsObjects()
+    {
+        $productTypes = array(1);
+        $productTypes = array_unique($productTypes);
+
+        // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($productTypes);
+        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($productTypes);
+
+        // 支払方法を取得
+        $payments = $this->app['eccube.repository.payment']->findPayments($deliveries[0], true);
+
+        $this->expected = 4;
+        $this->actual = count($payments);
+        $this->verify();
+
+        $this->assertTrue(is_object($payments[0]));
     }
 }
