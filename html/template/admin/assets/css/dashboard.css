@@ -747,6 +747,10 @@ fieldset[disabled] .btn-link:focus {
     padding: 16px 0 48px;
 }
 
+.btn_area ul li {
+    display: table-cell;
+    vertical-align: middle;
+}
 
 /*	dl-horizontal
 ============================ */
