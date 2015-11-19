@@ -295,8 +295,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div><!-- /.box -->
                     <div class="box">
                         <div class="box-header">
-                            <button class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}disabled{% endif %} onclick="doPreview();">
-                                プレビュー
+                            {% set disabled = true %}
+                            {%  if TargetPageLayout.url != 'entry_activate' and 
+                                   TargetPageLayout.url != 'shopping' and
+                                   TargetPageLayout.url != 'shopping_shipping' and
+                                   TargetPageLayout.url != 'shopping_shipping_multiple' and
+                                   TargetPageLayout.url != 'shopping_complete' and
+                                   TargetPageLayout.url != 'shopping_login' and 
+                                   TargetPageLayout.url != 'shopping_nonmember' and
+                                   TargetPageLayout.url != 'shopping_shipping_edit' and
+                                   TargetPageLayout.url != 'shopping_shipping_multiple_edit' and
+                                   TargetPageLayout.url != 'shopping_error' and
+                                   TargetPageLayout.url != 'forgot_reset'
+                            %}
+                            {% set disabled = false %}
+                            {% endif %}
+                            <button class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') or disabled %}disabled{% endif %} onclick="doPreview();">
+                                プレビュー{{TargetPageLayout.url}}
                             </button>
                         </div><!-- /.box-header -->
                     </div>

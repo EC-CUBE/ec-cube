@@ -53,22 +53,9 @@
                                         <div class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                             <ul class="dropdown-menu dropdown-menu-right">
-                                            {% if PageLayout.url != 'entry_activate' and 
-                                                  PageLayout.url != 'shopping' and
-                                                  PageLayout.url != 'shopping_shipping' and
-                                                  PageLayout.url != 'shopping_shipping_multiple' and
-                                                  PageLayout.url != 'shopping_complete' and
-                                                  PageLayout.url != 'shopping_login' and 
-                                                  PageLayout.url != 'shopping_nonmember' and
-                                                  PageLayout.url != 'shopping_shipping_edit' and
-                                                  PageLayout.url != 'shopping_shipping_multiple_edit' and
-                                                  PageLayout.url != 'shopping_error' and
-                                                  PageLayout.url != 'forgot_reset'
-                                             %}
                                                 <li>
                                                     <a href="{{ url('admin_content_layout_edit', { id : PageLayout.id } ) }}" >レイアウト編集</a>
                                                 </li>
-                                            {% endif %}
                                                 <li>
                                                     {% if PageLayout.filename|length >= 1 %}
                                                         <a href="{{ url('admin_content_page_edit', {id : PageLayout.id } ) }}">ページ編集</a>
