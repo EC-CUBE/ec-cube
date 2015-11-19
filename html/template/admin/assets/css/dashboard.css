@@ -747,11 +747,6 @@ fieldset[disabled] .btn-link:focus {
     padding: 16px 0 48px;
 }
 
-.btn_area ul li {
-    display: table-cell;
-    vertical-align: middle;
-}
-
 /*	dl-horizontal
 ============================ */
 
@@ -1333,6 +1328,7 @@ textarea.form-control{
     width: 20%;
     min-width: 160px;
     display: inline-block;
+    vertical-align: middle;
     margin-right: 8px;
     margin-bottom: 8px;
 }
