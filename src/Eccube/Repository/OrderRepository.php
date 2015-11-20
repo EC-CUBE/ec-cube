@@ -36,12 +36,11 @@ use Doctrine\ORM\QueryBuilder;
  */
 class OrderRepository extends EntityRepository
 {
-    /** @var array */
-    public $config;
+    protected $app;
 
-    public function setConfig(array $config)
+    public function setApplication($app)
     {
-        $this->config = $config;
+        $this->app = $app;
     }
 
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
@@ -295,7 +294,7 @@ class OrderRepository extends EntityRepository
         } else {
             // 購入処理中は検索対象から除外
             $qb->andWhere('o.OrderStatus <> :status')
-                ->setParameter('status', $this->config['order_processing']);
+                ->setParameter('status', $this->app['config']['order_processing']);
         }
 
         // name
@@ -472,7 +471,7 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
         $qb
             ->where('o.OrderStatus <> :OrderStatus')
-            ->setParameter('OrderStatus', $this->config['order_cancel'])
+            ->setParameter('OrderStatus', $this->app['config']['order_cancel'])
             ->setMaxResults(10)
             ->orderBy('o.create_date', 'DESC');
 
