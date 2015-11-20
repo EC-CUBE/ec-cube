@@ -381,9 +381,11 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->getQuery();
 
         $Customer = $query->getOneOrNullResult();
+        /*
         if (!$Customer) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
+        */
 
         return $Customer;
     }
