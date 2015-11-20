@@ -33,7 +33,7 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
 
         $CustomerAddress
             ->setName01($faker->lastName)
-            ->setName02($faker->firstName)
+            ->setName02($faker->firstName);
         $this->app['orm.em']->persist($CustomerAddress);
         $this->app['orm.em']->flush();
 
