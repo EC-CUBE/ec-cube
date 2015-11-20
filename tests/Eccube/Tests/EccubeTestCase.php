@@ -8,6 +8,7 @@ use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
@@ -143,10 +144,12 @@ abstract class EccubeTestCase extends WebTestCase
             $email = $faker->email;
         }
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::ACTIVE);
+        $Pref = $this->app['eccube.repository.master.pref']->find(1);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
             ->setEmail($email)
+            ->setPref($Pref)
             ->setPassword('password')
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
             ->setStatus($Status)
@@ -154,6 +157,56 @@ abstract class EccubeTestCase extends WebTestCase
         $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush();
+
+        $CustomerAddress = new CustomerAddress();
+        $CustomerAddress
+            ->setCustomer($Customer)
+            ->setDelFlg(0);
+        $CustomerAddress->copyProperties($Customer);
+        $this->app['orm.em']->persist($CustomerAddress);
+        $this->app['orm.em']->flush();
+
+        return $Customer;
+    }
+
+    /**
+     * 非会員の Customer オブジェクトを生成して返す.
+     *
+     * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
+     * @return \Eccube\Entity\Customer
+     */
+    public function createNonMember($email = null)
+    {
+        $sessionKey = 'eccube.front.shopping.nonmember';
+        $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
+        $faker = $this->getFaker();
+        $Customer = new Customer();
+        if (is_null($email)) {
+            $email = $faker->email;
+        }
+        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Customer
+            ->setName01($faker->lastName)
+            ->setName02($faker->firstName)
+            ->setEmail($email)
+            ->setPref($Pref)
+            ->setDelFlg(0);
+
+        $CustomerAddress = new CustomerAddress();
+        $CustomerAddress
+            ->setCustomer($Customer)
+            ->setDelFlg(0);
+        $CustomerAddress->copyProperties($Customer);
+        $Customer->addCustomerAddress($CustomerAddress);
+
+        $nonMember = array();
+        $nonMember['customer'] = $Customer;
+        $nonMember['pref'] = $Customer->getPref()->getId();
+        $this->app['session']->set($sessionKey, $nonMember);
+
+        $customerAddresses = array();
+        $customerAddresses[] = $CustomerAddress;
+        $this->app['session']->set($sessionCustomerAddressKey, serialize($customerAddresses));
         return $Customer;
     }
 
@@ -258,9 +311,12 @@ abstract class EccubeTestCase extends WebTestCase
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush();
 
+        $Delivery = $this->app['eccube.repository.delivery']->find(1);
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
-        $Shipping->setPref($Pref);
+        $Shipping
+            ->setPref($Pref)
+            ->setDelivery($Delivery);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
         $this->app['orm.em']->persist($Shipping);

@@ -262,7 +262,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testPref()
     {
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $pref_id = 26;
+        $Pref = $this->app['eccube.repository.master.pref']->find($pref_id);
         $this->Customer->setPref($Pref);
         $this->app['orm.em']->flush();
 
@@ -274,7 +275,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->assertEquals(1, count($this->Results));
 
-        $this->expected = 1;
+        $this->expected = $pref_id;
         $this->actual = $this->Results[0]->getPref()->getId();
         $this->verify();
     }
