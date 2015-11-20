@@ -246,13 +246,8 @@ abstract class EccubeTestCase extends WebTestCase
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
         $Pref = $this->app['eccube.repository.master.pref']->find(1);
-        $Order = new Order();
-        $Order->setCustomer($Customer)
-            ->setCharge(0)
-            ->setDeliveryFeeTotal(0)
-            ->setDiscount(0)
-            ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
-            ->setDelFlg(Constant::DISABLED);
+        $Order = new Order($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']));
+        $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
         $Order->setPref($Pref);
         $this->app['orm.em']->persist($Order);

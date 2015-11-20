@@ -226,16 +226,8 @@ class ShoppingService
      */
     public function newOrder()
     {
-        $Order = new \Eccube\Entity\Order();
-        $Order->setDiscount(0)
-            ->setSubtotal(0)
-            ->setTotal(0)
-            ->setPaymentTotal(0)
-            ->setCharge(0)
-            ->setTax(0)
-            ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
-            ->setDelFlg(Constant::DISABLED);
-
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $Order = new \Eccube\Entity\Order($OrderStatus);
         return $Order;
     }
 
