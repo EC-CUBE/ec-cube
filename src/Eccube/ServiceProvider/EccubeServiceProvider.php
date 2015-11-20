@@ -146,8 +146,6 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.product'] = $app->share(function () use ($app) {
             $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
-            $productRepository->setConfig($app['config']);
-
             return $productRepository;
         });
         $app['eccube.repository.product_image'] = $app->share(function () use ($app) {
@@ -173,25 +171,25 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.tax_rule'] = $app->share(function () use ($app) {
             $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');
-            $taxRuleRepository->setApp($app);
+            $taxRuleRepository->setApplication($app);
 
             return $taxRuleRepository;
         });
         $app['eccube.repository.page_layout'] = $app->share(function () use ($app) {
             $pageLayoutRepository = $app['orm.em']->getRepository('Eccube\Entity\PageLayout');
-            $pageLayoutRepository->setApp($app);
+            $pageLayoutRepository->setApplication($app);
 
             return $pageLayoutRepository;
         });
         $app['eccube.repository.block'] = $app->share(function () use ($app) {
             $blockRepository = $app['orm.em']->getRepository('Eccube\Entity\Block');
-            $blockRepository->setApp($app);
+            $blockRepository->setApplication($app);
 
             return $blockRepository;
         });
         $app['eccube.repository.order'] = $app->share(function () use ($app) {
             $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
-            $orderRepository->setConfig($app['config']);
+            $orderRepository->setApplication($app);
 
             return $orderRepository;
         });
@@ -235,7 +233,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
                 // tax_rule
                 $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
-                $taxRuleRepository->setApp($app);
+                $taxRuleRepository->setApplication($app);
                 $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
                 $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
 

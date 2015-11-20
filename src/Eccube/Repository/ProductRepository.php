@@ -37,20 +37,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepository extends EntityRepository
 {
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * setConfig
-     *
-     * @param array $config
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-    }
 
     /**
      * get Product.

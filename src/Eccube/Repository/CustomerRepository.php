@@ -43,7 +43,7 @@ use Symfony\Component\Security\Core\Util\SecureRandom;
  */
 class CustomerRepository extends EntityRepository implements UserProviderInterface
 {
-    public $app;
+    protected $app;
 
     public function setApplication($app)
     {

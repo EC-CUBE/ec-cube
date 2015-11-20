@@ -38,9 +38,9 @@ class TaxRuleRepository extends EntityRepository
 {
     private $rules = array();
 
-    private $app;
+    protected $app;
 
-    public function setApp($app)
+    public function setApplication($app)
     {
         $this->app = $app;
     }
