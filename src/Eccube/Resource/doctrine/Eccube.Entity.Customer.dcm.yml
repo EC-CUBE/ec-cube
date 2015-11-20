@@ -24,10 +24,10 @@ Eccube\Entity\Customer:
             nullable: false
         kana01:
             type: text
-            nullable: true
+            nullable: false
         kana02:
             type: text
-            nullable: true
+            nullable: false
         company_name:
             type: text
             nullable: true
