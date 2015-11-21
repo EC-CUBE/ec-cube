@@ -25,14 +25,13 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\Request;
 
 class LogController
 {
     public function index(Application $app, Request $request)
     {
-        $line = array();
+        $formData = array();
         // default
         $formData['files'] = 'site_'.date('Y-m-d').'.log';
         $formData['line_max'] = '50';
@@ -58,9 +57,6 @@ class LogController
 
     private function parseLogFile($logFile, $formData)
     {
-
-        // monologのparserは下記だが例外を突っ込まれているので使えない
-        //$pattern = '/\[(?P<date>.*)\] (?P<logger>\w+).(?P<level>\w+): (?P<message>.*[^ ]+) (?P<context>[^ ]+) (?P<extra>[^ ]+)/';
         $pattern = '/\[(?P<date>.*)\] (?P<logger>\w+).(?P<level>\w+): (?P<message>.*)$/';
 
         $log = array();
@@ -74,26 +70,20 @@ class LogController
 
             $line = chop($line);
             if (preg_match($pattern, $line, $data)) {
-
-                // 内容を取得するために一時的に配列に入れる
-                $tmp = array();
-                $tmp = array(
-                    'date' => \DateTime::createFromFormat('Y-m-d H:i:s', $data['date']),
-                    'logger' => $data['logger'],
-                    'level' => $data['level'],
-                );
-
                 $message[] = $data['message'];
                 // messageをここで分解し直す
                 // 改行コードにするとややこしいのでbrで改行する
                 preg_match('/(?P<message>.*[^ ]+) (?P<context>[^ ]+) (?P<extra>[^ ]+)/', implode("<br>", array_reverse($message)), $res);
-
-                $tmp['message'] = $res['message'];
-                $tmp['context'] = var_export(json_decode($res['context'], true), true);
-                $tmp['extra'] = var_export(json_decode($res['extra'], true), true);
                 $message = array();
 
-                $log[] = $tmp;
+                $log[] = array(
+                    'date' => \DateTime::createFromFormat('Y-m-d H:i:s', $data['date']),
+                    'logger' => $data['logger'],
+                    'level' => $data['level'],
+                    'message' => $res['message'],
+                    'context' => var_export(json_decode($res['context'], true), true),
+                    'extra' => var_export(json_decode($res['extra'], true), true),
+                );
             } else {
                 // 内容が改行されている場合がある
                 $message[] = $line;
