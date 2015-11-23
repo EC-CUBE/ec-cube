@@ -1,0 +1,113 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['setting', 'system', 'masterdata'] %}
+
+{% block title %}システム設定{% endblock %}
+{% block sub_title %}マスターデータ管理{% endblock %}
+
+{% block main %}
+<form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
+    {{ form_widget(form._token) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">マスターデータ管理</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            {{ form_widget(form.masterdata, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.masterdata) }}
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">選択</button>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</form>
+
+{% if form2.data is not empty %}
+<form id="form2" name="form2" method="post" action="{{ url('admin_setting_system_masterdata_edit') }}">
+    {{ form_widget(form2.masterdata_name) }}
+    {{ form_widget(form2._token) }}
+    <div class="row" id="aside_wrap">
+        <div class="col-md-9">
+            <div class="box">
+                <div class="box-header">
+                    <div class="read">
+                        マスターデータの値を設定できます。<br />
+                        重複したIDを登録することはできません。<br />
+                        空のIDを登録すると、値は削除されます。<br />
+                        設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            {#<th>Rank</th>#}
+                        </tr>
+                        {% for data in form2.data %}
+                        <tr>
+                            <td>
+                                {{form_widget(data.id)}}
+                            </td>
+                            <td>
+                                {{form_widget(data.name)}}
+                            </td>
+                            {#
+                            <td>
+                                {{form_widget(data.rank)}}
+                            </td>
+                            #}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div><!-- /.box-body -->
+        </div>
+        <div class="col-md-3">
+            <div class="col_inner" id="aside_column">
+                <div class="box no-header">
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                <button class="btn btn-primary btn-block btn-lg" onclick="document.form2.submit();">登録</button>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
+        </div><!-- /.col --> 
+    </div>
+</form>
+{% endif %}
+{% endblock %}
