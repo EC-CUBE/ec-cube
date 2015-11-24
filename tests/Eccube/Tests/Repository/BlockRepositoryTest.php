@@ -50,7 +50,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
     public function testGetList()
     {
-        $Blocks = $this->app['eccube.repository.block']->getList($this->DeviceType);
+        $Blocks = $this->app['eccube.repository.block']->getList(array('DeviceType' => $this->DeviceType));
 
         $this->assertNotNull($Blocks);
         $this->expected = 10;
@@ -60,7 +60,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
     public function testGetBlock()
     {
-        $Block = $this->app['eccube.repository.block']->getBlock($this->block_id, $this->DeviceType);
+        $Block = $this->app['eccube.repository.block']->getBlock(array('id' => $this->block_id, 'DeviceType' => $this->DeviceType));
         $this->assertNotNull($Block);
         $this->expected = $this->block_id;
         $this->actual = $Block->getId();
@@ -71,19 +71,19 @@ class BlockRepositoryTest extends EccubeTestCase
     {
         // TODO findOrCreate(array $condition) にするべき
         // https://github.com/EC-CUBE/ec-cube/issues/922
-        $Block = $this->app['eccube.repository.block']->findOrCreate($this->block_id, $this->DeviceType);
+        $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => $this->block_id, 'DeviceType' => $this->DeviceType));
 
         $this->assertNotNull($Block);
         $this->expected = $this->block_id;
         $this->actual = $Block->getId();
         $this->verify('ブロックIDは'.$this->expected.'ではありません');
 
-        $Block = $this->app['eccube.repository.block']->findOrCreate(null, $this->DeviceType);
+        $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => null, 'DeviceType' => $this->DeviceType));
         $this->assertNotNull($Block);
         $this->assertTrue($Block instanceof \Eccube\Entity\Block);
         $this->assertNull($Block->getId());
 
-        $Block = $this->app['eccube.repository.block']->findOrCreate(999999, $this->DeviceType);
+        $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => 999999, 'DeviceType' => $this->DeviceType));
         $this->assertNull($Block); // XXX block_id = 999999 の新たなインスタンスを返してほしいが不可能.
     }
 
