@@ -84,7 +84,7 @@ class BlockRepositoryTest extends EccubeTestCase
         $this->assertNull($Block->getId());
 
         $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => 999999, 'DeviceType' => $this->DeviceType));
-        $this->assertNull($Block); // XXX block_id = 999999 の新たなインスタンスを返してほしいが不可能.
+        $this->assertTrue($Block->getId(), 999999);
     }
 
     public function testGetWriteTemplatePath()
