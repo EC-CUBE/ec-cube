@@ -107,6 +107,9 @@
             - id: security
               name: セキュリティ管理
               url: admin_setting_system_security
+            - id: log
+              name: EC-CUBE ログ表示
+              url: admin_setting_system_log
 - id: store
   name: オーナーズストア
   has_child: true
