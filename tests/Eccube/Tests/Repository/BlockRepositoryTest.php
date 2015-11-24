@@ -131,7 +131,7 @@ class BlockRepositoryTest extends EccubeTestCase
         // XXX 引数 isUser は使用していない
         $data = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
         // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
-        $this->actual = $data['tpl_data'];
+        $this->actual = $data;
         $this->expected = 'test';
         $this->verify();
     }
