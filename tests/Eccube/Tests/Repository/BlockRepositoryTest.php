@@ -84,7 +84,7 @@ class BlockRepositoryTest extends EccubeTestCase
         $this->assertNull($Block->getId());
 
         $Block = $this->app['eccube.repository.block']->findOrCreate(array('id' => 999999, 'DeviceType' => $this->DeviceType));
-        $this->assertTrue($Block->getId(), 999999);
+        $this->assertNull($Block->getId());
     }
 
     public function testGetWriteTemplatePath()
