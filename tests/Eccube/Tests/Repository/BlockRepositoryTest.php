@@ -109,10 +109,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
         file_put_contents($this->app['config']['block_realdir'].'/'.$fileName.'.twig', 'test');
 
-        // XXX 引数 isUser は使用していない
-        $data = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
-        // XXX 実装上は, tpl_data しか使っていない. 配列を返す意味がない
-        $this->actual = $data['tpl_data'];
+        $this->actual = $this->app['eccube.repository.block']->getReadTemplateFile($fileName);
         $this->expected = 'test';
         $this->verify();
     }
