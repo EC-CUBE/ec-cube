@@ -50,7 +50,7 @@ class BlockRepositoryTest extends EccubeTestCase
 
     public function testGetList()
     {
-        $Blocks = $this->app['eccube.repository.block']->getList(array('DeviceType' => $this->DeviceType));
+        $Blocks = $this->app['eccube.repository.block']->getList($this->DeviceType);
 
         $this->assertNotNull($Blocks);
         $this->expected = 10;
