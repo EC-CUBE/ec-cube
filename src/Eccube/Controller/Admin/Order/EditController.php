@@ -362,10 +362,6 @@ class EditController extends AbstractController
     protected function newOrder()
     {
         $Order = new \Eccube\Entity\Order();
-        $Order->setCharge(0);
-        $Order->setDeliveryFeeTotal(0);
-        $Order->setDiscount(0);
-        $Order->setDelFlg(0);
         $Shipping = new \Eccube\Entity\Shipping();
         $Shipping->setDelFlg(0);
         $Order->addShipping($Shipping);
