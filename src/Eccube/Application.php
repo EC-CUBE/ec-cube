@@ -165,6 +165,10 @@ class Application extends ApplicationTrait
             }
 
             switch ($code) {
+                case 403:
+                    $title = 'アクセスできません。';
+                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                    break;
                 case 404:
                     $title = 'ページがみつかりません。';
                     $message = 'URLに間違いがないかご確認ください。';
@@ -490,7 +494,26 @@ class Application extends ApplicationTrait
                 'anonymous' => true,
             ),
         );
-        $this['security.access_rules'] = array(
+
+        // $this['security.access_rules'] = array(
+        //     array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
+        //     array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
+        //     array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+        //     array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+        //     array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
+        //     array('^/mypage', 'ROLE_USER'),
+        // );
+
+        $AuthorityRoles = $this['orm.em']->getRepository('Eccube\Entity\AuthorityRole')->findAll();
+
+        $securityExtend = array();
+        if (count($AuthorityRoles) >= 1) {
+            foreach ($AuthorityRoles as $AuthorityRole) {
+                $securityExtend[] = array("^/{$this['config']['admin_route']}".$AuthorityRole->getTargetUrl(), $AuthorityRole->getAuthority()->getRoleName());
+            }
+        }
+
+        $securityDefault = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
@@ -498,6 +521,9 @@ class Application extends ApplicationTrait
             array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
             array('^/mypage', 'ROLE_USER'),
         );
+
+        $this['security.access_rules'] = array_merge_recursive($securityExtend, $securityDefault);
+
         $this['eccube.password_encoder'] = $this->share(function($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
         });
