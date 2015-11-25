@@ -7,7 +7,7 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Service\CsvExportService;
 use org\bovigo\vfs\vfsStream;
 
-class CsvImportServiceTest extends AbstractServiceTestCase
+class CsvExportServiceTest extends AbstractServiceTestCase
 {
 
     protected $url;
