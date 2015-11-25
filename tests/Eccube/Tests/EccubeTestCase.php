@@ -348,6 +348,7 @@ abstract class EccubeTestCase extends WebTestCase
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity);
+        $Shipping->addShipmentItem($ShipmentItem);
         $this->app['orm.em']->persist($ShipmentItem);
 
         $subTotal = $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
