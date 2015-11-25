@@ -2,6 +2,7 @@
   name: 商品管理
   has_child: true
   icon: cb-tag
+  target_url: product
   child:
       - id: product_master
         name: 商品マスター

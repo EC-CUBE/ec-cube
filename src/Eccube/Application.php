@@ -328,13 +328,22 @@ class Application extends ApplicationTrait
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
-            // 管理画面
             if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                // 管理画面
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
-                // フロント画面
+
+                $Member = $app->user();
+                if (is_object($Member)) {
+                    // ログインしていれば管理者のロールを取得
+                    $AuthorityRoles = $app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
+
+                    $app['twig']->addGlobal('AuthorityRoles', $AuthorityRoles);
+                }
+
             } else {
+                // フロント画面
                 $request = $event->getRequest();
                 $route = $request->attributes->get('_route');
 
@@ -504,16 +513,7 @@ class Application extends ApplicationTrait
         //     array('^/mypage', 'ROLE_USER'),
         // );
 
-        $AuthorityRoles = $this['orm.em']->getRepository('Eccube\Entity\AuthorityRole')->findAll();
-
-        $securityExtend = array();
-        if (count($AuthorityRoles) >= 1) {
-            foreach ($AuthorityRoles as $AuthorityRole) {
-                $securityExtend[] = array("^/{$this['config']['admin_route']}".$AuthorityRole->getTargetUrl(), $AuthorityRole->getAuthority()->getRoleName());
-            }
-        }
-
-        $securityDefault = array(
+        $securityDefaultRules = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
@@ -522,7 +522,15 @@ class Application extends ApplicationTrait
             array('^/mypage', 'ROLE_USER'),
         );
 
-        $this['security.access_rules'] = array_merge_recursive($securityExtend, $securityDefault);
+        $authorityRoles = $this['orm.em']->getRepository('Eccube\Entity\AuthorityRole')->findAll();
+
+        $securityExtendRules = array();
+        if (count($authorityRoles) >= 1) {
+            foreach ($authorityRoles as $AuthorityRole) {
+//                $securityExtendRules[] = array("^(?!\/{$this['config']['admin_route']}\\".$AuthorityRole->getTargetUrl().").*$", $AuthorityRole->getAuthority()->getRoleName());
+            }
+        }
+        $this['security.access_rules'] = array_merge_recursive($securityExtendRules, $securityDefaultRules);
 
         $this['eccube.password_encoder'] = $this->share(function($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
