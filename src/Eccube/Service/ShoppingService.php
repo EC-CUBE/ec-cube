@@ -936,7 +936,6 @@ class ShoppingService
             // 複数配送時の支払方法
 
             $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
-            $payments = $this->getPayments($payments, $Order->getSubTotal());
         } else {
 
             // 配送業者をセット
@@ -945,6 +944,7 @@ class ShoppingService
             $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery(), true);
 
         }
+        $payments = $this->getPayments($payments, $Order->getSubTotal());
 
         return $payments;
 
