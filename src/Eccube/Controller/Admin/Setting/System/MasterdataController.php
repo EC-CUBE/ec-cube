@@ -35,6 +35,8 @@ class MasterdataController extends AbstractController
 {
     public function index(Application $app, Request $request)
     {
+        $data = array();
+
         $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
         $form = $builder->getForm();
 
@@ -49,18 +51,14 @@ class MasterdataController extends AbstractController
                     foreach ($masterdata as $key => $value) {
                         $data['data'][$value['rank']]['id'] = $value['id'];
                         $data['data'][$value['rank']]['name'] = $value['name'];
-                        $data['data'][$value['rank']]['rank'] = $value['rank'];
                     }
 
                     $data['data'][$value['rank']+1]['id'] = '';
                     $data['data'][$value['rank']+1]['name'] = '';
-                    $data['data'][$value['rank']+1]['rank'] = '';
 
                     $data['masterdata_name'] = $data['masterdata'];
                 }
             }
-        } else {
-            $data = array();
         }
 
         $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit', $data);
@@ -85,7 +83,7 @@ class MasterdataController extends AbstractController
 
                 $entity = new $data['masterdata_name']();
                 foreach ($data['data'] as $key => $value) {
-                    if (!is_null($value['id']) && !is_null($value['name'])) {
+                    if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
                         $entity->setRank($key);
@@ -99,8 +97,8 @@ class MasterdataController extends AbstractController
                     }
                 }
                 $app['orm.em']->flush();
-
                 $app->addSuccess('admin.register.complete', 'admin');
+
                 return $app->redirect($app->url('admin_setting_system_masterdata'));
             }
         }

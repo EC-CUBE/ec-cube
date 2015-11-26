@@ -54,8 +54,7 @@ class MasterdataEditType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('masterdata_name', 'hidden', array(
-            ));
+            ->add('masterdata_name', 'hidden');
         ;
     }
 

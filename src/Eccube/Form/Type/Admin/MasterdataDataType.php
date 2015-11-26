@@ -54,26 +54,13 @@ class MasterdataDataType extends AbstractType
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
+                        'message' => 'form.type.numeric.invalid',
                     )),
                 ),
             ))
             ->add('name', 'text', array(
                 'required' => false,
             ))
-            /* rankをkeyに使うので
-            ->add('rank', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $app['config']['int_len'],
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
-                ),
-            ))*/
             ;
     }
 

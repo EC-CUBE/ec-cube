@@ -66,7 +66,7 @@ class MasterdataType extends AbstractType
             ))
             ;
 
-        // $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
