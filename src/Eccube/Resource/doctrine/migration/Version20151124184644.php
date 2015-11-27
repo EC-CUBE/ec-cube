@@ -28,7 +28,7 @@ class Version20151124184644 extends AbstractMigration
             'autoincrement' => true,
         ));
         $table->addColumn('authority_id', 'smallint', array('NotNull' => true));
-        $table->addColumn('target_url', 'text', array('NotNull' => true));
+        $table->addColumn('deny_url', 'text', array('NotNull' => true));
         $table->addColumn('creator_id', 'integer', array('NotNull' => true));
         $table->addColumn('create_date', 'datetime', array('NotNull' => true));
         $table->addColumn('update_date', 'datetime', array('NotNull' => true));

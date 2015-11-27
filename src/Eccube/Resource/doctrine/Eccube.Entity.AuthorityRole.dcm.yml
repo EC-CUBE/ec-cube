@@ -12,7 +12,7 @@ Eccube\Entity\AuthorityRole:
             generator:
                 strategy: AUTO
     fields:
-        target_url:
+        deny_url:
             type: text
             nullable: false
         create_date:

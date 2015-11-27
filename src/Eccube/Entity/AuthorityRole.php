@@ -17,7 +17,7 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $target_url;
+    private $deny_url;
 
     /**
      * @var \DateTime
@@ -43,7 +43,7 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -51,26 +51,26 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set target_url
+     * Set deny_url
      *
-     * @param string $targetUrl
+     * @param string $denyUrl
      * @return AuthorityRole
      */
-    public function setTargetUrl($targetUrl)
+    public function setDenyUrl($denyUrl)
     {
-        $this->target_url = $targetUrl;
+        $this->deny_url = $denyUrl;
 
         return $this;
     }
 
     /**
-     * Get target_url
+     * Get deny_url
      *
-     * @return string 
+     * @return string
      */
-    public function getTargetUrl()
+    public function getDenyUrl()
     {
-        return $this->target_url;
+        return $this->deny_url;
     }
 
     /**
@@ -89,7 +89,7 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -112,7 +112,7 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -135,7 +135,7 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     /**
      * Get Authority
      *
-     * @return \Eccube\Entity\Master\Authority 
+     * @return \Eccube\Entity\Master\Authority
      */
     public function getAuthority()
     {
@@ -158,7 +158,7 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {
