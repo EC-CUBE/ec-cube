@@ -453,4 +453,46 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->actual = $DeliveryDates;
         $this->verify();
     }
+
+    /**
+     * #1238 のテストケース
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1238
+     */
+    public function testGetFormPayments()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $Order->setSubTotal(2500);
+        $this->app['orm.em']->flush();
+
+        $Delivery = $this->app['eccube.repository.delivery']->find(1);
+        $Payment1 = $this->createPayment($Delivery, 'スキップされる支払い方法', 0, 1000, 2000);
+        $Payment2 = $this->createPayment($Delivery, '支払い方法2', 0, 2001, 3000);
+
+        $Payments = $this->app['eccube.service.shopping']->getFormPayments(array($Delivery), $Order);
+
+        $this->expected = 5;
+        $this->actual = count($Payments);
+        $this->verify();
+    }
+
+    public function testGetFormPaymentsWithMultiple()
+    {
+        // 複数配送対応としておく
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+
+        $Order = $this->createOrder($this->Customer);
+        $Order->setSubTotal(2500);
+        $this->app['orm.em']->flush();
+
+        $Delivery = $this->app['eccube.repository.delivery']->find(1);
+        $Payment1 = $this->createPayment($Delivery, 'スキップされる支払い方法', 0, 1000, 2000);
+        $Payment2 = $this->createPayment($Delivery, '支払い方法2', 0, 2001, 3000);
+
+        $Payments = $this->app['eccube.service.shopping']->getFormPayments(array($Delivery), $Order);
+
+        $this->expected = 5;
+        $this->actual = count($Payments);
+        $this->verify();
+    }
 }

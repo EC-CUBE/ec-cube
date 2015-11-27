@@ -11,6 +11,8 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
+use Eccube\Entity\Payment;
+use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
@@ -358,6 +360,43 @@ abstract class EccubeTestCase extends WebTestCase
 
         $this->app['orm.em']->flush();
         return $Order;
+    }
+
+    /**
+     * Payment オプジェクトを生成して返す.
+     *
+     * @param \Eccube\Entity\Delivery $Delivery デフォルトで設定する配送オブジェクト
+     * @param string $method 支払い方法名称
+     * @param integer $charge 手数料
+     * @param integer $rule_min 下限金額
+     * @param integer $rule_max 上限金額
+     * @return \Eccube\Entity\Payment
+     */
+    public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
+    {
+        $Member = $this->app['eccube.repository.member']->find(2);
+        $Payment = new Payment();
+        $Payment
+            ->setMethod($method)
+            ->setCharge($charge)
+            ->setRuleMin($rule_min)
+            ->setRuleMax($rule_max)
+            ->setCreator($Member)
+            ->setDelFlg(Constant::DISABLED);
+        $this->app['orm.em']->persist($Payment);
+        $this->app['orm.em']->flush();
+
+        $PaymentOption = new PaymentOption();
+        $PaymentOption
+            ->setDeliveryId($Delivery->getId())
+            ->setPaymentId($Payment->getId())
+            ->setDelivery($Delivery)
+            ->setPayment($Payment);
+        $Payment->addPaymentOption($PaymentOption);
+
+        $this->app['orm.em']->persist($PaymentOption);
+        $this->app['orm.em']->flush();
+        return $Payment;
     }
 
     /**
