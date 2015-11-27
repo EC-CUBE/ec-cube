@@ -20,8 +20,10 @@ use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Tests\Mock\CsrfTokenMock;
+use Guzzle\Http\Client;
 use Silex\WebTestCase;
 use Faker\Factory as Faker;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -30,6 +32,8 @@ use Faker\Factory as Faker;
  */
 abstract class EccubeTestCase extends WebTestCase
 {
+    /** MailCatcher の URL. */
+    const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
 
     protected $actual;
     protected $expected;
@@ -411,5 +415,104 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
+    }
+
+    /**
+     * MailCatcher を初期化する.
+     *
+     * このメソッドは主に setUp() メソッドでコールされる.
+     * MailCatcher が起動してない場合は, テストをスキップする.
+     * MailCatcher については \Eccube\Tests\Service\MailServiceTest のコメントを参照してください
+     *
+     * @see \Eccube\Tests\Service\MailServiceTest
+     * @link http://mailcatcher.me/
+     */
+    protected function initializeMailCatcher()
+    {
+        $this->checkMailCatcherStatus();
+        $config = $this->app['config'];
+        $config['mail']['transport'] = 'smtp';
+        $config['mail']['host'] = '127.0.0.1';
+        $config['mail']['port'] = 1025;
+        $config['mail']['username'] = null;
+        $config['mail']['password'] = null;
+        $config['mail']['encryption'] = null;
+        $config['mail']['auth_mode'] = null;
+        $this->app['config'] = $config;
+        $this->app['swiftmailer.use_spool'] = false;
+        $this->app['swiftmailer.options'] = $this->app['config']['mail'];
+    }
+
+    /**
+     * MailCatcher の起動状態をチェックする.
+     *
+     * MailCatcher が起動していない場合は, テストをスキップする.
+     */
+    protected function checkMailCatcherStatus()
+    {
+        try {
+            $client = new Client();
+            $request = $client->get(self::MAILCATCHER_URL.'messages');
+            $response = $request->send();
+            if ($response->getStatusCode() !== 200) {
+                throw new HttpException($response->getStatusCode());
+            }
+        } catch (HttpException $e) {
+            $this->markTestSkipped($e->getMailCatcherMessage().'['.$e->getStatusCode().']');
+        } catch (\Exception $e) {
+            $this->markTestSkipped('MailCatcher is not alivable');
+        }
+    }
+
+    /**
+     * MailCatcher のメッセージをすべて削除する.
+     */
+    protected function cleanUpMailCatcherMessages()
+    {
+        try {
+            $client = new Client();
+            $request = $client->delete(self::MAILCATCHER_URL.'messages');
+            $request->send();
+        } catch (\Exception $e) {
+            $this->app->log('['.get_class().'] '.$e->getMessage());
+        }
+    }
+
+    /**
+     * MailCatcher のメッセージをすべて取得する.
+     *
+     * @return array MailCatcher のメッセージの配列
+     */
+    protected function getMailCatcherMessages()
+    {
+        $client = new Client();
+        $request = $client->get(self::MAILCATCHER_URL.'messages');
+        $response = $request->send();
+        return json_decode($response->getBody(true));
+    }
+
+    /**
+     * MailCatcher のメッセージを ID を指定して取得する.
+     *
+     * @param integer $id メッセージの ID
+     * @return object MailCatcher のメッセージ
+     */
+    protected function getMailCatcherMessage($id)
+    {
+        $client = new Client();
+        $request = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
+        $response = $request->send();
+        return json_decode($response->getBody(true));
+    }
+
+    /**
+     * MailCatcher のメッセージソースをデコードする.
+     *
+     * @param object $Message MailCatcher のメッセージ
+     * @return string デコードされた eml 形式のソース
+     */
+    protected function parseMailCatcherSource($Message)
+    {
+        return quoted_printable_decode($Message->source);
     }
 }

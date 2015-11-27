@@ -3,8 +3,6 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Service\MailService;
-use Guzzle\Http\Client;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * MailService test cases.
@@ -25,7 +23,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class MailServiceTest extends AbstractServiceTestCase
 {
-    const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
 
     protected $client;
     protected $Customer;
@@ -34,19 +31,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->client = new Client();
-        $this->checkStatus();
-        $config = $this->app['config'];
-        $config['mail']['transport'] = 'smtp';
-        $config['mail']['host'] = '127.0.0.1';
-        $config['mail']['port'] = 1025;
-        $config['mail']['username'] = null;
-        $config['mail']['password'] = null;
-        $config['mail']['encryption'] = null;
-        $config['mail']['auth_mode'] = null;
-        $this->app['config'] = $config;
-        $this->app['swiftmailer.use_spool'] = false;
-        $this->app['swiftmailer.options'] = $this->app['config']['mail'];
+        $this->initializeMailCatcher();
         $paths = array($this->app['config']['template_default_realdir']);
         $this->app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
         $this->Customer = $this->createCustomer();
@@ -55,7 +40,7 @@ class MailServiceTest extends AbstractServiceTestCase
 
     public function tearDown()
     {
-        $this->cleanUpMessages();
+        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -328,53 +313,19 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verifyRegExp($BccMessage, 'BCC');
     }
 
-    protected function checkStatus()
-    {
-        try {
-            $request = $this->client->get(self::MAILCATCHER_URL.'messages');
-            $response = $request->send();
-            if ($response->getStatusCode() !== 200) {
-                throw new HttpException($response->getStatusCode());
-            }
-        } catch (HttpException $e) {
-            $this->markTestSkipped($e->getMessage().'['.$e->getStatusCode().']');
-        } catch (\Exception $e) {
-            $this->markTestSkipped('MailCatcher is not alivable');
-        }
-    }
-
-    protected function cleanUpMessages()
-    {
-        try {
-            $request = $this->client->delete(self::MAILCATCHER_URL.'messages');
-            $request->send();
-        } catch (\Exception $e) {
-            $this->app->log('['.get_class().'] '.$e->getMessage());
-        }
-    }
-
     protected function getMessages()
     {
-        $request = $this->client->get(self::MAILCATCHER_URL.'messages');
-        $response = $request->send();
-        return json_decode($response->getBody(true));
+        return $this->getMailCatcherMessages();
     }
 
     protected function getMessage($id)
     {
-        $request = $this->client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-        $response = $request->send();
-        return json_decode($response->getBody(true));
-    }
-
-    protected function parseSource($Message)
-    {
-        return quoted_printable_decode($Message->source);
+        return $this->getMailCatcherMessage($id);
     }
 
     protected function verifyRegExp($Message, $errorMessage = null)
     {
-        $Source = $this->parseSource($Message);
+        $Source = $this->parseMailCatcherSource($Message);
         $this->assertRegExp('/'.preg_quote($this->expected, '/').'/', $Source, $errorMessage);
     }
 }
