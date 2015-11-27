@@ -241,6 +241,7 @@ class CsvExportService
             $this->em->detach($iteratableResult);
             $this->em->clear();
             $query->free();
+            flush();
         }
 
         $this->fclose();
