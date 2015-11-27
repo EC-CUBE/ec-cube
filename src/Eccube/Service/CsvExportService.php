@@ -234,7 +234,6 @@ class CsvExportService
 
         $this->fopen();
 
-        //@see http://www.krueckeberg.org/notes/d2.html :: Iterating over queries directly
         $query = $this->qb->getQuery();
         foreach ($query->getResult() as $iteratableResult) {
             $closure($iteratableResult, $this);
