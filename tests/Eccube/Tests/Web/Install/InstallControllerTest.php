@@ -67,8 +67,6 @@ class InstallControllerTest extends AbstractInstallWebTestCase
 
     public function testRoutingComplete()
     {
-        self::markTestSkipped();
-
         $this->client->request('GET', $this->app['url_generator']->generate('install_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
