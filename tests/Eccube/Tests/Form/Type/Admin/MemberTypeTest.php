@@ -159,8 +159,6 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidAuthority_NotBlank()
     {
-        self::markTestSkipped(); // postgresだけなぜか落ちる
-
         $this->formData['Authority'] = null;
         $this->form->submit($this->formData);
 

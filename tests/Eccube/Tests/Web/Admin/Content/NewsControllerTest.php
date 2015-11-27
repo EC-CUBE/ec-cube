@@ -30,24 +30,18 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentNews()
     {
-//         self::markTestSkipped();
-
         $this->client->request('GET', $this->app->url('admin_content_news'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentNewsNew()
     {
-//         self::markTestSkipped();
-
         $this->client->request('GET', $this->app->url('admin_content_news_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentNewsEdit()
     {
-//         self::markTestSkipped();
-
         // before
         $TestCreator = $this->findMember(1);
         $TestNews = $this->newTestNews($TestCreator);
@@ -68,8 +62,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentNewsDelete()
     {
-//         self::markTestSkipped();
-
         // before
         $TestCreator = $this->findMember(1);
         $TestNews = $this->newTestNews($TestCreator);
@@ -90,8 +82,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentNewsUp()
     {
-//         self::markTestSkipped();
-
         // before
         $TestCreator = $this->findMember(1);
         $TestNews1 = $this->newTestNews($TestCreator, 1);
@@ -115,8 +105,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentNewsDown()
     {
-//         self::markTestSkipped();
-
         // before
         $TestCreator = $this->findMember(1);
         $TestNews1 = $this->newTestNews($TestCreator, 1);

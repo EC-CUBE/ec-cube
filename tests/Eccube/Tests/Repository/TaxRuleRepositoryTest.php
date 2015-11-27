@@ -132,7 +132,6 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithPref()
     {
-        // self::markTestSkipped();
         $Pref = $this->app['eccube.repository.master.pref']->find(26);
         $this->TaxRule2->setApplyDate(new \DateTime('-1 days'));
         $this->TaxRule3
@@ -155,7 +154,6 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithCountry()
     {
-        // self::markTestSkipped();
         $Country = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\Country')->find(300);
         $this->TaxRule2
             ->setApplyDate(new \DateTime('-1 days'))
