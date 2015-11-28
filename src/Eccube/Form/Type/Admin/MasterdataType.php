@@ -50,7 +50,11 @@ class MasterdataType extends AbstractType
         $masterdata = array();
 
         foreach ($app['orm.em']->getMetadataFactory()->getAllMetadata() as $meta) {
-            if (strpos($meta->rootEntityName, 'Master') !== false) {
+            if (strpos($meta->rootEntityName, 'Master') !== false
+                && $meta->hasField('id')
+                && $meta->hasField('name')
+                && $meta->hasField('rank')
+            ) {
                 $masterdata[$meta->getName()] = $meta->getTableName();
             }
         }
