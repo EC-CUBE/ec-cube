@@ -49,12 +49,12 @@ class MasterdataController extends AbstractController
                     $masterdata = $app['orm.em']->getRepository($data['masterdata'])->findBy(array(), array('rank' => 'ASC'));
 
                     foreach ($masterdata as $key => $value) {
-                        $data['data'][$value['rank']]['id'] = $value['id'];
-                        $data['data'][$value['rank']]['name'] = $value['name'];
+                        $data['data'][$key]['id'] = $value['id'];
+                        $data['data'][$key]['name'] = $value['name'];
                     }
 
-                    $data['data'][$value['rank']+1]['id'] = '';
-                    $data['data'][$value['rank']+1]['name'] = '';
+                    $data['data'][$key+1]['id'] = '';
+                    $data['data'][$key+1]['name'] = '';
 
                     $data['masterdata_name'] = $data['masterdata'];
                 }
@@ -82,22 +82,30 @@ class MasterdataController extends AbstractController
                 $data = $form2->getData();
 
                 $entity = new $data['masterdata_name']();
+                $rank = 0;
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
-                        $entity->setRank($key);
+                        $entity->setRank($rank);
                         $app['orm.em']->merge($entity);
+                        $rank++;
                     } else {
                         // remove
-                        $rank = $app['orm.em']->getRepository($data['masterdata_name'])->findOneBy(array('rank' => $key));
-                        if ($rank) {
-                            $app['orm.em']->remove($rank);
+                        $delKey = $app['orm.em']->getRepository($data['masterdata_name'])->findOneBy(array('rank' => $key));
+                        if ($delKey) {
+                            $app['orm.em']->remove($delKey);
                         }
                     }
                 }
-                $app['orm.em']->flush();
-                $app->addSuccess('admin.register.complete', 'admin');
+
+                try {
+                    $app['orm.em']->flush();
+                    $app->addSuccess('admin.register.complete', 'admin');
+                } catch (\Exception $e) {
+                    // 外部キー制約などで削除できない場合に例外エラーになる
+                    $app->addError('admin.register.failed', 'admin');
+                }
 
                 return $app->redirect($app->url('admin_setting_system_masterdata'));
             }
