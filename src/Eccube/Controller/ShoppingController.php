@@ -743,7 +743,7 @@ class ShoppingController extends AbstractController
     {
 
         if (!$app['eccube.service.cart']->isLocked()) {
-            return $app->redirect($app['url_generator']->generate('cart'));
+            return $app->redirect($app->url('cart'));
         }
 
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
