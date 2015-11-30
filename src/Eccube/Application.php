@@ -504,16 +504,7 @@ class Application extends ApplicationTrait
             ),
         );
 
-        // $this['security.access_rules'] = array(
-        //     array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-        //     array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
-        //     array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-        //     array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-        //     array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
-        //     array('^/mypage', 'ROLE_USER'),
-        // );
-
-        $securityDefaultRules = array(
+        $this['security.access_rules'] = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
@@ -521,16 +512,6 @@ class Application extends ApplicationTrait
             array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
             array('^/mypage', 'ROLE_USER'),
         );
-
-        $authorityRoles = $this['orm.em']->getRepository('Eccube\Entity\AuthorityRole')->findAll();
-
-        $securityExtendRules = array();
-        if (count($authorityRoles) >= 1) {
-            foreach ($authorityRoles as $AuthorityRole) {
-//                $securityExtendRules[] = array("^(?!\/{$this['config']['admin_route']}\\".$AuthorityRole->getTargetUrl().").*$", $AuthorityRole->getAuthority()->getRoleName());
-            }
-        }
-        $this['security.access_rules'] = array_merge_recursive($securityExtendRules, $securityDefaultRules);
 
         $this['eccube.password_encoder'] = $this->share(function($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
@@ -552,6 +533,23 @@ class Application extends ApplicationTrait
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+
+        // Voterの設定
+        $app = $this;
+        $this['authority_voter'] = $this->share(function($app) {
+            return new \Eccube\Security\Voter\AuthorityVoter($app);
+        });
+
+        $app['security.voters'] = $app->extend('security.voters', function($voters) use ($app) {
+            $voters[] = $app['authority_voter'];
+
+            return $voters;
+        });
+
+        $this['security.access_manager'] = $this->share(function($app) {
+            return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
+        });
+
     }
 
     public function initializePlugin()

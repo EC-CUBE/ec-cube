@@ -31,11 +31,6 @@ class Authority extends \Eccube\Entity\AbstractEntity
 {
 
     /**
-     * @var string
-     */
-    const ROLE_NAME_PREFIX = 'ROLE_ADMIN_';
-
-    /**
      * @return string
      */
     public function __toString()

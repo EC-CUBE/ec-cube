@@ -54,7 +54,7 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
      */
     public function getRoles()
     {
-        return array('ROLE_ADMIN', $this->getAuthority()->getRoleName());
+        return array('ROLE_ADMIN');
     }
 
     /**
