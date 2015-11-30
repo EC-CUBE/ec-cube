@@ -40,12 +40,10 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
         self::$server = static::createClient();
         $this->client = self::$server;
-        $this->initializeMailCatcher();
     }
 
     public function tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
