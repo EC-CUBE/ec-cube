@@ -62,6 +62,9 @@ class ProductClassType extends AbstractType
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
                     )),
+                    new Assert\GreaterThan(array(
+                        'value' => '0',
+                    )),
                 ),
             ))
             ->add('sale_limit', 'number', array(
