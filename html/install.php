@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+$baseDir = '../';
+$checkLogFile = $baseDir.'app'.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR.'install.log';
 ini_set('display_errors', 'Off');
 if (!is_writable($checkLogFile)) {
     die('app/log/install.log をウェブサーバーから書き込めるようにしてください');
