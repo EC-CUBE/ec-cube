@@ -101,68 +101,6 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
     }
 
-    public function testRoutingAdminProductCategoryUp()
-    {
-
-        self::markTestSkipped();
-
-        // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
-        $TestCategory = $this->newTestCategory($TestCreator);
-        $this->app['orm.em']->persist($TestCategory);
-        $this->app['orm.em']->flush();
-        $test_category_id = $this->app['eccube.repository.category']
-            ->findOneBy(array(
-                'name' => $TestCategory->getName()
-            ))
-            ->getId();
-
-        // main
-        $redirectUrl = $this->app->url('admin_product_category');
-        $this->client->request('POST',
-            $this->app->url('admin_product_category_up',
-                array('id' => $test_category_id))
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->app['orm.em']->remove($TestCategory);
-        $this->app['orm.em']->flush();
-    }
-
-    public function testRoutingAdminProductCategoryDown()
-    {
-
-        self::markTestSkipped();
-
-        // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
-        $TestCategory = $this->newTestCategory($TestCreator);
-        $this->app['orm.em']->persist($TestCategory);
-        $this->app['orm.em']->flush();
-        $test_category_id = $this->app['eccube.repository.category']
-            ->findOneBy(array(
-                'name' => $TestCategory->getName()
-            ))
-            ->getId();
-
-        // main
-        $redirectUrl = $this->app->url('admin_product_category');
-        $this->client->request('POST',
-            $this->app->url('admin_product_category_down',
-                array('id' => $test_category_id))
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->app['orm.em']->remove($TestCategory);
-        $this->app['orm.em']->flush();
-    }
-
     public function testRoutingAdminProductCategoryDelete()
     {
         // before

@@ -29,9 +29,8 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
     public function testRoutingShoppingLogin()
     {
-        self::markTestSkipped();
         $client = $this->createClient();
-        $client->request('GET', '/shopping/login');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $crawler = $client->request('GET', '/shopping/login');
+        $this->assertTrue($client->getResponse()->isRedirect($this->app['url_generator']->generate('cart')));
     }
 }

@@ -42,21 +42,16 @@ class LoginControllerTest extends AbstractWebTestCase
 
     public function testRoutingAdminLoginCheck()
     {
-        // fixme login のテストを書きたいがsubmit buttonがcrawlerで見つけられないのでボタンが押せない
-        self::markTestSkipped();
+        $crawler = $this->client->request(
+            'POST', $this->app['url_generator']->generate('admin_login'),
+            array(
+                'login_id' => 'admin',
+                'password' => 'password',
+                '_csrf_token' => 'dummy'
+            )
+        );
 
-        $crawler = $this->client->request('GET', $this->app['url_generator']->generate('admin_login'));
-
-        $form = $crawler->selectButton('submit')->form(array(
-            'login_id' => 'admin',
-            'password' => 'password',
-        ));
-
-        $crawler = $this->client->submit($form);
-
-        // ログインしているか
-        $token = $this->app['security']->getToken();
-        $this->assertTrue(null !== $token);
+        $this->assertNotNull($this->app['security']->getToken(), 'ログインしているかどうか');
     }
 
     public function testRoutingAdminLogin_ログインしていない場合は401エラーがかえる()
