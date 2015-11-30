@@ -453,6 +453,7 @@ class ShoppingController extends AbstractController
                     array(
                         'Customer' => $app->user(),
                         'shippingId' => $id,
+                        'error' => true,
                     )
                 );
             }
@@ -513,6 +514,7 @@ class ShoppingController extends AbstractController
             array(
                 'Customer' => $app->user(),
                 'shippingId' => $id,
+                'error' => false,
             )
         );
     }
