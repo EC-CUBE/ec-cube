@@ -339,7 +339,13 @@ class Application extends ApplicationTrait
                     // ログインしていれば管理者のロールを取得
                     $AuthorityRoles = $app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
 
-                    $app['twig']->addGlobal('AuthorityRoles', $AuthorityRoles);
+                    $roles = array();
+                    foreach ($AuthorityRoles as $AuthorityRole) {
+                        // 管理画面でメニュー制御するため相対パス全てをセット
+                        $roles[] = $app['request']->getBaseUrl() . '/' . $app['config']['admin_route'] . $AuthorityRole->getDenyUrl();
+                    }
+
+                    $app['twig']->addGlobal('AuthorityRoles', $roles);
                 }
 
             } else {

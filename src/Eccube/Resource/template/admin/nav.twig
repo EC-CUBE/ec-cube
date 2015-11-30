@@ -20,10 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 
-{% for level1 in app.config.nav %}
-
-{% if level1.target_url is defined and level1.target_url  in AuthorityRoles|keys %}
-{% else %}
+{% for level1 in app.config.nav if app.request.baseUrl ~ '/' ~ app.config.admin_route ~ '/' ~ level1.id not in AuthorityRoles %}
     <li class="{% if active_menus(menus)[0] == level1.id %}active{% endif %}">
         {% if level1.has_child is defined and level1.has_child == true %}
             <a class="toggle">
@@ -33,6 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </a>
             <ul {% if active_menus(menus)[0] == level1.id %}class="active" style="display: block;"{% endif %}>
                 {% for level2 in level1.child %}
+                    {% if level2.url is defined and path(level2.url)  in AuthorityRoles %}
+                    {% else %}
                     <li class="{% if active_menus(menus)[1] == level2.id %}active{% endif %}">
                         {% if level2.has_child is defined and level2.has_child == true %}
                             <a class="toggle">
@@ -41,11 +40,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </a>
                             <ul {% if active_menus(menus)[1] == level2.id %}class="active" style="display: block;"{% endif %}>
                                 {% for level3 in level2.child %}
+                                    {% if level3.url is defined and path(level3.url)  in AuthorityRoles %}
+                                    {% else %}
                                     <li class="{% if active_menus(menus)[2] == level3.id %}active{% endif %}">
                                         <a href="{{ url(level3.url) }}">
                                             {{ level3.name }}
                                         </a>
                                     </li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         {% else %}
@@ -54,6 +56,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </a>
                         {% endif %}
                     </li>
+                   {% endif %}
                 {% endfor %}
             </ul>
         {% else %}
@@ -66,5 +69,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
         {% endif %}
     </li>
-{% endif %}
 {% endfor %}

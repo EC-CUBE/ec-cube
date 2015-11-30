@@ -50,9 +50,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th>権限</th>
                                         <th>名前</th>
                                         <th>所属</th>
+                                        <th>権限</th>
                                         <th>稼働</th>
                                         <th>&nbsp;</th>
                                     </tr>
@@ -60,9 +60,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tbody>
                                     {% for Member in Members %}
                                     <tr>
-                                        <td>{{ Member.Authority.name }}</td>
                                         <td>{{ Member.name }}</td>
                                         <td>{{ Member.department }}</td>
+                                        <td>{{ Member.Authority.name }}</td>
                                         <td>{{ Member.Work.name }}</td>
                                         <td class="icon_edit">
                                             <div class="dropdown">
