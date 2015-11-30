@@ -103,7 +103,7 @@ class InstallApplication extends ApplicationTrait
 
         $app->error(function(\Exception $e, $code) use ($app) {
             if ($code === 404) {
-                return $app->redirect($app['url_generator']->generate('install'));
+                return $app->redirect($app->url('install'));
             } elseif ($app['debug']) {
                 return;
             }
