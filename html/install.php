@@ -21,6 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+ini_set('display_errors', 'Off');
+if (!is_writable($checkLogFile)) {
+    die('app/log/install.log をウェブサーバーから書き込めるようにしてください');
+}
+
 if (function_exists('apc_clear_cache')) {
     apc_clear_cache('user');
     apc_clear_cache();

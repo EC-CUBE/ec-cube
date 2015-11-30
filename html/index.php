@@ -31,12 +31,6 @@ $app = new Eccube\Application();
 $baseDir = '../';
 $checkLogFile = $baseDir.'app'.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR.'install.log';
 
-if (!is_writable($checkLogFile)) {
-    chmod($checkLogFile, 0766);
-    echo 'app/log/install.log に書き込み権限(770)を与えてください';
-    exit();
-}
-
 // インストールされてなければインストーラにリダイレクト
 if ($app['config']['eccube_install']) {
     $app->initialize();
