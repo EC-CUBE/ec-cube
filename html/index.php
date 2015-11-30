@@ -29,7 +29,6 @@ error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
 $app = new Eccube\Application();
 
-
 // インストールされてなければインストーラにリダイレクト
 if ($app['config']['eccube_install']) {
     $app->initialize();
