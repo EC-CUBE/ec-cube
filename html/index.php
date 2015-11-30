@@ -28,8 +28,7 @@ ini_set('display_errors', 'Off');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
 $app = new Eccube\Application();
-$baseDir = '../';
-$checkLogFile = $baseDir.'app'.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR.'install.log';
+
 
 // インストールされてなければインストーラにリダイレクト
 if ($app['config']['eccube_install']) {
