@@ -52,6 +52,13 @@ class AuthorityVoter implements VoterInterface
     function vote(TokenInterface $token, $object, array $attributes)
     {
 
+        try {
+            $request = $this->app['request'];
+        } catch (\RuntimeException $e) {
+            // requestが取得できない場合、無視する(テストプログラムで不要なため)
+            return;
+        }
+
         $path = $this->app['request']->getPathInfo();
 
         $Member = $this->app->user();
