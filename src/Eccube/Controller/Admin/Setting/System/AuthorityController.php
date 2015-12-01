@@ -25,31 +25,25 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\AuthorityRole;
 use Eccube\Controller\AbstractController;
-
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Yaml\Yaml;
-
 
 class AuthorityController extends AbstractController
 {
+
     public function index(Application $app, Request $request)
     {
-
-        $AuthorityRoles = $app['eccube.repository.authority_role']->findAll();
+        $AuthorityRoles = $app['eccube.repository.authority_role']->findAllSort();
 
         $form = $app->form()
             ->add('AuthorityRoles', 'collection', array(
                 'type' => 'admin_authority_role',
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype' => true,
                 'data' => $AuthorityRoles,
             ))
             ->getForm();
+
         // 空行を追加
         $form->get('AuthorityRoles')->add(uniqid(), 'admin_authority_role');
 
@@ -61,13 +55,19 @@ class AuthorityController extends AbstractController
                 $data = $form->getData();
 
                 foreach ($data['AuthorityRoles'] as $AuthorityRole) {
-                    if (!empty($AuthorityRole) && !empty($denyUrl)) {
-                        $Authority = $AuthorityRole->getAuthority();
-                        $denyUrl = $AuthorityRole->getDenyUrl();
+                    $Authority = $AuthorityRole->getAuthority();
+                    $denyUrl = $AuthorityRole->getDenyUrl();
+                    if ($Authority && !empty($denyUrl)) {
                         $app['orm.em']->persist($AuthorityRole);
                     } else {
-                        error_log("hpge");
-                        $app['orm.em']->remove($AuthorityRole);
+                        $id = $AuthorityRole->getId();
+                        if (!empty($id)) {
+                            $role = $app['eccube.repository.authority_role']->find($id);
+                            if ($role) {
+                                // 削除
+                                $app['orm.em']->remove($AuthorityRole);
+                            }
+                        }
                     }
                 }
                 $app['orm.em']->flush();

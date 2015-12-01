@@ -125,7 +125,7 @@ class AuthorityRole extends \Eccube\Entity\AbstractEntity
      * @param \Eccube\Entity\Master\Authority $authority
      * @return AuthorityRole
      */
-    public function setAuthority(\Eccube\Entity\Master\Authority $authority)
+    public function setAuthority(\Eccube\Entity\Master\Authority $authority = null)
     {
         $this->Authority = $authority;
 

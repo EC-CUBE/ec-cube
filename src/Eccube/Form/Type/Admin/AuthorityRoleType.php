@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,17 +54,23 @@ class AuthorityRoleType extends AbstractType
                 'multiple' => false,
                 'required' => false,
                 'empty_value' => 'form.empty_value',
-                'constraints' => array(
-           //         new Assert\NotBlank(),
-                ),
             ))
             ->add('deny_url', 'text', array(
                 'label' => '拒否URL',
                 'required' => false,
-                'constraints' => array(
-            //        new Assert\NotBlank(),
-                ),
             ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+
+                $Authority = $form['Authority']->getData();
+                $denyUrl = $form['deny_url']->getData();
+
+                if (!$Authority && !empty($denyUrl)) {
+                    $form['Authority']->addError(new FormError('権限が選択されていません。'));
+                } else if ($Authority && empty($denyUrl)) {
+                    $form['deny_url']->addError(new FormError('拒否URLが入力されていません。'));
+                }
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }

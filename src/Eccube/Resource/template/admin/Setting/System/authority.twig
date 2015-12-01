@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block title %}システム設定{% endblock %}
 {% block sub_title %}権限管理{% endblock %}
 
-{% form_theme form 'Form/bootstrap_3_layout.html.twig' %}
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
     <form method="post" action="{{ url('admin_setting_system_authority') }}">
@@ -36,16 +36,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">権限設定</h3>
+                    <div style="margin-left: 10px;">
+                        {{ app.request.baseUrl ~ '/' ~ app.config.admin_route}}以降からのURLを拒否URLに入力してください。<br>
+                        {{ app.request.baseUrl ~ '/' ~ app.config.admin_route}}以降のURLがアクセス拒否されます。(URLは前方一致)<br>
+                        例) /setting <span class="text-danger">(「/」を必ず記入してください)</span>
+                    </div>
                 </div><!-- /.box-header -->
                 <div class="box-body form-inline">
                     {% for form in form.AuthorityRoles %}
                         <div class="form-group">
-                            <label for="exampleInputName2">権限</label>
+                            <label>権限 : </label>
                             {{ form_widget(form.Authority) }}
+                            {{ form_errors(form.Authority) }}
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail2">拒否URL</label>
+                            <label>拒否URL : </label>
                             {{ form_widget(form.deny_url) }}
+                            {{ form_errors(form.deny_url) }}
                         </div>
                         <p></p>
                     {% endfor %}

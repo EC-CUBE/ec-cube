@@ -34,4 +34,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class AuthorityRoleRepository extends EntityRepository
 {
+
+    /**
+     * 権限、拒否URLでソートする
+     *
+     * @return array
+     */
+    public function findAllSort()
+    {
+        return $this->findBy(array(), array('Authority' => 'ASC', 'deny_url' => 'ASC'));
+    }
 }
