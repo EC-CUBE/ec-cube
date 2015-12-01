@@ -29,7 +29,6 @@ namespace Eccube\Entity\Master;
  */
 class Authority extends \Eccube\Entity\AbstractEntity
 {
-
     /**
      * @return string
      */
@@ -37,15 +36,6 @@ class Authority extends \Eccube\Entity\AbstractEntity
     {
         return $this->getName();
     }
-
-    /**
-     * @return string
-     */
-    public function getRoleName()
-    {
-        return self::ROLE_NAME_PREFIX . $this->id;
-    }
-
 
     /**
      * @var integer

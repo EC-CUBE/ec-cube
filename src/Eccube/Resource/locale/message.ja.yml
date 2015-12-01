@@ -164,6 +164,8 @@ admin.content.template.delete.current.error: 現在設定中のテンプレー�
 admin.sysmte.security.save.complete: セキュリティ設定を保存しました。
 admin.sysmte.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
 
+admin.sysmte.authority.save.complete: 権限設定を保存しました。
+
 admin.plugin.enable.complete: プラグインを有効にしました。
 admin.plugin.disable.complete: プラグインを無効にしました。
 admin.plugin.already.enable: すでに有効化されています。
