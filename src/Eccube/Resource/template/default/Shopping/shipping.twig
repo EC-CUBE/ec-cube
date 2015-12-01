@@ -34,6 +34,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <span class="text-danger">お届け先登録上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
                     {% endif %}
                     </p>
+                    {% if error %}
+                        <p class="text-danger">お届け先を指定してください。</p>
+                    {% endif %}
 
                     {% if Customer.CustomerAddresses|length > 0 %}
                      <div class="table address_table">
