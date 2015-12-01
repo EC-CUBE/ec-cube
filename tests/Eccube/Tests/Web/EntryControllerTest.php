@@ -29,6 +29,17 @@ use Symfony\Component\HttpKernel\Exception as HttpException;
 
 class EntryControllerTest extends AbstractWebTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->initializeMailCatcher();
+    }
+
+    public function tearDown()
+    {
+        $this->cleanUpMailCatcherMessages();
+        parent::tearDown();
+    }
 
     protected function createFormData()
     {

@@ -97,7 +97,7 @@ class ProductController
                         $app->addRequestError($e->getMessage());
                     }
 
-                    return $app->redirect($app['url_generator']->generate('cart'));
+                    return $app->redirect($app->url('cart'));
                 }
             }
 
