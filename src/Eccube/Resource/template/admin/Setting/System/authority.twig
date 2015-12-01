@@ -37,9 +37,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div class="box-header">
                     <h3 class="box-title">権限設定</h3>
                     <div style="margin-left: 10px;">
-                        {{ app.request.baseUrl ~ '/' ~ app.config.admin_route}}以降からのURLを拒否URLに入力してください。<br>
-                        {{ app.request.baseUrl ~ '/' ~ app.config.admin_route}}以降のURLがアクセス拒否されます。(URLは前方一致)<br>
-                        例) /setting <span class="text-danger">(「/」を必ず記入してください)</span>
+                        <p>{{ app.request.baseUrl ~ '/' ~ app.config.admin_route}}以降からのURLを拒否URLに入力してください。</p>
+                        <p>{{ app.request.baseUrl ~ '/' ~ app.config.admin_route}}以降のURLがアクセス拒否されます。(URLは前方一致)</p>
+                        <p>例) /setting <span class="text-danger">※「/」を必ず記入してください</span></p>
+                        <p> 削除するときは、権限を未選択、拒否URLに何も入力せずに登録すると削除されます。</p>
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body form-inline">
@@ -66,7 +67,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="box-body">
                         <div class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                <button class="btn btn-primary btn-block btn-lg" type="submit">設定</button>
+                                <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
                             </div>
                         </div>
                     </div><!-- /.box-body -->
