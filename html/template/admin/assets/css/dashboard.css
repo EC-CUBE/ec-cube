@@ -2726,7 +2726,7 @@ a.plugin-name:hover {
 
 
 /* 権限管理 */
-#table-authority td.authority select {
+#table-authority td .input-authority {
     width: 200px;
 }
 #table-authority td .input-deny-url {
