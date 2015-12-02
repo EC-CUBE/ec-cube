@@ -27,6 +27,18 @@ namespace Eccube\Tests\Web;
 class ShoppingControllerTest extends AbstractWebTestCase
 {
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->initializeMailCatcher();
+    }
+
+    public function tearDown()
+    {
+        $this->cleanUpMailCatcherMessages();
+        parent::tearDown();
+    }
+
     public function testRoutingShoppingLogin()
     {
         $client = $this->createClient();
@@ -39,8 +51,88 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $this->app['eccube.service.cart']->unlock();
 
         $client = $this->createClient();
-        $crawler = $client->request('GET', '/shopping');
+        $crawler = $client->request('GET', $this->app->path('shopping'));
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+    }
+
+    public function testComplete()
+    {
+        $this->app['session']->set('eccube.front.shopping.order.id', 111);
+
+        $client = $this->createClient();
+        $crawler = $client->request('GET', $this->app->path('shopping_complete'));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertNull($this->app['session']->get('eccube.front.shopping.order.id'));
+    }
+
+    public function testShoppingError()
+    {
+        $client = $this->createClient();
+        $crawler = $client->request('GET', $this->app->path('shopping_error'));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * カート→購入確認画面→完了画面
+     */
+    public function testCompleteWithLogin()
+    {
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $client = $this->createClient();
+        $client->request('POST', '/cart/add', array('product_class_id' => 1));
+        $this->app['eccube.service.cart']->lock();
+
+        $crawler = $client->request('GET', $this->app->path('shopping'));
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_confirm'),
+            array('shopping' =>
+                  array(
+                      'shippings' =>
+                      array(0 =>
+                            array(
+                                'delivery' => 1,
+                                'deliveryTime' => 1
+                            ),
+                      ),
+                      'payment' => 1,
+                      'message' => $faker->text(),
+                      '_token' => 'dummy'
+                  )
+            )
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
+
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $Messages = $this->getMailCatcherMessages();
+        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->actual = $Message->subject;
+        $this->verify();
+
+        // 生成された受注のチェック
+        $Order = $this->app['eccube.repository.order']->findOneBy(
+            array(
+                'Customer' => $Customer
+            )
+        );
+
+        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $this->expected = $OrderNew;
+        $this->actual = $Order->getOrderStatus();
+        $this->verify();
+
+        $this->expected = $Customer->getName01();
+        $this->actual = $Order->getName01();
+        $this->verify();
     }
 }
