@@ -50,7 +50,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    public function logIn(\Eccube\Entity\Customer $user = null)
+    public function logIn($user = null)
     {
         $firewall = 'customer';
 
