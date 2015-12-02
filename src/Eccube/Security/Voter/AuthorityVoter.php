@@ -68,9 +68,18 @@ class AuthorityVoter implements VoterInterface
             $AuthorityRoles = $this->app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
             foreach ($AuthorityRoles as $AuthorityRole) {
                 // 許可しないURLが含まれていればアクセス拒否
-                $denyUrl = preg_quote($AuthorityRole->getDenyUrl(), '/');
-                if (preg_match("/^(\/{$this->app['config']['admin_route']}$denyUrl)/i", $path)) {
-                    return  VoterInterface::ACCESS_DENIED;
+                try {
+                    // 正規表現でURLチェック
+                    $denyUrl = str_replace('/', '\/', $AuthorityRole->getDenyUrl());
+                    if (preg_match("/^(\/{$this->app['config']['admin_route']}$denyUrl)/i", $path)) {
+                        return  VoterInterface::ACCESS_DENIED;
+                    }
+                } catch (\Exception $e) {
+                    // 拒否URLの指定に誤りがある場合、エスケープさせてチェック
+                    $denyUrl = preg_quote($AuthorityRole->getDenyUrl(), '/');
+                    if (preg_match("/^(\/{$this->app['config']['admin_route']}$denyUrl)/i", $path)) {
+                        return  VoterInterface::ACCESS_DENIED;
+                    }
                 }
             }
         }
