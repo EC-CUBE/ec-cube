@@ -45,6 +45,13 @@ class AuthorityController extends AbstractController
             ))
             ->getForm();
 
+        if (count($AuthorityRoles) == 0) {
+            // 1件もない場合、空行を追加
+            $form->get('AuthorityRoles')->add(uniqid(), 'admin_authority_role');
+        }
+
+
+
         if ('POST' === $request->getMethod()) {
 
             $form->handleRequest($request);

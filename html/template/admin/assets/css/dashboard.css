@@ -2724,16 +2724,13 @@ a.plugin-name:hover {
     word-break: break-all;
 }
 
+
 /* 権限管理 */
-#table-authority td.authority,
 #table-authority td.authority select {
     width: 200px;
 }
 #table-authority td .input-deny-url {
     width: 100%;
-}
-#table-authority td.delete {
-    width: 80px;
 }
 
 /*	Fixed Column
