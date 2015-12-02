@@ -74,16 +74,10 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
     public function testConfirmWithNonmember()
     {
         $client = $this->createClient();
-        $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioCartIn($client);
 
         $formData = $this->createNonmemberFormData();
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_nonmember'),
-            array('nonmember' => $formData)
-        );
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioInput($client, $formData);
 
         $crawler = $client->request('GET', $this->app->path('shopping'));
         $this->expected = 'ご注文内容のご確認';
@@ -100,40 +94,17 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $client = $this->createClient();
-        $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioCartIn($client);
 
         $formData = $this->createNonmemberFormData();
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_nonmember'),
-            array('nonmember' => $formData)
-        );
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioInput($client, $formData);
 
-        $crawler = $client->request('GET', $this->app->path('shopping'));
+        $crawler = $this->scenarioConfirm($client);
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_confirm'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
-            )
-        );
+        $this->scenarioComplete($client);
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
@@ -159,8 +130,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
 
         // ユーザーが会員ログイン済みの場合
         $this->logIn();
-        $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioCartIn($client);
 
         $crawler = $client->request('GET', $this->app->path('shopping_nonmember'));
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
@@ -169,8 +139,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
     public function testNonmemberInput()
     {
         $client = $this->createClient();
-        $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioCartIn($client);
 
         $crawler = $client->request('GET', $this->app->path('shopping_nonmember'));
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -179,15 +148,10 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
     public function testNonmemberInputWithPost()
     {
         $client = $this->createClient();
-        $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioCartIn($client);
 
         $formData = $this->createNonmemberFormData();
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_nonmember'),
-            array('nonmember' => $formData)
-        );
+        $this->scenarioInput($client, $formData);
 
         $Nonmember = $this->app['session']->get('eccube.front.shopping.nonmember');
         $this->assertNotNull($Nonmember);
@@ -238,5 +202,53 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
             '_token' => 'dummy'
         );
         return $form;
+    }
+
+    protected function scenarioCartIn($client)
+    {
+        $crawler = $client->request('POST', '/cart/add', array('product_class_id' => 1));
+        $this->app['eccube.service.cart']->lock();
+        return $crawler;
+    }
+
+    protected function scenarioInput($client, $formData)
+    {
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_nonmember'),
+            array('nonmember' => $formData)
+        );
+        $this->app['eccube.service.cart']->lock();
+        return $crawler;
+    }
+
+    protected function scenarioConfirm($client)
+    {
+        $crawler = $client->request('GET', $this->app->path('shopping'));
+        return $crawler;
+    }
+
+    protected function scenarioComplete($client)
+    {
+        $faker = $this->getFaker();
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_confirm'),
+            array('shopping' =>
+                  array(
+                      'shippings' =>
+                      array(0 =>
+                            array(
+                                'delivery' => 1,
+                                'deliveryTime' => 1
+                            ),
+                      ),
+                      'payment' => 1,
+                      'message' => $faker->text(),
+                      '_token' => 'dummy'
+                  )
+            )
+        );
+        return $crawler;
     }
 }
