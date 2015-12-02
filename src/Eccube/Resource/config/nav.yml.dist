@@ -110,6 +110,9 @@
             - id: log
               name: EC-CUBE ログ表示
               url: admin_setting_system_log
+            - id: masterdata
+              name: マスターデータ管理
+              url: admin_setting_system_masterdata
 - id: store
   name: オーナーズストア
   has_child: true
