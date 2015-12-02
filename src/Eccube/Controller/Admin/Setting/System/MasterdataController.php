@@ -48,14 +48,18 @@ class MasterdataController extends AbstractController
                 if ($data['masterdata']) {
                     $masterdata = $app['orm.em']->getRepository($data['masterdata'])->findBy(array(), array('rank' => 'ASC'));
 
-                    foreach ($masterdata as $key => $value) {
-                        $data['data'][$key]['id'] = $value['id'];
-                        $data['data'][$key]['name'] = $value['name'];
+                    $line = 0;
+                    foreach ($masterdata as $value) {
+                        $data['data'][$line]['id'] = $value['id'];
+                        $data['data'][$line]['name'] = $value['name'];
+                        $line++;
                     }
 
-                    $data['data'][$key+1]['id'] = '';
-                    $data['data'][$key+1]['name'] = '';
+                    // 新規登録様に空のデータを追加する。
+                    $data['data'][$line]['id'] = '';
+                    $data['data'][$line]['name'] = '';
 
+                    // hidden値
                     $data['masterdata_name'] = $data['masterdata'];
                 }
             }
