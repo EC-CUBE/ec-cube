@@ -28,6 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Eccube\Application;
+use Eccube\Entity\Member;
 
 class AuthorityVoter implements VoterInterface
 {
@@ -49,9 +50,10 @@ class AuthorityVoter implements VoterInterface
         return true;
     }
 
-    function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes)
     {
 
+        $request = null;
         try {
             $request = $this->app['request'];
         } catch (\RuntimeException $e) {
@@ -59,11 +61,11 @@ class AuthorityVoter implements VoterInterface
             return;
         }
 
-        $path = $this->app['request']->getPathInfo();
+        $path = $request->getPathInfo();
 
         $Member = $this->app->user();
 
-        if ($Member instanceof \Eccube\Entity\Member) {
+        if ($Member instanceof Member) {
             // 管理者のロールをチェック
             $AuthorityRoles = $this->app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
             foreach ($AuthorityRoles as $AuthorityRole) {

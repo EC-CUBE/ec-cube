@@ -40,12 +40,10 @@ class AuthorityController extends AbstractController
                 'type' => 'admin_authority_role',
                 'allow_add' => true,
                 'allow_delete' => true,
+                'prototype' => true,
                 'data' => $AuthorityRoles,
             ))
             ->getForm();
-
-        // 空行を追加
-        $form->get('AuthorityRoles')->add(uniqid(), 'admin_authority_role');
 
         if ('POST' === $request->getMethod()) {
 
@@ -53,6 +51,10 @@ class AuthorityController extends AbstractController
 
             if ($form->isValid()) {
                 $data = $form->getData();
+
+                foreach ($AuthorityRoles as $AuthorityRole) {
+                    $app['orm.em']->remove($AuthorityRole);
+                }
 
                 foreach ($data['AuthorityRoles'] as $AuthorityRole) {
                     $Authority = $AuthorityRole->getAuthority();
