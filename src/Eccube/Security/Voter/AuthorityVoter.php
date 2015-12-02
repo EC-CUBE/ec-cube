@@ -24,11 +24,9 @@
 
 namespace Eccube\Security\Voter;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Eccube\Application;
-use Eccube\Entity\Member;
 
 class AuthorityVoter implements VoterInterface
 {
@@ -65,7 +63,7 @@ class AuthorityVoter implements VoterInterface
 
         $Member = $this->app->user();
 
-        if ($Member instanceof Member) {
+        if ($Member instanceof \Eccube\Entity\Member) {
             // 管理者のロールをチェック
             $AuthorityRoles = $this->app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
             foreach ($AuthorityRoles as $AuthorityRole) {
