@@ -104,7 +104,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
-        $this->scenarioComplete($client);
+        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
@@ -162,6 +162,152 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+    }
+
+    public function testShippingEditChange()
+    {
+        $faker = $this->getFaker();
+        $client = $this->createClient();
+
+        $this->scenarioCartIn($client);
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+        $crawler = $this->scenarioConfirm($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $crawler = $client->request('GET', $crawler->filter('a.btn-shipping-edit')->attr('href'));
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+    }
+
+    /**
+     * 購入確認画面→お届け先の設定(非会員)
+     */
+    public function testShippingEditChangeWithPost()
+    {
+        $faker = $this->getFaker();
+        $client = $this->createClient();
+
+        $this->scenarioCartIn($client);
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+        $crawler = $this->scenarioConfirm($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $crawler = $client->request('POST', $crawler->filter('a.btn-shipping-edit')->attr('href'));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * 購入確認画面→お届け先の設定(非会員)
+     */
+    public function testShippingEditChangeWithPostVerify()
+    {
+        $faker = $this->getFaker();
+        $client = $this->createClient();
+
+        $this->scenarioCartIn($client);
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+
+        // 購入確認画面
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        // お届け先設定画面への遷移前チェック
+        $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
+        $crawler = $this->scenarioComplete($client, $shipping_edit_change_url);
+
+        // お届け先設定画面へ遷移
+        $shipping_edit_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_edit_change_url);
+        $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
+    }
+
+    public function testShippingEdit()
+    {
+        $faker = $this->getFaker();
+        $client = $this->createClient();
+
+        $this->scenarioCartIn($client);
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+        $crawler = $this->scenarioConfirm($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        // お届け先設定画面への遷移前チェック
+        $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
+        $crawler = $this->scenarioComplete($client, $shipping_edit_change_url);
+
+        // お届け先設定画面へ遷移
+        $shipping_edit_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_edit_change_url);
+
+        $crawler = $client->request('GET', $shipping_edit_url);
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $this->expected = 'お届け先の追加';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+    }
+
+    /**
+     * 購入確認画面→お届け先の設定(非会員)→お届け先変更→購入完了
+     */
+    public function testShippingEditWithPostToComplete()
+    {
+        $faker = $this->getFaker();
+        $client = $this->createClient();
+
+        $this->scenarioCartIn($client);
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($client, $formData);
+        $crawler = $this->scenarioConfirm($client);
+
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        // お届け先設定画面への遷移前チェック
+        $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
+        $crawler = $this->scenarioComplete($client, $shipping_edit_change_url);
+
+        // お届け先設定画面へ遷移し POST 送信
+        $shipping_edit_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_edit_change_url);
+        $formData = $this->createNonmemberFormData();
+        $formData['fax'] = array(
+            'fax01' => 111,
+            'fax02' => 111,
+            'fax03' => 111,
+        );
+        unset($formData['email']);
+
+        $crawler = $client->request(
+            'POST',
+            $shipping_edit_url,
+            array('shopping_shipping' => $formData)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        // ご注文完了
+        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $Messages = $this->getMailCatcherMessages();
+        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+
+        $this->assertRegexp('/111-111-111/', $Message->source, '変更した FAX 番号が一致するか');
     }
 
     public function createNonmemberFormData()
@@ -228,12 +374,12 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         return $crawler;
     }
 
-    protected function scenarioComplete($client)
+    protected function scenarioComplete($client, $confirm_url)
     {
         $faker = $this->getFaker();
         $crawler = $client->request(
             'POST',
-            $this->app->path('shopping_confirm'),
+            $confirm_url,
             array('shopping' =>
                   array(
                       'shippings' =>
