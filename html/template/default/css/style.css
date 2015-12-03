@@ -4406,9 +4406,3 @@ fieldset[disabled] .btn-link:focus {
 
 	}
 }
-
-
-/* BootStrap Focus cancel */
-.input_tel input {
-    margin: 5.97px;
-}
