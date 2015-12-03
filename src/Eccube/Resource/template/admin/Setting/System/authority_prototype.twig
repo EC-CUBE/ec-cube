@@ -1,0 +1,13 @@
+    <tr>
+        <td>
+            {{ form_widget(form.Authority, {'attr': {'class': 'input-authority'}}) }}
+            {{ form_errors(form.Authority) }}
+        </td>
+        <td>
+            {{ form_widget(form.deny_url, {'attr': {'class': 'input-deny-url'}}) }}
+            {{ form_errors(form.deny_url) }}
+        </td>
+        <td class="text-center">
+            <button type="button" class="btn btn-default delete">削除</button>
+        </td>
+    </tr>

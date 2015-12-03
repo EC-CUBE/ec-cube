@@ -165,6 +165,10 @@ class Application extends ApplicationTrait
             }
 
             switch ($code) {
+                case 403:
+                    $title = 'アクセスできません。';
+                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                    break;
                 case 404:
                     $title = 'ページがみつかりません。';
                     $message = 'URLに間違いがないかご確認ください。';
@@ -324,13 +328,28 @@ class Application extends ApplicationTrait
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
-            // 管理画面
             if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                // 管理画面
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
-                // フロント画面
+
+                $Member = $app->user();
+                if (is_object($Member)) {
+                    // ログインしていれば管理者のロールを取得
+                    $AuthorityRoles = $app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
+
+                    $roles = array();
+                    foreach ($AuthorityRoles as $AuthorityRole) {
+                        // 管理画面でメニュー制御するため相対パス全てをセット
+                        $roles[] = $app['request']->getBaseUrl() . '/' . $app['config']['admin_route'] . $AuthorityRole->getDenyUrl();
+                    }
+
+                    $app['twig']->addGlobal('AuthorityRoles', $roles);
+                }
+
             } else {
+                // フロント画面
                 $request = $event->getRequest();
                 $route = $request->attributes->get('_route');
 
@@ -490,6 +509,7 @@ class Application extends ApplicationTrait
                 'anonymous' => true,
             ),
         );
+
         $this['security.access_rules'] = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
@@ -498,6 +518,7 @@ class Application extends ApplicationTrait
             array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
             array('^/mypage', 'ROLE_USER'),
         );
+
         $this['eccube.password_encoder'] = $this->share(function($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
         });
@@ -518,6 +539,23 @@ class Application extends ApplicationTrait
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+
+        // Voterの設定
+        $app = $this;
+        $this['authority_voter'] = $this->share(function($app) {
+            return new \Eccube\Security\Voter\AuthorityVoter($app);
+        });
+
+        $app['security.voters'] = $app->extend('security.voters', function($voters) use ($app) {
+            $voters[] = $app['authority_voter'];
+
+            return $voters;
+        });
+
+        $this['security.access_manager'] = $this->share(function($app) {
+            return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
+        });
+
     }
 
     public function initializePlugin()

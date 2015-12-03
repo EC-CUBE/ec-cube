@@ -78,6 +78,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         // Repository
+        $app['eccube.repository.master.authority'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\Master\Authority');
+        });
         $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
         });
@@ -214,6 +217,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.template'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Template');
         });
+        $app['eccube.repository.authority_role'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\AuthorityRole');
+        });
 
         $app['paginator'] = $app->protect(function () {
             return new \Knp\Component\Pager\Paginator();
@@ -321,6 +327,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\ClassCategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\CategoryType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\MemberType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\AuthorityRoleType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\PageLayoutType();
             $types[] = new \Eccube\Form\Type\Admin\NewsType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\TemplateType($app['config']);

@@ -104,6 +104,9 @@
             - id: member
               name: メンバー管理
               url: admin_setting_system_member
+            - id: authority
+              name: 権限管理
+              url: admin_setting_system_authority
             - id: security
               name: セキュリティ管理
               url: admin_setting_system_security
