@@ -82,33 +82,14 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $faker = $this->getFaker();
         $Customer = $this->logIn();
         $client = $this->createClient();
-        $client->request('POST', '/cart/add', array('product_class_id' => 1));
-        $this->app['eccube.service.cart']->lock();
+        $this->scenarioCartIn($client);
 
-        $crawler = $client->request('GET', $this->app->path('shopping'));
+        $crawler = $this->scenarioConfirm($client);
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_confirm'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
-            )
-        );
-
+        $crawler = $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -134,5 +115,53 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $this->expected = $Customer->getName01();
         $this->actual = $Order->getName01();
         $this->verify();
+    }
+
+    protected function scenarioCartIn($client)
+    {
+        $crawler = $client->request('POST', '/cart/add', array('product_class_id' => 1));
+        $this->app['eccube.service.cart']->lock();
+        return $crawler;
+    }
+
+    protected function scenarioInput($client, $formData)
+    {
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('shopping_nonmember'),
+            array('nonmember' => $formData)
+        );
+        $this->app['eccube.service.cart']->lock();
+        return $crawler;
+    }
+
+    protected function scenarioConfirm($client)
+    {
+        $crawler = $client->request('GET', $this->app->path('shopping'));
+        return $crawler;
+    }
+
+    protected function scenarioComplete($client, $confirm_url)
+    {
+        $faker = $this->getFaker();
+        $crawler = $client->request(
+            'POST',
+            $confirm_url,
+            array('shopping' =>
+                  array(
+                      'shippings' =>
+                      array(0 =>
+                            array(
+                                'delivery' => 1,
+                                'deliveryTime' => 1
+                            ),
+                      ),
+                      'payment' => 1,
+                      'message' => $faker->text(),
+                      '_token' => 'dummy'
+                  )
+            )
+        );
+        return $crawler;
     }
 }
