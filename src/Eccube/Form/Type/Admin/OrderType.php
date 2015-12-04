@@ -192,8 +192,15 @@ class OrderType extends AbstractType
             ->add('OrderStatus', 'entity', array(
                 'class' => 'Eccube\Entity\Master\OrderStatus',
                 'property' => 'name',
-                'empty_value' => false,
+                'empty_value' => '選択してください',
                 'empty_data' => null,
+                'query_builder' => function($er) {
+                    return $er->createQueryBuilder('o')
+                        ->orderBy('o.rank', 'ASC');
+                },
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->add('Payment', 'entity', array(
                 'required' => false,

@@ -240,8 +240,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <h4>注文番号 <span class="number">{{ Order.id }}</span></h4>
                                 <div class="form-group">
                                     {{ form_widget(form.OrderStatus) }}
+                                    {{ form_errors(form.OrderStatus) }}
                                 </div>
-                                <div class="small">キャンセルの場合は在庫数を手動で戻してください</div>
+                                <div class="small text-danger">キャンセルの場合は在庫数を手動で戻してください</div>
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
                                 <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date|date_format }}</p>
