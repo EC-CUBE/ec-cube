@@ -191,24 +191,6 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
-    public function testCompleteWitNotActivate()
-    {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionCustomerActivate(0);
-        $this->app['orm.em']->flush();
-
-        $client = $this->createClient();
-        $crawler = $client->request('POST',
-                                    $this->app['url_generator']->generate('entry'),
-                                    array(
-                                        'entry' => $this->createFormData(),
-                                        'mode' => 'complete'
-                                    )
-        );
-
-        $this->assertTrue($client->getResponse()->isRedirect());
-    }
-
     public function testRoutingComplete()
     {
         $client = $this->createClient();
