@@ -240,6 +240,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     /* https://github.com/EC-CUBE/ec-cube/issues/945
      * kana01, kana02 のいずれかが NULL だと検索にヒットしない
+     * 2015'11'20データ構造を変更したためNULはDB上に存在しない
     public function testMultiWithKana01()
     {
         $this->Customer->setKana01('セイ')
@@ -415,8 +416,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    /* https://github.com/EC-CUBE/ec-cube/issues/945
-     * 0 が無視されてしまう
+    // https://github.com/EC-CUBE/ec-cube/issues/945
+    // 0 が無視されてしまう
     public function testBuyTotalStartWithZero()
     {
         $this->Customer->setBuyTotal(0);
@@ -432,7 +433,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->actual = count($this->Results);
         $this->verify();
     }
-    */
 
     public function testBuyTotalEnd()
     {
@@ -467,8 +467,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    /* https://github.com/EC-CUBE/ec-cube/issues/945
-     * 0 が無視されてしまう
+    // https://github.com/EC-CUBE/ec-cube/issues/945
+    //  0 が無視されてしまう
+    /*
     public function testBuyTimesStartWithZero()
     {
         $this->Customer->setBuyTimes(0);

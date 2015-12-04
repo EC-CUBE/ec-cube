@@ -65,6 +65,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     }
 
     /**
+     * 重複機能のため、インナー関数に処理を移譲
      * Loads the user for the given username.
      *
      * This method must throw UsernameNotFoundException if the user is not
@@ -80,29 +81,9 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      */
     public function loadUserByUsername($username)
     {
-        // 本会員ステータスの会員のみ有効.
-        $CustomerStatus = $this
-            ->getEntityManager()
-            ->getRepository('Eccube\Entity\Master\CustomerStatus')
-            ->find(CustomerStatus::ACTIVE);
-
-        $query = $this->createQueryBuilder('c')
-            ->where('c.email = :email')
-            ->andWhere('c.del_flg = :delFlg')
-            ->andWhere('c.Status =:CustomerStatus')
-            ->setParameters(array(
-                'email' => $username,
-                'delFlg' => Constant::DISABLED,
-                'CustomerStatus' => $CustomerStatus,
-            ))
-            ->getQuery();
-        $Customer = $query->getOneOrNullResult();
-        if (!$Customer) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }
-
-        return $Customer;
+        return $this->getActiveCustomerByEmail($username);
     }
+
 
     /**
      * Refreshes the user for the account interface.
@@ -393,11 +374,18 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     {
         $query = $this->createQueryBuilder('c')
             ->where('c.email = :email AND c.Status = :status')
+            ->andWhere('c.del_flg = :delFlg')
             ->setParameter('email', $email)
             ->setParameter('status', CustomerStatus::ACTIVE)
+            ->setParameter(':delFlg', Constant::DISABLED)
             ->getQuery();
 
         $Customer = $query->getOneOrNullResult();
+        /*
+        if (!$Customer) {
+            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+        }
+        */
 
         return $Customer;
     }

@@ -134,6 +134,7 @@ class CustomerRepositoryTest extends EccubeTestCase
     public function testGetActiveCustomerByEmail()
     {
         // XXX loadUserByUsername() と同じ役割？
+        // 2015'11'20にloadUserByUsernameと統合
         $this->actual = $this->Customer;
         $this->expected = $this->app['eccube.repository.customer']->getActiveCustomerByEmail($this->email);
         $this->verify();

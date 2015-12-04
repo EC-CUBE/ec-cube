@@ -154,6 +154,8 @@ abstract class EccubeTestCase extends WebTestCase
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
+            ->setKana01('ほげほげ')
+            ->setKana02('ふがふが')
             ->setEmail($email)
             ->setPref($Pref)
             ->setPassword('password')
