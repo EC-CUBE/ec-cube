@@ -747,11 +747,6 @@ fieldset[disabled] .btn-link:focus {
     padding: 16px 0 48px;
 }
 
-.btn_area ul li {
-    display: table-cell;
-    vertical-align: middle;
-}
-
 /*	dl-horizontal
 ============================ */
 
@@ -1330,11 +1325,14 @@ textarea.form-control{
     width: 80px;
 }
 .order_list .btn_area li {
-    width: 20%;
     min-width: 160px;
     display: inline-block;
     margin-right: 8px;
     margin-bottom: 8px;
+}
+
+.order_list .btn_area li .btn {
+    min-width: 160px;
 }
 
 .order_list .with-border2 {
