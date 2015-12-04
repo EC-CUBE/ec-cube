@@ -307,7 +307,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        $this->assertRegexp('/111-111-111/', $Message->source, '変更した FAX 番号が一致するか');
+        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
 
     public function createNonmemberFormData()
