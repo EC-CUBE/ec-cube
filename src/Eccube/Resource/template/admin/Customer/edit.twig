@@ -150,10 +150,17 @@
                         </div>
                         {# パスワード #}
                         <div class="form-group">
-                            {{ form_label(form.password) }}
+                            {{ form_label(form.password.first) }}
                             <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.password, { type : 'password' }) }}
-                                {{ form_errors(form.password) }}
+                                {{ form_widget(form.password.first, { type : 'password'}) }}
+                                {{ form_errors(form.password.first) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.password.second) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.password.second, { type : 'password'}) }}
+                                {{ form_errors(form.password.second) }}
                             </div>
                         </div>
                         {# 性別 #}
