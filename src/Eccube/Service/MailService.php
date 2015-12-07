@@ -140,10 +140,10 @@ class MailService
         // 問い合わせ者にメール送信
         $message = \Swift_Message::newInstance()
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setFrom(array($this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()))
             ->setTo(array($formData['email']))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setBcc($this->BaseInfo->getEmail02())
+            ->setReplyTo($this->BaseInfo->getEmail02())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
