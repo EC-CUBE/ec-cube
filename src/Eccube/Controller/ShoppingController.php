@@ -31,6 +31,7 @@ use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\MailHistory;
+use Eccube\Exception\ShoppingException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -102,8 +103,13 @@ class ShoppingController extends AbstractController
                 $Customer = $app->user();
             }
 
-            // 受注情報を作成
-            $Order = $app['eccube.service.shopping']->createOrder($Customer);
+            try {
+                // 受注情報を作成
+                $Order = $app['eccube.service.shopping']->createOrder($Customer);
+            } catch (SHoppingException $e) {
+                $app->addRequestError($e->getMessage());
+                return $app->redirect($app->url('cart'));
+            }
 
             // セッション情報を削除
             $app['session']->remove($this->sessionOrderKey);
@@ -302,19 +308,22 @@ class ShoppingController extends AbstractController
 
                     $Delivery = $Shipping->getDelivery();
 
-                    $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
-                        'Delivery' => $Delivery,
-                        'Pref' => $Shipping->getPref()
-                        ));
+                    if ($Delivery) {
+                        $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
+                            'Delivery' => $Delivery,
+                            'Pref' => $Shipping->getPref()
+                            ));
 
-                    // 商品ごとの配送料合計
-                    if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
-                        $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
+                        // 商品ごとの配送料合計
+                        if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
+                            $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
+                        }
+
+                        $Shipping->setDeliveryFee($deliveryFee);
+                        $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
+                        $Shipping->setShippingDeliveryName($Delivery->getName());
                     }
 
-                    $Shipping->setDeliveryFee($deliveryFee);
-                    $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
-                    $Shipping->setShippingDeliveryName($Delivery->getName());
                 }
 
                 // 支払い情報をセット
@@ -846,7 +855,15 @@ class ShoppingController extends AbstractController
                 // 初回アクセス(受注データがない)の場合は, 受注情報を作成
                 if (is_null($Order)) {
                     // 受注情報を作成
-                    $app['eccube.service.shopping']->createOrder($Customer);
+
+                    try {
+                        // 受注情報を作成
+                        $app['eccube.service.shopping']->createOrder($Customer);
+                    } catch (SHoppingException $e) {
+                        $app->addRequestError($e->getMessage());
+                        return $app->redirect($app->url('cart'));
+                    }
+
                 }
 
                 // 非会員用セッションを作成

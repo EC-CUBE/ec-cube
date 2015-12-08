@@ -34,7 +34,9 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
+use Eccube\Exception\ShoppingException;
 use Eccube\Util\Str;
+
 
 class ShoppingService
 {
@@ -521,6 +523,11 @@ class ShoppingService
                 $Shipping = $s;
                 break;
             }
+        }
+
+        if (is_null($Shipping)) {
+            // お届け先情報と関連していない場合、エラー
+            throw new ShoppingException('shopping.delivery.not.producttype');
         }
 
         // 商品ごとの配送料合計
