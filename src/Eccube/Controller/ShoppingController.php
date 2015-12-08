@@ -31,7 +31,7 @@ use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\MailHistory;
-use Eccube\Exception\ShoppingException;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -106,7 +106,7 @@ class ShoppingController extends AbstractController
             try {
                 // 受注情報を作成
                 $Order = $app['eccube.service.shopping']->createOrder($Customer);
-            } catch (ShoppingException $e) {
+            } catch (CartException $e) {
                 $app->addRequestError($e->getMessage());
                 return $app->redirect($app->url('cart'));
             }
@@ -859,7 +859,7 @@ class ShoppingController extends AbstractController
                     try {
                         // 受注情報を作成
                         $app['eccube.service.shopping']->createOrder($Customer);
-                    } catch (ShoppingException $e) {
+                    } catch (CartException $e) {
                         $app->addRequestError($e->getMessage());
                         return $app->redirect($app->url('cart'));
                     }
