@@ -71,7 +71,11 @@ class ShippingItemType extends AbstractType
                     }
                 }
 
+                $deliveryTimes = null;
                 $delivery = $data->getDelivery();
+                if ($delivery) {
+                    $deliveryTimes = $delivery->getDeliveryTimes();
+                }
 
                 $form
                     ->add('delivery', 'entity', array(
@@ -79,6 +83,9 @@ class ShippingItemType extends AbstractType
                         'property' => 'name',
                         'choices' => $deliveries,
                         'data' => $delivery,
+                        'constraints' => array(
+                            new Assert\NotBlank(),
+                        ),
                     ))
                     ->add('shippingDeliveryDate', 'choice', array(
                         'choices' => $deliveryDates,
@@ -89,7 +96,7 @@ class ShippingItemType extends AbstractType
                     ->add('deliveryTime', 'entity', array(
                         'class' => 'Eccube\Entity\DeliveryTime',
                         'property' => 'deliveryTime',
-                        'choices' => $delivery->getDeliveryTimes(),
+                        'choices' => $deliveryTimes,
                         'required' => false,
                         'empty_value' => '指定なし',
                         'empty_data' => null,

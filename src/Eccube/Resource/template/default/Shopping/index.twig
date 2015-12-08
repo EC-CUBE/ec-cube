@@ -251,6 +251,7 @@ $(function(){
                             <div class="form-inline form-group">
                                 <label>配送方法</label>
                                 {{ form_widget(form.shippings[idx].delivery, {'attr': {'class': 'delivery'}}) }}
+                                {{ form_errors(form.shippings[idx].delivery) }}
                             </div>
 
                             <div class="form-inline form-group">

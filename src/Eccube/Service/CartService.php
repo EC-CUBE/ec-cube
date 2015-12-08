@@ -221,6 +221,24 @@ class CartService
             throw new CartException('cart.product.not.status');
         }
 
+        $productName = $ProductClass->getProduct()->getName();
+        if ($ProductClass->hasClassCategory1()) {
+            $productName .= " - ".$ProductClass->getClassCategory1()->getName();
+        }
+        if ($ProductClass->hasClassCategory2()) {
+            $productName .= " - ".$ProductClass->getClassCategory2()->getName();
+        }
+
+        // 商品種別に紐づく配送業者を取得
+        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($ProductClass->getProductType());
+
+        if (count($deliveries) == 0) {
+            // 商品種別が存在しなければエラー
+            $this->removeProduct($ProductClass->getId());
+            $this->addError('cart.product.not.producttype', $productName);
+            throw new CartException('cart.product.not.producttype');
+        }
+
         $this->setCanAddProductType($ProductClass->getProductType());
 
         if ($this->BaseInfo->getOptionMultipleShipping() != Constant::ENABLED) {
@@ -256,13 +274,6 @@ class CartService
         $quantity = $tmp_quantity;
 
         $tmp_quantity = 0;
-        $product_str = $ProductClass->getProduct()->getName();
-        if ($ProductClass->hasClassCategory1()) {
-            $product_str .= " - ".$ProductClass->getClassCategory1()->getName();
-        }
-        if ($ProductClass->hasClassCategory2()) {
-            $product_str .= " - ".$ProductClass->getClassCategory2()->getName();
-        }
 
         /*
          * 実際の在庫は ProductClass::ProductStock だが、購入時にロックがかかるため、
@@ -271,15 +282,15 @@ class CartService
         if (!$ProductClass->getStockUnlimited() && $quantity > $ProductClass->getStock()) {
             if ($ProductClass->getSaleLimit() && $ProductClass->getStock() > $ProductClass->getSaleLimit()) {
                 $tmp_quantity = $ProductClass->getSaleLimit();
-                $this->addError('cart.over.sale_limit', $product_str);
+                $this->addError('cart.over.sale_limit', $productName);
             } else {
                 $tmp_quantity = $ProductClass->getStock();
-                $this->addError('cart.over.stock',  $product_str);
+                $this->addError('cart.over.stock',  $productName);
             }
         }
         if ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
             $tmp_quantity = $ProductClass->getSaleLimit();
-            $this->addError('cart.over.sale_limit', $product_str);
+            $this->addError('cart.over.sale_limit', $productName);
         }
         if ($tmp_quantity) {
             $quantity = $tmp_quantity;
