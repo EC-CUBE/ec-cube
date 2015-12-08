@@ -417,32 +417,28 @@ class EditController extends AbstractController
             $subtotal += $OrderDetail->getTotalPrice();
         }
 
-
         $shippings = $Order->getShippings();
         /** @var \Eccube\Entity\Shipping $Shipping */
         foreach ($shippings as $Shipping) {
             $shipmentItems = $Shipping->getShipmentItems();
             $Shipping->setDelFlg(Constant::DISABLED);
             /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-            if (!$Shipping->getId()) {
-                foreach ($shipmentItems as $ShipmentItem) {
-                    $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
-                    $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
-                    $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
-                        : null);
-                    $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
-                        : null);
-                    $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
-                        : null);
-                    $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
-                        : null);
-                }
+            foreach ($shipmentItems as $ShipmentItem) {
+                $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
+                $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
+                $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
+                    : null);
+                $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
+                    : null);
+                $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
+                    : null);
+                $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
+                    : null);
             }
-
         }
 
         // 受注データの税・小計・合計を再計算
