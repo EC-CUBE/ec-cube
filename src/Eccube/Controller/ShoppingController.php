@@ -106,7 +106,7 @@ class ShoppingController extends AbstractController
             try {
                 // 受注情報を作成
                 $Order = $app['eccube.service.shopping']->createOrder($Customer);
-            } catch (SHoppingException $e) {
+            } catch (ShoppingException $e) {
                 $app->addRequestError($e->getMessage());
                 return $app->redirect($app->url('cart'));
             }
@@ -859,7 +859,7 @@ class ShoppingController extends AbstractController
                     try {
                         // 受注情報を作成
                         $app['eccube.service.shopping']->createOrder($Customer);
-                    } catch (SHoppingException $e) {
+                    } catch (ShoppingException $e) {
                         $app->addRequestError($e->getMessage());
                         return $app->redirect($app->url('cart'));
                     }
