@@ -234,42 +234,39 @@ class OrderType extends AbstractType
         $app = $this->app;
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
 
-            if ('calc' === $app['request']->get('mode')) {
+            $data = $event->getData();
 
-                $data = $event->getData();
+            $orderDetails = &$data['OrderDetails'];
+            $shippings = &$data['Shippings'];
 
-                $orderDetails = &$data['OrderDetails'];
-                $shippings = &$data['Shippings'];
-
-                $shipmentItems = array();
-                foreach ($shippings as &$shipping) {
-                    $items = &$shipping['ShipmentItems'];
-                    if (count($items) > 0) {
-                        foreach ($items as &$item) {
-                            $shipmentItems[] = &$item;
-                        }
+            $shipmentItems = array();
+            foreach ($shippings as &$shipping) {
+                $items = &$shipping['ShipmentItems'];
+                if (count($items) > 0) {
+                    foreach ($items as &$item) {
+                        $shipmentItems[] = &$item;
                     }
                 }
-
-                if (count($orderDetails) > 0) {
-                    $orderDetailsCount = count($orderDetails);
-                    $shipmentItemsCount = count($shipmentItems);
-                    for ($i = 0; $i < $orderDetailsCount; $i++) {
-                        for ($j = 0; $j < $shipmentItemsCount; $j++) {
-                            $itemidx = &$shipmentItems[$j]['itemidx'];
-                            if ($itemidx == $i) {
-                                $shipmentItem = &$shipmentItems[$j];
-                                $shipmentItem['price'] = $orderDetails[$i]['price'];
-                                $orderDetail = &$orderDetails[$i];
-                                $orderDetail['quantity'] = $shipmentItems[$j]['quantity'];
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                $event->setData($data);
             }
+
+            if (count($orderDetails) > 0) {
+                $orderDetailsCount = count($orderDetails);
+                $shipmentItemsCount = count($shipmentItems);
+                for ($i = 0; $i < $orderDetailsCount; $i++) {
+                    for ($j = 0; $j < $shipmentItemsCount; $j++) {
+                        $itemidx = &$shipmentItems[$j]['itemidx'];
+                        if ($itemidx == $i) {
+                            $shipmentItem = &$shipmentItems[$j];
+                            $shipmentItem['price'] = $orderDetails[$i]['price'];
+                            $orderDetail = &$orderDetails[$i];
+                            $orderDetail['quantity'] = $shipmentItems[$j]['quantity'];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            $event->setData($data);
 
         });
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
