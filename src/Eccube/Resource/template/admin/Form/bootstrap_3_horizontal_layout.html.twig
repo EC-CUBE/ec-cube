@@ -2,7 +2,7 @@
 
 {% block form_errors -%}
     {% if errors|length > 0 -%}
-    {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
+    {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-section">{% endif %}
     <ul class="list-unstyled">
         {%- for error in errors -%}
             <p class="errormsg text-danger">{{ error.message |trans }}</p>
