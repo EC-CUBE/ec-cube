@@ -448,8 +448,11 @@ class InstallController
     {
         try {
             $migration = $this->getMigration();
-            // nullを渡すと最新バージョンまでマイグレートする
+
+            // DBとのコネクションを維持するためpingさせる
             $this->PDO->ping();
+
+            // nullを渡すと最新バージョンまでマイグレートする
             $migration->migrate(null, false);
         } catch (MigrationException $e) {
         }
