@@ -58,7 +58,6 @@ class LogController
     private function parseLogFile($logFile, $formData)
     {
         $log = array();
-        $message = array();
 
         foreach (array_reverse(file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) as $line) {
             // 上限に達した場合、処理を抜ける
