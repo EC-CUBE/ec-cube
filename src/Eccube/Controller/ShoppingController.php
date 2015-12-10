@@ -572,7 +572,6 @@ class ShoppingController extends AbstractController
         // 配送先住所最大値判定
         $Customer = $app->user();
         if ($Customer instanceof Customer) {
-            error_log("hoge");
             $addressCurrNum = count($app->user()->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {

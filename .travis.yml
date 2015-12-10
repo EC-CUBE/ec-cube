@@ -49,5 +49,5 @@ after_script:
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
   - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover ; fi
 
-after_failure: 
-  - 'cat app/log/site_`date +"%Y-%m-%d"`.log'
+# after_failure:
+#   - 'cat app/log/site_`date +"%Y-%m-%d"`.log'
