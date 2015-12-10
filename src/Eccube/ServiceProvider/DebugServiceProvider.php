@@ -35,7 +35,7 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
- * Debu Dump
+ * Debug Dump
  *
  * The MIT License (MIT)
  *
