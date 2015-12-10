@@ -47,7 +47,8 @@
         "phing/phing": "2.*",
         "symfony/browser-kit": ">=2.7,<2.8",
         "fabpot/php-cs-fixer": "^1.10",
-        "symfony/var-dumper": ">=2.7,<2.8"
+        "symfony/var-dumper": ">=2.7,<2.8",
+        "symfony/debug-bundle": ">=2.7,<2.8"
     },
     "autoload": {
         "psr-4": {
