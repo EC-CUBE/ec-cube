@@ -116,6 +116,9 @@
             - id: masterdata
               name: マスターデータ管理
               url: admin_setting_system_masterdata
+            - id: cache
+              name: キャッシュ管理
+              url: admin_setting_system_cache
 - id: store
   name: オーナーズストア
   has_child: true
