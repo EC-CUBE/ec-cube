@@ -46,7 +46,8 @@
         "fzaninotto/faker":"1.*",
         "phing/phing": "2.*",
         "symfony/browser-kit": ">=2.7,<2.8",
-        "fabpot/php-cs-fixer": "^1.10"
+        "fabpot/php-cs-fixer": "^1.10",
+        "symfony/var-dumper": ">=2.7,<2.8"
     },
     "autoload": {
         "psr-4": {

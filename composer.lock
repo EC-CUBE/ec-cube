@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "707967f59d156625afeb65d38d5047c5",
-    "content-hash": "9be2d3058dd240e65c97d4b3a648d6a6",
+    "hash": "0e63bc780592a5ff91bdebabf32d7f3e",
+    "content-hash": "0c5cea11739d109aebe598f23a861612",
     "packages": [
         {
             "name": "dflydev/doctrine-orm-service-provider",
@@ -897,7 +897,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -4391,6 +4391,65 @@
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
             "time": "2015-11-19 16:11:24"
+        },
+        {
+            "name": "symfony/var-dumper",
+            "version": "v2.7.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-dumper.git",
+                "reference": "72bcb27411780eaee9469729aace73c0d46fb2b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/72bcb27411780eaee9469729aace73c0d46fb2b8",
+                "reference": "72bcb27411780eaee9469729aace73c0d46fb2b8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "suggest": {
+                "ext-symfony_debug": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Resources/functions/dump.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Component\\VarDumper\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony mechanism for exploring and dumping PHP variables",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "debug",
+                "dump"
+            ],
+            "time": "2015-11-18 13:41:01"
         }
     ],
     "aliases": [],
