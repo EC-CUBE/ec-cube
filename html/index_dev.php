@@ -83,6 +83,10 @@ $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
     'profiler.cache_dir' => __DIR__.'/../app/cache/profiler',
     'profiler.mount_prefix' => '/_profiler',
 ));
+
+// Debug出力
+$app->register(new \Eccube\ServiceProvider\DebugServiceProvider());
+
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
 
 $app->run();
