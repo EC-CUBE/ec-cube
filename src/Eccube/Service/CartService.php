@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\Disp;
+use Eccube\Entity\ProductClass;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -98,23 +99,33 @@ class CartService
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
         $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
+            'Eccube\Entity\ProductClass',
         ));
 
         foreach ($this->cart->getCartItems() as $CartItem) {
-            $ProductClass = $this
-                ->entityManager
-                ->getRepository($CartItem->getClassName())
-                ->find($CartItem->getClassId());
-
-            $CartItem->setObject($ProductClass);
-
-            if (is_null($this->ProductType) && $ProductClass->getDelFlg() == Constant::DISABLED) {
-                $this->setCanAddProductType($ProductClass->getProductType());
-            }
+            $this->loadProductClassFromCartItem($CartItem);
         }
 
         $softDeleteFilter->setExcludes(array());
+    }
+
+    /**
+     * CartItem に対応する ProductClass を設定します。
+     *
+     * @param CartItem $CartItem
+     */
+    protected function loadProductClassFromCartItem(CartItem $CartItem)
+    {
+        $ProductClass = $this
+            ->entityManager
+            ->getRepository($CartItem->getClassName())
+            ->find($CartItem->getClassId());
+
+        $CartItem->setObject($ProductClass);
+
+        if (is_null($this->ProductType) && $ProductClass->getDelFlg() == Constant::DISABLED) {
+            $this->setCanAddProductType($ProductClass->getProductType());
+        }
     }
 
     public function setCanAddProductType(\Eccube\Entity\Master\ProductType $ProductType)
@@ -226,7 +237,7 @@ class CartService
      */
     public function setProductQuantity($ProductClass, $quantity)
     {
-        if (!$ProductClass instanceof \Eccube\Entity\ProductClass) {
+        if (!$ProductClass instanceof ProductClass) {
             $ProductClass = $this->entityManager
                 ->getRepository('Eccube\Entity\ProductClass')
                 ->find($ProductClass);
@@ -303,7 +314,7 @@ class CartService
                 $this->addError('cart.over.sale_limit', $productName);
             } else {
                 $tmp_quantity = $ProductClass->getStock();
-                $this->addError('cart.over.stock',  $productName);
+                $this->addError('cart.over.stock', $productName);
             }
         }
         if ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
@@ -397,12 +408,9 @@ class CartService
         foreach ($this->cart->getCartItems() as $CartItem) {
             $ProductClass = $CartItem->getObject();
             if (!$ProductClass) {
-                $ProductClass = $this
-                    ->entityManager
-                    ->getRepository($CartItem->getClassName())
-                    ->find($CartItem->getClassId());
+                $this->loadProductClassFromCartItem($CartItem);
 
-                $CartItem->setObject($ProductClass);
+                $ProductClass = $CartItem->getObject();
             }
 
             if ($ProductClass->getDelFlg() == Constant::DISABLED) {
@@ -416,10 +424,10 @@ class CartService
                     $quantity = $CartItem->getQuantity();
                     $saleLimit = $ProductClass->getSaleLimit();
                     if ($stockUnlimited == Constant::DISABLED && $ProductClass->getStock() < $quantity) {
-                        // 在庫数が購入数を超えている場合、メッセージを表示
+                        // 購入数が在庫数を超えている場合、メッセージを表示
                         $this->setError('cart.over.stock');
-                    } else if (!is_null($saleLimit) && $saleLimit < $quantity) {
-                        // 販売制限数が購入数を超えている場合、メッセージを表示
+                    } elseif (!is_null($saleLimit) && $saleLimit < $quantity) {
+                        // 購入数が販売制限数を超えている場合、メッセージを表示
                         $this->setError('cart.over.sale_limit');
                     }
                 }
