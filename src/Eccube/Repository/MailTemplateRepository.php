@@ -25,7 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\ORM\NoResultException;
 /**
  * MailTemplateRepository
  *
@@ -34,20 +34,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class MailTemplateRepository extends EntityRepository
 {
-    public function findOrCreate($id)
+    public function findOrCreate($id, \Eccube\Entity\Member $Member = null)
     {
         if ($id == 0) {
-            $Creator = $this
-                ->getEntityManager()
-                ->getRepository('\Eccube\Entity\Member')
-                ->find(2);
-
+            if (is_null($Member)) {
+                throw new \LogicException('You must given Meber Object.');
+            }
             $MailTemplate = new \Eccube\Entity\MailTemplate();
             $MailTemplate
                 ->setDelFlg(0)
-                ->setCreator($Creator)
-            ;
-
+                ->setCreator($Member);
         } else {
             $MailTemplate = $this->find($id);
 
