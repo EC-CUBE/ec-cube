@@ -148,6 +148,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/page/{id}/edit', '\Eccube\Controller\Admin\Content\PageController::edit')->assert('id', '\d+')->bind('admin_content_page_edit');
         $c->delete('/content/page/{id}/delete', '\Eccube\Controller\Admin\Content\PageController::delete')->assert('id', '\d+')->bind('admin_content_page_delete');
 
+        $c->match('/content/cache', '\Eccube\Controller\Admin\Content\CacheController::index')->bind('admin_content_cache');
+
         // shop
         $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
 
@@ -206,9 +208,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         // system/masterdata
         $c->match('/setting/system/masterdata', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata');
         $c->match('/setting/system/masterdata/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::edit')->bind('admin_setting_system_masterdata_edit');
-
-        // system/cache
-        $c->match('/setting/system/cache', '\Eccube\Controller\Admin\Setting\System\CacheController::index')->bind('admin_setting_system_cache');
 
         // store
         $c->match('/store/template', '\Eccube\Controller\Admin\Store\TemplateController::index')->bind('admin_store_template');

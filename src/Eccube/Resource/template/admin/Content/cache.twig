@@ -21,43 +21,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
-{% set menus = ['setting', 'system', 'cache'] %}
+{% set menus = ['content', 'cache'] %}
 
-{% block title %}システム設定{% endblock %}
+{% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}キャッシュ管理{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
-<form name="form1" method="post" action="{{ url('admin_setting_system_cache') }}">
+<form name="form1" method="post" action="{{ url('admin_content_cache') }}">
     {{ form_widget(form._token) }}
     <div class="row">
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Twigキャッシュ管理</h3>
+                    <h3 class="box-title">キャッシュ管理</h3>
                     <div style="margin-left: 10px;">
-                        <p>本番環境でTwigファイルを入れ替えて反映させるにはTwigキャッシュをクリアをする必要があります。</p>
+                        <p class="text-danger">本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュをクリアをする必要があります。</p>
                         <p>キャッシュをクリアをするには「キャッシュクリア」ボタンを押してください。</p>
                     </div>
                 </div>
                 <div class="box-body">
-                    <button type="submit" class="btn btn-primary" name="mode" value="twig">Twigキャッシュクリア</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">全キャッシュ管理</h3>
-                    <div style="margin-left: 10px;">
-                        <p>Twigを含むすべてのキャッシュをクリアする必要がある場合、「全キャッシュクリア」ボタンを押してください。</p>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <button type="submit" class="btn btn-primary" name="mode" value="all">全キャッシュクリア</button>
+                    <button type="submit" class="btn btn-primary" name="mode" value="twig">キャッシュクリア</button>
                 </div>
             </div>
         </div>

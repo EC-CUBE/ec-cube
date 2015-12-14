@@ -22,7 +22,7 @@
  */
 
 
-namespace Eccube\Controller\Admin\Setting\System;
+namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
@@ -47,23 +47,15 @@ class CacheController extends AbstractController
                     case 'twig':
                         // Twigキャッシュクリア
                         Cache::clear($app, false, true);
-                        $app->addSuccess('admin.system.twig.cache.save.complete', 'admin');
+                        $app->addSuccess('admin.content.twig.cache.save.complete', 'admin');
                         break;
-
-                    case 'all':
-                        // sessionを除くキャッシュクリア
-                        Cache::clear($app, false);
-                        $app->addSuccess('admin.system.all.cache.save.complete', 'admin');
-
-                        break;
-
                     default:
                         break;
                 }
             }
         }
 
-        return $app->render('Setting/System/cache.twig', array(
+        return $app->render('Content/cache.twig', array(
             'form' => $form->createView(),
         ));
     }
