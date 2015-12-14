@@ -3203,12 +3203,14 @@ fieldset[disabled] .btn-link:focus {
     /****** Side Setting ********/
 
     .drawer {
+        height: 0;
         visibility: hidden;
         -webkit-transition: visibility 0s 0.3s;
         -moz-transition: visibility 0s 0.3s;
         transition: visibility 0s 0.3s;
     }
     .drawer-open .drawer {
+        height: 100%;
         visibility: visible;
         -webkit-transition: visibility 0s 0s;
         -moz-transition: visibility 0s 0s;
