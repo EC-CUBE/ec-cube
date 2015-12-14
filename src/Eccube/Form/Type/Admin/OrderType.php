@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\Constant;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,7 +49,9 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->app['config'];
+        $app = $this->app;
+        $config = $app['config'];
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder
             ->add('name', 'name', array(
@@ -213,13 +216,13 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('OrderDetails', 'collection', array(
-                'type' => new OrderDetailType($this->app),
+                'type' => new OrderDetailType($app),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($this->app),
+                'type' => new ShippingType($app),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -231,42 +234,44 @@ class OrderType extends AbstractType
                     '\Eccube\Entity\Customer'
                 )));
 
-        $app = $this->app;
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
 
-            $data = $event->getData();
+            if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
 
-            $orderDetails = &$data['OrderDetails'];
-            $shippings = &$data['Shippings'];
+                $data = $event->getData();
 
-            $shipmentItems = array();
-            foreach ($shippings as &$shipping) {
-                $items = &$shipping['ShipmentItems'];
-                if (count($items) > 0) {
-                    foreach ($items as &$item) {
-                        $shipmentItems[] = &$item;
-                    }
-                }
-            }
+                $orderDetails = &$data['OrderDetails'];
+                $shippings = &$data['Shippings'];
 
-            if (count($orderDetails) > 0) {
-                $orderDetailsCount = count($orderDetails);
-                $shipmentItemsCount = count($shipmentItems);
-                for ($i = 0; $i < $orderDetailsCount; $i++) {
-                    for ($j = 0; $j < $shipmentItemsCount; $j++) {
-                        $itemidx = &$shipmentItems[$j]['itemidx'];
-                        if ($itemidx == $i) {
-                            $shipmentItem = &$shipmentItems[$j];
-                            $shipmentItem['price'] = $orderDetails[$i]['price'];
-                            $orderDetail = &$orderDetails[$i];
-                            $orderDetail['quantity'] = $shipmentItems[$j]['quantity'];
-                            break;
+                $shipmentItems = array();
+                foreach ($shippings as &$shipping) {
+                    $items = &$shipping['ShipmentItems'];
+                    if (count($items) > 0) {
+                        foreach ($items as &$item) {
+                            $shipmentItems[] = &$item;
                         }
                     }
                 }
-            }
 
-            $event->setData($data);
+                if (count($orderDetails) > 0) {
+                    $orderDetailsCount = count($orderDetails);
+                    $shipmentItemsCount = count($shipmentItems);
+                    for ($i = 0; $i < $orderDetailsCount; $i++) {
+                        for ($j = 0; $j < $shipmentItemsCount; $j++) {
+                            $itemidx = &$shipmentItems[$j]['itemidx'];
+                            if ($itemidx == $i) {
+                                $shipmentItem = &$shipmentItems[$j];
+                                $shipmentItem['price'] = $orderDetails[$i]['price'];
+                                $orderDetail = &$orderDetails[$i];
+                                $orderDetail['quantity'] = $shipmentItems[$j]['quantity'];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                $event->setData($data);
+            }
 
         });
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
