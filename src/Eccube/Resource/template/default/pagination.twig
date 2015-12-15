@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="pagination">
     <ul>
         {% if pages.previous is defined %}
-        <li>
+        <li class="pagenation__item-previous">
             <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
                aria-label="Previous"><span aria-hidden="true">前へ</span></a>
         </li>
@@ -31,14 +31,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         {% for page in pages.pagesInRange %}
             {% if page == pages.current %}
-                <li class="active"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+                <li class="pagenation__item active"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% else %}
-                <li><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+                <li class="pagenation__item"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% endif %}
         {% endfor %}
 
         {% if pages.next is defined %}
-        <li>
+        <li class="pagenation__item-next">
             <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
                aria-label="Next"><span aria-hidden="true">次へ</span></a>
         </li>
