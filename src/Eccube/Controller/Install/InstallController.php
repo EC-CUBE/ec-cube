@@ -147,10 +147,10 @@ class InstallController
         $form->setData($sessionData);
         if ($this->isValid($request, $form)) {
             $data = $form->getData();
-            $this
-                ->createConfigYamlFile($data)
-                ->createMailYamlFile($data)
-                ->createPathYamlFile($data, $request);
+            // $this
+            //     ->createConfigYamlFile($data)
+            //     ->createMailYamlFile($data)
+            //     ->createPathYamlFile($data, $request);
 
             return $app->redirect($app->url('install_step4'));
         }
@@ -202,7 +202,23 @@ class InstallController
                     ->createTables()
                     ->doMigrate()
                     ->insert();
+
+                $this->createConfigYamlFile($sessionData);
+
+            } else {
+                // データベースを初期化しない場合、auth_magicは初期化しない
+                $this->createConfigYamlFile($sessionData, false);
+
+                $this
+                    ->setPDO()
+                    ->update();
+
             }
+
+            $this
+                ->createMailYamlFile($sessionData)
+                ->createPathYamlFile($sessionData, $request);
+
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $host = $request->getSchemeAndHttpHost();
                 $basePath = $request->getBasePath();
@@ -390,7 +406,7 @@ class InstallController
                 'password_hash_algos' => 'sha256',
             );
             $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
-            $salt = \Eccube\Util\Str::random();
+            $salt = \Eccube\Util\Str::random(32);
 
             $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
             $sth = $this->PDO->prepare('INSERT INTO dtb_base_info (
@@ -427,6 +443,69 @@ class InstallController
 
         return $this;
     }
+
+    private function update()
+    {
+        $this->resetNatTimer();
+
+        $config_file = $this->config_path . '/database.yml';
+        $database = Yaml::parse($config_file);
+        $config['database'] = $database['database'];
+
+        $config_file = $this->config_path . '/config.yml';
+        $baseConfig = Yaml::parse($config_file);
+        $config['config'] = $baseConfig;
+
+        $this->PDO->beginTransaction();
+
+        try {
+
+            $config = array(
+                'auth_type' => '',
+                'auth_magic' => $config['config']['auth_magic'],
+                'password_hash_algos' => 'sha256',
+            );
+            $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
+            $salt = \Eccube\Util\Str::random(32);
+
+            $stmt = $this->PDO->prepare("SELECT member_id FROM dtb_member WHERE login_id = :login_id;");
+            $stmt->execute(array(':login_id' => $this->session_data['login_id']));
+
+            $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
+
+            if ($stmt) {
+                // 同一の管理者IDであればパスワードのみ更新
+                $sth = $this->PDO->prepare("UPDATE dtb_member set password = :admin_pass, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
+                $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt, ':login_id' => $this->session_data['login_id']));
+
+            } else {
+                // 新しい管理者IDが入力されたらinsert
+                $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+                $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
+            }
+
+            $sth = $this->PDO->prepare('UPDATE dtb_base_info set
+                shop_name = :shop_name,
+                email01 = :admin_mail,
+                email02 = :admin_mail,
+                email03 = :admin_mail,
+                email04 = :admin_mail,
+                update_date = current_timestamp
+            WHERE id = 1;');
+            $sth->execute(array(
+                ':shop_name' => $this->session_data['shop_name'],
+                ':admin_mail' => $this->session_data['email']
+            ));
+
+            $this->PDO->commit();
+        } catch (\Exception $e) {
+            $this->PDO->rollback();
+            throw $e;
+        }
+
+        return $this;
+    }
+
 
     private function getMigration()
     {
@@ -484,15 +563,22 @@ class InstallController
         return $protectedDirs;
     }
 
-    private function createConfigYamlFile($data)
+    private function createConfigYamlFile($data, $auth = true)
     {
         $fs = new Filesystem();
         $config_file = $this->config_path . '/config.yml';
+        $config = Yaml::parse(file_get_contents($config_file));
+
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
 
-        $auth_magic = Str::random(32);
+        if ($auth) {
+            $auth_magic = Str::random(32);
+        } else {
+            $auth_magic = $config['auth_magic'];
+        }
+
         $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
         if (empty($allowHost)) {
             $adminAllowHosts = array();
