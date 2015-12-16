@@ -195,10 +195,6 @@ class InstallController
         $form->setData($sessionData);
         if ($this->isValid($request, $form)) {
             $data = $form->getData();
-            // $this
-            //     ->createConfigYamlFile($data)
-            //     ->createMailYamlFile($data)
-            //     ->createPathYamlFile($data, $request);
 
             return $app->redirect($app->url('install_step4'));
         }
@@ -240,7 +236,6 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
-            // $this->createDatabaseYamlFile($form->getData());
 
             return $app->redirect($app->url('install_step5'));
         }
@@ -638,16 +633,20 @@ class InstallController
     {
         $fs = new Filesystem();
         $config_file = $this->config_path . '/config.yml';
-        $config = Yaml::parse($config_file);
 
         if ($fs->exists($config_file)) {
+            $config = Yaml::parse($config_file);
             $fs->remove($config_file);
         }
 
         if ($auth) {
             $auth_magic = Str::random(32);
         } else {
-            $auth_magic = $config['auth_magic'];
+            if (isset($config['auth_magic'])) {
+                $auth_magic = $config['auth_magic'];
+            } else {
+                $auth_magic = Str::random(32);
+            }
         }
 
         $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
