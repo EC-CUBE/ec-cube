@@ -144,6 +144,54 @@ class InstallController
             ->createBuilder('install_step3')
             ->getForm();
         $sessionData = $this->getSessionData($request);
+
+        if (empty($sessionData['shop_name'])) {
+
+            $config_file = $this->config_path . '/config.yml';
+            $fs = new Filesystem();
+
+            if ($fs->exists($config_file)) {
+                // すでに登録されていた場合、登録データを表示
+                $this->setPDO();
+                $stmt = $this->PDO->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
+
+                foreach ($stmt as $row) {
+                    $sessionData['shop_name'] = $row['shop_name'];
+                    $sessionData['email'] = $row['email01'];
+                }
+
+                // セキュリティの設定
+                $config_file = $this->config_path . '/path.yml';
+                $config = Yaml::parse($config_file);
+                $sessionData['admin_dir'] = $config['admin_route'];
+
+                $config_file = $this->config_path . '/config.yml';
+                $config = Yaml::parse($config_file);
+
+                $config_file = $this->config_path . '/config.yml';
+                $config = Yaml::parse($config_file);
+
+                $allowHost = $config['admin_allow_host'];
+                if (count($allowHost) > 0) {
+                    $sessionData['admin_allow_hosts'] = Str::convertLineFeed(implode("\n", $allowHost));
+                }
+                $sessionData['admin_force_ssl'] = (bool)$config['force_ssl'];
+
+                // メール設定
+                $config_file = $this->config_path . '/mail.yml';
+                $config = Yaml::parse($config_file);
+                $mail = $config['mail'];
+                $sessionData['mail_backend'] = $mail['transport'];
+                $sessionData['smtp_host'] = $mail['host'];
+                $sessionData['smtp_port'] = $mail['port'];
+                $sessionData['smtp_username'] = $mail['username'];
+                $sessionData['smtp_password'] = $mail['password'];
+            } else {
+                // 初期値にmailを設定
+                $sessionData['mail_backend'] = 'mail';
+            }
+        }
+
         $form->setData($sessionData);
         if ($this->isValid($request, $form)) {
             $data = $form->getData();
@@ -168,10 +216,31 @@ class InstallController
             ->getForm();
 
         $sessionData = $this->getSessionData($request);
+
+        if (empty($sessionData['database'])) {
+
+            $config_file = $this->config_path . '/database.yml';
+            $fs = new Filesystem();
+
+            if ($fs->exists($config_file)) {
+                // すでに登録されていた場合、登録データを表示
+
+                // データベース設定
+                $config = Yaml::parse($config_file);
+                $database = $config['database'];
+                $sessionData['database'] = $database['driver'];
+                $sessionData['database_host'] = $database['host'];
+                $sessionData['database_port'] = $database['port'];
+                $sessionData['database_name'] = $database['dbname'];
+                $sessionData['database_user'] = $database['user'];
+                $sessionData['database_password'] = $database['password'];
+            }
+        }
+
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
-            $this->createDatabaseYamlFile($form->getData());
+            // $this->createDatabaseYamlFile($form->getData());
 
             return $app->redirect($app->url('install_step5'));
         }
@@ -216,6 +285,7 @@ class InstallController
             }
 
             $this
+                ->createDatabaseYamlFile($sessionData)
                 ->createMailYamlFile($sessionData)
                 ->createPathYamlFile($sessionData, $request);
 
@@ -470,17 +540,18 @@ class InstallController
 
             $stmt = $this->PDO->prepare("SELECT member_id FROM dtb_member WHERE login_id = :login_id;");
             $stmt->execute(array(':login_id' => $this->session_data['login_id']));
+            $rs = $stmt->fetch();
 
             $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
 
-            if ($stmt) {
+            if ($rs) {
                 // 同一の管理者IDであればパスワードのみ更新
                 $sth = $this->PDO->prepare("UPDATE dtb_member set password = :admin_pass, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
                 $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt, ':login_id' => $this->session_data['login_id']));
 
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $this->PDO->prepare("INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, :login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+                $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
                 $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
             }
 
@@ -567,7 +638,7 @@ class InstallController
     {
         $fs = new Filesystem();
         $config_file = $this->config_path . '/config.yml';
-        $config = Yaml::parse(file_get_contents($config_file));
+        $config = Yaml::parse($config_file);
 
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
