@@ -25,7 +25,6 @@ matrix:
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres # driver currently unsupported by HHVM
   allow_failures:
     - php: hhvm
-    - php: 7.0
     - php: 5.3.3
 
 env:
