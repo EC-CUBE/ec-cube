@@ -66,7 +66,7 @@ class TemplateController extends AbstractController
 
                 // path.ymlの再構築
                 $file = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
-                $config = Yaml::parse($file);
+                $config = Yaml::parse(file_get_contents($file));
 
                 $templateCode = $Template->getCode();
                 $config['template_code'] = $templateCode;

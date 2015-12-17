@@ -229,7 +229,7 @@ class InstallController
     public function complete(InstallApplication $app, Request $request)
     {
         $config_file = $this->config_path . '/path.yml';
-        $config = Yaml::parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
 
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
@@ -294,7 +294,7 @@ class InstallController
     private function setPDO()
     {
         $config_file = $this->config_path . '/database.yml';
-        $config = Yaml::parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
 
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
@@ -329,7 +329,7 @@ class InstallController
     private function getEntityManager()
     {
         $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse($config_file);
+        $database = Yaml::parse(file_get_contents($config_file));
 
         $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $database['database']
@@ -373,11 +373,11 @@ class InstallController
         $this->resetNatTimer();
 
         $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse($config_file);
+        $database = Yaml::parse(file_get_contents($config_file));
         $config['database'] = $database['database'];
 
         $config_file = $this->config_path . '/config.yml';
-        $baseConfig = Yaml::parse($config_file);
+        $baseConfig = Yaml::parse(file_get_contents($config_file));
         $config['config'] = $baseConfig;
 
         $this->PDO->beginTransaction();
@@ -522,7 +522,7 @@ class InstallController
     private function addInstallStatus()
     {
         $config_file = $this->config_path . '/config.yml';
-        $config = Yaml::parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
         $config['eccube_install'] = 1;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);
@@ -632,7 +632,7 @@ class InstallController
     private function sendAppData($params)
     {
         $config_file = $this->config_path . '/database.yml';
-        $db_config = Yaml::parse($config_file);
+        $db_config = Yaml::parse(file_get_contents($config_file));
 
         $this->setPDO();
         $stmt = $this->PDO->query('select version() as v');

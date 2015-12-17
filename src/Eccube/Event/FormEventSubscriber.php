@@ -43,7 +43,7 @@ class FormEventSubscriber implements EventSubscriberInterface
             ->depth(0);
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse($dir->getRealPath() . '/config.yml');
+            $config = Yaml::parse(file_get_contents($dir->getRealPath() . '/config.yml'));
 
             if (isset($config['form'])) {
                 foreach ($config['form'] as $event => $class) {
