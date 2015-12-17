@@ -75,7 +75,7 @@ class ContactController
 
                     case 'complete':
                         // メール送信
-                        $app['eccube.service.mail']->sendrContactMail($form->getData());
+                        $app['eccube.service.mail']->sendContactMail($form->getData());
 
                         return $app->redirect($app->url('contact_complete'));
                         break;

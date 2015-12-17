@@ -129,7 +129,7 @@ class MailService
      *
      * @param $formData お問い合わせ内容
      */
-    public function sendrContactMail($formData)
+    public function sendContactMail($formData)
     {
 
         $body = $this->app->renderView('Mail/contact_mail.twig', array(
@@ -151,6 +151,18 @@ class MailService
 
     }
 
+    /**
+     * Alias of sendContactMail().
+     *
+     * @param $formData お問い合わせ内容
+     * @see sendContactMail()
+     * @deprected since 3.0.0, to be removed in 3.1
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1315
+     */
+    public function sendrContactMail($formData)
+    {
+        $this->sendContactMail($formData);
+    }
 
     /**
      * Send order mail.
