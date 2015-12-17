@@ -86,6 +86,7 @@ class Application extends ApplicationTrait
             $constant_yml_dist = $distPath.'/constant.yml.dist';
             if (file_exists($constant_yml_dist)) {
                 $config_constant_dist = Yaml::parse($constant_yml_dist);
+                var_dump($config_constant_dist);
             }
 
             $configAll = array_replace_recursive($config_constant_dist, $config_dist, $config_constant, $config_path, $config);
