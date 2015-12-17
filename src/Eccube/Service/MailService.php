@@ -156,7 +156,7 @@ class MailService
      *
      * @param $formData お問い合わせ内容
      * @see sendContactMail()
-     * @deprected since 3.0.0, to be removed in 3.1
+     * @deprecated since 3.0.0, to be removed in 3.1
      * @link https://github.com/EC-CUBE/ec-cube/issues/1315
      */
     public function sendrContactMail($formData)
