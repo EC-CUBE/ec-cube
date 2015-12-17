@@ -24,20 +24,13 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Common\Constant;
+
 /**
  * CustomerAddress
  */
 class CustomerAddress extends \Eccube\Entity\AbstractEntity
 {
-
-    /**
-     * @return string
-     */
-    public function getShippingMultipleDefaultName()
-    {
-        return $this->getName01() . ' ' . $this->getAddr02() . ' ' . $this->getPref()->getName() . $this->getAddr01();
-    }
-
     /**
      * @var integer
      */
@@ -152,6 +145,52 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\Master\Pref
      */
     private $Pref;
+
+    public function __construct()
+    {
+        $this->setDelFlg(Constant::DISABLED);
+    }
+
+    /**
+     * getShippingMultipleDefaultName
+     * 
+     * @return string
+     */
+    public function getShippingMultipleDefaultName()
+    {
+        return $this->getName01() . ' ' . $this->getAddr02() . ' ' . $this->getPref()->getName() . $this->getAddr01();
+    }
+    
+    /**
+     * Set from customer.
+     * 
+     * @param \Eccube\Entity\Customer $Customer
+     * @return \Eccube\Entity\CustomerAddress
+     */
+    public function setFromCustomer(Customer $Customer)
+    {
+        $this
+            ->setCustomer($Customer)
+            ->setName01($Customer->getName01())
+            ->setName02($Customer->getName02())
+            ->setKana01($Customer->getKana01())
+            ->setKana02($Customer->getKana02())
+            ->setCompanyName($Customer->getCompanyName())
+            ->setTel01($Customer->getTel01())
+            ->setTel02($Customer->getTel02())
+            ->setTel03($Customer->getTel03())
+            ->setFax01($Customer->getFax01())
+            ->setFax02($Customer->getFax02())
+            ->setFax03($Customer->getFax03())
+            ->setZip01($Customer->getZip01())
+            ->setZip02($Customer->getZip02())
+            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+            ->setPref($Customer->getPref())
+            ->setAddr01($Customer->getAddr01())
+            ->setAddr02($Customer->getAddr02());
+
+        return $this;
+    }
 
     /**
      * Get id

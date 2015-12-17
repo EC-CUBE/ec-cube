@@ -115,11 +115,11 @@ class EntryControllerTest extends AbstractWebTestCase
         $client = $this->createClient();
 
         $crawler = $client->request('POST',
-                                    $this->app['url_generator']->generate('entry'),
-                                    array(
-                                        'entry' => $this->createFormData(),
-                                        'mode' => 'confirm'
-                                    )
+            $this->app['url_generator']->generate('entry'),
+            array(
+                'entry' => $this->createFormData(),
+                'mode' => 'confirm',
+            )
         );
 
         $this->expected = '新規会員登録確認';
@@ -134,11 +134,11 @@ class EntryControllerTest extends AbstractWebTestCase
         $client = $this->createClient();
 
         $crawler = $client->request('POST',
-                                    $this->app['url_generator']->generate('entry'),
-                                    array(
-                                        'entry' => array(),
-                                        'mode' => 'confirm'
-                                    )
+            $this->app['url_generator']->generate('entry'),
+            array(
+                'entry' => array(),
+                'mode' => 'confirm'
+            )
         );
 
         $this->expected = '新規会員登録';
@@ -153,11 +153,11 @@ class EntryControllerTest extends AbstractWebTestCase
         $client = $this->createClient();
 
         $crawler = $client->request('POST',
-                                    $this->app['url_generator']->generate('entry'),
-                                    array(
-                                        'entry' => $this->createFormData(),
-                                        'mode' => 'aaaaa'
-                                    )
+            $this->app['url_generator']->generate('entry'),
+            array(
+                'entry' => $this->createFormData(),
+                'mode' => 'aaaaa'
+            )
         );
 
         $this->expected = '新規会員登録';
@@ -175,11 +175,11 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $client = $this->createClient();
         $crawler = $client->request('POST',
-                                    $this->app['url_generator']->generate('entry'),
-                                    array(
-                                        'entry' => $this->createFormData(),
-                                        'mode' => 'complete'
-                                    )
+            $this->app['url_generator']->generate('entry'),
+            array(
+                'entry' => $this->createFormData(),
+                'mode' => 'complete'
+            )
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('entry_complete')));
