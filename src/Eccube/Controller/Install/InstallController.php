@@ -511,7 +511,7 @@ class InstallController
         );
         $fs->dumpFile($config_file, $content);
 
-        $config = Yaml::Parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
         $config['admin_allow_host'] = $adminAllowHosts;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);

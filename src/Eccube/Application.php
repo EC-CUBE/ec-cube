@@ -666,7 +666,7 @@ class Application extends ApplicationTrait
                 $subscriber = new $class($this);
 
                 if (file_exists($dir->getRealPath().'/event.yml')) {
-                    foreach (Yaml::Parse($dir->getRealPath().'/event.yml') as $event => $handlers) {
+                    foreach (Yaml::parse(file_get_contents($dir->getRealPath().'/event.yml')) as $event => $handlers) {
                         foreach ($handlers as $handler) {
                             if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
                                 $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;

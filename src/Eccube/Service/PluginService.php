@@ -140,7 +140,7 @@ class PluginService
 
     public function readYml($yml)
     {
-        return Yaml::Parse($yml);
+        return Yaml::parse(file_get_contents($yml));
     }
 
     public function checkSymbolName($string)
@@ -244,8 +244,8 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
 
-        $this->callPluginManagerMethod(Yaml::Parse($pluginDir.'/'.self::CONFIG_YML), 'disable');
-        $this->callPluginManagerMethod(Yaml::Parse($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
+        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
+        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
 
@@ -286,7 +286,7 @@ class PluginService
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
             $em->persist($plugin);
-            $this->callPluginManagerMethod(Yaml::Parse($pluginDir.'/'.self::CONFIG_YML), $enable ? 'enable' : 'disable');
+            $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {
