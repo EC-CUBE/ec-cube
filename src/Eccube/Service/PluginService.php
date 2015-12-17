@@ -140,7 +140,11 @@ class PluginService
 
     public function readYml($yml)
     {
-        return Yaml::parse(file_get_contents($yml));
+        if (file_exists($yml)) {
+            return Yaml::parse(file_get_contents($yml));
+        }
+
+        return false;
     }
 
     public function checkSymbolName($string)
