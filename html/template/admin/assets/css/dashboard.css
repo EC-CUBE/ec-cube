@@ -2731,6 +2731,18 @@ a.plugin-name:hover {
     width: 100%;
 }
 
+/* ログ表示 */
+#line-max {
+    width: 60px;
+}
+
+textarea#log {
+    font-size: 1.4rem;
+    line-height: 1.9;
+    color: #141823;
+    background-color: #fdfdfd;
+}
+
 /*	Fixed Column
 ============================ */
 

@@ -57,10 +57,7 @@ class LogController
 
     private function parseLogFile($logFile, $formData)
     {
-        $pattern = '/\[(?P<date>.*)\] (?P<logger>\w+).(?P<level>\w+): (?P<message>.*)$/';
-
         $log = array();
-        $message = array();
 
         foreach (array_reverse(file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) as $line) {
             // 上限に達した場合、処理を抜ける
@@ -68,26 +65,7 @@ class LogController
                 break;
             }
 
-            $line = chop($line);
-            if (preg_match($pattern, $line, $data)) {
-                $message[] = $data['message'];
-                // messageをここで分解し直す
-                // 改行コードにするとややこしいのでbrで改行する
-                preg_match('/(?P<message>.*[^ ]+) (?P<context>[^ ]+) (?P<extra>[^ ]+)/', implode("<br>", array_reverse($message)), $res);
-                $message = array();
-
-                $log[] = array(
-                    'date' => \DateTime::createFromFormat('Y-m-d H:i:s', $data['date']),
-                    'logger' => $data['logger'],
-                    'level' => $data['level'],
-                    'message' => $res['message'],
-                    'context' => var_export(json_decode($res['context'], true), true),
-                    'extra' => var_export(json_decode($res['extra'], true), true),
-                );
-            } else {
-                // 内容が改行されている場合がある
-                $message[] = $line;
-            }
+            $log[] = $line;
         }
         return $log;
     }
