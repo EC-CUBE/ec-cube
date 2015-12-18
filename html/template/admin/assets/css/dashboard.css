@@ -960,10 +960,10 @@ textarea.form-control{
     height: 200px;
 }
 
-.alert {
+.alert-section {
     border-radius: 0;
-	margin-top: -16px;
-	position: relative;
+    margin-top: -16px;
+    position: relative;
 }
 
 /* form inline for smartphone */
