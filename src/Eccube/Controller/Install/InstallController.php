@@ -168,9 +168,6 @@ class InstallController
                 $config_file = $this->config_path . '/config.yml';
                 $config = Yaml::parse(file_get_contents($config_file));
 
-                $config_file = $this->config_path . '/config.yml';
-                $config = Yaml::parse(file_get_contents($config_file));
-
                 $allowHost = $config['admin_allow_host'];
                 if (count($allowHost) > 0) {
                     $sessionData['admin_allow_hosts'] = Str::convertLineFeed(implode("\n", $allowHost));
