@@ -39,10 +39,10 @@ class ChangeController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-        $LoginCustomer = $app->user();
+        $Customer = $app->user();
+        $LoginCustomer = clone $Customer;
         $app['orm.em']->detach($LoginCustomer);
 
-        $Customer = $app['eccube.repository.customer']->find($LoginCustomer->getId());
         $previous_password = $Customer->getPassword();
         $Customer->setPassword($app['config']['default_password']);
 
@@ -65,6 +65,8 @@ class ChangeController extends AbstractController
 
             return $app->redirect($app->url('mypage_change_complete'));
         }
+
+        $app['security']->getToken()->setUser($LoginCustomer);
 
         return $app->renderView('Mypage/change.twig', array(
             'form' => $form->createView(),

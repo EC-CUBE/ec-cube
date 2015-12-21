@@ -532,11 +532,11 @@ class Application extends ApplicationTrait
         $this['eccube.event_listner.security'] = $this->share(function($app) {
             return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         });
-        $this['user'] = $this->share(function($app) {
+        $this['user'] = function($app) {
             $token = $app['security']->getToken();
 
             return ($token !== null) ? $token->getUser() : null;
-        });
+        };
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
