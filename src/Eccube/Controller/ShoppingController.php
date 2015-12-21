@@ -532,7 +532,7 @@ class ShoppingController extends AbstractController
     {
         // 配送先住所最大値判定
         $Customer = $app->user();
-        if ($Customer instanceof Customer) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             $addressCurrNum = count($app->user()->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
@@ -556,13 +556,15 @@ class ShoppingController extends AbstractController
         if (!$Shipping) {
             throw new NotFoundHttpException();
         }
-        if ($Customer instanceof Customer) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             $Shipping->clearCustomerAddress();
         }
 
         $CustomerAddress = new CustomerAddress();
-        if ($Customer instanceof Customer) {
+        if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
             $CustomerAddress->setCustomer($Customer);
+        } else {
+            $CustomerAddress->setFromShipping($Shipping);
         }
 
         $builder = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress);

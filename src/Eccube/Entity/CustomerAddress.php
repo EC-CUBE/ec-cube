@@ -191,6 +191,36 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
 
         return $this;
     }
+    
+    /**
+     * Set from Shipping.
+     * 
+     * @param \Eccube\Entity\Shipping $Shipping
+     * @return \Eccube\Entity\CustomerAddress
+     */
+    public function setFromShipping(Shipping $Shipping)
+    {
+        $this
+            ->setName01($Shipping->getName01())
+            ->setName02($Shipping->getName02())
+            ->setKana01($Shipping->getKana01())
+            ->setKana02($Shipping->getKana02())
+            ->setCompanyName($Shipping->getCompanyName())
+            ->setTel01($Shipping->getTel01())
+            ->setTel02($Shipping->getTel02())
+            ->setTel03($Shipping->getTel03())
+            ->setFax01($Shipping->getFax01())
+            ->setFax02($Shipping->getFax02())
+            ->setFax03($Shipping->getFax03())
+            ->setZip01($Shipping->getZip01())
+            ->setZip02($Shipping->getZip02())
+            ->setZipCode($Shipping->getZip01() . $Shipping->getZip02())
+            ->setPref($Shipping->getPref())
+            ->setAddr01($Shipping->getAddr01())
+            ->setAddr02($Shipping->getAddr02());
+
+        return $this;
+    }
 
     /**
      * Get id
