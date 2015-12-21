@@ -2738,6 +2738,7 @@ a.plugin-name:hover {
 
 textarea#log {
     font-size: 1.4rem;
+    font-family: Consolas, 'Courier New', Courier, Monaco, monospace, 'ＭＳ ゴシック', 'MS Gothic', 'Osaka-等幅', 'Osaka-Mono';
     line-height: 1.9;
     color: #141823;
     background-color: #fdfdfd;
