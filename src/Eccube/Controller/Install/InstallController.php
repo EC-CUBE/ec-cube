@@ -592,6 +592,9 @@ class InstallController
             $migration = $this->getMigration();
 
             // DBとのコネクションを維持するためpingさせる
+            if (is_null($this->PDO)) {
+                $this->setPDO();
+            }
             $this->PDO->ping();
 
             // nullを渡すと最新バージョンまでマイグレートする
