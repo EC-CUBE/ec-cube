@@ -496,7 +496,7 @@ class Application extends ApplicationTrait
                     'target_url' => '/',
                 ),
                 'remember_me' => array(
-                    'key' => sha1($this['config']['auth_magic']),
+                    'key' => sha1(__DIR__),
                     'name' => 'eccube_rememberme',
                     // lifetimeはデフォルトの1年間にする
                     // 'lifetime' => $this['config']['cookie_lifetime'],
