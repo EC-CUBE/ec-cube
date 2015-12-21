@@ -39,7 +39,7 @@ class ConsoleApplication extends \Silex\Application
         $config = array();
         $file = __DIR__ . '/../../app/config/eccube/database.yml';
         if (file_exists($file)) {
-            $config = Yaml::parse($file);
+            $config = Yaml::parse(file_get_contents($file));
         }
 
         // Doctrine ORM

@@ -45,13 +45,13 @@ class InstallApplication extends ApplicationTrait
             $configConstant = array();
             $constantYamlPath = $distPath.'/constant.yml.dist';
             if (file_exists($constantYamlPath)) {
-                $configConstant = Yaml::parse($constantYamlPath);
+                $configConstant = Yaml::parse(file_get_contents($constantYamlPath));
             }
 
             $configLog = array();
             $logYamlPath = $distPath.'/log.yml.dist';
             if (file_exists($logYamlPath)) {
-                $configLog = Yaml::parse($logYamlPath);
+                $configLog = Yaml::parse(file_get_contents($logYamlPath));
             }
 
             $config = array_replace_recursive($configConstant, $configLog);
@@ -60,7 +60,7 @@ class InstallApplication extends ApplicationTrait
         });
 
         $distPath = __DIR__.'/../../src/Eccube/Resource/config';
-        $config_dist = Yaml::parse($distPath.'/config.yml.dist');
+        $config_dist = Yaml::parse(file_get_contents($distPath.'/config.yml.dist'));
         if (!empty($config_dist['timezone'])) {
             date_default_timezone_set($config_dist['timezone']);
         }
