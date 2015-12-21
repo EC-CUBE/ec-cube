@@ -392,13 +392,13 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
-            list($json, $httpHeader) = $this->getRequestApi($request, $authKey, $url);
+            list($json, $info) = $this->getRequestApi($request, $authKey, $url);
 
             if ($json === false) {
                 // 接続失敗時
                 $success = 0;
 
-                $message = $this->getResponseErrorMessage($httpHeader);
+                $message = $this->getResponseErrorMessage($info);
 
             } else {
                 // 接続成功時
@@ -508,12 +508,12 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
-            list($json, $httpHeader) = $this->getRequestApi($request, $authKey, $url);
+            list($json, $info) = $this->getRequestApi($request, $authKey, $url);
 
             if ($json === false) {
                 // 接続失敗時
 
-                $message = $this->getResponseErrorMessage($httpHeader);
+                $message = $this->getResponseErrorMessage($info);
 
             } else {
                 // 接続成功時
@@ -647,36 +647,46 @@ class PluginController extends AbstractController
      */
     private function getRequestApi(Request $request, $authKey, $url)
     {
-        $opts = array(
-            'http' => array(
-                'method' => 'GET',
-                'ignore_errors' => false,
-                'timeout' => 60,
-                'header' => array(
-                    'Authorization: ' . base64_encode($authKey),
-                    'x-eccube-store-url: ' . base64_encode($request->getSchemeAndHttpHost() . $request->getBasePath()),
-                    'x-eccube-store-version: ' . base64_encode(Constant::VERSION)
-                )
-            )
+        $curl = curl_init($url);
+
+        $options = array(           // オプション配列
+            //HEADER
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: ' . base64_encode($authKey),
+                'x-eccube-store-url: ' . base64_encode($request->getSchemeAndHttpHost() . $request->getBasePath()),
+                'x-eccube-store-version: ' . base64_encode(Constant::VERSION),
+            ),
+            CURLOPT_HTTPGET => true,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FAILONERROR => true,
         );
 
-        $context = stream_context_create($opts);
+        curl_setopt_array($curl, $options); /// オプション値を設定
 
-        $json = @file_get_contents($url, false, $context);
+        $result = curl_exec($curl);
+        $info = curl_getinfo($curl);
 
-        return array($json, $http_response_header);
+        $errno = curl_errno($curl);
+        $error = curl_error($curl);
+        $message = curl_strerror($errno);
+        $info['message'] = $message;
+        curl_close($curl);
+
+        return array($result, $info);
     }
 
     /**
-     * レスポンスヘッダーのチェック
+     * レスポンスのチェック
      *
-     * @param $httpHeader
+     * @param $info
      * @return string
      */
-    private function getResponseErrorMessage($httpHeader)
+    private function getResponseErrorMessage($info)
     {
-        if (!empty($httpHeader)) {
-            list($version, $statusCode, $message) = explode(' ', $httpHeader[0], 3);
+        if (!empty($info)) {
+            $statusCode = $info['http_code'];
+            $message = $info['message'];
 
             switch ($statusCode) {
                 case '404':
@@ -686,7 +696,7 @@ class PluginController extends AbstractController
                     $message = $statusCode . ' : ' . $message;
                     break;
                 default:
-                    $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
+                    $message = $statusCode . ' : ' . $message;
                     break;
             }
         } else {
