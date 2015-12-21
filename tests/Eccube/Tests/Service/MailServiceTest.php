@@ -117,6 +117,10 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verifyRegExp($BccMessage, 'BCC');
     }
 
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1315
+     * @deprecated since 3.0.0, to be removed in 3.1
+     */
     public function testSendrContactMail()
     {
         $faker = $this->getFaker();
@@ -154,6 +158,66 @@ class MailServiceTest extends AbstractServiceTestCase
         );
 
         $this->app['eccube.service.mail']->sendrContactMail($formData);
+
+        $Messages = $this->getMessages();
+        $Message = $this->getMessage($Messages[0]->id);
+
+        $this->expected = '[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->actual = $Message->subject;
+        $this->verify();
+
+        $this->expected = '<'.$email.'>';
+        $this->actual = $Message->recipients[0];
+        $this->verify();
+
+        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
+        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+
+        $this->expected = 'お問い合わせ内容';
+        $this->verifyRegExp($Message, 'お問い合わせ内容');
+
+        $BccMessage = $this->getMessage($Messages[1]->id);
+        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
+        $this->verifyRegExp($BccMessage, 'BCC');
+    }
+
+    public function testSendContactMail()
+    {
+        $faker = $this->getFaker();
+        $name01 = $faker->lastName;
+        $name02 = $faker->firstName;
+        $kana01 = $faker->lastName;
+        $kana02 = $faker->firstName;
+        $email = $faker->email;
+        $zip = $faker->postCode;
+        $zip01 = substr($zip, 0, 3);
+        $zip02 = substr($zip, 3, 7);
+        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $addr01 = $faker->city;
+        $addr02 = $faker->streetAddress;
+        $tel = explode('-', $faker->phoneNumber);
+        $tel01 = $tel[0];
+        $tel02 = $tel[1];
+        $tel03 = $tel[2];
+
+        $formData = array(
+            'name01' => $name01,
+            'name02' => $name02,
+            'kana01' => $kana01,
+            'kana02' => $kana02,
+            'zip01' => $zip01,
+            'zip02' => $zip02,
+            'pref' => $Pref,
+            'addr01' => $addr01,
+            'addr02' => $addr02,
+            'tel01' => $tel01,
+            'tel02' => $tel02,
+            'tel03' => $tel03,
+            'email' => $email,
+            'contents' => 'お問い合わせ内容'
+        );
+
+        $this->app['eccube.service.mail']->sendContactMail($formData);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
