@@ -60,7 +60,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="confirm_main" class="col-sm-8">
                 <div class="cart_item table">
                     <div class="tbody">
-
                         {% set remessage = '' %}
                         {% for OrderDetail in Order.OrderDetails %}
                             <div class="item_box tr">
@@ -102,17 +101,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </dd>
                                         <dd class="item_price">{{ OrderDetail.price_inc_tax|price }} × {{ OrderDetail.quantity|number_format }}</dd>
                                         <dd class="item_subtotal">小計：{{ OrderDetail.total_price|price }}</dd>
-                                        {% if OrderDetail.product and OrderDetail.price_inc_tax != OrderDetail.productClass.price02IncTax %}
-                                        <dd class="text-danger">
-                                            <strong>【現在価格】{{ OrderDetail.productClass.price02IncTax|price }}</strong>
-                                        </dd>
-                                        {% set remessage = true %}
+                                        {% if OrderDetail.ProductClass and OrderDetail.isPriceChange %}
+                                            <dd class="text-danger">
+                                                <strong>【現在価格】{{ OrderDetail.productClass.price02IncTax|price }}</strong>
+                                            </dd>
+                                            {% set remessage = true %}
                                         {% endif %}
                                     </dl>
                                 </div>
                             </div><!--/item_box-->
                         {% endfor %}
-
                     </div>
                 </div><!--/cart_item-->
 
@@ -140,11 +138,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                             <dl class="item_detail">
                                                 <dt class="item_name text-default">{{ shipmentItem.productName }}</dt>
                                                 <dd class="item_pattern small">
-                                                    {% if shipmentItem.productClass.classCategory1 %}
-                                                        {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
-                                                    {% endif %}
-                                                    {% if shipmentItem.productClass.classCategory2 %}
-                                                        <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
+                                                    {% if shipmentItem.ProductClass %}
+                                                        {% if shipmentItem.ProductClass.classCategory1 %}
+                                                            {{ shipmentItem.ProductClass.classCategory1.className }}：{{ shipmentItem.ProductClass.classCategory1 }}
+                                                        {% endif %}
+                                                        {% if shipmentItem.ProductClass.classCategory2 %}
+                                                            <br>{{ shipmentItem.ProductClass.classCategory2.className }}：{{ shipmentItem.ProductClass.classCategory2 }}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        {% if shipmentItem.classCategoryName1 %}
+                                                            {{ shipmentItem.classCategoryName1 }}
+                                                        {% endif %}
+                                                        {% if shipmentItem.classCategoryName2 %}
+                                                            <br>{{ shipmentItem.classCategoryName2 }}
+                                                        {% endif %}
                                                     {% endif %}
                                                 </dd>
                                                 <dd class="item_price">{{ shipmentItem.priceIncTax|price }} ×{{ shipmentItem.quantity }}</dd>
