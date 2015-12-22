@@ -254,8 +254,15 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
+
+            $this
+                ->createDatabaseYamlFile($sessionData)
+                ->createMailYamlFile($sessionData)
+                ->createPathYamlFile($sessionData, $request);
+
             if (!$form['no_update']->getData()) {
                 set_time_limit(0);
+                $this->createConfigYamlFile($sessionData);
 
                 $this
                     ->setPDO()
@@ -263,9 +270,6 @@ class InstallController
                     ->createTables()
                     ->doMigrate()
                     ->insert();
-
-                $this->createConfigYamlFile($sessionData);
-
             } else {
                 // データベースを初期化しない場合、auth_magicは初期化しない
                 $this->createConfigYamlFile($sessionData, false);
@@ -276,10 +280,6 @@ class InstallController
 
             }
 
-            $this
-                ->createDatabaseYamlFile($sessionData)
-                ->createMailYamlFile($sessionData)
-                ->createPathYamlFile($sessionData, $request);
 
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $host = $request->getSchemeAndHttpHost();
