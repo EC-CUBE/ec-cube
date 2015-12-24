@@ -22,51 +22,41 @@
  */
 
 
-namespace Eccube\Controller\Admin\Setting\System;
+namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
+use Eccube\Util\Cache;
 use Symfony\Component\HttpFoundation\Request;
 
-class LogController
+class CacheController extends AbstractController
 {
+
     public function index(Application $app, Request $request)
     {
-        $formData = array();
-        // default
-        $formData['files'] = 'site_'.date('Y-m-d').'.log';
-        $formData['line_max'] = '50';
 
-        $form = $app['form.factory']
-            ->createBuilder('admin_system_log')
-            ->getForm();
+        $form = $app->form()->getForm();
 
         if ('POST' === $request->getMethod()) {
+
             $form->handleRequest($request);
+
             if ($form->isValid()) {
-                $formData = $form->getData();
+
+                switch ($request->get('mode')) {
+                    case 'twig':
+                        // Twigキャッシュクリア
+                        Cache::clear($app, false, true);
+                        $app->addSuccess('admin.content.twig.cache.save.complete', 'admin');
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
-        $logFile = $app['config']['root_dir'].'/app/log/'.$formData['files'];
-
-        return $app['view']->render('Setting/System/log.twig', array(
+        return $app->render('Content/cache.twig', array(
             'form' => $form->createView(),
-            'log' => $this->parseLogFile($logFile, $formData),
         ));
-    }
-
-    private function parseLogFile($logFile, $formData)
-    {
-        $log = array();
-
-        foreach (array_reverse(file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) as $line) {
-            // 上限に達した場合、処理を抜ける
-            if (count($log) >= $formData['line_max']) {
-                break;
-            }
-
-            $log[] = $line;
-        }
-        return $log;
     }
 }

@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(form.files, {'attr': {'class': 'form-control'}}) }}
                                 </div>
                                 <div class="form-group">
-                                    直近の{{ form_widget(form.line_max, {'attr': {'style': 'width:60px;'}}) }}行を
+                                    直近の{{ form_widget(form.line_max, {'id': 'line-max', 'attr': {'class': 'form-control'}}) }}行を
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-default">読み込む</button>
@@ -51,28 +51,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </form>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            {% for key, item in log %}
-                            <tr>
-                                <td>
-                                    {{item.date.format('Y/m/d H:i:s')}}
-                                </td>
-                                <td>
-                                    {{item.level}}
-                                </td>
-                                <td>
-                                    {{item.message|raw}}
-                                </td>
-                                <td>
-                                    {{item.context|nl2br}}
-                                </td>
-                                <td>
-                                    {{item.extra|nl2br}}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </table>
+                    <div>
+<textarea id="log" class="form-control" rows="20"  wrap="off" readonly>
+{% for line in log %}
+{{ line }}
+{% endfor %}
+</textarea>
                     </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->

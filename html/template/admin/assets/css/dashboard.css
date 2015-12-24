@@ -960,10 +960,10 @@ textarea.form-control{
     height: 200px;
 }
 
-.alert {
+.alert-section {
     border-radius: 0;
-	margin-top: -16px;
-	position: relative;
+    margin-top: -16px;
+    position: relative;
 }
 
 /* form inline for smartphone */
@@ -2729,6 +2729,19 @@ a.plugin-name:hover {
 }
 #table-authority td .input-deny-url {
     width: 100%;
+}
+
+/* ログ表示 */
+#line-max {
+    width: 60px;
+}
+
+textarea#log {
+    font-size: 1.4rem;
+    font-family: Consolas, 'Courier New', Courier, Monaco, monospace, 'ＭＳ ゴシック', 'MS Gothic', 'Osaka-等幅', 'Osaka-Mono';
+    line-height: 1.9;
+    color: #141823;
+    background-color: #fdfdfd;
 }
 
 /*	Fixed Column
