@@ -228,8 +228,14 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
-        $config_file = $this->config_path . '/path.yml';
-        $config = Yaml::parse($config_file);
+        $config_yml = $this->config_path . '/config.yml';
+        $config = Yaml::parse($config_yml);
+        $config_path = $this->config_path . '/path.yml';
+        $path_yml = Yaml::parse($config_path);
+
+        $config = array_replace_recursive($path_yml, $config);
+
+        Request::setTrustedProxies($config['trusted_proxies']);
 
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
@@ -499,11 +505,11 @@ class InstallController
         } else {
             $adminAllowHosts = explode("\n", $allowHost);
         }
-        $proxyHosts = Str::convertLineFeed($data['proxy_hosts']);
-        if (empty($proxyHosts)) {
-            $adminProxyHosts = array();
+        $trustedProxies = Str::convertLineFeed($data['trusted_proxies']);
+        if (empty($trustedProxies)) {
+            $adminTrustedProxies = array();
         } else {
-            $adminProxyHosts = explode("\n", $proxyHosts);
+            $adminTrustedProxies = explode("\n", $trustedProxies);
         }
 
         $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
@@ -519,7 +525,7 @@ class InstallController
 
         $config = Yaml::Parse($config_file);
         $config['admin_allow_host'] = $adminAllowHosts;
-        $config['proxy_hosts'] = $adminProxyHosts;
+        $config['trusted_proxies'] = $adminTrustedProxies;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);
 

@@ -111,7 +111,7 @@ class Step3Type extends AbstractType
                 'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
                 'required' => false,
             ))
-            ->add('proxy_hosts', 'textarea', array(
+            ->add('trusted_proxies', 'textarea', array(
                 'label' => 'ロードバランサー、プロキシサーバのホスト名',
                 'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
                 'required' => false,
