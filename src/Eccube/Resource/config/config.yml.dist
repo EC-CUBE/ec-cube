@@ -3,7 +3,7 @@ password_hash_algos: sha256
 shop_name: ${SHOP_NAME}
 force_ssl: ${FORCE_SSL}
 admin_allow_host:
-proxy_hosts:
+trusted_proxies:
 cookie_lifetime: 0
 locale: ja
 timezone: Asia/Tokyo
