@@ -54,18 +54,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 <p>データベースの初期化を行います。初期化には少し時間がかかる場合があります。<br>
                                     すでにテーブル等が作成されている場合は中断されます。</p>
                             </div>
-                            <form name="form1" id="form1" method="post" action="{{ url('install_step5') }}">
+                            <form name="form1" id="form1" method="post" action="{{ path('install_step5') }}">
                                 {{ form_widget(form._token) }}
                                 <div class="note_box">
                                     <p>旧バージョンをインストールしていて、既存の情報を削除したくない場合はチェックをいれてください。</p>
-                                    <p>
-                                        {{ form_widget(form.no_update) }}
-                                    </p>
+                                    {{ form_widget(form.no_update) }}
                                 </div>
 
                                 <ul class="btn_area">
-                                    <li><button type="submit"class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
-                                    <li><a href="{{ url('install_step4') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
+                                    <li><button type="submit" class="btn btn-primary btn-block btn-lg">次へ進む</button></li>
+                                    <li><a href="{{ path('install_step4') }}" class="btn btn-link btn-block btn-lg">前に戻る</a></li>
                                 </ul>
                             </form>
                         </div>

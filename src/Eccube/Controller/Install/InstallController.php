@@ -92,7 +92,7 @@ class InstallController
     {
         $request->getSession()->remove(self::SESSION_KEY);
 
-        return $app->redirect($app->url('install_step1'));
+        return $app->redirect($app->path('install_step1'));
     }
 
     // ようこそ
@@ -105,7 +105,7 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
-            return $app->redirect($app->url('install_step2'));
+            return $app->redirect($app->path('install_step2'));
         }
 
         $this->checkModules($app);
@@ -152,7 +152,7 @@ class InstallController
                 ->createMailYamlFile($data)
                 ->createPathYamlFile($data, $request);
 
-            return $app->redirect($app->url('install_step4'));
+            return $app->redirect($app->path('install_step4'));
         }
 
         return $app['twig']->render('step3.twig', array(
@@ -173,7 +173,7 @@ class InstallController
         if ($this->isValid($request, $form)) {
             $this->createDatabaseYamlFile($form->getData());
 
-            return $app->redirect($app->url('install_step5'));
+            return $app->redirect($app->path('install_step5'));
         }
 
         return $app['twig']->render('step4.twig', array(
@@ -217,7 +217,7 @@ class InstallController
 
             $request->getSession()->remove(self::SESSION_KEY);
 
-            return $app->redirect($app->url('install_complete'));
+            return $app->redirect($app->path('install_complete'));
         }
 
         return $app['twig']->render('step5.twig', array(
@@ -499,6 +499,12 @@ class InstallController
         } else {
             $adminAllowHosts = explode("\n", $allowHost);
         }
+        $proxyHosts = Str::convertLineFeed($data['proxy_hosts']);
+        if (empty($proxyHosts)) {
+            $adminProxyHosts = array();
+        } else {
+            $adminProxyHosts = explode("\n", $proxyHosts);
+        }
 
         $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
         $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl']);
@@ -513,6 +519,7 @@ class InstallController
 
         $config = Yaml::Parse($config_file);
         $config['admin_allow_host'] = $adminAllowHosts;
+        $config['proxy_hosts'] = $adminProxyHosts;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);
 
@@ -710,7 +717,7 @@ class InstallController
 
         if (empty($Plugins)) {
             // インストール済プラグインがない場合はマイグレーション実行画面へリダイレクト.
-            return $app->redirect($app->url('migration_end'));
+            return $app->redirect($app->path('migration_end'));
         } else {
             return $app['twig']->render('migration_plugin.twig', array(
                 'Plugins' => $Plugins,
