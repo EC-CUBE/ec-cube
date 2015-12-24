@@ -113,7 +113,7 @@ class Step3Type extends AbstractType
             ))
             ->add('trusted_proxies', 'textarea', array(
                 'label' => 'ロードバランサー、プロキシサーバのホスト名',
-                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください',
+                'help' => '複数入力する場合は、IPとIPの間に改行をいれてください（X-Forwarded-Proto、X-Forwarded-Host、X-Forwarded-Portヘッダーに対応してる必要があります）',
                 'required' => false,
             ))
             ->add('mail_backend', 'choice', array(
