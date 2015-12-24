@@ -202,8 +202,8 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
-        if (isset($this['config']['proxy_hosts'])) {
-            Request::setTrustedProxies($this['config']['proxy_hosts']);
+        if (isset($this['config']['trusted_proxies'])) {
+            Request::setTrustedProxies($this['config']['trusted_proxies']);
         }
     }
 
