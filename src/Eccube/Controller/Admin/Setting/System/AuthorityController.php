@@ -81,7 +81,7 @@ class AuthorityController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
-                $app->addSuccess('admin.sysmte.authority.save.complete', 'admin');
+                $app->addSuccess('admin.system.authority.save.complete', 'admin');
 
                 return $app->redirect($app->url('admin_setting_system_authority'));
 

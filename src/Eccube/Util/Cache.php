@@ -40,9 +40,10 @@ class Cache
      *
      * @param Application $app
      * @param boolean $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
+     * @param boolean $isTwig Twigキャッシュファイルのみ削除する場合 true
      * @return boolean 削除に成功した場合 true
      */
-    public static function clear($app, $isAll)
+    public static function clear($app, $isAll, $isTwig = false)
     {
         $cacheDir = $app['config']['root_dir'].'/app/cache';
 
@@ -50,6 +51,11 @@ class Cache
         if ($isAll) {
             $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
             $filesystem->remove($finder);
+        } elseif ($isTwig) {
+            if (is_dir($cacheDir.'/twig')) {
+                $finder = Finder::create()->in($cacheDir.'/twig');
+                $filesystem->remove($finder);
+            }
         } else {
             if (is_dir($cacheDir.'/doctrine')) {
                 $finder = Finder::create()->in($cacheDir.'/doctrine');

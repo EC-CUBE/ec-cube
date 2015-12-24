@@ -61,6 +61,9 @@
       - id: block
         name: ブロック管理
         url: admin_content_block
+      - id: cache
+        name: キャッシュ管理
+        url: admin_content_cache
 - id: setting
   name: 設定
   has_child: true

@@ -125,7 +125,6 @@ class Step3Type extends AbstractType
                 ),
                 'expanded' => true,
                 'multiple' => false,
-                'data' => 'mail',
             ))
             ->add('smtp_host', 'text', array(
                 'label' => 'SMTPホスト',

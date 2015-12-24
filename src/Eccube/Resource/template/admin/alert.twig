@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if app.session.flashBag.has('eccube.admin.success') %}
     {% for message in app.session.flashBag.get('eccube.admin.success') %}
         <div class="row">
-            <div class="alert alert-success alert-dismissable">
+            <div class="alert alert-success alert-dismissable alert-section">
                 <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if app.session.flashBag.has('eccube.admin.info') %}
     {% for message in app.session.flashBag.get('eccube.admin.info') %}
         <div class="row">
-            <div class="alert alert-info alert-dismissable">
+            <div class="alert alert-info alert-dismissable alert-section">
                 <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if app.session.flashBag.has('eccube.admin.warning') %}
     {% for message in app.session.flashBag.get('eccube.admin.warning') %}
         <div class="row">
-            <div class="alert alert-warning alert-dismissable">
+            <div class="alert alert-warning alert-dismissable alert-section">
                 <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if app.session.flashBag.has('eccube.admin.danger') %}
     {% for message in app.session.flashBag.get('eccube.admin.danger') %}
         <div class="row">
-            <div class="alert alert-danger alert-dismissable">
+            <div class="alert alert-danger alert-dismissable alert-section">
                 <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>
@@ -63,7 +63,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if app.session.flashBag.has('eccube.admin.error') %}
     {% for message in app.session.flashBag.get('eccube.admin.error') %}
         <div class="row">
-            <div class="alert alert-danger alert-dismissable">
+            <div class="alert alert-danger alert-dismissable alert-section">
                 <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
                 <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
             </div>

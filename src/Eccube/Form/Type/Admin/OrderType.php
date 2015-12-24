@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\Constant;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,7 +49,9 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->app['config'];
+        $app = $this->app;
+        $config = $app['config'];
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder
             ->add('name', 'name', array(
@@ -213,13 +216,13 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('OrderDetails', 'collection', array(
-                'type' => new OrderDetailType($this->app),
+                'type' => new OrderDetailType($app),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($this->app),
+                'type' => new ShippingType($app),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -231,10 +234,9 @@ class OrderType extends AbstractType
                     '\Eccube\Entity\Customer'
                 )));
 
-        $app = $this->app;
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
 
-            if ('calc' === $app['request']->get('mode')) {
+            if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
 
                 $data = $event->getData();
 

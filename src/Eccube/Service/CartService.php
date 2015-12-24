@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManager;
 use Eccube\Common\Constant;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\Disp;
+use Eccube\Entity\ProductClass;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -85,18 +86,46 @@ class CartService
             $this->cart = new \Eccube\Entity\Cart();
         }
 
-        foreach ($this->cart->getCartItems() as $CartItem) {
-            $ProductClass = $this
-                ->entityManager
-                ->getRepository($CartItem->getClassName())
-                ->find($CartItem->getClassId());
-            if ($ProductClass) {
-                $this->setCanAddProductType($ProductClass->getProductType());
-            }
-        }
+        $this->loadProductClassFromCart();
 
         $this->BaseInfo = $app['eccube.repository.base_info']->get();
+    }
 
+    /**
+     * カートに保存されている商品の ProductClass エンティティを読み込み、カートへ設定します。
+     */
+    protected function loadProductClassFromCart()
+    {
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass',
+        ));
+
+        foreach ($this->cart->getCartItems() as $CartItem) {
+            $this->loadProductClassFromCartItem($CartItem);
+        }
+
+        $softDeleteFilter->setExcludes(array());
+    }
+
+    /**
+     * CartItem に対応する ProductClass を設定します。
+     *
+     * @param CartItem $CartItem
+     */
+    protected function loadProductClassFromCartItem(CartItem $CartItem)
+    {
+        $ProductClass = $this
+            ->entityManager
+            ->getRepository($CartItem->getClassName())
+            ->find($CartItem->getClassId());
+
+        $CartItem->setObject($ProductClass);
+
+        if (is_null($this->ProductType) && $ProductClass->getDelFlg() == Constant::DISABLED) {
+            $this->setCanAddProductType($ProductClass->getProductType());
+        }
     }
 
     public function setCanAddProductType(\Eccube\Entity\Master\ProductType $ProductType)
@@ -208,7 +237,7 @@ class CartService
      */
     public function setProductQuantity($ProductClass, $quantity)
     {
-        if (!$ProductClass instanceof \Eccube\Entity\ProductClass) {
+        if (!$ProductClass instanceof ProductClass) {
             $ProductClass = $this->entityManager
                 ->getRepository('Eccube\Entity\ProductClass')
                 ->find($ProductClass);
@@ -285,7 +314,7 @@ class CartService
                 $this->addError('cart.over.sale_limit', $productName);
             } else {
                 $tmp_quantity = $ProductClass->getStock();
-                $this->addError('cart.over.stock',  $productName);
+                $this->addError('cart.over.stock', $productName);
             }
         }
         if ($ProductClass->getSaleLimit() && $quantity > $ProductClass->getSaleLimit()) {
@@ -318,6 +347,11 @@ class CartService
             ->entityManager
             ->getRepository('\Eccube\Entity\ProductClass')
             ->find($productClassId);
+
+        if (!$ProductClass) {
+            return false;
+        }
+
         $ProductType = $ProductClass->getProductType();
 
         return $this->ProductType == $ProductType;
@@ -364,43 +398,38 @@ class CartService
 
     }
 
+    /**
+     * カートを取得します。
+     *
+     * @return \Eccube\Entity\Cart
+     */
     public function getCart()
     {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
-        ));
-
         foreach ($this->cart->getCartItems() as $CartItem) {
-            $ProductClass = $this
-                ->entityManager
-                ->getRepository($CartItem->getClassName())
-                ->find($CartItem->getClassId());
+            $ProductClass = $CartItem->getObject();
+            if (!$ProductClass) {
+                $this->loadProductClassFromCartItem($CartItem);
 
-            $stockUnlimited = $ProductClass->getStockUnlimited();
+                $ProductClass = $CartItem->getObject();
+            }
 
             if ($ProductClass->getDelFlg() == Constant::DISABLED) {
                 // 商品情報が有効
-
+                $stockUnlimited = $ProductClass->getStockUnlimited();
                 if ($stockUnlimited == Constant::DISABLED && $ProductClass->getStock() < 1) {
                     // 在庫がなければカートから削除
                     $this->setError('cart.zero.stock');
                     $this->removeProduct($ProductClass->getId());
                 } else {
-
                     $quantity = $CartItem->getQuantity();
                     $saleLimit = $ProductClass->getSaleLimit();
                     if ($stockUnlimited == Constant::DISABLED && $ProductClass->getStock() < $quantity) {
-                        // 在庫数が購入数を超えている場合、メッセージを表示
+                        // 購入数が在庫数を超えている場合、メッセージを表示
                         $this->setError('cart.over.stock');
-                    } else if (!is_null($saleLimit) && $saleLimit < $quantity) {
-                        // 販売制限数が購入数を超えている場合、メッセージを表示
+                    } elseif (!is_null($saleLimit) && $saleLimit < $quantity) {
+                        // 購入数が販売制限数を超えている場合、メッセージを表示
                         $this->setError('cart.over.sale_limit');
                     }
-
-                    // カートに追加
-                    $CartItem->setObject($ProductClass);
                 }
             } else {
                 // 商品情報が削除されていたらエラー
@@ -408,7 +437,6 @@ class CartService
                 // カートから削除
                 $this->removeProduct($ProductClass->getId());
             }
-
         }
 
         return $this->cart;
