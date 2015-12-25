@@ -313,7 +313,9 @@ class InstallController
 
         $config = array_replace_recursive($path_yml, $config);
 
-        Request::setTrustedProxies($config['trusted_proxies']);
+        if (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
+            Request::setTrustedProxies($config['trusted_proxies']);
+        }
 
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
