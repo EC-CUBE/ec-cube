@@ -174,6 +174,13 @@ class InstallController
                 }
                 $sessionData['admin_force_ssl'] = (bool)$config['force_ssl'];
 
+                // ロードバランサー、プロキシサーバ設定
+                $sessionData['trusted_proxies_connection_only'] = (bool)$config['trusted_proxies_connection_only'];
+                $trustedProxies = $config['admin_allow_host'];
+                if (count($trustedProxies) > 0) {
+                    $sessionData['trusted_proxies'] = Str::convertLineFeed(implode("\n", $trustedProxies));
+                }
+
                 // メール設定
                 $config_file = $this->config_path . '/mail.yml';
                 $config = Yaml::parse(file_get_contents($config_file));
@@ -313,7 +320,10 @@ class InstallController
 
         $config = array_replace_recursive($path_yml, $config);
 
-        if (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
+
+        if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
+            Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')), $config['trusted_proxies']));
+        } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
             Request::setTrustedProxies($config['trusted_proxies']);
         }
 
@@ -668,10 +678,16 @@ class InstallController
             $adminTrustedProxies = array();
         } else {
             $adminTrustedProxies = explode("\n", $trustedProxies);
+            // ループバックアドレスを含める
+            $adminTrustedProxies = array_merge($adminTrustedProxies, array('127.0.0.1/8', '::1'));
+        }
+        if ($data['trusted_proxies_connection_only']) {
+            // ループバックアドレスを含める
+            $adminTrustedProxies = array('127.0.0.1/8', '::1');
         }
 
-        $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}');
-        $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl']);
+        $target = array('${AUTH_MAGIC}', '${SHOP_NAME}', '${ECCUBE_INSTALL}', '${FORCE_SSL}', '${TRUSTED_PROXIES_CONNECTION_ONLY}');
+        $replace = array($auth_magic, $data['shop_name'], '0', $data['admin_force_ssl'], $data['trusted_proxies_connection_only']);
 
         $fs = new Filesystem();
         $content = str_replace(

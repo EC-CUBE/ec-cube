@@ -195,6 +195,9 @@ class Application extends ApplicationTrait
         // init security
         $this->initSecurity();
 
+        // init proxy
+        $this->initProxy();
+
         // init ec-cube service provider
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
@@ -203,9 +206,6 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
-        if (isset($this['config']['trusted_proxies']) && !empty($this['config']['trusted_proxies'])) {
-            Request::setTrustedProxies($this['config']['trusted_proxies']);
-        }
     }
 
     public function initLocale()
@@ -560,6 +560,21 @@ class Application extends ApplicationTrait
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
         });
 
+    }
+
+    /**
+     * ロードバランサー、プロキシサーバの設定を行う
+     */
+    public function initProxy()
+    {
+        $config = $this['config'];
+        if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
+            $this->before(function(Request $request, \Silex\Application $app) {
+                Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')), $app['config']['trusted_proxies']));
+            }, self::EARLY_EVENT);
+        } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
+            Request::setTrustedProxies($config['trusted_proxies']);
+        }
     }
 
     public function initializePlugin()

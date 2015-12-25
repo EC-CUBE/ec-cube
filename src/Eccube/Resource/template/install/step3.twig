@@ -73,13 +73,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <a href="#" class="toggle">&gt; オプションを表示</a>
                                     <div class="accpanel">
 
+                                        <h2>メールの設定</h2>
                                         {{ form_row(form.mail_backend) }}
                                         {{ form_row(form.smtp_host) }}
                                         {{ form_row(form.smtp_port) }}
                                         {{ form_row(form.smtp_username) }}
                                         {{ form_row(form.smtp_password) }}
 
-                                        {{ form_row(form.trusted_proxies) }}
+                                        <h2>ロードバランサー、プロキシサーバの設定</h2>
+                                        {{ form_row(form.trusted_proxies_connection_only) }}
+                                        {{ form_row(form.trusted_proxies, {attr: {placeholder: '例）192.168.10.0/24'}}) }}
 
                                     </div>
                                 </div>
