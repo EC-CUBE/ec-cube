@@ -50,7 +50,7 @@ class CssController
                 $fs->dumpFile($this->getCssDir($app) . $data['file_name'], $data['content']);
                 $app['session']->getFlashBag()->add('admin.content.css.complete', 'admin.register.complete');
 
-                return $app->redirect($app['url_generator']->generate('admin_content_css'));
+                return $app->redirect($app->url('admin_content_css'));
             }
         }
 
@@ -91,7 +91,7 @@ class CssController
             $app['session']->getFlashBag()->add('admin.content.css.complete', 'admin.register.complete');
         }
 
-        return $app->redirect($app['url_generator']->generate('admin_content_css'));
+        return $app->redirect($app->url('admin_content_css'));
     }
 
     protected function getFileNames($app)

@@ -108,9 +108,16 @@ class CustomerType extends AbstractType
             ->add('birth', 'birthday', array(
                 'required' => false,
                 'input' => 'datetime',
+                'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'constraints' => array(
+                    new Assert\LessThanOrEqual(array(
+                        'value' => date('Y-m-d'),
+                        'message' => 'form.type.select.selectisfuturedate',
+                    )),
+                ),
             ))
             ->add('password', 'repeated')
             ->add('status', 'customer_status', array(

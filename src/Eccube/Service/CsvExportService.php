@@ -235,10 +235,9 @@ class CsvExportService
         $this->fopen();
 
         $query = $this->qb->getQuery();
-        foreach ($query->iterate() as $iteratableResult) {
-            $closure($iteratableResult[0], $this);
-
-            $this->em->detach($iteratableResult[0]);
+        foreach ($query->getResult() as $iteratableResult) {
+            $closure($iteratableResult, $this);
+            $this->em->detach($iteratableResult);
             $this->em->clear();
             $query->free();
             flush();

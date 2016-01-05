@@ -36,12 +36,11 @@ use Doctrine\ORM\QueryBuilder;
  */
 class OrderRepository extends EntityRepository
 {
-    /** @var array */
-    public $config;
+    protected $app;
 
-    public function setConfig(array $config)
+    public function setApplication($app)
     {
-        $this->config = $config;
+        $this->app = $app;
     }
 
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
@@ -295,7 +294,7 @@ class OrderRepository extends EntityRepository
         } else {
             // 購入処理中は検索対象から除外
             $qb->andWhere('o.OrderStatus <> :status')
-                ->setParameter('status', $this->config['order_processing']);
+                ->setParameter('status', $this->app['config']['order_processing']);
         }
 
         // name
@@ -472,12 +471,35 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
         $qb
             ->where('o.OrderStatus <> :OrderStatus')
-            ->setParameter('OrderStatus', $this->config['order_cancel'])
+            ->setParameter('OrderStatus', $this->app['config']['order_cancel'])
             ->setMaxResults(10)
             ->orderBy('o.create_date', 'DESC');
 
         return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * 会員の合計購入金額を取得、回数を取得
+     *
+     * @param  \Eccube\Entity\Customer $Customer
+     * @param  array $OrderStatuses
+     * @return QueryBuilder
+     */
+    public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
+    {
+        $result = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id) AS buy_times, SUM(o.total)  AS buy_total')
+            ->where('o.Customer = :Customer')
+            ->andWhere('o.OrderStatus in (:OrderStatuses)')
+            ->setParameter('Customer', $Customer)
+            ->setParameter('OrderStatuses', $OrderStatuses)
+            ->groupBy('o.id')
+            ->orderBy('o.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
     }
 }

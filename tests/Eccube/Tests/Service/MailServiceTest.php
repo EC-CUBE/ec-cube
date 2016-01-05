@@ -3,8 +3,6 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Service\MailService;
-use Guzzle\Http\Client;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * MailService test cases.
@@ -25,7 +23,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class MailServiceTest extends AbstractServiceTestCase
 {
-    const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
 
     protected $client;
     protected $Customer;
@@ -34,19 +31,7 @@ class MailServiceTest extends AbstractServiceTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->client = new Client();
-        $this->checkStatus();
-        $config = $this->app['config'];
-        $config['mail']['transport'] = 'smtp';
-        $config['mail']['host'] = '127.0.0.1';
-        $config['mail']['port'] = 1025;
-        $config['mail']['username'] = null;
-        $config['mail']['password'] = null;
-        $config['mail']['encryption'] = null;
-        $config['mail']['auth_mode'] = null;
-        $this->app['config'] = $config;
-        $this->app['swiftmailer.use_spool'] = false;
-        $this->app['swiftmailer.options'] = $this->app['config']['mail'];
+        $this->initializeMailCatcher();
         $paths = array($this->app['config']['template_default_realdir']);
         $this->app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
         $this->Customer = $this->createCustomer();
@@ -55,7 +40,7 @@ class MailServiceTest extends AbstractServiceTestCase
 
     public function tearDown()
     {
-        $this->cleanUpMessages();
+        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -132,6 +117,10 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verifyRegExp($BccMessage, 'BCC');
     }
 
+    /**
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1315
+     * @deprecated since 3.0.0, to be removed in 3.1
+     */
     public function testSendrContactMail()
     {
         $faker = $this->getFaker();
@@ -169,6 +158,66 @@ class MailServiceTest extends AbstractServiceTestCase
         );
 
         $this->app['eccube.service.mail']->sendrContactMail($formData);
+
+        $Messages = $this->getMessages();
+        $Message = $this->getMessage($Messages[0]->id);
+
+        $this->expected = '[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->actual = $Message->subject;
+        $this->verify();
+
+        $this->expected = '<'.$email.'>';
+        $this->actual = $Message->recipients[0];
+        $this->verify();
+
+        $this->expected = 'Reply-To: '.$this->BaseInfo->getEmail03();
+        $this->verifyRegExp($Message, 'Reply-Toは'.$this->BaseInfo->getEmail03().'ではありません');
+
+        $this->expected = 'お問い合わせ内容';
+        $this->verifyRegExp($Message, 'お問い合わせ内容');
+
+        $BccMessage = $this->getMessage($Messages[1]->id);
+        $this->expected = 'Bcc: '.$this->BaseInfo->getEmail01();
+        $this->verifyRegExp($BccMessage, 'BCC');
+    }
+
+    public function testSendContactMail()
+    {
+        $faker = $this->getFaker();
+        $name01 = $faker->lastName;
+        $name02 = $faker->firstName;
+        $kana01 = $faker->lastName;
+        $kana02 = $faker->firstName;
+        $email = $faker->email;
+        $zip = $faker->postCode;
+        $zip01 = substr($zip, 0, 3);
+        $zip02 = substr($zip, 3, 7);
+        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $addr01 = $faker->city;
+        $addr02 = $faker->streetAddress;
+        $tel = explode('-', $faker->phoneNumber);
+        $tel01 = $tel[0];
+        $tel02 = $tel[1];
+        $tel03 = $tel[2];
+
+        $formData = array(
+            'name01' => $name01,
+            'name02' => $name02,
+            'kana01' => $kana01,
+            'kana02' => $kana02,
+            'zip01' => $zip01,
+            'zip02' => $zip02,
+            'pref' => $Pref,
+            'addr01' => $addr01,
+            'addr02' => $addr02,
+            'tel01' => $tel01,
+            'tel02' => $tel02,
+            'tel03' => $tel03,
+            'email' => $email,
+            'contents' => 'お問い合わせ内容'
+        );
+
+        $this->app['eccube.service.mail']->sendContactMail($formData);
 
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
@@ -328,53 +377,19 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verifyRegExp($BccMessage, 'BCC');
     }
 
-    protected function checkStatus()
-    {
-        try {
-            $request = $this->client->get(self::MAILCATCHER_URL.'messages');
-            $response = $request->send();
-            if ($response->getStatusCode() !== 200) {
-                throw new HttpException($response->getStatusCode());
-            }
-        } catch (HttpException $e) {
-            $this->markTestSkipped($e->getMessage().'['.$e->getStatusCode().']');
-        } catch (\Exception $e) {
-            $this->markTestSkipped('MailCatcher is not alivable');
-        }
-    }
-
-    protected function cleanUpMessages()
-    {
-        try {
-            $request = $this->client->delete(self::MAILCATCHER_URL.'messages');
-            $request->send();
-        } catch (\Exception $e) {
-            $this->app->log('['.get_class().'] '.$e->getMessage());
-        }
-    }
-
     protected function getMessages()
     {
-        $request = $this->client->get(self::MAILCATCHER_URL.'messages');
-        $response = $request->send();
-        return json_decode($response->getBody(true));
+        return $this->getMailCatcherMessages();
     }
 
     protected function getMessage($id)
     {
-        $request = $this->client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-        $response = $request->send();
-        return json_decode($response->getBody(true));
-    }
-
-    protected function parseSource($Message)
-    {
-        return quoted_printable_decode($Message->source);
+        return $this->getMailCatcherMessage($id);
     }
 
     protected function verifyRegExp($Message, $errorMessage = null)
     {
-        $Source = $this->parseSource($Message);
+        $Source = $this->parseMailCatcherSource($Message);
         $this->assertRegExp('/'.preg_quote($this->expected, '/').'/', $Source, $errorMessage);
     }
 }

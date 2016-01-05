@@ -43,7 +43,7 @@ use Symfony\Component\Security\Core\Util\SecureRandom;
  */
 class CustomerRepository extends EntityRepository implements UserProviderInterface
 {
-    public $app;
+    protected $app;
 
     public function setApplication($app)
     {
@@ -419,5 +419,58 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     public function getResetPassword()
     {
         return Str::random(8);
+    }
+
+    /**
+     * 会員の初回購入時間、購入時間、購入回数、購入金額を更新する
+     *
+     * @param $app
+     * @param  Customer $Customer
+     * @param  $orderStatusId
+     */
+    public function updateBuyData($app, Customer $Customer, $orderStatusId)
+    {
+        // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
+
+        $arr = array($app['config']['order_new'],
+                                $app['config']['order_pay_wait'],
+                                $app['config']['order_back_order'],
+                                $app['config']['order_deliv'],
+                                $app['config']['order_pre_end'],
+                        );
+
+        $result = $app['eccube.repository.order']->getCustomerCount($Customer, $arr);
+
+        if (!empty($result)) {
+            $data = $result[0];
+
+            $now = new \DateTime();
+
+            $firstBuyDate = $Customer->getFirstBuyDate();
+            if (empty($firstBuyDate)) {
+                $Customer->setFirstBuyDate($now);
+            }
+
+            if ($orderStatusId == $app['config']['order_cancel'] ||
+                    $orderStatusId == $app['config']['order_pending'] ||
+                    $orderStatusId == $app['config']['order_processing']) {
+                // キャンセル、決済処理中、購入処理中は購入時間は更新しない
+            } else {
+                $Customer->setLastBuyDate($now);
+            }
+
+            $Customer->setBuyTimes($data['buy_times']);
+            $Customer->setBuyTotal($data['buy_total']);
+
+        } else {
+            // 受注データが存在しなければ初期化
+            $Customer->setFirstBuyDate(null);
+            $Customer->setLastBuyDate(null);
+            $Customer->setBuyTimes(0);
+            $Customer->setBuyTotal(0);
+        }
+
+        $app['orm.em']->persist($Customer);
+        $app['orm.em']->flush();
     }
 }

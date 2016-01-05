@@ -240,8 +240,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <h4>注文番号 <span class="number">{{ Order.id }}</span></h4>
                                 <div class="form-group">
                                     {{ form_widget(form.OrderStatus) }}
+                                    {{ form_errors(form.OrderStatus) }}
                                 </div>
-                                <div class="small">キャンセルの場合は在庫数を手動で戻してください</div>
+                                <div class="small text-danger">キャンセルの場合は在庫数を手動で戻してください</div>
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
                                 <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date|date_format }}</p>
@@ -262,7 +263,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         {% if Order.id is empty %}
                         <div class="btn_area">
                             <ul>
-                                <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchCustomerModal">会員検索</a></li>
+                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchCustomerModal">会員検索</a></li>
                             </ul>
                         </div>
                         {% endif %}
@@ -298,7 +299,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {{ form_label(form.address) }}
                             <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
-                                {{ form_errors(form.zip) }}
+                                {{ form_errors(form.zip.zip01) }}
+                                {{ form_errors(form.zip.zip02) }}
                                 <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>
@@ -378,9 +380,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div class="btn_area">
                             <ul>
                                 {% if BaseInfo.optionMultipleShipping != 1 %}
-                                <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchProductModal">商品の追加</a></li>
+                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">商品の追加</a></li>
                                 {% endif %}
-                                <li><button type="submit" class="btn btn-default btn-block btn-sm" name="mode" value="calc">計算結果の更新</button></li>
+                                <li><button type="submit" class="btn btn-default" name="mode" value="calc">計算結果の更新</button></li>
                             </ul>
                         </div>
                         <div class="tableish"
@@ -525,9 +527,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                     <div class="order_list">
                         <div class="btn_area">
                             <ul>
-                                <li><a class="btn btn-default btn-block btn-sm copyCustomerToShippingButton" data-idx="{{ loop.index0 }}">注文者情報をコピー</a></li>
+                                <li><a class="btn btn-default copyCustomerToShippingButton" data-idx="{{ loop.index0 }}">注文者情報をコピー</a></li>
                                 {% if BaseInfo.optionMultipleShipping %}
-                                <li><a class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#searchProductModal" data-idx="{{ loop.index0 }}">商品の追加</a></li>
+                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal" data-idx="{{ loop.index0 }}">商品の追加</a></li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -612,7 +614,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {{ form_label(shippingForm.address) }}
                                 <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                     〒{{ form_widget(shippingForm.zip.zip01) }}-{{ form_widget(shippingForm.zip.zip02) }}
-                                    {{ form_errors(shippingForm.zip) }}
+                                    {{ form_errors(shippingForm.zip.zip01) }}
+                                    {{ form_errors(shippingForm.zip.zip02) }}
                                 </div>
                             </div>
                             {# 住所：都道府県 #}

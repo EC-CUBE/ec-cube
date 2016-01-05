@@ -28,6 +28,9 @@ use Eccube\Entity\Cart;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
 
+/**
+ * @deprecated since 3.0.0, to be removed in 3.1
+ */
 class OrderService
 {
     /** @var \Eccube\Application */
@@ -43,15 +46,11 @@ class OrderService
      *
      * @param Order $Order
      * @return int
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getTotalQuantity(Order $Order)
     {
-        $totalQuantity = 0;
-        foreach ($Order->getOrderDetails() as $OrderDetail) {
-            $totalQuantity += $OrderDetail->getQuantity();
-        }
-
-        return $totalQuantity;
+        return $Order->calculateTotalQuantity();
     }
 
     /**
@@ -59,16 +58,11 @@ class OrderService
      *
      * @param Order $Order
      * @return int
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getSubTotal(Order $Order)
     {
-        $subTotal = 0;
-        foreach ($Order->getOrderDetails() as $OrderDetail) {
-            // 小計
-            $subTotal += $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
-        }
-
-        return $subTotal;
+        return $Order->calculateSubTotal();
     }
 
     /**
@@ -76,16 +70,11 @@ class OrderService
      *
      * @param Order $Order
      * @return int
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getTotalTax(Order $Order)
     {
-        $tax = 0;
-        foreach ($Order->getOrderDetails() as $OrderDetail) {
-            // 消費税のみの小計
-            $tax += ($OrderDetail->getPriceIncTax() - $OrderDetail->getPrice()) * $OrderDetail->getQuantity();
-        }
-
-        return $tax;
+        return $Order->calculateTotalTax();
     }
 
     /**
@@ -93,18 +82,11 @@ class OrderService
      *
      * @param Order $Order
      * @return array
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getProductTypes(Order $Order)
     {
-
-        $productTypes = array();
-        foreach ($Order->getOrderDetails() as $OrderDetail) {
-            /* @var $ProductClass \Eccube\Entity\ProductClass */
-            $ProductClass = $OrderDetail->getProductClass();
-            $productTypes[] = $ProductClass->getProductType();
-        }
-        return array_unique($productTypes);
-
+        return $Order->getProductTypes();
     }
 
     /**

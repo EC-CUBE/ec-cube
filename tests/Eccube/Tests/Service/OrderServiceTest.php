@@ -29,135 +29,85 @@ use Eccube\Application;
 class OrderServiceTest extends AbstractServiceTestCase
 {
     protected $app;
+    protected $Customer;
+    protected $Order;
+    protected $rate;
 
     public function setUp()
     {
         parent::setUp();
+        $this->Customer = $this->createCustomer();
+        $this->Order = $this->createOrder($this->Customer);
+        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule();
+        $this->rate = $TaxRule->getTaxRate();
     }
 
-    public function testNewOrder()
+    public function testGetSubTotal()
     {
-        self::markTestSkipped();
-        $Order = $this->app['eccube.service.order']->newOrder();
-        $this->assertNotEmpty($Order);
-    }
+        $quantity = 3;
+        $price = 100;
+        $rows = count($this->Order->getOrderDetails());
 
-    public function testNewOrderDetail()
-    {
-        self::markTestSkipped();
-        $ProductClass = $this->app['orm.em']
-            ->getRepository('Eccube\Entity\ProductClass')
-            ->find(2);
-        $Product = $ProductClass->getProduct();
-        $OrderDetail = $this->app['eccube.service.order']->newOrderDetail($Product, $ProductClass, 3);
-        $this->assertNotEmpty($OrderDetail);
-    }
-
-    public function testCopyToOrderFromCustomer()
-    {
-        self::markTestSkipped();
-        $orderService = $this->app['eccube.service.order'];
-
-        $Order = new \Eccube\Entity\Order();
-        $Order = $orderService->copyToOrderFromCustomer($Order, null);
-        $this->assertNull($Order->getCustomer());
-
-        $Customer = new \Eccube\Entity\Customer();
-        $Customer->setName01('last name');
-        $Customer->setName02('first name');
-        $Order = $orderService->copyToOrderFromCustomer($Order, $Customer);
-
-        $this->assertEquals($Customer->getName01(), $Order->getName01());
-        $this->assertEquals($Customer->getName02(), $Order->getName02());
-    }
-    public function testCopyToShippingFromCustomer()
-    {
-        self::markTestSkipped();
-        $orderService = $this->app['eccube.service.order'];
-
-        $Shipping = new \Eccube\Entity\Shipping();
-        $Shipping = $orderService->copyToShippingFromCustomer($Shipping, null);
-        $this->assertTrue(null === $Shipping->getName01());
-
-        $Customer = new \Eccube\Entity\Customer();
-        $Customer->setName01('last name');
-        $Customer->setName02('first name');
-        $Order = $orderService->copyToShippingFromCustomer($Shipping, $Customer);
-
-        $this->assertEquals($Customer->getName01(), $Order->getName01());
-        $this->assertEquals($Customer->getName02(), $Order->getName02());
-    }
-
-    public function testRegisterPreOrderFromCart()
-    {
-        self::markTestSkipped();
-        $this->app['orm.em']->getConnection()->beginTransaction();
-
-        // set up customer;
-        $Customer = $this->newCustomer();
-        $this->app['orm.em']->persist($Customer);
+        $subTotal = 0;
+        foreach ($this->Order->getOrderDetails() as $Detail) {
+            $Detail->setPrice($price);
+            $Detail->setQuantity($quantity);
+            $subTotal = $Detail->getPriceIncTax() * $Detail->getQuantity();
+        }
+        $this->Order->setSubTotal($subTotal);
         $this->app['orm.em']->flush();
 
-        // set up cart items
-        $ProductClass = $this->app['orm.em']
-            ->getRepository('Eccube\Entity\ProductClass')
-            ->find(1);
-        $cartService = $this->app['eccube.service.cart'];
-        $cartService->clear();
-        $cartService->addProduct($ProductClass->getId());
-        $cartService->addProduct($ProductClass->getId());
-        $cartService->lock();
+        $Result = $this->app['eccube.repository.order']->find($this->Order->getId());
 
-        $CarItems = $cartService->getCart()->getCartItems();
-
-        // 受注データ登録
-        $Order = $this->app['eccube.service.order']->registerPreOrderFromCartItems($CarItems, $Customer);
-
-        // 登録内容確認
-        $this->assertNotEmpty($Order);
-        $OrderDetails = $Order->getOrderDetails();
-        foreach ($OrderDetails as $detail) {
-            $this->assertNotEmpty($detail);
-        }
-
-        $Shippings = $Order->getShippings();
-        $this->assertNotEmpty($Shippings);
-        foreach ($Shippings as $Shipping) {
-            $this->assertNotEmpty($Shipping);
-            $ShipmentItems = $Shipping->getShipmentItems();
-            foreach ($ShipmentItems as $item) {
-                $this->assertNotEmpty($item);
-            }
-        }
-
-        // 購入確定
-        $this->app['eccube.service.order']->commit($Order);
-        $this->assertEquals(0, $Order->getDelFlg());
-
-        $this->app['orm.em']->getConnection()->rollback();
+        $this->expected = ($price + ($price * ($this->rate / 100))) * $quantity * $rows;
+        $this->actual = $this->app['eccube.service.order']->getSubTotal($Result);
+        $this->verify();
     }
 
-    public function newCustomer()
+    public function testGetTotalQuantity()
     {
-        $CustomerStatus = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\CustomerStatus')
-            ->find(1);
-        $Customer = new \Eccube\Entity\Customer();
-        $Customer->setName01('last name')
-            ->setName02('first name')
-            ->setEmail('example@lockon.co.jp')
-            ->setSecretKey('dummy' + uniqid())
-            ->setStatus($CustomerStatus)
-            ->setCreateDate(new \DateTime())
-            ->setUpdateDate(new \DateTime())
-            ->setDelFlg(1);
+        $quantity = 3;
+        $rows = count($this->Order->getOrderDetails());
 
-        return $Customer;
+        $total = 0;
+        foreach ($this->Order->getOrderDetails() as $Detail) {
+            $Detail->setQuantity($quantity);
+            $total += $Detail->getQuantity();
+        }
+        $this->app['orm.em']->flush();
+
+        $Result = $this->app['eccube.repository.order']->find($this->Order->getId());
+
+        $this->expected = $total;
+        $this->actual = $this->app['eccube.service.order']->getTotalQuantity($Result);
+        $this->verify();
     }
 
-    public function tearDown()
+    public function testGetTotalTax()
     {
-        $this->app['orm.em']->getConnection()->close();
-        parent::tearDown();
+        $quantity = 3;
+        $price = 100;
+        $rows = count($this->Order->getOrderDetails());
+
+        $totalTax = 0;
+        foreach ($this->Order->getOrderDetails() as $Detail) {
+            $Detail->setPrice($price);
+            $Detail->setQuantity($quantity);
+            $totalTax += ($Detail->getPriceIncTax() - $Detail->getPrice()) * $Detail->getQuantity();
+        }
+        $this->app['orm.em']->flush();
+
+        $Result = $this->app['eccube.repository.order']->find($this->Order->getId());
+
+        $this->expected = ($price * ($this->rate / 100)) * $quantity * $rows;
+        $this->actual = $this->app['eccube.service.order']->getTotalTax($Result);
+        $this->verify();
+    }
+
+    public function testGetProductTypes()
+    {
+        $this->expected = array($this->app['eccube.repository.master.product_type']->find(1));
+        $this->actual = $this->app['eccube.service.order']->getProductTypes($this->Order);
+        $this->verify();
     }
 }

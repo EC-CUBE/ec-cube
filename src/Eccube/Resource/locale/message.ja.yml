@@ -44,23 +44,30 @@ form.type.admin.notkanastyle: お名前(フリガナ)はカタカナで入力し
 
 form.type.select.notselect: 入力されていません。
 
+form.type.select.selectisfuturedate: 未来の日付は選択出来ません。
+
 cart.over.stock: |-
-    選択された商品(%product%)の在庫が不足しております。
-    一度に在庫数を超える購入はできません。
+  選択された商品(%product%)の在庫が不足しております。
+  一度に在庫数を超える購入はできません。
 cart.over.sale_limit: |-
-    選択された商品(%product%)は販売制限しております。
-    一度に販売制限数を超える購入はできません。
+  選択された商品(%product%)は販売制限しております。
+  一度に販売制限数を超える購入はできません。
 cart.zero.stock: |-
-    選択された商品(%product%)の在庫が不足しております。
-    該当商品をカートから削除しました。
+  選択された商品(%product%)の在庫が不足しております。
+  該当商品をカートから削除しました。
 cart.over.price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
 cart.product.type.kind: この商品は同時に購入することはできません。
 cart.product.payment.kind: お支払方法が異なるためこの商品は同時に購入することはできません。
 cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
-cart.product.not.status: この商品は現在購入することはできません。
+cart.product.not.status: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
+cart.product.not.producttype: |-
+  「%product%」はまだ配送の準備ができておりません。
+  恐れ入りますがお問い合わせページよりお問い合わせください。
 
 shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
-shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
+shopping.delivery.not.producttype: |-
+  配送の準備ができていない商品が含まれております。
+  恐れ入りますがお問い合わせページよりお問い合わせください。
 
 front.shopping.order.error: 購入処理でエラーが発生しました。
 front.shopping.stock.error: 選択された商品の在庫が不足しております。該当商品をカートから削除しました。
@@ -72,6 +79,7 @@ admin.register.complete: 登録が完了しました。
 admin.register.failed: 登録できませんでした。
 admin.delete.complete: 削除が完了しました。
 admin.delete.failed: 削除できませんでした。
+admin.delete.warning: 既に削除されています。
 admin.rank.move.complete: ランクの移動が完了しました。
 
 admin.order.save.complete: 受注情報を保存しました。
@@ -159,8 +167,12 @@ admin.content.template.delete.complete: テンプレートを削除しました�
 admin.content.template.delete.default.error: デフォルトテンプレートは削除できません。
 admin.content.template.delete.current.error: 現在設定中のテンプレートは削除できません。
 
-admin.sysmte.security.save.complete: セキュリティ設定を保存しました。
-admin.sysmte.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
+admin.content.twig.cache.save.complete: Twigキャッシュをクリアしました。
+
+admin.system.security.save.complete: セキュリティ設定を保存しました。
+admin.system.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
+
+admin.system.authority.save.complete: 権限設定を保存しました。
 
 admin.plugin.enable.complete: プラグインを有効にしました。
 admin.plugin.disable.complete: プラグインを無効にしました。

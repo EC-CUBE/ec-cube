@@ -148,6 +148,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/page/{id}/edit', '\Eccube\Controller\Admin\Content\PageController::edit')->assert('id', '\d+')->bind('admin_content_page_edit');
         $c->delete('/content/page/{id}/delete', '\Eccube\Controller\Admin\Content\PageController::delete')->assert('id', '\d+')->bind('admin_content_page_delete');
 
+        $c->match('/content/cache', '\Eccube\Controller\Admin\Content\CacheController::index')->bind('admin_content_cache');
+
         // shop
         $c->match('/setting/shop', '\Eccube\Controller\Admin\Setting\Shop\ShopController::index')->bind('admin_setting_shop');
 
@@ -189,7 +191,6 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // setting/system
         $c->match('/setting/system/system', '\Eccube\Controller\Admin\Setting\System\SystemController::index')->bind('admin_setting_system_system');
-
         // system/member
         $c->match('/setting/system/member', '\Eccube\Controller\Admin\Setting\System\MemberController::index')->bind('admin_setting_system_member');
         $c->match('/setting/system/member/new', '\Eccube\Controller\Admin\Setting\System\MemberController::edit')->bind('admin_setting_system_member_new');
@@ -197,9 +198,16 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->delete('/setting/system/member/{id}/delete', '\Eccube\Controller\Admin\Setting\System\MemberController::delete')->assert('id', '\d+')->bind('admin_setting_system_member_delete');
         $c->put('/setting/system/member/{id}/up', '\Eccube\Controller\Admin\Setting\System\MemberController::up')->assert('id', '\d+')->bind('admin_setting_system_member_up');
         $c->put('/setting/system/member/{id}/down', '\Eccube\Controller\Admin\Setting\System\MemberController::down')->assert('id', '\d+')->bind('admin_setting_system_member_down');
-
+        // system/authority
+        $c->match('/setting/system/authority', '\Eccube\Controller\Admin\Setting\System\AuthorityController::index')->bind('admin_setting_system_authority');
         // system/security
         $c->match('/setting/system/security', '\Eccube\Controller\Admin\Setting\System\SecurityController::index')->bind('admin_setting_system_security');
+        // system/log
+        $c->match('/setting/system/log', '\Eccube\Controller\Admin\Setting\System\LogController::index')->bind('admin_setting_system_log');
+
+        // system/masterdata
+        $c->match('/setting/system/masterdata', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata');
+        $c->match('/setting/system/masterdata/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::edit')->bind('admin_setting_system_masterdata_edit');
 
         // store
         $c->match('/store/template', '\Eccube\Controller\Admin\Store\TemplateController::index')->bind('admin_store_template');

@@ -38,9 +38,9 @@ class TaxRuleRepository extends EntityRepository
 {
     private $rules = array();
 
-    private $app;
+    protected $app;
 
-    public function setApp($app)
+    public function setApplication($app)
     {
         $this->app = $app;
     }
@@ -101,11 +101,6 @@ class TaxRuleRepository extends EntityRepository
         }
         if ($ProductClass instanceof \Eccube\Entity\ProductClass) {
             $productClassId = $ProductClass->getId();
-        } else if ($ProductClass instanceof \Eccube\Entity\ShipmentItem) {
-            // XXX https://github.com/EC-CUBE/ec-cube/issues/1029
-            // 注文処理時、TaxRuleEventSubscriber::prePersistからの呼び出しで、
-            // $ProductClassにShipmentItemがsetされて呼び出されるのに対応
-            $productClassId = '';
         } elseif ($ProductClass) {
             $productClassId = $ProductClass;
         } else {

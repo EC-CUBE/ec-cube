@@ -8,8 +8,11 @@ use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
+use Eccube\Entity\Payment;
+use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
@@ -19,8 +22,10 @@ use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Tests\Mock\CsrfTokenMock;
+use Guzzle\Http\Client;
 use Silex\WebTestCase;
 use Faker\Factory as Faker;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -29,6 +34,8 @@ use Faker\Factory as Faker;
  */
 abstract class EccubeTestCase extends WebTestCase
 {
+    /** MailCatcher の URL. */
+    const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
 
     protected $actual;
     protected $expected;
@@ -144,10 +151,12 @@ abstract class EccubeTestCase extends WebTestCase
             $email = $faker->email;
         }
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::ACTIVE);
+        $Pref = $this->app['eccube.repository.master.pref']->find(1);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
             ->setEmail($email)
+            ->setPref($Pref)
             ->setPassword('password')
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
             ->setStatus($Status)
@@ -155,6 +164,56 @@ abstract class EccubeTestCase extends WebTestCase
         $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
         $this->app['orm.em']->flush();
+
+        $CustomerAddress = new CustomerAddress();
+        $CustomerAddress
+            ->setCustomer($Customer)
+            ->setDelFlg(0);
+        $CustomerAddress->copyProperties($Customer);
+        $this->app['orm.em']->persist($CustomerAddress);
+        $this->app['orm.em']->flush();
+
+        return $Customer;
+    }
+
+    /**
+     * 非会員の Customer オブジェクトを生成して返す.
+     *
+     * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
+     * @return \Eccube\Entity\Customer
+     */
+    public function createNonMember($email = null)
+    {
+        $sessionKey = 'eccube.front.shopping.nonmember';
+        $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
+        $faker = $this->getFaker();
+        $Customer = new Customer();
+        if (is_null($email)) {
+            $email = $faker->email;
+        }
+        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Customer
+            ->setName01($faker->lastName)
+            ->setName02($faker->firstName)
+            ->setEmail($email)
+            ->setPref($Pref)
+            ->setDelFlg(0);
+
+        $CustomerAddress = new CustomerAddress();
+        $CustomerAddress
+            ->setCustomer($Customer)
+            ->setDelFlg(0);
+        $CustomerAddress->copyProperties($Customer);
+        $Customer->addCustomerAddress($CustomerAddress);
+
+        $nonMember = array();
+        $nonMember['customer'] = $Customer;
+        $nonMember['pref'] = $Customer->getPref()->getId();
+        $this->app['session']->set($sessionKey, $nonMember);
+
+        $customerAddresses = array();
+        $customerAddresses[] = $CustomerAddress;
+        $this->app['session']->set($sessionCustomerAddressKey, serialize($customerAddresses));
         return $Customer;
     }
 
@@ -247,21 +306,19 @@ abstract class EccubeTestCase extends WebTestCase
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
         $Pref = $this->app['eccube.repository.master.pref']->find(1);
-        $Order = new Order();
-        $Order->setCustomer($Customer)
-            ->setCharge(0)
-            ->setDeliveryFeeTotal(0)
-            ->setDiscount(0)
-            ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
-            ->setDelFlg(Constant::DISABLED);
+        $Order = new Order($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']));
+        $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
         $Order->setPref($Pref);
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush();
 
+        $Delivery = $this->app['eccube.repository.delivery']->find(1);
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
-        $Shipping->setPref($Pref);
+        $Shipping
+            ->setPref($Pref)
+            ->setDelivery($Delivery);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
         $this->app['orm.em']->persist($Shipping);
@@ -293,6 +350,7 @@ abstract class EccubeTestCase extends WebTestCase
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity);
+        $Shipping->addShipmentItem($ShipmentItem);
         $this->app['orm.em']->persist($ShipmentItem);
 
         $subTotal = $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
@@ -303,6 +361,43 @@ abstract class EccubeTestCase extends WebTestCase
 
         $this->app['orm.em']->flush();
         return $Order;
+    }
+
+    /**
+     * Payment オプジェクトを生成して返す.
+     *
+     * @param \Eccube\Entity\Delivery $Delivery デフォルトで設定する配送オブジェクト
+     * @param string $method 支払い方法名称
+     * @param integer $charge 手数料
+     * @param integer $rule_min 下限金額
+     * @param integer $rule_max 上限金額
+     * @return \Eccube\Entity\Payment
+     */
+    public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
+    {
+        $Member = $this->app['eccube.repository.member']->find(2);
+        $Payment = new Payment();
+        $Payment
+            ->setMethod($method)
+            ->setCharge($charge)
+            ->setRuleMin($rule_min)
+            ->setRuleMax($rule_max)
+            ->setCreator($Member)
+            ->setDelFlg(Constant::DISABLED);
+        $this->app['orm.em']->persist($Payment);
+        $this->app['orm.em']->flush();
+
+        $PaymentOption = new PaymentOption();
+        $PaymentOption
+            ->setDeliveryId($Delivery->getId())
+            ->setPaymentId($Payment->getId())
+            ->setDelivery($Delivery)
+            ->setPayment($Payment);
+        $Payment->addPaymentOption($PaymentOption);
+
+        $this->app['orm.em']->persist($PaymentOption);
+        $this->app['orm.em']->flush();
+        return $Payment;
     }
 
     /**
@@ -360,5 +455,106 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
+    }
+
+    /**
+     * MailCatcher を初期化する.
+     *
+     * このメソッドは主に setUp() メソッドでコールされる.
+     * MailCatcher が起動してない場合は, テストをスキップする.
+     * MailCatcher については \Eccube\Tests\Service\MailServiceTest のコメントを参照してください
+     *
+     * @see \Eccube\Tests\Service\MailServiceTest
+     * @link http://mailcatcher.me/
+     */
+    protected function initializeMailCatcher()
+    {
+        $this->checkMailCatcherStatus();
+        $config = $this->app['config'];
+        $config['mail']['transport'] = 'smtp';
+        $config['mail']['host'] = '127.0.0.1';
+        $config['mail']['port'] = 1025;
+        $config['mail']['username'] = null;
+        $config['mail']['password'] = null;
+        $config['mail']['encryption'] = null;
+        $config['mail']['auth_mode'] = null;
+        $this->app['config'] = $config;
+        $this->app['swiftmailer.use_spool'] = false;
+        $this->app['swiftmailer.options'] = $this->app['config']['mail'];
+    }
+
+    /**
+     * MailCatcher の起動状態をチェックする.
+     *
+     * MailCatcher が起動していない場合は, テストをスキップする.
+     */
+    protected function checkMailCatcherStatus()
+    {
+        try {
+            $client = new Client();
+            $request = $client->get(self::MAILCATCHER_URL.'messages');
+            $response = $request->send();
+            if ($response->getStatusCode() !== 200) {
+                throw new HttpException($response->getStatusCode());
+            }
+        } catch (HttpException $e) {
+            $this->markTestSkipped($e->getMailCatcherMessage().'['.$e->getStatusCode().']');
+        } catch (\Exception $e) {
+            $message = 'MailCatcher is not alivable';
+            $this->markTestSkipped($message);
+            $this->app->log($message);
+        }
+    }
+
+    /**
+     * MailCatcher のメッセージをすべて削除する.
+     */
+    protected function cleanUpMailCatcherMessages()
+    {
+        try {
+            $client = new Client();
+            $request = $client->delete(self::MAILCATCHER_URL.'messages');
+            $request->send();
+        } catch (\Exception $e) {
+            $this->app->log('['.get_class().'] '.$e->getMessage());
+        }
+    }
+
+    /**
+     * MailCatcher のメッセージをすべて取得する.
+     *
+     * @return array MailCatcher のメッセージの配列
+     */
+    protected function getMailCatcherMessages()
+    {
+        $client = new Client();
+        $request = $client->get(self::MAILCATCHER_URL.'messages');
+        $response = $request->send();
+        return json_decode($response->getBody(true));
+    }
+
+    /**
+     * MailCatcher のメッセージを ID を指定して取得する.
+     *
+     * @param integer $id メッセージの ID
+     * @return object MailCatcher のメッセージ
+     */
+    protected function getMailCatcherMessage($id)
+    {
+        $client = new Client();
+        $request = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
+        $response = $request->send();
+        return json_decode($response->getBody(true));
+    }
+
+    /**
+     * MailCatcher のメッセージソースをデコードする.
+     *
+     * @param object $Message MailCatcher のメッセージ
+     * @return string デコードされた eml 形式のソース
+     */
+    protected function parseMailCatcherSource($Message)
+    {
+        return quoted_printable_decode($Message->source);
     }
 }

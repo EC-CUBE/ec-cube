@@ -30,7 +30,8 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
-use Eccube\Util\Str;
+use Eccube\Entity\MailHistory;
+use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -102,8 +103,13 @@ class ShoppingController extends AbstractController
                 $Customer = $app->user();
             }
 
-            // 受注情報を作成
-            $Order = $app['eccube.service.shopping']->createOrder($Customer);
+            try {
+                // 受注情報を作成
+                $Order = $app['eccube.service.shopping']->createOrder($Customer);
+            } catch (CartException $e) {
+                $app->addRequestError($e->getMessage());
+                return $app->redirect($app->url('cart'));
+            }
 
             // セッション情報を削除
             $app['session']->remove($this->sessionOrderKey);
@@ -120,9 +126,6 @@ class ShoppingController extends AbstractController
         // form作成
         $form = $app['eccube.service.shopping']->getShippingForm($Order);
 
-        // 合計数量
-        $totalQuantity = $app['eccube.service.order']->getTotalQuantity($Order);
-
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$app['session']->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {
@@ -135,7 +138,6 @@ class ShoppingController extends AbstractController
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
-            'totalQuantity' => $totalQuantity,
         ));
     }
 
@@ -194,7 +196,6 @@ class ShoppingController extends AbstractController
 
                     $em->getConnection()->commit();
                     $em->flush();
-                    $em->close();
 
                 } catch (\Exception $e) {
                     $em->getConnection()->rollback();
@@ -214,6 +215,27 @@ class ShoppingController extends AbstractController
 
                 // 受注IDをセッションにセット
                 $app['session']->set($this->sessionOrderKey, $Order->getId());
+
+                // 送信履歴を保存.
+                $MailTemplate = $app['eccube.repository.mail_template']->find(1);
+
+                $body = $app->renderView($MailTemplate->getFileName(), array(
+                    'header' => $MailTemplate->getHeader(),
+                    'footer' => $MailTemplate->getFooter(),
+                    'Order' => $Order,
+                ));
+
+                $MailHistory = new MailHistory();
+                $MailHistory
+                    ->setSubject('[' . $app['eccube.repository.base_info']->get()->getShopName() . '] ' . $MailTemplate->getSubject())
+                    ->setMailBody($body)
+                    ->setMailTemplate($MailTemplate)
+                    ->setSendDate(new \DateTime())
+                    ->setOrder($Order);
+                $app['orm.em']->persist($MailHistory);
+                $app['orm.em']->flush($MailHistory);
+
+                $em->close();
 
                 // 完了画面表示
                 return $app->redirect($app->url('shopping_complete'));
@@ -273,50 +295,61 @@ class ShoppingController extends AbstractController
 
             $form->handleRequest($request);
 
-            $data = $form->getData();
+            if ($form->isValid()) {
 
-            $shippings = $data['shippings'];
+                $data = $form->getData();
 
-            $productDeliveryFeeTotal = 0;
-            $BaseInfo = $app['eccube.repository.base_info']->get();
+                $shippings = $data['shippings'];
 
-            foreach ($shippings as $Shipping) {
+                $productDeliveryFeeTotal = 0;
+                $BaseInfo = $app['eccube.repository.base_info']->get();
 
-                $Delivery = $Shipping->getDelivery();
+                foreach ($shippings as $Shipping) {
 
-                $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
-                    'Delivery' => $Delivery,
-                    'Pref' => $Shipping->getPref()
-                    ));
+                    $Delivery = $Shipping->getDelivery();
 
-                // 商品ごとの配送料合計
-                if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
-                    $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
+                    if ($Delivery) {
+                        $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
+                            'Delivery' => $Delivery,
+                            'Pref' => $Shipping->getPref()
+                            ));
+
+                        // 商品ごとの配送料合計
+                        if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
+                            $productDeliveryFeeTotal += $app['eccube.service.shopping']->getProductDeliveryFee($Shipping);
+                        }
+
+                        $Shipping->setDeliveryFee($deliveryFee);
+                        $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
+                        $Shipping->setShippingDeliveryName($Delivery->getName());
+                    }
+
                 }
 
-                $Shipping->setDeliveryFee($deliveryFee);
-                $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
-                $Shipping->setShippingDeliveryName($Delivery->getName());
+                // 支払い情報をセット
+                $payment = $data['payment'];
+                $message = $data['message'];
+
+                $Order->setPayment($payment);
+                $Order->setPaymentMethod($payment->getMethod());
+                $Order->setMessage($message);
+                $Order->setCharge($payment->getCharge());
+
+                $Order->setDeliveryFeeTotal($app['eccube.service.shopping']->getShippingDeliveryFeeTotal($shippings));
+
+                $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
+
+                $Order->setTotal($total);
+                $Order->setPaymentTotal($total);
+
+                // 受注関連情報を最新状態に更新
+                $app['orm.em']->flush();
+            } else {
+                return $app->render('Shopping/index.twig', array(
+                    'form' => $form->createView(),
+                    'Order' => $Order,
+                ));
             }
-
-            // 支払い情報をセット
-            $payment = $data['payment'];
-            $message = $data['message'];
-
-            $Order->setPayment($payment);
-            $Order->setPaymentMethod($payment->getMethod());
-            $Order->setMessage($message);
-            $Order->setCharge($payment->getCharge());
-
-            $Order->setDeliveryFeeTotal($app['eccube.service.shopping']->getShippingDeliveryFeeTotal($shippings));
-
-            $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
-
-            $Order->setTotal($total);
-            $Order->setPaymentTotal($total);
-
-            // 受注関連情報を最新状態に更新
-            $app['orm.em']->flush();
 
         }
 
@@ -342,22 +375,29 @@ class ShoppingController extends AbstractController
 
             $form->handleRequest($request);
 
-            $data = $form->getData();
-            $payment = $data['payment'];
-            $message = Str::ellipsis($data['message'], 3000, '');
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $payment = $data['payment'];
+                $message = $data['message'];
 
-            $Order->setPayment($payment);
-            $Order->setPaymentMethod($payment->getMethod());
-            $Order->setMessage($message);
-            $Order->setCharge($payment->getCharge());
+                $Order->setPayment($payment);
+                $Order->setPaymentMethod($payment->getMethod());
+                $Order->setMessage($message);
+                $Order->setCharge($payment->getCharge());
 
-            $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
+                $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
 
-            $Order->setTotal($total);
-            $Order->setPaymentTotal($total);
+                $Order->setTotal($total);
+                $Order->setPaymentTotal($total);
 
-            // 受注関連情報を最新状態に更新
-            $app['orm.em']->flush();
+                // 受注関連情報を最新状態に更新
+                $app['orm.em']->flush();
+            } else {
+                return $app->render('Shopping/index.twig', array(
+                    'form' => $form->createView(),
+                    'Order' => $Order,
+                ));
+            }
 
         }
 
@@ -381,13 +421,20 @@ class ShoppingController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            $data = $form->getData();
-            $message = Str::ellipsis($data['message'], 3000, '');
-            $Order->setMessage($message);
-            // 受注情報を更新
-            $app['orm.em']->flush();
-            // お届け先設定一覧へリダイレクト
-            return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $message = $data['message'];
+                $Order->setMessage($message);
+                // 受注情報を更新
+                $app['orm.em']->flush();
+                // お届け先設定一覧へリダイレクト
+                return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
+            } else {
+                return $app->render('Shopping/index.twig', array(
+                    'form' => $form->createView(),
+                    'Order' => $Order,
+                ));
+            }
         }
 
         return $app->redirect($app->url('shopping'));
@@ -415,6 +462,7 @@ class ShoppingController extends AbstractController
                     array(
                         'Customer' => $app->user(),
                         'shippingId' => $id,
+                        'error' => true,
                     )
                 );
             }
@@ -422,11 +470,16 @@ class ShoppingController extends AbstractController
             // 選択されたお届け先情報を取得
             $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
                 'Customer' => $app->user(),
-                'id' => $address));
+                'id' => $address,
+            ));
+            if (is_null($CustomerAddress)) {
+                throw new NotFoundHttpException();
+            }
 
             $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
             if (!$Order) {
                 $app->addError('front.shopping.order.error');
+
                 return $app->redirect($app->url('shopping_error'));
             }
 
@@ -470,6 +523,7 @@ class ShoppingController extends AbstractController
             array(
                 'Customer' => $app->user(),
                 'shippingId' => $id,
+                'error' => false,
             )
         );
     }
@@ -490,13 +544,20 @@ class ShoppingController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            $data = $form->getData();
-            $message = Str::ellipsis($data['message'], 3000, '');
-            $Order->setMessage($message);
-            // 受注情報を更新
-            $app['orm.em']->flush();
-            // お届け先設定一覧へリダイレクト
-            return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $message = $data['message'];
+                $Order->setMessage($message);
+                // 受注情報を更新
+                $app['orm.em']->flush();
+                // お届け先設定一覧へリダイレクト
+                return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
+            } else {
+                return $app->render('Shopping/index.twig', array(
+                    'form' => $form->createView(),
+                    'Order' => $Order,
+                ));
+            }
         }
 
         return $app->redirect($app->url('shopping'));
@@ -509,7 +570,8 @@ class ShoppingController extends AbstractController
     public function shippingEdit(Application $app, Request $request, $id)
     {
         // 配送先住所最大値判定
-        if ($app->user() instanceof \Eccube\Entity\Customer) {
+        $Customer = $app->user();
+        if ($Customer instanceof Customer) {
             $addressCurrNum = count($app->user()->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
@@ -691,7 +753,7 @@ class ShoppingController extends AbstractController
     {
 
         if (!$app['eccube.service.cart']->isLocked()) {
-            return $app->redirect($app['url_generator']->generate('cart'));
+            return $app->redirect($app->url('cart'));
         }
 
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -792,7 +854,15 @@ class ShoppingController extends AbstractController
                 // 初回アクセス(受注データがない)の場合は, 受注情報を作成
                 if (is_null($Order)) {
                     // 受注情報を作成
-                    $app['eccube.service.shopping']->createOrder($Customer);
+
+                    try {
+                        // 受注情報を作成
+                        $app['eccube.service.shopping']->createOrder($Customer);
+                    } catch (CartException $e) {
+                        $app->addRequestError($e->getMessage());
+                        return $app->redirect($app->url('cart'));
+                    }
+
                 }
 
                 // 非会員用セッションを作成
@@ -831,13 +901,20 @@ class ShoppingController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            $data = $form->getData();
-            $message = Str::ellipsis($data['message'], 3000, '');
-            $Order->setMessage($message);
-            // 受注情報を更新
-            $app['orm.em']->flush();
-            // 複数配送設定へリダイレクト
-            return $app->redirect($app->url('shopping_shipping_multiple'));
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $message = $data['message'];
+                $Order->setMessage($message);
+                // 受注情報を更新
+                $app['orm.em']->flush();
+                // 複数配送設定へリダイレクト
+                return $app->redirect($app->url('shopping_shipping_multiple'));
+            } else {
+                return $app->render('Shopping/index.twig', array(
+                    'form' => $form->createView(),
+                    'Order' => $Order,
+                ));
+            }
         }
 
         return $app->redirect($app->url('shopping'));
@@ -969,7 +1046,7 @@ class ShoppingController extends AbstractController
                             // 選択された情報を取得
                             $data = $item['customer_address']->getData();
                             if ($data instanceof CustomerAddress) {
-                                // 会員の場合、CustomerAddressオブジェクトを取得される
+                                // 会員の場合、CustomerAddressオブジェクトを取得
                                 $CustomerAddress = $data;
                             } else {
                                 // 非会員の場合、選択されたindexが取得される

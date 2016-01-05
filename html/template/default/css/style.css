@@ -188,8 +188,8 @@ dd.form-group .errormsg {
 .input_tel input {
     display: inline-block;
     margin-bottom: 0;
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 1px;
+    margin-right: 1px;
     max-width: 5em;
     vertical-align: middle;
     width: 30%;
@@ -3203,12 +3203,14 @@ fieldset[disabled] .btn-link:focus {
     /****** Side Setting ********/
 
     .drawer {
+        height: 0;
         visibility: hidden;
         -webkit-transition: visibility 0s 0.3s;
         -moz-transition: visibility 0s 0.3s;
         transition: visibility 0s 0.3s;
     }
     .drawer-open .drawer {
+        height: 100%;
         visibility: visible;
         -webkit-transition: visibility 0s 0s;
         -moz-transition: visibility 0s 0s;

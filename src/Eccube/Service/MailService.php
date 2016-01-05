@@ -129,7 +129,7 @@ class MailService
      *
      * @param $formData お問い合わせ内容
      */
-    public function sendrContactMail($formData)
+    public function sendContactMail($formData)
     {
 
         $body = $this->app->renderView('Mail/contact_mail.twig', array(
@@ -140,10 +140,10 @@ class MailService
         // 問い合わせ者にメール送信
         $message = \Swift_Message::newInstance()
             ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
-            ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
+            ->setFrom(array($this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()))
             ->setTo(array($formData['email']))
-            ->setBcc($this->BaseInfo->getEmail01())
-            ->setReplyTo($this->BaseInfo->getEmail03())
+            ->setBcc($this->BaseInfo->getEmail02())
+            ->setReplyTo($this->BaseInfo->getEmail02())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
@@ -151,6 +151,18 @@ class MailService
 
     }
 
+    /**
+     * Alias of sendContactMail().
+     *
+     * @param $formData お問い合わせ内容
+     * @see sendContactMail()
+     * @deprecated since 3.0.0, to be removed in 3.1
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1315
+     */
+    public function sendrContactMail($formData)
+    {
+        $this->sendContactMail($formData);
+    }
 
     /**
      * Send order mail.

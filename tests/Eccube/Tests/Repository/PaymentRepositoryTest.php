@@ -81,6 +81,40 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->verify('商品種別共通の支払い方法は'.$this->expected.'種類です');
     }
 
+    /**
+     * 共通する支払い方法が存在しない場合.
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1162
+     */
+    public function testFindAllowedPaymentWithExclusion()
+    {
+        $productTypes = array(1, 2);
+        $productTypes = array_unique($productTypes);
+
+        // ProductType 1 と 2 で, 共通する支払い方法を削除しておく
+        $PaymentOption = $this
+            ->app['orm.em']
+            ->getRepository('\Eccube\Entity\PaymentOption')
+            ->findOneBy(
+                array(
+                    'delivery_id' => 1,
+                    'payment_id' => 3
+                )
+            );
+        $this->assertNotNull($PaymentOption);
+        $this->app['orm.em']->remove($PaymentOption);
+        $this->app['orm.em']->flush();
+
+        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($productTypes);
+
+        // 支払方法を取得
+        $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
+
+        $this->expected = 0;
+        $this->actual = count($payments);
+        $this->verify('商品種別共通の支払い方法は'.$this->expected.'種類です');
+    }
+
     public function testFindAllArray()
     {
         $Results = $this->app['eccube.repository.payment']->findAllArray();
@@ -106,5 +140,25 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->expected = 4;
         $this->actual = count($payments);
         $this->verify();
+
+        $this->assertTrue(is_array($payments[0]));
+    }
+
+    public function testFindPaymentsAsObjects()
+    {
+        $productTypes = array(1);
+        $productTypes = array_unique($productTypes);
+
+        // $paymentOption = $app['eccube.repository.payment_option']->getPaymentOption($productTypes);
+        $deliveries = $this->app['eccube.repository.delivery']->getDeliveries($productTypes);
+
+        // 支払方法を取得
+        $payments = $this->app['eccube.repository.payment']->findPayments($deliveries[0], true);
+
+        $this->expected = 4;
+        $this->actual = count($payments);
+        $this->verify();
+
+        $this->assertTrue(is_object($payments[0]));
     }
 }

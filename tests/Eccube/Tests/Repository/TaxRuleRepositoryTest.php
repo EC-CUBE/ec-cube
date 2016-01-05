@@ -132,8 +132,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithPref()
     {
-        // self::markTestSkipped();
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Pref = $this->app['eccube.repository.master.pref']->find(26);
         $this->TaxRule2->setApplyDate(new \DateTime('-1 days'));
         $this->TaxRule3
             ->setApplyDate(new \DateTime('-1 days'))
@@ -155,7 +154,6 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithCountry()
     {
-        // self::markTestSkipped();
         $Country = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\Country')->find(300);
         $this->TaxRule2
             ->setApplyDate(new \DateTime('-1 days'))
@@ -262,5 +260,37 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $this->expected = $this->TaxRule2->getId();
         $this->actual = $TaxRule->getId();
         $this->verify();
+    }
+
+    /**
+     * TaxRuleEventSubscriber の確認用テストケース.
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1029
+     */
+    public function testShipmentItem()
+    {
+        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->app['orm.em']->flush();
+
+        $this->TaxRule1->setApplyDate(new \DateTime('-5 days'));
+        $this->TaxRule2->setApplyDate(new \DateTime('-5 days'));
+        $this->TaxRule3->setApplyDate(new \DateTime('-2 days'));
+        $this->app['orm.em']->flush();
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+
+        $this->app['eccube.repository.tax_rule']->clearCache();
+        $Shippings = $Order->getShippings();
+
+        foreach ($Shippings as $Shipping) {
+            $ShipmentItems = $Shipping->getShipmentItems();
+
+            foreach ($ShipmentItems as $Shipment) {
+                $this->expected = round($Shipment->getPrice() + $Shipment->getPrice() * $this->TaxRule1->getTaxRate() / 100, 0);
+                $this->actual = $Shipment->getPriceIncTax();
+                $this->verify('ShipmentItem で TaxRuleEventSubscriber が正常にコールされるか');
+            }
+        }
     }
 }

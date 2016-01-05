@@ -110,7 +110,8 @@ class CategoryController extends AbstractController
 
         $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_product_category'));
         }
         $Parent = $TargetCategory->getParent();
 

@@ -35,9 +35,9 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class BlockRepository extends EntityRepository
 {
-    private $app;
+    protected $app;
 
-    public function setApp($app)
+    public function setApplication($app)
     {
         $this->app = $app;
     }

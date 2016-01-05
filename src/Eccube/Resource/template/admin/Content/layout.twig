@@ -295,19 +295,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div><!-- /.box -->
                     <div class="box">
                         <div class="box-header">
-                            <button class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') %}disabled{% endif %} onclick="doPreview();">
-                                プレビュー登録
+                            {% set disabled = true %}
+                            {%  if TargetPageLayout.url != 'entry_activate' and 
+                                   TargetPageLayout.url != 'shopping' and
+                                   TargetPageLayout.url != 'shopping_shipping' and
+                                   TargetPageLayout.url != 'shopping_shipping_multiple' and
+                                   TargetPageLayout.url != 'shopping_complete' and
+                                   TargetPageLayout.url != 'shopping_login' and 
+                                   TargetPageLayout.url != 'shopping_nonmember' and
+                                   TargetPageLayout.url != 'shopping_shipping_edit' and
+                                   TargetPageLayout.url != 'shopping_shipping_multiple_edit' and
+                                   TargetPageLayout.url != 'shopping_error' and
+                                   TargetPageLayout.url != 'forgot_reset'
+                            %}
+                            {% set disabled = false %}
+                            {% endif %}
+                            <button class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') or disabled %}disabled{% endif %} onclick="doPreview();">
+                                プレビュー
                             </button>
                         </div><!-- /.box-header -->
-                        <div class="box-body">
-                            <p>
-                                <strong>「プレビュー登録」とは</strong><br>
-                                現在編集中のレイアウト情報をプレビューデータとして登録します。<br>
-                                プレビューを確認するときは、確認したいページを開き、URLの末尾に"?preview=1"を追加してアクセスしてください。<br>
-                                <br>
-                                例：{{ url('entry') }}?preview=1
-                            </p>
-                        </div>
                     </div>
 
                 </div>

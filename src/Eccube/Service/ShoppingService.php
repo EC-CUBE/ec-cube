@@ -34,7 +34,9 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
+use Eccube\Exception\CartException;
 use Eccube\Util\Str;
+
 
 class ShoppingService
 {
@@ -226,16 +228,8 @@ class ShoppingService
      */
     public function newOrder()
     {
-        $Order = new \Eccube\Entity\Order();
-        $Order->setDiscount(0)
-            ->setSubtotal(0)
-            ->setTotal(0)
-            ->setPaymentTotal(0)
-            ->setCharge(0)
-            ->setTax(0)
-            ->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']))
-            ->setDelFlg(Constant::DISABLED);
-
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $Order = new \Eccube\Entity\Order($OrderStatus);
         return $Order;
     }
 
@@ -353,51 +347,27 @@ class ShoppingService
      */
     public function getNewShipping(Order $Order, Customer $Customer, $deliveries)
     {
+        $productTypes = array();
+        foreach ($deliveries as $Delivery) {
+            if (!in_array($Delivery->getProductType()->getId(), $productTypes)) {
+                $Shipping = new Shipping();
 
-        // カートに保持されている商品種別を取得
-        $productTypes = $this->cartService->getProductTypes();
+                $this->copyToShippingFromCustomer($Shipping, $Customer)
+                    ->setOrder($Order)
+                    ->setDelFlg(Constant::DISABLED);
 
-        if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
-            // 複数配送対応
-            $productType = array();
-            foreach ($deliveries as $Delivery) {
+                // 配送料金の設定
+                $this->setShippingDeliveryFee($Shipping, $Delivery);
 
-                if (!in_array($Delivery->getProductType()->getId(), $productType)) {
-                    $Shipping = new Shipping();
+                $this->em->persist($Shipping);
 
-                    $this->copyToShippingFromCustomer($Shipping, $Customer)
-                        ->setOrder($Order)
-                        ->setDelFlg(Constant::DISABLED);
+                $Order->addShipping($Shipping);
 
-                    // 配送料金の設定
-                    $this->setShippingDeliveryFee($Shipping, $Delivery);
-
-                    $this->em->persist($Shipping);
-
-                    $Order->addShipping($Shipping);
-                }
-                $productType[] = $Delivery->getProductType()->getId();
+                $productTypes[] = $Delivery->getProductType()->getId();
             }
-        } else {
-            $Shipping = new Shipping();
-
-            $this->copyToShippingFromCustomer($Shipping, $Customer)
-                ->setOrder($Order)
-                ->setDelFlg(Constant::DISABLED);
-
-            $Delivery = $deliveries[0];
-
-            // 配送料金の設定
-            $this->setShippingDeliveryFee($Shipping, $Delivery);
-
-            $this->em->persist($Shipping);
-
-            $Order->addShipping($Shipping);
-
         }
 
         return $Order;
-
     }
 
     /**
@@ -413,11 +383,12 @@ class ShoppingService
             return $Shipping;
         }
 
-        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(array(
-            'Customer' => $Customer
-        ));
+        $CustomerAddress = $this->app['eccube.repository.customer_address']->findOneBy(
+            array('Customer' => $Customer),
+            array('id' => 'ASC')
+        );
 
-        if ($this->app->isGranted('ROLE_USER')) {
+        if (!is_null($CustomerAddress)) {
             $Shipping
                 ->setName01($CustomerAddress->getName01())
                 ->setName02($CustomerAddress->getName02())
@@ -552,6 +523,11 @@ class ShoppingService
                 $Shipping = $s;
                 break;
             }
+        }
+
+        if (is_null($Shipping)) {
+            // お届け先情報と関連していない場合、エラー
+            throw new CartException('shopping.delivery.not.producttype');
         }
 
         // 商品ごとの配送料合計
@@ -893,9 +869,10 @@ class ShoppingService
         foreach ($payments as $payment) {
             // 支払方法の制限値内であれば表示
             if (!is_null($payment)) {
-                if (intval($payment->getRuleMin()) <= $subTotal) {
-                    if (is_null($payment->getRuleMax()) || $payment->getRuleMax() >= $subTotal) {
-                        $pays[] = $payment;
+                $pay = $this->app['eccube.repository.payment']->find($payment['id']);
+                if (intval($pay->getRuleMin()) <= $subTotal) {
+                    if (is_null($pay->getRuleMax()) || $pay->getRuleMax() >= $subTotal) {
+                        $pays[] = $pay;
                     }
                 }
             }
@@ -966,15 +943,15 @@ class ShoppingService
             // 複数配送時の支払方法
 
             $payments = $this->app['eccube.repository.payment']->findAllowedPayments($deliveries);
-            $payments = $this->getPayments($payments, $Order->getSubTotal());
         } else {
 
             // 配送業者をセット
             $shippings = $Order->getShippings();
             $Shipping = $shippings[0];
-            $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery());
+            $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery(), true);
 
         }
+        $payments = $this->getPayments($payments, $Order->getSubTotal());
 
         return $payments;
 

@@ -240,7 +240,7 @@ class ProductController extends AbstractController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
-                    
+
                     // 個別消費税
                     $BaseInfo = $app['eccube.repository.base_info']->get();
                     if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
@@ -262,7 +262,7 @@ class ProductController extends AbstractController
                         }
                     }
                     $app['orm.em']->persist($ProductClass);
-                    
+
                     // 在庫情報を作成
                     if (!$ProductClass->getStockUnlimited()) {
                         $ProductStock->setStock($ProductClass->getStock());
@@ -384,6 +384,11 @@ class ProductController extends AbstractController
         if (!is_null($id)) {
             /* @var $Product \Eccube\Entity\Product */
             $Product = $app['eccube.repository.product']->find($id);
+            if (!$Product) {
+                $app->deleteMessage();
+                return $app->redirect($app->url('admin_product'));
+            }
+
             if ($Product instanceof \Eccube\Entity\Product) {
                 $Product->setDelFlg(Constant::ENABLED);
 

@@ -37,14 +37,16 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
     }
 
     // Mockを使うべき
-    public function logIn()
+    public function logIn($user = null)
     {
         $firewall = 'admin';
 
-        $user = $this->app['eccube.repository.member']
-            ->findOneBy(array(
-                'login_id' => 'admin',
-            ));
+        if (!is_object($user)) {
+            $user = $this->app['eccube.repository.member']
+                ->findOneBy(array(
+                    'login_id' => 'admin',
+                ));
+        }
 
         $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_ADMIN'));
 
@@ -53,6 +55,6 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 
         $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());
         $this->client->getCookieJar()->set($cookie);
+        return $user;
     }
-
 }

@@ -75,32 +75,32 @@ class Application extends ApplicationTrait
             $config = array();
             $config_yml = $ymlPath.'/config.yml';
             if (file_exists($config_yml)) {
-                $config = Yaml::parse($config_yml);
+                $config = Yaml::parse(file_get_contents($config_yml));
             }
 
             $config_dist = array();
             $config_yml_dist = $distPath.'/config.yml.dist';
             if (file_exists($config_yml_dist)) {
-                $config_dist = Yaml::parse($config_yml_dist);
+                $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
             }
 
             $config_path = array();
             $path_yml = $ymlPath.'/path.yml';
             if (file_exists($path_yml)) {
-                $config_path = Yaml::parse($path_yml);
+                $config_path = Yaml::parse(file_get_contents($path_yml));
             }
 
             $config_constant = array();
             $constant_yml = $ymlPath.'/constant.yml';
             if (file_exists($constant_yml)) {
-                $config_constant = Yaml::parse($constant_yml);
+                $config_constant = Yaml::parse(file_get_contents($constant_yml));
                 $config_constant = empty($config_constant) ? array() : $config_constant;
             }
 
             $config_constant_dist = array();
             $constant_yml_dist = $distPath.'/constant.yml.dist';
             if (file_exists($constant_yml_dist)) {
-                $config_constant_dist = Yaml::parse($constant_yml_dist);
+                $config_constant_dist = Yaml::parse(file_get_contents($constant_yml_dist));
             }
 
             $configAll = array_replace_recursive($config_constant_dist, $config_dist, $config_constant, $config_path, $config);
@@ -108,25 +108,25 @@ class Application extends ApplicationTrait
             $database = array();
             $yml = $ymlPath.'/database.yml';
             if (file_exists($yml)) {
-                $database = Yaml::parse($yml);
+                $database = Yaml::parse(file_get_contents($yml));
             }
 
             $mail = array();
             $yml = $ymlPath.'/mail.yml';
             if (file_exists($yml)) {
-                $mail = Yaml::parse($yml);
+                $mail = Yaml::parse(file_get_contents($yml));
             }
             $configAll = array_replace_recursive($configAll, $database, $mail);
 
             $config_log = array();
             $yml = $ymlPath.'/log.yml';
             if (file_exists($yml)) {
-                $config_log = Yaml::parse($yml);
+                $config_log = Yaml::parse(file_get_contents($yml));
             }
             $config_log_dist = array();
             $log_yml_dist = $distPath.'/log.yml.dist';
             if (file_exists($log_yml_dist)) {
-                $config_log_dist = Yaml::parse($log_yml_dist);
+                $config_log_dist = Yaml::parse(file_get_contents($log_yml_dist));
             }
 
             $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
@@ -134,12 +134,12 @@ class Application extends ApplicationTrait
             $config_nav = array();
             $yml = $ymlPath.'/nav.yml';
             if (file_exists($yml)) {
-                $config_nav = array('nav' => Yaml::parse($yml));
+                $config_nav = array('nav' => Yaml::parse(file_get_contents($yml)));
             }
             $config_nav_dist = array();
             $nav_yml_dist = $distPath.'/nav.yml.dist';
             if (file_exists($nav_yml_dist)) {
-                $config_nav_dist = array('nav' => Yaml::parse($nav_yml_dist));
+                $config_nav_dist = array('nav' => Yaml::parse(file_get_contents($nav_yml_dist)));
             }
 
             $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
@@ -153,6 +153,7 @@ class Application extends ApplicationTrait
         $app = $this;
         $this->register(new ServiceProvider\EccubeMonologServiceProvider($app));
         $this['monolog.logfile'] = __DIR__.'/../../app/log/site.log';
+        $this['monolog.name'] = 'eccube';
     }
 
     public function initialize()
@@ -180,6 +181,10 @@ class Application extends ApplicationTrait
             }
 
             switch ($code) {
+                case 403:
+                    $title = 'アクセスできません。';
+                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                    break;
                 case 404:
                     $title = 'ページがみつかりません。';
                     $message = 'URLに間違いがないかご確認ください。';
@@ -339,13 +344,28 @@ class Application extends ApplicationTrait
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
-            // 管理画面
             if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                // 管理画面
                 // 管理画面メニュー
                 $menus = array('', '', '');
                 $app['twig']->addGlobal('menus', $menus);
-                // フロント画面
+
+                $Member = $app->user();
+                if (is_object($Member)) {
+                    // ログインしていれば管理者のロールを取得
+                    $AuthorityRoles = $app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
+
+                    $roles = array();
+                    foreach ($AuthorityRoles as $AuthorityRole) {
+                        // 管理画面でメニュー制御するため相対パス全てをセット
+                        $roles[] = $app['request']->getBaseUrl() . '/' . $app['config']['admin_route'] . $AuthorityRole->getDenyUrl();
+                    }
+
+                    $app['twig']->addGlobal('AuthorityRoles', $roles);
+                }
+
             } else {
+                // フロント画面
                 $request = $event->getRequest();
                 $route = $request->attributes->get('_route');
 
@@ -429,7 +449,7 @@ class Application extends ApplicationTrait
         );
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse($dir->getRealPath().'/config.yml');
+            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
 
             // Doctrine Extend
             if (isset($config['orm.path']) && is_array($config['orm.path'])) {
@@ -505,6 +525,7 @@ class Application extends ApplicationTrait
                 'anonymous' => true,
             ),
         );
+
         $this['security.access_rules'] = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
@@ -513,6 +534,7 @@ class Application extends ApplicationTrait
             array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
             array('^/mypage', 'ROLE_USER'),
         );
+
         $this['eccube.password_encoder'] = $this->share(function($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
         });
@@ -533,6 +555,23 @@ class Application extends ApplicationTrait
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+
+        // Voterの設定
+        $app = $this;
+        $this['authority_voter'] = $this->share(function($app) {
+            return new \Eccube\Security\Voter\AuthorityVoter($app);
+        });
+
+        $app['security.voters'] = $app->extend('security.voters', function($voters) use ($app) {
+            $voters[] = $app['authority_voter'];
+
+            return $voters;
+        });
+
+        $this['security.access_manager'] = $this->share(function($app) {
+            return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
+        });
+
     }
 
     public function initializePlugin()
@@ -615,7 +654,7 @@ class Application extends ApplicationTrait
             if (!file_exists($dir->getRealPath().'/config.yml')) {
                 continue;
             }
-            $config = Yaml::parse($dir->getRealPath().'/config.yml');
+            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
 
             $plugin = $this['orm.em']
                 ->getRepository('Eccube\Entity\Plugin')
@@ -643,7 +682,7 @@ class Application extends ApplicationTrait
                 $subscriber = new $class($this);
 
                 if (file_exists($dir->getRealPath().'/event.yml')) {
-                    foreach (Yaml::Parse($dir->getRealPath().'/event.yml') as $event => $handlers) {
+                    foreach (Yaml::parse(file_get_contents($dir->getRealPath().'/event.yml')) as $event => $handlers) {
                         foreach ($handlers as $handler) {
                             if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
                                 $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LATEST;

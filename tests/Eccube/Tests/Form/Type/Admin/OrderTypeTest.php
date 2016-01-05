@@ -69,6 +69,8 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'delivery_fee_total' => '1',
         'charge' => '1',
         'Payment' => '1', // dtb_payment?
+        'OrderDetails' => array(),
+        'Shippings' => array(),
     );
 
     public function setUp()

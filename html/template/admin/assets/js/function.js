@@ -131,6 +131,7 @@ jQuery(document).ready(function ($) {
         setTimeout(function(){
             $form.submit();
         }, 0);
+        return false;
     });
 
 /////////// 検索条件をクリア

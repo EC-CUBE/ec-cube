@@ -166,12 +166,17 @@ class DeliveryController extends AbstractController
         $this->isTokenValid($app);
 
         $repo = $app['eccube.repository.delivery'];
-        $Deliv = $repo->find($id);
+        $Delivery = $repo->find($id);
+        if (!$Delivery) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_setting_shop_delivery'));
+        }
 
-        $Deliv
+        $Delivery
             ->setDelFlg(Constant::ENABLED)
             ->setRank(0);
-        $app['orm.em']->persist($Deliv);
+
+        $app['orm.em']->persist($Delivery);
 
         $rank = 1;
         $Delivs = $repo
