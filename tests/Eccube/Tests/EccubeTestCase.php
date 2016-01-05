@@ -328,17 +328,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        if (is_object($GLOBALS['app'])) {
-            /*
-             * tests/bootstrap.php で生成した Application を取得.
-             * html/index.php でやっていることをエミュレートしている.
-             * phpunit.xml で backupGlobals = false にする必要がある
-             */
-            $app = $GLOBALS['app'];
-        } else {
-            $app = new Application();
-        }
-
+        $app = Application::getInstance();
         $app['debug'] = true;
         $app->initialize();
         $app->initPluginEventDispatcher();

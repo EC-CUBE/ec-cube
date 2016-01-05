@@ -27,7 +27,7 @@ require __DIR__.'/../autoload.php';
 ini_set('display_errors', 'Off');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
-$app = new Eccube\Application();
+$app = Eccube\Application::getInstance();
 
 // インストールされてなければインストーラにリダイレクト
 if ($app['config']['eccube_install']) {

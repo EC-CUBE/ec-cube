@@ -17,15 +17,7 @@ class Version20151023102323 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        if (is_object($GLOBALS['app'])) {
-            // ConsoleApplication で生成した Application を取得する
-            $app = $GLOBALS['app'];
-        } else {
-            $app = new \Eccube\Application();
-            $app->initialize();
-            $app->boot();
-        }
-
+        $app = \Eccube\Application::getInstance();
         $em = $app['orm.em'];
 
         $DeviceType = $em->getRepository('\Eccube\Entity\Master\DeviceType')->find(10);

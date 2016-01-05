@@ -39,6 +39,21 @@ use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
 {
+    protected static $instance;
+
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new Application();
+        }
+        return self::$instance;
+    }
+
+    final function __clone()
+    {
+        throw new \Exception('Clone is not allowed against' . get_class($this));
+    }
+
     public function __construct(array $values = array())
     {
         parent::__construct($values);

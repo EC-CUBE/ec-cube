@@ -23,15 +23,7 @@ class Version20150716110252 extends AbstractMigration
         if (!$schema->hasTable(self::NAME)) {
             return true;
         }
-
-        if (is_object($GLOBALS['app'])) {
-            // ConsoleApplication で生成した Application を取得する
-            $app = $GLOBALS['app'];
-        } else {
-            $app = new \Eccube\Application();
-            $app->initialize();
-            $app->boot();
-        }
+        $app = \Eccube\Application::getInstance();
         $em = $app["orm.em"];
 
         $CsvType = new CsvType();

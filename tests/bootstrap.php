@@ -22,5 +22,4 @@
  */
 
 $loader = require __DIR__ . '/../autoload.php';
-$app = new Eccube\Application();
 $loader->add('Eccube\Tests', __DIR__);
