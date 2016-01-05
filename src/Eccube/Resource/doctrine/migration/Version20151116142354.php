@@ -19,9 +19,7 @@ class Version20151116142354 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
 
         // pageを追加
-        $app = new \Eccube\Application();
-        $app->initialize();
-        $app->boot();
+        $app = \Eccube\Application::getInstance();
         $em = $app['orm.em'];
 
         $DeviceType = $app['eccube.repository.master.device_type']->find(10);
