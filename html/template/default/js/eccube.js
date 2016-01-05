@@ -447,6 +447,8 @@
                 }
                 eccube.checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2',
                 $sele2.val() ? $sele2.val() : '');
+                // IE11対応
+                $sele2.children(':first').attr('selected', 'selected');
             }
         }
     };
@@ -560,6 +562,8 @@
             } else {
                 eccube.setClassCategories($form, product_id, $sele1, $sele2);
             }
+            // IE11対応
+            $sele1.trigger('blur');
         });
 
         // 規格2選択時
@@ -569,6 +573,8 @@
             var product_id = $form.find('input[name=product_id]').val();
             var $sele1 = $form.find('select[name=classcategory_id1]');
             var $sele2 = $(this);
+            // IE11対応
+            $sele2.trigger('click');
             eccube.checkStock($form, product_id, $sele1.val(), $sele2.val());
         });
 
