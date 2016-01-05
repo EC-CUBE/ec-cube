@@ -61,8 +61,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 <h2>セキュリティの設定</h2>
                                 {{ form_row(form.admin_dir , {attr : {placeholder: 'セキュリティのため推測されにくいディレクトリ名を入力して下さい'}}) }}
-                                {{ form_row(form.admin_force_ssl) }}
-                                {{ form_row(form.admin_allow_hosts) }}
+                                {% if app.request.secure %}
+                                    {{ form_row(form.admin_force_ssl) }}
+                                {% else %}
+                                    <span class="text-danger">httpsからの接続でなければSSL制限を設定できません。</span>
+                                    {{ form_row(form.admin_force_ssl , {attr : {disabled: 'disabled', 'value': null}}) }}
+                                {% endif %}
+                                {{ form_row(form.admin_allow_hosts , {attr : {rows: '5'}}) }}
 
                                 <div class="accordion">
                                     <a href="#" class="toggle">&gt; オプションを表示</a>

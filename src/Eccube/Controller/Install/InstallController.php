@@ -144,13 +144,54 @@ class InstallController
             ->createBuilder('install_step3')
             ->getForm();
         $sessionData = $this->getSessionData($request);
+
+        if (empty($sessionData['shop_name'])) {
+
+            $config_file = $this->config_path . '/config.yml';
+            $fs = new Filesystem();
+
+            if ($fs->exists($config_file)) {
+                // すでに登録されていた場合、登録データを表示
+                $this->setPDO();
+                $stmt = $this->PDO->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
+
+                foreach ($stmt as $row) {
+                    $sessionData['shop_name'] = $row['shop_name'];
+                    $sessionData['email'] = $row['email01'];
+                }
+
+                // セキュリティの設定
+                $config_file = $this->config_path . '/path.yml';
+                $config = Yaml::parse(file_get_contents($config_file));
+                $sessionData['admin_dir'] = $config['admin_route'];
+
+                $config_file = $this->config_path . '/config.yml';
+                $config = Yaml::parse(file_get_contents($config_file));
+
+                $allowHost = $config['admin_allow_host'];
+                if (count($allowHost) > 0) {
+                    $sessionData['admin_allow_hosts'] = Str::convertLineFeed(implode("\n", $allowHost));
+                }
+                $sessionData['admin_force_ssl'] = (bool)$config['force_ssl'];
+
+                // メール設定
+                $config_file = $this->config_path . '/mail.yml';
+                $config = Yaml::parse(file_get_contents($config_file));
+                $mail = $config['mail'];
+                $sessionData['mail_backend'] = $mail['transport'];
+                $sessionData['smtp_host'] = $mail['host'];
+                $sessionData['smtp_port'] = $mail['port'];
+                $sessionData['smtp_username'] = $mail['username'];
+                $sessionData['smtp_password'] = $mail['password'];
+            } else {
+                // 初期値にmailを設定
+                $sessionData['mail_backend'] = 'mail';
+            }
+        }
+
         $form->setData($sessionData);
         if ($this->isValid($request, $form)) {
             $data = $form->getData();
-            $this
-                ->createConfigYamlFile($data)
-                ->createMailYamlFile($data)
-                ->createPathYamlFile($data, $request);
 
             return $app->redirect($app->url('install_step4'));
         }
@@ -168,10 +209,30 @@ class InstallController
             ->getForm();
 
         $sessionData = $this->getSessionData($request);
+
+        if (empty($sessionData['database'])) {
+
+            $config_file = $this->config_path . '/database.yml';
+            $fs = new Filesystem();
+
+            if ($fs->exists($config_file)) {
+                // すでに登録されていた場合、登録データを表示
+
+                // データベース設定
+                $config = Yaml::parse(file_get_contents($config_file));
+                $database = $config['database'];
+                $sessionData['database'] = $database['driver'];
+                $sessionData['database_host'] = $database['host'];
+                $sessionData['database_port'] = $database['port'];
+                $sessionData['database_name'] = $database['dbname'];
+                $sessionData['database_user'] = $database['user'];
+                $sessionData['database_password'] = $database['password'];
+            }
+        }
+
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
-            $this->createDatabaseYamlFile($form->getData());
 
             return $app->redirect($app->url('install_step5'));
         }
@@ -193,8 +254,15 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
+
+            $this
+                ->createDatabaseYamlFile($sessionData)
+                ->createMailYamlFile($sessionData)
+                ->createPathYamlFile($sessionData, $request);
+
             if (!$form['no_update']->getData()) {
                 set_time_limit(0);
+                $this->createConfigYamlFile($sessionData);
 
                 $this
                     ->setPDO()
@@ -202,7 +270,17 @@ class InstallController
                     ->createTables()
                     ->doMigrate()
                     ->insert();
+            } else {
+                // データベースを初期化しない場合、auth_magicは初期化しない
+                $this->createConfigYamlFile($sessionData, false);
+
+                $this
+                    ->setPDO()
+                    ->update();
+
             }
+
+
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $host = $request->getSchemeAndHttpHost();
                 $basePath = $request->getBasePath();
@@ -229,7 +307,7 @@ class InstallController
     public function complete(InstallApplication $app, Request $request)
     {
         $config_file = $this->config_path . '/path.yml';
-        $config = Yaml::parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
 
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
@@ -294,7 +372,7 @@ class InstallController
     private function setPDO()
     {
         $config_file = $this->config_path . '/database.yml';
-        $config = Yaml::parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
 
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
@@ -329,7 +407,7 @@ class InstallController
     private function getEntityManager()
     {
         $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse($config_file);
+        $database = Yaml::parse(file_get_contents($config_file));
 
         $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'db.options' => $database['database']
@@ -373,11 +451,11 @@ class InstallController
         $this->resetNatTimer();
 
         $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse($config_file);
+        $database = Yaml::parse(file_get_contents($config_file));
         $config['database'] = $database['database'];
 
         $config_file = $this->config_path . '/config.yml';
-        $baseConfig = Yaml::parse($config_file);
+        $baseConfig = Yaml::parse(file_get_contents($config_file));
         $config['config'] = $baseConfig;
 
         $this->PDO->beginTransaction();
@@ -390,7 +468,7 @@ class InstallController
                 'password_hash_algos' => 'sha256',
             );
             $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
-            $salt = \Eccube\Util\Str::random();
+            $salt = \Eccube\Util\Str::random(32);
 
             $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
             $sth = $this->PDO->prepare('INSERT INTO dtb_base_info (
@@ -428,6 +506,70 @@ class InstallController
         return $this;
     }
 
+    private function update()
+    {
+        $this->resetNatTimer();
+
+        $config_file = $this->config_path . '/database.yml';
+        $database = Yaml::parse(file_get_contents($config_file));
+        $config['database'] = $database['database'];
+
+        $config_file = $this->config_path . '/config.yml';
+        $baseConfig = Yaml::parse(file_get_contents($config_file));
+        $config['config'] = $baseConfig;
+
+        $this->PDO->beginTransaction();
+
+        try {
+
+            $config = array(
+                'auth_type' => '',
+                'auth_magic' => $config['config']['auth_magic'],
+                'password_hash_algos' => 'sha256',
+            );
+            $passwordEncoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($config);
+            $salt = \Eccube\Util\Str::random(32);
+
+            $stmt = $this->PDO->prepare("SELECT member_id FROM dtb_member WHERE login_id = :login_id;");
+            $stmt->execute(array(':login_id' => $this->session_data['login_id']));
+            $rs = $stmt->fetch();
+
+            $encodedPassword = $passwordEncoder->encodePassword($this->session_data['login_pass'], $salt);
+
+            if ($rs) {
+                // 同一の管理者IDであればパスワードのみ更新
+                $sth = $this->PDO->prepare("UPDATE dtb_member set password = :admin_pass, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
+                $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt, ':login_id' => $this->session_data['login_id']));
+
+            } else {
+                // 新しい管理者IDが入力されたらinsert
+                $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
+                $sth->execute(array(':login_id' => $this->session_data['login_id'], ':admin_pass' => $encodedPassword, ':salt' => $salt));
+            }
+
+            $sth = $this->PDO->prepare('UPDATE dtb_base_info set
+                shop_name = :shop_name,
+                email01 = :admin_mail,
+                email02 = :admin_mail,
+                email03 = :admin_mail,
+                email04 = :admin_mail,
+                update_date = current_timestamp
+            WHERE id = 1;');
+            $sth->execute(array(
+                ':shop_name' => $this->session_data['shop_name'],
+                ':admin_mail' => $this->session_data['email']
+            ));
+
+            $this->PDO->commit();
+        } catch (\Exception $e) {
+            $this->PDO->rollback();
+            throw $e;
+        }
+
+        return $this;
+    }
+
+
     private function getMigration()
     {
         $app = new \Eccube\Application();
@@ -450,6 +592,9 @@ class InstallController
             $migration = $this->getMigration();
 
             // DBとのコネクションを維持するためpingさせる
+            if (is_null($this->PDO)) {
+                $this->setPDO();
+            }
             $this->PDO->ping();
 
             // nullを渡すと最新バージョンまでマイグレートする
@@ -484,15 +629,26 @@ class InstallController
         return $protectedDirs;
     }
 
-    private function createConfigYamlFile($data)
+    private function createConfigYamlFile($data, $auth = true)
     {
         $fs = new Filesystem();
         $config_file = $this->config_path . '/config.yml';
+
         if ($fs->exists($config_file)) {
+            $config = Yaml::parse(file_get_contents($config_file));
             $fs->remove($config_file);
         }
 
-        $auth_magic = Str::random(32);
+        if ($auth) {
+            $auth_magic = Str::random(32);
+        } else {
+            if (isset($config['auth_magic'])) {
+                $auth_magic = $config['auth_magic'];
+            } else {
+                $auth_magic = Str::random(32);
+            }
+        }
+
         $allowHost = Str::convertLineFeed($data['admin_allow_hosts']);
         if (empty($allowHost)) {
             $adminAllowHosts = array();
@@ -511,7 +667,7 @@ class InstallController
         );
         $fs->dumpFile($config_file, $content);
 
-        $config = Yaml::Parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
         $config['admin_allow_host'] = $adminAllowHosts;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);
@@ -522,7 +678,7 @@ class InstallController
     private function addInstallStatus()
     {
         $config_file = $this->config_path . '/config.yml';
-        $config = Yaml::parse($config_file);
+        $config = Yaml::parse(file_get_contents($config_file));
         $config['eccube_install'] = 1;
         $yml = Yaml::dump($config);
         file_put_contents($config_file, $yml);
@@ -632,7 +788,7 @@ class InstallController
     private function sendAppData($params)
     {
         $config_file = $this->config_path . '/database.yml';
-        $db_config = Yaml::parse($config_file);
+        $db_config = Yaml::parse(file_get_contents($config_file));
 
         $this->setPDO();
         $stmt = $this->PDO->query('select version() as v');
