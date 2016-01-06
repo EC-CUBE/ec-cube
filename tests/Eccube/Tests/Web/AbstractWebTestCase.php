@@ -25,26 +25,46 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Mock\CsrfTokenMock;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpKernel\Client;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
 
-    protected $client = null;
-    protected static $server = null;
+    protected $client;
 
     public function setUp()
     {
         parent::setUp();
-
-        self::$server = static::createClient();
-        $this->client = self::$server;
+        $this->client = $this->createClient();
     }
 
     public function tearDown()
     {
         parent::tearDown();
+        $this->client = null;
+    }
+
+    public function createClient(array $server = array())
+    {
+        if (!$this->client) {
+            // pimple で無限ループしてしまうので新たなインスタンスを生成する
+            $app = new \Eccube\Application();
+            $app['debug'] = true;
+            $app->initialize();
+            $app->initPluginEventDispatcher();
+            $app['session.test'] = true;
+            $app['exception_handler']->disable();
+            $app['form.csrf_provider'] = $app->share(function () {
+                return new CsrfTokenMock();
+            });
+            $app->boot();
+
+            $this->client = new Client($app, $server);
+        }
+        return $this->client;
     }
 
     /**
