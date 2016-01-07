@@ -47,26 +47,6 @@ abstract class AbstractWebTestCase extends EccubeTestCase
         $this->client = null;
     }
 
-    public function createClient(array $server = array())
-    {
-        if (!$this->client) {
-            // pimple で無限ループしてしまうので新たなインスタンスを生成する
-            $app = new \Eccube\Application();
-            $app['debug'] = true;
-            $app->initialize();
-            $app->initPluginEventDispatcher();
-            $app['session.test'] = true;
-            $app['exception_handler']->disable();
-            $app['form.csrf_provider'] = $app->share(function () {
-                return new CsrfTokenMock();
-            });
-            $app->boot();
-
-            $this->client = new Client($app, $server);
-        }
-        return $this->client;
-    }
-
     /**
      * {@inheritdoc}
      */

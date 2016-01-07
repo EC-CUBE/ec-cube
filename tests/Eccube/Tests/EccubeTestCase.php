@@ -423,7 +423,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        $app = Application::getInstance();
+        $app = new Application();
         $app['debug'] = true;
         $app->initialize();
         $app->initPluginEventDispatcher();
