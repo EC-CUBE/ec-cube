@@ -20,7 +20,7 @@ class Version20151116142354 extends AbstractMigration
 
         // pageを追加
         $app = \Eccube\Application::getInstance();
-        $em = $app['orm.em'];
+        $em = $app["orm.em"];
 
         $DeviceType = $app['eccube.repository.master.device_type']->find(10);
 

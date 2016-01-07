@@ -17,8 +17,11 @@ class Version20151023102323 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
+
+
+        // pageを追加
         $app = \Eccube\Application::getInstance();
-        $em = $app['orm.em'];
+        $em = $app["orm.em"];
 
         $DeviceType = $em->getRepository('\Eccube\Entity\Master\DeviceType')->find(10);
 

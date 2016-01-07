@@ -572,8 +572,10 @@ class InstallController
 
     private function getMigration()
     {
-        $app = new \Eccube\Application();
-        $app->initDoctrine();
+        $app = \Eccube\Application::getInstance();
+        $app->initialize();
+        $app->boot();
+
         $config = new Configuration($app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
@@ -858,8 +860,9 @@ class InstallController
      */
     public function migration_plugin(InstallApplication $app, Request $request)
     {
-        $eccube = new \Eccube\Application();
-        $eccube->initDoctrine();
+        $eccube = \Eccube\Application::getInstance();
+        $eccube->initialize();
+        $eccube->boot();
 
         $pluginRepository = $eccube['orm.em']->getRepository('Eccube\Entity\Plugin');
         $Plugins = $pluginRepository->findBy(array('del_flg' => Constant::DISABLED));
