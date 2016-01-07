@@ -46,9 +46,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function setUp()
     {
         parent::setUp();
-        // in the case of sqlite in-memory database only.
-        if (array_key_exists('memory', $this->app['config']['database'])
-            && $this->app['config']['database']['memory']) {
+        if ($this->isSqliteInMemory()) {
             $this->initializeDatabase();
         }
         if (isset($this->app['orm.em'])) {
@@ -62,8 +60,10 @@ abstract class EccubeTestCase extends WebTestCase
     public function tearDown()
     {
         parent::tearDown();
-        $this->app['orm.em']->getConnection()->rollback();
-        $this->app['orm.em']->getConnection()->close();
+        if (!$this->isSqliteInMemory()) {
+            $this->app['orm.em']->getConnection()->rollback();
+            $this->app['orm.em']->getConnection()->close();
+        }
 
         $this->cleanUpProperties();
         $this->app = null;
@@ -558,5 +558,17 @@ abstract class EccubeTestCase extends WebTestCase
     protected function parseMailCatcherSource($Message)
     {
         return quoted_printable_decode($Message->source);
+    }
+
+    /**
+     * in the case of sqlite in-memory database.
+     */
+    protected function isSqliteInMemory()
+    {
+        if (array_key_exists('memory', $this->app['config']['database'])
+            && $this->app['config']['database']['memory']) {
+            return true;
+        }
+        return false;
     }
 }
