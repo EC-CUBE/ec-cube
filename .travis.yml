@@ -40,7 +40,7 @@ before_script:
   - composer install --dev --no-interaction -o
   - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
   - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql none; fi"
-  - sh -c "if [ '$DB' = 'sqlite' ]; then sh ./eccube_install.sh sqlite-in-memory none; fi"
+  - sh -c "if [ '$DB' = 'sqlite' ]; then sh ./eccube_install.sh sqlite3-in-memory none; fi"
   - mailcatcher
 
 script:
