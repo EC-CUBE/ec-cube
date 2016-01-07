@@ -66,6 +66,7 @@ abstract class EccubeTestCase extends WebTestCase
         $this->app['orm.em']->getConnection()->close();
 
         $this->cleanUpProperties();
+        $this->app = null;
     }
 
     /**
@@ -423,7 +424,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        $app = new Application();
+        $app = Application::getInstance();
         $app['debug'] = true;
         $app->initialize();
         $app->initPluginEventDispatcher();

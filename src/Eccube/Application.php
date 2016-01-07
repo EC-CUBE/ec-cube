@@ -40,7 +40,7 @@ class Application extends ApplicationTrait
 
     public static function getInstance(array $values = array())
     {
-        if (!self::$instance) {
+        if (!is_object(self::$instance)) {
             self::$instance = new Application($values);
         }
 
