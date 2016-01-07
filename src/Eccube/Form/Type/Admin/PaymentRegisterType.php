@@ -52,7 +52,10 @@ class PaymentRegisterType extends AbstractType
                 'precision' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Regex(array('pattern' => '/^\d+$/')),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('rule_min', 'money', array(
@@ -60,7 +63,10 @@ class PaymentRegisterType extends AbstractType
                 'currency' => 'JPY',
                 'precision' => 0,
                 'constraints' => array(
-                    new Assert\Regex(array('pattern' => '/^\d+$/')),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('rule_max', 'money', array(
@@ -69,7 +75,10 @@ class PaymentRegisterType extends AbstractType
                 'precision' => 0,
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Regex(array('pattern' => '/^\d+$/')),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('payment_image_file', 'file', array(

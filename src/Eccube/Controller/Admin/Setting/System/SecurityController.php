@@ -88,7 +88,7 @@ class SecurityController extends AbstractController
 
                     file_put_contents($pathFile, Yaml::dump($config));
 
-                    $app->addSuccess('admin.sysmte.security.route.dir.complete', 'admin');
+                    $app->addSuccess('admin.system.security.route.dir.complete', 'admin');
 
                     // ログアウト
                     $this->getSecurity($app)->setToken(null);
@@ -97,7 +97,7 @@ class SecurityController extends AbstractController
                     return $app->redirect($request->getBaseUrl() . '/' . $config['admin_route']);
                 }
 
-                $app->addSuccess('admin.sysmte.security.save.complete', 'admin');
+                $app->addSuccess('admin.system.security.save.complete', 'admin');
 
             }
         } else {

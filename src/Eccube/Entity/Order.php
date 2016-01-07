@@ -24,6 +24,7 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Common\Constant;
 use Eccube\Util\EntityUtil;
 
 /**
@@ -63,6 +64,64 @@ class Order extends \Eccube\Entity\AbstractEntity
             }
         }
 
+    }
+
+    /**
+     * Calculate quantity of total.
+     *
+     * @return integer
+     */
+    public function calculateTotalQuantity()
+    {
+        $totalQuantity = 0;
+        foreach ($this->getOrderDetails() as $OrderDetail) {
+            $totalQuantity += $OrderDetail->getQuantity();
+        }
+        return $totalQuantity;
+    }
+
+    /**
+     * Calculate SubTotal.
+     *
+     * @return integer
+     */
+    public function calculateSubTotal()
+    {
+        $subTotal = 0;
+        foreach ($this->getOrderDetails() as $OrderDetail) {
+            $subTotal += $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
+        }
+        return $subTotal;
+    }
+
+    /**
+     * Calculate tax of total.
+     *
+     * @return integer
+     */
+    public function calculateTotalTax()
+    {
+        $tax = 0;
+        foreach ($this->getOrderDetails() as $OrderDetail) {
+            $tax += ($OrderDetail->getPriceIncTax() - $OrderDetail->getPrice()) * $OrderDetail->getQuantity();
+        }
+        return $tax;
+    }
+
+    /**
+     * この注文の保持する商品種別を取得します.
+     *
+     * @return array 一意な商品種別の配列
+     */
+    public function getProductTypes()
+    {
+        $productTypes = array();
+        foreach ($this->getOrderDetails() as $OrderDetail) {
+            /* @var $ProductClass \Eccube\Entity\ProductClass */
+            $ProductClass = $OrderDetail->getProductClass();
+            $productTypes[] = $ProductClass->getProductType();
+        }
+        return array_unique($productTypes);
     }
 
     /**
@@ -313,8 +372,18 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(\Eccube\Entity\Master\OrderStatus $orderStatus = null)
     {
+        $this->setDiscount(0)
+            ->setSubtotal(0)
+            ->setTotal(0)
+            ->setPaymentTotal(0)
+            ->setCharge(0)
+            ->setTax(0)
+            ->setDeliveryFeeTotal(0)
+            ->setOrderStatus($orderStatus)
+            ->setDelFlg(Constant::DISABLED);
+
         $this->OrderDetails = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Shippings = new \Doctrine\Common\Collections\ArrayCollection();
         $this->MailHistories = new \Doctrine\Common\Collections\ArrayCollection();

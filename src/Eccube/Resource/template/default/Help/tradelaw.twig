@@ -22,144 +22,113 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% extends 'default_frame.twig' %}
 
 {% block main %}
-    <div id="contents" class="main_only">
-        <div class="container-fluid inner no-padding">
-            <div id="main">
-                <h1 class="page-heading">特定商取引法に基づく表記</h1>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <div class="dl_table">
+<div id="contents" class="main_only">
+    <div class="container-fluid inner no-padding">
+        <div id="main">
+            <h1 class="page-heading">特定商取引法に基づく表記</h1>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="dl_table">
 
-                                {% if help.law_company is defined %}
-                                    <dl>
-                                        <dt>販売業者</dt>
-                                        <dd>{{ help.law_company }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_company is defined %}
+                            <dl>
+                                <dt>販売業者</dt>
+                                <dd>{{ help.law_company }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_manager is defined %}
-                                    <dl>
-                                        <dt>運営責任者</dt>
-                                        <dd>{{ help.law_manager }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_manager is defined %}
+                            <dl>
+                                <dt>運営責任者</dt>
+                                <dd>{{ help.law_manager }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_zip01 is defined %}
-                                    <dl>
-                                        <dt>住所</dt>
-                                        <dd>〒{{ help.law_zip01 }}-{{ help.law_zip02 }}<br />
-                                            {{ help.law_pref|default('') }}{{ help.law_addr01 }}{{ help.law_addr02 }}
-                                        </dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_zip01 is defined %}
+                            <dl>
+                                <dt>住所</dt>
+                                <dd>〒{{ help.law_zip01 }}-{{ help.law_zip02 }}<br />
+                                    {{ help.law_pref|default('') }}{{ help.law_addr01 }}{{ help.law_addr02 }}
+                                </dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_tel01 is defined %}
-                                    <dl>
-                                        <dt>電話番号</dt>
-                                        <dd>{{ help.law_tel01 }}-{{ help.law_tel02 }}-{{ help.law_tel03 }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_tel01 is defined %}
+                            <dl>
+                                <dt>電話番号</dt>
+                                <dd>{{ help.law_tel01 }}-{{ help.law_tel02 }}-{{ help.law_tel03 }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_fax01 is defined %}
-                                    <dl>
-                                        <dt>FAX番号</dt>
-                                        <dd>{{ help.law_fax01 }}-{{ help.law_fax02 }}-{{ help.law_fax03 }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_fax01 is defined and help.law_fax01 is not empty %}
+                            <dl>
+                                <dt>FAX番号</dt>
+                                <dd>{{ help.law_fax01 }}-{{ help.law_fax02 }}-{{ help.law_fax03 }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_email is defined %}
-                                    <dl>
-                                        <dt>メールアドレス</dt>
-                                        <dd><a href="mailto:{{ help.law_email }}">{{ help.law_email }}</a></dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_email is defined %}
+                            <dl>
+                                <dt>メールアドレス</dt>
+                                <dd><a href="mailto:{{ help.law_email }}">{{ help.law_email }}</a></dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_url is defined %}
-                                    <dl>
-                                        <dt>URL</dt>
-                                        <dd><a href="{{ help.law_url }}">{{ help.law_url }}</a></dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_url is defined %}
+                            <dl>
+                                <dt>URL</dt>
+                                <dd><a href="{{ help.law_url }}">{{ help.law_url }}</a></dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_term01 is defined %}
-                                    <dl>
-                                        <dt>商品以外の必要代金</dt>
-                                        <dd>{{ help.law_term01|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_term01 is defined %}
+                            <dl>
+                                <dt>商品以外の必要代金</dt>
+                                <dd>{{ help.law_term01|nl2br }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_term02 is defined %}
-                                    <dl>
-                                        <dt>注文方法</dt>
-                                        <dd>{{ help.law_term02|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_term02 is defined %}
+                            <dl>
+                                <dt>注文方法</dt>
+                                <dd>{{ help.law_term02|nl2br }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_term03 is defined %}
-                                    <dl>
-                                        <dt>支払方法</dt>
-                                        <dd>{{ help.law_term03|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_term03 is defined %}
+                            <dl>
+                                <dt>支払方法</dt>
+                                <dd>{{ help.law_term03|nl2br }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_term04 is defined %}
-                                    <dl>
-                                        <dt>支払期限</dt>
-                                        <dd>{{ help.law_term04|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_term04 is defined %}
+                            <dl>
+                                <dt>支払期限</dt>
+                                <dd>{{ help.law_term04|nl2br }}</dd>
+                            </dl>
+                            {% endif %}
 
-                                {% if help.law_term05 is defined %}
-                                    <dl>
-                                        <dt>引渡し時期</dt>
-                                        <dd>{{ help.law_term05|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
+                            {% if help.law_term05 is defined %}
+                            <dl>
+                                <dt>引渡し時期</dt>
+                                <dd>{{ help.law_term05|nl2br }}</dd>
+                            </dl>
+                            {% endif %}
 
+                            {% if help.law_term06 is defined %}
+                            <dl>
+                                <dt>返品・交換について</dt>
+                                <dd>{{ help.law_term06|nl2br }}</dd>
+                            </dl>
+                            {% endif %}
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
 
-                                {% if help.law_term06 is defined %}
-                                    <dl>
-                                        <dt>返品・交換について</dt>
-                                        <dd>{{ help.law_term06|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
-
-                                {% if help.law_term07 is defined %}
-                                    <dl>
-                                        <dt>予備１</dt>
-                                        <dd>{{ help.law_term07|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
-
-                                {% if help.law_term08 is defined %}
-                                    <dl>
-                                        <dt>予備２</dt>
-                                        <dd>{{ help.law_term08|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
-
-                                {% if help.law_term09 is defined %}
-                                    <dl>
-                                        <dt>予備３</dt>
-                                        <dd>{{ help.law_term09|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
-
-                                {% if help.law_term10 is defined %}
-                                    <dl>
-                                        <dt>予備４</dt>
-                                        <dd>{{ help.law_term10|nl2br }}</dd>
-                                    </dl>
-                                {% endif %}
-
-
-                            </div>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-
-                </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

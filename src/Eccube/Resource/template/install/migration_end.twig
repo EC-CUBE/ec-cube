@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'migration_frame.twig' %}
 
-{% set current = 1 %}
+{% set current = 2 %}
 
 {% block main %}
     <div id="main" class="step1">
@@ -31,14 +31,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="row">
                         <div class="col-md-12">
                             <div class="page-header">
-                                <h1>ようこそ</h1>
+                                <h1>マイグレーション完了</h1>
                             </div>
-                            <form name="form1" id="form1" action="{{ url('migration_end') }}">
-                                <div class="intro">
-                                    <svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg>
-                                    <p>EC-CUBEのマイグレーションが完了しました。</p>
-                                </div>
-                            </form>
+                            <div class="intro">
+                                <svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg>
+                                <p>EC-CUBEのマイグレーションが完了しました。</p>
+                            </div>
                         </div><!-- /.col -->
                     </div>
                 </div>

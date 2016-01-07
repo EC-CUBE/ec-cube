@@ -31,7 +31,7 @@ class LayoutController
 {
     private $isPreview = false;
 
-    public function index(Application $app, Request $request, $id = 1)
+    public function index(Application $app, Request $request, $id = 1, $origId = 1)
     {
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
@@ -39,6 +39,7 @@ class LayoutController
         // 編集対象ページ
         /* @var $TargetPageLayout \Eccube\Entity\PageLayout */
         $TargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $id);
+        $OrigTargetPageLayout = $app['eccube.repository.page_layout']->get($DeviceType, $origId);
         $Blocks = $app['orm.em']->getRepository('Eccube\Entity\Block')
             ->findBy(array(
                 'DeviceType' => $DeviceType,
@@ -86,7 +87,8 @@ class LayoutController
                 // TODO: collection を利用
 
                 $data = $request->request->all();
-                for ($i = 0; $i < count($Blocks); $i++) {
+                $max = count($Blocks);
+                for ($i = 0; $i < $max; $i++) {
                     // block_id が取得できない場合は INSERT しない
                     if (!isset($data['id_' . $i])) {
                         continue;
@@ -133,12 +135,32 @@ class LayoutController
                 $app['orm.em']->flush();
 
                 if ($this->isPreview) {
-                    $app->addSuccess('admin.preview.register.complete', 'admin');
+                    if ($OrigTargetPageLayout->getEditFlg()) {
+                        if ($OrigTargetPageLayout->getUrl() === 'product_detail') {
+                            $products = $app['eccube.repository.product']->createQueryBUilder('p')
+                                ->where('p.Status = 1')
+                                ->getQuery()
+                                ->getResult();
+                            $product = null;
+                            foreach ($products as $p) {
+                                $product = $p;
+                                break;
+                            }
+                            if (is_null($product)) {
+                                return '';
+                            }
+                            return $app->redirect($app->url($OrigTargetPageLayout->getUrl(), array('preview' => 1, 'id' => $product->getId())));
+                        } else {
+                            return $app->redirect($app->url($OrigTargetPageLayout->getUrl(), array('preview' => 1)));
+                        }
+                    } else {
+                        return $app->redirect($app->url('homepage')."user_data/".$OrigTargetPageLayout->getUrl().'?preview=1');
+                    }
                 } else {
                     $app->addSuccess('admin.register.complete', 'admin');
+                    return $app->redirect($app->url('admin_content_layout_edit', array('id' => $id)));
                 }
 
-                return $app->redirect($app->url('admin_content_layout_edit', array('id' => $id)));
             }
 
         }
@@ -153,7 +175,7 @@ class LayoutController
     public function preview(Application $app, Request $request, $id)
     {
         $this->isPreview = true;
-        return $this->index($app, $request, 0);
+        return $this->index($app, $request, 0, $id);
     }
 
 }

@@ -30,6 +30,22 @@ namespace Eccube\Entity\Master;
 class Taxrule extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * 四捨五入.
+     * @var integer
+     */
+    const ROUND = 1;
+    /**
+     * 切り捨て.
+     * @var integer
+     */
+    const FLOOR = 2;
+    /**
+     * 切り上げ.
+     * @var integer
+     */
+    const CEIL = 3;
+
+    /**
      * @return string
      */
     public function __toString()

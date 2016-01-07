@@ -25,6 +25,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -41,8 +42,10 @@ class ProductController
 
     public function index(Application $app, Request $request)
     {
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+
         // Doctrine SQLFilter
-        if ($app['config']['nostock_hidden']) {
+        if ($BaseInfo->getNostockHidden() === Constant::ENABLED) {
             $app['orm.em']->getFilters()->enable('nostock_hidden');
         }
 
@@ -87,9 +90,14 @@ class ProductController
 
                 if ($addCartForm->isValid()) {
                     $addCartData = $addCartForm->getData();
-                    $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
 
-                    return $app->redirect($app['url_generator']->generate('cart'));
+                    try {
+                        $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
+                    } catch (CartException $e) {
+                        $app->addRequestError($e->getMessage());
+                    }
+
+                    return $app->redirect($app->url('cart'));
                 }
             }
 
@@ -137,13 +145,17 @@ class ProductController
 
     public function detail(Application $app, Request $request, $id)
     {
-        if ($app['config']['nostock_hidden']) {
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+        if ($BaseInfo->getNostockHidden() === Constant::ENABLED) {
             $app['orm.em']->getFilters()->enable('nostock_hidden');
         }
 
         /* @var $Product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->get($id);
         if (!$request->getSession()->has('_security_admin') && $Product->getStatus()->getId() !== 1) {
+            throw new NotFoundHttpException();
+        }
+        if (count($Product->getProductClasses()) < 1) {
             throw new NotFoundHttpException();
         }
 
@@ -165,9 +177,14 @@ class ProductController
                         $Customer = $app->user();
                         $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
                         $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+                        return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
+                    } else {
+                        // 非会員の場合、ログイン画面を表示
+                        //  ログイン後の画面遷移先を設定
+                        $app->setLoginTargetPath($app->url('product_detail', array('id' => $Product->getId())));
+                        $app['session']->getFlashBag()->set('eccube.add.favorite', true);
+                        return $app->redirect($app->url('mypage_login'));
                     }
-
-                    return $app->redirect($app->url('product_detail', array('productId' => $Product->getId())));
                 } else {
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
@@ -178,13 +195,22 @@ class ProductController
                     return $app->redirect($app->url('cart'));
                 }
             }
+        } else {
+            $addFavorite = $app['session']->getFlashBag()->get('eccube.add.favorite');
+            if (!empty($addFavorite)) {
+                // お気に入り登録時にログインされていない場合、ログイン後にお気に入り追加処理を行う
+                if ($app->isGranted('ROLE_USER')) {
+                        $Customer = $app->user();
+                        $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
+                        $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+                }
+            }
         }
 
+        $is_favorite = false;
         if ($app->isGranted('ROLE_USER')) {
             $Customer = $app->user();
             $is_favorite = $app['eccube.repository.customer_favorite_product']->isFavorite($Customer, $Product);
-        } else {
-            $is_favorite = false;
         }
 
         return $app->render('Product/detail.twig', array(
@@ -204,7 +230,7 @@ class ProductController
      */
     private function getPageTitle($searchData)
     {
-        if (isset($searchData['mode']) && $searchData['mode'] === 'search') {
+        if (isset($searchData['name']) && !empty($searchData['name'])) {
             return '検索結果';
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();

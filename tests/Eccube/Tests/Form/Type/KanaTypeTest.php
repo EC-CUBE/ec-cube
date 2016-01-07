@@ -148,6 +148,54 @@ class KanaTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testinvaliddata_kana01_haswhitespaceEn()
+    {
+        $data = array(
+            'kana' => array(
+                'kana01' => 'ホゲ ホゲ',
+                'kana02' => 'フガフガ',
+            ));
+
+        $this->form->submit($data);
+        $this->assertfalse($this->form->isvalid());
+    }
+
+    public function testinvaliddata_kana02_haswhitespaceEn()
+    {
+        $data = array(
+            'kana' => array(
+                'kana01' => 'ホゲホゲ',
+                'kana02' => 'フガ フガ',
+            ));
+
+        $this->form->submit($data);
+        $this->assertfalse($this->form->isvalid());
+    }
+
+    public function testinvaliddata_kana01_haswhitespaceJa()
+    {
+        $data = array(
+            'kana' => array(
+                'kana01' => 'ホゲ　ホゲ',
+                'kana02' => 'フガフガ',
+            ));
+
+        $this->form->submit($data);
+        $this->assertfalse($this->form->isvalid());
+    }
+
+    public function testinvaliddata_kana02_haswhitespaceJa()
+    {
+        $data = array(
+            'kana' => array(
+                'kana01' => 'ホゲホゲ',
+                'kana02' => 'フガ　フガ',
+            ));
+
+        $this->form->submit($data);
+        $this->assertfalse($this->form->isvalid());
+    }
+
     /**
      * ひらがな入力されてもカタカナで返す
      */

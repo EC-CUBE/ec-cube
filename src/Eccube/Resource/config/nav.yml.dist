@@ -51,7 +51,7 @@
   child:
       - id: news
         name: 新着情報管理
-        url : admin_content
+        url : admin_content_news
       - id: file
         name: ファイル管理
         url: admin_content_file
@@ -61,6 +61,9 @@
       - id: block
         name: ブロック管理
         url: admin_content_block
+      - id: cache
+        name: キャッシュ管理
+        url: admin_content_cache
 - id: setting
   name: 設定
   has_child: true
@@ -104,9 +107,18 @@
             - id: member
               name: メンバー管理
               url: admin_setting_system_member
+            - id: authority
+              name: 権限管理
+              url: admin_setting_system_authority
             - id: security
               name: セキュリティ管理
               url: admin_setting_system_security
+            - id: log
+              name: EC-CUBE ログ表示
+              url: admin_setting_system_log
+            - id: masterdata
+              name: マスターデータ管理
+              url: admin_setting_system_masterdata
 - id: store
   name: オーナーズストア
   has_child: true

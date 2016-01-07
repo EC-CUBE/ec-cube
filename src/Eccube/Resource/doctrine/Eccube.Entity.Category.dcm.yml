@@ -14,7 +14,7 @@ Eccube\Entity\Category:
     fields:
         name:
             type: text
-            nullable: true
+            nullable: false
             column: category_name
         level:
             type: integer
@@ -22,7 +22,7 @@ Eccube\Entity\Category:
             unsigned: false
         rank:
             type: integer
-            nullable: true
+            nullable: false
             unsigned: false
         create_date:
             type: datetime

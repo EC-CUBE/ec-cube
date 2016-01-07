@@ -1,12 +1,12 @@
 @charset "utf-8";
 
-/* -------------------------------- 
+/* --------------------------------
 	Theme CSS for EC-CUBE 3
 -------------------------------- */
 
 
-/* -------------------------------- 
-	Common 
+/* --------------------------------
+	Common
 -------------------------------- */
 
 body {
@@ -100,7 +100,7 @@ body {
     margin: 0 10px 10px 0;
 }
 
-/* -------------------------------- 
+/* --------------------------------
 	Top Page
 -------------------------------- */
 
@@ -150,7 +150,7 @@ body {
 	font-size: 14px;
 	font-size: 1.4rem;
 }
-.front_page #contents_top .item_comment.text-warning, 
+.front_page #contents_top .item_comment.text-warning,
 .front_page #contents_top .item_name.text-warning {
 	color: #9a947e;
 	font-weight: bold;
@@ -204,7 +204,7 @@ body {
 	clear: both;
 }
 
-/* -------------------------------- 
+/* --------------------------------
 	Detail Page
 -------------------------------- */
 
@@ -316,22 +316,22 @@ body {
 *******************************/
 
 @media only screen and (max-width: 767px) {
-	
+
 	/* --------- common ---------- */
-	
+
 
 	/****** Header Setting ********/
-	
+
 
 	/****** Side Setting ********/
-	
-	
+
+
 	/****** Effect Setting ********/
-	
-	
+
+
 }
 @media only screen and (min-width: 768px) {
-	
+
 	/* --------- common ---------- */
 
 	#contents {
@@ -339,14 +339,14 @@ body {
 	}
 
 	/****** Header Setting ********/
-	
+
 	/****** Layout ********/
 
 	/* header */
 
 	#header .header_logo_area {
 		float: left;
-		margin-right: 265px; 
+		margin-right: 265px;
 	}
 	#header #drawer #search {
 		position: relative;
@@ -362,7 +362,7 @@ body {
 	.member ul li {
 		display: inline-block;
 	}
-	
+
 
 
 	/****** Side Setting ********/
@@ -370,14 +370,15 @@ body {
 	/****** Footer Setting ********/
 
 	/****** Each BlockParts Setting ********/
-	
+
 	/* search area */
-	
+
 	#search select {
 		width: auto;
+		max-width: 180px;
 	}
 	/* cart */
-	
+
 	#cart .inner {
 		position: absolute;
 		right: 0; top: 0;
@@ -403,17 +404,17 @@ body {
 	#cart_area .cart_price .price {
 		font-size: 16px;
 	}
-	
-	
-	/* -------------------------------- 
+
+
+	/* --------------------------------
 		Top Page
 	-------------------------------- */
-	
+
 	.front_page #contents .row {
 		padding-bottom: 24px;
 	}
 	/* Comment Area */
-	
+
 	.front_page .comment_area h4 {
 		font-size: 32px;
 		font-size: 3.2rem;
@@ -428,13 +429,13 @@ body {
 		font-size: 2rem;
 		margin: 24px 0 24px;
 	}
-	
+
 	/* news_area */
-	
+
 	.news_contents {
 		padding: 0 16px 0 0;
 	}
-	
+
 	#news_area .heading01 {
 		padding: 16px;
 		text-align: left;
@@ -442,22 +443,22 @@ body {
 	#news_area {
 		margin-bottom: 32px;
 	}
-	
+
 
 	/* txt_bnr */
-	
+
 	.txt_bnr_area {
 		padding-left: 16px;
 	}
-	
+
 	.txt_bnr {
 		margin:0 0 16px;
 	}
-	
-	/* -------------------------------- 
+
+	/* --------------------------------
 		Detail Page
 	-------------------------------- */
-	
+
 	#item_photo_area .slick-dots {
 		margin: 0 -16px;
 		position: relative;
@@ -491,4 +492,19 @@ body {
 	.slick-dots li button.thumbnail::before {
 		display: none;
 	}
+}
+
+/* --------------------------------
+    display mask
+-------------------------------- */
+.prevention-masked {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3040;
+    background-color: #000;
+    filter: alpha(opacity=50);
+    opacity: .5;
 }

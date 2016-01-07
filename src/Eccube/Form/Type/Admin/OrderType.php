@@ -24,9 +24,11 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Common\Constant;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -47,30 +49,24 @@ class OrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $config = $this->app['config'];
+        $app = $this->app;
+        $config = $app['config'];
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder
             ->add('name', 'name', array(
-                'required' => true,
+                'required' => false,
                 'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
                     'constraints' => array(
-                        new Assert\Length(array('max' => $config['stext_len'])),
+                        new Assert\NotBlank(),
                     ),
                 ),
             ))
-            ->add('kana', 'name', array(
+            ->add('kana', 'kana', array(
+                'required' => false,
                 'options' => array(
-                    'attr' => array(
-                        'maxlength' => $config['stext_len'],
-                    ),
                     'constraints' => array(
-                        new Assert\Length(array('max' => $config['stext_len'])),
-                        new Assert\Regex(array(
-                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        )),
+                        new Assert\NotBlank(),
                     ),
                 ),
             ))
@@ -83,17 +79,33 @@ class OrderType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array())
+            ->add('zip', 'zip', array(
+                'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
+            ))
             ->add('address', 'address', array(
+                'required' => false,
+                'pref_options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
                 'addr01_options' => array(
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
                     ),
                 ),
                 'addr02_options' => array(
+                    'required' => false,
                     'constraints' => array(
+                        new Assert\NotBlank(),
                         new Assert\Length(array(
                             'max' => $config['mtext_len'],
                         )),
@@ -101,6 +113,7 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('email', 'email', array(
+                'required' => false,
                 'label' => 'メールアドレス',
                 'constraints' => array(
                     new Assert\NotBlank(),
@@ -108,7 +121,12 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('tel', 'tel', array(
-                'required' => true,
+                'required' => false,
+                'options' => array(
+                    'constraints' => array(
+                        new Assert\NotBlank(),
+                    ),
+                ),
             ))
             ->add('fax', 'tel', array(
                 'label' => 'FAX番号',
@@ -177,10 +195,18 @@ class OrderType extends AbstractType
             ->add('OrderStatus', 'entity', array(
                 'class' => 'Eccube\Entity\Master\OrderStatus',
                 'property' => 'name',
-                'empty_value' => false,
+                'empty_value' => '選択してください',
                 'empty_data' => null,
+                'query_builder' => function($er) {
+                    return $er->createQueryBuilder('o')
+                        ->orderBy('o.rank', 'ASC');
+                },
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->add('Payment', 'entity', array(
+                'required' => false,
                 'class' => 'Eccube\Entity\Payment',
                 'property' => 'method',
                 'empty_value' => '選択してください',
@@ -190,13 +216,13 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('OrderDetails', 'collection', array(
-                'type' => new OrderDetailType($this->app),
+                'type' => new OrderDetailType($app),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($this->app),
+                'type' => new ShippingType($app),
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
@@ -208,10 +234,9 @@ class OrderType extends AbstractType
                     '\Eccube\Entity\Customer'
                 )));
 
-        $app = $this->app;
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
 
-            if ('calc' === $app['request']->get('mode')) {
+            if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
 
                 $data = $event->getData();
 
@@ -248,6 +273,14 @@ class OrderType extends AbstractType
                 $event->setData($data);
             }
 
+        });
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $orderDetails = $form['OrderDetails']->getData();
+            if (empty($orderDetails) || count($orderDetails) < 1) {
+                // 画面下部にエラーメッセージを表示させる
+                $form['charge']->addError(new FormError('商品が追加されていません。'));
+            }
         });
         $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }

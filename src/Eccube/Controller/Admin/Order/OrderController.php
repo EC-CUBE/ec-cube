@@ -25,11 +25,13 @@
 namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class OrderController
+class OrderController extends AbstractController
 {
 
     public function index(Application $app, Request $request, $page_no = null)
@@ -67,7 +69,6 @@ class OrderController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.order.search', $searchData);
-                $active = true;
             }
         } else {
             if (is_null($page_no)) {
@@ -120,7 +121,6 @@ class OrderController
                         $searchData['payment'] = $app['eccube.repository.payment']->findBy(array('id' => $payment_ids));
                     }
                     $searchForm->setData($searchData);
-                    $active = true;
                 }
             }
         }
@@ -140,17 +140,27 @@ class OrderController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Order = $app['orm.em']->getRepository('Eccube\Entity\Order')
             ->find($id);
 
-        if ($Order) {
-            $Order->setDelFlg(1);
-            $app['orm.em']->persist($Order);
-            $app['orm.em']->flush();
-
-            $app->addSuccess('admin.order.delete.complete', 'admin');
+        if (!$Order) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_order'));
         }
 
+        $Order->setDelFlg(Constant::ENABLED);
+        $app['orm.em']->persist($Order);
+        $app['orm.em']->flush();
+
+        $Customer = $Order->getCustomer();
+        if ($Customer) {
+            // 会員の場合、購入回数、購入金額などを更新
+            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
+        }
+
+        $app->addSuccess('admin.order.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_order'));
     }

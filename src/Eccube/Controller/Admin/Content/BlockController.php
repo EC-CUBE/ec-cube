@@ -25,11 +25,13 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class BlockController
+class BlockController extends AbstractController
 {
     public function index(Application $app)
     {
@@ -51,6 +53,10 @@ class BlockController
 
         $Block = $app['eccube.repository.block']
             ->findOrCreate($id, $DeviceType);
+
+        if (!$Block) {
+            throw new NotFoundHttpException();
+        }
 
         $form = $app['form.factory']
             ->createBuilder('block', $Block)
@@ -80,8 +86,7 @@ class BlockController
                 $app['orm.em']->flush();
 
                 // ファイル生成・更新
-                $tplDir = $app['eccube.repository.block']
-                    ->getWriteTemplatePath($deletable);
+                $tplDir = $app['config']['block_realdir'];
 
                 $filePath = $tplDir . '/' . $Block->getFileName() . '.twig';
 
@@ -95,13 +100,14 @@ class BlockController
                     }
                 }
 
+                \Eccube\Util\Cache::clear($app,false);
+
                 $app->addSuccess('admin.register.complete', 'admin');
 
                 return $app->redirect($app->url('admin_content_block_edit', array('id' => $Block->getId())));
             }
         }
 
-        \Eccube\Util\Cache::clear($app,false);
 
         return $app->render('Content/block_edit.twig', array(
             'form' => $form->createView(),
@@ -112,26 +118,37 @@ class BlockController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(DeviceType::DEVICE_TYPE_PC);
 
-        $Block = $app['eccube.repository.block']->findOrCreate($id, $DeviceType);
+        $Block = $app['eccube.repository.block']->findOneBy(array(
+                'id' => $id,
+                'DeviceType' => $DeviceType
+            ));
+
+        if (!$Block) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_content_block'));
+        }
 
         // ユーザーが作ったブロックのみ削除する
+        // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る
         if ($Block->getDeletableFlg() > 0) {
-            $tplDir = $app['eccube.repository.page_layout']
-                ->getWriteTemplatePath($DeviceType);
-            $tplDir .= $app['config']['block_dir'];
-            $file = $tplDir . $Block->getFileName();
+            $tplDir = $app['config']['block_realdir'];
+            $file = $tplDir . '/' . $Block->getFileName() . '.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);
             }
             $app['orm.em']->remove($Block);
             $app['orm.em']->flush();
+
+            $app->addSuccess('admin.delete.complete', 'admin');
+            \Eccube\Util\Cache::clear($app,false);
         }
 
-        \Eccube\Util\Cache::clear($app,false);
 
         return $app->redirect($app->url('admin_content_block'));
     }

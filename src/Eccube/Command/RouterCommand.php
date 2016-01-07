@@ -25,6 +25,7 @@ namespace Eccube\Command;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\TableHelper;
@@ -46,6 +47,8 @@ class RouterCommand extends \Knp\Command\Command
             ->setDefinition(array(
                 new InputArgument('name', InputArgument::OPTIONAL, 'A route name'),
             ))
+            ->addOption('sort', null, InputOption::VALUE_OPTIONAL, '[null/ASC/DESC]. If argument orderby set, Default is ASC.')
+            ->addOption('orderby', null, InputOption::VALUE_OPTIONAL, '[null/name/path]. If argument sort set, Default is name.')
             ->setDescription('Displays current routes for an application')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> displays the configured routes:
@@ -62,6 +65,10 @@ EOF
 
         $console = new Application();
 
+        $filtername = $input->getArgument('name');
+        $sort = $input->getOption('sort');
+        $orderby = $input->getOption('orderby');
+
         $table = $console->getHelperSet()->get('table');
         $table->setHeaders(array('Name', 'Path', 'Pattern'));
         $table->setLayout(TableHelper::LAYOUT_DEFAULT);
@@ -70,6 +77,10 @@ EOF
         $collection     = $controllers->flush();
 
         foreach ($collection as $name => $route) {
+            if (!empty($filtername) && !preg_match("/$filtername/", $name)) {
+                continue;
+            }
+
             $requirements = array();
             foreach ($route->getRequirements() as $key => $requirement) {
                 // $requirements[] = $key . ' => ' . $requirement;
@@ -81,15 +92,39 @@ EOF
                 $route->getPath(),
                 join(', ', $requirements)
             ));
-
         }
 
 
         $routes = $this->app['routes']->all();
 
+        // 引数で並び替える。
+        if (!empty($sort)) {
+            $orderby = (!empty($orderby)) ? $orderby : "name";
+        }
+        if (!empty($orderby)) {
+            $sort = (!empty($sort)) ? $sort : "ASC";
+        }
+
+        if (strtoupper($orderby) === "NAME") {
+            if (strtoupper($sort) === "DESC") {
+                krsort($routes);
+            } else {
+                ksort($routes);
+            }
+        } else if (strtoupper($orderby) === "PATH") {
+            uasort($routes, function($a, $b) {
+                return strcmp($a->getPattern(), $b->getPattern());
+            });
+        }
+
         $maxName = 4;
         $maxMethod = 6;
         foreach ($routes as $name => $route) {
+            if (!empty($filtername) && !preg_match("/$filtername/", $name)) {
+                unset($routes[$name]);
+                continue;
+            }
+
             $requirements = $route->getRequirements();
             $method = isset($requirements['_method'])
                 ? strtoupper(is_array($requirements['_method'])

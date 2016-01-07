@@ -28,6 +28,7 @@
         "symfony/class-loader": ">=2.7,<2.8",
         "symfony/css-selector": ">=2.7,<2.8",
         "symfony/dom-crawler": ">=2.7,<2.8",
+        "symfony/serializer": ">=2.7,<2.8",
         "dflydev/doctrine-orm-service-provider": "*",
         "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
         "saxulum/saxulum-webprofiler-provider": "*",
@@ -42,10 +43,13 @@
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
         "phpunit/dbunit": ">=1.3,<1.4",
+        "mikey179/vfsStream": "~1",
+        "fzaninotto/faker":"1.*",
         "phing/phing": "2.*",
         "symfony/browser-kit": ">=2.7,<2.8",
-        "sorien/silex-pimple-dumper": "1.0.*",
-        "fabpot/php-cs-fixer": "^1.10"
+        "fabpot/php-cs-fixer": "^1.10",
+        "symfony/var-dumper": ">=2.7,<2.8",
+        "symfony/debug-bundle": ">=2.7,<2.8"
     },
     "autoload": {
         "psr-4": {

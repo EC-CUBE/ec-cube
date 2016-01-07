@@ -36,59 +36,56 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% for Plugin in Plugins %}
                     {% set form = plugin_forms[Plugin.id] %}
                     <form id="{{ form.vars.name }}" name="{{ form.vars.name }}" method="post" action="" {{ form_enctype(form) }}>
-                        {% set enable_action = url('admin_store_plugin_enable', { id : Plugin.id }) %}
-                        {% set disable_action = url('admin_store_plugin_disable', { id : Plugin.id }) %}
-                        {% set uninstall_action = url('admin_store_plugin_uninstall', { id : Plugin.id }) %}
-                        {% set update_action = url('admin_store_plugin_update', { id : Plugin.id }) %}
-                            <tr class="{% if Plugin.enable == 0 %}active{% endif %}">
-                                <td class="tp">
-                                    <strong>{{ Plugin.name }}</strong>{% if Plugin.enable == 0 %}<span class="text-danger"> (停止中)</span>{% endif %}<br>
-                                    {% if Plugin.enable == 1 %}
-                                        <a href="#" onclick="changeActionSubmit('{{ disable_action }}', '{{ form.vars.name }}');return false;">
-                                            無効にする
-                                        </a>
-                                    {% else %}
-                                        <a href="#" onclick="changeActionSubmit('{{ enable_action }}', '{{ form.vars.name }}');return false;">
-                                            有効にする
-                                        </a>
-                                    {% endif %}
-                                    /
-                                    <a href="#" onclick="fnDelete('{{ uninstall_action }}', '{{ form.vars.name }}');return false;">
-                                        削除
-                                    </a>
-                                </td>
-                                <td class="tv text-center">{{ Plugin.version }}</td>
-                                <td class="tc">{{ Plugin.code }}</td>
-                                <td class="tu">
-                                {% if Plugin.source == 0 %}
-                                    {{ form_widget(form._token) }}
-                                    {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
-                                    {{ form_errors(form.plugin_archive) }}
-                                    <p></p>
-                                    <a class="btn btn-primary btn-xs" href="#" onclick="changeActionSubmit('{{ update_action }}', '{{ form.vars.name }}');">
-                                        アップロード
+                        <tr class="{% if Plugin.enable == 0 %}active{% endif %}">
+                            <td class="tp">
+                                <strong>{{ Plugin.name }}</strong>{% if Plugin.enable == 0 %}<span class="text-danger"> (停止中)</span>{% endif %}<br>
+                                {% if Plugin.enable == 1 %}
+                                    <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
+                                        無効にする
                                     </a>
                                 {% else %}
-                                    {% if Plugin.updateStatus == 3 %}
-                                        <p>新バージョンのプラグインが利用可能です。
-                                            <a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">今すぐ更新</a>
-                                        </p>
-                                        <ul class="plugin-meta dl-horizontal">
-                                            <li class="plugin-version">プラグインバージョン : {{ Plugin.newVersion }}</li>
-                                            <li class="plugin-update">更新日 : {{ Plugin.lastUpdateDate|time_ago }}</li>
-                                        </ul>
-                                    {% else %}
-                                        <p>アップデート対象プラグインはありません。</p>
-                                    {% endif %}
-                                    <p><a href="{{ Plugin.productUrl }}" target="_blank">詳細</a></p>
+                                    <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">
+                                        有効にする
+                                    </a>
                                 {% endif %}
-                                </td>
-                                <td class="ta text-center">
-                                    {% if configPages[Plugin.code] is defined %}
-                                       <a target='_blank' href='{{configPages[Plugin.code]}}'>設定</a>
-                                    {% endif %}
-                                </td>
-                            </tr>
+                                /
+                                <a href="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このプラグインを削除してもよろしいですか？">
+                                    削除
+                                </a>
+                            </td>
+                            <td class="tv text-center">{{ Plugin.version }}</td>
+                            <td class="tc">{{ Plugin.code }}</td>
+                            <td class="tu">
+                            {% if Plugin.source == 0 %}
+                                {{ form_widget(form._token) }}
+                                {{ form_widget(form.plugin_id) }}
+                                {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
+                                {{ form_errors(form.plugin_archive) }}
+                                <p></p>
+                                <a class="btn btn-primary btn-xs" href="#" onclick="changeActionSubmit('{{ url('admin_store_plugin_update', { id : Plugin.id }) }}', '{{ form.vars.name }}');">
+                                    アップロード
+                                </a>
+                            {% else %}
+                                {% if Plugin.updateStatus == 3 %}
+                                    <p>新バージョンのプラグインが利用可能です。
+                                        <a class="btn btn-default btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'update', 'id': Plugin.source, 'version': Plugin.version}) }}">今すぐ更新</a>
+                                    </p>
+                                    <ul class="plugin-meta dl-horizontal">
+                                        <li class="plugin-version">プラグインバージョン : {{ Plugin.newVersion }}</li>
+                                        <li class="plugin-update">更新日 : {{ Plugin.lastUpdateDate|time_ago }}</li>
+                                    </ul>
+                                {% else %}
+                                    <p>アップデート対象プラグインはありません。</p>
+                                {% endif %}
+                                <p><a href="{{ Plugin.productUrl }}" target="_blank">詳細</a></p>
+                            {% endif %}
+                            </td>
+                            <td class="ta text-center">
+                                {% if configPages[Plugin.code] is defined %}
+                                   <a target='_blank' href='{{configPages[Plugin.code]}}'>設定</a>
+                                {% endif %}
+                            </td>
+                        </tr>
                     </form>
                 {% endfor %}
                 </tbody>

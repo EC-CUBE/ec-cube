@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -36,20 +37,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepository extends EntityRepository
 {
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * setConfig
-     *
-     * @param array $config
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-    }
 
     /**
      * get Product.
@@ -105,7 +92,7 @@ class ProductRepository extends EntityRepository
         }
 
         // name
-        if (!empty($searchData['name']) && $searchData['name']) {
+        if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
             $keywords = preg_split('/[\s　]+/u', $searchData['name'], -1, PREG_SPLIT_NO_EMPTY);
 
             foreach ($keywords as $index => $keyword) {
@@ -119,21 +106,21 @@ class ProductRepository extends EntityRepository
         // Order By
         // 価格順
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+            //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
+            $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
-            $qb->orderBy('pc.price02', 'DESC');
+            $qb->groupBy('p');
+            $qb->orderBy('price02_min', 'ASC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
-            $qb->innerJoin('p.ProductClasses', 'pc');
-            $qb->orderBy('pc.create_date', 'DESC');
+            $qb->orderBy('p.create_date', 'DESC');
         } else {
-            if ($categoryJoin == false) {
+            if ($categoryJoin === false) {
                 $qb
                     ->leftJoin('p.ProductCategories', 'pct')
                     ->leftJoin('pct.Category', 'c');
             }
             $qb
-                ->orderBy('c.rank', 'DESC')
-                ->addOrderBy('pct.rank', 'DESC')
                 ->addOrderBy('p.id', 'DESC');
         }
 
@@ -149,12 +136,10 @@ class ProductRepository extends EntityRepository
     public function getQueryBuilderBySearchDataForAdmin($searchData)
     {
         $qb = $this->createQueryBuilder('p')
-            ->select(array('p', 'pi'))
-            ->leftJoin('p.ProductImage', 'pi')
             ->innerJoin('p.ProductClasses', 'pc');
 
         // id
-        if (!empty($searchData['id']) && $searchData['id']) {
+        if (isset($searchData['id']) && Str::isNotBlank($searchData['id'])) {
             $id = preg_match('/^\d+$/', $searchData['id']) ? $searchData['id'] : null;
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
@@ -225,7 +210,8 @@ class ProductRepository extends EntityRepository
         }
 
         if (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
-            $date = $searchData['create_date_end']
+            $date = clone $searchData['create_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -242,7 +228,8 @@ class ProductRepository extends EntityRepository
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -253,8 +240,7 @@ class ProductRepository extends EntityRepository
 
         // Order By
         $qb
-            ->orderBy('p.update_date', 'DESC')
-            ->addOrderBy('pi.rank', 'DESC');
+            ->orderBy('p.update_date', 'DESC');
 
         return $qb;
     }

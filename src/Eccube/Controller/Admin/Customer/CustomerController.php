@@ -25,45 +25,97 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CustomerController
+class CustomerController extends AbstractController
 {
-    public function index(Application $app, Request $request)
+    public function index(Application $app, Request $request, $page_no = null)
     {
-        $pagination = null;
+        $session = $request->getSession();
+        $pagination = array();
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_customer')
             ->getForm();
 
-        $searchForm->handleRequest($request);
-        $searchData = array();
-        if ($searchForm->isValid()) {
-            $searchData = $searchForm->getData();
-        }
+        //アコーディオンの制御初期化( デフォルトでは閉じる )
+        $active = false;
+
+        $pageMaxis = $app['eccube.repository.master.page_max']->findAll();
+        $page_count = $app['config']['default_page_count'];
 
         if ('POST' === $request->getMethod()) {
-            $qb = $app['eccube.repository.customer']
-                ->getQueryBuilderBySearchData($searchData);
 
-            $pagination = $app['paginator']()->paginate(
-                $qb,
-                empty($searchData['pageno']) ? 1 : $searchData['pageno'],
-                empty($searchData['pagemax']) ? 10 : $searchData['pagemax']->getId()
-            );
+            $searchForm->handleRequest($request);
+
+            if ($searchForm->isValid()) {
+                $searchData = $searchForm->getData();
+
+                // paginator
+                $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+                $page_no = 1;
+                $pagination = $app['paginator']()->paginate(
+                    $qb,
+                    $page_no,
+                    $page_count
+                );
+
+                // sessionのデータ保持
+                $session->set('eccube.admin.customer.search', $searchData);
+            }
+        } else {
+            if (is_null($page_no)) {
+                // sessionを削除
+                $session->remove('eccube.admin.customer.search');
+            } else {
+                // pagingなどの処理
+                $searchData = $session->get('eccube.admin.customer.search');
+                if (!is_null($searchData)) {
+                    // 表示件数
+                    $pcount = $request->get('page_count');
+                    $page_count = empty($pcount) ? $page_count : $pcount;
+
+                    $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+                    $pagination = $app['paginator']()->paginate(
+                        $qb,
+                        $page_no,
+                        $page_count
+                    );
+
+                    // セッションから検索条件を復元
+                    if (count($searchData['sex']) > 0) {
+                        $sex_ids = array();
+                        foreach ($searchData['sex'] as $Sex) {
+                            $sex_ids[] = $Sex->getId();
+                        }
+                        $searchData['sex'] = $app['eccube.repository.master.sex']->findBy(array('id' => $sex_ids));
+                    }
+
+                    if (!is_null($searchData['pref'])) {
+                        $searchData['pref'] = $app['eccube.repository.master.pref']->find($searchData['pref']->getId());
+                    }
+                    $searchForm->setData($searchData);
+                }
+            }
         }
-
-        return $app->render('Customer/index.twig', array(
+        return $app->renderView('Customer/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
+            'pageMaxis' => $pageMaxis,
+            'page_no' => $page_no,
+            'page_count' => $page_count,
+            'active' => $active,
         ));
     }
 
     public function resend(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $Customer = $app['orm.em']
             ->getRepository('Eccube\Entity\Customer')
             ->find($id);
@@ -84,15 +136,18 @@ class CustomerController
 
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $Customer = $app['orm.em']
             ->getRepository('Eccube\Entity\Customer')
             ->find($id);
 
-        if (is_null($Customer)) {
-            throw new NotFoundHttpException();
+        if (!$Customer) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_customer'));
         }
 
-        $Customer->setDelFlg(1);
+        $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
         $app['orm.em']->flush();
         $app->addSuccess('admin.customer.delete.complete', 'admin');

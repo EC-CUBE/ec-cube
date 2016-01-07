@@ -111,7 +111,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <dd>
                             {% for passwordField in form.password %}
                             <div class="form-group {% if passwordField.vars.errors is not empty %}has-error{% endif %}">
-                                {{ form_widget(passwordField) }}
+                                {{ form_widget(passwordField, { type : 'password' }) }}
                                 {{ form_errors(passwordField) }}
                             </div>
                             {% endfor %}

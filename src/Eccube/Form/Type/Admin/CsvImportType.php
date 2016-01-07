@@ -54,9 +54,7 @@ class CsvImportType extends AbstractType
                     new Assert\NotBlank(array('message' => 'ファイルを選択してください。')),
                     new Assert\File(array(
                         'maxSize' => $app['config']['csv_size'] . 'M',
-                        'mimeTypes' => array('text/csv', 'text/plain'),
                         'maxSizeMessage' => 'CSVファイルは' . $app['config']['csv_size'] . 'M以下でアップロードしてください。',
-                        'mimeTypesMessage' => 'CSVファイルをアップロードしてください。',
                     )),
                 ),
             ))

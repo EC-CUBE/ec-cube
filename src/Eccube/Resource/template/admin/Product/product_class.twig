@@ -181,7 +181,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="row">
     <div class="col-md-12">
         <div class="box">
-            {% if classForm.product_classes|length > 0 %}
+            {% if classForm.product_classes|length > 0 and has_class_category_flg %}
             <div class="box-header">
                 <button type="button" id="copy" class="btn btn-default pull-right btn-xs">1行目のデータをコピーする</button>
                 <h3 class="box-title">検索結果 <span class="normal"><strong>{{ classForm.product_classes|length }} 件</strong> が該当しました</span></h3>
@@ -191,7 +191,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box-header -->
             <div class="box-body no-padding">
                 <div class="table_list">
-                    <div class="table-responsive with-border table-menu">
+                    <div class="table-responsive with-border table-menu table-responsive-overflow">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -278,17 +278,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </table>
                     </div>
                 </div>
-            </div><!-- /.box-body --> 
+            </div><!-- /.box-body -->
             {% else %}
             <div class="box-header">
                 <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
             </div><!-- /.box-header -->
             {% endif %}
-        </div><!-- /.box --> 
-    </div><!-- /.col --> 
+        </div><!-- /.box -->
+    </div><!-- /.col -->
 </div>
 
-{% if classForm.product_classes|length > 0 %}
+{% if classForm.product_classes|length > 0 and has_class_category_flg %}
 <div class="row">
     <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
 {% if not_product_class  %}

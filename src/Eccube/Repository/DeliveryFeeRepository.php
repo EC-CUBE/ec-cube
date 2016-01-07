@@ -34,6 +34,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class DeliveryFeeRepository extends EntityRepository
 {
+    /**
+     * 都道府県と配送業者から配送料を検索します.
+     *
+     * 検索条件に該当するデータ配送料が存在しない場合は、
+     * 新たなインスタンスを生成して返す.
+     *
+     * @param array $conditions Pref 及び Delivery を含んだ検索条件の配列
+     * @return \Eccube\Entity\DeliveryFee 配送料オブジェクト
+     */
     public function findOrCreate(array $conditions)
     {
         $DeliveryFee = $this->findOneBy($conditions);

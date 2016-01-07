@@ -46,12 +46,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </ul>
                 </div>
 
+                {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
                 {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
+                    {% set idx = loop.index0 %}
+                    {% if productStr[idx] is defined %}
+                    <div class="message">
+                        <p class="errormsg bg-danger">
+                            <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>
+                            {{ error|trans({'%product%':productStr[idx]})|nl2br }}
+                        </p>
+                    </div>
+                    {% else %}
                     <div class="message">
                         <p class="errormsg bg-danger">
                             <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
                         </p>
                     </div>
+                    {% endif %}
                 {% endfor %}
                 {% for error in app.session.flashbag.get('eccube.front.cart.error')  %}
                     <div class="message">
@@ -105,7 +116,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 <div class="item_box tr">
                                     <div class="icon_edit td">
-                                        <a href="{{ url('cart_remove', {'productClassId': ProductClass.id }) }}">
+                                        <a href="{{ url('cart_remove', {'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="カートから商品を削除してもよろしいですか?">
                                             <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
                                         </a>
                                     </div>
@@ -136,13 +147,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <ul>
                                             <li>
                                                 {% if CartItem.quantity > 1 %}
-                                                    <a href="{{ url('cart_down', {'productClassId': ProductClass.id}) }}"><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></a>
+                                                    <a href="{{ url('cart_down', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></a>
                                                 {% else %}
                                                     <span><svg class="cb cb-minus"><use xlink:href="#cb-minus" /></svg></span>
                                                 {% endif %}
                                             </li>
                                             <li>
-                                                <a href="{{ url('cart_up', {'productClassId': ProductClass.id}) }}"><svg class="cb cb-plus"><use xlink:href="#cb-plus" /></svg></a>
+                                                <a href="{{ url('cart_up', {'productClassId': ProductClass.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false"><svg class="cb cb-plus"><use xlink:href="#cb-plus" /></svg></a>
                                             </li>
                                         </ul>
                                     </div>

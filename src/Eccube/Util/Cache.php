@@ -26,30 +26,51 @@ namespace Eccube\Util;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class Cache {
+/**
+ * キャッシュ関連のユーティリティクラス.
+ */
+class Cache
+{
 
-    public static function clear($app,$isAll){
-
-        $cacheDir = $app['config']['root_dir'] . '/app/cache';
+    /**
+     * キャッシュを削除する.
+     *
+     * doctrine, profiler, twig によって生成されたキャッシュディレクトリを削除する.
+     * キャッシュは $app['config']['root_dir'].'/app/cache' に生成されます.
+     *
+     * @param Application $app
+     * @param boolean $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
+     * @param boolean $isTwig Twigキャッシュファイルのみ削除する場合 true
+     * @return boolean 削除に成功した場合 true
+     */
+    public static function clear($app, $isAll, $isTwig = false)
+    {
+        $cacheDir = $app['config']['root_dir'].'/app/cache';
 
         $filesystem = new Filesystem();
         if ($isAll) {
             $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
             $filesystem->remove($finder);
+        } elseif ($isTwig) {
+            if (is_dir($cacheDir.'/twig')) {
+                $finder = Finder::create()->in($cacheDir.'/twig');
+                $filesystem->remove($finder);
+            }
         } else {
-            if(is_dir($cacheDir . '/doctrine')){
-                $finder = Finder::create()->in($cacheDir . '/doctrine');
+            if (is_dir($cacheDir.'/doctrine')) {
+                $finder = Finder::create()->in($cacheDir.'/doctrine');
                 $filesystem->remove($finder);
             }
-            if(is_dir($cacheDir . '/profiler')){
-                $finder = Finder::create()->in($cacheDir . '/profiler');
+            if (is_dir($cacheDir.'/profiler')) {
+                $finder = Finder::create()->in($cacheDir.'/profiler');
                 $filesystem->remove($finder);
             }
-            if(is_dir($cacheDir . '/twig')){
-                $finder = Finder::create()->in($cacheDir . '/twig');
+            if (is_dir($cacheDir.'/twig')) {
+                $finder = Finder::create()->in($cacheDir.'/twig');
                 $filesystem->remove($finder);
             }
         }
+
         return true;
     }
 }

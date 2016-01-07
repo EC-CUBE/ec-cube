@@ -24,46 +24,47 @@
 
 namespace Eccube\Tests\Web;
 
-use Silex\WebTestCase;
-use Eccube\Application;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Mock\CsrfTokenMock;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpKernel\Client;
 
-abstract class AbstractWebTestCase extends WebTestCase
+abstract class AbstractWebTestCase extends EccubeTestCase
 {
 
-    protected $client = null;
-    protected static $server = null;
+    protected $client;
 
     public function setUp()
     {
         parent::setUp();
-
-        if ($this->client == null) {
-            if (self::$server == null) {
-                self::$server = static::createClient();
-            }
-            $this->client = self::$server;
-        }
+        $this->client = $this->createClient();
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        $this->app['orm.em']->getConnection()->close();
-        $this->app = null;
         $this->client = null;
-    }
-
-    public static function tearDownAfterClass()
-    {
-        self::$server = null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createApplication()
+    public function logIn($user = null)
     {
-        return EccubeTestCase::createApplication();
+        $firewall = 'customer';
+
+        if (!is_object($user)) {
+            $user = $this->createCustomer();
+        }
+        $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
+
+        $this->app['security.token_storage']->setToken($token);
+        $this->app['session']->set('_security_' . $firewall, serialize($token));
+        $this->app['session']->save();
+
+        $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());
+        $this->client->getCookieJar()->set($cookie);
+        return $user;
     }
 }

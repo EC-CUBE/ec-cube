@@ -23,11 +23,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block title %}ホーム{% endblock %}
 
+{% block javascript %}
+<script>
+$(function(){
+    $('.order-summary-detail').click(function() {
+        $('#admin_search_order_status').val($(this).attr('data-order-status'));
+        $('#order-state').submit();
+        return false;
+    });
+    $('.shop-stock-detail').click(function() {
+        $('#shop-state-stock').submit();
+        return false;
+    });
+    $('.shop-member-detail').click(function() {
+        $('#shop-state-member').submit();
+        return false;
+    });
+});
+</script>
+{% endblock javascript %}
+
 {% block main %}
 
         <div class="row">
             <div class="col-md-6">
-                <form id="form1" name="form1" action="{{ url('admin_order') }}" method="post">
+                <form id="order-state" name="form1" action="{{ url('admin_order') }}" method="post">
                 {{ form_widget(searchOrderForm._token) }}
                 <input type="hidden" id="admin_search_order_status" name="admin_search_order[status]" value="">
                 <div class="box" id="order_info">
@@ -38,7 +58,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div class="link_list">
                             <div class="tableish">
                                 {% for OrderStatus in OrderStatuses %}
-                                <a href="#" class="item_box tr" onclick="$('#admin_search_order_status').val({{ OrderStatus.id }});document.form1.submit();">
+                                <a href="" class="item_box tr order-summary-detail" data-order-status="{{ OrderStatus.id }}">
                                     <div class="td">{{ OrderStatus.name }}</div>
                                     <div class="item_number text-right td">{{ Orders is not empty and Orders[OrderStatus.id] is defined ? Orders[OrderStatus.id] : 0 }}</div>
                                     <div class="icon_link td">
@@ -102,23 +122,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <h3 class="box-title">ショップ状況</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body no-padding no-border">
-                        <form id="form2" name="form2" action="{{ url('admin_product_page', { page_no : 1, status : 3}) }}" method="post">
+                        <form id="shop-state-stock" name="form2" action="{{ url('admin_homepage_nonstock') }}" method="post">
                             {{ form_widget(searchProductForm._token) }}
                         </form>
-                        <form id="form3" name="form3" action="{{ url('admin_customer') }}" method="post">
+                        <form id="shop-state-member" name="form3" action="{{ url('admin_customer') }}" method="post">
                             {{ form_widget(searchCustomerForm._token) }}
                             <input type="hidden" id="admin_search_customer_status_1" name="admin_search_customer[customer_status]" value="2">
                         </form>
                         <div class="link_list">
                             <div class="tableish">
-                                <a href="#" class="item_box tr" onclick="document.form2.submit();">
+                                <a href="" class="item_box tr shop-stock-detail">
                                     <div class="icon td"><svg class="cb cb-tag-slash"><use xlink:href="#cb-tag-slash" /></svg></div>
                                     <div class="item_number td">{{ countNonStockProducts|number_format }}<div class="small">在庫切れ商品</div></div>
                                     <div class="icon_link td">
                                         <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
                                     </div>
                                 </a><!-- /.item_box -->
-                                <a href="#" class="item_box tr" onclick="document.form3.submit();">
+                                <a href="" class="item_box tr shop-member-detail">
                                     <div class="icon td"><svg class="cb cb-users"><use xlink:href="#cb-users" /></svg></div>
                                     <div class="item_number text-left td">{{ countCustomers|number_format }}<div class="small">会員数</div></div>
                                     <div class="icon_link td">

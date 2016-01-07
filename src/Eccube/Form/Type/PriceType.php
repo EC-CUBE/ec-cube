@@ -26,6 +26,7 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,14 +42,23 @@ class PriceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $defaultValues = array(
+            new Assert\Length(array('max' => $this->config['price_len'])),
+            new Assert\GreaterThanOrEqual(array('value' => 0)),
+        );
+
+        $constraints = function (Options $options) use ($defaultValues) {
+            if (false !== $options['required']) {
+                return array_merge($defaultValues, array(new Assert\NotBlank()));
+            }
+            return $defaultValues;
+        };
+
         $resolver->setDefaults(array(
             'currency' => 'JPY',
             'precision' => 0,
-            'constraints' => array(
-                new Assert\NotBlank(),
-                new Assert\Length(array('max' => $this->config['price_len'])),
-                new Assert\GreaterThanOrEqual(array('value' => 0)),
-            ),
+            'constraints' => $constraints,
+            'invalid_message' => 'form.type.numeric.invalid'
         ));
     }
 

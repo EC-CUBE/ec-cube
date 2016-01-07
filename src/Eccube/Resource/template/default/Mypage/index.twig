@@ -26,12 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block main %}
-    <h1 class="page-heading">マイページ</h1>
+    <h1 class="page-heading">マイページ/ご注文履歴</h1>
     <div class="container-fluid">
 
         {% include 'Mypage/navi.twig' %}
 
-        <h2 class="heading01">ご注文履歴</h2>
         <div class="row">
             <div class="col-md-12">
 
@@ -61,7 +60,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     {% if OrderDetail.Product is null %}
                                                         <img src="{{ app.config.image_save_urlpath }}/{{ '' | no_image_product }}" />
                                                     {% else %}
-                                                        <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.Product.mainFileName|no_image_product }}" />
+                                                        {% if OrderDetail.enable %}
+                                                            <img src="{{ app.config.image_save_urlpath }}/{{ OrderDetail.product.MainListImage|no_image_product }}">
+                                                        {% else %}
+                                                            <img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}" />
+                                                        {% endif %}
                                                     {% endif %}
                                                 </div>
                                                 <dl class="item_detail td">
@@ -74,7 +77,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                             / {{ OrderDetail.class_category_name2 }}
                                                         {% endif %}
                                                     </dd>
-                                                    <dd class="item_price">{{ OrderDetail.price|price }} ×{{ OrderDetail.quantity }}</dd>
+                                                    <dd class="item_price">{{ OrderDetail.price_inc_tax|price }} ×{{ OrderDetail.quantity }}</dd>
                                                 </dl>
                                             </div>
                                         </div>

@@ -19,32 +19,35 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-        <div class="col-sm-9 news_contents">
-            <!-- ▼news_area▼ -->
-            <div id="news_area">
-                <h2 class="heading01">新着情報</h2>
-                <div class="accordion">
-                    <div class="newslist">
+<div class="col-sm-9 news_contents">
+    <div id="news_area">
+        <h2 class="heading01">新着情報</h2>
+        <div class="accordion">
+            <div class="newslist">
 
-                        {% for News in NewsList %}
-                        <dl>
-                            <dt>
-                                <span class="date">{{ News.date|date("Y.m.d") }}</span>
-                                <span class="news_title">
-                                    {{ News.title }}
-                                </span>
-                                <span class="angle-circle"><svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg></span>
-                            </dt>
-                            <dd>{{ News.comment }}
-                            {% if News.url %}<br><a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
-                            詳しくはこちら
-                            </a>{% endif %}
-                            </dd>
-                        </dl>
-                        {% endfor %}
+                {% for News in NewsList %}
+                <dl>
+                    <dt>
+                        <span class="date">{{ News.date|date("Y/m/d") }}</span>
+                        <span class="news_title">
+                            {{ News.title }}
+                        </span>
+                        {% if News.comment or News.url %}
+                        <span class="angle-circle"><svg class="cb cb-angle-down"><use xlink:href="#cb-angle-down" /></svg></span>
+                        {% endif %}
+                    </dt>
+                    {% if News.comment or News.url %}
+                    <dd>{{ News.comment|raw|nl2br}}
+                        {% if News.url %}<br>
+                        <a href="{{ News.url }}" {% if News.link_method == '1' %}target="_blank"{% endif %}>
+                        詳しくはこちら
+                        </a>{% endif %}
+                    </dd>
+                    {% endif %}
+                </dl>
+                {% endfor %}
 
-                    </div>
-                </div>
             </div>
-            <!-- ▲news_area▲ -->
         </div>
+    </div>
+</div>

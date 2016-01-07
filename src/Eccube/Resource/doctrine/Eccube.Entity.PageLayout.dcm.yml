@@ -51,6 +51,7 @@ Eccube\Entity\PageLayout:
     oneToMany:
         BlockPositions:
             targetEntity: Eccube\Entity\BlockPosition
+            cascade: ["persist", "remove"]
             mappedBy: PageLayout
             indexBy: block_id
     manyToOne:

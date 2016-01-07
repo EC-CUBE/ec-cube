@@ -57,18 +57,33 @@ $(function() {
         });
     }
 
+    // フォーム値を確認し、アコーディオンを制御
+    // 値あり : 開く / 値なし : 閉じる
+    (function($, f) {
+        //フォームがないページは処理キャンセル
+        var $ac = $(".accpanel");
+        if (!$ac) {
+            return false
+        }
+
+        //フォーム内全項目取得
+        var c = f();
+        if (c.formState()) {
+            if ($ac.css("display") == "none") {
+                $ac.parent('li').addClass("active");
+                $ac.slideDown(0);
+            }
+        } else {
+            $ac.parent('li').removeClass("active");
+            $ac.slideUp(0);
+        }
+    })($, formPropStateSubscriber);
 });
 </script>
 <script>
     function fnConfirm(action) {
         document.search_form.action = action;
         document.search_form.submit();
-    }
-    function fnDelete(action) {
-        if (confirm('この商品情報を削除しても宜しいですか？')) {
-            document.search_form.action = action;
-            document.search_form.submit();
-        }
     }
     function fnCopy(action) {
         if (confirm('この商品情報を複製しても宜しいですか？')) {
@@ -95,7 +110,7 @@ $(function() {
                             <div class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-10 col-lg-offset-1 search">
-                                
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -110,7 +125,7 @@ $(function() {
                                                 </div>
                                             </div>
                                         </div><!-- /.row -->
-                                
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label>登録日</label>
@@ -209,7 +224,7 @@ $(function() {
                             </div>
                             <div class="item_list">
                                 <div class="tableish tableish-striped">
-                                
+
                                     {% for Product in pagination %}
                                         <div class="item_box tr">
                                             <div class="item_id td">
@@ -236,17 +251,17 @@ $(function() {
                                                     <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"></svg></a>
                                                     <ul class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_product_product_class', { id : Product.id }) }}">規格</a></li>
-                                                    <li><a href="#" onclick="fnConfirm('{{ url('admin_product_product_display', {'id' : Product.id}) }}');return false;">確認</a></li>
+                                                    <li><a href="{{ url('admin_product_product_display', {'id' : Product.id}) }}" target="_blank">確認</a></li>
                                                     <li><a href="#" onclick="fnCopy('{{ url('admin_product_product_copy', {'id' : Product.id}) }}');return false;">複製</a></li>
-                                                    <li><a href="#" onclick="fnDelete('{{ url('admin_product_product_delete', {'id' : Product.id}) }}');return false;">削除</a></li>
+                                                    <li><a href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="商品情報を削除してもよろしいですか？">削除</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                        </div><!-- /.item_box --> 
+                                        </div><!-- /.item_box -->
                                     {% endfor %}
                                 </div>
                             </div>
-                        </div><!-- /.box-body --> 
+                        </div><!-- /.box-body -->
                         {% if pagination.totalItemCount > 0 %}
                             {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_product_page' } %}
                         {% endif %}
@@ -255,8 +270,8 @@ $(function() {
                             <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
                         </div><!-- /.box-header -->
                         {% endif %}
-                    </div><!-- /.box --> 
-                </div><!-- /.col --> 
+                    </div><!-- /.box -->
+                </div><!-- /.col -->
             </div>
 
         {% endif %}

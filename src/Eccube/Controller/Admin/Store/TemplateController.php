@@ -24,6 +24,7 @@
 namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -35,7 +36,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 
-class TemplateController
+class TemplateController extends AbstractController
 {
 
     /**
@@ -65,13 +66,14 @@ class TemplateController
 
                 // path.ymlの再構築
                 $file = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
-                $config = Yaml::parse($file);
+                $config = Yaml::parse(file_get_contents($file));
 
                 $templateCode = $Template->getCode();
                 $config['template_code'] = $templateCode;
                 $config['template_realdir'] = $config['root_dir'] . '/app/template/' . $templateCode;
                 $config['template_html_realdir'] = $config['root_dir'] . '/html/template/' . $templateCode;
                 $config['front_urlpath'] = $config['root_urlpath'] . '/template/' . $templateCode;
+                $config['block_realdir'] =$config['template_realdir'] . '/Block';
 
                 file_put_contents($file, Yaml::dump($config));
 
@@ -129,6 +131,11 @@ class TemplateController
         // tar.gzファイルに圧縮する.
         $phar = new \PharData($tarFile);
         $phar->buildFromDirectory($tmpDir);
+        // appディレクトリがない場合は, 空ディレクトリを追加
+        // @see https://github.com/EC-CUBE/ec-cube/issues/742
+        if (empty($phar['app'])) {
+            $phar->addEmptyDir('app');
+        }
         $phar->compress(\Phar::GZ);
 
         // ダウンロード完了後にファイルを削除する.
@@ -154,11 +161,14 @@ class TemplateController
 
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         /** @var $Template \Eccube\Entity\Template */
         $Template = $app['eccube.repository.template']->find($id);
 
         if (!$Template) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_store_template'));
         }
 
         // デフォルトテンプレート

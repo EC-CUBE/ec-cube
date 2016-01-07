@@ -28,17 +28,6 @@
 {% block title %}コンテンツ管理{% endblock %}
 {% block sub_title %}ページ管理{% endblock %}
 
-{% block javascript %}
-<script>
-function fnDelete(action) {
-    if (confirm('このページを削除しても宜しいですか？')) {
-        document.content_page_form.action = action;
-        document.content_page_form.submit();
-    }
-}
-</script>
-{% endblock javascript %}
-
 {% block main %}
 <form name="content_page_form" action="" method="post">
 </form>
@@ -76,7 +65,7 @@ function fnDelete(action) {
                                                 </li>
                                                 <li>
                                                     {% if PageLayout.edit_flg == constant('Eccube\\Entity\\PageLayout::EDIT_FLG_USER') %}
-                                                        <a href="javascript:;" onclick="fnDelete('{{ url('admin_content_page_delete', { 'id': PageLayout.id}) }}');return false;">削除</a>
+                                                        <a href="{{ url('admin_content_page_delete', { 'id': PageLayout.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このページを削除してもよろしいですか？">削除</a>
                                                     {% else %}
                                                         <a>削除</a>
                                                     {% endif %}

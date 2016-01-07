@@ -57,13 +57,14 @@ class ShopMasterType extends AbstractType
                 'label' => '会社名(フリガナ)',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Length(array(
-                        'max' => $config['stext_len'],
-                    )),
+                    // todo カナへの変換
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
-                )
+                    new Assert\Length(array(
+                        'max' => $config['stext_len'],
+                    )),
+                ),
             ))
             ->add('shop_name', 'text', array(
                 'label' => '店名',
@@ -82,6 +83,7 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['stext_len'],
                     )),
+                    // todo カナへの変換
                     new Assert\Regex(array(
                         'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
                     )),
@@ -101,42 +103,9 @@ class ShopMasterType extends AbstractType
             ))
             ->add('zip', 'zip', array(
                 'required' => false,
-                'zip01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Regex(array('pattern' => '/^\d{3}$/'))
-                    ),
-                ),
-                'zip02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Regex(array('pattern' => '/^\d{4}$/'))
-                    ),
-                ),
             ))
             ->add('address', 'address', array(
                 'required' => false,
-                'pref_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                    ),
-                ),
-                'addr01_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array(
-                            'max' => $config['mtext_len'],
-                        )),
-                    ),
-                ),
-                'addr02_options' => array(
-                    'constraints' => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array(
-                            'max' => $config['mtext_len'],
-                        )),
-                    ),
-                ),
             ))
             ->add('tel', 'tel', array(
                 'required' => false,
@@ -214,11 +183,21 @@ class ShopMasterType extends AbstractType
                     new Assert\Length(array(
                         'max' => $config['price_len'],
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('delivery_free_quantity', 'integer', array(
                 'label' => '送料無料条件(数量)',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
+                ),
             ))
             ->add('option_product_delivery_fee', 'choice', array(
                 'label' => '商品ごとの送料設定を有効にする',

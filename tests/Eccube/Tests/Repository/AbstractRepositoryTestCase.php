@@ -25,6 +25,9 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Application;
 
+/**
+ * @deprecated Eccube\Tests\EccubeTestCase を使用してください
+ */
 class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
 {
 

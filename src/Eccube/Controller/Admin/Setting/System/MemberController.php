@@ -106,6 +106,8 @@ class MemberController extends AbstractController
 
     public function up(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetMember = $app['eccube.repository.member']->find($id);
 
         if (!$TargetMember) {
@@ -113,7 +115,7 @@ class MemberController extends AbstractController
         }
 
         $status = false;
-        if ('POST' === $request->getMethod()) {
+        if ('PUT' === $request->getMethod()) {
             $status = $app['eccube.repository.member']->up($TargetMember);
         }
 
@@ -128,6 +130,8 @@ class MemberController extends AbstractController
 
     public function down(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetMember = $app['eccube.repository.member']->find($id);
 
         if (!$TargetMember) {
@@ -135,7 +139,7 @@ class MemberController extends AbstractController
         }
 
         $status = false;
-        if ('POST' === $request->getMethod()) {
+        if ('PUT' === $request->getMethod()) {
             $status = $app['eccube.repository.member']->down($TargetMember);
         }
 
@@ -150,15 +154,15 @@ class MemberController extends AbstractController
 
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetMember = $app['eccube.repository.member']->find($id);
         if (!$TargetMember) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_setting_system_member'));
         }
 
-        $status = false;
-        if ('POST' === $request->getMethod()) {
-            $status = $app['eccube.repository.member']->delete($TargetMember);
-        }
+        $status = $app['eccube.repository.member']->delete($TargetMember);
 
         if ($status) {
             $app->addSuccess('admin.member.delete.complete', 'admin');

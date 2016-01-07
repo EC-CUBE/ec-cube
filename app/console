@@ -6,12 +6,29 @@
 
 set_time_limit(0);
 
-$app = new Eccube\ConsoleApplication();
+$app = \Eccube\Application::getInstance();
+$app->initialize();
+
+// Console
+$app->register(
+    new \Knp\Provider\ConsoleServiceProvider(),
+    array(
+        'console.name' => 'EC-CUBE',
+        'console.version' => \Eccube\Common\Constant::VERSION,
+        'console.project_directory' => __DIR__ . "/.."
+    )
+);
+
+// Migration
+$app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
+    'db.migrations.path' => __DIR__ . '/../src/Eccube/Resource/doctrine/migration',
+));
+
+$app->boot();
 
 $console = $app["console"];
-$console->add(new Eccube\Command\RouterCommand(new Eccube\Application()));
-$console->add(new Eccube\Command\CacheClearCommand(new Eccube\Application()));
-$console->add(new Eccube\Command\PhpStormCommand(new Eccube\Application()));
-$console->add(new Eccube\Command\PluginCommand(new Eccube\Application()));
+$console->add(new Eccube\Command\RouterCommand($app));
+$console->add(new Eccube\Command\CacheClearCommand($app));
+$console->add(new Eccube\Command\PluginCommand($app));
 
 $console->run();

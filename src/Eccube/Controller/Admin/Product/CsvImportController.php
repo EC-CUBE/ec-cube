@@ -60,7 +60,6 @@ class CsvImportController
      */
     public function csvProduct(Application $app, Request $request)
     {
-
         $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getProductCsvHeader();
@@ -76,10 +75,13 @@ class CsvImportController
                 if (!empty($formFile)) {
 
                     $data = $this->getImportData($app, $formFile);
+                    if ($data === false) {
+                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        return $this->render($app, $form, $headers, $this->productTwig);
+                    }
 
                     $keys = array_keys($headers);
                     $columnHeaders = $data->getColumnHeaders();
-
                     if ($keys !== $columnHeaders) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
                         return $this->render($app, $form, $headers, $this->productTwig);
@@ -420,10 +422,13 @@ class CsvImportController
                 if (!empty($formFile)) {
 
                     $data = $this->getImportData($app, $formFile);
+                    if ($data === false) {
+                        $this->addErrors('CSVのフォーマットが一致しません。');
+                        return $this->render($app, $form, $headers, $this->categoryTwig);
+                    }
 
                     $keys = array_keys($headers);
                     $columnHeaders = $data->getColumnHeaders();
-
                     if ($keys !== $columnHeaders) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
                         return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -614,7 +619,6 @@ class CsvImportController
      */
     protected function getImportData($app, $formFile)
     {
-
         // アップロードされたCSVファイルを一時ディレクトリに保存
         $this->fileName = 'upload_' . Str::random() . '.' . $formFile->getClientOriginalExtension();
         $formFile->move($app['config']['csv_temp_realdir'], $this->fileName);
@@ -638,9 +642,9 @@ class CsvImportController
         // アップロードされたCSVファイルを行ごとに取得
         $data = new CsvImportService($file, $app['config']['csv_import_delimiter'], $app['config']['csv_import_enclosure']);
 
-        $data->setHeaderRowNumber(0);
+        $ret = $data->setHeaderRowNumber(0);
 
-        return $data;
+        return ($ret !== false) ? $data : false;
     }
 
 
@@ -818,6 +822,15 @@ class CsvImportController
                 $ProductClass->setPrice02($price02);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の販売価格は0以上の数値を設定してください。');
+            }
+        }
+
+        if ($row['送料'] != '') {
+            $delivery_fee = str_replace(',', '', $row['送料']);
+            if (is_numeric($delivery_fee) && $delivery_fee >= 0) {
+                $ProductClass->setDeliveryFee($delivery_fee);
+            } else {
+                $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
             }
         }
 

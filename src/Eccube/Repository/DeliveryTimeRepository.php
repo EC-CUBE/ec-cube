@@ -34,6 +34,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class DeliveryTimeRepository extends EntityRepository
 {
+    /**
+     * @deprecated since 3.0.0, to be removed in 3.1
+     */
     public function findOrCreate(array $conditions)
     {
         $DeliveryTime = $this->findOneBy($conditions);

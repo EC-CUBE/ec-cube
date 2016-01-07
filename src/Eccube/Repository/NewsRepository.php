@@ -36,9 +36,10 @@ class NewsRepository extends EntityRepository
 {
 
     /**
-     * @param  \Eccube\Entity\News $News
+     * News の順位を1上げる.
      *
-     * @return void
+     * @param  \Eccube\Entity\News $News
+     * @return boolean 成功した場合 true
      */
     public function up(\Eccube\Entity\News $News)
     {
@@ -71,8 +72,10 @@ class NewsRepository extends EntityRepository
     }
 
     /**
+     * News の順位を1下げる
+     *
      * @param  \Eccube\Entity\News $News
-     * @return bool
+     * @return boolean 成功した場合 true
      */
     public function down(\Eccube\Entity\News $News)
     {
@@ -104,8 +107,10 @@ class NewsRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Member $Member
-     * @return bool
+     * News を保存する.
+     *
+     * @param  \Eccube\Entity\News $News
+     * @return boolean 成功した場合 true
      */
     public function save(\Eccube\Entity\News $News)
     {
@@ -137,8 +142,10 @@ class NewsRepository extends EntityRepository
     }
 
     /**
-     * @param  \Eccube\Entity\Member $Member
-     * @return bool
+     * News を削除する.
+     *
+     * @param  \Eccube\Entity\News $News
+     * @return boolean 成功した場合 true
      */
     public function delete(\Eccube\Entity\News $News)
     {
@@ -168,5 +175,4 @@ class NewsRepository extends EntityRepository
 
         return true;
     }
-
 }

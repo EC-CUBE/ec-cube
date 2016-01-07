@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -33,7 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ProductController
+class ProductController extends AbstractController
 {
     public function index(Application $app, Request $request, $page_no = null)
     {
@@ -65,12 +66,12 @@ class ProductController
                 $pagination = $app['paginator']()->paginate(
                     $qb,
                     $page_no,
-                    $page_count
+                    $page_count,
+                    array('wrap-queries' => true)
                 );
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
-                $active = true;
             }
         } else {
             if (is_null($page_no)) {
@@ -105,7 +106,8 @@ class ProductController
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
-                        $page_count
+                        $page_count,
+                        array('wrap-queries' => true)
                     );
 
                     // セッションから検索条件を復元
@@ -123,17 +125,7 @@ class ProductController
                         $searchData['link_status'] = null;
                         $searchData['stock_status'] = null;
                     }
-                    /*
-                    if (count($searchData['product_status']) > 0) {
-                        $product_status_ids = array();
-                        foreach ($searchData['product_status'] as $ProductStatus) {
-                            $product_status_ids[] = $ProductStatus->getId();
-                        }
-                        $searchData['product_status'] = $app['eccube.repository.master.product_status']->findBy(array('id' => $product_status_ids));
-                    }
-                    */
                     $searchForm->setData($searchData);
-                    $active = true;
                 }
             }
         }
@@ -203,6 +195,10 @@ class ProductController
             if (!$has_class) {
                 $ProductClasses = $Product->getProductClasses();
                 $ProductClass = $ProductClasses[0];
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+                if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED && $ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                    $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
+                }
                 $ProductStock = $ProductClasses[0]->getProductStock();
             }
         }
@@ -244,6 +240,27 @@ class ProductController
 
                 if (!$has_class) {
                     $ProductClass = $form['class']->getData();
+
+                    // 個別消費税
+                    $BaseInfo = $app['eccube.repository.base_info']->get();
+                    if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+                        if ($ProductClass->getTaxRate()) {
+                            if ($ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                                $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
+                            } else {
+                                $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
+                                $taxrule->setTaxRate($ProductClass->getTaxRate());
+                                $taxrule->setApplyDate(new \DateTime());
+                                $taxrule->setProduct($Product);
+                                $taxrule->setProductClass($ProductClass);
+                                $ProductClass->setTaxRule($taxrule);
+                            }
+                        } else {
+                            if ($ProductClass->getTaxRule()) {
+                                $ProductClass->getTaxRule()->setDelFlg(Constant::ENABLED);
+                            }
+                        }
+                    }
                     $app['orm.em']->persist($ProductClass);
 
                     // 在庫情報を作成
@@ -362,9 +379,16 @@ class ProductController
 
     public function delete(Application $app, Request $request, $id = null)
     {
+        $this->isTokenValid($app);
+
         if (!is_null($id)) {
             /* @var $Product \Eccube\Entity\Product */
             $Product = $app['eccube.repository.product']->find($id);
+            if (!$Product) {
+                $app->deleteMessage();
+                return $app->redirect($app->url('admin_product'));
+            }
+
             if ($Product instanceof \Eccube\Entity\Product) {
                 $Product->setDelFlg(Constant::ENABLED);
 

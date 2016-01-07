@@ -57,10 +57,25 @@ class ProductClassType extends AbstractType
             ->add('stock', 'number', array(
                 'label' => '在庫数',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
+                ),
             ))
             ->add('sale_limit', 'number', array(
                 'label' => '販売制限数',
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => 10,
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
+                ),
             ))
             ->add('price01', 'money', array(
                 'label' => '通常価格',
@@ -70,6 +85,10 @@ class ProductClassType extends AbstractType
                 'constraints' => array(
                     new Assert\Length(array(
                         'max' => 10,
+                    )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
                     )),
                 ),
             ))
@@ -82,19 +101,34 @@ class ProductClassType extends AbstractType
                     new Assert\Length(array(
                         'max' => 10,
                     )),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
                 ),
             ))
             ->add('tax_rate', 'text', array(
                 'label' => '消費税率',
                 'required' => false,
                 'constraints' => array(
-                    new Assert\Range(array('min' => 0, 'max' => 100))),
+                    new Assert\Range(array('min' => 0, 'max' => 100)),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+(\.\d+)?$/",
+                        'message' => 'form.type.float.invalid'
+                    )),
+                ),
             ))
             ->add('delivery_fee', 'money', array(
                 'label' => '商品送料',
                 'currency' => 'JPY',
                 'precision' => 0,
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form.type.numeric.invalid'
+                    )),
+                ),
             ))
             ->add('product_type', 'product_type', array(
                 'label' => '商品種別',

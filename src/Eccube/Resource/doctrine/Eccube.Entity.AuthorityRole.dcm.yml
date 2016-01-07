@@ -1,0 +1,37 @@
+Eccube\Entity\AuthorityRole:
+    type: entity
+    table: dtb_authority_role
+    repositoryClass: Eccube\Repository\AuthorityRoleRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: authority_role_id
+            generator:
+                strategy: AUTO
+    fields:
+        deny_url:
+            type: text
+            nullable: false
+        create_date:
+            type: datetime
+            nullable: false
+        update_date:
+            type: datetime
+            nullable: false
+    manyToOne:
+        Authority:
+            targetEntity: Eccube\Entity\Master\Authority
+            joinColumn:
+                name: authority_id
+                referencedColumnName: id
+                nullable: false
+        Creator:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: creator_id
+                referencedColumnName: member_id
+                nullable: false
+    lifecycleCallbacks: {  }

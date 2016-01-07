@@ -70,7 +70,10 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'month' => '2',
             'day' => '14',
         ),
-        'password' => 'password',
+        'password' => array(
+            'first' => 'password',
+            'second' => 'password',
+        ),
         'status' => 1,
         'note' => 'note',
     );
@@ -236,7 +239,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPassword_Blank()
     {
-        $this->formData['password'] = '';
+        $this->formData['password']['first'] = '';
+        $this->formData['password']['second'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -252,7 +256,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPassword_MinLength()
     {
-        $this->formData['password'] = str_repeat('a', $this->app['config']['password_min_len']-1);
+        $this->formData['password']['first'] = str_repeat('a', $this->app['config']['password_min_len']-1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -260,7 +264,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidPassword_MaxLength()
     {
-        $this->formData['password'] = str_repeat('a', $this->app['config']['password_max_len']);
+        $this->formData['password']['first'] = str_repeat('a', $this->app['config']['password_max_len']);
+        $this->formData['password']['second'] = str_repeat('a', $this->app['config']['password_max_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -268,7 +273,7 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidPassword_MaxLength()
     {
-        $this->formData['password'] = str_repeat('a', $this->app['config']['password_max_len']+1);
+        $this->formData['password']['first'] = str_repeat('a', $this->app['config']['password_max_len']+1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

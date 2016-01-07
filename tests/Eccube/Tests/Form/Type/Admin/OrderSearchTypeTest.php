@@ -53,4 +53,14 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($formData);
         $this->assertTrue($this->form->isValid());
     }
+
+    public function testKana_NotValidData()
+    {
+        $formData = array(
+            'kana' => 'a'
+        );
+
+        $this->form->submit($formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }

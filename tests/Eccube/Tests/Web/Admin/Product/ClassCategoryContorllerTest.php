@@ -96,82 +96,6 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
     }
 
-    public function testRoutingAdminProductClassCategoryUp()
-    {
-        // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
-        $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
-            ->findOneBy(array(
-                'name' => $TestClassName->getName()
-            ))
-            ->getId();
-        $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
-        $this->app['orm.em']->persist($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $test_class_category_id = $this->app['eccube.repository.class_category']
-            ->findOneBy(array(
-                'name' => $TestClassCategory->getName()
-            ))
-            ->getId();
-
-        // main
-        $redirectUrl = $this->app->url('admin_product_class_category', array('class_name_id' => $test_class_name_id));
-        $this->client->request('POST',
-            $this->app->url('admin_product_class_category_up',
-                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id))
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->app['orm.em']->remove($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
-    }
-
-    public function testRoutingAdminProductClassCategoryDown()
-    {
-        // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
-        $TestClassName = $this->newTestClassName($TestCreator);
-        $this->app['orm.em']->persist($TestClassName);
-        $this->app['orm.em']->flush();
-        $test_class_name_id = $this->app['eccube.repository.class_name']
-            ->findOneBy(array(
-                'name' => $TestClassName->getName()
-            ))
-            ->getId();
-        $TestClassCategory = $this->newTestClassCategory($TestCreator, $TestClassName);
-        $this->app['orm.em']->persist($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $test_class_category_id = $this->app['eccube.repository.class_category']
-            ->findOneBy(array(
-                'name' => $TestClassCategory->getName()
-            ))
-            ->getId();
-
-        // main
-        $redirectUrl = $this->app->url('admin_product_class_category', array('class_name_id' => $test_class_name_id));
-        $this->client->request('POST',
-            $this->app->url('admin_product_class_category_down',
-                array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id))
-        );
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        // after
-        $this->app['orm.em']->remove($TestClassCategory);
-        $this->app['orm.em']->flush();
-        $this->app['orm.em']->remove($TestClassName);
-        $this->app['orm.em']->flush();
-    }
-
     public function testRoutingAdminProductClassCategoryDelete()
     {
         // before
@@ -197,7 +121,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->app->url('admin_product_class_category', array('class_name_id' => $test_class_name_id));
-        $this->client->request('POST',
+        $this->client->request('DELETE',
             $this->app->url('admin_product_class_category_delete',
                 array('class_name_id' => $test_class_name_id, 'id' => $test_class_category_id))
         );

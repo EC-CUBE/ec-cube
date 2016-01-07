@@ -24,6 +24,7 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Common\Constant;
 use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Product
@@ -118,7 +119,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function isEnable()
     {
-        return $this->getStatus() === 1 ? true : false;
+        return $this->getStatus()->getId() === \Eccube\Entity\Master\Disp::DISPLAY_SHOW ? true : false;
     }
 
     /**
@@ -614,7 +615,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get description_list
      *
-     * @return string 
+     * @return string
      */
     public function getDescriptionList()
     {
@@ -637,7 +638,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get description_detail
      *
-     * @return string 
+     * @return string
      */
     public function getDescriptionDetail()
     {
@@ -660,7 +661,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get search_word
      *
-     * @return string 
+     * @return string
      */
     public function getSearchWord()
     {
@@ -683,7 +684,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get free_area
      *
-     * @return string 
+     * @return string
      */
     public function getFreeArea()
     {
@@ -829,7 +830,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     public function hasProductClass()
     {
         foreach ($this->ProductClasses as $ProductClass) {
-            if (!is_null($ProductClass->getClassCategory1())) {
+            if (!is_null($ProductClass->getClassCategory1()) && $ProductClass->getDelFlg() == Constant::DISABLED) {
                 return true;
             }
         }
@@ -953,7 +954,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductImage
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductImage()
     {
@@ -995,7 +996,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductTag
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductTag()
     {

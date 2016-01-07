@@ -19,12 +19,16 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-<nav class="local_nav">
+{% set favorite = BaseInfo.option_favorite_product %}
+<nav class="local_nav {% if favorite == 1 %}favorite{% endif %}">
     <ul>
-        <li><a{% if mypageno|default('') != 'index' %} href="{{ url('mypage') }}"{% endif %}>ご注文履歴</a></li>
-        <li><a{% if mypageno|default('') != 'change' %} href="{{ url('mypage_change') }}"{% endif %}>会員情報編集</a></li>
-        <li><a{% if mypageno|default('') != 'delivery' %} href="{{ url('mypage_delivery') }}"{% endif %}>お届け先編集</a></li>
-        <li><a{% if mypageno|default('') != 'withdraw' %} href="{{ url('mypage_withdraw') }}"{% endif %}>退会手続き</a></li>
+        <li class="{% if mypageno|default('') == 'index' %}active{% endif %}"><a href="{{ url('mypage') }}">ご注文履歴</a></li>
+        {% if favorite == 1 %}
+        <li  class="{% if mypageno|default('') == 'favorite' %}active{% endif %}"><a href="{{ url('mypage_favorite') }}">お気に入り一覧</a></li>
+        {% endif %}
+        <li class="{% if mypageno|default('') == 'change' %}active{% endif %}"><a href="{{ url('mypage_change') }}">会員情報編集</a></li>
+        <li class="{% if mypageno|default('') == 'delivery' %}active{% endif %}"><a href="{{ url('mypage_delivery') }}">お届け先編集</a></li>
+        <li class="{% if mypageno|default('') == 'withdraw' %}active{% endif %}"><a href="{{ url('mypage_withdraw') }}">退会手続き</a></li>
     </ul>
 </nav>
 <div class="message">

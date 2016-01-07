@@ -26,6 +26,7 @@ namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Eccube\Common\Constant;
 
 /**
  * CustomerFavoriteProductRepository
@@ -47,6 +48,7 @@ class CustomerFavoriteProductRepository extends EntityRepository
             $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
             $CustomerFavoriteProduct->setCustomer($Customer);
             $CustomerFavoriteProduct->setProduct($Product);
+            $CustomerFavoriteProduct->setDelFlg(Constant::DISABLED);
 
             $em = $this->getEntityManager();
             $em->persist($CustomerFavoriteProduct);

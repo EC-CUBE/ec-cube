@@ -27,7 +27,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <form method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
             <div id="deliveradd_select" class="row">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <p><a href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
+                    <p>
+                    {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
+                        <a href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}" class="btn btn-default btn-sm">新規お届け先を追加する</a>
+                    {% else %}
+                        <span class="text-danger">お届け先登録上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
+                    {% endif %}
+                    </p>
+                    {% if error %}
+                        <p class="text-danger">お届け先を指定してください。</p>
+                    {% endif %}
 
                     {% if Customer.CustomerAddresses|length > 0 %}
                      <div class="table address_table">
@@ -36,12 +45,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <div class="addr_box tr">
                             <div class="icon_radio td"><input type="radio" id="address{{ CustomerAddress.id }}" class="no-style" name="address" value="{{ CustomerAddress.id }}" /></div>
                             <div class="column td">
-                                            <label for="address{{ CustomerAddress.id }}">
-                                            <p class="address">
-                                                {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
-                                                〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }}　{{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
-                                                {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}</p>
-                                            </label>
+                                <label for="address{{ CustomerAddress.id }}">
+                                    <p class="address">
+                                        {{ CustomerAddress.name01 }}&nbsp;{{ CustomerAddress.name02 }}<br>
+                                        〒{{ CustomerAddress.zip01 }}-{{ CustomerAddress.zip02 }} {{ CustomerAddress.Pref }}{{ CustomerAddress.addr01 }}{{ CustomerAddress.addr02 }}<br>
+                                        {{ CustomerAddress.tel01 }}-{{ CustomerAddress.tel02 }}-{{ CustomerAddress.tel03 }}
+                                    </p>
+                                </label>
                             </div>
                             </div>
                             {% endfor %}

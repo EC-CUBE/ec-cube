@@ -28,7 +28,7 @@ class Constant {
     /**
      * EC-CUBE VERSION.
      */
-    const VERSION = '3.0.3';
+    const VERSION = '3.0.8';
 
     /**
      * Enable value.
@@ -39,5 +39,10 @@ class Constant {
      * Disable value.
      */
     const DISABLED = 0;
+
+    /**
+     * Csrf Token Name.
+     */
+    const TOKEN_NAME = '_token';
 
 }

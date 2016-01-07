@@ -114,7 +114,9 @@ small, .small {
 .no-border {
     border: 0 none !important;
 }
-
+.word-break{
+    word-wrap: break-word
+}
 
 /* grid setting
 ============================ */
@@ -745,7 +747,6 @@ fieldset[disabled] .btn-link:focus {
     padding: 16px 0 48px;
 }
 
-
 /*	dl-horizontal
 ============================ */
 
@@ -876,6 +877,9 @@ dd.form-group .errormsg {
     height: 40px;
     line-height: 1.5
 }
+textarea.form-control{
+    min-height: 160px;
+}
 .form-control:focus {
     border-color:#3c8dbc !important;
     box-shadow:none
@@ -956,10 +960,10 @@ dd.form-group .errormsg {
     height: 200px;
 }
 
-.alert {
+.alert-section {
     border-radius: 0;
-	margin-top: -16px;
-	position: relative;
+    margin-top: -16px;
+    position: relative;
 }
 
 /* form inline for smartphone */
@@ -1116,16 +1120,19 @@ dd.form-group .errormsg {
 .form-horizontal .photo_files li .delete-image {
     display: block;
     font-size: 20px;
-    width: 40px; height: 40px;
+    width: 40px;
+    height: 40px;
     line-height: 40px;
     position: absolute;
-    right: 8px; top: 8px;
+    right: -13px;
+    top: -13px;
     border: 1px solid #C4CCCE;
-    background: rgba(248,248,248,1);
-    color: #C1C1C1;
+    background: rgba(248, 248, 248, 0.9);
+    color: #666666;
     text-align: center;
     vertical-align: middle;
-	border-radius: 3px;
+    border-radius: 100%;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 .form-horizontal .photo_files li a .cb {
     position: relative;
@@ -1318,11 +1325,14 @@ dd.form-group .errormsg {
     width: 80px;
 }
 .order_list .btn_area li {
-    width: 20%;
     min-width: 160px;
     display: inline-block;
     margin-right: 8px;
     margin-bottom: 8px;
+}
+
+.order_list .btn_area li .btn {
+    min-width: 160px;
 }
 
 .order_list .with-border2 {
@@ -2713,6 +2723,27 @@ a.plugin-name:hover {
 }
 
 
+/* 権限管理 */
+#table-authority td .input-authority {
+    width: 200px;
+}
+#table-authority td .input-deny-url {
+    width: 100%;
+}
+
+/* ログ表示 */
+#line-max {
+    width: 60px;
+}
+
+textarea#log {
+    font-size: 1.4rem;
+    font-family: Consolas, 'Courier New', Courier, Monaco, monospace, 'ＭＳ ゴシック', 'MS Gothic', 'Osaka-等幅', 'Osaka-Mono';
+    line-height: 1.9;
+    color: #141823;
+    background-color: #fdfdfd;
+}
+
 /*	Fixed Column
 ============================ */
 
@@ -3143,4 +3174,43 @@ a.plugin-name:hover {
     .dl_dropdown .dropdown .dropdown-toggle .icon_down {
         right: 27px;
     }
+}
+
+/* --------------------------------
+    display table-responsive dropdown-menu
+-------------------------------- */
+@media (max-width: 767px) {
+    .icon_edit .dropdown-menu {
+        margin-top:  0;
+    }
+    .table-responsive .dropdown-menu {
+        left: -160px !important;
+        top: -115% !important;
+    }
+    .table-responsive .dropdown-menu-right {
+        right: 50px;
+    }
+}
+@media (min-width: 768px) {
+    .table-responsive {
+        overflow: visible;
+    }
+    .table-responsive.table-responsive-overflow {
+        overflow: auto;
+    }
+}
+
+/* --------------------------------
+    display mask
+-------------------------------- */
+.prevention-masked {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3040;
+    background-color: #000;
+    filter: alpha(opacity=50);
+    opacity: .5;
 }

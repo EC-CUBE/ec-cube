@@ -63,17 +63,7 @@ class PriceTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        // \Eccube\Applicationは重いから呼ばない
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-
-        $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
-            $types[] = new \Eccube\Form\Type\PriceType($self->config);
-
-            return $types;
-        }));
+        $app = $this->createApplication();
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $app['form.factory']
@@ -114,5 +104,37 @@ class PriceTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->form->submit(str_repeat('1', $this->config['price_len']+1));
         $this->assertFalse($this->form->isValid());
+    }
+
+    public function testNotRequiredOption()
+    {
+        $app = $this->createApplication();
+
+        $form = $app['form.factory']
+            ->createBuilder('price', null, array(
+                'csrf_protection' => false,
+                'required' => false,
+            ))
+            ->getForm();
+
+        $form->submit('');
+        $this->assertTrue($form->isValid());
+    }
+
+    public function createApplication()
+    {
+        // \Eccube\Applicationは重いから呼ばない
+        $app = new \Silex\Application();
+        $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+
+        $self = $this;
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
+            $types[] = new \Eccube\Form\Type\PriceType($self->config);
+
+            return $types;
+        }));
+
+        return $app;
     }
 }

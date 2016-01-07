@@ -25,10 +25,11 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ClassCategoryController
+class ClassCategoryController extends AbstractController
 {
     public function index(Application $app, Request $request, $class_name_id, $id = null)
     {
@@ -77,112 +78,36 @@ class ClassCategoryController
         ));
     }
 
-    public function up(Application $app, Request $request, $class_name_id, $id)
-    {
-        //
-        $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
-        if (!$ClassName) {
-            throw new NotFoundHttpException();
-        }
-        $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
-        if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            throw new NotFoundHttpException();
-        }
-
-        //
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_class_category', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        //
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.class_category']->up($TargetClassCategory);
-            }
-        }
-
-        if ($status === true) {
-            $app->addSuccess('admin.class_category.up.complete', 'admin');
-        } else {
-            $app->addError('admin.class_category.up.error', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
-    }
-
-    public function down(Application $app, Request $request, $class_name_id, $id)
-    {
-        //
-        $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
-        if (!$ClassName) {
-            throw new NotFoundHttpException();
-        }
-        $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
-        if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            throw new NotFoundHttpException();
-        }
-
-        //
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_class_category', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        //
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.class_category']->down($TargetClassCategory);
-            }
-        }
-
-        if ($status === true) {
-            $app->addSuccess('admin.class_category.down.complete', 'admin');
-        } else {
-            $app->addError('admin.class_category.down.error', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
-    }
-
     public function delete(Application $app, Request $request, $class_name_id, $id)
     {
-        //
+        $this->isTokenValid($app);
+
         $ClassName = $app['eccube.repository.class_name']->find($class_name_id);
         if (!$ClassName) {
             throw new NotFoundHttpException();
         }
         $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
         }
 
-        //
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_class_category', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        //
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.class_category']->delete($TargetClassCategory);
-            }
-        }
-
-        if ($status === true) {
-            $app->addSuccess('admin.class_category.delete.complete', 'admin');
+        $num = $app['eccube.repository.product_class']->createQueryBuilder('pc')
+            ->select('count(pc.id)')
+            ->where('pc.ClassCategory1 = :id OR pc.ClassCategory2 = :id')
+            ->setParameter('id',$id)
+            ->getQuery()
+            ->getSingleScalarResult();
+        if ($num > 0) {
+            $app->addError('admin.class_category.delete.hasproduct', 'admin');
         } else {
-            $app->addError('admin.class_category.delete.error', 'admin');
+            $status = $app['eccube.repository.class_category']->delete($TargetClassCategory);
+
+            if ($status === true) {
+                $app->addSuccess('admin.class_category.delete.complete', 'admin');
+            } else {
+                $app->addError('admin.class_category.delete.error', 'admin');
+            }
         }
 
         return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));

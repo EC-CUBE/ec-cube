@@ -94,6 +94,8 @@
                             <div class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip) }}
+                                {{ form_errors(form.zip.zip01) }}
+                                {{ form_errors(form.zip.zip02) }}
                                 <span><button type="button" id="zip-search" class="btn btn-default btn-sm">郵便番号から自動入力</button></span>
                             </div>
                         </div>
@@ -148,10 +150,17 @@
                         </div>
                         {# パスワード #}
                         <div class="form-group">
-                            {{ form_label(form.password) }}
+                            {{ form_label(form.password.first) }}
                             <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.password, { type : 'password' }) }}
-                                {{ form_errors(form.password) }}
+                                {{ form_widget(form.password.first, { type : 'password'}) }}
+                                {{ form_errors(form.password.first) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.password.second) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.password.second, { type : 'password'}) }}
+                                {{ form_errors(form.password.second) }}
                             </div>
                         </div>
                         {# 性別 #}

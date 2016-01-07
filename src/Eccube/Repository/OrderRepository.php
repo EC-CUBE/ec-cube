@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -35,12 +36,11 @@ use Doctrine\ORM\QueryBuilder;
  */
 class OrderRepository extends EntityRepository
 {
-    /** @var array */
-    public $config;
+    protected $app;
 
-    public function setConfig(array $config)
+    public function setApplication($app)
     {
-        $this->config = $config;
+        $this->app = $app;
     }
 
     public function changeStatus($orderId, \Eccube\Entity\Master\OrderStatus $Status)
@@ -76,14 +76,14 @@ class OrderRepository extends EntityRepository
         $joinedCustomer = false;
 
         // order_id_start
-        if (!empty($searchData['order_id_start']) && $searchData['order_id_start']) {
+        if (isset($searchData['order_id_start']) && Str::isNotBlank($searchData['order_id_start'])) {
             $qb
                 ->andWhere('o.id >= :order_id_start')
                 ->setParameter('order_id_start', $searchData['order_id_start']);
         }
 
         // order_id_end
-        if (!empty($searchData['order_id_end']) && $searchData['order_id_end']) {
+        if (isset($searchData['order_id_end']) && Str::isNotBlank($searchData['order_id_end'])) {
             $qb
                 ->andWhere('o.id <= :order_id_end')
                 ->setParameter('order_id_end', $searchData['order_id_end']);
@@ -97,38 +97,38 @@ class OrderRepository extends EntityRepository
         }
 
         // name
-        if (!empty($searchData['name']) && $searchData['name']) {
+        if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
                 ->setParameter('name', '%' . $searchData['name'] . '%');
         }
 
         // kana
-        if (!empty($searchData['kana']) && $searchData['kana']) {
+        if (isset($searchData['kana']) && Str::isNotBlank($searchData['kana'])) {
             $qb
                 ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
                 ->setParameter('kana', '%' . $searchData['kana'] . '%');
         }
 
         // email
-        if (!empty($searchData['email']) && $searchData['email']) {
+        if (isset($searchData['email']) && Str::isNotBlank($searchData['email'])) {
             $qb
                 ->andWhere('o.email = :email')
                 ->setParameter('email', $searchData['email']);
         }
 
         // tel
-        if (!empty($searchData['tel01']) && $searchData['tel01']) {
+        if (isset($searchData['tel01']) && Str::isNotBlank($searchData['tel01'])) {
             $qb
                 ->andWhere('o.tel01 = :tel01')
                 ->setParameter('tel01', $searchData['tel01']);
         }
-        if (!empty($searchData['tel02']) && $searchData['tel02']) {
+        if (isset($searchData['tel02']) && Str::isNotBlank($searchData['tel02'])) {
             $qb
                 ->andWhere('o.tel02 = :tel02')
                 ->setParameter('tel02', $searchData['tel02']);
         }
-        if (!empty($searchData['tel03']) && $searchData['tel03']) {
+        if (isset($searchData['tel03']) && Str::isNotBlank($searchData['tel03'])) {
             $qb
                 ->andWhere('o.tel03 = :tel03')
                 ->setParameter('tel03', $searchData['tel03']);
@@ -153,7 +153,8 @@ class OrderRepository extends EntityRepository
                 $joinedCustomer = true;
             }
 
-            $date = $searchData['birth_end']
+            $date = clone $searchData['birth_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -174,7 +175,7 @@ class OrderRepository extends EntityRepository
             }
 
             $qb
-                ->andWhere($qb->expr()->in('c.sex', ':sexs'))
+                ->andWhere($qb->expr()->in('c.Sex', ':sexs'))
                 ->setParameter('sexs', $sexs);
         }
 
@@ -199,7 +200,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('order_date_start', $date);
         }
         if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
-            $date = $searchData['order_date_end']
+            $date = clone $searchData['order_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -216,7 +218,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -225,19 +228,19 @@ class OrderRepository extends EntityRepository
         }
 
         // payment_total
-        if (!empty($searchData['payment_total_start']) && $searchData['payment_total_start']) {
+        if (isset($searchData['payment_total_start']) && Str::isNotBlank($searchData['payment_total_start'])) {
             $qb
                 ->andWhere('o.payment_total >= :payment_total_start')
                 ->setParameter('payment_total_start', $searchData['payment_total_start']);
         }
-        if (!empty($searchData['payment_total_end']) && $searchData['payment_total_end']) {
+        if (isset($searchData['payment_total_end']) && Str::isNotBlank($searchData['payment_total_end'])) {
             $qb
                 ->andWhere('o.payment_total <= :payment_total_end')
                 ->setParameter('payment_total_end', $searchData['payment_total_end']);
         }
 
         // buy_product_name
-        if (!empty($searchData['buy_product_name']) && $searchData['buy_product_name']) {
+        if (isset($searchData['buy_product_name']) && Str::isNotBlank($searchData['buy_product_name'])) {
             $qb
                 ->leftJoin('o.OrderDetails', 'od')
                 ->andWhere('od.product_name LIKE :buy_product_name')
@@ -261,13 +264,13 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
 
         // order_id_start
-        if (!empty($searchData['order_id_start']) && $searchData['order_id_start']) {
+        if (isset($searchData['order_id_start']) && Str::isNotBlank($searchData['order_id_start'])) {
             $qb
                 ->andWhere('o.id >= :order_id_start')
                 ->setParameter('order_id_start', $searchData['order_id_start']);
         }
         // multi
-        if (!empty($searchData['multi']) && $searchData['multi']) {
+        if (isset( $searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
             $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
                 ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR ' .
@@ -277,7 +280,7 @@ class OrderRepository extends EntityRepository
         }
 
         // order_id_end
-        if (!empty($searchData['order_id_end']) && $searchData['order_id_end']) {
+        if (isset($searchData['order_id_end']) && Str::isNotBlank($searchData['order_id_end'])) {
             $qb
                 ->andWhere('o.id <= :order_id_end')
                 ->setParameter('order_id_end', $searchData['order_id_end']);
@@ -291,32 +294,32 @@ class OrderRepository extends EntityRepository
         } else {
             // 購入処理中は検索対象から除外
             $qb->andWhere('o.OrderStatus <> :status')
-                ->setParameter('status', $this->config['order_processing']);
+                ->setParameter('status', $this->app['config']['order_processing']);
         }
 
         // name
-        if (!empty($searchData['name']) && $searchData['name']) {
+        if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
                 ->setParameter('name', '%' . $searchData['name'] . '%');
         }
 
         // kana
-        if (!empty($searchData['kana']) && $searchData['kana']) {
+        if (isset($searchData['kana']) && Str::isNotBlank($searchData['kana'])) {
             $qb
                 ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
                 ->setParameter('kana', '%' . $searchData['kana'] . '%');
         }
 
         // email
-        if (!empty($searchData['email']) && $searchData['email']) {
+        if (isset($searchData['email']) && Str::isNotBlank($searchData['email'])) {
             $qb
                 ->andWhere('o.email like :email')
                 ->setParameter('email', '%' . $searchData['email'] . '%');
         }
 
         // tel
-        if (!empty($searchData['tel']) && $searchData['tel']) {
+        if (isset($searchData['tel']) && Str::isNotBlank($searchData['tel'])) {
             $qb
                 ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
                 ->setParameter('tel', '%' . $searchData['tel'] . '%');
@@ -350,7 +353,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('order_date_start', $date);
         }
         if (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
-            $date = $searchData['order_date_end']
+            $date = clone $searchData['order_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -367,7 +371,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('payment_date_start', $date);
         }
         if (!empty($searchData['payment_date_end']) && $searchData['payment_date_end']) {
-            $date = $searchData['payment_date_end']
+            $date = clone $searchData['payment_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -384,7 +389,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('commit_date_start', $date);
         }
         if (!empty($searchData['commit_date_end']) && $searchData['commit_date_end']) {
-            $date = $searchData['commit_date_end']
+            $date = clone $searchData['commit_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -402,7 +408,8 @@ class OrderRepository extends EntityRepository
                 ->setParameter('update_date_start', $date);
         }
         if (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
-            $date = $searchData['update_date_end']
+            $date = clone $searchData['update_date_end'];
+            $date = $date
                 ->modify('+1 days')
                 ->format('Y-m-d H:i:s');
             $qb
@@ -411,19 +418,19 @@ class OrderRepository extends EntityRepository
         }
 
         // payment_total
-        if (!empty($searchData['payment_total_start']) && $searchData['payment_total_start']) {
+        if (isset($searchData['payment_total_start']) && Str::isNotBlank($searchData['payment_total_start'])) {
             $qb
                 ->andWhere('o.payment_total >= :payment_total_start')
                 ->setParameter('payment_total_start', $searchData['payment_total_start']);
         }
-        if (!empty($searchData['payment_total_end']) && $searchData['payment_total_end']) {
+        if (isset($searchData['payment_total_end']) && Str::isNotBlank($searchData['payment_total_end'])) {
             $qb
                 ->andWhere('o.payment_total <= :payment_total_end')
                 ->setParameter('payment_total_end', $searchData['payment_total_end']);
         }
 
         // buy_product_name
-        if (!empty($searchData['buy_product_name']) && $searchData['buy_product_name']) {
+        if (isset($searchData['buy_product_name']) && Str::isNotBlank($searchData['buy_product_name'])) {
             $qb
                 ->leftJoin('o.OrderDetails', 'od')
                 ->andWhere('od.product_name LIKE :buy_product_name')
@@ -464,12 +471,35 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
         $qb
             ->where('o.OrderStatus <> :OrderStatus')
-            ->setParameter('OrderStatus', $this->config['order_cancel'])
+            ->setParameter('OrderStatus', $this->app['config']['order_cancel'])
             ->setMaxResults(10)
             ->orderBy('o.create_date', 'DESC');
 
         return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * 会員の合計購入金額を取得、回数を取得
+     *
+     * @param  \Eccube\Entity\Customer $Customer
+     * @param  array $OrderStatuses
+     * @return QueryBuilder
+     */
+    public function getCustomerCount(\Eccube\Entity\Customer $Customer, array $OrderStatuses)
+    {
+        $result = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id) AS buy_times, SUM(o.total)  AS buy_total')
+            ->where('o.Customer = :Customer')
+            ->andWhere('o.OrderStatus in (:OrderStatuses)')
+            ->setParameter('Customer', $Customer)
+            ->setParameter('OrderStatuses', $OrderStatuses)
+            ->groupBy('o.id')
+            ->orderBy('o.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
     }
 }

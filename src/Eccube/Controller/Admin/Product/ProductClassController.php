@@ -48,6 +48,7 @@ class ProductClassController
 
         /** @var $Product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->find($id);
+        $hasClassCategoryFlg = false;
 
         if (!$Product) {
             throw new NotFoundHttpException();
@@ -84,8 +85,18 @@ class ProductClassController
                 if ($form->isValid()) {
 
                     $data = $form->getData();
+
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
+
+                    // 各規格が選択されている際に、分類を保有しているか確認
+                    $class1Valied = $this->isValiedCategory($ClassName1);
+                    $class2Valied = $this->isValiedCategory($ClassName2);
+
+                    // 規格が選択されていないか、選択された状態で分類が保有されていれば、画面表示
+                    if($class1Valied && $class2Valied){
+                        $hasClassCategoryFlg = true;
+                    }
 
                     if (!is_null($ClassName2) && $ClassName1->getId() == $ClassName2->getId()) {
                         // 規格1と規格2が同じ値はエラー
@@ -103,7 +114,7 @@ class ProductClassController
 
                         // 組み合わされた商品規格にデフォルト値をセット
                         foreach ($ProductClasses as $productClass) {
-                            $this->setDefualtProductClass($productClass, $sourceProduct);
+                            $this->setDefualtProductClass($app, $productClass, $sourceProduct);
                         }
 
                         $productClassForm = $app->form()
@@ -125,6 +136,7 @@ class ProductClassController
                 'Product' => $Product,
                 'not_product_class' => true,
                 'error' => null,
+                'has_class_category_flg' => $hasClassCategoryFlg,
             ));
 
         } else {
@@ -151,7 +163,7 @@ class ProductClassController
             $BaseInfo = $app['eccube.repository.base_info']->get();
             if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
                 foreach ($ProductClasses as $class) {
-                    if ($class->getTaxRule()) {
+                    if ($class->getTaxRule() && !$class->getTaxRule()->getDelFlg()) {
                         $class->setTaxRate($class->getTaxRule()->getTaxRate());
                     }
                 }
@@ -182,7 +194,7 @@ class ProductClassController
             // 登録済み商品規格と空の商品規格をマージ
             foreach ($mergeProductClasses as $mergeProductClass) {
                 // 空の商品規格にデフォルト値を設定
-                $this->setDefualtProductClass($mergeProductClass, $ProductClass);
+                $this->setDefualtProductClass($app, $mergeProductClass, $ProductClass);
                 $ProductClasses->add($mergeProductClass);
             }
 
@@ -203,6 +215,7 @@ class ProductClassController
                 'class_name2' => $ClassName2,
                 'not_product_class' => false,
                 'error' => null,
+                'has_class_category_flg' => true,
             ));
 
         }
@@ -323,8 +336,9 @@ class ProductClassController
                     // 登録対象と更新対象の行か判断する
                     $addProductClasses = array();
                     $updateProductClasses = array();
-                    $flag = false;
                     foreach ($checkProductClasses as $cp) {
+                        $flag = false;
+                        
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
@@ -341,7 +355,7 @@ class ProductClassController
                                 } else {
                                     $productStock->setStock(null);
                                 }
-                                $this->setDefualtProductClass($productClass, $cp);
+                                $this->setDefualtProductClass($app, $productClass, $cp);
                                 $flag = true;
                                 break;
                             }
@@ -349,7 +363,6 @@ class ProductClassController
                         if (!$flag) {
                             $addProductClasses[] = $cp;
                         }
-                        $flag = false;
                     }
 
                     foreach ($removeProductClasses as $rc) {
@@ -459,6 +472,7 @@ class ProductClassController
             'class_name2' => $ClassName2,
             'not_product_class' => $not_product_class,
             'error' => $error,
+            'has_class_category_flg' => true,
         ));
     }
 
@@ -553,14 +567,39 @@ class ProductClassController
      * @param $productClassDest コピー先となる商品規格
      * @param $productClassOrig コピー元となる商品規格
      */
-    private function setDefualtProductClass($productClassDest, $productClassOrig) {
+    private function setDefualtProductClass($app, $productClassDest, $productClassOrig) {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
         $productClassDest->setProduct($productClassOrig->getProduct());
+        $productClassDest->setProductType($productClassOrig->getProductType());
+        $productClassDest->setCode($productClassOrig->getCode());
         $productClassDest->setStock($productClassOrig->getStock());
         $productClassDest->setStockUnlimited($productClassOrig->getStockUnlimited());
+        $productClassDest->setSaleLimit($productClassOrig->getSaleLimit());
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
+        
+        // 個別消費税
+        $BaseInfo = $app['eccube.repository.base_info']->get();
+        if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
+            if($productClassOrig->getTaxRate()) {
+                $productClassDest->setTaxRate($productClassOrig->getTaxRate());
+                if ($productClassDest->getTaxRule() && !$productClassDest->getTaxRule()->getDelFlg()) {
+                    $productClassDest->getTaxRule()->setTaxRate($productClassOrig->getTaxRate());
+                } else {
+                    $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
+                    $taxrule->setTaxRate($productClassOrig->getTaxRate());
+                    $taxrule->setApplyDate(new \DateTime());
+                    $taxrule->setProduct($productClassDest->getProduct());
+                    $taxrule->setProductClass($productClassDest);
+                    $productClassDest->setTaxRule($taxrule);
+                }
+            } else {
+                if ($productClassDest->getTaxRule()) {
+                    $productClassDest->getTaxRule()->setDelFlg(Constant::ENABLED);
+                }
+            }
+        }
     }
 
 
@@ -617,4 +656,20 @@ class ProductClassController
 
     }
 
+    /**
+     * 規格の分類判定
+     *
+     * @param Eccube\Entity\ClassName $ClassesName
+     * @return boolean
+     */
+    private function isValiedCategory($class_name)
+    {
+        if (empty($class_name)) {
+            return true;
+        }
+        if (count($class_name->getClassCategories()) < 1) {
+            return false;
+        }
+        return true;
+    }
 }

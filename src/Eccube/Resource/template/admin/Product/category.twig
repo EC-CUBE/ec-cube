@@ -34,10 +34,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
     <script>
-        function changeAction(action) {
-            document.form1.action = action;
-        }
-
         $(function() {
             var oldRanks = [];
             // 画面の中のrank一覧を保持
@@ -115,7 +111,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
                                 {{ form_widget(form._token) }}
                                 {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
-                                <button class="btn btn-default btn-sm" type="submit" onclick="document.form1.submit(); return false;">カテゴリ作成</button>
+                                {{ form_errors(form.name) }}
+                                <button class="btn btn-default btn-sm" type="submit">カテゴリ作成</button>
                             </form>
                             {% endif %}
                         </div>
@@ -156,31 +153,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
                                                     <li><a title="子カテゴリが存在するため削除できません。">削除</a></li>
                                                 {% else %}
-                                                    {% set delete_action = url('admin_product_category_delete', {id: Category.id}) %}
                                                     <li>
-                                                        <a href="?" onclick="changeAction('{{ delete_action }}'); document.form1.submit(); return false;">
+                                                        <a href="{{ url('admin_product_category_delete', {id: Category.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                             削除
                                                         </a>
                                                     </li>
                                                 {% endif %}
 
-                                                {% if loop.first == false %}
-                                                    {% set up_action = url('admin_product_category_up', {id: Category.id}) %}
-                                                    <li>
-                                                        <a href="?" onclick="changeAction('{{ up_action }}'); document.form1.submit(); return false;">
-                                                            上へ
-                                                        </a>
-                                                    </li>
-                                                {% endif %}
-
-                                                {% if loop.last == false %}
-                                                    {% set down_action = url('admin_product_category_down', {id: Category.id}) %}
-                                                    <li>
-                                                        <a href="?" onclick="changeAction('{{ down_action }}'); document.form1.submit(); return false;">
-                                                            下へ
-                                                        </a>
-                                                    </li>
-                                                {% endif %}
                                             </ul>
                                         </div>
                                     </div>

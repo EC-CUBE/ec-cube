@@ -5,19 +5,21 @@
 # EC-CUBE のインストールを行う shell スクリプト
 #
 #
-# #処理内容
+# 処理内容
 # 1. パーミッション変更
-# 2. html/install/sql 配下の SQL を実行
-# 3. 管理者権限をアップデート
-# 4. data/config/config.php を生成
+# 2. app/config以下に設定ファイルを生成
+# 3. データベースの作成
+# 4. データベーススキーマ生成・初期データ投入
+# 5. app/cache以下をクリア
 #
 # 使い方
 # Configurationの内容を自分の環境に併せて修正
 # PostgreSQLの場合は、DBユーザーを予め作成しておいて
-# # ./ec_cube_install.sh pgsql
+# > ./ec_cube_install.sh pgsql
 # MySQLはMYSQLのRoot以外のユーザーで実行する場合は、128行目をコメントアウトして
-# # ./ec_cube_install.sh mysql
-#
+# > ./ec_cube_install.sh mysql
+# composerを実行しない場合は, 第2引数に"none"を指定するとスキップできる
+# > ./ec_cube_install.sh mysql none
 #
 # 開発コミュニティの関連スレッド
 # http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4918&forum=14&post_id=23090#forumpost23090
@@ -82,8 +84,6 @@ case "${DBTYPE}" in
     #-- DB Seting Postgres
     PSQL=psql
     PGUSER=postgres
-    DROPDB=dropdb
-    CREATEDB=createdb
     export DBPORT=5432
     export DBDRIVER=pdo_pgsql
 ;;
@@ -201,10 +201,10 @@ case "${DBTYPE}" in
 "pgsql" )
     # PostgreSQL
     echo "dropdb..."
-    sudo -u ${PGUSER} ${DROPDB} ${DBNAME}
+    ${PSQL} -U ${PGUSER} -c "drop database ${DBNAME}"
 
     echo "createdb..."
-    sudo -u ${PGUSER} ${CREATEDB} -U ${DBUSER} ${DBNAME}
+    ${PSQL} -U ${PGUSER} -c "create database ${DBNAME} owner ${DBUSER}"
 
     echo "create table..."
     ./vendor/bin/doctrine orm:schema-tool:create
@@ -213,7 +213,7 @@ case "${DBTYPE}" in
     php app/console migrations:migrate  --no-interaction
 
     echo "execute optional SQL..."
-    get_optional_sql | sudo -u ${PGUSER} ${PSQL} -U ${DBUSER} ${DBNAME}
+    get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME}
 ;;
 "mysql" )
     DBPASS=`echo $DBPASS | tr -d " "`

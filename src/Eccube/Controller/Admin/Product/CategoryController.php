@@ -25,13 +25,14 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CategoryController
+class CategoryController extends AbstractController
 {
     public function index(Application $app, Request $request, $parent_id = null, $id = null)
     {
@@ -103,97 +104,18 @@ class CategoryController
         ));
     }
 
-    public function up(Application $app, Request $request, $id)
-    {
-        $TargetCategory = $app['eccube.repository.category']->find($id);
-        if (!$TargetCategory) {
-            throw new NotFoundHttpException();
-        }
-        $Parent = $TargetCategory->getParent();
-
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_category', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.category']->up($TargetCategory);
-            }
-        }
-
-        if ($status === true) {
-            $app->addSuccess('admin.category.up.complete', 'admin');
-        } else {
-            $app->addError('admin.category.up.error', 'admin');
-        }
-
-        if ($Parent) {
-            return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
-        } else {
-            return $app->redirect($app->url('admin_product_category'));
-        }
-    }
-
-    public function down(Application $app, Request $request, $id)
-    {
-        $TargetCategory = $app['eccube.repository.category']->find($id);
-        if (!$TargetCategory) {
-            throw new NotFoundHttpException();
-        }
-        $Parent = $TargetCategory->getParent();
-
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_category', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.category']->down($TargetCategory);
-            }
-        }
-
-        if ($status === true) {
-            $app->addSuccess('admin.category.down.complete', 'admin');
-        } else {
-            $app->addError('admin.category.down.error', 'admin');
-        }
-
-        if ($Parent) {
-            return $app->redirect($app->url('admin_product_category_show', array('parent_id' => $Parent->getId())));
-        } else {
-            return $app->redirect($app->url('admin_product_category'));
-        }
-    }
-
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetCategory = $app['eccube.repository.category']->find($id);
         if (!$TargetCategory) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_product_category'));
         }
         $Parent = $TargetCategory->getParent();
 
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_category', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.category']->delete($TargetCategory);
-            }
-        }
+        $status = $app['eccube.repository.category']->delete($TargetCategory);
 
         if ($status === true) {
             $app->addSuccess('admin.category.delete.complete', 'admin');
@@ -226,7 +148,7 @@ class CategoryController
 
 
     /**
-     * ¤•iCSV‚Ìo—Í.
+     * å•†å“CSVã®å‡ºåŠ›.
      *
      * @param Application $app
      * @param Request $request
@@ -234,27 +156,27 @@ class CategoryController
      */
     public function export(Application $app, Request $request)
     {
-        // ƒ^ƒCƒ€ƒAƒEƒg‚ð–³Œø‚É‚·‚é.
+        // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã‚’ç„¡åŠ¹ã«ã™ã‚‹.
         set_time_limit(0);
 
-        // sql logger‚ð–³Œø‚É‚·‚é.
+        // sql loggerã‚’ç„¡åŠ¹ã«ã™ã‚‹.
         $em = $app['orm.em'];
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($app, $request) {
 
-            // CSVŽí•Ê‚ðŒ³‚É‰Šú‰».
+            // CSVç¨®åˆ¥ã‚’å…ƒã«åˆæœŸåŒ–.
             $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_CATEGORY);
 
-            // ƒwƒbƒ_s‚Ìo—Í.
+            // ãƒ˜ãƒƒãƒ€è¡Œã®å‡ºåŠ›.
             $app['eccube.service.csv.export']->exportHeader();
 
             $qb = $app['eccube.repository.category']
                 ->createQueryBuilder('c')
                 ->orderBy('c.rank', 'DESC');
 
-            // ƒf[ƒ^s‚Ìo—Í.
+            // ãƒ‡ãƒ¼ã‚¿è¡Œã®å‡ºåŠ›.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
             $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
 
@@ -263,14 +185,14 @@ class CategoryController
                 /** @var $Category \Eccube\Entity\Category */
                 $Category = $entity;
 
-                // CSVo—Í€–Ú‚Æ‡’v‚·‚éƒf[ƒ^‚ðŽæ“¾.
+                // CSVå‡ºåŠ›é …ç›®ã¨åˆè‡´ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—.
                 $row = array();
                 foreach ($Csvs as $Csv) {
                     $row[] = $csvService->getData($Csv, $Category);
                 }
 
                 //$row[] = number_format(memory_get_usage(true));
-                // o—Í.
+                // å‡ºåŠ›.
                 $csvService->fputcsv($row);
             });
         });

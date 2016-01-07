@@ -107,6 +107,7 @@ master_data_realdir: /PATH/TO/WEB_ROOT/data/cache/
 max_lifetime: 7200
 max_log_quantity: 5
 max_log_size: '1000000'
+max_total_fee: 9999999999
 member_pmax: 10
 mltext_len: 1000
 mobile_cart_urlpath: /cart/
@@ -134,7 +135,7 @@ normal_image_height: 260
 normal_image_width: 260
 normal_subimage_height: 200
 normal_subimage_width: 200
-nostock_hidden: false
+nostock_hidden: false  #deprecated 3.1 delete. use dtb_base_info.nostock_hidden
 option_class_regist: 1
 option_deliv_fee: 1
 option_favorite_product: 1
@@ -212,6 +213,7 @@ start_birth_year: 1970
 stext_len: 50
 tax_rule_priority: 'product_id,product_class_id,pref_id,country_id'
 tel_len: 5
+tel_len_min: 1
 tel_item_len: 12
 template_admin_realdir: /PATH/TO/WEB_ROOT/data/template/admin/
 template_name: default
@@ -259,3 +261,4 @@ name_len: 16
 kana_len: 25
 address1_len: 32
 address2_len: 32
+birth_max: 110

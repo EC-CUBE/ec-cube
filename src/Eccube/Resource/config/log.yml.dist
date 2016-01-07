@@ -2,6 +2,9 @@ log:
     prefix: site_
     suffix:
     format: Y-m-d
-    action_level: WARNING
+    action_level: INFO
     log_level: INFO
     max_files: 90
+    exclude_keys:
+        - password
+        - app

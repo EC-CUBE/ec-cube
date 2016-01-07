@@ -28,13 +28,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
+                {% for error in app.session.flashbag.get('eccube.front.error')  %}
                 <div class="message">
-                    <p>購入エラーが発生しました。</p>
+                    {{ error|trans|nl2br }}
                 </div>
+                {% endfor %}
                 <div class="row no-padding">
                     <div class="btn_group col-sm-offset-4 col-sm-4">
                         <p>
                             <a href="{{ url('homepage') }}" class="btn btn-info btn-block">トップページへ</a>
+                        </p>
+                        <p>
+                            <a href="{{ url('cart') }}" class="btn btn-info btn-block">カートに戻る</a>
                         </p>
                     </div>
                 </div>

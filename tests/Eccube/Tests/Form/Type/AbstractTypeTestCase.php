@@ -24,29 +24,9 @@
 
 namespace Eccube\Tests\Form\Type;
 
+use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTypeTestCase extends EccubeTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->app = new \Eccube\Application();
-        $this->app->initialize();
-        $this->app['session.test'] = true;
-        $this->app['exception_handler']->disable();
-
-        $this->app->boot();
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        // 初期化
-        $this->app = null;
-        $this->form = null;
-        $this->formData = null;
-    }
 }

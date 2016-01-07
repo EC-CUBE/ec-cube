@@ -93,28 +93,24 @@ class CustomerType extends AbstractType
             ->add('birth', 'birthday', array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y')-80, date('Y')),
+                'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
-            ))
-            // RepeatedPasswordTypeと共通化したい
-            ->add('password', 'text', array(
-                'required' => true,
-                'invalid_message' => 'form.member.password.invalid',
                 'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Length(array(
-                        'min' => $this->config['password_min_len'],
-                        'max' => $this->config['password_max_len'],
-                    )),
-                    new Assert\Regex(array(
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form.type.graph.invalid',
+                    new Assert\LessThanOrEqual(array(
+                        'value' => date('Y-m-d'),
+                        'message' => 'form.type.select.selectisfuturedate',
                     )),
                 ),
-                'attr' => array(
-                    'placeholder' => '半角英数字記号'.$this->config['password_min_len'].'～'.$this->config['password_max_len'].'文字',
+            ))
+            ->add('password', 'repeated_password', array(
+                // 'type' => 'password',
+                'first_options'  => array(
+                    'label' => 'パスワード',
+                ),
+                'second_options' => array(
+                    'label' => 'パスワード(確認)',
                 ),
             ))
             ->add('status', 'customer_status', array(

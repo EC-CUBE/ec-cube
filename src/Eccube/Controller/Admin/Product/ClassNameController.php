@@ -25,10 +25,11 @@
 namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ClassNameController
+class ClassNameController extends AbstractController
 {
     public function index(Application $app, Request $request, $id = null)
     {
@@ -69,86 +70,17 @@ class ClassNameController
         ));
     }
 
-    public function up(Application $app, Request $request, $id)
-    {
-        $TargetClassName = $app['eccube.repository.class_name']->find($id);
-        if (!$TargetClassName) {
-            throw new NotFoundHttpException;
-        }
-
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_class_name', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.class_name']->up($TargetClassName);
-            }
-        }
-
-        if ($status === true) {
-            $app->addSuccess('admin.class_name.up.complete', 'admin');
-        } else {
-            $app->addError('admin.class_name.up.error', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_product_class_name'));
-    }
-
-    public function down(Application $app, Request $request, $id)
-    {
-        $TargetClassName = $app['eccube.repository.class_name']->find($id);
-        if (!$TargetClassName) {
-            throw new NotFoundHttpException();
-        }
-
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_class_name', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.class_name']->down($TargetClassName);
-            }
-        }
-
-        if ($status === true) {
-            $app->addSuccess('admin.class_name.down.complete', 'admin');
-        } else {
-            $app->addError('admin.class_name.down.error', 'admin');
-        }
-
-        return $app->redirect($app->url('admin_product_class_name'));
-    }
-
     public function delete(Application $app, Request $request, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetClassName = $app['eccube.repository.class_name']->find($id);
         if (!$TargetClassName) {
-            throw new NotFoundHttpException();
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_product_class_name'));
         }
 
-        $form = $app['form.factory']
-            ->createNamedBuilder('admin_class_name', 'form', null, array(
-                'allow_extra_fields' => true,
-            ))
-            ->getForm();
-
-        $status = false;
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $status = $app['eccube.repository.class_name']->delete($TargetClassName);
-            }
-        }
+        $status = $app['eccube.repository.class_name']->delete($TargetClassName);
 
         if ($status === true) {
             $app->addSuccess('admin.class_name.delete.complete', 'admin');

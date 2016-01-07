@@ -35,9 +35,9 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class BlockRepository extends EntityRepository
 {
-    private $app;
+    protected $app;
 
-    public function setApp($app)
+    public function setApplication($app)
     {
         $this->app = $app;
     }
@@ -64,6 +64,9 @@ class BlockRepository extends EntityRepository
         return $Block;
     }
 
+    /**
+     * @deprecated since 3.0.0, to be removed in 3.1
+     */
     private function getNewBlockId($DeviceType)
     {
 
@@ -80,7 +83,7 @@ class BlockRepository extends EntityRepository
     /**
      * ブロックの情報を取得.
      *
-     * @param  integer $block_id       ブロックID
+     * @param  integer $block_id ブロックID
      * @param  \Eccube\Entity\Master\DeviceType $DeviceType
      * @return array
      */
@@ -105,8 +108,7 @@ class BlockRepository extends EntityRepository
         $qb = $this->createQueryBuilder('b')
             ->orderBy('b.id', 'DESC')
             ->where('b.DeviceType = :DeviceType')
-            ->setParameter('DeviceType', $DeviceType)
-        ;
+            ->setParameter('DeviceType', $DeviceType);
 
         $Blocks = $qb
             ->getQuery()
@@ -122,10 +124,11 @@ class BlockRepository extends EntityRepository
      * $deviceTypeId は必須. デフォルト値は DEVICE_TYPE_PC.
      *
      * @access public
-     * @param  DeviceType  $DeviceType 端末種別ID
-     * @param  string                            $where 追加の検索条件
-     * @param  string[]                          $parameters 追加の検索パラメーター
+     * @param  DeviceType $DeviceType 端末種別ID
+     * @param  string $where 追加の検索条件
+     * @param  string[] $parameters 追加の検索パラメーター
      * @return array                             ページ属性の配列
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getPageList(DeviceType $DeviceType, $where = null, $parameters = array())
     {
@@ -156,6 +159,8 @@ class BlockRepository extends EntityRepository
      *
      * @param  boolean $isUser
      * @return string
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getWriteTemplatePath($isUser = false)
     {

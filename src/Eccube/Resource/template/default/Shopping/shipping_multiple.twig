@@ -30,18 +30,54 @@ $(function() {
         var item = $('#item' + idx);
         var row = $('#item' + idx + '-0');
         var addrow = $(row).clone();
-        var length = $('.item'+idx).length;
-        $(addrow).attr('id', 'item' + idx + '-' + length);
 
-        $(addrow).find('select').each(function() {
-            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + length + '][customer_address]');
+        // 行のID設定
+        var i = 0;
+        $('#item' + idx).find('.shipping_item').each(function() {
+            $(this).attr('id', 'item' + idx + '-' + i);
+            i++;
         });
-        $(addrow).find('input').each(function() {
-            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + length + '][quantity]');
+        $(addrow).attr('id', 'item' + idx + '-' + i);
+
+        // お届け先設定
+        i = 0;
+        $('#item' + idx).find('select').each(function() {
+            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
+            i++;
         });
+        $(addrow).find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
+
+        // 数量設定
+        i = 0;
+        $('#item' + idx).find('input').each(function() {
+            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
+            i++;
+        });
+        $(addrow).find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
+
+        // 削除ボタン設定
+        i = 0;
+        $('#item' + idx).find('button').each(function() {
+            $(this).attr('data-itemidx', idx + '-' + i);
+            $(this).data('itemidx', idx + '-' + i);
+            if (i != 0) {
+                // 1行目以外の削除ボタンを表示
+                $(this).removeAttr('style');
+            }
+            i++;
+        });
+        $(addrow).find('button').attr('data-itemidx', idx + '-' + i);
+        $(addrow).find('button').data('itemidx', idx + '-' + i);
+        $(addrow).find('button').removeAttr('style');
 
         $(item).append($(addrow));
     });
+
+    $(document).on('click', '.delete', function() {
+        var data = $(this).data();
+        $('#item' + data.itemidx).remove();
+    });
+
 });
 </script>
 {% endblock javascript %}
@@ -102,27 +138,26 @@ $(function() {
                             </div>
                         </div><!--/cart_item-->
 
-                        {% if itemvalue > 1 %}
-                            <div id="item{{ idx }}">
-                                {% for shipping in form.shipping_multiple[idx].shipping %}
-                                    <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }}">
-                                        <div class="form-inline form-group">
-                                            <label>お届け先</label>
-                                            {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
-                                            {{ form_errors(shipping.customer_address) }}
-                                            <label>数量</label>
-                                            {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
-                                            {{ form_errors(shipping.quantity) }}
-                                        </div>
+                        <div id="item{{ idx }}">
+                            {% for shipping in form.shipping_multiple[idx].shipping %}
+                                <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }} form-inline" style="margin-bottom: 5px;">
+                                    <div class="form-group">
+                                        <label>お届け先</label>
+                                        {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
+                                        {{ form_errors(shipping.customer_address) }}
                                     </div>
-                                {% endfor %}
-                            </div>
-                            <p>
-                                <button type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
-                            </p>
-                        {% else %}
-                            数量が1のためお届け先の追加はできません。
-                        {% endif %}
+                                    <div class="form-group">
+                                        <label>数量</label>
+                                        {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
+                                        {{ form_errors(shipping.quantity) }}
+                                    </div>
+                                    <button type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">削除</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <p>
+                            <button type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
+                        </p>
                     {% endfor %}
                     <div class="row no-padding">
                         <div class="btn_group col-sm-offset-4 col-sm-4">

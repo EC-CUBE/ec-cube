@@ -104,7 +104,14 @@ class TaxRuleController extends AbstractController
      */
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $TargetTaxRule = $app['eccube.repository.tax_rule']->find($id);
+        if (!$TargetTaxRule) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_setting_shop_tax'));
+        }
+
         if (!$TargetTaxRule->isDefaultTaxRule()) {
             $app['eccube.repository.tax_rule']->delete($TargetTaxRule);
             $app->addSuccess('admin.shop.tax.delete.complete', 'admin');

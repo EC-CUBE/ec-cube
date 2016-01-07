@@ -65,10 +65,12 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'fax03' => '6789',
         ),
         'email' => 'default@example.com',
-        'discount' => '0',
-        'delivery_fee_total' => '0',
-        'charge' => '0',
+        'discount' => '1',
+        'delivery_fee_total' => '1',
+        'charge' => '1',
         'Payment' => '1', // dtb_payment?
+        'OrderDetails' => array(),
+        'Shippings' => array(),
     );
 
     public function setUp()
@@ -84,13 +86,11 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ->getForm();
     }
 
-    public function testValidData()
+    public function testInValidData()
     {
         $this->app['request'] = new Request();
         $this->form->submit($this->formData);
-        $this->assertTrue($this->form->isValid());
-
-        //var_dump($this->form->getErrorsAsString());die;
+        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidTel_Blank()
@@ -99,6 +99,87 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['tel']['tel01'] = '';
         $this->formData['tel']['tel02'] = '';
         $this->formData['tel']['tel03'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidDiscount_OverMaxLength()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['discount'] = '12345678910'; //Max 9
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidDiscount_NotNumeric()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['discount'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidDiscount_HasMinus()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['discount'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidDeliveryFeeTotal_OverMaxLength()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['delivery_fee_total'] = '12345678910'; //Max 9
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidDeliveryFeeTotal_NotNumeric()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['delivery_fee_total'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidDeliveryFeeTotal_HasMinus()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['delivery_fee_total'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidCharge_OverMaxLength()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['charge'] = '12345678910'; //Max 9
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidCharge_NotNumeric()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['charge'] = 'abcde';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidCharge_HasMinus()
+    {
+        $this->app['request'] = new Request();
+        $this->formData['charge'] = '-12345';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

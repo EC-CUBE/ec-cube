@@ -26,14 +26,29 @@ namespace Eccube\Tests\Service;
 use Eccube\Application;
 use Symfony\Component\Yaml\Yaml;
 use Eccube\Common\Constant;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
 
 class PluginServiceTest extends AbstractServiceTestCase
 {
     protected $app;
 
-    public function setUp()
+    public function tearDown()
     {
-        parent::setUp();
+        $dirs = array();
+        $finder = new Finder();
+        $iterator = $finder
+            ->in($this->app['config']['plugin_realdir'])
+            ->name('dummy*')
+            ->directories();
+        foreach ($iterator as $dir) {
+            $dirs[] = $dir->getPathName();
+        }
+
+        foreach ($dirs as $dir) {
+            $this->deleteFile($dir);
+        }
+        parent::tearDown();
     }
 
     /*
@@ -42,7 +57,7 @@ class PluginServiceTest extends AbstractServiceTestCase
        * 展開した直下のディレクトリにconfig.ymlがあり、正しいymlファイルである
        * config.ymlの必須要素が規定の文字数、文字種で定義されている
        * event.ymlが存在する場合、正しいymlである
- 
+
      */
 
     // テスト用のダミープラグインを配置する
@@ -53,18 +68,16 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
         return $t;
     }
+
     public function deleteFile($path)
     {
-        $f=new Filesystem();
+        $f = new Filesystem();
         return $f->remove($path);
     }
-
 
     // 必要最小限のファイルのプラグインのインストールとアンインストールを検証
     public function testInstallPluginMinimum()
     {
-        #self::markTestSkipped();
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -77,7 +90,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
@@ -102,12 +115,10 @@ class PluginServiceTest extends AbstractServiceTestCase
     // 必須ファイルがないプラグインがインストール出来ないこと
     public function testInstallPluginEmptyError()
     {
-        #self::markTestSkipped();
-
         $this->setExpectedException(
           '\Eccube\Exception\PluginException', 'config.yml not found or syntax error'
         );
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
 
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
@@ -118,17 +129,16 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar->addFromString('dummy','dummy');
         // インストールできるか
         $service->install($tmpfile);
-        
+
     }
 
     // config.ymlのフォーマット確認
     public function testConfigYmlFormat()
     {
-#        self::markTestSkipped();
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
         $tmpname='dummy'.mt_rand();
         $tmpfile=sys_get_temp_dir().'/dummy'.mt_rand();
-        
+
 
         // 必須項目のチェック
         $config=array();
@@ -139,7 +149,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ } 
+        }catch(\Eccube\Exception\PluginException $e){ }
 
         $config=array();
         $config['name'] = $tmpname;
@@ -170,7 +180,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ } 
+        }catch(\Eccube\Exception\PluginException $e){ }
 
         $config=array();
         $config['name'] = $tmpname;
@@ -208,8 +218,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     // config.ymlに異常な項目がある場合
     public function testnstallPluginMalformedConfigError()
     {
-        #self::markTestSkipped();
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
         $tar = new \PharData($tmpfile);
@@ -231,8 +240,6 @@ class PluginServiceTest extends AbstractServiceTestCase
     // イベント定義を含むプラグインのインストールとアンインストールを検証
     public function testInstallPluginWithEvent()
     {
-        #self::markTestSkipped();
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -289,14 +296,14 @@ EOD;
         $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
         $tar->addFromString('event.yml',Yaml::dump($event));
 
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
         $rep= $this->app['eccube.repository.plugin'];
 
         $plugin=$rep->findOneBy(array('code'=>$tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
-        $this->app['orm.em']->detach($plugin); 
+        $this->app['orm.em']->detach($plugin);
 
 
         // インストールした内容は正しいか
@@ -365,7 +372,7 @@ EOD;
         $this->assertEquals($plugin->getVersion(),$tmpname."u");
 
         // イベントハンドラが新しいevent.ymlと整合しているか(追加、削除)
-        $this->app['orm.em']->detach($plugin); 
+        $this->app['orm.em']->detach($plugin);
         $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
 
@@ -385,7 +392,7 @@ EOD;
         }
         // 追加されたファイルが配置されているか
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/update_dummy");
- 
+
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
         // ちゃんとファイルが消えているか
@@ -395,51 +402,7 @@ EOD;
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
     }
 
-
-     // インストーラが例外を上げた場合ロールバックできるか
-    public function testInstallPluginWithBrokenManager()
-    {
-        // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
-        $config['name'] = $tmpname;
-        $config['code'] = $tmpname;
-        $config['version'] = $tmpname;
-
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
-
-        $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml',Yaml::dump($config));
-        $dummyManager=<<<'EOD'
-<?php
-namespace Plugin\@@@@ ;
-
-use Eccube\Plugin\AbstractPluginManager;
-class PluginManager extends AbstractPluginManager
-{
-    public function install($plugin,$app)
-    {
-        throw new \Exception('hoge',1);
-    }
-
-}
-
-EOD;
-        $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
-        $tar->addFromString("PluginManager.php" , $dummyManager);
-        $service = $this->app['eccube.service.plugin']; 
-        try{
-            $this->assertTrue($service->install($tmpfile));
-            $this->fail("BrokenManager dont throw exception.");
-        }catch(\Exception $e){ }
-
-        // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
-        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
-        $this->assertFalse((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
-    }
-
-     // インストーラが例外を上げた場合ロールバックできるか
+    // インストーラが例外を上げた場合ロールバックできるか
     public function testInstallPluginWithBrokenManagerAfterInstall()
     {
         // インストールするプラグインを作成する
@@ -462,7 +425,7 @@ use Eccube\Plugin\AbstractPluginManager;
 class PluginManager extends AbstractPluginManager
 {
     public function install($plugin,$app)
-    {    
+    {
         echo "";
     }
     public function uninstall($config,$app)
@@ -487,7 +450,7 @@ class PluginManager extends AbstractPluginManager
 EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
 
         // 正しくインストールでき、enableのハンドラが呼ばれないことを確認
         $this->assertTrue($service->install($tmpfile));
@@ -496,18 +459,15 @@ EOD;
         try{
             $this->assertTrue($service->enable($plugin));// enableにしようとするが、例外発生
         }catch(\Exception $e){ }
-        $this->app['orm.em']->detach($plugin); 
+        $this->app['orm.em']->detach($plugin);
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable()); // プラグインがdisableのままになっていることを確認
 
     }
 
-     // インストーラを含むプラグインが正しくインストールできるか 
+    // インストーラを含むプラグインが正しくインストールできるか
     public function testInstallPluginWithManager()
     {
-        #self::markTestSkipped();
-
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -556,7 +516,7 @@ class PluginManager extends AbstractPluginManager
 EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
@@ -587,8 +547,6 @@ EOD;
     // const定義を含むpluginのインストール
     public function testInstallPluginWithConst()
     {
-        #self::markTestSkipped();
-
         // インストールするプラグインを作成する
         $tmpname="dummy".sha1(mt_rand());
         $config=array();
@@ -603,7 +561,7 @@ EOD;
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $service = $this->app['eccube.service.plugin']; 
+        $service = $this->app['eccube.service.plugin'];
 
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
@@ -611,15 +569,19 @@ EOD;
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
 
         // インストール後disable状態でもconstがロードされているか
-        $app = new Application();
-        $app->initialize();
-        $app->initializePlugin();
-        $app->boot();
-        $this->assertEquals('A',$app['config'][$tmpname]['const']['A']);
-        $this->assertEquals('1',$app['config'][$tmpname]['const']['C']);
+        $config = $this->app['config'];
+        $config[$tmpname]['const']['A'] = null;
+        $config[$tmpname]['const']['C'] = null;
+        // const が存在しないのを確認後, 再ロード
+        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['A']));
+        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['C']));
+
+        $this->app->initializePlugin();
+        $this->app->boot();
+        $this->assertEquals('A',$this->app['config'][$tmpname]['const']['A']);
+        $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
 
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
     }
-
 }

@@ -60,7 +60,7 @@ $(function() {
                         {{ form_row(form.shop_name) }}
                         {{ form_row(form.shop_kana) }}
                         {{ form_row(form.shop_name_eng) }}
-                        
+
                         {# 住所：郵便番号 #}
                         <div class="form-group {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">
                             {{ form_label(form.address) }}
@@ -112,7 +112,7 @@ $(function() {
                                 {{ form_errors(form.fax.fax03) }}
                             </div>
                         </div>
-                        
+
                         {{ form_row(form.business_hour) }}
                         {{ form_row(form.email01) }}
                         {{ form_row(form.email02) }}
@@ -146,9 +146,7 @@ $(function() {
 
                         {{ form_row(form.option_customer_activate) }}
                         {{ form_row(form.option_mypage_order_status_display) }}
-                        {# お気に入り商品設定
                         {{ form_row(form.option_favorite_product) }}
-                        #}
                         {{ form_row(form.option_remember_me) }}
 
                     </div><!-- /.box-body -->
@@ -178,7 +176,7 @@ $(function() {
                 </div><!-- /.box -->
 
             </div>
-            
+
             <div class="col-md-3" id="aside_column">
                 <div class="col_inner">
                     <div class="box no-header">

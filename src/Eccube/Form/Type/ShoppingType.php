@@ -40,6 +40,7 @@ class ShoppingType extends AbstractType
 
         $payments = $options['payments'];
         $payment = $options['payment'];
+        $message = $options['message'];
 
         $builder
             ->add('payment', 'entity', array(
@@ -54,6 +55,7 @@ class ShoppingType extends AbstractType
             ))
             ->add('message', 'textarea', array(
                 'required' => false,
+                'data' => $message,
                 'constraints' => array(
                     new Assert\Length(array('min' => 0, 'max' => 3000))),
             ))
@@ -66,6 +68,7 @@ class ShoppingType extends AbstractType
         $resolver->setDefaults(array(
             'payments' => array(),
             'payment' => null,
+            'message' => null,
         ));
     }
 

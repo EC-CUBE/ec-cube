@@ -33,7 +33,6 @@ class RepeatedPasswordType extends AbstractType
     {
         $resolver->setDefaults(array(
             'type' => 'text', // type password だと入力欄を空にされてしまうので、widgetで対応
-            'widget' => 'password',
             'required' => true,
             'error_bubbling' => false,
             'invalid_message' => 'form.member.password.invalid',

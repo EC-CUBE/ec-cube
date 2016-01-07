@@ -42,12 +42,12 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../autoload.php';
 
 Debug::enable();
 
 // load configs.
-$app = new Eccube\Application();
+$app = \Eccube\Application::getInstance();
 
 // debug enable.
 $app['debug'] = true;
@@ -70,6 +70,8 @@ $app['config'] = $app->share(function () use ($conf) {
 
     return array_replace_recursive($conf, $confarray);
 });
+// config_dev.ymlにmailが設定されていた場合、config_dev.ymlの設定内容を反映
+$app['swiftmailer.options'] = $app['config']['mail'];
 
 // Mail
 if (isset($app['config']['delivery_address'])) {
@@ -81,6 +83,10 @@ $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
     'profiler.cache_dir' => __DIR__.'/../app/cache/profiler',
     'profiler.mount_prefix' => '/_profiler',
 ));
+
+// Debug出力
+$app->register(new \Eccube\ServiceProvider\DebugServiceProvider());
+
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
 
 $app->run();

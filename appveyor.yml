@@ -2,8 +2,11 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
 # Set build version format here instead of in the admin panel.
-version: 3.0.0-dev-{build}
+version: 3.0.x-{build}
 
+cache:
+  - '%LOCALAPPDATA%\Composer\files'
+  
 # Fix line endings in Windows. (runs before repo cloning)
 init:
   - git config --global core.autocrlf input
@@ -53,7 +56,9 @@ install:
   - echo mbstring.http_input = UTF-8 >> C:\tools\php\php.ini
   - echo mbstring.http_output = pass >> C:\tools\php\php.ini
   - echo mbstring.internal_encoding = UTF-8 >> C:\tools\php\php.ini
-  - echo memory_limit = 256M >> C:\tools\php\php.ini
+  - echo memory_limit = 512M >> C:\tools\php\php.ini
+  - php -r "readfile('http://getcomposer.org/installer');" | php
+  - php composer.phar install --dev --no-interaction -o
 
 # cache:
   # - C:\ProgramData\chocolatey\bin -> appveyor.yml
@@ -63,7 +68,7 @@ install:
 build: off
 
 before_test:
-  - bash eccube_install.sh mysql
+  - bash eccube_install.sh mysql none
 
 test_script:
   - vendor\bin\phpunit.bat

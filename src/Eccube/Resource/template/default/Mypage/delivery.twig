@@ -26,21 +26,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% set body_class = 'mypage' %}
 
 {% block main %}
-    <h1 class="page-heading">マイページ</h1>
+    <h1 class="page-heading">マイページ/お届け先編集</h1>
     <div class="container-fluid">
 
         {{ include('Mypage/navi.twig') }}
 
-        <h2 class="heading01">お届け先編集</h2>
         <div class="row">
             <div class="col-md-12">
                 <p class="intro"><strong>{{ Customer.CustomerAddresses|length }}件</strong>のお届け先があります。</p>
                     <div id="deliveradd_select" class="row">
                         <div class="col-sm-10 col-sm-offset-1">
                             <p>
+                            {% if Customer.CustomerAddresses|length < app.config.deliv_addr_max %}
                                 <a href="{{ url('mypage_delivery_new') }}">
                                     <button class="btn btn-default btn-sm">新規お届け先を追加する</button>
                                 </a>
+                            {% else %}
+                                <span class="text-danger">お届け先登録の上限の{{ app.config.deliv_addr_max }}件に達しています。お届け先を入力したい場合は、削除か変更を行ってください</span>
+                            {% endif %}
                             </p>
 
                             {% if Customer.CustomerAddresses|length > 0 %}
@@ -50,9 +53,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% for CustomerAddress in Customer.CustomerAddresses %}
                                         <div class="addr_box tr">
                                             <div class="icon_edit td">
-                                                <a href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}">
+                                            {% if Customer.CustomerAddresses|length != 1 %}
+                                                <a href="{{ url('mypage_delivery_delete', { id : CustomerAddress.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                     <svg class="cb cb-close"><use xlink:href="#cb-close" /></svg>
                                                 </a>
+                                            {% endif %}
                                             </div>
                                             <div class="column is-edit td">
                                                 <label for="address01">

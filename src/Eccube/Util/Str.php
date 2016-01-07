@@ -23,6 +23,8 @@
 
 namespace Eccube\Util;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class Str
 {
 
@@ -144,6 +146,7 @@ class Str
 
     /**
      * 指定した文字列以上ある場合、「...」を付加する
+     * lengthに7を指定すると、「1234567890」は「1234567...」と「...」を付与して出力される
      *
      * @param string $value
      * @param int $length
@@ -161,6 +164,7 @@ class Str
 
 
     /**
+     * 現在からの経過時間を書式化する.
      *
      * @param $date
      * @return string
@@ -197,20 +201,82 @@ class Str
     }
 
     /**
-     * @param $value
-     * @return bool
+     * 変数が空白かどうかをチェックする.
+     *
+     * 引数 $value が空白かどうかをチェックする. 空白の場合は true.
+     * 以下の文字は空白と判断する.
+     * - ' ' (ASCII 32 (0x20)), 通常の空白
+     * - "\t" (ASCII 9 (0x09)), タブ
+     * - "\n" (ASCII 10 (0x0A)), リターン
+     * - "\r" (ASCII 13 (0x0D)), 改行
+     * - "\0" (ASCII 0 (0x00)), NULバイト
+     * - "\x0B" (ASCII 11 (0x0B)), 垂直タブ
+     *
+     * 引数 $value がオブジェクト型、配列の場合は非推奨とし、 E_USER_DEPRECATED をスローする.
+     * EC-CUBE2系からの互換性、ビギナー層を配慮し、以下のような実装とする.
+     * 引数 $value が配列の場合は, 空の配列の場合 true を返す.
+     * 引数 $value が ArrayCollection::isEmpty() == true の場合 true を返す.
+     * 引数 $value が上記以外のオブジェクト型の場合は false を返す.
+     *
+     * 引数 $greedy が true の場合は, 全角スペース, ネストした空の配列も
+     * 空白と判断する.
+     *
+     * @param string $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
+     * @param boolean $greedy '貧欲'にチェックを行う場合 true, デフォルト false
+     * @return boolean $value が空白と判断された場合 true
      */
-    public static function isBlank($value)
+    public static function isBlank($value, $greedy = false)
     {
-        if (!is_string($value)) {
+        $deprecated = '\Eccube\Util\Str::isBlank() の第一引数は文字型、数値を使用してください';
+        // テストカバレッジを上げるために return の前で trigger_error をスローしている
+        if (is_object($value)) {
+            if ($value instanceof ArrayCollection) {
+                if ($value->isEmpty()) {
+                    trigger_error($deprecated, E_USER_DEPRECATED);
+
+                    return true;
+                } else {
+                    trigger_error($deprecated, E_USER_DEPRECATED);
+
+                    return false;
+                }
+            }
+            trigger_error($deprecated, E_USER_DEPRECATED);
             return false;
         }
+        if (is_array($value)) {
+            if ($greedy) {
+                if (empty($value)) {
+                    trigger_error($deprecated, E_USER_DEPRECATED);
 
-        if ($value == null || $value == '') {
-            return true;
+                    return true;
+                }
+                $array_result = true;
+                foreach ($value as $in) {
+                    $array_result = self::isBlank($in, $greedy);
+                    if (!$array_result) {
+                        trigger_error($deprecated, E_USER_DEPRECATED);
+
+                        return false;
+                    }
+                }
+                trigger_error($deprecated, E_USER_DEPRECATED);
+
+                return $array_result;
+            } else {
+                trigger_error($deprecated, E_USER_DEPRECATED);
+
+                return empty($value);
+            }
         }
 
-        if (trim(mb_convert_kana($value, 's', 'UTF-8')) !== '') {
+        if ($greedy) {
+            $value = preg_replace('/　/', '', $value);
+        }
+
+        $value = trim($value);
+        if (strlen($value) > 0) {
+
             return false;
         }
 
@@ -221,11 +287,10 @@ class Str
      * @param $value
      * @return bool
      */
-    public static function isNotBlank($value)
+    public static function isNotBlank($value, $greedy = false)
     {
-        return !self::isBlank($value);
+        return !self::isBlank($value, $greedy);
     }
-
 
     /**
      * 両端にある全角スペース、半角スペースを取り除く
@@ -235,14 +300,15 @@ class Str
      */
     public static function trimAll($value)
     {
+        if ($value === '') {
+            return '';
+        }
+        if ($value === 0) {
+            return 0;
+        }
         if ($value == null) {
             return null;
         }
-        if ($value == '') {
-            return '';
-        }
-
-        return trim(mb_convert_kana($value, 's', 'UTF-8'));
+        return preg_replace('/(^\s+)|(\s+$)/u', '', $value);
     }
-
 }

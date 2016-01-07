@@ -27,6 +27,7 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DeliveryController extends AbstractController
 {
@@ -55,6 +56,16 @@ class DeliveryController extends AbstractController
     public function edit(Application $app, Request $request, $id = null)
     {
         $Customer = $app['user'];
+
+        // 配送先住所最大値判定
+        // $idが存在する際は、追加処理ではなく、編集の処理ため本ロジックスキップ
+        if (is_null($id)) {
+            $addressCurrNum = count($Customer->getCustomerAddresses());
+            $addressMax = $app['config']['deliv_addr_max'];
+            if ($addressCurrNum >= $addressMax) {
+                throw new NotFoundHttpException();
+            }
+        }
 
         $CustomerAddress = $app['eccube.repository.customer_address']->findOrCreateByCustomerAndId($Customer, $id);
 
@@ -99,6 +110,8 @@ class DeliveryController extends AbstractController
 
     public function delete(Application $app, $id)
     {
+        $this->isTokenValid($app);
+
         $Customer = $app['user'];
 
         // 別のお届け先削除

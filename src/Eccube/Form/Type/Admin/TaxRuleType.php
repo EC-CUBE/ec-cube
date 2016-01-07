@@ -52,7 +52,11 @@ class TaxRuleType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Range(array('min' => 0, 'max' => 100))
+                    new Assert\Range(array('min' => 0, 'max' => 100)),
+                    new Assert\Regex(array(
+                        'pattern' => "/^\d+(\.\d+)?$/u",
+                        'message' => 'form.type.float.invalid'
+                    )),
                 ),
             ))
             ->add('calc_rule', 'calc_rule', array(

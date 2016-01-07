@@ -38,9 +38,9 @@ class TaxRuleRepository extends EntityRepository
 {
     private $rules = array();
 
-    private $app;
+    protected $app;
 
-    public function setApp($app)
+    public function setApplication($app)
     {
         $this->app = $app;
     }
@@ -97,30 +97,30 @@ class TaxRuleRepository extends EntityRepository
         } elseif ($Product) {
             $productId = $Product;
         } else {
-            $productId = '';
+            $productId = '0';
         }
         if ($ProductClass instanceof \Eccube\Entity\ProductClass) {
             $productClassId = $ProductClass->getId();
         } elseif ($ProductClass) {
             $productClassId = $ProductClass;
         } else {
-            $productClassId = '';
+            $productClassId = '0';
         }
         if ($Pref instanceof \Eccube\Entity\Master\Pref) {
             $prefId = $Pref->getId();
         } elseif ($Pref) {
             $prefId = $Pref;
         } else {
-            $prefId = '';
+            $prefId = '0';
         }
         if ($Country instanceof \Eccube\Entity\Master\Country) {
             $countryId = $Country->getId();
         } elseif ($Country) {
             $countryId = $Country;
         } else {
-            $countryId = '';
+            $countryId = '0';
         }
-        $cacheKey = $productId . ':' . $productClassId . ':' . $prefId . ':' . $countryId;
+        $cacheKey = $productId.':'.$productClassId.':'.$prefId.':'.$countryId;
 
         // すでに取得している場合はキャッシュから
         if (isset($this->rules[$cacheKey])) {
@@ -129,8 +129,7 @@ class TaxRuleRepository extends EntityRepository
 
         $parameters = array();
         $qb = $this->createQueryBuilder('t')
-            ->where('t.apply_date < CURRENT_TIMESTAMP()')
-            ->orderBy('t.apply_date', 'DESC');
+            ->where('t.apply_date < CURRENT_TIMESTAMP()');
 
         // Pref
         if ($Pref) {
@@ -148,8 +147,14 @@ class TaxRuleRepository extends EntityRepository
             $qb->andWhere('t.Country IS NULL');
         }
 
+        /*
+         * Product, ProductClass が persist される前に TaxRuleEventSubscriber によってアクセスされる
+         * 場合があるため、ID の存在もチェックする.
+         * https://github.com/EC-CUBE/ec-cube/issues/677
+         */
+
         // Product
-        if ($Product) {
+        if ($Product && $productId > 0) {
             $qb->andWhere('t.Product IS NULL OR t.Product = :Product');
             $parameters['Product'] = $Product;
         } else {
@@ -157,16 +162,17 @@ class TaxRuleRepository extends EntityRepository
         }
 
         // ProductClass
-        if ($ProductClass) {
+        if ($ProductClass && $productClassId > 0) {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
             $parameters['ProductClass'] = $ProductClass;
         } else {
             $qb->andWhere('t.ProductClass IS NULL');
         }
 
-        $TaxRules = (array) $qb
-            ->getQuery()
+        $TaxRules = $qb
             ->setParameters($parameters)
+            ->orderBy('t.apply_date', 'DESC') // 実際は usort() でソートする
+            ->getQuery()
             ->getResult();
 
         // 地域設定を優先するが、システムパラメーターなどに設定を持っていくか
@@ -174,13 +180,15 @@ class TaxRuleRepository extends EntityRepository
         $priorityKeys = explode(',', $this->app['config']['tax_rule_priority']);
         $priorityKeys = array();
         foreach (explode(',', $this->app['config']['tax_rule_priority']) as $key) {
-            $priorityKeys[] = preg_replace('/_id\z/', '', $key);
+            $priorityKeys[] = str_replace('_', '', preg_replace('/_id\z/', '', $key));
         }
 
         foreach ($TaxRules as $TaxRule) {
             $rank = 0;
             foreach ($priorityKeys as $index => $key) {
-                if ($TaxRule[$key]) {
+                $arrayProperties = array_change_key_case($TaxRule->toArray());
+                if ($arrayProperties[$key]) {
+
                     // 配列の数値添字を重みとして利用する
                     $rank += 1 << ($index + 1);
                 }
@@ -188,11 +196,12 @@ class TaxRuleRepository extends EntityRepository
             $TaxRule->setRank($rank);
         }
 
-        usort($TaxRules, function ($a, $b) {
-            return strcmp($a->getRank(), $b->getRank());
+        // 適用日降順, rank 降順にソートする
+        usort($TaxRules, function($a, $b) {
+            return $a->compareTo($b);
         });
 
-        if ($TaxRules) {
+        if (!empty($TaxRules)) {
             $this->rules[$cacheKey] = $TaxRules[0];
 
             return $TaxRules[0];
@@ -267,5 +276,16 @@ class TaxRuleRepository extends EntityRepository
         $em = $this->getEntityManager();
         $em->persist($TaxRule);
         $em->flush();
+    }
+
+    /**
+     * TaxRule のキャッシュをクリアする.
+     *
+     * getByRule() をコールすると、結果をキャッシュし、2回目以降はデータベースへアクセスしない.
+     * このメソッドをコールすると、キャッシュをクリアし、再度データベースを参照して結果を取得する.
+     */
+    public function clearCache()
+    {
+        $this->rules = array();
     }
 }

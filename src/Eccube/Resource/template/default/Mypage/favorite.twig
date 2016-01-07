@@ -21,68 +21,57 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% extends 'default_frame.twig' %}
 
+{% set mypageno = 'favorite' %}
+
 {% set body_class = 'mypage' %}
 
 {% block main %}
-<div id="mypagecolumn">
-    <h2 class="title">{{ title }}</h2>
-    {% include 'Mypage/navi.twig' %}
-    <div id="mycontents_area">
-        <form name="form1" id="form1" method="post" action="{{ path('mypage_favorite')}}">
-            <input type="hidden" name="mode" value="" />
-            <input type="hidden" name="pageno" value="{{ app.request.get('pageno') }}" />
-            <input type="hidden" name="product_id" value="" />
-            <h3>{{ subtitle }}</h3>
+    <h1 class="page-heading">マイページ/お気に入り一覧</h1>
+    <div class="container-fluid">
 
+        {% include 'Mypage/navi.twig' %}
+
+        <div class="row">
+            <div class="col-md-12">
             {% if pagination.totalItemCount > 0 %}
-                <p><span class="attention">{{ pagination.totalItemCount }}件</span>のお気に入りがあります。</p>
-                <div class="paging">
-                    <!--▼ページナビ-->
-                    {% include "pagination.twig" with {'pages': pagination.paginationData} %}
-                    <!--▲ページナビ-->
+                <p class="intro"><strong>{{ pagination.totalItemCount }}件</strong>のお気に入りがあります。</p>
+                <div id="item_list">
+                    <div class="row no-padding">
+                        {% for Product in pagination %}
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="product_item">
+                                <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                                    <div class="item_photo">
+                                        <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}" alt="{{ Product.name }}"/>
+                                    </div>
+                                </a>
+                                <a href="{{ url('mypage_favorite_delete', { id : Product.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete">
+                                    <button type="button" class="btn_circle"><svg class="cb cb-close"><use xlink:href="#cb-close"></use></svg></button>
+                                </a>
+                                <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                                    <dl>
+                                        <dt class="item_name" style="height: 22px;"> {{ Product.name }}</dt>
+                                        <dd class="item_price">
+                                            {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
+                                                {{ Product.price02_inc_tax_min|price }}
+                                            {% else %}
+                                                {{ Product.price02_inc_tax_min|price }}～{{ Product.price02_inc_tax_max|price }}
+                                            {% endif %}
+                                        </dd>
+                                    </dl>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-
-                <table summary="お気に入り">
-                    <col width="15%" />
-                    <col width="20%" />
-                    <col width="45%" />
-                    <col width="20%" />
-                    <tr>
-                        <th class="alignC">削除</th>
-                        <th class="alignC">商品画像</th>
-                        <th class="alignC">商品名</th>
-                        <th class="alignC">{{ 'sale_price_title' | trans }}(税込)</th>
-                    </tr>
-                    {% for Product in pagination %}
-                        <tr>
-                            <td class="alignC">
-                                <a href="javascript:eccube.setModeAndSubmit('delete_favorite','product_id','{{ Product.id |escape('js')}}');">
-                                    削除</a>
-                            </td>
-                            <td class="alignC">
-                                <a href="{{ path('product_detail', {'productId': Product.id}) }}">
-                                    <img src="{{ app.config.image_path }}{{ Product.main_list_image|no_image_product }}" style="max-width: 65px;max-height: 65px;" alt="{{ Product.name }}" />
-                            </td>
-                            <td>
-                                <a href="{{ path('product_detail', {'productId': Product.id}) }}">
-                                    {{ Product.name }}</a>
-                            </td>
-                            <td class="alignR sale_price">
-                                <span class="price">
-                                    {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
-                                        {{ Product.price02_inc_tax_min|number_format }}
-                                    {% else %}
-                                        {{ Product.price02_inc_tax_min|number_format }}～{{ Product.price02_inc_tax_max|number_format }}
-                                    {% endif %}円</span>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-                <br />
+                <div class="paging">
+                    {% include "pagination.twig" with {'pages': pagination.paginationData} %}
+                </div>
             {% else %}
-                <p>お気に入りが登録されておりません。</p>
+                <p class="intro">お気に入りが登録されていません。</p>
             {% endif %}
-        </form>
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}

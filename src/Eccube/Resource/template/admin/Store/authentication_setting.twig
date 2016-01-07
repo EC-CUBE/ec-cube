@@ -38,13 +38,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h3 class="box-title">認証キー設定</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body form-horizontal">
-                        <div class="form-group">
-                            <label class="col-sm-3 col-lg-2 control-label">認証キー</label>
-                            <div class="col-sm-9 col-lg-10">
-                                {{ form_widget(form.authentication_key) }}
-                                {{ form_errors(form.authentication_key) }}
-                            </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">認証キー</label>
+                        <div class="col-sm-9 col-lg-10">
+                            {{ form_widget(form.authentication_key) }}
+                            {{ form_errors(form.authentication_key) }}
+                            <p>※認証キーは<a target="_blank" href="https://www.ec-cube.net/owners/">EC-CUBEオーナーズストア</a>で取得できます。</p>
                         </div>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->

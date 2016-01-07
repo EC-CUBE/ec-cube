@@ -803,6 +803,7 @@ class Version20150613000000 extends AbstractMigration
         $this->addSql("INSERT INTO dtb_template (template_id, template_code, device_type_id, template_name, create_date, update_date) VALUES (4, 'sphone', 2, 'スマートフォン', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);");
 
         if ($this->connection->getDatabasePlatform()->getName() == "postgresql") {
+            $this->addSql("SELECT setval('dtb_base_info_id_seq', 2);");
             $this->addSql("SELECT setval('dtb_member_member_id_seq', 2);");
             $this->addSql("SELECT setval('dtb_tax_rule_tax_rule_id_seq', 1);");
             $this->addSql("SELECT setval('dtb_block_block_id_seq', 11);");

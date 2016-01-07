@@ -31,24 +31,47 @@ form.contact.contents.help: ご注文に関するお問い合わせには、必�
 form.member.email.invalid: 同じメールアドレスを入力してください。
 form.member.password.invalid: 同じパスワードを入力してください。
 form.type.numeric.invalid: 数字で入力してください。
+form.type.float.invalid : 数字と小数点のみ入力できます。
 form.member.repeated.confirm: 確認のためもう一度入力してください
 form.type.graph.invalid: 半角英数字で入力してください。
 
+form.type.name.firstname.nothasspace: お名前(名)にスペース、タブ、改行は含めないで下さい。
+form.type.name.lastname.nothasspace: お名前(性)にスペース、タブ、改行は含めないで下さい。
+form.type.customer.company.nothasspace: 会社名にスペース、タブ、改行は含めないで下さい。
+
+form.type.admin.nottelstyle: 電話番号は半角数字かハイフンのみを入力してください。。
+form.type.admin.notkanastyle: お名前(フリガナ)はカタカナで入力してください。
+
+form.type.select.notselect: 入力されていません。
+
+form.type.select.selectisfuturedate: 未来の日付は選択出来ません。
+
 cart.over.stock: |-
-    選択された商品の在庫が不足しております。
-    一度に在庫数を超える購入はできません。
+  選択された商品(%product%)の在庫が不足しております。
+  一度に在庫数を超える購入はできません。
 cart.over.sale_limit: |-
-    選択された商品は販売制限しております。
-    一度に販売制限数を超える購入はできません。
+  選択された商品(%product%)は販売制限しております。
+  一度に販売制限数を超える購入はできません。
 cart.zero.stock: |-
-    選択された商品の在庫が不足しております。
-    該当商品をカートから削除しました。
+  選択された商品(%product%)の在庫が不足しております。
+  該当商品をカートから削除しました。
+cart.over.price_limit: 商品を購入できる金額の上限を超えております。数量を調整してください。
 cart.product.type.kind: この商品は同時に購入することはできません。
 cart.product.payment.kind: お支払方法が異なるためこの商品は同時に購入することはできません。
 cart.product.delete:  現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。
-cart.product.not.status: この商品は現在購入することはできません。
+cart.product.not.status: 現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。
+cart.product.not.producttype: |-
+  「%product%」はまだ配送の準備ができておりません。
+  恐れ入りますがお問い合わせページよりお問い合わせください。
 
 shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
+shopping.delivery.not.producttype: |-
+  配送の準備ができていない商品が含まれております。
+  恐れ入りますがお問い合わせページよりお問い合わせください。
+
+front.shopping.order.error: 購入処理でエラーが発生しました。
+front.shopping.stock.error: 選択された商品の在庫が不足しております。該当商品をカートから削除しました。
+front.shopping.system.error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
 
 admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
 
@@ -56,6 +79,7 @@ admin.register.complete: 登録が完了しました。
 admin.register.failed: 登録できませんでした。
 admin.delete.complete: 削除が完了しました。
 admin.delete.failed: 削除できませんでした。
+admin.delete.warning: 既に削除されています。
 admin.rank.move.complete: ランクの移動が完了しました。
 
 admin.order.save.complete: 受注情報を保存しました。
@@ -80,6 +104,7 @@ admin.class_category.save.complete: 分類を保存しました。
 admin.class_category.save.error: 分類を保存できませんでした。
 admin.class_category.delete.complete: 分類を削除しました。
 admin.class_category.delete.error: 分類を削除できませんでした。
+admin.class_category.delete.hasproduct: この分類は商品で使われているので削除できません。
 
 admin.category.up.complete: カテゴリを上へ移動しました。
 admin.category.up.error: カテゴリを上へ移動できませんでした。
@@ -100,6 +125,7 @@ admin.product.csv_import.save.complete: 商品登録CSVファイルをアップ�
 admin.category.csv_import.save.complete: カテゴリ登録CSVファイルをアップロードしました。
 
 admin.customer.save.complete: 会員情報を保存しました。
+admin.customer.save.failed: 会員情報を保存できませんでした。
 admin.customer.delete.complete: 会員情報を削除しました。
 admin.customer.resend.complete: 仮会員登録メールを送信しました。
 
@@ -141,8 +167,12 @@ admin.content.template.delete.complete: テンプレートを削除しました�
 admin.content.template.delete.default.error: デフォルトテンプレートは削除できません。
 admin.content.template.delete.current.error: 現在設定中のテンプレートは削除できません。
 
-admin.sysmte.security.save.complete: セキュリティ設定を保存しました。
-admin.sysmte.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
+admin.content.twig.cache.save.complete: Twigキャッシュをクリアしました。
+
+admin.system.security.save.complete: セキュリティ設定を保存しました。
+admin.system.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
+
+admin.system.authority.save.complete: 権限設定を保存しました。
 
 admin.plugin.enable.complete: プラグインを有効にしました。
 admin.plugin.disable.complete: プラグインを無効にしました。

@@ -71,6 +71,11 @@ $(function(){
             return '<button class="thumbnail">' + $(slider.$slides[i]).find('img').prop('outerHTML') + '</button>';
         }
     });
+
+    $('#favorite').click(function() {
+        $('#mode').val('add_favorite');
+    });
+
 });
 </script>
 
@@ -114,7 +119,7 @@ $(function(){
                 <div class="item_detail">
                     <!--★通常価格★-->
                     {% if Product.hasProductClass -%}
-                        {% if Product.getPrice01Min == Product.getPrice01Max %}
+                        {% if Product.getPrice01Min is not null and Product.getPrice01Min == Product.getPrice01Max %}
                         <p class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
                         {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
                         <p class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> ～ <span class="price01_default">{{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span></p>
@@ -138,11 +143,9 @@ $(function(){
 
                     <!--▼商品コード-->
                     <p class="item_code">商品コード： <span id="item_code_default">
-                        {%- if Product.hasProductClass -%}
-                            {{ Product.code_min }} ～ {{ Product.code_max }}
-                        {%- else -%}
-                            {{ Product.code_min }}
-                        {%- endif -%} </span> </p>
+                        {{ Product.code_min }}
+                        {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
+                        </span> </p>
                     <!--▲商品コード-->
 
                     <!-- ▼関連カテゴリ▼ -->
@@ -193,8 +196,17 @@ $(function(){
                                 {# カートボタン #}
                                 <div class="btn_area">
                                     <ul class="row">
-                                        <li class="col-xs-12 col-sm-8"><button type="submit" class="btn btn-primary btn-block">カートに入れる</button></li>
+                                        <li class="col-xs-12 col-sm-8"><button type="submit" id="cart" class="btn btn-primary btn-block prevention-btn prevention-mask">カートに入れる</button></li>
                                     </ul>
+                                    {% if BaseInfo.option_favorite_product == 1 %}
+                                    <ul class="row">
+                                        {% if is_favorite == false %}
+                                            <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block prevention-btn prevention-mask">お気に入りに追加</button></li>
+                                        {% else %}
+                                            <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block" disabled="disabled">お気に入りに追加済みです</button></li>
+                                        {% endif %}
+                                    </ul>
+                                    {% endif %}
                                 </div>
                             {% else %}
                                 {# 在庫がない場合は品切れボタンのみ表示 #}
@@ -210,7 +222,7 @@ $(function(){
                     </form>
 
                     <!--★商品説明★-->
-                    <p class="item_comment">{{ Product.description_detail }}</p>
+                    <p class="item_comment">{{ Product.description_detail|raw|nl2br }}</p>
 
                 </div>
                 <!-- /.item_detail -->

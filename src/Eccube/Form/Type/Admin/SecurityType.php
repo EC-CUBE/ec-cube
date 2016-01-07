@@ -25,17 +25,21 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SecurityType extends AbstractType
 {
+    private $app;
     private $config;
 
-    public function __construct($config)
+    public function __construct($app)
     {
-        $this->config = $config;
+        $this->app = $app;
+        $this->config = $app['config'];
     }
 
     /**
@@ -43,6 +47,7 @@ class SecurityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $app = $this->app;
         $builder
             ->add('admin_route_dir', 'text', array(
                 'label' => 'ディレクトリ名',
@@ -56,7 +61,7 @@ class SecurityType extends AbstractType
             ))
             ->add('admin_allow_host', 'textarea', array(
                 'required' => false,
-                'label' => 'SSL制限',
+                'label' => 'IP制限',
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['stext_len'])),
                 ),
@@ -65,6 +70,22 @@ class SecurityType extends AbstractType
                 'label' => 'SSLを強制',
                 'required' => false,
             ))
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use($app) {
+                $form = $event->getForm();
+                $data = $form->getData();
+
+                $ips = preg_split("/\R/", $data['admin_allow_host'], null, PREG_SPLIT_NO_EMPTY);
+
+                foreach($ips as $ip) {
+                    $errors = $app['validator']->validateValue($ip, array(
+                            new Assert\Ip(),
+                        )
+                    );
+                    if ($errors->count() != 0) {
+                        $form['admin_allow_host']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
+                    }
+                }
+            })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }

@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ShipmentItem;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -70,7 +71,9 @@ class EditController extends AbstractController
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
-                    if ($form->isValid()) {
+                    if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
+                        $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
+                    } elseif ($form->isValid()) {
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
@@ -160,6 +163,12 @@ class EditController extends AbstractController
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
+                        $Customer = $TargetOrder->getCustomer();
+                        if ($Customer) {
+                            // 会員の場合、購入回数、購入金額などを更新
+                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
+                        }
+
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
                         return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
@@ -198,12 +207,23 @@ class EditController extends AbstractController
             ->createBuilder('admin_search_product')
             ->getForm();
 
+        // 配送業者のお届け時間
+        $times = array();
+        $deliveries = $app['eccube.repository.delivery']->findAll();
+        foreach ($deliveries as $Delivery) {
+            $deliveryTiems = $Delivery->getDeliveryTimes();
+            foreach ($deliveryTiems as $DeliveryTime) {
+                $times[$Delivery->getId()][$DeliveryTime->getId()] = $DeliveryTime->getDeliveryTime();
+            }
+        }
+
         return $app->render('Order/edit.twig', array(
             'form' => $form->createView(),
             'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
             'id' => $id,
+            'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
         ));
     }
 
@@ -342,10 +362,6 @@ class EditController extends AbstractController
     protected function newOrder()
     {
         $Order = new \Eccube\Entity\Order();
-        $Order->setCharge(0);
-        $Order->setDeliveryFeeTotal(0);
-        $Order->setDiscount(0);
-        $Order->setDelFlg(0);
         $Shipping = new \Eccube\Entity\Shipping();
         $Shipping->setDelFlg(0);
         $Order->addShipping($Shipping);
@@ -401,32 +417,28 @@ class EditController extends AbstractController
             $subtotal += $OrderDetail->getTotalPrice();
         }
 
-
         $shippings = $Order->getShippings();
         /** @var \Eccube\Entity\Shipping $Shipping */
         foreach ($shippings as $Shipping) {
             $shipmentItems = $Shipping->getShipmentItems();
             $Shipping->setDelFlg(Constant::DISABLED);
             /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-            if (!$Shipping->getId()) {
-                foreach ($shipmentItems as $ShipmentItem) {
-                    $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
-                    $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
-                    $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
-                        : null);
-                    $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
-                        : null);
-                    $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                        ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
-                        : null);
-                    $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                        ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
-                        : null);
-                }
+            foreach ($shipmentItems as $ShipmentItem) {
+                $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
+                $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
+                $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
+                    : null);
+                $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
+                    : null);
+                $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
+                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
+                    : null);
+                $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
+                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
+                    : null);
             }
-
         }
 
         // 受注データの税・小計・合計を再計算

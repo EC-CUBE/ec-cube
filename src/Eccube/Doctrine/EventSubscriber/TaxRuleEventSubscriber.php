@@ -65,7 +65,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
         if ($entity instanceof ShipmentItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
+            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }
 
@@ -81,7 +81,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
         if ($entity instanceof ShipmentItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
+            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }
 
@@ -97,7 +97,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
         if ($entity instanceof ShipmentItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
+            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }
 
@@ -113,7 +113,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
             $entity->setPriceIncTax($entity->getPrice() + $this->taxRateService->calcTax($entity->getPrice(), $entity->getTaxRate(), $entity->getTaxRule()));
         }
         if ($entity instanceof ShipmentItem) {
-            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity));
+            $entity->setPriceIncTax($this->taxRateService->getPriceIncTax($entity->getPrice(), $entity->getProduct(), $entity->getProductClass()));
         }
     }
 }

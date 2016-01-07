@@ -19,9 +19,13 @@
 * eccube_install.shの51行目付近、`Configuration（）`以下の設定内容を環境に応じて修正し実行してください。
     
 * PostgreSQL
-    > eccube_install.sh pgsql  
-* MySQL  
-    > eccube_install.sh mysql  
+
+    > eccube_install.sh pgsql
+
+* MySQL
+
+    > eccube_install.sh mysql
+
 
 インストール完了後、 http://{インストール先URL}/admin にアクセス  
 EC-CUBEの管理ログイン画面が表示されればインストール成功です。以下のID/Passwordにてログインしてください。  
@@ -37,7 +41,7 @@ ID: admin PW: password
     
 * Webインストーラーにアクセス
     
-    インスール先のhttp://{インストール先URL}/にアクセスし表示されるインストーラーの指示にしたがってインスールしてください。
+    インスール先のhttp://{インストール先URL}/にアクセスし表示されるインストーラーの指示にしたがってインストールしてください。
 
 -------
 ### 動作確認環境
@@ -67,6 +71,15 @@ $allow = array(
 
 [EC-CUBE3のトピック@Qiita](http://qiita.com/tags/ec-cube3)
 
+### ドキュメント
+
+[EC-CUBE3 開発ドキュメント@ec-cube.github.io](http://ec-cube.github.io/)
+
+EC-CUBE3 の仕様や手順、開発Tipsに関するドキュメントを掲載しています。
+
+修正や追記、新規ドキュメントの作成をいただく場合、以下のレポジトリからPullRequestをお送りください。
+
+https://github.com/EC-CUBE/ec-cube.github.io
 
 ### 開発への参加
 

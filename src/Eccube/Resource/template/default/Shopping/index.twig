@@ -33,6 +33,21 @@ $(function(){
         $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
     });
 
+    $('.btn-shipping').click(function() {
+        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        return false;
+    });
+
+    $('.btn-shipping-edit').click(function() {
+        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        return false;
+    });
+
+    $('.btn-shipping-multiple').click(function() {
+        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        return false;
+    });
+
     {% if is_granted('ROLE_USER') == false %}
     var ref = new Array();
     var name = new Array();
@@ -163,7 +178,7 @@ $(function(){
                                                 <br>{{ orderDetail.productClass.classCategory2.className }}：{{ orderDetail.productClass.classCategory2 }}
                                             {% endif %}
                                         </dd>
-                                        <dd class="item_price">{{ orderDetail.priceIncTax|price }} ×{{ orderDetail.quantity }}</dd>
+                                        <dd class="item_price">{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}</dd>
                                         <dd class="item_subtotal">小計：{{ orderDetail.totalPrice|price }}</dd>
                                     </dl>
                                 </div>
@@ -178,8 +193,8 @@ $(function(){
                         〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
                         <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                         {% if is_granted('ROLE_USER') == false %}
-                            <div class="customer-edit customer-email">{{ Order.email }}</div>
-                            <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
+                        <div class="customer-edit customer-email">{{ Order.email }}</div>
+                        <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
                         <div class="mod-button" style="display:none;">
                             <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
                             <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
@@ -221,7 +236,7 @@ $(function(){
                                                         <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
                                                     {% endif %}
                                                 </dd>
-                                                <dd class="item_price">{{ shipmentItem.priceIncTax|price }} ×{{ shipmentItem.quantity }}</dd>
+                                                <dd class="item_price">{{ shipmentItem.priceIncTax|price }} × {{ shipmentItem.quantity|number_format }}</dd>
                                                 <dd class="item_subtotal">小計：{{ shipmentItem.totalPrice|price }}</dd>
                                             </dl>
                                         </div>
@@ -236,6 +251,7 @@ $(function(){
                             <div class="form-inline form-group">
                                 <label>配送方法</label>
                                 {{ form_widget(form.shippings[idx].delivery, {'attr': {'class': 'delivery'}}) }}
+                                {{ form_errors(form.shippings[idx].delivery) }}
                             </div>
 
                             <div class="form-inline form-group">
@@ -245,18 +261,16 @@ $(function(){
                                 {{ form_widget(form.shippings[idx].deliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping', {'id': shipping.id}) }}" class="btn btn-default btn-sm">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
                             {% else %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit', {'id': shipping.id}) }}" class="btn btn-default btn-sm">変更</a></p>
+                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit">変更</a></p>
                             {% endif %}
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
                     {% endfor %}
                     {% if BaseInfo.optionMultipleShipping %}
-                        {% if totalQuantity != Order.shippings|length %}
                         <hr>
-                        <div><a href="{{ url('shopping_shipping_multiple') }}" class="btn btn-default btn-sm">お届け先を追加する</a></div>
-                        {% endif %}
+                        <div><a href="{{ url('shopping_shipping_multiple_change') }}" class="btn btn-default btn-sm btn-shipping-multiple">お届け先を追加する</a></div>
                     {% endif %}
 
                     <h2 class="heading02">お支払方法</h2>
@@ -285,20 +299,20 @@ $(function(){
                 <div id="confirm_side" class="col-sm-4">
                     <div class="total_box">
                         <dl>
-                        <dt>小計</dt>
-                        <dd class="text-primary">{{ Order.subtotal|price }}</dd>
+                            <dt>小計</dt>
+                            <dd class="text-primary">{{ Order.subtotal|price }}</dd>
                         </dl>
                         <dl>
-                        <dt>手数料</dt>
-                        <dd>{{ Order.charge|price }}</dd>
+                            <dt>手数料</dt>
+                            <dd>{{ Order.charge|price }}</dd>
                         </dl>
                         <dl>
-                        <dt>送料</dt>
-                        <dd>{{ Order.deliveryFeeTotal|price }}</dd>
+                            <dt>送料</dt>
+                            <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                         </dl>
                         <div class="total_amount">
                             <p class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
-                            <p><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn">注文する</button></p>
+                            <p><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn prevention-mask">注文する</button></p>
                         </div>
                     </div>
                 </div>

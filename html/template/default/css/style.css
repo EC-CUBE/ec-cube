@@ -3,7 +3,7 @@
 @import url("bootstrap.custom.min.css"); /* only Grid system CSS */
 
 
-/* -------------------------------- 
+/* --------------------------------
 	Common style
 -------------------------------- */
 
@@ -188,8 +188,8 @@ dd.form-group .errormsg {
 .input_tel input {
     display: inline-block;
     margin-bottom: 0;
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 1px;
+    margin-right: 1px;
     max-width: 5em;
     vertical-align: middle;
     width: 30%;
@@ -265,8 +265,8 @@ span.required {
     font-size: 1.2rem;
 }
 
-/* -------------------------------- 
-	Parts 
+/* --------------------------------
+	Parts
 -------------------------------- */
 
 /* heading */
@@ -798,8 +798,8 @@ p.message {
 }
 
 
-/* -------------------------------- 
-	Common 
+/* --------------------------------
+	Common
 -------------------------------- */
 
 .inner {
@@ -1377,7 +1377,6 @@ p.cart-trigger.cart-is-visible .cb-close {
 }
 .product_item a {
     display: block;
-    padding-bottom: 10px;
 }
 .product_page .product_item a {
     padding-bottom: 16px;
@@ -1713,7 +1712,7 @@ dl.quantity dd {
 ------------------------------------------- */
 
 #form_cart > .message:first-child {
-	padding-top: 16px; 
+	padding-top: 16px;
 }
 
 .total_box {
@@ -1941,12 +1940,8 @@ margin-top: 5px;
 .local_nav li a:hover {
     background: #f5f7f8;
 }
-.local_nav li a:not([href]){
+.local_nav li.active a {
     color: #DE5D50;
-    cursor: default;
-}
-.local_nav li a:not([href]):hover {
-    background: #fff;
 }
 .order_detail dt {
     float: left;
@@ -2076,7 +2071,7 @@ margin-top: 5px;
 }
 .error_page #contents {
 	background: inherit;
-	
+
 }
 
 
@@ -2365,6 +2360,7 @@ margin-top: 5px;
 
 .mypage .message {
     border-bottom: 1px dotted #ccc;
+    margin-bottom: 11px;
 }
 .mypage #item_list .product_item {
     padding-bottom: 8px;
@@ -3207,12 +3203,14 @@ fieldset[disabled] .btn-link:focus {
     /****** Side Setting ********/
 
     .drawer {
+        height: 0;
         visibility: hidden;
         -webkit-transition: visibility 0s 0.3s;
         -moz-transition: visibility 0s 0.3s;
         transition: visibility 0s 0.3s;
     }
     .drawer-open .drawer {
+        height: 100%;
         visibility: visible;
         -webkit-transition: visibility 0s 0s;
         -moz-transition: visibility 0s 0s;
@@ -3730,7 +3728,7 @@ fieldset[disabled] .btn-link:focus {
         left: 100%;
     }
     #header .category-nav li:last-child ul li ul {
-        left: -100%;
+        left: 100%;
         width: 100%;
     }
     #header .category-nav li ul li ul:before {
@@ -3743,10 +3741,17 @@ fieldset[disabled] .btn-link:focus {
     }
     #header .category-nav li:last-child ul li ul:before {
         position: absolute;
+        content: ">";
+        top: 13px;
+        left: -15px;
+        width: 0;
+        height: 0;
+        /*
         content: "<";
         top: 13px;
         left: 200%;
         margin-left: -15px;
+        */
     }
     #header .category-nav li ul li:hover > ul > li {
         overflow: visible;
@@ -4103,9 +4108,9 @@ fieldset[disabled] .btn-link:focus {
     #confirm_side {
         top: 0;
     }
-	
+
 	/* payment_list */
-	
+
 	.payment_list .radio {
 		display: inline;
 		margin-right: 16px;
@@ -4128,6 +4133,9 @@ fieldset[disabled] .btn-link:focus {
 
     .local_nav li {
         width: 25%;
+    }
+   .local_nav.favorite li {
+        width: 20%;
     }
     .historylist_column {
         border-top: 1px solid #ccc;
@@ -4394,9 +4402,9 @@ fieldset[disabled] .btn-link:focus {
     }
 
 	/* Error Page */
-	
+
 	.error_page .footer_logo_area {
 		margin-top: 0;
-		
+
 	}
 }

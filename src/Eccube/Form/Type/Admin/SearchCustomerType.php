@@ -93,6 +93,12 @@ class SearchCustomerType extends AbstractType
             ))
             ->add('tel', 'text', array(
                 'required' => false,
+                'constraints' => array(
+                    new Assert\Regex(array(
+                        'pattern' => "/^[\d-]+$/u",
+                        'message' => 'form.type.admin.nottelstyle',
+                    )),
+                ),
             ))
             ->add('buy_total_start', 'integer', array(
                 'label' => '購入金額',
@@ -198,10 +204,6 @@ class SearchCustomerType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'empty_value' => false,
-            ))
-            ->add('pageno', 'hidden', array(
-            ))
-            ->add('pagemax', 'page_max', array(
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;

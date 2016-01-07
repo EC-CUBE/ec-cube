@@ -85,23 +85,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       });
     }
 
+    // フォーム値を確認し、アコーディオンを制御
+    // 値あり : 開く / 値なし : 閉じる
+    (function($, f) {
+        //フォームがないページは処理キャンセル
+        var $ac = $(".accpanel");
+        if (!$ac) {
+            return false
+        }
+
+        //フォーム内全項目取得
+        var c = f();
+        if (c.formState()) {
+            if ($ac.css("display") == "none") {
+                $ac.parent('li').addClass("active");
+                $ac.slideDown(0);
+            }
+        } else {
+            $ac.parent('li').removeClass("active");
+            $ac.slideUp(0);
+        }
+    })($, formPropStateSubscriber);
   });
 
   function fnChangeActionSubmit(action) {
     document.search_form.action = action;
     document.search_form.submit();
-  }
-  function fnDelete(action) {
-    if (confirm('この会員情報を削除しても宜しいですか？')) {
-      document.search_form.action = action;
-      document.search_form.submit();
-    }
-  }
-  function fnReSendMail(action) {
-    if (confirm('仮登録メールを再送しても宜しいですか？')) {
-      document.search_form.action = action;
-      document.search_form.submit();
-    }
   }
 </script>
 {% endblock javascript %}
@@ -116,8 +125,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前', class : 'input_search' } } ) }}
 
-        <a class="toggle" href="#"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
-        <div class="search-box-inner accpanel">
+        <a href="#" class="toggle{% if active %} active{% endif %}"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
+        <div class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
           <div class="row">
             <div class="col-sm-12 col-lg-10 col-lg-offset-1 search">
 
@@ -139,7 +148,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   {{ form_widget(searchForm.birth_month) }}
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label>誕生日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.birth_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.birth_end, {'attr': {'class': 'input_cal'}}) }}
@@ -151,38 +160,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   {{ form_widget(searchForm.pref) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-6 col-sm-6">
                 <div class="form-group">
                   <label>電話番号</label>
                   {{ form_widget(searchForm.tel) }}
+                  {{ form_errors(searchForm.tel) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <label>登録日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.create_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.create_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <label>更新日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <div class="form-group range">
                   <label>購入金額</label>
                   {{ form_widget(searchForm.buy_total_start) }} ～ {{ form_widget(searchForm.buy_total_end) }}
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <div class="form-group range">
                   <label>購入回数</label>
                   {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
                 </div>
               </div>
               {#
-              <div class="col-md-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <div class="form-group">
                   <label>購入商品カテゴリー</label>
                   {{ form_widget(searchForm.buy_category) }}
@@ -190,19 +200,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               </div>
             </div>
             #}
-            <div class="col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-6">
               <div class="form-group">
                 <label>購入商品名・コード</label>
                 {{ form_widget(searchForm.buy_product_code) }}
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-6">
               <label>最終購入日</label>
               <div class="form-group range">
                 {{ form_widget(searchForm.last_buy_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.last_buy_end, {'attr': {'class': 'input_cal'}}) }}
               </div>
             </div>
-            <div class="col-sm-12">
+            <div class="col-xs-12 col-sm-12">
               <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
             </div>
           </div>
@@ -234,11 +244,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
           <div class="col-md-12">
             <ul class="sort-dd">
               <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">20件<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
-              <ul class="dropdown-menu">
-                <li><a>50件</a></li>
-                <li><a>100件</a></li>
-              </ul>
+                {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                  <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
+                  <ul class="dropdown-menu">
+                {% endfor %}
+                  {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                    <li><a href="{{ path('admin_customer_page', {'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                  {% endfor %}
+                  </ul>
               </li>
               <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
@@ -250,43 +263,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </ul>
           </div>
         </div>
-        <div class="table_list">
-          <div class="table-responsive with-border">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>会員ID</th>
-                  <th>会員名</th>
-                  <th>電話番号</th>
-                  <th>メールアドレス</th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for Customer in pagination %}
-                <tr>
-                  <td class="member_id">{{ Customer.id }}</td>
-                  <td class="member_name"><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                  <td class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
-                  <td class="member_mail">{{ Customer.email }}</td>
-                  <td class="icon_edit">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                      <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="#" onclick="fnChangeActionSubmit('{{ url('admin_customer_edit', { 'id': Customer.id}) }}');return false;">編集</a></li>
-                        <li><a href="#" onclick="fnDelete('{{ url('admin_customer_delete', { 'id': Customer.id}) }}');return false;">削除</a></li>
-                        {% if Customer.Status.id == 1 %}
-                        <li><a href="#" onclick="fnReSendMail('{{ url('admin_customer_resend', { 'id': Customer.id}) }}');return false;">仮会員メール再送</a></li>
-                        {% endif %}
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {% for Customer in pagination %}
+            <div class="table_list">
+                <div class="table-responsive with-border">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>会員ID</th>
+                            <th>会員名</th>
+                            <th>電話番号</th>
+                            <th>メールアドレス</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for Customer in pagination %}
+                        <tr>
+                            <td class="member_id">{{ Customer.id }}</td>
+                            <td class="member_name"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                            <td class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                            <td class="member_mail">{{ Customer.email }}</td>
+                            <td class="icon_edit">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">編集</a></li>
+                                        <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この会員情報を削除してもよろしいですか？">削除</a></li>
+                                        {% if Customer.Status.id == 1 %}
+                                        <li><a href="{{ url('admin_customer_resend', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="put" data-message="仮登録メールを再送してもよろしいですか？">仮会員メール再送</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
       </div><!-- /.box-body -->
       {% if pagination.totalItemCount > 0 %}
       {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}

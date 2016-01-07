@@ -38,9 +38,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentBlock_edit()
     {
-        // TODO: テンプレートファイルの参照等がconstant.yml.distで定まらずCIで落ちるためスキップ
-        //self::markTestSkipped();
-
         $this->client->request('GET',
             $this->app->url(
                 'admin_content_block_edit',
@@ -56,7 +53,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
         $redirectUrl = $this->app->url('admin_content_block');
 
-        $this->client->request('GET',
+        $this->client->request('DELETE',
             $this->app->url(
                 'admin_content_block_delete',
                 array('id' => 1)

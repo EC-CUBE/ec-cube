@@ -52,7 +52,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->app->url('admin_setting_shop_tax');
 
         $this->client->request(
-            'GET',
+            'DELETE',
             $this->app->url('admin_setting_shop_tax_delete', array('id' => 1))
         );
 

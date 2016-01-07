@@ -32,10 +32,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
     <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
     <script>
-        function changeAction(action) {
-            document.form1.action = action;
-        }
-
         $(function() {
             var oldRanks = [];
             // 画面の中のrank一覧を保持
@@ -106,25 +102,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_setting_shop_delivery_edit', {id: Delivery.id} ) }}">編集</a></li>
-                                                    <li><a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}">削除</a></li>
-
-                                                    {% if loop.first == false %}
-                                                        {% set up_action = url('admin_setting_shop_delivery_up', {id: Delivery.id} ) %}
-                                                        <li>
-                                                            <a href="?" onclick="changeAction('{{ up_action }}'); document.form1.submit(); return false;">
-                                                                上へ
-                                                            </a>
-                                                        </li>
-                                                    {% endif %}
-
-                                                    {% if loop.last == false %}
-                                                        {% set down_action = url('admin_setting_shop_delivery_down', {id: Delivery.id} ) %}
-                                                        <li>
-                                                            <a href="?" onclick="changeAction('{{ down_action }}'); document.form1.submit(); return false;">
-                                                                下へ
-                                                            </a>
-                                                        </li>
-                                                    {% endif %}
+                                                    <li><a href="{{ url('admin_setting_shop_delivery_delete', {id: Delivery.Id} ) }}" {{ csrf_token_for_anchor() }} data-method="delete">削除</a></li>
                                                 </ul>
                                             </div>
                                         </div>

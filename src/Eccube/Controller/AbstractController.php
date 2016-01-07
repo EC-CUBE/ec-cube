@@ -25,6 +25,9 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 class AbstractController
 {
@@ -45,6 +48,16 @@ class AbstractController
     protected function getSecurity($app)
     {
         return $app['security.token_storage'];
+    }
+
+    protected function isTokenValid($app)
+    {
+        $csrf = $app['form.csrf_provider'];
+        $name = Constant::TOKEN_NAME;
+        if (!$csrf->isTokenValid(new CsrfToken($name, $app['request']->request->get($name)))) {
+            throw new AccessDeniedHttpException('CSRF token is invalid.');
+        }
+        return true;
     }
 
 }

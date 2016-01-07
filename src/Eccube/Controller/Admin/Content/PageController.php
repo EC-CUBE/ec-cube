@@ -25,12 +25,13 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
+use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class PageController
+class PageController extends AbstractController
 {
     public function index(Application $app)
     {
@@ -115,6 +116,8 @@ class PageController
 
     public function delete(Application $app, $id = null)
     {
+        $this->isTokenValid($app);
+
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -123,6 +126,11 @@ class PageController
                 'id' => $id,
                 'DeviceType' => $DeviceType
             ));
+
+        if (!$PageLayout) {
+            $app->deleteMessage();
+            return $app->redirect($app->url('admin_content_page'));
+        }
 
         // ユーザーが作ったページのみ削除する
         if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_USER) {

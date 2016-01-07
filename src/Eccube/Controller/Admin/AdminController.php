@@ -125,6 +125,39 @@ class AdminController extends AbstractController
         ));
     }
 
+    /**
+     * 在庫なし商品の検索結果を表示する.
+     * 
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function searchNonStockProducts(Application $app, Request $request)
+    {
+        // 商品マスター検索用フォーム
+        $form = $app['form.factory']
+            ->createBuilder('admin_search_product')
+            ->getForm();
+        
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+        
+            if ($form->isValid()) {
+                // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
+                $searchData = array();
+                $searchData['stock_status'] = Constant::DISABLED;    
+                $session = $request->getSession();
+                $session->set('eccube.admin.product.search', $searchData);
+
+                return $app->redirect($app->url('admin_product_page', array(
+                    'page_no' => 1,
+                    'status' => $app['config']['admin_product_stock_status'])));
+            }
+        }
+        
+        return $app->redirect($app->url('admin_homepage'));
+    }
+    
     protected function findOrderStatus($em, array $excludes)
     {
         $qb = $em
