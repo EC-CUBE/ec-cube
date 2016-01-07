@@ -47,6 +47,11 @@ class Application extends ApplicationTrait
         return self::$instance;
     }
 
+    public static function clearInstance()
+    {
+        self::$instance = null;
+    }
+
     final public function __clone()
     {
         throw new \Exception('Clone is not allowed against' . get_class($this));

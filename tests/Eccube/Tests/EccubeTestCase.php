@@ -456,6 +456,7 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
+        \Eccube\Application::clearInstance();
     }
 
     /**
