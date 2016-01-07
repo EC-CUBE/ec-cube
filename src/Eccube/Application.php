@@ -40,11 +40,16 @@ class Application extends ApplicationTrait
 
     public static function getInstance(array $values = array())
     {
-        if (!self::$instance) {
+        if (is_null(self::$instance)) {
             self::$instance = new Application($values);
         }
 
         return self::$instance;
+    }
+
+    public static function clearInstance()
+    {
+        self::$instance = null;
     }
 
     final public function __clone()

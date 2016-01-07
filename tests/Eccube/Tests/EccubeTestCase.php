@@ -422,7 +422,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        $app = new Application();
+        $app = \Eccube\Application::getInstance();
         $app['debug'] = true;
         $app->initialize();
         $app->initPluginEventDispatcher();
@@ -454,6 +454,7 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
+        \Eccube\Application::clearInstance();
     }
 
     /**
