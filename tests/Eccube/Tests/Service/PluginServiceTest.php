@@ -576,7 +576,8 @@ EOD;
         $this->assertFalse(isset($this->app['config'][$tmpname]['const']['A']));
         $this->assertFalse(isset($this->app['config'][$tmpname]['const']['C']));
 
-        $this->app->initializePlugin();
+        $this->app->initPluginEventDispatcher();
+        $this->app->loadPlugin();
         $this->app->boot();
         $this->assertEquals('A',$this->app['config'][$tmpname]['const']['A']);
         $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
