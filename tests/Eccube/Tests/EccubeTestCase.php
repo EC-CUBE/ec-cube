@@ -86,7 +86,9 @@ abstract class EccubeTestCase extends WebTestCase
         $pdo = $entityManager->getConnection()->getWrappedConnection();
 
         // Clear Doctrine to be safe
+        $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
         $entityManager->clear();
+        gc_collect_cycles();
 
         // Schema Tool to process our entities
         $tool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
@@ -425,7 +427,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function createApplication()
     {
         $app = Application::getInstance();
-        $app['debug'] = true;
+        $app['debug'] = false;
         $app->initialize();
         $app->initPluginEventDispatcher();
         $app['session.test'] = true;
