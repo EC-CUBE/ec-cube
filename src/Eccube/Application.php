@@ -590,7 +590,7 @@ class Application extends ApplicationTrait
 
     public function initializePlugin()
     {
-        if (!$this->initializedPlugin) {
+        if ($this->initializedPlugin) {
             return;
         }
 
