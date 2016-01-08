@@ -98,7 +98,7 @@ abstract class EccubeTestCase extends WebTestCase
         $config = new Configuration($this->app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
-        $migrationDir = __DIR__ . '/../../../src/Eccube/Resource/doctrine/migration';
+        $migrationDir = __DIR__.'/../../../src/Eccube/Resource/doctrine/migration';
         $config->setMigrationsDirectory($migrationDir);
         $config->registerMigrationsFromDirectory($migrationDir);
 

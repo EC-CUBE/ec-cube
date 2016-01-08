@@ -55,7 +55,7 @@ class Application extends ApplicationTrait
 
     final public function __clone()
     {
-        throw new \Exception('Clone is not allowed against' . get_class($this));
+        throw new \Exception('Clone is not allowed against '.get_class($this));
     }
 
     public function __construct(array $values = array())
@@ -372,7 +372,7 @@ class Application extends ApplicationTrait
                     $roles = array();
                     foreach ($AuthorityRoles as $AuthorityRole) {
                         // 管理画面でメニュー制御するため相対パス全てをセット
-                        $roles[] = $app['request']->getBaseUrl() . '/' . $app['config']['admin_route'] . $AuthorityRole->getDenyUrl();
+                        $roles[] = $app['request']->getBaseUrl().'/'.$app['config']['admin_route'].$AuthorityRole->getDenyUrl();
                     }
 
                     $app['twig']->addGlobal('AuthorityRoles', $roles);
