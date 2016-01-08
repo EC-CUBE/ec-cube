@@ -37,6 +37,7 @@ class Application extends ApplicationTrait
     protected static $instance;
 
     protected $initialized = false;
+    protected $initializedPlugin = false;
 
     public static function getInstance(array $values = array())
     {
@@ -589,11 +590,17 @@ class Application extends ApplicationTrait
 
     public function initializePlugin()
     {
+        if (!$this->initializedPlugin) {
+            return;
+        }
+
         // setup event dispatcher
         $this->initPluginEventDispatcher();
 
         // load plugin
         $this->loadPlugin();
+
+        $this->initializedPlugin = true;
     }
 
     public function initPluginEventDispatcher()
