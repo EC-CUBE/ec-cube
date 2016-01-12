@@ -113,6 +113,10 @@ abstract class EccubeTestCase extends WebTestCase
             $migrations = json_decode(file_get_contents(sys_get_temp_dir().'/migrations.sql'), true);
             foreach ($migrations as $migration_sql) {
                 foreach ($migration_sql as $sql) {
+                    if ($this->isSqliteInMemory()) {
+                        // XXX #1199 の問題を無理矢理回避...
+                        $sql = preg_replace('/CURRENT_TIMESTAMP/i', "datetime('now','-9 hours')", $sql);
+                    }
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute();
                     $stmt->closeCursor();
