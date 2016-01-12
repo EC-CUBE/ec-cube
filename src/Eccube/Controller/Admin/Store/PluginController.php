@@ -90,7 +90,8 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
-            list($json, $httpHeader) = $this->getRequestApi($request, $authKey, $url);
+            list($json, $info) = $this->getRequestApi($request, $authKey, $url);
+            $app->log('http get_info', $info);
 
             if ($json) {
 
@@ -393,6 +394,7 @@ class PluginController extends AbstractController
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
             list($json, $info) = $this->getRequestApi($request, $authKey, $url);
+            $app->log('http get_info', $info);
 
             if ($json === false) {
                 // 接続失敗時
@@ -509,6 +511,7 @@ class PluginController extends AbstractController
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
             list($json, $info) = $this->getRequestApi($request, $authKey, $url);
+            $app->log('http get_info', $info);
 
             if ($json === false) {
                 // 接続失敗時
@@ -667,9 +670,7 @@ class PluginController extends AbstractController
         $result = curl_exec($curl);
         $info = curl_getinfo($curl);
 
-        $errno = curl_errno($curl);
-        $error = curl_error($curl);
-        $message = curl_strerror($errno);
+        $message = curl_error($curl);
         $info['message'] = $message;
         curl_close($curl);
 
@@ -688,17 +689,8 @@ class PluginController extends AbstractController
             $statusCode = $info['http_code'];
             $message = $info['message'];
 
-            switch ($statusCode) {
-                case '404':
-                    $message = $statusCode . ' : ' . $message;
-                    break;
-                case '500':
-                    $message = $statusCode . ' : ' . $message;
-                    break;
-                default:
-                    $message = $statusCode . ' : ' . $message;
-                    break;
-            }
+            $message = $statusCode . ' : ' . $message;
+
         } else {
             $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
         }
