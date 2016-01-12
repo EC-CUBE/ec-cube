@@ -29,6 +29,14 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CsvControllerTest extends AbstractAdminWebTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $Csv = $this->app['eccube.repository.csv']->find(1);
+        $Csv->setRank(1);
+        $Csv->setEnableFlg(Constant::DISABLED);
+        $this->app['orm.em']->flush();
+    }
 
     public function testRoutingCsv()
     {
