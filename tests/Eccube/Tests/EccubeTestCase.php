@@ -105,16 +105,31 @@ abstract class EccubeTestCase extends WebTestCase
         $config->registerMigrationsFromDirectory($migrationDir);
 
         $migration = new Migration($config);
-        $migration->migrate(null, false);
+        // initialize migrations.sql from bootstrap
+        if (!file_exists(sys_get_temp_dir().'/migrations.sql')) {
+            $sql = $migration->migrate(null, false);
+            file_put_contents(sys_get_temp_dir().'/migrations.sql', json_encode($sql));
+        } else {
+            $migrations = json_decode(file_get_contents(sys_get_temp_dir().'/migrations.sql'), true);
+            foreach ($migrations as $migration_sql) {
+                foreach ($migration_sql as $sql) {
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                }
+            }
+        }
 
         // 通常は eccube_install.sh で追加されるデータを追加する
         $sql = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, 'admin', 'test', 'test', 1, 0, 0, 1, 1, current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP')";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+        $stmt->closeCursor();
 
         $sql = "INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, option_product_tax_rule) VALUES (1, 'SHOP_NAME', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'admin@example.com', current_timestamp, 0)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+        $stmt->closeCursor();
     }
 
     /**
