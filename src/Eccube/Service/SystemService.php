@@ -47,12 +47,16 @@ class SystemService
                 break;
 
             case 'pdo_mysql':
-                $prefix = 'MySQL '; // break nothing
+                $prefix = 'MySQL ';
+                $func = 'version()';
+                break;
+
             case 'pdo_pgsql':
             default:
                 $prefix = '';
                 $func = 'version()';
         }
+
         $version = $this->app['orm.em']
             ->createNativeQuery('select '.$func.' as v', $rsm)
             ->getSingleScalarResult();
