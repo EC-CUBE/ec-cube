@@ -39,6 +39,11 @@ class PluginController extends AbstractController
 {
 
     /**
+     * @var string 証明書ファイル
+     */
+    private $certFileName = 'cacert.pem';
+
+    /**
      * インストール済プラグイン画面
      *
      * @param Application $app
@@ -90,8 +95,7 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
-            list($json, $info) = $this->getRequestApi($request, $authKey, $url);
-            $app->log('http get_info', $info);
+            list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json) {
 
@@ -393,8 +397,7 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=list';
-            list($json, $info) = $this->getRequestApi($request, $authKey, $url);
-            $app->log('http get_info', $info);
+            list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
                 // 接続失敗時
@@ -510,8 +513,7 @@ class PluginController extends AbstractController
 
             // オーナーズストア通信
             $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
-            list($json, $info) = $this->getRequestApi($request, $authKey, $url);
-            $app->log('http get_info', $info);
+            list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
                 // 接続失敗時
@@ -562,7 +564,7 @@ class PluginController extends AbstractController
 
                             // ダウンロード完了通知処理(正常終了時)
                             $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=1&version=' . $version;
-                            $this->getRequestApi($request, $authKey, $url);
+                            $this->getRequestApi($request, $authKey, $url, $app);
 
                             return $app->redirect($app->url('admin_store_plugin'));
 
@@ -585,7 +587,7 @@ class PluginController extends AbstractController
 
         // ダウンロード完了通知処理(エラー発生時)
         $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=0&version=' . $version . '&message=' . urlencode($message);
-        $this->getRequestApi($request, $authKey, $url);
+        $this->getRequestApi($request, $authKey, $url, $app);
 
         $app->addError($message, 'admin');
 
@@ -641,14 +643,34 @@ class PluginController extends AbstractController
 
 
     /**
+     * 認証キーダウンロード
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function download(Application $app, Request $request)
+    {
+
+        $url = 'http://curl.haxx.se/ca/cacert.pem';
+        $data = file_get_contents($url);
+        file_put_contents($app['config']['root_dir'] . '/app/config/eccube/' . $this->certFileName, $data);
+
+        return $app->redirect($app->url('admin_store_authentication_setting'));
+
+    }
+
+
+    /**
      * APIリクエスト処理
      *
      * @param Request $request
      * @param $authKey
      * @param $url
+     * @param $app
      * @return array
      */
-    private function getRequestApi(Request $request, $authKey, $url)
+    private function getRequestApi(Request $request, $authKey, $url, $app)
     {
         $curl = curl_init($url);
 
@@ -667,12 +689,21 @@ class PluginController extends AbstractController
 
         curl_setopt_array($curl, $options); /// オプション値を設定
 
+        $certFile = $app['config']['root_dir'] . '/app/config/eccube/'. $this->certFileName;
+        if (file_exists($certFile)) {
+            // php5.6でサーバ上に適切な証明書がなければhttps通信エラーが発生するため、
+            // http://curl.haxx.se/ca/cacert.pem を利用して通信する
+            curl_setopt($curl, CURLOPT_CAINFO, $certFile);
+        }
+
         $result = curl_exec($curl);
         $info = curl_getinfo($curl);
 
         $message = curl_error($curl);
         $info['message'] = $message;
         curl_close($curl);
+
+        $app->log('http get_info', $info);
 
         return array($result, $info);
     }
