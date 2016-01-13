@@ -163,12 +163,6 @@ class ProductController extends AbstractController
 
     public function edit(Application $app, Request $request, $id = null)
     {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
-        ));
-
         $has_class = false;
         if (is_null($id)) {
             $Product = new \Eccube\Entity\Product();
@@ -462,7 +456,7 @@ class ProductController extends AbstractController
                     $app['orm.em']->persist($Category);
                 }
 
-                // 規格あり商品の場合は, ダミー規格を取得する.
+                // 規格あり商品の場合は, デフォルトの商品規格を取得し登録する.
                 if ($CopyProduct->hasProductClass()) {
                     $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
                     $softDeleteFilter->setExcludes(array(
@@ -474,7 +468,9 @@ class ProductController extends AbstractController
                         'ClassCategory2' => null,
                         'Product' => $Product,
                     ));
-                    $CopyProduct->addProductClass(clone $dummyClass);
+                    $dummyClass = clone $dummyClass;
+                    $dummyClass->setProduct($CopyProduct);
+                    $CopyProduct->addProductClass($dummyClass);
                     $softDeleteFilter->setExcludes(array());
                 }
 
