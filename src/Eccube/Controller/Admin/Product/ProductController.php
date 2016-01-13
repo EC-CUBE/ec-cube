@@ -130,7 +130,7 @@ class ProductController extends AbstractController
             }
         }
 
-        return $app->renderView('Product/index.twig', array(
+        return $app->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,

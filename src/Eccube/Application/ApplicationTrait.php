@@ -2,6 +2,7 @@
 
 namespace Eccube\Application;
 
+use Eccube\Event\TemplateEvent;
 use Monolog\Logger;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,6 +62,16 @@ class ApplicationTrait extends \Silex\Application
     public function setLoginTargetPath($targetPath)
     {
         $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+    }
+
+    public function isAdminRequest()
+    {
+        return $this['admin'];
+    }
+
+    public function isFrontRequest()
+    {
+        return $this['front'];
     }
 
     /*
@@ -209,6 +220,21 @@ class ApplicationTrait extends \Silex\Application
     {
         $twig = $this['twig'];
 
+        // twigファイルのソースコードを読み込み, 文字列化.
+        $source = $twig->getLoader()->getSource($view);
+
+        // イベントの実行.
+        // プラグインにはテンプレートファイル名、文字列化されたtwigファイル、パラメータを渡す
+        $event = new TemplateEvent($this, $view, $source, $parameters, $response);
+
+        $eventName = $view;
+        if ($this->isAdminRequest()) {
+            // 管理画面の場合、event名に「admin」を付ける
+            $eventName = 'admin/' . $view;
+        }
+
+        $this['eccube.event.dispatcher']->dispatch($eventName, $event);
+
         if ($response instanceof StreamedResponse) {
             $response->setCallback(function () use ($twig, $view, $parameters) {
                 $twig->display($view, $parameters);
@@ -217,7 +243,13 @@ class ApplicationTrait extends \Silex\Application
             if (null === $response) {
                 $response = new Response();
             }
-            $response->setContent($twig->render($view, $parameters));
+
+            // プラグインで変更された文字列から, テンプレートオブジェクトを生成
+            $template = $twig->createTemplate($event->getSource());
+
+            // レンダリング実行.
+            $content = $template->render($event->getParameters());
+            $response->setContent($content);
         }
 
         return $response;

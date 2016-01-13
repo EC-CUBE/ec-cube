@@ -25,11 +25,6 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
-use Monolog\Handler\FingersCrossedHandler;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -180,7 +175,7 @@ class Application extends ApplicationTrait
                     break;
             }
 
-            return $app['twig']->render('error.twig', array(
+            return $app->render('error.twig', array(
                 'error_title' => $title,
                 'error_message' => $message,
             ));
@@ -284,6 +279,9 @@ class Application extends ApplicationTrait
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
 
+                $app['admin'] = false;
+                $app['front'] = false;
+
                 if (isset($app['profiler'])) {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
                 } else {
@@ -296,6 +294,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.'admin';
+                    $app['admin'] = true;
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
@@ -303,6 +302,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_default_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.$app['config']['template_code'];
+                    $app['front'] = true;
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));

@@ -28,9 +28,9 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryController extends AbstractController
 {
@@ -61,7 +61,7 @@ class EntryController extends AbstractController
                         $form = $builder->getForm();
                         $form->handleRequest($request);
 
-                        return $app['twig']->render('Entry/confirm.twig', array(
+                        return $app->render('Entry/confirm.twig', array(
                             'form' => $form->createView(),
                         ));
                         break;
@@ -127,7 +127,7 @@ class EntryController extends AbstractController
             }
         }
 
-        return $app['view']->render('Entry/index.twig', array(
+        return $app->render('Entry/index.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -140,7 +140,7 @@ class EntryController extends AbstractController
      */
     public function complete(Application $app)
     {
-        return $app['view']->render('Entry/complete.twig', array(
+        return $app->render('Entry/complete.twig', array(
         ));
     }
 
@@ -183,7 +183,7 @@ class EntryController extends AbstractController
             $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
             $this->getSecurity($app)->setToken($token);
 
-            return $app['view']->render('Entry/activate.twig');
+            return $app->render('Entry/activate.twig');
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }

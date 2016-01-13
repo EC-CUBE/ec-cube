@@ -25,8 +25,8 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
-use \Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class CssController
 {
@@ -70,7 +70,7 @@ class CssController
             }
         }
 
-        return $app['view']->render('Content/css.twig', array(
+        return $app->render('Content/css.twig', array(
             'form' => $form->createView(),
             'filenames' => $this->getFileNames($app),
         ));

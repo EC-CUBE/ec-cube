@@ -24,7 +24,6 @@
 
 namespace Eccube\Controller\Admin;
 
-use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Application;
@@ -45,7 +44,7 @@ class AdminController extends AbstractController
             ->createNamedBuilder('', 'admin_login')
             ->getForm();
 
-        return $app['view']->render('login.twig', array(
+        return $app->render('login.twig', array(
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
         ));

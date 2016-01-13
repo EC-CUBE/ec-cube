@@ -74,7 +74,7 @@ class ChangeController extends AbstractController
             }
         }
 
-        return $app->renderView('Mypage/change.twig', array(
+        return $app->render('Mypage/change.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -87,6 +87,6 @@ class ChangeController extends AbstractController
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->renderView('Mypage/change_complete.twig');
+        return $app->render('Mypage/change_complete.twig');
     }
 }

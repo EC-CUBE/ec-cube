@@ -84,7 +84,7 @@ class StatusController
             }
         }
 
-        return $app['view']->render('Order/status.twig', array(
+        return $app->render('Order/status.twig', array(
             'form' => $form->createView(),
             'Payment' => $Payment,
             'Orders' => $Orders,

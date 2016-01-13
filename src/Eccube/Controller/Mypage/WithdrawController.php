@@ -25,9 +25,9 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Util\Str;
-use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\Request;
 
 class WithdrawController extends AbstractController
@@ -51,7 +51,7 @@ class WithdrawController extends AbstractController
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
                     case 'confirm':
-                        return $app->renderView('Mypage/withdraw_confirm.twig', array(
+                        return $app->render('Mypage/withdraw_confirm.twig', array(
                             'form' => $form->createView(),
                         ));
                     case 'complete':
@@ -78,7 +78,7 @@ class WithdrawController extends AbstractController
             }
         }
 
-        return $app->renderView('Mypage/withdraw.twig', array(
+        return $app->render('Mypage/withdraw.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -91,6 +91,6 @@ class WithdrawController extends AbstractController
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->renderView('Mypage/withdraw_complete.twig');
+        return $app->render('Mypage/withdraw_complete.twig');
     }
 }
