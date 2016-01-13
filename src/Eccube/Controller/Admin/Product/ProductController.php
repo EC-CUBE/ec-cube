@@ -24,6 +24,7 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -461,6 +462,23 @@ class ProductController extends AbstractController
                 foreach ($CopyProductCategories as $Category) {
                     $app['orm.em']->persist($Category);
                 }
+
+                // 規格あり商品の場合は, ダミー規格を取得する.
+                if ($CopyProduct->hasProductClass()) {
+                    $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+                    $softDeleteFilter->setExcludes(array(
+                        'Eccube\Entity\ProductClass'
+                    ));
+                    $dummyClass = $app['eccube.repository.product_class']->findOneBy(array(
+                        'del_flg' => \Eccube\Common\Constant::ENABLED,
+                        'ClassCategory1' => null,
+                        'ClassCategory2' => null,
+                        'Product' => $Product,
+                    ));
+                    $CopyProduct->addProductClass(clone $dummyClass);
+                    $softDeleteFilter->setExcludes(array());
+                }
+
                 $CopyProductClasses = $CopyProduct->getProductClasses();
                 foreach ($CopyProductClasses as $Class) {
                     $Stock = $Class->getProductStock();
