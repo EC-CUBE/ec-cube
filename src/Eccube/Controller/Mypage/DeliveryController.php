@@ -115,7 +115,7 @@ class DeliveryController extends AbstractController
         $Customer = $app['user'];
 
         // 別のお届け先削除
-        if ($app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id)) {
+        if (!$app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id)) {
             $app->addError('mypage.address.delete.failed');
         } else {
             $app->addSuccess('mypage.address.delete.complete');
