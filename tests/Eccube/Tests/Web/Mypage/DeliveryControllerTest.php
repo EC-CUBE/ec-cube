@@ -192,7 +192,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $crawler = $client->request(
             'DELETE',
-            $this->app->path('mypage_delivery_delete', array('id' => PHP_INT_MAX))
+            $this->app->path('mypage_delivery_delete', array('id' => 999999999))
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_delivery')));

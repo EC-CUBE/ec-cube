@@ -136,7 +136,7 @@ class MypageControllerTest extends AbstractWebTestCase
         try {
             $crawler = $client->request(
                 'GET',
-                $this->app->path('mypage_history', array('id' => PHP_INT_MAX))
+                $this->app->path('mypage_history', array('id' => 999999999))
             );
             $this->fail();
         } catch (NotFoundHttpException $e) {
