@@ -696,38 +696,47 @@ class InstallController
             $fs->remove($config_file);
         }
 
-        switch ($data['database']) {
-            case 'pdo_pgsql':
-                if (empty($data['db_port'])) {
-                    $data['db_port'] = '5432';
-                }
-                $data['db_driver'] = 'pdo_pgsql';
-                break;
-            case 'pdo_mysql':
-                if (empty($data['db_port'])) {
-                    $data['db_port'] = '3306';
-                }
-                $data['db_driver'] = 'pdo_mysql';
-                break;
+        if ($data['database'] != 'pdo_sqlite') {
+            switch ($data['database']) {
+                case 'pdo_pgsql':
+                    if (empty($data['db_port'])) {
+                        $data['db_port'] = '5432';
+                    }
+                    $data['db_driver'] = 'pdo_pgsql';
+                    break;
+                case 'pdo_mysql':
+                    if (empty($data['db_port'])) {
+                        $data['db_port'] = '3306';
+                    }
+                    $data['db_driver'] = 'pdo_mysql';
+                    break;
+            }
+            $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
+            $replace = array(
+                $data['db_driver'],
+                $data['database_host'],
+                $data['database_name'],
+                $data['database_port'],
+                $data['database_user'],
+                $data['database_password']
+            );
+
+            $fs = new Filesystem();
+            $content = str_replace(
+                $target,
+                $replace,
+                file_get_contents($this->dist_path . '/database.yml.dist')
+            );
+
+        } else {
+            $content = array(
+                'database' => array(
+                    'driver' => 'pdo_sqlite',
+                    'path' => __DIR__.'/../../../../app/config/eccube/eccube.db'
+                )
+            );
         }
-        $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
-        $replace = array(
-            $data['db_driver'],
-            $data['database_host'],
-            $data['database_name'],
-            $data['database_port'],
-            $data['database_user'],
-            $data['database_password']
-        );
-
-        $fs = new Filesystem();
-        $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/database.yml.dist')
-        );
-
-        $fs->dumpFile($config_file, $content);
+        $fs->dumpFile($config_file, Yaml::dump($content));
 
         return $this;
     }
