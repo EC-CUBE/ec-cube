@@ -20,12 +20,10 @@ class Version20151023102323 extends AbstractMigration
 
 
         // pageを追加
-        $app = new \Eccube\Application();
-        $app->initialize();
-        $app->boot();
-        $em = $app['orm.em'];
+        $app = \Eccube\Application::getInstance();
+        $em = $app["orm.em"];
 
-        $DeviceType = $app['eccube.repository.master.device_type']->find(10);
+        $DeviceType = $em->getRepository('\Eccube\Entity\Master\DeviceType')->find(10);
 
         $PageLayout = new PageLayout();
         $PageLayout->setDeviceType($DeviceType);
@@ -34,6 +32,8 @@ class Version20151023102323 extends AbstractMigration
         $PageLayout->setFileName('Shopping/shipping_edit');
         $PageLayout->setEditFlg(2);
         $PageLayout->setMetaRobots('noindex');
+        $PageLayout->setCreateDate(new \DateTime());
+        $PageLayout->setUpdateDate(new \DateTime());
         $em->persist($PageLayout);
 
         $PageLayout = new PageLayout();
@@ -43,6 +43,8 @@ class Version20151023102323 extends AbstractMigration
         $PageLayout->setFileName('Shopping/shipping_multiple_edit');
         $PageLayout->setEditFlg(2);
         $PageLayout->setMetaRobots('noindex');
+        $PageLayout->setCreateDate(new \DateTime());
+        $PageLayout->setUpdateDate(new \DateTime());
         $em->persist($PageLayout);
 
         $PageLayout = new PageLayout();
@@ -52,6 +54,8 @@ class Version20151023102323 extends AbstractMigration
         $PageLayout->setFileName('Shopping/shopping_error');
         $PageLayout->setEditFlg(2);
         $PageLayout->setMetaRobots('noindex');
+        $PageLayout->setCreateDate(new \DateTime());
+        $PageLayout->setUpdateDate(new \DateTime());
         $em->persist($PageLayout);
 
         $PageLayout = new PageLayout();
@@ -60,6 +64,8 @@ class Version20151023102323 extends AbstractMigration
         $PageLayout->setUrl('help_guide');
         $PageLayout->setFileName('Help/guide');
         $PageLayout->setEditFlg(2);
+        $PageLayout->setCreateDate(new \DateTime());
+        $PageLayout->setUpdateDate(new \DateTime());
         $em->persist($PageLayout);
 
         $PageLayout = new PageLayout();
@@ -68,6 +74,8 @@ class Version20151023102323 extends AbstractMigration
         $PageLayout->setUrl('forgot');
         $PageLayout->setFileName('Forgot/index');
         $PageLayout->setEditFlg(2);
+        $PageLayout->setCreateDate(new \DateTime());
+        $PageLayout->setUpdateDate(new \DateTime());
         $em->persist($PageLayout);
 
         $PageLayout = new PageLayout();
@@ -77,6 +85,8 @@ class Version20151023102323 extends AbstractMigration
         $PageLayout->setFileName('Forgot/complete');
         $PageLayout->setEditFlg(2);
         $PageLayout->setMetaRobots('noindex');
+        $PageLayout->setCreateDate(new \DateTime());
+        $PageLayout->setUpdateDate(new \DateTime());
         $em->persist($PageLayout);
 
         $PageLayout = new PageLayout();
@@ -86,6 +96,8 @@ class Version20151023102323 extends AbstractMigration
         $PageLayout->setFileName('Forgot/reset');
         $PageLayout->setEditFlg(2);
         $PageLayout->setMetaRobots('noindex');
+        $PageLayout->setCreateDate(new \DateTime());
+        $PageLayout->setUpdateDate(new \DateTime());
         $em->persist($PageLayout);
 
         $em->flush();
