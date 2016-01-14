@@ -16,19 +16,22 @@ class Version20150821134922 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $tableName = 'dtb_session';
+        // https://github.com/EC-CUBE/ec-cube/pull/1392
+        // NativeSessionHandler の変更に伴いユニットテストがエラーになるためコメントアウト
+        //
+        // $tableName = 'dtb_session';
 
-        if ($schema->hasTable($tableName)) {
-            return;
-        }
+        // if ($schema->hasTable($tableName)) {
+        //     return;
+        // }
 
-        $pdoSessionHandler = new PdoSessionHandler(
-            $this->connection->getWrappedConnection(),
-            array(
-                'db_table' => $tableName,
-            )
-        );
-        $pdoSessionHandler->createTable();
+        // $pdoSessionHandler = new PdoSessionHandler(
+        //     $this->connection->getWrappedConnection(),
+        //     array(
+        //         'db_table' => $tableName,
+        //     )
+        // );
+        // $pdoSessionHandler->createTable();
     }
 
     /**
