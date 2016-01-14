@@ -42,7 +42,7 @@ class SystemService
 
         switch ($this->app['config']['database']['driver']) {
             case 'pdo_sqlite':
-                $prefix = 'sqlite3 ';
+                $prefix = 'SQLite version ';
                 $func = 'sqlite_version()';
                 break;
 

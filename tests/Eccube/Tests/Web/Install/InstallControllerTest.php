@@ -30,6 +30,12 @@ use Symfony\Component\Yaml\Yaml;
 class InstallControllerTest extends AbstractInstallWebTestCase
 {
 
+    public function setUp()
+    {
+        parent::setUp();
+        $config_file = __DIR__.'/../../../../../app/config/eccube/database.yml';
+        $this->config = Yaml::parse(file_get_contents($config_file));
+    }
     public function testRoutingIndex()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('install'));
@@ -50,9 +56,7 @@ class InstallControllerTest extends AbstractInstallWebTestCase
 
     public function testRoutingStep3()
     {
-        $config_file = __DIR__.'/../../../../../app/config/eccube/database.yml';
-        $config = Yaml::parse(file_get_contents($config_file));
-        if ($config['database']['driver'] == 'pdo_sqlite') {
+        if ($this->config['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');
         }
 
@@ -62,6 +66,10 @@ class InstallControllerTest extends AbstractInstallWebTestCase
 
     public function testRoutingStep4()
     {
+        if ($this->config['database']['driver'] == 'pdo_sqlite') {
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+
         $this->client->request('GET', $this->app['url_generator']->generate('install_step4'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }

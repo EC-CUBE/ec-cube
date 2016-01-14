@@ -55,7 +55,7 @@ class Step4Type extends AbstractType
             $database['pdo_mysql'] = 'MySQL';
         }
         if (extension_loaded('pdo_sqlite')) {
-            $database['pdo_sqlite'] = 'sqlite3';
+            $database['pdo_sqlite'] = 'SQLite(開発者用)';
         }
 
         $builder

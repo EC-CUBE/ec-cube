@@ -35,6 +35,6 @@ class SystemServiceTest extends AbstractServiceTestCase
             ->getDbversion();
 
         $this->assertNotNull($version);
-        $this->assertRegExp('/mysql|postgresql|sqlite3/', strtolower($version));
+        $this->assertRegExp('/mysql|postgresql|sqlite/', strtolower($version));
     }
 }

@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Tests\Form\Type\Install;
+use Symfony\Component\Yaml\Yaml;
 
 class Step4TypeTest extends AbstractTypeTestCase
 {
@@ -57,6 +58,13 @@ class Step4TypeTest extends AbstractTypeTestCase
     // DB への接続チェックも行われてしまうので、テストが難しい
     public function testInvalidData()
     {
+        $config_file = __DIR__.'/../../../../../../app/config/eccube/database.yml';
+        $config = Yaml::parse(file_get_contents($config_file));
+
+        if ($config['database']['driver'] == 'pdo_sqlite') {
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
         //var_dump($this->form->getErrorsAsString());die();
