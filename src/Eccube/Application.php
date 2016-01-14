@@ -25,11 +25,6 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
-use Monolog\Handler\FingersCrossedHandler;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,9 +34,37 @@ use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
 {
+    protected static $instance;
+
+    protected $initialized = false;
+    protected $initializedPlugin = false;
+
+    public static function getInstance(array $values = array())
+    {
+        if (!is_object(self::$instance)) {
+            self::$instance = new Application($values);
+        }
+
+        return self::$instance;
+    }
+
+    public static function clearInstance()
+    {
+        self::$instance = null;
+    }
+
+    final public function __clone()
+    {
+        throw new \Exception('Clone is not allowed against '.get_class($this));
+    }
+
     public function __construct(array $values = array())
     {
         parent::__construct($values);
+
+        if (is_null(self::$instance)) {
+            self::$instance = $this;
+        }
 
         // load config
         $this->initConfig();
@@ -143,6 +166,10 @@ class Application extends ApplicationTrait
 
     public function initialize()
     {
+        if ($this->initialized) {
+            return;
+        }
+
         // init locale
         $this->initLocale();
 
@@ -203,6 +230,8 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
+
+        $this->initialized = true;
     }
 
     public function initLocale()
@@ -343,7 +372,7 @@ class Application extends ApplicationTrait
                     $roles = array();
                     foreach ($AuthorityRoles as $AuthorityRole) {
                         // 管理画面でメニュー制御するため相対パス全てをセット
-                        $roles[] = $app['request']->getBaseUrl() . '/' . $app['config']['admin_route'] . $AuthorityRole->getDenyUrl();
+                        $roles[] = $app['request']->getBaseUrl().'/'.$app['config']['admin_route'].$AuthorityRole->getDenyUrl();
                     }
 
                     $app['twig']->addGlobal('AuthorityRoles', $roles);
@@ -561,11 +590,17 @@ class Application extends ApplicationTrait
 
     public function initializePlugin()
     {
+        if ($this->initializedPlugin) {
+            return;
+        }
+
         // setup event dispatcher
         $this->initPluginEventDispatcher();
 
         // load plugin
         $this->loadPlugin();
+
+        $this->initializedPlugin = true;
     }
 
     public function initPluginEventDispatcher()

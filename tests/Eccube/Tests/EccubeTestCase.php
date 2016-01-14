@@ -64,7 +64,9 @@ abstract class EccubeTestCase extends WebTestCase
         parent::tearDown();
         $this->app['orm.em']->getConnection()->rollback();
         $this->app['orm.em']->getConnection()->close();
+
         $this->cleanUpProperties();
+        $this->app = null;
     }
 
     /**
@@ -96,7 +98,7 @@ abstract class EccubeTestCase extends WebTestCase
         $config = new Configuration($this->app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
-        $migrationDir = __DIR__ . '/../../../src/Eccube/Resource/doctrine/migration';
+        $migrationDir = __DIR__.'/../../../src/Eccube/Resource/doctrine/migration';
         $config->setMigrationsDirectory($migrationDir);
         $config->registerMigrationsFromDirectory($migrationDir);
 
@@ -422,7 +424,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        $app = new Application();
+        $app = Application::getInstance();
         $app['debug'] = true;
         $app->initialize();
         $app->initPluginEventDispatcher();
@@ -454,6 +456,7 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
+        \Eccube\Application::clearInstance();
     }
 
     /**
