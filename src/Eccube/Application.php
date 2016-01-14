@@ -281,17 +281,6 @@ class Application extends ApplicationTrait
                 // http://blog.tokumaru.org/2011/10/cookiedomain.html
             ),
         ));
-        $this['session.db_options'] = array(
-            'db_table'      => 'dtb_session',
-        );
-
-        $app = $this;
-        $this['session.storage.handler'] = function() use ($app) {
-            return new PdoSessionHandler(
-                $app['dbs']['session']->getWrappedConnection(),
-                $app['session.db_options']
-            );
-        };
     }
 
     public function initRendering()
