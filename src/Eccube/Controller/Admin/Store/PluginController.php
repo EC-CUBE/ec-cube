@@ -31,12 +31,45 @@ use Eccube\Exception\PluginException;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
+    /**
+     * フォルダに置くだけプラグイン取得
+     *
+     * @param array $installedPlugin
+     * @param Eccube\Application $app
+     */
+    public function getDevelopPlugins(array $installedPlugin, \Eccube\Application $app){
+        $Finder = new \Symfony\Component\Finder\Finder();
+        $PluginService = $app['eccube.service.plugin'];
+
+        $installedPluginCodes = array();
+
+        // DB登録済みプラグインコードのみ取得
+        foreach ($installedPlugin as $key => $plugin) {
+            $installedPluginCodes[] = $plugin->getCode();
+        }
+
+        // DB登録済みプラグインコードPluginディレクトリから排他
+        $dirs = $Finder->in($app['config']['plugin_realdir'])->depth(0)->directories();
+
+        $developPlugin = array();
+        foreach ($dirs as $key => $val) {
+            $pluginCode = $val->getBasename();
+            if(in_array($pluginCode, $installedPluginCodes, true)) {
+                continue;
+            }
+            $developPlugin[$pluginCode] = $val->getRealPath();
+        }
+
+        $davelopPlugins = $PluginService->readDevelopPlugins($developPlugin);
+        return (count($davelopPlugins) > 0) ? $davelopPlugins : null;
+    }
 
     /**
      * インストール済プラグイン画面
@@ -51,6 +84,7 @@ class PluginController extends AbstractController
         $configPages = array();
 
         $Plugins = $app['eccube.repository.plugin']->findBy(array(), array('name' => 'ASC'));
+        $developPlugins = $this->getDevelopPlugins($Plugins, $app);
 
         $officialPlugins = array();
         $unofficialPlugins = array();
@@ -132,6 +166,7 @@ class PluginController extends AbstractController
             'plugin_forms' => $pluginForms,
             'officialPlugins' => $officialPlugins,
             'unofficialPlugins' => $unofficialPlugins,
+            'developPlugins' => $developPlugins,
             'configPages' => $configPages
         ));
 

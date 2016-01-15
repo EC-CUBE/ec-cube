@@ -24,11 +24,13 @@
 
 namespace Eccube\Event;
 
+use Eccube\Application;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
+use Monolog\Logger;
 
 class FormEventSubscriber implements EventSubscriberInterface
 {
@@ -43,7 +45,13 @@ class FormEventSubscriber implements EventSubscriberInterface
             ->depth(0);
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse(file_get_contents($dir->getRealPath() . '/config.yml'));
+            if (file_exists($dir->getRealPath() . '/config.yml')) {
+                $config = Yaml::parse(file_get_contents($dir->getRealPath() . '/config.yml'));
+            }else{
+                $error = 'FormEventSubscriber::getEvents : config.yamlがみつかりません';
+                $app = \Eccube\Application::getInstance();
+                $app->log($error, array(), Logger::WARNING);
+            }
 
             if (isset($config['form'])) {
                 foreach ($config['form'] as $event => $class) {
