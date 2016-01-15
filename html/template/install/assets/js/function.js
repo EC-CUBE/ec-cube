@@ -52,6 +52,24 @@ jQuery(document).ready(function($){
         e.stopPropagation();
     });
 
+/////////// database choice
+	$("#install_step4_database").change(function() {
+		if ($(this).val() == 'pdo_sqlite') {
+			$(".required").hide();
+			$("#install_step4_database_host, "
+			  + "#install_step4_database_port, "
+			  + "#install_step4_database_name, "
+			  + "#install_step4_database_user, "
+			  + "#install_step4_database_password").attr("disabled", "disabled");
+		} else {
+			$(".required").show();
+			$("#install_step4_database_host, "
+			  + "#install_step4_database_port, "
+			  + "#install_step4_database_name, "
+			  + "#install_step4_database_user, "
+			  + "#install_step4_database_password").removeAttr("disabled");
+		}
+	});
 
 
 

@@ -33,7 +33,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testId()
     {
-        $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-1'));
+        $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-2'));
         $id = $Product->getId();
 
         $this->searchData = array(

@@ -23,3 +23,6 @@
 
 $loader = require __DIR__ . '/../autoload.php';
 $loader->add('Eccube\Tests', __DIR__);
+if (file_exists(sys_get_temp_dir().'/migrations.sql')) {
+    unlink(sys_get_temp_dir().'/migrations.sql');
+}
