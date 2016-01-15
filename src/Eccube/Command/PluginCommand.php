@@ -72,104 +72,99 @@ EOF
         $code = $input->getOption('code');
 
         $service = $this->app['eccube.service.plugin'];
-        try{
-            if ($mode == 'install') {
-                if (empty($path)) {
-                    $output->writeln('path is required.');
-                    return;
-                }
-                if ($service->install($path)) {
-                    $output->writeln('success');
-                    return;
-                }
+        if ($mode == 'install') {
+            if (empty($path)) {
+                $output->writeln('path is required.');
+                return;
             }
-            if ($mode == 'update') {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-                    return;
-                }
-                if (empty($path)) {
-                    $output->writeln('path is required.');
-                    return;
-                }
-                $plugin = $this->getPluginFromCode($code);
-                if ($service->update($plugin, $path)) {
-                    $output->writeln('success');
-                    return;
-                }
+            if ($service->install($path)) {
+                $output->writeln('success');
+                return;
             }
-            if ($mode == 'reload') {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-                    return;
-                }
-                $stepFlg = false;
-                if ($service->sandBoxExcute($this->pluginPath.$code, 'uninstall')) {
-                    $stepFlg = true;
-                }
-                if ($stepFlg) {
-                    if ($service->sandBoxExcute($this->pluginPath.$code, 'install')) {
-                        $output->writeln('success');
-                        return;
-                    }
-                }
+        }
+        if ($mode == 'update') {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
             }
-            if ($mode == 'sandbox:install') {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-                    return;
-                }
+            if (empty($path)) {
+                $output->writeln('path is required.');
+                return;
+            }
+            $plugin = $this->getPluginFromCode($code);
+            if ($service->update($plugin, $path)) {
+                $output->writeln('success');
+                return;
+            }
+        }
+        if ($mode == 'reload') {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+            $stepFlg = false;
+            if ($service->sandBoxExcute($this->pluginPath.$code, 'uninstall')) {
+                $stepFlg = true;
+            }
+            if ($stepFlg) {
                 if ($service->sandBoxExcute($this->pluginPath.$code, 'install')) {
                     $output->writeln('success');
                     return;
                 }
             }
-            if ($mode == 'sandbox:uninstall') {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-                    return;
-                }
-                if ($service->sandBoxExcute($this->pluginPath.$code, 'uninstall')) {
-                    $output->writeln('success');
-                    return;
-                }
-            }
-            if ($mode == 'sandbox:disable') {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-                    return;
-                }
-                if ($service->sandBoxExcute($this->pluginPath.$code, 'disable')) {
-                    $output->writeln('success');
-                    return;
-                }
-            }
-            if ($mode == 'sandbox:enable') {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-                    return;
-                }
-                if ($service->sandBoxExcute($this->pluginPath.$code, 'enable')) {
-                    $output->writeln('success');
-                    return;
-                }
-            }
-            if (in_array($mode, array('enable', 'disable', 'uninstall'), true)) {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-                    return;
-                }
-
-                $plugin = $this->getPluginFromCode($code);
-                if ($service->$mode($plugin)) {
-                    $output->writeln('success');
-                    return;
-                }
-            }
-            $output->writeln('undefined mode.');
-        } catch(\Exception $e) {
-            $output->writeln('Raised exception : '.$e->getMessage());
-            $this->app->log($e, Logger::WARNING);
         }
+        if ($mode == 'sandbox:install') {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+            if ($service->sandBoxExcute($this->pluginPath.$code, 'install')) {
+                $output->writeln('success');
+                return;
+            }
+        }
+        if ($mode == 'sandbox:uninstall') {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+            if ($service->sandBoxExcute($this->pluginPath.$code, 'uninstall')) {
+                $output->writeln('success');
+                return;
+            }
+        }
+        if ($mode == 'sandbox:disable') {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+            if ($service->sandBoxExcute($this->pluginPath.$code, 'disable')) {
+                $output->writeln('success');
+                return;
+            }
+        }
+        if ($mode == 'sandbox:enable') {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+            if ($service->sandBoxExcute($this->pluginPath.$code, 'enable')) {
+                $output->writeln('success');
+                return;
+            }
+        }
+        if (in_array($mode, array('enable', 'disable', 'uninstall'), true)) {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+
+            $plugin = $this->getPluginFromCode($code);
+            if ($service->$mode($plugin)) {
+                $output->writeln('success');
+                return;
+            }
+        }
+        $output->writeln('undefined mode.');
     }
 }

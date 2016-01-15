@@ -96,7 +96,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
         // console用
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpfile, 'install'));
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
 
         try{
             $service->install($tmpfile);
@@ -108,11 +108,14 @@ class PluginServiceTest extends AbstractServiceTestCase
         // 同じプラグインの二重インストールが蹴られるか
 
         // アンインストールできるか
+        // console用
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'uninstall'));
+        // console用
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
+        // 通常
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
         $this->assertTrue($service->uninstall($plugin));
-        // console用
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpfile, 'uninstall'));
 
 
     }
@@ -136,7 +139,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールできるか
         $service->install($tmpfile);
         // console用
-        $service->sandBoxExcute($pluginpath.$tmpfile, 'install');
+        $service->sandBoxExcute($pluginpath.$tmpname, 'install');
 
     }
 
@@ -245,7 +248,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールできないはず
         $this->assertNull($service->install($tmpfile));
         // coneole用
-        $this->assertNull($service->sandBoxExcute($pluginpath.$tmpfile, 'install'));
+        $this->assertNull($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
     }
 
     // イベント定義を含むプラグインのインストールとアンインストールを検証
@@ -360,10 +363,10 @@ EOD;
         $this->assertTrue($service->enable($plugin));
         // console用
         // enable/disableできるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$plugin, 'disable'));
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$plugin, 'enable'));
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'disable'));
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'enable'));
         // reloadは行えるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$plugin, 'reload'));
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'reload'));
 
         // イベント定義を更新する
         $event=array();
@@ -541,7 +544,7 @@ EOD;
         ob_start();
         $this->assertTrue($service->install($tmpfile));
         // console用インストールが行えるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpfile, 'install'));
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
         $this->assertRegexp('/Installed/',ob_get_contents()); ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
@@ -559,9 +562,10 @@ EOD;
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
         $service->disable($plugin);
-        $this->assertTrue($service->uninstall($plugin));
         // console用アンインストールが行えるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpfile, 'uninstall'));
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'uninstall'));
+        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
+        $this->assertTrue($service->uninstall($plugin));
         $this->assertRegexp('/DisabledUninstalled/',ob_get_contents()); ob_end_clean();
     }
 
