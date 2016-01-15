@@ -74,9 +74,12 @@ EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
         $service = $this->app['eccube.service.plugin'];
+        $pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
         try{
 
             $this->assertTrue($service->install($tmpfile));
+            // console用
+            $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpfile, 'install'));
             $this->fail("BrokenManager dont throw exception.");
         }catch(\Exception $e){ }
 

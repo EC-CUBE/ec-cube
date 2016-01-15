@@ -41,6 +41,24 @@ class PluginService
         $this->app = $app;
     }
 
+    public function sandBoxExcute($path, $method)
+    {
+        $pluginBaseDir = null;
+
+        try {
+            $this->checkPluginArchiveContent($path);
+            $config = $this->readYml($path.'/'.self::CONFIG_YML);
+            $event = $this->readYml($path.'/'.self::EVENT_YML);
+            $this->callPluginManagerMethod($config, $method);
+        } catch (PluginException $e) {
+            throw $e;
+        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
+            throw $e;
+        }
+
+        return true;
+    }
+
     public function install($path, $source = 0)
     {
         $pluginBaseDir = null;
