@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Web\Admin\Customer;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Entity\Master\CsvType;
 
 class CustomerControllerTest extends AbstractAdminWebTestCase
 {
@@ -12,6 +13,16 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->initializeMailCatcher();
         for ($i = 0; $i < 10; $i++) {
             $this->createCustomer('user-'.$i.'@example.com');
+        }
+        // sqlite では CsvType が生成されないので、ここで作る
+        $CsvType = $this->app['eccube.repository.master.csv_type']->find(2);
+        if (!is_object($CsvType)) {
+            $CsvType = new CsvType();
+            $CsvType->setId(2);
+            $CsvType->setName('会員CSV');
+            $CsvType->setRank(4);
+            $this->app['orm.em']->persist($CsvType);
+            $this->app['orm.em']->flush();
         }
     }
 
