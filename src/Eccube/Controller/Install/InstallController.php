@@ -212,7 +212,7 @@ class InstallController
 
         if (empty($sessionData['database'])) {
 
-            $config_file = $this->config_path.'/database.yml';
+            $config_file = $this->config_path . '/database.yml';
             $fs = new Filesystem();
 
             if ($fs->exists($config_file)) {
@@ -729,14 +729,16 @@ class InstallController
             );
 
         } else {
-            $content = array(
-                'database' => array(
-                    'driver' => 'pdo_sqlite',
-                    'path' => realpath($this->config_path.'/eccube.db')
+            $content = Yaml::dump(
+                array(
+                    'database' => array(
+                        'driver' => 'pdo_sqlite',
+                        'path' => realpath($this->config_path . '/eccube.db')
+                    )
                 )
             );
         }
-        $fs->dumpFile($config_file, Yaml::dump($content));
+        $fs->dumpFile($config_file, $content);
 
         return $this;
     }
