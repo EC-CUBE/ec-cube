@@ -163,12 +163,6 @@ class ProductController extends AbstractController
 
     public function edit(Application $app, Request $request, $id = null)
     {
-        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass'
-        ));
-
         $has_class = false;
         if (is_null($id)) {
             $Product = new \Eccube\Entity\Product();
@@ -461,6 +455,25 @@ class ProductController extends AbstractController
                 foreach ($CopyProductCategories as $Category) {
                     $app['orm.em']->persist($Category);
                 }
+
+                // 規格あり商品の場合は, デフォルトの商品規格を取得し登録する.
+                if ($CopyProduct->hasProductClass()) {
+                    $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+                    $softDeleteFilter->setExcludes(array(
+                        'Eccube\Entity\ProductClass'
+                    ));
+                    $dummyClass = $app['eccube.repository.product_class']->findOneBy(array(
+                        'del_flg' => \Eccube\Common\Constant::ENABLED,
+                        'ClassCategory1' => null,
+                        'ClassCategory2' => null,
+                        'Product' => $Product,
+                    ));
+                    $dummyClass = clone $dummyClass;
+                    $dummyClass->setProduct($CopyProduct);
+                    $CopyProduct->addProductClass($dummyClass);
+                    $softDeleteFilter->setExcludes(array());
+                }
+
                 $CopyProductClasses = $CopyProduct->getProductClasses();
                 foreach ($CopyProductClasses as $Class) {
                     $Stock = $Class->getProductStock();

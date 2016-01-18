@@ -40,14 +40,27 @@ class SystemService
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
+        switch ($this->app['config']['database']['driver']) {
+            case 'pdo_sqlite':
+                $prefix = 'SQLite version ';
+                $func = 'sqlite_version()';
+                break;
+
+            case 'pdo_mysql':
+                $prefix = 'MySQL ';
+                $func = 'version()';
+                break;
+
+            case 'pdo_pgsql':
+            default:
+                $prefix = '';
+                $func = 'version()';
+        }
+
         $version = $this->app['orm.em']
-            ->createNativeQuery('select version() as v', $rsm)
+            ->createNativeQuery('select '.$func.' as v', $rsm)
             ->getSingleScalarResult();
 
-        if ($this->app['config']['database']['driver'] == 'pdo_mysql') {
-            return 'MySQL '.$version;
-        } else {
-            return $version;
-        }
+        return $prefix.$version;
     }
 }
