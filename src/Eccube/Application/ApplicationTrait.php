@@ -58,7 +58,7 @@ class ApplicationTrait extends \Silex\Application
         $this->clearMessage();
         $this->addWarning('admin.delete.warning', 'admin');
     }
-    
+
     public function setLoginTargetPath($targetPath)
     {
         $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
@@ -225,13 +225,14 @@ class ApplicationTrait extends \Silex\Application
 
         // イベントの実行.
         // プラグインにはテンプレートファイル名、文字列化されたtwigファイル、パラメータを渡す
-        $event = new TemplateEvent($this, $view, $source, $parameters, $response);
+        $event = new TemplateEvent($view, $source, $parameters, $response);
 
         $eventName = $view;
         if ($this->isAdminRequest()) {
-            // 管理画面の場合、event名に「admin」を付ける
-            $eventName = 'admin/' . $view;
+            // 管理画面の場合、event名に「admin.」を付ける
+            $eventName = 'admin.' . $view;
         }
+        $this['monolog']->debug('Template Event Name : ' . $eventName);
 
         $this['eccube.event.dispatcher']->dispatch($eventName, $event);
 

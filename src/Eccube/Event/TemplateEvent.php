@@ -35,11 +35,6 @@ class TemplateEvent extends Event
 {
 
     /**
-     * @var \Eccube\Application
-     */
-    private $app;
-
-    /**
      * @var string
      */
     private $view;
@@ -62,35 +57,17 @@ class TemplateEvent extends Event
     /**
      * TemplateEvent constructor.
      *
-     * @param $app
      * @param string $view
      * @param string $source
      * @param array $parameters
      * @param Response|null $response
      */
-    public function __construct($app, $view, $source, array $parameters = array(), Response $response = null)
+    public function __construct($view, $source, array $parameters = array(), Response $response = null)
     {
-        $this->app = $app;
         $this->view = $view;
         $this->source = $source;
         $this->parameters = $parameters;
         $this->response = $response;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getApp()
-    {
-        return $this->app;
-    }
-
-    /**
-     * @param mixed $app
-     */
-    public function setApp($app)
-    {
-        $this->app = $app;
     }
 
     /**
