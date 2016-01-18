@@ -39,9 +39,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             eccube.submitForm();
         }
         // 商品表示BOXの高さを揃える
-        (function(){
+        $(window).load(function() {
             $('.product_item').matchHeight();
-        })();
+        });
     </script>
 {% endblock %}
 
