@@ -57,7 +57,7 @@ class ApplicationTrait extends \Silex\Application
         $this->clearMessage();
         $this->addWarning('admin.delete.warning', 'admin');
     }
-    
+
     public function setLoginTargetPath($targetPath)
     {
         $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
@@ -234,6 +234,26 @@ class ApplicationTrait extends \Silex\Application
     public function renderView($view, array $parameters = array())
     {
         return $this['twig']->render($view, $parameters);
+    }
+
+    /**
+     * Response xml.
+     *
+     * @param string $view The view name
+     * @param array $parameters An array of parameters to pass to the view
+     *
+     * @return Response A Response instance
+     */
+    public function xml($view, array $parameters = array())
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $this->render(
+            $view,
+            $parameters,
+            $response
+        );
     }
 
     /** UrlGeneratorTrait */
