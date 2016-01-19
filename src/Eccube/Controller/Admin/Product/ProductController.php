@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -206,8 +207,15 @@ class ProductController extends AbstractController
         }
 
         $form = $builder->getForm();
+        //$event = new FormEvent($form, $request);
+        $event = new EventArgs(array(
+                'form' => $form,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch('admin.product.initialize', $event);
+
         if (!$has_class) {
-            $ProductClass->setStockUnlimited((boolean) $ProductClass->getStockUnlimited());
+            $ProductClass->setStockUnlimited((boolean)$ProductClass->getStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
@@ -347,6 +355,15 @@ class ProductController extends AbstractController
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
+
+
+                $event = new EventArgs(array(
+                        'form' => $form,
+                        'product' => $Product,
+                    )
+                );
+
+                $app['eccube.event.dispatcher']->dispatch('admin.product.complete', $event);
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
