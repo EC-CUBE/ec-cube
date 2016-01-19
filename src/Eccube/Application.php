@@ -640,7 +640,7 @@ class Application extends ApplicationTrait
             $app['monolog']->debug('KernelEvents::REQUEST '.$route);
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.request', $event);
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
 
             if (strpos('admin', $route) === 0) {
                 // 管理画面
@@ -666,7 +666,7 @@ class Application extends ApplicationTrait
             $app['monolog']->debug('KernelEvents::CONTROLLER '.$route);
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.controller', $event);
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.controller', $event);
 
             if (strpos('admin', $route) === 0) {
                 // 管理画面
@@ -703,7 +703,7 @@ class Application extends ApplicationTrait
             }
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.response', $event);
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.response', $event);
         });
 
         // Exception Event
@@ -729,7 +729,7 @@ class Application extends ApplicationTrait
             }
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.exception', $event);
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.exception', $event);
         });
 
         // Terminate Event
@@ -751,7 +751,7 @@ class Application extends ApplicationTrait
             }
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.terminate', $event);
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
         });
     }
 
