@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -477,65 +478,70 @@ class Application extends ApplicationTrait
 
     public function initSecurity()
     {
-        $this->register(new \Silex\Provider\SecurityServiceProvider());
-        $this->register(new \Silex\Provider\RememberMeServiceProvider());
+        try {
+            $this->register(new \Silex\Provider\SecurityServiceProvider());
+            $this->register(new \Silex\Provider\RememberMeServiceProvider());
 
-        $this['security.firewalls'] = array(
-            'admin' => array(
-                'pattern' => "^/{$this['config']['admin_route']}",
-                'form' => array(
-                    'login_path' => "/{$this['config']['admin_route']}/login",
-                    'check_path' => "/{$this['config']['admin_route']}/login_check",
-                    'username_parameter' => 'login_id',
-                    'password_parameter' => 'password',
-                    'with_csrf' => true,
-                    'use_forward' => true,
+            $this['security.firewalls'] = array(
+                'admin' => array(
+                    'pattern' => "^/{$this['config']['admin_route']}",
+                    'form' => array(
+                        'login_path' => "/{$this['config']['admin_route']}/login",
+                        'check_path' => "/{$this['config']['admin_route']}/login_check",
+                        'username_parameter' => 'login_id',
+                        'password_parameter' => 'password',
+                        'with_csrf' => true,
+                        'use_forward' => true,
+                    ),
+                    'logout' => array(
+                        'logout_path' => "/{$this['config']['admin_route']}/logout",
+                        'target_url' => "/{$this['config']['admin_route']}/",
+                    ),
+                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
+                    'anonymous' => true,
                 ),
-                'logout' => array(
-                    'logout_path' => "/{$this['config']['admin_route']}/logout",
-                    'target_url' => "/{$this['config']['admin_route']}/",
+                'customer' => array(
+                    'pattern' => '^/',
+                    'form' => array(
+                        'login_path' => '/mypage/login',
+                        'check_path' => '/login_check',
+                        'username_parameter' => 'login_email',
+                        'password_parameter' => 'login_pass',
+                        'with_csrf' => true,
+                        'use_forward' => true,
+                    ),
+                    'logout' => array(
+                        'logout_path' => '/logout',
+                        'target_url' => '/',
+                    ),
+                    'remember_me' => array(
+                        'key' => sha1($this['config']['auth_magic']),
+                        'name' => 'eccube_rememberme',
+                        // lifetimeはデフォルトの1年間にする
+                        // 'lifetime' => $this['config']['cookie_lifetime'],
+                        'path' => $this['config']['root_urlpath'] ?: '/',
+                        'secure' => $this['config']['force_ssl'],
+                        'httponly' => true,
+                        'always_remember_me' => false,
+                        'remember_me_parameter' => 'login_memory',
+                    ),
+                    'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
+                    'anonymous' => true,
                 ),
-                'users' => $this['orm.em']->getRepository('Eccube\Entity\Member'),
-                'anonymous' => true,
-            ),
-            'customer' => array(
-                'pattern' => '^/',
-                'form' => array(
-                    'login_path' => '/mypage/login',
-                    'check_path' => '/login_check',
-                    'username_parameter' => 'login_email',
-                    'password_parameter' => 'login_pass',
-                    'with_csrf' => true,
-                    'use_forward' => true,
-                ),
-                'logout' => array(
-                    'logout_path' => '/logout',
-                    'target_url' => '/',
-                ),
-                'remember_me' => array(
-                    'key' => sha1($this['config']['auth_magic']),
-                    'name' => 'eccube_rememberme',
-                    // lifetimeはデフォルトの1年間にする
-                    // 'lifetime' => $this['config']['cookie_lifetime'],
-                    'path' => $this['config']['root_urlpath'] ?: '/',
-                    'secure' => $this['config']['force_ssl'],
-                    'httponly' => true,
-                    'always_remember_me' => false,
-                    'remember_me_parameter' => 'login_memory',
-                ),
-                'users' => $this['orm.em']->getRepository('Eccube\Entity\Customer'),
-                'anonymous' => true,
-            ),
-        );
+            );
 
-        $this['security.access_rules'] = array(
-            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
-            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
-            array('^/mypage', 'ROLE_USER'),
-        );
+            $this['security.access_rules'] = array(
+                array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
+                array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
+                array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+                array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+                array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
+                array('^/mypage', 'ROLE_USER'),
+            );
+        } catch(\Exception $e) {
+            $this->log($e, array(), Logger::WARNING);
+            throw new \Exception('データベース接続が行えません');
+        }
 
         $this['eccube.password_encoder'] = $this->share(function($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
@@ -642,17 +648,23 @@ class Application extends ApplicationTrait
 
         // ハンドラ優先順位をdbから持ってきてハッシュテーブルを作成
         $priorities = array();
-        $handlers = $this['orm.em']
-            ->getRepository('Eccube\Entity\PluginEventHandler')
-            ->getHandlers();
-        foreach ($handlers as $handler) {
-            if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
-                $priority = $handler->getPriority();
-            } else {
-                // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
-                $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
+        try {
+            $handlers = $this['orm.em']
+                ->getRepository('Eccube\Entity\PluginEventHandler')
+                ->getHandlers();
+
+            foreach ($handlers as $handler) {
+                if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
+                    $priority = $handler->getPriority();
+                } else {
+                    // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
+                    $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
+                }
+                $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
             }
-            $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
+        }catch(\Exception $e){
+            $this->log($e, array(), Logger::WARNING);
+            throw new \Exception('データベース接続が行えません');
         }
 
         // プラグインをロードする.
