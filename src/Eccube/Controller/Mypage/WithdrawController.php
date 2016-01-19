@@ -50,6 +50,8 @@ class WithdrawController extends AbstractController
 
             if ($form->isValid()) {
                 switch ($request->get('mode')) {
+                    case 'back':
+                        return $app->redirect($app->url('mypage'));
                     case 'confirm':
                         return $app->renderView('Mypage/withdraw_confirm.twig', array(
                             'form' => $form->createView(),
