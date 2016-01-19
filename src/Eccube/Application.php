@@ -637,6 +637,10 @@ class Application extends ApplicationTrait
 
             $route = $event->getRequest()->attributes->get('_route');
 
+            if (is_null($route)) {
+                return;
+            }
+
             $app['monolog']->debug('KernelEvents::REQUEST '.$route);
 
             // 全体
@@ -652,7 +656,8 @@ class Application extends ApplicationTrait
 
             // ルーティング単位
             $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.request", $event);
-        });
+
+        }, 30); // Routing(32)が解決しし, 認証判定(8)が実行される前のタイミング.
 
         // Controller Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function(\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
@@ -661,7 +666,12 @@ class Application extends ApplicationTrait
                 return;
             }
 
+
             $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
 
             $app['monolog']->debug('KernelEvents::CONTROLLER '.$route);
 
@@ -689,6 +699,10 @@ class Application extends ApplicationTrait
 
             $route = $event->getRequest()->attributes->get('_route');
 
+            if (is_null($route)) {
+                return;
+            }
+
             $app['monolog']->debug('KernelEvents::RESPONSE '.$route);
 
             // ルーティング単位
@@ -715,6 +729,10 @@ class Application extends ApplicationTrait
 
             $route = $event->getRequest()->attributes->get('_route');
 
+            if (is_null($route)) {
+                return;
+            }
+
             $app['monolog']->debug('KernelEvents::EXCEPTION '.$route);
 
             // ルーティング単位
@@ -736,6 +754,10 @@ class Application extends ApplicationTrait
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function(\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) use ($app) {
 
             $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
 
             $app['monolog']->debug('KernelEvents::TERMINATE '.$route);
 
