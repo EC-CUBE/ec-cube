@@ -37,6 +37,8 @@ form.type.graph.invalid: 半角英数字で入力してください。
 
 form.type.name.firstname.nothasspace: お名前(名)にスペース、タブ、改行は含めないで下さい。
 form.type.name.lastname.nothasspace: お名前(性)にスペース、タブ、改行は含めないで下さい。
+form.type.kana.firstname.nothasspace: お名前(メイ)にスペース、タブ、改行は含めないで下さい。
+form.type.kana.lastname.nothasspace: お名前(セイ)にスペース、タブ、改行は含めないで下さい。
 form.type.customer.company.nothasspace: 会社名にスペース、タブ、改行は含めないで下さい。
 
 form.type.admin.nottelstyle: 電話番号は半角数字かハイフンのみを入力してください。。

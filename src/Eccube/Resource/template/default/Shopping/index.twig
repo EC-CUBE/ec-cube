@@ -190,6 +190,7 @@ $(function(){
                     <h2 class="heading02">お客様情報</h2>
                     <div class="column is-edit">
                         <p class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様<br>
+                        <span class="customer-edit customer-kana01">{{ Order.kana01 }}</span> <span class="customer-edit customer-kana02">{{ Order.kana02 }}</span> サマ<br>
                         〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
                         <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                         {% if is_granted('ROLE_USER') == false %}
@@ -202,6 +203,8 @@ $(function(){
                         <p class="btn_edit"><button type="button" id="customer" class="btn btn-default btn-sm">変更</button></p>
                         <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
                         <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
+                        <input type="hidden" id="customer-kana01" class="customer-in" name="customer_kana01" value="{{ Order.kana01 }}">
+                        <input type="hidden" id="customer-kana02" class="customer-in" name="customer_kana02" value="{{ Order.kana02 }}">
                         <input type="hidden" id="customer-zip01" class="customer-in" name="customer_zip01" value="{{ Order.zip01 }}">
                         <input type="hidden" id="customer-zip02" class="customer-in" name="customer_zip02" value="{{ Order.zip02 }}">
                         <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">

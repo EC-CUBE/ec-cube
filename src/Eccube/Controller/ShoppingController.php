@@ -710,6 +710,8 @@ class ShoppingController extends AbstractController
                 $Order
                     ->setName01($data['customer_name01'])
                     ->setName02($data['customer_name02'])
+                    ->setKana01($data['customer_kana01'])
+                    ->setKana02($data['customer_kana02'])
                     ->setCompanyName($data['customer_company_name'])
                     ->setTel01($data['customer_tel01'])
                     ->setTel02($data['customer_tel02'])
@@ -1215,13 +1217,25 @@ class ShoppingController extends AbstractController
         $errors[] = $app['validator']->validateValue($data['customer_name01'], array(
             new Assert\NotBlank(),
             new Assert\Length(array('max' => $app['config']['name_len'],)),
-            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
+            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.secondname.nothasspace'))
         ));
 
         $errors[] = $app['validator']->validateValue($data['customer_name02'], array(
             new Assert\NotBlank(),
             new Assert\Length(array('max' => $app['config']['name_len'], )),
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_kana01'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['name_len'],)),
+            new Assert\Regex(array('pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u", 'message' => 'form.type.kana.secondname.nothasspace'))
+        ));
+
+        $errors[] = $app['validator']->validateValue($data['customer_kana02'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['name_len'], )),
+            new Assert\Regex(array('pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u", 'message' => 'form.type.kana.firstname.nothasspace'))
         ));
 
         $errors[] = $app['validator']->validateValue($data['customer_company_name'], array(
