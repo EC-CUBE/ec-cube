@@ -452,12 +452,12 @@ class Application extends ApplicationTrait
         );
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
             if (file_exists($dir->getRealPath().'/config.yml')) {
                 $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
             }else{
                 $error = 'Application::initDoctrine : config.yamlがみつかりません'.$dir->getRealPath();
                 $this->log($error, array(), Logger::WARNING);
+                continue;
             }
 
             // Doctrine Extend
@@ -662,32 +662,17 @@ class Application extends ApplicationTrait
             $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
         }
 
-        // 既存のプラグインで「config.yml」がない場合は、エラー
-        // 既存プラグインの「code」を抽出
-        $installedPlugins = $this['orm.em']
-            ->getRepository('Eccube\Entity\Plugin')
-            ->findAll();
-        $installedCodes = array();
-        foreach($installedPlugins as $val){
-            $installedCodes[] = $val->getCode();
-        }
-
         // プラグインをロードする.
         // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
         foreach ($finder as $dir) {
-            //config.ymlのないディレクトリは無視する
-            if (!file_exists($dir->getRealPath().'/config.yml')) {
-                $code = $dir->getBasename();
-                if(!in_array($code, $installedCodes, true)){
-                    $error = 'Application::loadPlugin : config.ymlがロードできませんでした。'.$dir->getRealPath();
-                    $this->log($error, array(), Logger::WARNING);
-                    continue;
-                }else{
-                    // 既にインストールされているプラグインで「config.yml」が見つからない場合はエラー
-                    throw new \Exception('Application::loadPlugin : config.ymlファイルが見つかりません'.$dir->getRealPath());
-                }
+            try {
+                $this['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
+            } catch(\Eccube\Exception\PluginException $e) {
+                $this['monolog']->warning($e->getMessage());
+                continue;
             }
-            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
+
+            $config = $this['eccube.service.plugin']->readYml($dir->getRealPath().'/config.yml');
 
             $plugin = $this['orm.em']
                 ->getRepository('Eccube\Entity\Plugin')

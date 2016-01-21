@@ -60,13 +60,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
 
 
-            {% if developPlugins is not null %}
+            {% if unregisteredPlugins is not empty %}
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">独自プラグイン</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    {{ include('Store/develop_plugin_table.twig', {'Plugins': developPlugins}) }}
+                    {{ include('Store/unregistered_plugin_table.twig', {'Plugins': unregisteredPlugins}) }}
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
             {% endif %}

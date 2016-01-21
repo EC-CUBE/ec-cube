@@ -38,38 +38,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
-    /**
-     * フォルダに置くだけプラグイン取得
-     *
-     * @param array $installedPlugin
-     * @param Eccube\Application $app
-     */
-    public function getDevelopPlugins(array $installedPlugin, \Eccube\Application $app){
-        $Finder = new \Symfony\Component\Finder\Finder();
-        $PluginService = $app['eccube.service.plugin'];
-
-        $installedPluginCodes = array();
-
-        // DB登録済みプラグインコードのみ取得
-        foreach ($installedPlugin as $key => $plugin) {
-            $installedPluginCodes[] = $plugin->getCode();
-        }
-
-        // DB登録済みプラグインコードPluginディレクトリから排他
-        $dirs = $Finder->in($app['config']['plugin_realdir'])->depth(0)->directories();
-
-        $developPlugin = array();
-        foreach ($dirs as $key => $val) {
-            $pluginCode = $val->getBasename();
-            if(in_array($pluginCode, $installedPluginCodes, true)) {
-                continue;
-            }
-            $developPlugin[$pluginCode] = $val->getRealPath();
-        }
-
-        $davelopPlugins = $PluginService->readDevelopPlugins($developPlugin);
-        return (count($davelopPlugins) > 0) ? $davelopPlugins : null;
-    }
 
     /**
      * インストール済プラグイン画面
@@ -84,7 +52,7 @@ class PluginController extends AbstractController
         $configPages = array();
 
         $Plugins = $app['eccube.repository.plugin']->findBy(array(), array('name' => 'ASC'));
-        $developPlugins = $this->getDevelopPlugins($Plugins, $app);
+        $unregisteredPlugins = $this->getUnregisteredPlugins($Plugins, $app);
 
         $officialPlugins = array();
         $unofficialPlugins = array();
@@ -166,7 +134,7 @@ class PluginController extends AbstractController
             'plugin_forms' => $pluginForms,
             'officialPlugins' => $officialPlugins,
             'unofficialPlugins' => $unofficialPlugins,
-            'developPlugins' => $developPlugins,
+            'unregisteredPlugins' => $unregisteredPlugins,
             'configPages' => $configPages
         ));
 
@@ -680,7 +648,7 @@ class PluginController extends AbstractController
      * @param $url
      * @return array
      */
-    private function getRequestApi(Request $request, $authKey, $url)
+    protected function getRequestApi(Request $request, $authKey, $url)
     {
         $opts = array(
             'http' => array(
@@ -708,7 +676,7 @@ class PluginController extends AbstractController
      * @param $httpHeader
      * @return string
      */
-    private function getResponseErrorMessage($httpHeader)
+    protected function getResponseErrorMessage($httpHeader)
     {
         if (!empty($httpHeader)) {
             list($version, $statusCode, $message) = explode(' ', $httpHeader[0], 3);
@@ -731,4 +699,48 @@ class PluginController extends AbstractController
         return $message;
     }
 
+    /**
+     * フォルダ設置のみのプラグイン取得
+     *
+     * @param array $plugins
+     * @param Eccube\Application $app
+     */
+    protected function getUnregisteredPlugins(array $plugins, \Eccube\Application $app)
+    {
+        $finder = new \Symfony\Component\Finder\Finder();
+
+        $pluginCodes = array();
+
+        // DB登録済みプラグインコードのみ取得
+        foreach ($plugins as $key => $plugin) {
+            $pluginCodes[] = $plugin->getCode();
+        }
+
+        // DB登録済みプラグインコードPluginディレクトリから排他
+        $dirs = $finder->in($app['config']['plugin_realdir'])->depth(0)->directories();
+
+        // プラグイン基本チェック
+        $unregisteredPlugins = array();
+        foreach ($dirs as $key => $val) {
+            $pluginCode = $val->getBasename();
+            if(in_array($pluginCode, $pluginCodes, true)) {
+                continue;
+            }
+            try {
+                $app['eccube.service.plugin']->checkPluginArchiveContent($val->getRealPath());
+            } catch(\Eccube\Exception\PluginException $e) {
+                //config.yamlに不備があった際は全てスキップ
+                $app['monolog']->warning($e->getMessage());
+                continue;
+            }
+            $config = $app['eccube.service.plugin']->readYml($val->getRealPath().'/config.yml');
+            $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
+            $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
+            $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
+            $unregisteredPlugins[$pluginCode]['enable'] = Constant::DISABLED;
+            $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
+        }
+
+        return $unregisteredPlugins;
+    }
 }

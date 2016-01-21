@@ -24,7 +24,6 @@
 
 namespace Eccube\Event;
 
-use Eccube\Application;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -43,15 +42,15 @@ class FormEventSubscriber implements EventSubscriberInterface
             ->in($basePath)
             ->directories()
             ->depth(0);
-
+        $app = \Eccube\Application::getInstance();
         foreach ($finder as $dir) {
-            if (file_exists($dir->getRealPath() . '/config.yml')) {
-                $config = Yaml::parse(file_get_contents($dir->getRealPath() . '/config.yml'));
-            }else{
-                $error = 'FormEventSubscriber::getEvents : config.yamlがみつかりません';
-                $app = \Eccube\Application::getInstance();
-                $app->log($error, array(), Logger::WARNING);
+            try {
+                $app['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
+            } catch(\Eccube\Exception\PluginException $e) {
+                $app['monolog']->warning($e->getMessage());
+                continue;
             }
+            $config = $app['eccube.service.plugin']->readYml($dir->getRealPath() . '/config.yml');
 
             if (isset($config['form'])) {
                 foreach ($config['form'] as $event => $class) {

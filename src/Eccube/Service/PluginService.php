@@ -41,36 +41,6 @@ class PluginService
         $this->app = $app;
     }
 
-    /**
-     * 引数で取得した置くだけプラグインをエンティティ化
-     *
-     * @param array $developPlugins
-     * @return array $developPluginsCollection(エンティティ配列)
-     */
-    public function readDevelopPlugins(array $developPlugins){
-        // エラーハンドリング
-        if (count($developPlugins) < 1) {
-            return null;
-        }
-        // プラグイン基本チェック
-        $developPluginsCollection = array();
-        foreach ($developPlugins as $name => $path) {
-            $p = new \Eccube\Entity\Plugin();
-            $config = $this->readYml($path.'/'.self::CONFIG_YML);
-            $event = $this->readYml($path.'/'.self::EVENT_YML);
-            $p->setName(isset($config['name']) ? $config['name'] : null);
-                ->setEnable(Constant::ENABLED)
-                ->setClassName(isset($config['event']) ? $config['event'] : null)
-                ->setVersion(isset($config['version']) ? $config['version'] : null)
-                ->setDelflg(Constant::DISABLED)
-                ->setSource(0)
-                ->setCode(isset($config['code']) ? $config['code'] : null);
-
-            $developPluginsCollection[] = $p;
-        }
-        return (count($developPluginsCollection) > 0) ? $developPluginsCollection : null;
-    }
-
     public function install($path, $source = 0)
     {
         $pluginBaseDir = null;
@@ -85,10 +55,6 @@ class PluginService
             $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
             $event = $this->readYml($tmp.'/'.self::EVENT_YML);
 
-            if (!$config && !$event) {
-                throw new PluginException('設定ファイルが見つかりませんでした');
-            }
-
             $this->deleteFile($tmp); // テンポラリのファイルを削除
 
             $this->checkSamePlugin($config['code']); // 重複していないかチェック
@@ -100,28 +66,10 @@ class PluginService
 
             $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
         } catch (PluginException $e) {
-            if (strpos('Plugin', $tmp) !== false) {
-                $removeDir = array($tmp, $pluginBaseDir);
-            }else{
-                $removeDir = array($tmp);
-            }
-            $this->deleteDirs($removeDir);
+            $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
         } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
-            if (strpos('Plugin', $tmp) !== false) {
-                $removeDir = array($tmp, $pluginBaseDir);
-            }else{
-                $removeDir = array($tmp);
-            }
-            $this->deleteDirs($removeDir);
-            throw $e;
-        } finally {
-            if (strpos('Plugin', $tmp) !== false) {
-                $removeDir = array($tmp, $pluginBaseDir);
-            }else{
-                $removeDir = array($tmp);
-            }
-            $this->deleteDirs($removeDir);
+            $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
         }
 
@@ -170,7 +118,13 @@ class PluginService
 
     public function checkPluginArchiveContent($dir)
     {
-        $meta = $this->readYml($dir.'/config.yml');
+        try {
+            $meta = $this->readYml($dir . '/config.yml');
+        } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
+            $this->app['monolog']->warning($e->getMessage());
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
+        }
+
         if (!is_array($meta)) {
             throw new PluginException('config.yml not found or syntax error');
         }
@@ -187,6 +141,16 @@ class PluginService
         if (!isset($meta['version'])) {
             // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
             throw new PluginException('config.yml version invalid_character(\W) ');
+        }
+        if (isset($meta['orm.path'])) {
+            if (!is_array($meta['orm.path'])) {
+                throw new PluginException('config.yml orm.path invalid_character(\W) ');
+            }
+        }
+        if (isset($meta['service'])) {
+            if (!is_array($meta['service'])) {
+                throw new PluginException('config.yml service invalid_character(\W) ');
+            }
         }
     }
 
@@ -228,7 +192,7 @@ class PluginService
 
     public function createPluginDir($d)
     {
-        $b = mkdir($d);
+        $b = @mkdir($d);
         if (!$b) {
             throw new PluginException($php_errormsg);
         }
