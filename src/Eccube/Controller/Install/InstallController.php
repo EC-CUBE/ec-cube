@@ -37,6 +37,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
+use Monolog\Logger;
 
 class InstallController
 {
@@ -151,9 +152,14 @@ class InstallController
             $fs = new Filesystem();
 
             if ($fs->exists($config_file)) {
-                // すでに登録されていた場合、登録データを表示
-                $this->setPDO();
-                $stmt = $this->PDO->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
+                try {
+                    // すでに登録されていた場合、登録データを表示
+                    $this->setPDO();
+                    $stmt = $this->PDO->query("SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;");
+                }catch (\Exception $e){
+                    $app->log($e, array(), Logger::WARNING);
+                    throw new \Exception('データべ―スに接続できません');
+                }
 
                 foreach ($stmt as $row) {
                     $sessionData['shop_name'] = $row['shop_name'];
