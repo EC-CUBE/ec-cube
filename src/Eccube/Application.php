@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Eccube\Exception\PluginException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,6 +71,7 @@ class Application extends ApplicationTrait
 
         // init monolog
         $this->initLogger();
+        new PluginException()
     }
 
     public function initConfig()
@@ -719,12 +721,19 @@ class Application extends ApplicationTrait
     }
 
     /**
-     * データベースコネクションを確認後、接続がなければエラー画面を表示
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * データベースの接続を確認
+     * 成功 : trueを返却
+     *　失敗 : \Doctrine\DBAL\DBALExceptionエラーが発生( 接続に失敗した場合 )、エラー画面を表示しdie()
+     * 備考 : app['debug']がtrueの際は処理を行わない
+     * @return boolean true
+     *
      */
     protected function checkDatabaseConnection()
     {
+        if ($this['debug']) {
+            return;
+        }
         try {
             $this['db']->connect();
         } catch (\Doctrine\DBAL\DBALException $e) {
@@ -741,6 +750,6 @@ class Application extends ApplicationTrait
             $response->send();
             die();
         }
-
+        return true;
     }
 }
