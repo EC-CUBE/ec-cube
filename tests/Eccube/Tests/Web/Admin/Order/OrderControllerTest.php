@@ -3,6 +3,7 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Entity\Master\CsvType;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
@@ -19,6 +20,26 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderStatus);
             $Order->setPayment($Payment);
+            $this->app['orm.em']->flush();
+        }
+
+        // sqlite では CsvType が生成されないので、ここで作る
+        $OrderCsvType = $this->app['eccube.repository.master.csv_type']->find(3);
+        if (!is_object($OrderCsvType)) {
+            $OrderCsvType = new CsvType();
+            $OrderCsvType->setId(3);
+            $OrderCsvType->setName('受注CSV');
+            $OrderCsvType->setRank(4);
+            $this->app['orm.em']->persist($OrderCsvType);
+            $this->app['orm.em']->flush();
+        }
+        $ShipCsvType = $this->app['eccube.repository.master.csv_type']->find(4);
+        if (!is_object($ShipCsvType)) {
+            $ShipCsvType = new CsvType();
+            $ShipCsvType->setId(4);
+            $ShipCsvType->setName('受注CSV');
+            $ShipCsvType->setRank(5);
+            $this->app['orm.em']->persist($ShipCsvType);
             $this->app['orm.em']->flush();
         }
     }
