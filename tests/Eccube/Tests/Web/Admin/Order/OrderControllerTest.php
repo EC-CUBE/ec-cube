@@ -10,10 +10,15 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function setUp()
     {
         parent::setUp();
+        $Sex = $this->app['eccube.repository.master.sex']->find(1);
+        $Payment = $this->app['eccube.repository.payment']->find(1);
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
         for ($i = 0; $i < 10; $i++) {
-            $Order = $this->createOrder($this->createCustomer('user-'.$i.'@example.com'));
+            $Customer = $this->createCustomer('user-'.$i.'@example.com');
+            $Customer->setSex($Sex);
+            $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderStatus);
+            $Order->setPayment($Payment);
             $this->app['orm.em']->flush();
         }
     }
@@ -44,6 +49,34 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->verify();
     }
+
+    public function testIndexWithNext()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order').'?page_count=3',
+            array(
+                'admin_search_order' => array(
+                    '_token' => 'dummy',
+                    'status' => 1,
+                    'sex' => array(1, 2),
+                    'payment' => array(1, 2, 3, 4)
+                )
+            )
+        );
+
+        // 次のページへ遷移
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->url('admin_order_page', array('page_no' => 2))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 10 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
 
     public function testDelete()
     {
