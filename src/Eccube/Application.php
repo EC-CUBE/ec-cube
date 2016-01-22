@@ -71,7 +71,6 @@ class Application extends ApplicationTrait
 
         // init monolog
         $this->initLogger();
-        new PluginException()
     }
 
     public function initConfig()
