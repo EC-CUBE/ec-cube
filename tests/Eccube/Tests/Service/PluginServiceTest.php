@@ -91,12 +91,9 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
         $service = $this->app['eccube.service.plugin'];
-        $pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
 
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
-        // console用
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
 
         try{
             $service->install($tmpfile);
@@ -108,11 +105,6 @@ class PluginServiceTest extends AbstractServiceTestCase
         // 同じプラグインの二重インストールが蹴られるか
 
         // アンインストールできるか
-        // console用
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'uninstall'));
-        // console用
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
-        // 通常
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
         $this->assertTrue($service->uninstall($plugin));
@@ -132,14 +124,11 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tmpname="dummy".sha1(mt_rand());
         $tmpdir=$this->createTempDir();
         $tmpfile=$tmpdir.'/plugin.tar';
-        $pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('dummy','dummy');
         // インストールできるか
         $service->install($tmpfile);
-        // console用
-        $service->sandBoxExcute($pluginpath.$tmpname, 'install');
 
     }
 
@@ -240,15 +229,12 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
 
         $this->setExpectedException(
           '\Eccube\Exception\PluginException', 'config.yml name empty'
         );
         // インストールできないはず
         $this->assertNull($service->install($tmpfile));
-        // coneole用
-        $this->assertNull($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
     }
 
     // イベント定義を含むプラグインのインストールとアンインストールを検証
@@ -356,17 +342,10 @@ EOD;
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/config.yml");
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/event.yml");
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
-        $pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
 
         // enable/disableできるか
         $this->assertTrue($service->disable($plugin));
         $this->assertTrue($service->enable($plugin));
-        // console用
-        // enable/disableできるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'disable'));
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'enable'));
-        // reloadは行えるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'reload'));
 
         // イベント定義を更新する
         $event=array();
@@ -538,13 +517,10 @@ EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
         $service = $this->app['eccube.service.plugin'];
-        $pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
 
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
         $this->assertTrue($service->install($tmpfile));
-        // console用インストールが行えるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
         $this->assertRegexp('/Installed/',ob_get_contents()); ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
@@ -562,9 +538,6 @@ EOD;
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
         $service->disable($plugin);
-        // console用アンインストールが行えるか
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'uninstall'));
-        $this->assertTrue($service->sandBoxExcute($pluginpath.$tmpname, 'install'));
         $this->assertTrue($service->uninstall($plugin));
         $this->assertRegexp('/DisabledUninstalled/',ob_get_contents()); ob_end_clean();
     }
