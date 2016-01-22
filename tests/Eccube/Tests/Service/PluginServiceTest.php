@@ -64,21 +64,20 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function setUnregisteredPlugin()
     {
         // インストールするプラグインを作成する
-        $tmpname = '';
-        $tmpname = "dummy".sha1(mt_rand());
-
-        // configファイルを作成
-        $config = array();
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
         $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname."_version";
 
-        $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
+        $service = $this->app['eccube.service.plugin'];
 
+        /*
         $dummyEvent = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -169,6 +168,7 @@ PMEOD;
 
 
         $service = $this->app['eccube.service.plugin'];
+        */
 
         // 解凍後インストール
         // テスト用プラグインの設置
