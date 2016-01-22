@@ -36,7 +36,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
     public function __construct()
     {
-        $this->$pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
+        $this->pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
     }
 
     public function tearDown()
