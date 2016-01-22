@@ -174,7 +174,7 @@ PMEOD;
         // テスト用プラグインの設置
         $service->install($tmpfile);
 
-        $this->assertTrue($service->sandBoxExcute($this->pluginpath.$tmpname, 'uninstall'));
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'uninstall'));
     }
 
     /*
