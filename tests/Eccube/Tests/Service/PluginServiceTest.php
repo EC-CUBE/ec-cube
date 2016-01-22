@@ -32,6 +32,13 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginServiceTest extends AbstractServiceTestCase
 {
     protected $app;
+    protected $pluginpath;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
+    }
 
     public function tearDown()
     {
@@ -49,6 +56,125 @@ class PluginServiceTest extends AbstractServiceTestCase
             $this->deleteFile($dir);
         }
         parent::tearDown();
+    }
+
+    /*
+     * 置くだけプラグインを設置
+     */
+    public function setUnregisteredPlugin()
+    {
+        // インストールするプラグインを作成する
+        $tmpname = '';
+        $tmpname = "dummy".sha1(mt_rand());
+
+        // configファイルを作成
+        $config = array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml',Yaml::dump($config));
+
+        $dummyEvent = <<<'EOD'
+<?php
+namespace Plugin\@@@@ ;
+
+
+class DummyEvent
+{
+    private $app;
+
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
+    public function dummyHandler()
+    {
+        echo "dummyHandler\n";
+    }
+    public function dummyHandlerFirst()
+    {
+        echo "dummyHandlerFirst\n";
+    }
+    public function dummyHandlerLast()
+    {
+        echo "dummyHandlerLast\n";
+    }
+
+}
+
+EOD;
+        $dummyEvent = str_replace('@@@@', $tmpname, $dummyEvent); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $tar->addFromString("DummyEvent.php" , $dummyEvent);
+
+        // イベント定義を作成する
+        $event=array();
+        $event['eccube.event.app.before'] = array();
+        $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
+        $event['eccube.event.app.before'][] = array("dummyHandlerFirst",'FIRST');
+        $event['eccube.event.app.after'] = array();
+        $event['eccube.event.app.after'][] = array("dummyHandlerLast",'LAST');
+        $tar->addFromString('event.yml',Yaml::dump($event));
+
+
+        $dummyPluginManager = <<<'PMEOD'
+<?php
+namespace Plugin\@@@@ ;
+
+use Eccube\Plugin\AbstractPluginManager;
+use Eccube\Common\Constant;
+use Eccube\Util\Cache;
+use Symfony\Component\Filesystem\Filesystem;
+
+class PluginManager extends AbstractPluginManager
+{
+    public function __construct()
+    {
+    }
+
+    public function install($config, $app)
+    {
+        return 'install';
+    }
+
+    public function uninstall($config, $app)
+    {
+        return 'uninstall';
+    }
+
+    public function enable($config, $app)
+    {
+        return 'enable';
+    }
+
+    public function disable($config, $app)
+    {
+        return 'disable';
+    }
+
+    public function update($config, $app)
+    {
+        return 'update';
+    }
+}
+
+PMEOD;
+        $dummyPluginManager = str_replace('@@@@', $tmpname, $dummyPluginManager);
+        $tar->addFromString("PluginManager.php" , $dummyPluginManager);
+
+
+
+        $service = $this->app['eccube.service.plugin'];
+
+        // 解凍後インストール
+        // テスト用プラグインの設置
+        $service->install($tmpfile);
+
+        $this->assertTrue($service->sandBoxExcute($this->pluginpath.$tmpname, 'uninstall'));
     }
 
     /*
@@ -584,5 +710,54 @@ EOD;
 
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
+    }
+
+    public function testConsoleInstallPlugin()
+    {
+        $service = $this->app['eccube.service.plugin'];
+        // プラグインの設置
+        $this->setUnregisteredPlugin();
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
+    }
+
+    // consoleでのアンインストールを検証
+    public function testConsoleUninstallPlugin()
+    {
+        $service = $this->app['eccube.service.plugin'];
+        // プラグインの設置
+        $this->setUnregisteredPlugin();
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'uninstall'));
+    }
+
+    // consoleでの有効化を検証
+    public function testConsoleDisablePlugin()
+    {
+        $service = $this->app['eccube.service.plugin'];
+        // プラグインの設置
+        $this->setUnregisteredPlugin();
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'disable'));
+    }
+
+    // consoleでの有効化を検証
+    public function testConsoleEnablePlugin()
+    {
+        $service = $this->app['eccube.service.plugin'];
+        // プラグインの設置
+        $this->setUnregisteredPlugin();
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'disable'));
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'enable'));
+    }
+
+    // consoleでのリロードを検証
+    public function testConsoleReloadPlugin()
+    {
+        $service = $this->app['eccube.service.plugin'];
+        // プラグインの設置
+        $this->setUnregisteredPlugin();
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
+        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'reload'));
     }
 }

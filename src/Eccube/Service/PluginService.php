@@ -41,7 +41,7 @@ class PluginService
         $this->app = $app;
     }
 
-    public function sandBoxExcute($path, $method)
+    public function sandBoxExecute($path, $method)
     {
         $pluginBaseDir = null;
 

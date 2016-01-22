@@ -103,11 +103,11 @@ EOF
                 return;
             }
             $stepFlg = false;
-            if ($service->sandBoxExcute($this->pluginPath.$code, 'uninstall')) {
+            if ($service->sandBoxExecute($this->pluginPath.$code, 'uninstall')) {
                 $stepFlg = true;
             }
             if ($stepFlg) {
-                if ($service->sandBoxExcute($this->pluginPath.$code, 'install')) {
+                if ($service->sandBoxExecute($this->pluginPath.$code, 'install')) {
                     $output->writeln('success');
                     return;
                 }
@@ -118,7 +118,7 @@ EOF
                 $output->writeln('code is required.');
                 return;
             }
-            if ($service->sandBoxExcute($this->pluginPath.$code, 'install')) {
+            if ($service->sandBoxExecute($this->pluginPath.$code, 'install')) {
                 $output->writeln('success');
                 return;
             }
@@ -128,7 +128,7 @@ EOF
                 $output->writeln('code is required.');
                 return;
             }
-            if ($service->sandBoxExcute($this->pluginPath.$code, 'uninstall')) {
+            if ($service->sandBoxExecute($this->pluginPath.$code, 'uninstall')) {
                 $output->writeln('success');
                 return;
             }
@@ -138,7 +138,7 @@ EOF
                 $output->writeln('code is required.');
                 return;
             }
-            if ($service->sandBoxExcute($this->pluginPath.$code, 'disable')) {
+            if ($service->sandBoxExecute($this->pluginPath.$code, 'disable')) {
                 $output->writeln('success');
                 return;
             }
@@ -148,7 +148,7 @@ EOF
                 $output->writeln('code is required.');
                 return;
             }
-            if ($service->sandBoxExcute($this->pluginPath.$code, 'enable')) {
+            if ($service->sandBoxExecute($this->pluginPath.$code, 'enable')) {
                 $output->writeln('success');
                 return;
             }
