@@ -709,6 +709,10 @@ class Application extends ApplicationTrait
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
+                    if (!class_exists($class)) {
+                        $this['monolog']->warning('該当クラスが見つかりません:' . $class);
+                        continue;
+                    }
                     $this->register(new $class($this));
                 }
             }
