@@ -34,7 +34,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     protected $app;
     protected $pluginpath;
 
-    public __construct()
+    public function __construct()
     {
         $this->$pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
     }
