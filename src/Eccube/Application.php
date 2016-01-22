@@ -719,16 +719,16 @@ class Application extends ApplicationTrait
     }
 
     /**
-     * Set up the DBAL connection now to check for a proper connection to the database.
+     * データベースコネクションを確認後、接続がなければエラー画面を表示
      *
-     * @throws LowlevelException
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function checkDatabaseConnection()
     {
         try {
             $this['db']->connect();
         } catch (\Doctrine\DBAL\DBALException $e) {
-            $this['monolog']->warning($e->getMessage());
+            $this['monolog']->error($e->getMessage());
             $this['twig.path'] = array(__DIR__.'/Resource/template/exception');
             $html = $this['twig']->render('error.twig', array(
                 'error_title' => 'データーベース接続エラー',
