@@ -218,6 +218,9 @@ class Application extends ApplicationTrait
         // init doctrine orm
         $this->initDoctrine();
 
+        // Set up the DBAL connection now to check for a proper connection to the database.
+        $this->checkDatabaseConnection();
+
         // init security
         $this->initSecurity();
 
@@ -713,5 +716,31 @@ class Application extends ApplicationTrait
                 }
             }
         }
+    }
+
+    /**
+     * Set up the DBAL connection now to check for a proper connection to the database.
+     *
+     * @throws LowlevelException
+     */
+    protected function checkDatabaseConnection()
+    {
+        try {
+            $this['db']->connect();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this['monolog']->warning($e->getMessage());
+            $this['twig.path'] = array(__DIR__.'/Resource/template/exception');
+            $html = $this['twig']->render('error.twig', array(
+                'error_title' => 'データーベース接続エラー',
+                'error_message' => 'データーベースを確認してください',
+            ));
+            $response = new Response();
+            $response->setContent($html);
+            $response->setStatusCode('500');
+            $response->headers->set('Content-Type', 'text/html');
+            $response->send();
+            die();
+        }
+
     }
 }
