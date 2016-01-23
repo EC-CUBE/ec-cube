@@ -37,6 +37,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function __construct()
     {
         parent::__construct();
+        $this->app = \Eccube\Application::getInstance();
         $this->pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
     }
 
