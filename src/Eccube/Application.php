@@ -76,84 +76,92 @@ class Application extends ApplicationTrait
     public function initConfig()
     {
         // load config
-        $this['config'] = $this->share(function() {
-            $ymlPath = __DIR__.'/../../app/config/eccube';
-            $distPath = __DIR__.'/../../src/Eccube/Resource/config';
+        $this['config'] = $this->share(
+            function () {
+                $ymlPath = __DIR__.'/../../app/config/eccube';
+                $distPath = __DIR__.'/../../src/Eccube/Resource/config';
 
-            $config = array();
-            $config_yml = $ymlPath.'/config.yml';
-            if (file_exists($config_yml)) {
-                $config = Yaml::parse(file_get_contents($config_yml));
+                $config = array();
+                $config_yml = $ymlPath.'/config.yml';
+                if (file_exists($config_yml)) {
+                    $config = Yaml::parse(file_get_contents($config_yml));
+                }
+
+                $config_dist = array();
+                $config_yml_dist = $distPath.'/config.yml.dist';
+                if (file_exists($config_yml_dist)) {
+                    $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
+                }
+
+                $config_path = array();
+                $path_yml = $ymlPath.'/path.yml';
+                if (file_exists($path_yml)) {
+                    $config_path = Yaml::parse(file_get_contents($path_yml));
+                }
+
+                $config_constant = array();
+                $constant_yml = $ymlPath.'/constant.yml';
+                if (file_exists($constant_yml)) {
+                    $config_constant = Yaml::parse(file_get_contents($constant_yml));
+                    $config_constant = empty($config_constant) ? array() : $config_constant;
+                }
+
+                $config_constant_dist = array();
+                $constant_yml_dist = $distPath.'/constant.yml.dist';
+                if (file_exists($constant_yml_dist)) {
+                    $config_constant_dist = Yaml::parse(file_get_contents($constant_yml_dist));
+                }
+
+                $configAll = array_replace_recursive(
+                    $config_constant_dist,
+                    $config_dist,
+                    $config_constant,
+                    $config_path,
+                    $config
+                );
+
+                $database = array();
+                $yml = $ymlPath.'/database.yml';
+                if (file_exists($yml)) {
+                    $database = Yaml::parse(file_get_contents($yml));
+                }
+
+                $mail = array();
+                $yml = $ymlPath.'/mail.yml';
+                if (file_exists($yml)) {
+                    $mail = Yaml::parse(file_get_contents($yml));
+                }
+                $configAll = array_replace_recursive($configAll, $database, $mail);
+
+                $config_log = array();
+                $yml = $ymlPath.'/log.yml';
+                if (file_exists($yml)) {
+                    $config_log = Yaml::parse(file_get_contents($yml));
+                }
+                $config_log_dist = array();
+                $log_yml_dist = $distPath.'/log.yml.dist';
+                if (file_exists($log_yml_dist)) {
+                    $config_log_dist = Yaml::parse(file_get_contents($log_yml_dist));
+                }
+
+                $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
+
+                $config_nav = array();
+                $yml = $ymlPath.'/nav.yml';
+                if (file_exists($yml)) {
+                    $config_nav = array('nav' => Yaml::parse(file_get_contents($yml)));
+                }
+                $config_nav_dist = array();
+                $nav_yml_dist = $distPath.'/nav.yml.dist';
+                if (file_exists($nav_yml_dist)) {
+                    $config_nav_dist = array('nav' => Yaml::parse(file_get_contents($nav_yml_dist)));
+                }
+
+                $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
+
+                return $configAll;
             }
-
-            $config_dist = array();
-            $config_yml_dist = $distPath.'/config.yml.dist';
-            if (file_exists($config_yml_dist)) {
-                $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
-            }
-
-            $config_path = array();
-            $path_yml = $ymlPath.'/path.yml';
-            if (file_exists($path_yml)) {
-                $config_path = Yaml::parse(file_get_contents($path_yml));
-            }
-
-            $config_constant = array();
-            $constant_yml = $ymlPath.'/constant.yml';
-            if (file_exists($constant_yml)) {
-                $config_constant = Yaml::parse(file_get_contents($constant_yml));
-                $config_constant = empty($config_constant) ? array() : $config_constant;
-            }
-
-            $config_constant_dist = array();
-            $constant_yml_dist = $distPath.'/constant.yml.dist';
-            if (file_exists($constant_yml_dist)) {
-                $config_constant_dist = Yaml::parse(file_get_contents($constant_yml_dist));
-            }
-
-            $configAll = array_replace_recursive($config_constant_dist, $config_dist, $config_constant, $config_path, $config);
-
-            $database = array();
-            $yml = $ymlPath.'/database.yml';
-            if (file_exists($yml)) {
-                $database = Yaml::parse(file_get_contents($yml));
-            }
-
-            $mail = array();
-            $yml = $ymlPath.'/mail.yml';
-            if (file_exists($yml)) {
-                $mail = Yaml::parse(file_get_contents($yml));
-            }
-            $configAll = array_replace_recursive($configAll, $database, $mail);
-
-            $config_log = array();
-            $yml = $ymlPath.'/log.yml';
-            if (file_exists($yml)) {
-                $config_log = Yaml::parse(file_get_contents($yml));
-            }
-            $config_log_dist = array();
-            $log_yml_dist = $distPath.'/log.yml.dist';
-            if (file_exists($log_yml_dist)) {
-                $config_log_dist = Yaml::parse(file_get_contents($log_yml_dist));
-            }
-
-            $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
-
-            $config_nav = array();
-            $yml = $ymlPath.'/nav.yml';
-            if (file_exists($yml)) {
-                $config_nav = array('nav' => Yaml::parse(file_get_contents($yml)));
-            }
-            $config_nav_dist = array();
-            $nav_yml_dist = $distPath.'/nav.yml.dist';
-            if (file_exists($nav_yml_dist)) {
-                $config_nav_dist = array('nav' => Yaml::parse(file_get_contents($nav_yml_dist)));
-            }
-
-            $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
-
-            return $configAll;
-        });
+        );
     }
 
     public function initLogger()
@@ -187,31 +195,36 @@ class Application extends ApplicationTrait
         $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
         $app = $this;
-        $this->error(function(\Exception $e, $code) use ($app) {
-            if ($app['debug']) {
-                return;
-            }
+        $this->error(
+            function (\Exception $e, $code) use ($app) {
+                if ($app['debug']) {
+                    return;
+                }
 
-            switch ($code) {
-                case 403:
-                    $title = 'アクセスできません。';
-                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
-                    break;
-                case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
-                    break;
-                default:
-                    $title = 'システムエラーが発生しました。';
-                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
-                    break;
-            }
+                switch ($code) {
+                    case 403:
+                        $title = 'アクセスできません。';
+                        $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                        break;
+                    case 404:
+                        $title = 'ページがみつかりません。';
+                        $message = 'URLに間違いがないかご確認ください。';
+                        break;
+                    default:
+                        $title = 'システムエラーが発生しました。';
+                        $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+                        break;
+                }
 
-            return $app['twig']->render('error.twig', array(
-                'error_title' => $title,
-                'error_message' => $message,
-            ));
-        });
+                return $app['twig']->render(
+                    'error.twig',
+                    array(
+                        'error_title' => $title,
+                        'error_message' => $message,
+                    )
+                );
+            }
+        );
 
         // init mailer
         $this->initMailer();
@@ -228,7 +241,10 @@ class Application extends ApplicationTrait
         // mount controllers
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $this->mount('', new ControllerProvider\FrontControllerProvider());
-        $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
+        $this->mount(
+            '/'.trim($this['config']['admin_route'], '/').'/',
+            new ControllerProvider\AdminControllerProvider()
+        );
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
         $this->initialized = true;
@@ -242,172 +258,214 @@ class Application extends ApplicationTrait
             date_default_timezone_set($this['config']['timezone']);
         }
 
-        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
-            'locale' => $this['config']['locale'],
-        ));
-        $this['translator'] = $this->share($this->extend('translator', function($translator, \Silex\Application $app) {
-            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+        $this->register(
+            new \Silex\Provider\TranslationServiceProvider(),
+            array(
+                'locale' => $this['config']['locale'],
+            )
+        );
+        $this['translator'] = $this->share(
+            $this->extend(
+                'translator',
+                function ($translator, \Silex\Application $app) {
+                    $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
-            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-            $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
-            if (file_exists($file)) {
-                $translator->addResource('xliff', $file, $app['locale'], 'validators');
-            }
+                    $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
+                    $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
+                    if (file_exists($file)) {
+                        $translator->addResource('xliff', $file, $app['locale'], 'validators');
+                    }
 
-            $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
-            if (file_exists($file)) {
-                $translator->addResource('yaml', $file, $app['locale'], 'validators');
-            }
+                    $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
+                    if (file_exists($file)) {
+                        $translator->addResource('yaml', $file, $app['locale'], 'validators');
+                    }
 
-            $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.yml';
-            if (file_exists($file)) {
-                $translator->addResource('yaml', $file, $app['locale']);
-            }
+                    $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.yml';
+                    if (file_exists($file)) {
+                        $translator->addResource('yaml', $file, $app['locale']);
+                    }
 
-            return $translator;
-        }));
+                    return $translator;
+                }
+            )
+        );
     }
 
     public function initSession()
     {
-        $this->register(new \Silex\Provider\SessionServiceProvider(), array(
-            'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
-            'session.storage.options' => array(
-                'name' => 'eccube',
-                'cookie_path' => $this['config']['root_urlpath'] ?: '/',
-                'cookie_secure' => $this['config']['force_ssl'],
-                'cookie_lifetime' => $this['config']['cookie_lifetime'],
-                'cookie_httponly' => true,
-                // cookie_domainは指定しない
-                // http://blog.tokumaru.org/2011/10/cookiedomain.html
-            ),
-        ));
+        $this->register(
+            new \Silex\Provider\SessionServiceProvider(),
+            array(
+                'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
+                'session.storage.options' => array(
+                    'name' => 'eccube',
+                    'cookie_path' => $this['config']['root_urlpath'] ?: '/',
+                    'cookie_secure' => $this['config']['force_ssl'],
+                    'cookie_lifetime' => $this['config']['cookie_lifetime'],
+                    'cookie_httponly' => true,
+                    // cookie_domainは指定しない
+                    // http://blog.tokumaru.org/2011/10/cookiedomain.html
+                ),
+            )
+        );
     }
 
     public function initRendering()
     {
-        $this->register(new \Silex\Provider\TwigServiceProvider(), array(
-            'twig.form.templates' => array('Form/form_layout.twig'),
-        ));
-        $this['twig'] = $this->share($this->extend('twig', function(\Twig_Environment $twig, \Silex\Application $app) {
-            $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
-            $twig->addExtension(new \Twig_Extension_StringLoader());
+        $this->register(
+            new \Silex\Provider\TwigServiceProvider(),
+            array(
+                'twig.form.templates' => array('Form/form_layout.twig'),
+            )
+        );
+        $this['twig'] = $this->share(
+            $this->extend(
+                'twig',
+                function (\Twig_Environment $twig, \Silex\Application $app) {
+                    $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
+                    $twig->addExtension(new \Twig_Extension_StringLoader());
 
-            return $twig;
-        }));
-
-        $this->before(function(Request $request, \Silex\Application $app) {
-            // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            $app['twig'] = $app->share($app->extend('twig', function(\Twig_Environment $twig, \Silex\Application $app) {
-                $paths = array();
-
-                // 互換性がないのでprofiler とproduction 時のcacheを分離する
-
-                if (isset($app['profiler'])) {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
-                } else {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                    return $twig;
                 }
+            )
+        );
+
+        $this->before(
+            function (Request $request, \Silex\Application $app) {
+                // フロント or 管理画面ごとにtwigの探索パスを切り替える.
+                $app['twig'] = $app->share(
+                    $app->extend(
+                        'twig',
+                        function (\Twig_Environment $twig, \Silex\Application $app) {
+                            $paths = array();
+
+                            // 互換性がないのでprofiler とproduction 時のcacheを分離する
+
+                            if (isset($app['profiler'])) {
+                                $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
+                            } else {
+                                $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                            }
+                            if (strpos(
+                                    $app['request']->getPathInfo(),
+                                    '/'.trim($app['config']['admin_route'], '/')
+                                ) === 0
+                            ) {
+                                if (file_exists(__DIR__.'/../../app/template/admin')) {
+                                    $paths[] = __DIR__.'/../../app/template/admin';
+                                }
+                                $paths[] = $app['config']['template_admin_realdir'];
+                                $paths[] = __DIR__.'/../../app/Plugin';
+                                $cache = $cacheBaseDir.'admin';
+                            } else {
+                                if (file_exists($app['config']['template_realdir'])) {
+                                    $paths[] = $app['config']['template_realdir'];
+                                }
+                                $paths[] = $app['config']['template_default_realdir'];
+                                $paths[] = __DIR__.'/../../app/Plugin';
+                                $cache = $cacheBaseDir.$app['config']['template_code'];
+                            }
+                            $twig->setCache($cache);
+                            $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+
+                            return $twig;
+                        }
+                    )
+                );
+
+                // 管理画面のIP制限チェック.
                 if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__.'/../../app/template/admin')) {
-                        $paths[] = __DIR__.'/../../app/template/admin';
-                    }
-                    $paths[] = $app['config']['template_admin_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    $cache = $cacheBaseDir.'admin';
-                } else {
-                    if (file_exists($app['config']['template_realdir'])) {
-                        $paths[] = $app['config']['template_realdir'];
-                    }
-                    $paths[] = $app['config']['template_default_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    $cache = $cacheBaseDir.$app['config']['template_code'];
-                }
-                $twig->setCache($cache);
-                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
-
-                return $twig;
-            }));
-
-            // 管理画面のIP制限チェック.
-            if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
-                // IP制限チェック
-                $allowHost = $app['config']['admin_allow_host'];
-                if (count($allowHost) > 0) {
-                    if (array_search($app['request']->getClientIp(), $allowHost) === false) {
-                        throw new \Exception();
+                    // IP制限チェック
+                    $allowHost = $app['config']['admin_allow_host'];
+                    if (count($allowHost) > 0) {
+                        if (array_search($app['request']->getClientIp(), $allowHost) === false) {
+                            throw new \Exception();
+                        }
                     }
                 }
-            }
-        }, self::EARLY_EVENT);
+            },
+            self::EARLY_EVENT
+        );
 
         // twigのグローバル変数を定義.
         $app = $this;
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function(\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-            // ショップ基本情報
-            $BaseInfo = $app['eccube.repository.base_info']->get();
-            $app['twig']->addGlobal('BaseInfo', $BaseInfo);
+        $this->on(
+            \Symfony\Component\HttpKernel\KernelEvents::CONTROLLER,
+            function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+                // ショップ基本情報
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+                $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
-            if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
-                // 管理画面
-                // 管理画面メニュー
-                $menus = array('', '', '');
-                $app['twig']->addGlobal('menus', $menus);
+                if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                    // 管理画面
+                    // 管理画面メニュー
+                    $menus = array('', '', '');
+                    $app['twig']->addGlobal('menus', $menus);
 
-                $Member = $app->user();
-                if (is_object($Member)) {
-                    // ログインしていれば管理者のロールを取得
-                    $AuthorityRoles = $app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
+                    $Member = $app->user();
+                    if (is_object($Member)) {
+                        // ログインしていれば管理者のロールを取得
+                        $AuthorityRoles = $app['eccube.repository.authority_role']->findBy(
+                            array('Authority' => $Member->getAuthority())
+                        );
 
-                    $roles = array();
-                    foreach ($AuthorityRoles as $AuthorityRole) {
-                        // 管理画面でメニュー制御するため相対パス全てをセット
-                        $roles[] = $app['request']->getBaseUrl().'/'.$app['config']['admin_route'].$AuthorityRole->getDenyUrl();
+                        $roles = array();
+                        foreach ($AuthorityRoles as $AuthorityRole) {
+                            // 管理画面でメニュー制御するため相対パス全てをセット
+                            $roles[] = $app['request']->getBaseUrl(
+                                ).'/'.$app['config']['admin_route'].$AuthorityRole->getDenyUrl();
+                        }
+
+                        $app['twig']->addGlobal('AuthorityRoles', $roles);
                     }
 
-                    $app['twig']->addGlobal('AuthorityRoles', $roles);
+                } else {
+                    // フロント画面
+                    $request = $event->getRequest();
+                    $route = $request->attributes->get('_route');
+
+                    // ユーザ作成画面
+                    if ($route === trim($app['config']['user_data_route'])) {
+                        $params = $request->attributes->get('_route_params');
+                        $route = $params['route'];
+                        // プレビュー画面
+                    } elseif ($request->get('preview')) {
+                        $route = 'preview';
+                    }
+
+                    try {
+                        $DeviceType = $app['eccube.repository.master.device_type']
+                            ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
+                        $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
+                    } catch (\Doctrine\ORM\NoResultException $e) {
+                        $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
+                    }
+
+                    $app['twig']->addGlobal('PageLayout', $PageLayout);
+                    $app['twig']->addGlobal('title', $PageLayout->getName());
                 }
-
-            } else {
-                // フロント画面
-                $request = $event->getRequest();
-                $route = $request->attributes->get('_route');
-
-                // ユーザ作成画面
-                if ($route === trim($app['config']['user_data_route'])) {
-                    $params = $request->attributes->get('_route_params');
-                    $route = $params['route'];
-                    // プレビュー画面
-                } elseif ($request->get('preview')) {
-                    $route = 'preview';
-                }
-
-                try {
-                    $DeviceType = $app['eccube.repository.master.device_type']
-                        ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
-                } catch (\Doctrine\ORM\NoResultException $e) {
-                    $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
-                }
-
-                $app['twig']->addGlobal('PageLayout', $PageLayout);
-                $app['twig']->addGlobal('title', $PageLayout->getName());
             }
-        });
+        );
     }
 
     public function initMailer()
     {
 
         // メール送信時の文字エンコード指定(デフォルトはUTF-8)
-        if (isset($this['config']['mail']['charset_iso_2022_jp']) && is_bool($this['config']['mail']['charset_iso_2022_jp'])) {
+        if (isset($this['config']['mail']['charset_iso_2022_jp']) && is_bool(
+                $this['config']['mail']['charset_iso_2022_jp']
+            )
+        ) {
             if ($this['config']['mail']['charset_iso_2022_jp'] === true) {
-                \Swift::init(function() {
-                    \Swift_DependencyContainer::getInstance()
-                        ->register('mime.qpheaderencoder')
-                        ->asAliasOf('mime.base64headerencoder');
-                    \Swift_Preferences::getInstance()->setCharset('iso-2022-jp');
-                });
+                \Swift::init(
+                    function () {
+                        \Swift_DependencyContainer::getInstance()
+                            ->register('mime.qpheaderencoder')
+                            ->asAliasOf('mime.base64headerencoder');
+                        \Swift_Preferences::getInstance()->setCharset('iso-2022-jp');
+                    }
+                );
             }
         }
 
@@ -428,10 +486,14 @@ class Application extends ApplicationTrait
 
     public function initDoctrine()
     {
-        $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'dbs.options' => array(
-                'default' => $this['config']['database']
-        )));
+        $this->register(
+            new \Silex\Provider\DoctrineServiceProvider(),
+            array(
+                'dbs.options' => array(
+                    'default' => $this['config']['database'],
+                ),
+            )
+        );
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
@@ -454,7 +516,7 @@ class Application extends ApplicationTrait
         foreach ($finder as $dir) {
             if (file_exists($dir->getRealPath().'/config.yml')) {
                 $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
-            }else{
+            } else {
                 $error = 'Application::initDoctrine : config.yamlがみつかりません'.$dir->getRealPath();
                 $this->log($error, array(), Logger::WARNING);
                 continue;
@@ -474,12 +536,15 @@ class Application extends ApplicationTrait
             }
         }
 
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => $ormMappings,
-            ),
-        ));
+        $this->register(
+            new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(),
+            array(
+                'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
+                'orm.em.options' => array(
+                    'mappings' => $ormMappings,
+                ),
+            )
+        );
     }
 
     public function initSecurity()
@@ -544,42 +609,65 @@ class Application extends ApplicationTrait
             array('^/mypage', 'ROLE_USER'),
         );
 
-        $this['eccube.password_encoder'] = $this->share(function($app) {
-            return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
-        });
-        $this['security.encoder_factory'] = $this->share(function($app) {
-            return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
-                'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
-                'Eccube\Entity\Member' => $app['eccube.password_encoder'],
-            ));
-        });
-        $this['eccube.event_listner.security'] = $this->share(function($app) {
-            return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
-        });
-        $this['user'] = $this->share(function($app) {
-            $token = $app['security']->getToken();
+        $this['eccube.password_encoder'] = $this->share(
+            function ($app) {
+                return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
+            }
+        );
+        $this['security.encoder_factory'] = $this->share(
+            function ($app) {
+                return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(
+                    array(
+                        'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
+                        'Eccube\Entity\Member' => $app['eccube.password_encoder'],
+                    )
+                );
+            }
+        );
+        $this['eccube.event_listner.security'] = $this->share(
+            function ($app) {
+                return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
+            }
+        );
+        $this['user'] = $this->share(
+            function ($app) {
+                $token = $app['security']->getToken();
 
-            return ($token !== null) ? $token->getUser() : null;
-        });
+                return ($token !== null) ? $token->getUser() : null;
+            }
+        );
 
         // ログイン時のイベントを設定.
-        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+        $this['dispatcher']->addListener(
+            \Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN,
+            array($this['eccube.event_listner.security'], 'onInteractiveLogin')
+        );
 
         // Voterの設定
         $app = $this;
-        $this['authority_voter'] = $this->share(function($app) {
-            return new \Eccube\Security\Voter\AuthorityVoter($app);
-        });
+        $this['authority_voter'] = $this->share(
+            function ($app) {
+                return new \Eccube\Security\Voter\AuthorityVoter($app);
+            }
+        );
 
-        $app['security.voters'] = $app->extend('security.voters', function($voters) use ($app) {
-            $voters[] = $app['authority_voter'];
+        $app['security.voters'] = $app->extend(
+            'security.voters',
+            function ($voters) use ($app) {
+                $voters[] = $app['authority_voter'];
 
-            return $voters;
-        });
+                return $voters;
+            }
+        );
 
-        $this['security.access_manager'] = $this->share(function($app) {
-            return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
-        });
+        $this['security.access_manager'] = $this->share(
+            function ($app) {
+                return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager(
+                    $app['security.voters'],
+                    'unanimous'
+                );
+            }
+        );
 
     }
 
@@ -601,39 +689,56 @@ class Application extends ApplicationTrait
     public function initPluginEventDispatcher()
     {
         // EventDispatcher
-        $this['eccube.event.dispatcher'] = $this->share(function() {
-            return new EventDispatcher();
-        });
+        $this['eccube.event.dispatcher'] = $this->share(
+            function () {
+                return new EventDispatcher();
+            }
+        );
 
         // hook point
-        $this->before(function(Request $request, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
-        }, self::EARLY_EVENT);
+        $this->before(
+            function (Request $request, \Silex\Application $app) {
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+            },
+            self::EARLY_EVENT
+        );
 
-        $this->before(function(Request $request, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.before';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
+        $this->before(
+            function (Request $request, \Silex\Application $app) {
+                $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.before';
+                $app['eccube.event.dispatcher']->dispatch($event);
+            }
+        );
 
-        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.after';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
+        $this->after(
+            function (Request $request, Response $response, \Silex\Application $app) {
+                $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.after';
+                $app['eccube.event.dispatcher']->dispatch($event);
+            }
+        );
 
-        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
-        }, self::LATE_EVENT);
+        $this->after(
+            function (Request $request, Response $response, \Silex\Application $app) {
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+            },
+            self::LATE_EVENT
+        );
 
-        $this->finish(function(Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.finish';
-            $app['eccube.event.dispatcher']->dispatch($event);
-        });
+        $this->finish(
+            function (Request $request, Response $response, \Silex\Application $app) {
+                $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.finish';
+                $app['eccube.event.dispatcher']->dispatch($event);
+            }
+        );
 
         $app = $this;
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
-            $route = $event->getRequest()->attributes->get('_route');
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
-        });
+        $this->on(
+            \Symfony\Component\HttpKernel\KernelEvents::RESPONSE,
+            function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+                $route = $event->getRequest()->attributes->get('_route');
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
+            }
+        );
     }
 
     public function loadPlugin()
@@ -659,7 +764,8 @@ class Application extends ApplicationTrait
                 // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
                 $priority = \Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED;
             }
-            $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler()] = $priority;
+            $priorities[$handler->getPlugin()->getClassName()][$handler->getEvent()][$handler->getHandler(
+            )] = $priority;
         }
 
         // 既存のプラグインで「config.yml」がない場合は、エラー
@@ -668,7 +774,7 @@ class Application extends ApplicationTrait
             ->getRepository('Eccube\Entity\Plugin')
             ->findAll();
         $installedCodes = array();
-        foreach($installedPlugins as $val){
+        foreach ($installedPlugins as $val) {
             $installedCodes[] = $val->getCode();
         }
 
@@ -679,7 +785,7 @@ class Application extends ApplicationTrait
             if (!file_exists($dir->getRealPath().'/config.yml')) {
                 try {
                     $this['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
-                } catch(\Eccube\Exception\PluginException $e) {
+                } catch (\Eccube\Exception\PluginException $e) {
                     $this['monolog']->warning($e->getMessage());
                     continue;
                 }
@@ -692,13 +798,18 @@ class Application extends ApplicationTrait
 
             // const
             if (isset($config['const'])) {
-                $this['config'] = $this->share($this->extend('config', function($eccubeConfig) use ($config) {
-                    $eccubeConfig[$config['code']] = array(
-                        'const' => $config['const'],
-                    );
+                $this['config'] = $this->share(
+                    $this->extend(
+                        'config',
+                        function ($eccubeConfig) use ($config) {
+                            $eccubeConfig[$config['code']] = array(
+                                'const' => $config['const'],
+                            );
 
-                    return $eccubeConfig;
-                }));
+                            return $eccubeConfig;
+                        }
+                    )
+                );
             }
 
             if ($plugin && $plugin->getEnable() == Constant::DISABLED) {
@@ -721,7 +832,11 @@ class Application extends ApplicationTrait
                             }
                             // 優先度が0のプラグインは登録しない
                             if (\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_DISABLED != $priority) {
-                                $this['eccube.event.dispatcher']->addListener($event, array($subscriber, $handler[0]), $priority);
+                                $this['eccube.event.dispatcher']->addListener(
+                                    $event,
+                                    array($subscriber, $handler[0]),
+                                    $priority
+                                );
                             }
                         }
                     }
