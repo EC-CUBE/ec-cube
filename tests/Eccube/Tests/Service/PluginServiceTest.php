@@ -78,7 +78,6 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar->addFromString('config.yml',Yaml::dump($config));
         $service = $this->app['eccube.service.plugin'];
 
-        /*
         $dummyEvent = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -169,7 +168,6 @@ PMEOD;
 
 
         $service = $this->app['eccube.service.plugin'];
-        */
 
         // 解凍後インストール
         // テスト用プラグインの設置
