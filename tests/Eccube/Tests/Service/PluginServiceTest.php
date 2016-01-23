@@ -176,6 +176,7 @@ PMEOD;
         $service->install($tmpfile);
 
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'uninstall'));
+        return $tmpname;
     }
 
     /*
@@ -717,7 +718,7 @@ EOD;
     {
         $service = $this->app['eccube.service.plugin'];
         // プラグインの設置
-        $this->setUnregisteredPlugin();
+        $tmpname = $this->setUnregisteredPlugin();
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
     }
 
@@ -726,7 +727,7 @@ EOD;
     {
         $service = $this->app['eccube.service.plugin'];
         // プラグインの設置
-        $this->setUnregisteredPlugin();
+        $tmpname = $this->setUnregisteredPlugin();
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'uninstall'));
     }
@@ -736,7 +737,7 @@ EOD;
     {
         $service = $this->app['eccube.service.plugin'];
         // プラグインの設置
-        $this->setUnregisteredPlugin();
+        $tmpname = $this->setUnregisteredPlugin();
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'disable'));
     }
@@ -746,7 +747,7 @@ EOD;
     {
         $service = $this->app['eccube.service.plugin'];
         // プラグインの設置
-        $this->setUnregisteredPlugin();
+        $tmpname = $this->setUnregisteredPlugin();
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'disable'));
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'enable'));
@@ -757,7 +758,7 @@ EOD;
     {
         $service = $this->app['eccube.service.plugin'];
         // プラグインの設置
-        $this->setUnregisteredPlugin();
+        $tmpname = $this->setUnregisteredPlugin();
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
         $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'reload'));
     }
