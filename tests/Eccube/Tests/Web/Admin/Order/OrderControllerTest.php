@@ -37,7 +37,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         if (!is_object($ShipCsvType)) {
             $ShipCsvType = new CsvType();
             $ShipCsvType->setId(4);
-            $ShipCsvType->setName('受注CSV');
+            $ShipCsvType->setName('配送CSV');
             $ShipCsvType->setRank(5);
             $this->app['orm.em']->persist($ShipCsvType);
             $this->app['orm.em']->flush();
@@ -118,31 +118,59 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testExportOrder()
     {
+        // 受注件数を11件にしておく
+        $this->createOrder($this->createCustomer('dummy-user@example.com'));
+
+        // 10件ヒットするはずの検索条件
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order'),
+            array(
+                'admin_search_order' => array(
+                    '_token' => 'dummy',
+                    'email' => 'user-'
+                )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->expected = '検索結果 10 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+
         $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
 
         $this->client->request(
-            'POST',
-            $this->app->path('admin_order_export_order'),
-            array(
-                'admin_search_customer' => array(
-                    '_token' => 'dummy'
-                )
-            )
+            'GET',
+            $this->app->path('admin_order_export_order')
         );
     }
 
     public function testExportShipping()
     {
+        // 受注件数を11件にしておく
+        $this->createOrder($this->createCustomer('dummy-user@example.com'));
+
+        // 10件ヒットするはずの検索条件
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order'),
+            array(
+                'admin_search_order' => array(
+                    '_token' => 'dummy',
+                    'email' => 'user-'
+                )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->expected = '検索結果 10 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+
         $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
 
         $this->client->request(
-            'POST',
-            $this->app->path('admin_order_export_shipping'),
-            array(
-                'admin_search_customer' => array(
-                    '_token' => 'dummy'
-                )
-            )
+            'GET',
+            $this->app->path('admin_order_export_shipping')
         );
     }
 }
