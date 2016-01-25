@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -45,6 +46,12 @@ class ProductController extends AbstractController
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
+
+        $event = new EventArgs(array(
+                'form' => $searchForm,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
 
         $pagination = array();
 
@@ -64,6 +71,15 @@ class ProductController extends AbstractController
                 // paginator
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                 $page_no = 1;
+
+                $event = new EventArgs(array(
+                        'queryBuilder' => $qb,
+                        'searchData' => $searchData,
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+                $searchData = $event->getArgument('searchData');
+
                 $pagination = $app['paginator']()->paginate(
                     $qb,
                     $page_no,
@@ -104,6 +120,15 @@ class ProductController extends AbstractController
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                    $event = new EventArgs(array(
+                            'queryBuilder' => $qb,
+                            'searchData' => $searchData,
+                        )
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+                    $searchData = $event->getArgument('searchData');
+
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
@@ -207,12 +232,11 @@ class ProductController extends AbstractController
         }
 
         $form = $builder->getForm();
-        //$event = new FormEvent($form, $request);
         $event = new EventArgs(array(
                 'form' => $form,
             )
         );
-        $app['eccube.event.dispatcher']->dispatch('admin.product.initialize', $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
 
         if (!$has_class) {
             $ProductClass->setStockUnlimited((boolean)$ProductClass->getStockUnlimited());
@@ -356,14 +380,12 @@ class ProductController extends AbstractController
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
-
                 $event = new EventArgs(array(
                         'form' => $form,
                         'product' => $Product,
                     )
                 );
-
-                $app['eccube.event.dispatcher']->dispatch('admin.product.complete', $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
