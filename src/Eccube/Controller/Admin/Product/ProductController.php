@@ -546,7 +546,7 @@ class ProductController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function () use ($app, $request, $em) {
 
             // CSV種別を元に初期化.
             $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_PRODUCT);
@@ -556,7 +556,7 @@ class ProductController extends AbstractController
 
             // 商品データ検索用のクエリビルダを取得.
             $qb = $app['eccube.service.csv.export']
-                ->getProductQueryBuilder($request);
+                ->getProductQueryBuilder($request, $em);
 
             // joinする場合はiterateが使えないため, select句をdistinctする.
             // http://qiita.com/suin/items/2b1e98105fa3ef89beb7

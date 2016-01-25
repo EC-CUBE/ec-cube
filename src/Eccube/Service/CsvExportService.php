@@ -28,6 +28,7 @@ use Eccube\Common\Constant;
 use Eccube\Util\EntityUtil;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class CsvExportService
 {
@@ -353,11 +354,12 @@ class CsvExportService
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getOrderQueryBuilder(Request $request)
+    public function getOrderQueryBuilder(Request $request, $em)
     {
         $session = $request->getSession();
         if ($session->has('eccube.admin.order.search')) {
             $searchData = $session->get('eccube.admin.order.search');
+            $this->findDeserializeObjects($searchData, $em);
         } else {
             $searchData = array();
         }
@@ -375,11 +377,12 @@ class CsvExportService
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getCustomerQueryBuilder(Request $request)
+    public function getCustomerQueryBuilder(Request $request, $em)
     {
         $session = $request->getSession();
         if ($session->has('eccube.admin.customer.search')) {
             $searchData = $session->get('eccube.admin.customer.search');
+            $this->findDeserializeObjects($searchData, $em);
         } else {
             $searchData = array();
         }
@@ -397,11 +400,12 @@ class CsvExportService
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getProductQueryBuilder(Request $request)
+    public function getProductQueryBuilder(Request $request, $em)
     {
         $session = $request->getSession();
         if ($session->has('eccube.admin.product.search')) {
             $searchData = $session->get('eccube.admin.product.search');
+            $this->findDeserializeObjects($searchData, $em);
         } else {
             $searchData = array();
         }
@@ -411,5 +415,30 @@ class CsvExportService
             ->getQueryBuilderBySearchDataForAdmin($searchData);
 
         return $qb;
+    }
+
+    /**
+     * セッションでシリアライズされた Doctrine のオブジェクトを取得し直す.
+     *
+     * XXX self::setExportQueryBuilder() をコールする前に EntityManager を取得したいので、引数で渡している
+     *
+     * @param array $searchData セッションから取得した検索条件の配列
+     * @param EntityManager $em
+     */
+    protected function findDeserializeObjects(array &$searchData, $em)
+    {
+        foreach ($searchData as &$Conditions) {
+            if ($Conditions instanceof ArrayCollection) {
+                $Conditions = new ArrayCollection(
+                    array_map(
+                        function ($Entity) use ($em) {
+                            return $em->getRepository(get_class($Entity))->find($Entity->getId());
+                        }, $Conditions->toArray()
+                    )
+                );
+            } elseif ($Conditions instanceof \Eccube\Entity\AbstractEntity) {
+                $Conditions = $em->getRepository(get_class($Conditions))->find($Conditions->getId());
+            }
+        }
     }
 }
