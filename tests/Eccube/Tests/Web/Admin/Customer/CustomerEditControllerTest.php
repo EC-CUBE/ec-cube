@@ -22,6 +22,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
 
         $email = $faker->safeEmail;
         $password = $faker->lexify('????????');
+        $birth = $faker->dateTimeBetween;
 
         $form = array(
             'name' => array(
@@ -58,9 +59,9 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
                 'second' => $password,
             ),
             'birth' => array(
-                'year' => $faker->year,
-                'month' => intval($faker->month),
-                'day' => intval($faker->dayOfMonth),
+                'year' => $birth->format('Y'),
+                'month' => $birth->format('n'),
+                'day' => $birth->format('j'),
             ),
             'sex' => 1,
             'job' => 1,
