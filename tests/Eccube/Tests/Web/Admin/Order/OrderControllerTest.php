@@ -2,8 +2,8 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
