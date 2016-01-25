@@ -25,7 +25,6 @@
 namespace Eccube\Twig\Extension;
 
 use Eccube\Common\Constant;
-use Eccube\Twig\TokenParser\Twig_TokenParser_Hoge;
 use Eccube\Util\Str;
 use Silex\Application;
 
@@ -66,11 +65,6 @@ class EccubeExtension extends \Twig_Extension
             new \Twig_SimpleFilter('ellipsis', array($this, 'getEllipsis')),
             new \Twig_SimpleFilter('time_ago', array($this, 'getTimeAgo')),
         );
-    }
-
-    public function getTokenParsers()
-    {
-        return array(new Twig_TokenParser_Hoge());
     }
 
     /**
