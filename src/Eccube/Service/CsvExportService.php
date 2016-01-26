@@ -378,11 +378,10 @@ class CsvExportService
      */
     public function getCustomerQueryBuilder(Request $request)
     {
-        $em = $this->getEntityManager();
         $session = $request->getSession();
         if ($session->has('eccube.admin.customer.search')) {
             $searchData = $session->get('eccube.admin.customer.search');
-            $this->findDeserializeObjects($searchData, $em);
+            $this->findDeserializeObjects($searchData);
         } else {
             $searchData = array();
         }
@@ -402,11 +401,10 @@ class CsvExportService
      */
     public function getProductQueryBuilder(Request $request)
     {
-        $em = $this->getEntityManager();
         $session = $request->getSession();
         if ($session->has('eccube.admin.product.search')) {
             $searchData = $session->get('eccube.admin.product.search');
-            $this->findDeserializeObjects($searchData, $em);
+            $this->findDeserializeObjects($searchData);
         } else {
             $searchData = array();
         }
