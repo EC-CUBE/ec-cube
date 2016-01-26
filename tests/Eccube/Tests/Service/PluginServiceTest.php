@@ -779,9 +779,27 @@ PMEOD;
         // テスト用プラグインの設置
         $service->install($tmpfile);
 
-        $this->assertTrue($service->uninstallOnlyDb($this->pluginpath.$tmpname));
+        $plugin = $this->getPluginFromCode($tmpname);
+
+        $this->assertTrue($service->uninstallOnlyDb($plugin));
 
         return $tmpname;
+    }
+
+    public function getPluginFromCode($pluginCode)
+    {
+        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0, 'code'=>$pluginCode));
+    }
+
+    /**
+     * consoleでのインストールを検証
+     */
+    public function testConsoleInstallPlugin()
+    {
+        $service = $this->app['eccube.service.plugin'];
+        // プラグインの設置
+        $tmpname = $this->setUnregisteredPlugin();
+        $this->assertTrue($service->installOnlyDb($this->pluginpath.$tmpname));
     }
 
     /**
@@ -793,6 +811,7 @@ PMEOD;
         // プラグインの設置
         $tmpname = $this->setUnregisteredPlugin();
         $this->assertTrue($service->installOnlyDb($this->pluginpath.$tmpname));
-        $this->assertTrue($service->uninstallOnlyDb($this->pluginpath.$tmpname));
+        $plugin = $this->getPluginFromCode($tmpname);
+        $this->assertTrue($service->uninstallOnlyDb($plugin));
     }
 }
