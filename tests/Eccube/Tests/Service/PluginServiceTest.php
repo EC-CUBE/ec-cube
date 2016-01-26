@@ -669,18 +669,6 @@ EOD;
         $this->assertTrue($service->uninstall($plugin));
     }
 
-
-    /**
-     * const定義を含むpluginのインストール
-     */
-    public function testConsoleInstallPlugin()
-    {
-        $service = $this->app['eccube.service.plugin'];
-        // プラグインの設置
-        $tmpname = $this->setUnregisteredPlugin();
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
-    }
-
     public function setUnregisteredPlugin()
     {
         // インストールするプラグインを作成する
@@ -791,7 +779,7 @@ PMEOD;
         // テスト用プラグインの設置
         $service->install($tmpfile);
 
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'uninstall'));
+        $this->assertTrue($service->uninstallOnlyDb($this->pluginpath.$tmpname));
 
         return $tmpname;
     }
@@ -804,44 +792,7 @@ PMEOD;
         $service = $this->app['eccube.service.plugin'];
         // プラグインの設置
         $tmpname = $this->setUnregisteredPlugin();
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'uninstall'));
-    }
-
-    /**
-     * consoleでの有効化を検証
-     */
-    public function testConsoleDisablePlugin()
-    {
-        $service = $this->app['eccube.service.plugin'];
-        // プラグインの設置
-        $tmpname = $this->setUnregisteredPlugin();
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'disable'));
-    }
-
-    /**
-     * consoleでの有効化を検証
-     */
-    public function testConsoleEnablePlugin()
-    {
-        $service = $this->app['eccube.service.plugin'];
-        // プラグインの設置
-        $tmpname = $this->setUnregisteredPlugin();
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'disable'));
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'enable'));
-    }
-
-    /**
-     * consoleでのリロードを検証
-     */
-    public function testConsoleReloadPlugin()
-    {
-        $service = $this->app['eccube.service.plugin'];
-        // プラグインの設置
-        $tmpname = $this->setUnregisteredPlugin();
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'install'));
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'reload'));
+        $this->assertTrue($service->installOnlyDb($this->pluginpath.$tmpname));
+        $this->assertTrue($service->uninstallOnlyDb($this->pluginpath.$tmpname));
     }
 }

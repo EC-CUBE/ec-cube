@@ -46,9 +46,10 @@ class PluginCommand extends \Knp\Command\Command
     {
         $this
             ->setName('plugin:develop')
-            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reload/sandbox:install/sandbox:uninstall/sandbox:enable/sandbox:disable)', null)
+            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reload)', null)
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
+            ->addOption('only-db', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->setDescription('plugin commandline installer.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> plugin installer runner for developer;
@@ -70,9 +71,17 @@ EOF
         $mode = $input->getArgument('mode');
         $path = $input->getOption('path');
         $code = $input->getOption('code');
+        $onlyDbFlg = $input->getOption('only-db');
 
         $service = $this->app['eccube.service.plugin'];
         if ($mode == 'install') {
+            // 解凍なしのインストール ( 設置プラグイン用 )
+            if (!is_null($onlyDbFlg)) {
+                if ($service->installOnlyDb($this->pluginPath.$onlyDbFlg)) {
+                    $output->writeln('success');
+                    return;
+                }
+            }
             if (empty($path)) {
                 $output->writeln('path is required.');
                 return;
@@ -103,64 +112,41 @@ EOF
                 return;
             }
             $stepFlg = false;
-            if ($service->sandBoxExecute($this->pluginPath.$code, 'uninstall')) {
+            if ($service->uninstallOnlyDb($this->pluginPath.$code)) {
                 $stepFlg = true;
             }
             if ($stepFlg) {
-                if ($service->sandBoxExecute($this->pluginPath.$code, 'install')) {
+                if ($service->installOnlyDb($this->pluginPath.$code)) {
                     $output->writeln('success');
                     return;
                 }
             }
         }
-        if ($mode == 'sandbox:install') {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-            if ($service->sandBoxExecute($this->pluginPath.$code, 'install')) {
-                $output->writeln('success');
-                return;
-            }
-        }
-        if ($mode == 'sandbox:uninstall') {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-            if ($service->sandBoxExecute($this->pluginPath.$code, 'uninstall')) {
-                $output->writeln('success');
-                return;
-            }
-        }
-        if ($mode == 'sandbox:disable') {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-            if ($service->sandBoxExecute($this->pluginPath.$code, 'disable')) {
-                $output->writeln('success');
-                return;
-            }
-        }
-        if ($mode == 'sandbox:enable') {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-            if ($service->sandBoxExecute($this->pluginPath.$code, 'enable')) {
-                $output->writeln('success');
-                return;
-            }
-        }
+
         if (in_array($mode, array('enable', 'disable', 'uninstall'), true)) {
+            // 解凍なしのアンインストール ( 設置プラグイン用 )
+            if (!is_null($onlyDbFlg)) {
+                if ($mode == 'uninstall') {
+                    $plugin = $this->getPluginFromCode($onlyDbFlg);
+                    if ($service->uninstallOnlyDb($plugin)) {
+                        $output->writeln('success');
+
+                        return;
+                    }
+                }
+                $output->writeln('entered only-db option, this option not has this mode.');
+                return;
+            }
+
             if (empty($code)) {
                 $output->writeln('code is required.');
                 return;
             }
 
             $plugin = $this->getPluginFromCode($code);
+
             if ($service->$mode($plugin)) {
+
                 $output->writeln('success');
                 return;
             }
