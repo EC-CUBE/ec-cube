@@ -171,7 +171,7 @@ class CustomerController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request, $em) {
+        $response->setCallback(function () use ($app, $request) {
 
             // CSV種別を元に初期化.
             $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
@@ -181,7 +181,7 @@ class CustomerController extends AbstractController
 
             // 会員データ検索用のクエリビルダを取得.
             $qb = $app['eccube.service.csv.export']
-                ->getCustomerQueryBuilder($request, $em);
+                ->getCustomerQueryBuilder($request);
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);

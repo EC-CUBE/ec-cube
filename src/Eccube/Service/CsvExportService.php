@@ -167,7 +167,6 @@ class CsvExportService
     public function setExportQueryBuilder(\Doctrine\ORM\QueryBuilder $qb)
     {
         $this->qb = $qb;
-        $this->setEntityManager($qb->getEntityManager());
     }
 
     /**
@@ -354,12 +353,12 @@ class CsvExportService
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getOrderQueryBuilder(Request $request, $em)
+    public function getOrderQueryBuilder(Request $request)
     {
         $session = $request->getSession();
         if ($session->has('eccube.admin.order.search')) {
             $searchData = $session->get('eccube.admin.order.search');
-            $this->findDeserializeObjects($searchData, $em);
+            $this->findDeserializeObjects($searchData);
         } else {
             $searchData = array();
         }
@@ -377,8 +376,9 @@ class CsvExportService
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getCustomerQueryBuilder(Request $request, $em)
+    public function getCustomerQueryBuilder(Request $request)
     {
+        $em = $this->getEntityManager();
         $session = $request->getSession();
         if ($session->has('eccube.admin.customer.search')) {
             $searchData = $session->get('eccube.admin.customer.search');
@@ -400,8 +400,9 @@ class CsvExportService
      * @param Request $request
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getProductQueryBuilder(Request $request, $em)
+    public function getProductQueryBuilder(Request $request)
     {
+        $em = $this->getEntityManager();
         $session = $request->getSession();
         if ($session->has('eccube.admin.product.search')) {
             $searchData = $session->get('eccube.admin.product.search');
@@ -425,8 +426,9 @@ class CsvExportService
      * @param array $searchData セッションから取得した検索条件の配列
      * @param EntityManager $em
      */
-    protected function findDeserializeObjects(array &$searchData, $em)
+    protected function findDeserializeObjects(array &$searchData)
     {
+        $em = $this->getEntityManager();
         foreach ($searchData as &$Conditions) {
             if ($Conditions instanceof ArrayCollection) {
                 $Conditions = new ArrayCollection(
