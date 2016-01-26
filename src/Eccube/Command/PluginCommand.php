@@ -75,16 +75,16 @@ EOF
 
         $service = $this->app['eccube.service.plugin'];
         if ($mode == 'install') {
-            if (empty($path)) {
-                $output->writeln('path is required.');
-                return;
-            }
             // 解凍なしのインストール ( 設置プラグイン用 )
             if (!is_null($onlyDbFlg)) {
                 if ($service->installOnlyDb($this->pluginPath.$onlyDbFlg)) {
                     $output->writeln('success');
                     return;
                 }
+            }
+            if (empty($path)) {
+                $output->writeln('path is required.');
+                return;
             }
             if ($service->install($path)) {
                 $output->writeln('success');
@@ -124,17 +124,11 @@ EOF
         }
 
         if (in_array($mode, array('enable', 'disable', 'uninstall'), true)) {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-
-            $plugin = $this->getPluginFromCode($code);
-
             // 解凍なしのアンインストール ( 設置プラグイン用 )
             if (!is_null($onlyDbFlg)) {
                 if ($mode == 'uninstall') {
-                    if ($service->uninstallOnlyDb($this->pluginPath.$onlyDbFlg)) {
+                    $plugin = $this->getPluginFromCode($onlyDbFlg);
+                    if ($service->uninstallOnlyDb($plugin)) {
                         $output->writeln('success');
 
                         return;
@@ -143,6 +137,13 @@ EOF
                 $output->writeln('entered only-db option, this option not has this mode.');
                 return;
             }
+
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+
+            $plugin = $this->getPluginFromCode($code);
 
             if ($service->$mode($plugin)) {
 

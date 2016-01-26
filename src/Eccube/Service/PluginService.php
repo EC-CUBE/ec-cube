@@ -297,23 +297,14 @@ class PluginService
      * @return bool
      *
      */
-    public function uninstallOnlyDb($path)
+    public function uninstallOnlyDb(\Eccube\Entity\Plugin $plugin)
     {
-        $config = $this->readYml($path.'/'.self::CONFIG_YML);
+        $pluginDir = $this->calcPluginDir($plugin->getCode());
+        $config = $this->readYml($pluginDir.'/'.self::CONFIG_YML);
 
         $this->callPluginManagerMethod($config, 'disable');
         $this->callPluginManagerMethod($config, 'uninstall');
-        $p = new \Eccube\Entity\Plugin();
-        // インストール直後はプラグインは有効にしない
-        $p->setName($config['name'])
-            ->setEnable(Constant::DISABLED)
-            ->setClassName(isset($config['event']) ? $config['event'] : '')
-            ->setVersion($config['version'])
-            ->setDelflg(Constant::DISABLED)
-            ->setSource(0)
-            ->setCode($config['code']);
-
-        $this->unregisterPlugin($p);
+        $this->unregisterPlugin($plugin);
 
         return true;
     }
