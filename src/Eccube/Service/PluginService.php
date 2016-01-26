@@ -41,23 +41,6 @@ class PluginService
         $this->app = $app;
     }
 
-    public function sandBoxExecute($path, $method)
-    {
-        $pluginBaseDir = null;
-
-        try {
-            $this->checkPluginArchiveContent($path);
-            $config = $this->readYml($path.'/'.self::CONFIG_YML);
-            $event = $this->readYml($path.'/'.self::EVENT_YML);
-            $this->callPluginManagerMethod($config, $method);
-        } catch (PluginException $e) {
-            throw $e;
-        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
-            throw $e;
-        }
-
-        return true;
-    }
 
     public function install($path, $source = 0)
     {
@@ -68,6 +51,7 @@ class PluginService
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
+
             $this->checkPluginArchiveContent($tmp);
 
             $config = $this->readYml($tmp.'/'.self::CONFIG_YML);
@@ -88,6 +72,37 @@ class PluginService
         } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
 
             $this->deleteDirs(array($tmp, $pluginBaseDir));
+            throw $e;
+        }
+
+        return true;
+    }
+
+    /**
+     *
+     * プラグインの設定ファイルを読み込みインストールを行う
+     * ・ファイルの解凍は行わない
+     * @param string $path
+     * @param int $source
+     * @return bool
+     * @throws PluginException
+     * @throws \Exception
+     *
+     */
+    public function installOnlyDb($path, $source = 0)
+    {
+        try {
+            $this->checkPluginArchiveContent($path);
+
+            $config = $this->readYml($path.'/'.self::CONFIG_YML);
+            $event = $this->readYml($path.'/'.self::EVENT_YML);
+
+            $this->checkSamePlugin($config['code']); // 重複していないかチェック
+
+            $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
+        } catch (PluginException $e) {
+            throw $e;
+        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
             throw $e;
         }
 
@@ -266,10 +281,39 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
 
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'disable');
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
+
+        return true;
+    }
+
+    /**
+     *
+     * プラグインの設定ファイルを読み込みアンインストールを行う
+     * ・ファイルの削除は行わない
+     * @param string $path
+     * @return bool
+     *
+     */
+    public function uninstallOnlyDb($path)
+    {
+        $config = $this->readYml($path.'/'.self::CONFIG_YML);
+
+        $this->callPluginManagerMethod($config, 'disable');
+        $this->callPluginManagerMethod($config, 'uninstall');
+        $p = new \Eccube\Entity\Plugin();
+        // インストール直後はプラグインは有効にしない
+        $p->setName($config['name'])
+            ->setEnable(Constant::DISABLED)
+            ->setClassName(isset($config['event']) ? $config['event'] : '')
+            ->setVersion($config['version'])
+            ->setDelflg(Constant::DISABLED)
+            ->setSource(0)
+            ->setCode($config['code']);
+
+        $this->unregisterPlugin($p);
 
         return true;
     }
@@ -308,7 +352,7 @@ class PluginService
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
             $em->persist($plugin);
-            $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
+            $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), $enable ? 'enable' : 'disable');
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {

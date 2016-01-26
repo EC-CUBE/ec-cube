@@ -32,12 +32,13 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginServiceTest extends AbstractServiceTestCase
 {
     protected $app;
-    protected $pluginpath;
+    protected $pluginPath;
 
     public function __construct()
     {
         parent::__construct();
-        $this->pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
+        $this->app = \Eccube\Application::getInstance();
+        $this->pluginPath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
     }
 
     public function tearDown()
@@ -64,20 +65,19 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function setUnregisteredPlugin()
     {
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
+        $tmpName="dummy".sha1(mt_rand());
         $config=array();
-        $config['name'] = $tmpname."_name";
-        $config['code'] = $tmpname;
-        $config['version'] = $tmpname."_version";
+        $config['name'] = $tmpName."_name";
+        $config['code'] = $tmpName;
+        $config['version'] = $tmpName."_version";
 
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpDir=$this->createTempDir();
+        $tmpFile=$tmpDir.'/plugin.tar';
 
-        $tar = new \PharData($tmpfile);
+        $tar = new \PharData($tmpFile);
         $tar->addFromString('config.yml',Yaml::dump($config));
         $service = $this->app['eccube.service.plugin'];
 
-        /*
         $dummyEvent = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -107,7 +107,7 @@ class DummyEvent
 }
 
 EOD;
-        $dummyEvent = str_replace('@@@@', $tmpname, $dummyEvent); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $dummyEvent = str_replace('@@@@', $tmpName, $dummyEvent); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("DummyEvent.php" , $dummyEvent);
 
         // イベント定義を作成する
@@ -162,19 +162,18 @@ class PluginManager extends AbstractPluginManager
 }
 
 PMEOD;
-        $dummyPluginManager = str_replace('@@@@', $tmpname, $dummyPluginManager);
+        $dummyPluginManager = str_replace('@@@@', $tmpName, $dummyPluginManager);
         $tar->addFromString("PluginManager.php" , $dummyPluginManager);
 
 
 
         $service = $this->app['eccube.service.plugin'];
-        */
 
         // 解凍後インストール
         // テスト用プラグインの設置
         $service->install($tmpfile);
 
-        $this->assertTrue($service->sandBoxExecute($this->pluginpath.$tmpname, 'uninstall'));
+        $this->assertTrue($service->uninstallOnlyDb($this->pluginPath.$tmpName));
     }
 
     /*
