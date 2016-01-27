@@ -732,7 +732,7 @@ class ShoppingController extends AbstractController
                 $response->headers->set('Content-Type', 'application/json');
 
             } catch (\Exception $e) {
-                $app['monolog']->warning($e);
+                $app['monolog']->error($e);
 
                 $response = new Response(json_encode('NG'), 500);
                 $response->headers->set('Content-Type', 'application/json');
