@@ -76,7 +76,7 @@ jQuery(document).ready(function($){
 	} else {
 		showParameters();
 	}
-	$("#install_step4_database").on('change', function() {
+	$("#install_step4_database").change(function() {
 		var database = $(this).val();
 		if (database == 'pdo_sqlite') {
 			hideParameters();
