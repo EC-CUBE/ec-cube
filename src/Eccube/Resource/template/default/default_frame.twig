@@ -74,15 +74,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
     <div id="contents" class="{{ PageLayout.theme }}">
 
-        <div id="contents_top">
-            {# ▼TOP COLUMN #}
-            {% if PageLayout.ContentsTop %}
+        {# ▼TOP COLUMN #}
+        {% if PageLayout.ContentsTop %}
+            <div id="contents_top">
                 {# ▼上ナビ #}
                 {{ include('block.twig', {'Blocks': PageLayout.ContentsTop}) }}
                 {# ▲上ナビ #}
-            {% endif %}
-            {# ▲TOP COLUMN #}
-        </div>
+            </div>
+        {% endif %}
+        {# ▲TOP COLUMN #}
 
         <div class="container-fluid inner">
             {# ▼LEFT COLUMN #}
@@ -127,31 +127,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
             {# ▲RIGHT COLUMN #}
 
-            {# ▼BOTTOM COLUMN #}
-            {% if PageLayout.ContentsBottom %}
-                <div id="contents_bottom">
-                    {# ▼下ナビ #}
-                    {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
-                    {# ▲下ナビ #}
-                </div>
-            {% endif %}
-            {# ▲BOTTOM COLUMN #}
-
         </div>
-
-        <footer id="footer">
-            {# ▼Footer COLUMN#}
-            {% if PageLayout.Footer %}
-                {# ▼上ナビ #}
-                {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
-                {# ▲上ナビ #}
-            {% endif %}
-            {# ▲Footer COLUMN#}
-
-        </footer>
+    
+        {# ▼BOTTOM COLUMN #}
+        {% if PageLayout.ContentsBottom %}
+            <div id="contents_bottom">
+                {# ▼下ナビ #}
+                {{ include('block.twig', {'Blocks': PageLayout.ContentsBottom}) }}
+                {# ▲下ナビ #}
+            </div>
+        {% endif %}
+        {# ▲BOTTOM COLUMN #}
 
     </div>
 
+    <footer id="footer">
+        {# ▼Footer COLUMN#}
+        {% if PageLayout.Footer %}
+            {# ▼上ナビ #}
+            {{ include('block.twig', {'Blocks': PageLayout.Footer}) }}
+            {# ▲上ナビ #}
+        {% endif %}
+        {# ▲Footer COLUMN#}
+
+    </footer>
+    
     <div id="drawer" class="drawer sp">
     </div>
 
