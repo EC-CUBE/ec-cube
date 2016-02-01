@@ -32,14 +32,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class PluginServiceTest extends AbstractServiceTestCase
 {
     protected $app;
-    protected $pluginpath;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->app = \Eccube\Application::getInstance();
-        $this->pluginpath = $this->app['config']['plugin_realdir'].DIRECTORY_SEPARATOR;
-    }
 
     public function tearDown()
     {
@@ -69,7 +61,7 @@ class PluginServiceTest extends AbstractServiceTestCase
      */
 
     /**
-     * 置くだけプラグインを設置
+     * テスト用のダミープラグインを配置する
      * @return boolean
      */
     private function createTempDir()
