@@ -21,26 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Tests\Form\Type\Admin;
 
-namespace Eccube\Tests\Form\Type\Install;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
-class Step4TypeTest extends AbstractTypeTestCase
+class MasterdataTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
 
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
-
-    /** @var array デフォルト値を設定 */
-    protected $formData = array(
-        'database' => '',
-        'database_host' => '',
-        'database_port' => '',
-        'database_name' => '',
-        'database_user' => '',
-        'database_password' => '',
-    );
+    /** @var array デフォルト値（正常系）を設定 */
+    protected $formData = array();
 
     public function setUp()
     {
@@ -48,20 +39,27 @@ class Step4TypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('install_step4', null, array(
+            ->createBuilder('admin_system_masterdata', null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
     }
 
-    // DB への接続チェックも行われてしまうので、テストが難しい
-    public function testInvalidData()
+    /**
+     * 本体のメタデータのみ取得できているかどうかのテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1403
+     */
+    public function testEntityMetadata()
     {
-        // Request に依存しているため WebTest で代替する
-        $this->markTestSkipped('Can not support of FormInterface::submit()');
+        $view = $this->form['masterdata']->createView();
+        $choices = $view->vars['choices'];
 
-        $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
-        //var_dump($this->form->getErrorsAsString());die();
+        $expect = 'Eccube\Entity';
+
+        foreach ($choices as $choice) {
+            $actual = $choice->data;
+            $this->assertStringStartsWith($expect, $actual);
+        }
     }
 }

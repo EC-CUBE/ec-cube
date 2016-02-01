@@ -212,7 +212,7 @@ class InstallController
 
         if (empty($sessionData['database'])) {
 
-            $config_file = $this->config_path . '/database.yml';
+            $config_file = $this->config_path.'/database.yml';
             $fs = new Filesystem();
 
             if ($fs->exists($config_file)) {
@@ -254,8 +254,15 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
+
+            $this
+                ->createDatabaseYamlFile($sessionData)
+                ->createMailYamlFile($sessionData)
+                ->createPathYamlFile($sessionData, $request);
+
             if (!$form['no_update']->getData()) {
                 set_time_limit(0);
+                $this->createConfigYamlFile($sessionData);
 
                 $this
                     ->setPDO()
@@ -263,9 +270,6 @@ class InstallController
                     ->createTables()
                     ->doMigrate()
                     ->insert();
-
-                $this->createConfigYamlFile($sessionData);
-
             } else {
                 // データベースを初期化しない場合、auth_magicは初期化しない
                 $this->createConfigYamlFile($sessionData, false);
@@ -276,10 +280,6 @@ class InstallController
 
             }
 
-            $this
-                ->createDatabaseYamlFile($sessionData)
-                ->createMailYamlFile($sessionData)
-                ->createPathYamlFile($sessionData, $request);
 
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $host = $request->getSchemeAndHttpHost();
@@ -572,8 +572,10 @@ class InstallController
 
     private function getMigration()
     {
-        $app = new \Eccube\Application();
-        $app->initDoctrine();
+        $app = \Eccube\Application::getInstance();
+        $app->initialize();
+        $app->boot();
+
         $config = new Configuration($app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
@@ -694,37 +696,48 @@ class InstallController
             $fs->remove($config_file);
         }
 
-        switch ($data['database']) {
-            case 'pdo_pgsql':
-                if (empty($data['db_port'])) {
-                    $data['db_port'] = '5432';
-                }
-                $data['db_driver'] = 'pdo_pgsql';
-                break;
-            case 'pdo_mysql':
-                if (empty($data['db_port'])) {
-                    $data['db_port'] = '3306';
-                }
-                $data['db_driver'] = 'pdo_mysql';
-                break;
+        if ($data['database'] != 'pdo_sqlite') {
+            switch ($data['database']) {
+                case 'pdo_pgsql':
+                    if (empty($data['db_port'])) {
+                        $data['db_port'] = '5432';
+                    }
+                    $data['db_driver'] = 'pdo_pgsql';
+                    break;
+                case 'pdo_mysql':
+                    if (empty($data['db_port'])) {
+                        $data['db_port'] = '3306';
+                    }
+                    $data['db_driver'] = 'pdo_mysql';
+                    break;
+            }
+            $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
+            $replace = array(
+                $data['db_driver'],
+                $data['database_host'],
+                $data['database_name'],
+                $data['database_port'],
+                $data['database_user'],
+                $data['database_password']
+            );
+
+            $fs = new Filesystem();
+            $content = str_replace(
+                $target,
+                $replace,
+                file_get_contents($this->dist_path . '/database.yml.dist')
+            );
+
+        } else {
+            $content = Yaml::dump(
+                array(
+                    'database' => array(
+                        'driver' => 'pdo_sqlite',
+                        'path' => realpath($this->config_path.'/eccube.db')
+                    )
+                )
+            );
         }
-        $target = array('${DBDRIVER}', '${DBSERVER}', '${DBNAME}', '${DBPORT}', '${DBUSER}', '${DBPASS}');
-        $replace = array(
-            $data['db_driver'],
-            $data['database_host'],
-            $data['database_name'],
-            $data['database_port'],
-            $data['database_user'],
-            $data['database_password']
-        );
-
-        $fs = new Filesystem();
-        $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/database.yml.dist')
-        );
-
         $fs->dumpFile($config_file, $content);
 
         return $this;
@@ -858,8 +871,9 @@ class InstallController
      */
     public function migration_plugin(InstallApplication $app, Request $request)
     {
-        $eccube = new \Eccube\Application();
-        $eccube->initDoctrine();
+        $eccube = \Eccube\Application::getInstance();
+        $eccube->initialize();
+        $eccube->boot();
 
         $pluginRepository = $eccube['orm.em']->getRepository('Eccube\Entity\Plugin');
         $Plugins = $pluginRepository->findBy(array('del_flg' => Constant::DISABLED));

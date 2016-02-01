@@ -24,9 +24,7 @@ class Version20150716110252 extends AbstractMigration
             return true;
         }
 
-        $app = new \Eccube\Application();
-        $app->initialize();
-        $app->boot();
+        $app = \Eccube\Application::getInstance();
         $em = $app["orm.em"];
 
         $CsvType = new CsvType();

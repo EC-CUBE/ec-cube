@@ -25,23 +25,45 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
-use Monolog\Handler\FingersCrossedHandler;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
 {
+    protected static $instance;
+
+    protected $initialized = false;
+    protected $initializedPlugin = false;
+
+    public static function getInstance(array $values = array())
+    {
+        if (!is_object(self::$instance)) {
+            self::$instance = new Application($values);
+        }
+
+        return self::$instance;
+    }
+
+    public static function clearInstance()
+    {
+        self::$instance = null;
+    }
+
+    final public function __clone()
+    {
+        throw new \Exception('Clone is not allowed against '.get_class($this));
+    }
+
     public function __construct(array $values = array())
     {
         parent::__construct($values);
+
+        if (is_null(self::$instance)) {
+            self::$instance = $this;
+        }
 
         // load config
         $this->initConfig();
@@ -143,6 +165,10 @@ class Application extends ApplicationTrait
 
     public function initialize()
     {
+        if ($this->initialized) {
+            return;
+        }
+
         // init locale
         $this->initLocale();
 
@@ -203,6 +229,8 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
+
+        $this->initialized = true;
     }
 
     public function initLocale()
@@ -242,6 +270,7 @@ class Application extends ApplicationTrait
     public function initSession()
     {
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
+            'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => 'eccube',
                 'cookie_path' => $this['config']['root_urlpath'] ?: '/',
@@ -252,17 +281,6 @@ class Application extends ApplicationTrait
                 // http://blog.tokumaru.org/2011/10/cookiedomain.html
             ),
         ));
-        $this['session.db_options'] = array(
-            'db_table'      => 'dtb_session',
-        );
-
-        $app = $this;
-        $this['session.storage.handler'] = function() use ($app) {
-            return new PdoSessionHandler(
-                $app['dbs']['session']->getWrappedConnection(),
-                $app['session.db_options']
-            );
-        };
     }
 
     public function initRendering()
@@ -343,7 +361,7 @@ class Application extends ApplicationTrait
                     $roles = array();
                     foreach ($AuthorityRoles as $AuthorityRole) {
                         // 管理画面でメニュー制御するため相対パス全てをセット
-                        $roles[] = $app['request']->getBaseUrl() . '/' . $app['config']['admin_route'] . $AuthorityRole->getDenyUrl();
+                        $roles[] = $app['request']->getBaseUrl().'/'.$app['config']['admin_route'].$AuthorityRole->getDenyUrl();
                     }
 
                     $app['twig']->addGlobal('AuthorityRoles', $roles);
@@ -411,8 +429,7 @@ class Application extends ApplicationTrait
     {
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'dbs.options' => array(
-                'default' => $this['config']['database'],
-                'session' => $this['config']['database'],
+                'default' => $this['config']['database']
         )));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
@@ -561,11 +578,17 @@ class Application extends ApplicationTrait
 
     public function initializePlugin()
     {
+        if ($this->initializedPlugin) {
+            return;
+        }
+
         // setup event dispatcher
         $this->initPluginEventDispatcher();
 
         // load plugin
         $this->loadPlugin();
+
+        $this->initializedPlugin = true;
     }
 
     public function initPluginEventDispatcher()
