@@ -390,7 +390,6 @@ class CsvImportController
 
                     $this->em->flush();
                     $this->em->getConnection()->commit();
-                    $this->em->close();
 
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
@@ -527,7 +526,6 @@ class CsvImportController
 
                     $this->em->flush();
                     $this->em->getConnection()->commit();
-                    $this->em->close();
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
@@ -590,7 +588,6 @@ class CsvImportController
         if ($this->hasErrors()) {
             if ($this->em) {
                 $this->em->getConnection()->rollback();
-                $this->em->close();
             }
         }
 

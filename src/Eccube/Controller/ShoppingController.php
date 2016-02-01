@@ -28,9 +28,9 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\MailHistory;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
-use Eccube\Entity\MailHistory;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -174,7 +174,6 @@ class ShoppingController extends AbstractController
                 $check = $app['eccube.service.shopping']->isOrderProduct($em, $Order);
                 if (!$check) {
                     $em->getConnection()->rollback();
-                    $em->close();
 
                     $app->addError('front.shopping.stock.error');
                     return $app->redirect($app->url('shopping_error'));
@@ -190,11 +189,11 @@ class ShoppingController extends AbstractController
                     $app['eccube.service.shopping']->setCustomerUpdate($Order, $app->user());
                 }
 
-                $em->getConnection()->commit();
                 $em->flush();
+                $em->getConnection()->commit();
+
             } catch (\Exception $e) {
                 $em->getConnection()->rollback();
-                $em->close();
 
                 $app->log($e);
 
@@ -230,7 +229,6 @@ class ShoppingController extends AbstractController
             $app['orm.em']->persist($MailHistory);
             $app['orm.em']->flush($MailHistory);
 
-            $em->close();
 
             // 完了画面表示
             return $app->redirect($app->url('shopping_complete'));
@@ -717,13 +715,48 @@ class ShoppingController extends AbstractController
         }
 
         $Customer = new Customer();
-        $form = $app['form.factory']->createBuilder('nonmember', $Customer)->getForm();
+        $form = $app['form.factory']->createBuilder('nonmember')->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $Customer = new Customer();
+            $Customer
+                ->setName01($data['name01'])
+                ->setName02($data['name02'])
+                ->setKana01($data['kana01'])
+                ->setKana02($data['kana02'])
+                ->setCompanyName($data['company_name'])
+                ->setEmail($data['email'])
+                ->setTel01($data['tel01'])
+                ->setTel02($data['tel02'])
+                ->setTel03($data['tel03'])
+                ->setZip01($data['zip01'])
+                ->setZip02($data['zip02'])
+                ->setZipCode($data['zip01'] . $data['zip02'])
+                ->setPref($data['pref'])
+                ->setAddr01($data['addr01'])
+                ->setAddr02($data['addr02']);
+
+            // 非会員複数配送用
             $CustomerAddress = new CustomerAddress();
             $CustomerAddress
-                ->setFromCustomer($Customer);
+                ->setCustomer($Customer)
+                ->setName01($data['name01'])
+                ->setName02($data['name02'])
+                ->setKana01($data['kana01'])
+                ->setKana02($data['kana02'])
+                ->setCompanyName($data['company_name'])
+                ->setTel01($data['tel01'])
+                ->setTel02($data['tel02'])
+                ->setTel03($data['tel03'])
+                ->setZip01($data['zip01'])
+                ->setZip02($data['zip02'])
+                ->setZipCode($data['zip01'] . $data['zip02'])
+                ->setPref($data['pref'])
+                ->setAddr01($data['addr01'])
+                ->setAddr02($data['addr02'])
+                ->setDelFlg(Constant::DISABLED);
             $Customer->addCustomerAddress($CustomerAddress);
 
             // 受注情報を取得

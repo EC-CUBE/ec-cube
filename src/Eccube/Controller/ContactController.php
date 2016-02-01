@@ -37,7 +37,7 @@ class ContactController
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
-        if ($app['security']->isGranted('ROLE_USER')) {
+        if ($app->isGranted('ROLE_USER')) {
             /* @var $user \Eccube\Entity\Customer */
             $user = $app['user'];
             $form->setData(array(
@@ -72,7 +72,7 @@ class ContactController
 
                 case 'complete':
                     // メール送信
-                    $app['eccube.service.mail']->sendrContactMail($form->getData());
+                    $app['eccube.service.mail']->sendContactMail($form->getData());
 
                     return $app->redirect($app->url('contact_complete'));
             }
