@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Eccube\Exception\PluginException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -218,6 +219,9 @@ class Application extends ApplicationTrait
 
         // init doctrine orm
         $this->initDoctrine();
+
+        // Set up the DBAL connection now to check for a proper connection to the database.
+        $this->checkDatabaseConnection();
 
         // init security
         $this->initSecurity();
@@ -728,5 +732,38 @@ class Application extends ApplicationTrait
                 }
             }
         }
+    }
+
+    /**
+     *
+     * データベースの接続を確認
+     * 成功 : trueを返却
+     *　失敗 : \Doctrine\DBAL\DBALExceptionエラーが発生( 接続に失敗した場合 )、エラー画面を表示しdie()
+     * 備考 : app['debug']がtrueの際は処理を行わない
+     * @return boolean true
+     *
+     */
+    protected function checkDatabaseConnection()
+    {
+        if ($this['debug']) {
+            return;
+        }
+        try {
+            $this['db']->connect();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this['monolog']->error($e->getMessage());
+            $this['twig.path'] = array(__DIR__.'/Resource/template/exception');
+            $html = $this['twig']->render('error.twig', array(
+                'error_title' => 'データーベース接続エラー',
+                'error_message' => 'データーベースを確認してください',
+            ));
+            $response = new Response();
+            $response->setContent($html);
+            $response->setStatusCode('500');
+            $response->headers->set('Content-Type', 'text/html');
+            $response->send();
+            die();
+        }
+        return true;
     }
 }
