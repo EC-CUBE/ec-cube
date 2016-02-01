@@ -688,7 +688,7 @@ class ShoppingController extends AbstractController
 
                 foreach ($errors as $error) {
                     if ($error->count() != 0) {
-                        $response = new Response(json_encode('NG'), 500);
+                        $response = new Response(json_encode('NG'), 400);
                         $response->headers->set('Content-Type', 'application/json');
                         return $response;
                     }
@@ -696,7 +696,7 @@ class ShoppingController extends AbstractController
 
                 $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
                 if (!$pref) {
-                    $response = new Response(json_encode('NG'), 500);
+                    $response = new Response(json_encode('NG'), 400);
                     $response->headers->set('Content-Type', 'application/json');
                     return $response;
                 }
@@ -732,7 +732,7 @@ class ShoppingController extends AbstractController
                 $response->headers->set('Content-Type', 'application/json');
 
             } catch (\Exception $e) {
-                $app->log($e);
+                $app['monolog']->error($e);
 
                 $response = new Response(json_encode('NG'), 500);
                 $response->headers->set('Content-Type', 'application/json');

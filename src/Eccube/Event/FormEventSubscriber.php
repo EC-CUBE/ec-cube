@@ -29,6 +29,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
+use Monolog\Logger;
 
 class FormEventSubscriber implements EventSubscriberInterface
 {
@@ -42,8 +43,17 @@ class FormEventSubscriber implements EventSubscriberInterface
             ->directories()
             ->depth(0);
 
+        $app = \Eccube\Application::getInstance();
+
         foreach ($finder as $dir) {
             $config = Yaml::parse(file_get_contents($dir->getRealPath() . '/config.yml'));
+            try {
+                $app['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
+            } catch(\Eccube\Exception\PluginException $e) {
+                $app['monolog']->warning($e->getMessage());
+                continue;
+            }
+            $config = $app['eccube.service.plugin']->readYml($dir->getRealPath() . '/config.yml');
 
             if (isset($config['form'])) {
                 foreach ($config['form'] as $event => $class) {

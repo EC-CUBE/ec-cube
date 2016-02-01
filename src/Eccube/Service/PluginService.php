@@ -118,7 +118,13 @@ class PluginService
 
     public function checkPluginArchiveContent($dir)
     {
-        $meta = $this->readYml($dir.'/config.yml');
+        try {
+            $meta = $this->readYml($dir . '/config.yml');
+        } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
+            $this->app['monolog']->warning($e->getMessage());
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
+        }
+
         if (!is_array($meta)) {
             throw new PluginException('config.yml not found or syntax error');
         }
@@ -135,6 +141,16 @@ class PluginService
         if (!isset($meta['version'])) {
             // versionは直接クラス名やPATHに使われるわけではないため文字のチェックはなしし
             throw new PluginException('config.yml version invalid_character(\W) ');
+        }
+        if (isset($meta['orm.path'])) {
+            if (!is_array($meta['orm.path'])) {
+                throw new PluginException('config.yml orm.path invalid_character(\W) ');
+            }
+        }
+        if (isset($meta['service'])) {
+            if (!is_array($meta['service'])) {
+                throw new PluginException('config.yml service invalid_character(\W) ');
+            }
         }
     }
 
@@ -176,7 +192,7 @@ class PluginService
 
     public function createPluginDir($d)
     {
-        $b = mkdir($d);
+        $b = @mkdir($d);
         if (!$b) {
             throw new PluginException($php_errormsg);
         }
