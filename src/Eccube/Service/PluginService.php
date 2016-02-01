@@ -46,8 +46,31 @@ class PluginService
         $pluginBaseDir = null;
         $tmp = null;
 
+        $extension = null;
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        if ($extension == 'zip' || $extension == 'gz') {
+            return $this->installCompressPlugin($path);
+        } elseif (empty($extension)) {
+            return $this->installUnCompressPlugin($path);
+        }
+        // 圧縮形式に問題がある場合のみこのフローに到達
+        throw new \Eccube\Exception\PluginException();
+    }
+
+    /**
+     * 圧縮済みプラグイン (通常プラグイン) のインストール
+     * @param $path
+     * @param int $source
+     * @return bool
+     * @throws PluginException
+     * @throws \Exception
+     */
+    public function installCompressPlugin($path, $source = 0)
+    {
         try {
             $tmp = $this->createTempDir();
+
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
@@ -74,6 +97,33 @@ class PluginService
         }
 
         return true;
+
+    }
+
+    /**
+     * 設置のみプラグインのインストール
+     * @param $path
+     * @param int $source
+     * @return bool
+     * @throws PluginException
+     * @throws \Exception
+     */
+    public function installUnCompressPlugin($path, $source = 0)
+    {
+        try {
+            $this->checkPluginArchiveContent($path);
+
+            $config = $this->readYml($path.'/'.self::CONFIG_YML);
+            $event = $this->readYml($path.'/'.self::EVENT_YML);
+            $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
+        } catch (PluginException $e) {
+            throw $e;
+        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
+            throw $e;
+        }
+
+        return true;
+
     }
 
     public function createTempDir()
@@ -212,7 +262,12 @@ class PluginService
                             ->setdelFlg(Constant::DISABLED)
                             ->setHandler($handler[0])
                             ->setHandlerType($handler[1])
-                            ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($event, $handler[1]));
+                            ->setPriority(
+                                $this->app['eccube.repository.plugin_event_handler']->calcNewPriority(
+                                    $event,
+                                    $handler[1]
+                                )
+                            );
                         $em->persist($peh);
                         $em->flush();
                     }
@@ -244,14 +299,37 @@ class PluginService
         }
     }
 
+    /**
+     * 該当プラグインディレクトリの削除を伴うアンインストール
+     * @param \Eccube\Entity\Plugin $plugin
+     * @return bool
+     * @throws \Exception
+     */
+    public function uninstallWithRemoveFolder(\Eccube\Entity\Plugin $plugin)
+    {
+        $pluginDir = $this->calcPluginDir($plugin->getCode());
+
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'disable');
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
+        $this->unregisterPlugin($plugin);
+        $this->deleteFile($pluginDir);
+
+        return true;
+    }
+
+    /**
+     * 該当プラグインディレクトリの削除を伴わないアンインストール
+     * @param \Eccube\Entity\Plugin $plugin
+     * @return bool
+     * @throws \Exception
+     */
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
 
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'disable');
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
         $this->unregisterPlugin($plugin);
-        $this->deleteFile($pluginDir);
 
         return true;
     }
@@ -290,7 +368,10 @@ class PluginService
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
             $em->persist($plugin);
-            $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
+            $this->callPluginManagerMethod(
+                $this->readYml($pluginDir.'/'.self::CONFIG_YML),
+                $enable ? 'enable' : 'disable'
+            );
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {
@@ -361,11 +442,15 @@ class PluginService
                             throw new PluginException('Handler name format error');
                         }
                         // updateで追加されたハンドラかどうか調べる
-                        $peh = $rep->findBy(array('del_flg' => Constant::DISABLED,
-                            'plugin_id' => $plugin->getId(),
-                            'event' => $event,
-                            'handler' => $handler[0],
-                            'handler_type' => $handler[1],));
+                        $peh = $rep->findBy(
+                            array(
+                                'del_flg' => Constant::DISABLED,
+                                'plugin_id' => $plugin->getId(),
+                                'event' => $event,
+                                'handler' => $handler[0],
+                                'handler_type' => $handler[1],
+                            )
+                        );
 
                         if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                             $peh = new \Eccube\Entity\PluginEventHandler();
@@ -382,7 +467,9 @@ class PluginService
                 }
 
                 # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
-                foreach ($rep->findBy(array('del_flg' => Constant::DISABLED, 'plugin_id' => $plugin->getId())) as $peh) {
+                foreach ($rep->findBy(
+                    array('del_flg' => Constant::DISABLED, 'plugin_id' => $plugin->getId())
+                ) as $peh) {
                     if (!isset($event_yml[$peh->getEvent()])) {
                         $em->remove($peh);
                         $em->flush();
