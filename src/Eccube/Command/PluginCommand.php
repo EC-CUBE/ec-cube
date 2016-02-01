@@ -49,7 +49,7 @@ class PluginCommand extends \Knp\Command\Command
             ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update)', null)
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
-            ->addOption('force', null, InputOption::VALUE_OPTIONAL, 'plugin code')
+            ->addOption('force', null, InputOption::VALUE_OPTIONAL, '0 or 1 (All Delete)')
             ->setDescription('plugin commandline installer.')
             ->setHelp(
                 <<<EOF
@@ -142,6 +142,11 @@ EOF
             // uninstallのみオプションにより2パターン存在する
             // ディレクトリは削除せず
             if ($mode == 'uninstall' && empty($force)) {
+                if (empty($code)) {
+                    $output->writeln('code is required.');
+
+                    return;
+                }
                 $plugin = $this->getPluginFromCode($code);
                 if ($service->uninstall($plugin, $path)) {
                     $output->writeln('success');
@@ -152,7 +157,12 @@ EOF
 
             // ディレクトリ毎削除
             if ($mode == 'uninstall' && !empty($force)) {
-                $plugin = $this->getPluginFromCode($force);
+                if (empty($code)) {
+                    $output->writeln('code is required.');
+
+                    return;
+                }
+                $plugin = $this->getPluginFromCode($code);
                 if ($service->uninstallWithRemoveFolder($plugin, $path)) {
                     $output->writeln('success');
 
