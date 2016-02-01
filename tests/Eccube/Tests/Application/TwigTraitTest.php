@@ -29,7 +29,7 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
 
         $response = $app->render('error.twig');
         $this->assertEquals('Symfony\Component\HttpFoundation\Response', get_class($response));
-//        $this->assertEquals('foo', $response->getContent());
+        $this->assertStringStartsWith('<!doctype html>', $response->getContent());
     }
 
     public function testRenderKeepResponse()
@@ -39,7 +39,7 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
         $response = $app->render('error.twig', array(), new Response('', 404));
         $this->assertEquals(404, $response->getStatusCode());
     }
-//
+
     public function testRenderForStream()
     {
         $app = $this->createApplication();
@@ -47,9 +47,9 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
         $response = $app->render('error.twig', array(), new StreamedResponse());
         $this->assertEquals('Symfony\Component\HttpFoundation\StreamedResponse', get_class($response));
 
-        //ob_start();
-       // $response->send();
-      //  $this->assertEquals('foo', ob_get_clean());
+        ob_start();
+        $response->send();
+        $this->assertStringStartsWith('<!doctype html>', ob_get_clean());
     }
 
     public function testRenderView()
