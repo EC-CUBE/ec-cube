@@ -24,6 +24,7 @@
 
 namespace Eccube\Command;
 
+use Eccube\Exception\PluginException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -76,26 +77,29 @@ EOF
 
         $service = $this->app['eccube.service.plugin'];
 
-        //
         if ($mode == 'install') {
-            // パスがない場合
-            if (empty($path)) {
-                // コードがない場合
-                if (empty($code)) {
-                    $output->writeln('path or code is required.');
+            // パスもしくはプラグインコードがない場合
+            if (empty($path) && empty($code)) {
+                $output->writeln('path or code is required.');
+
+                return;
+
+            }
+
+            if (!empty($path)) {
+                if ($service->install($path)) {
+                    $output->writeln('success');
 
                     return;
                 }
             }
 
-            $resource = $path;
-            if (empty($path)) {
-                $resource = $this->pluginPath.$code;
-            }
-            if ($service->install($resource)) {
-                $output->writeln('success');
+            if (!empty($code)) {
+                if ($this->installUnCompressPlugin($this->pluginPath.$code)) {
+                    $output->writeln('success');
 
-                return;
+                    return;
+                }
             }
         }
 
@@ -112,7 +116,7 @@ EOF
                 $stepFlg = true;
             }
             if ($stepFlg) {
-                if ($service->install($this->pluginPath.$code)) {
+                if ($this->installUnCompressPlugin($this->pluginPath.$code)) {
                     $output->writeln('success');
 
                     return;
@@ -138,17 +142,19 @@ EOF
                 return;
             }
         }
+
         if (in_array($mode, array('enable', 'disable', 'uninstall'), true)) {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+
+                return;
+            }
+
+            $plugin = $this->getPluginFromCode($code);
             // uninstallのみオプションにより2パターン存在する
             // ディレクトリは削除せず
             if ($mode == 'uninstall' && empty($force)) {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-
-                    return;
-                }
-                $plugin = $this->getPluginFromCode($code);
-                if ($service->uninstall($plugin, $path)) {
+                if ($this->uninstallOnlyDb($plugin)) {
                     $output->writeln('success');
 
                     return;
@@ -157,26 +163,13 @@ EOF
 
             // ディレクトリ毎削除
             if ($mode == 'uninstall' && !empty($force)) {
-                if (empty($code)) {
-                    $output->writeln('code is required.');
-
-                    return;
-                }
-                $plugin = $this->getPluginFromCode($code);
-                if ($service->uninstallWithRemoveFolder($plugin, $path)) {
+                if ($service->uninstall($plugin, $path)) {
                     $output->writeln('success');
 
                     return;
                 }
             }
 
-            if (empty($code)) {
-                $output->writeln('code is required.');
-
-                return;
-            }
-
-            $plugin = $this->getPluginFromCode($code);
             if ($service->$mode($plugin)) {
                 $output->writeln('success');
 
@@ -185,4 +178,51 @@ EOF
         }
         $output->writeln('undefined mode.');
     }
+
+    /**
+     * 設置のみプラグインのインストール
+     * @param $path
+     * @param int $source
+     * @return bool
+     * @throws PluginException
+     * @throws \Exception
+     */
+    protected function installUnCompressPlugin($path, $source = 0)
+    {
+        $service = $this->app['eccube.service.plugin'];
+        try {
+            $service->checkPluginArchiveContent($path);
+
+            $config = $service->readYml($path.'/'.$service::CONFIG_YML);
+            $event = $service->readYml($path.'/'.$service::EVENT_YML);
+            $service->registerPlugin($config, $event, $source); // dbにプラグイン登録
+        } catch (PluginException $e) {
+                throw $e;
+        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
+                throw $e;
+        }
+
+        return true;
+
+     }
+
+    /**
+     * 該当プラグインディレクトリの削除を伴わないアンインストール
+     * @param \Eccube\Entity\Plugin $plugin
+     * @return bool
+     * @throws \Exception
+     */
+    protected function uninstallOnlyDb(\Eccube\Entity\Plugin $plugin)
+    {
+        $service = $this->app['eccube.service.plugin'];
+
+        $pluginDir = $service->calcPluginDir($plugin->getCode());
+
+        $service->callPluginManagerMethod($service->readYml($pluginDir.'/'.$service::CONFIG_YML), 'disable');
+        $service->callPluginManagerMethod($service->readYml($pluginDir.'/'.$service::CONFIG_YML), 'uninstall');
+        $service->unregisterPlugin($plugin);
+
+        return true;
+    }
+
 }

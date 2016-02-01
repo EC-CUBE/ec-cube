@@ -46,31 +46,8 @@ class PluginService
         $pluginBaseDir = null;
         $tmp = null;
 
-        $extension = null;
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
-
-        if ($extension == 'zip' || $extension == 'gz') {
-            return $this->installCompressPlugin($path);
-        } elseif (empty($extension)) {
-            return $this->installUnCompressPlugin($path);
-        }
-        // 圧縮形式に問題がある場合のみこのフローに到達
-        throw new \Eccube\Exception\PluginException();
-    }
-
-    /**
-     * 圧縮済みプラグイン (通常プラグイン) のインストール
-     * @param $path
-     * @param int $source
-     * @return bool
-     * @throws PluginException
-     * @throws \Exception
-     */
-    public function installCompressPlugin($path, $source = 0)
-    {
         try {
             $tmp = $this->createTempDir();
-
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
             $this->checkPluginArchiveContent($tmp);
@@ -93,32 +70,6 @@ class PluginService
         } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
 
             $this->deleteDirs(array($tmp, $pluginBaseDir));
-            throw $e;
-        }
-
-        return true;
-
-    }
-
-    /**
-     * 設置のみプラグインのインストール
-     * @param $path
-     * @param int $source
-     * @return bool
-     * @throws PluginException
-     * @throws \Exception
-     */
-    public function installUnCompressPlugin($path, $source = 0)
-    {
-        try {
-            $this->checkPluginArchiveContent($path);
-
-            $config = $this->readYml($path.'/'.self::CONFIG_YML);
-            $event = $this->readYml($path.'/'.self::EVENT_YML);
-            $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
-        } catch (PluginException $e) {
-            throw $e;
-        } catch (\Exception $e) { // インストーラがどんなExceptionを上げるかわからないので
             throw $e;
         }
 
@@ -299,30 +250,6 @@ class PluginService
         }
     }
 
-    /**
-     * 該当プラグインディレクトリの削除を伴うアンインストール
-     * @param \Eccube\Entity\Plugin $plugin
-     * @return bool
-     * @throws \Exception
-     */
-    public function uninstallWithRemoveFolder(\Eccube\Entity\Plugin $plugin)
-    {
-        $pluginDir = $this->calcPluginDir($plugin->getCode());
-
-        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'disable');
-        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
-        $this->unregisterPlugin($plugin);
-        $this->deleteFile($pluginDir);
-
-        return true;
-    }
-
-    /**
-     * 該当プラグインディレクトリの削除を伴わないアンインストール
-     * @param \Eccube\Entity\Plugin $plugin
-     * @return bool
-     * @throws \Exception
-     */
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
@@ -330,6 +257,7 @@ class PluginService
         $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'disable');
         $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
         $this->unregisterPlugin($plugin);
+        $this->deleteFile($pluginDir);
 
         return true;
     }
