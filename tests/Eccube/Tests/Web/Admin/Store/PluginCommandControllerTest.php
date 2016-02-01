@@ -201,8 +201,6 @@ PMEOD;
     public function test_command_AdminStore_PluginCommand_Install()
     {
         $tmpinfo = $this->setPluginOnFolder();
-        $application = new \Symfony\Component\Console\Application();
-        $command = new \Symfony\Component\Console\Tester\CommandTester();
 
         $application = new Application();
 
@@ -219,8 +217,6 @@ PMEOD;
     public function test_command_AdminStore_PluginCommand_UnInstall_OnlyDb()
     {
         $tmpinfo = $this->setPluginOnFolder();
-        $application = new \Symfony\Component\Console\Application();
-        $command = new \Symfony\Component\Console\Tester\CommandTester();
 
         $application = new Application();
 
@@ -243,8 +239,6 @@ PMEOD;
     public function test_command_AdminStore_PluginCommand_Reload()
     {
         $tmpinfo = $this->setPluginOnFolder();
-        $application = new \Symfony\Component\Console\Application();
-        $command = new \Symfony\Component\Console\Tester\CommandTester();
 
         $application = new Application();
 
@@ -267,8 +261,6 @@ PMEOD;
     public function test_command_AdminStore_PluginCommand_install_OnlyDb()
     {
         $tmpinfo = $this->setPluginOnFolder();
-        $application = new \Symfony\Component\Console\Application();
-        $command = new \Symfony\Component\Console\Tester\CommandTester();
 
         $application = new Application();
 
@@ -296,8 +288,6 @@ PMEOD;
     public function test_command_AdminStore_PluginCommand_Uninstall_All()
     {
         $tmpinfo = $this->setPluginOnFolder();
-        $application = new \Symfony\Component\Console\Application();
-        $command = new \Symfony\Component\Console\Tester\CommandTester();
 
         $application = new Application();
 
@@ -315,7 +305,7 @@ PMEOD;
         );
 
         $this->assertRegExp('/success/', $commandTester->getDisplay());
-        //　削除されているか確認
+        // 削除されているか確認
         $this->assertFileNotExists(__DIR__."/../../../../../../app/Plugin/$tmpname/config.yml");
     }
 }
