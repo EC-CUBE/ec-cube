@@ -109,7 +109,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['version'] = $tmpname."_version";
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml', Yaml::dump($config));
@@ -151,7 +151,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールするプラグインを作成する
         $tmpname = "dummy".sha1(mt_rand());
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('dummy', 'dummy');
@@ -259,7 +259,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         $service = $this->app['eccube.service.plugin'];
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
         $tar = new \PharData($tmpfile);
 
         // インストールするプラグインを作成する
@@ -291,7 +291,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['event'] = 'DummyEvent';
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml', Yaml::dump($config));
@@ -490,7 +490,7 @@ EOD;
         $config['version'] = $tmpname;
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml', Yaml::dump($config));
@@ -560,7 +560,7 @@ EOD;
         $config['version'] = $tmpname;
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml', Yaml::dump($config));
@@ -648,7 +648,7 @@ EOD;
         $config['const']['C'] = 1;
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml', Yaml::dump($config));
@@ -689,7 +689,7 @@ EOD;
         $config['version'] = $tmpname."_version";
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir.'/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar.gz';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml', Yaml::dump($config));
