@@ -119,7 +119,10 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testExportOrder()
     {
         // 受注件数を11件にしておく
-        $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $Order->setOrderStatus($OrderStatus);
+        $this->app['orm.em']->flush();
 
         // 10件ヒットするはずの検索条件
         $crawler = $this->client->request(
@@ -148,7 +151,10 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testExportShipping()
     {
         // 受注件数を11件にしておく
-        $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $Order->setOrderStatus($OrderStatus);
+        $this->app['orm.em']->flush();
 
         // 10件ヒットするはずの検索条件
         $crawler = $this->client->request(
