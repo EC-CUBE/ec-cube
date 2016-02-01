@@ -198,7 +198,7 @@ PMEOD;
         return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg' => 0, 'code' => $pluginCode));
     }
 
-    protected function test_command_AdminStore_PluginCommand_Install()
+    public function test_command_AdminStore_PluginCommand_Install()
     {
         $tmpinfo = $this->setPluginOnFolder();
         $application = new \Symfony\Component\Console\Application();
@@ -216,7 +216,7 @@ PMEOD;
         $this->assertRegExp('/success/', $commandTester->getDisplay());
     }
 
-    protected function test_command_AdminStore_PluginCommand_UnInstall_OnlyDb()
+    public function test_command_AdminStore_PluginCommand_UnInstall_OnlyDb()
     {
         $tmpinfo = $this->setPluginOnFolder();
         $application = new \Symfony\Component\Console\Application();
@@ -240,7 +240,7 @@ PMEOD;
         $this->assertRegExp('/success/', $commandTester->getDisplay());
     }
 
-    protected function test_command_AdminStore_PluginCommand_Reload()
+    public function test_command_AdminStore_PluginCommand_Reload()
     {
         $tmpinfo = $this->setPluginOnFolder();
         $application = new \Symfony\Component\Console\Application();
@@ -264,7 +264,7 @@ PMEOD;
         $this->assertRegExp('/success/', $commandTester->getDisplay());
     }
 
-    protected function test_command_AdminStore_PluginCommand_install_OnlyDb()
+    public function test_command_AdminStore_PluginCommand_install_OnlyDb()
     {
         $tmpinfo = $this->setPluginOnFolder();
         $application = new \Symfony\Component\Console\Application();
@@ -293,7 +293,7 @@ PMEOD;
         $this->assertRegExp('/success/', $commandTester->getDisplay());
     }
 
-    protected function test_command_AdminStore_PluginCommand_Uninstall_All()
+    public function test_command_AdminStore_PluginCommand_Uninstall_All()
     {
         $tmpinfo = $this->setPluginOnFolder();
         $application = new \Symfony\Component\Console\Application();
