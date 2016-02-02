@@ -25,8 +25,8 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ForgotController extends AbstractController
 {
