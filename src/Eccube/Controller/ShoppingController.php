@@ -581,7 +581,7 @@ class ShoppingController extends AbstractController
             $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 
             // 配送先を更新 
-           $app['orm.em']->flush();
+            $app['orm.em']->flush();
 
             return $app->redirect($app->url('shopping'));
         }
@@ -714,7 +714,6 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        $Customer = new Customer();
         $form = $app['form.factory']->createBuilder('nonmember')->getForm();
         $form->handleRequest($request);
 
