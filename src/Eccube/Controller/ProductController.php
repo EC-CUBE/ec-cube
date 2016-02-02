@@ -132,7 +132,7 @@ class ProductController
 
         $Category = $searchForm->get('category_id')->getData();
 
-        return $app['twig']->render('Product/list.twig', array(
+        return $app->render('Product/list.twig', array(
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),

@@ -44,7 +44,7 @@ class BlockController
             }
         }
 
-        return $app['twig']->render('block.twig', array(
+        return $app->render('block.twig', array(
             'blocks' => $blocks,
         ));
     }

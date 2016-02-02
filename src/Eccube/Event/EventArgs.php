@@ -22,27 +22,21 @@
  */
 
 
-namespace Eccube\Controller\Block;
-
-use Eccube\Application;
+namespace Eccube\Event;
 
 
-class SearchProductController
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+class EventArgs extends GenericEvent
 {
-    public function index(Application $app)
+
+    /**
+     * EventArgs constructor.
+     * @param array $arguments
+     */
+    public function __construct(array $arguments = array())
     {
-        /** @var $form \Symfony\Component\Form\Form */
-        $form = $app['form.factory']
-            ->createNamedBuilder('', 'search_product')
-            ->setMethod('GET')
-            ->getForm();
-
-        /** @var $request \Symfony\Component\HttpFoundation\Request */
-        $request = $app['request_stack']->getMasterRequest();
-        $form->handleRequest($request);
-
-        return $app->render('Block/search_product.twig', array(
-            'form' => $form->createView(),
-        ));
+        parent::__construct(null, $arguments);
     }
+
 }
