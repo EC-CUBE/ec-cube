@@ -26,6 +26,8 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -64,11 +66,30 @@ class ProductController
         }
         /* @var $searchForm \Symfony\Component\Form\FormInterface */
         $searchForm = $builder->getForm();
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE, $event);
+
         $searchForm->handleRequest($request);
 
         // paginator
         $searchData = $searchForm->getData();
         $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);
+
+        $event = new EventArgs(
+            array(
+                'searchData' => $searchData,
+                'qb' => $qb,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH, $event);
+
         $pagination = $app['paginator']()->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
@@ -85,7 +106,7 @@ class ProductController
             ));
             $addCartForm = $builder->getForm();
 
-            if ($request->getMethod() === 'POST' && (string) $Product->getId() === $request->get('product_id')) {
+            if ($request->getMethod() === 'POST' && (string)$Product->getId() === $request->get('product_id')) {
                 $addCartForm->handleRequest($request);
 
                 if ($addCartForm->isValid()) {
@@ -95,6 +116,19 @@ class ProductController
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
                     } catch (CartException $e) {
                         $app->addRequestError($e->getMessage());
+                    }
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $addCartForm,
+                            'product' => $Product,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_COMPLETE, $event);
+
+                    if ($event->getResponse() !== null) {
+                        return $event->getResponse();
                     }
 
                     return $app->redirect($app->url('cart'));
@@ -115,6 +149,15 @@ class ProductController
             $builder->setMethod('GET');
         }
         $dispNumberForm = $builder->getForm();
+
+        $event = new EventArgs(
+            array(
+                'dispNumberForm' => $dispNumberForm,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_DISP, $event);
+
         $dispNumberForm->handleRequest($request);
 
         // ソート順
@@ -128,6 +171,15 @@ class ProductController
             $builder->setMethod('GET');
         }
         $orderByForm = $builder->getForm();
+
+        $event = new EventArgs(
+            array(
+                'orderByForm' => $orderByForm,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_ORDER, $event);
+
         $orderByForm->handleRequest($request);
 
         $Category = $searchForm->get('category_id')->getData();
@@ -167,6 +219,15 @@ class ProductController
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'product' => $Product,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
+
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
 
@@ -177,6 +238,20 @@ class ProductController
                         $Customer = $app->user();
                         $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
                         $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+
+                        $event = new EventArgs(
+                            array(
+                                'form' => $form,
+                                'product' => $Product,
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_FAVORITE, $event);
+
+                        if ($event->getResponse() !== null) {
+                            return $event->getResponse();
+                        }
+
                         return $app->redirect($app->url('product_detail', array('id' => $Product->getId())));
                     } else {
                         // 非会員の場合、ログイン画面を表示
@@ -192,6 +267,19 @@ class ProductController
                         $app->addRequestError($e->getMessage());
                     }
 
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'product' => $Product,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_COMPLETE, $event);
+
+                    if ($event->getResponse() !== null) {
+                        return $event->getResponse();
+                    }
+
                     return $app->redirect($app->url('cart'));
                 }
             }
@@ -200,9 +288,9 @@ class ProductController
             if (!empty($addFavorite)) {
                 // お気に入り登録時にログインされていない場合、ログイン後にお気に入り追加処理を行う
                 if ($app->isGranted('ROLE_USER')) {
-                        $Customer = $app->user();
-                        $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
-                        $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
+                    $Customer = $app->user();
+                    $app['eccube.repository.customer_favorite_product']->addFavorite($Customer, $Product);
+                    $app['session']->getFlashBag()->set('product_detail.just_added_favorite', $Product->getId());
                 }
             }
         }
