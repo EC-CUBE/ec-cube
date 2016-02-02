@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block javascript %}
 <script>
-$(function(){
+$(function() {
 
     $('.delivery').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
@@ -49,78 +49,76 @@ $(function(){
     });
 
     {% if is_granted('ROLE_USER') == false %}
-    var ref = new Array();
-    var name = new Array();
-    var input = new Array();
-    var customerin = new Array();
-    $('#customer').click(function() {
-        // ref = $('.customer-name01');
-        var edit = $('.customer-edit');
-        var hidden = $('.customer-in');
+        var ref = [];
+        var name = [];
+        var input = [];
+        var customerin = [];
 
-        $(edit).each(function(index) {
-            ref[index] = $(this);
-        });
-        $(hidden).each(function(index) {
-            customerin[index] = $(this);
-        });
-        $(ref).each(function(index) {
-            name[index] = $(this).text();
-        });
-        $(name).each(function(index) {
-            input[index] = $('<input id="edit' + index + '" type="text" />').val(name[index]);
-        });
-        $(input).each(function(index) {
-            ref[index].empty().append(input[index]);
-        });
+        $('#customer').click(function() {
+            // ref = $('.customer-name01');
+            var edit = $('.customer-edit');
+            var hidden = $('.customer-in');
 
-        $('#customer').prop("disabled", true);
-        $('.mod-button').show();
-    });
+            $(edit).each(function(index) {
+                ref[index] = $(this);
+            });
+            $(hidden).each(function(index) {
+                customerin[index] = $(this);
+            });
+            $(ref).each(function(index) {
+                name[index] = $(this).text();
+            });
+            $(name).each(function(index) {
+                input[index] = $('<input id="edit' + index + '" type="text" />').val(name[index]);
+            });
+            $(input).each(function(index) {
+                ref[index].empty().append(input[index]);
+            });
 
-    $('#customer-ok').click(function() {
-
-        var data;
-        $(ref).each(function(index) {
-            var nameAfter = input[index].val();
-            ref[index].empty().text(nameAfter);
-            customerin[index].val(nameAfter);
-            input[index].remove();
+            $('#customer').prop("disabled", true);
+            $('.mod-button').show();
         });
 
-        var postData = {};
-        $('.customer-in').each(function() {
-          postData[$(this).attr('name')] = $(this).val();
+        $('#customer-ok').click(function() {
+            $(ref).each(function(index) {
+                var nameAfter = input[index].val();
+                ref[index].empty().text(nameAfter);
+                customerin[index].val(nameAfter);
+                input[index].remove();
+            });
+
+            var postData = {};
+            $('.customer-in').each(function() {
+                postData[$(this).attr('name')] = $(this).val();
+            });
+
+            $.ajax({
+                url: "{{ url('shopping_customer') }}",
+                type: 'POST',
+                data: postData,
+                dataType: 'json',
+            }).done(function(){
+            }).fail(function(){
+                alert('更新に失敗しました。入力内容を確認してください。');
+                $(ref).each(function(index) {
+                    ref[index].empty().text(name[index]);
+                    input[index].remove();
+                });
+            });
+
+            $('#customer').prop("disabled", false);
+            $('.mod-button').hide();
         });
 
-        $.ajax({
-            url: "{{ url('shopping_customer') }}",
-            type: 'POST',
-            data: postData,
-            dataType: 'json',
-        }).done(function(data){
-        }).fail(function(data){
-            alert('更新に失敗しました。入力内容を確認してください。');
+        $('#customer-cancel').click(function() {
             $(ref).each(function(index) {
                 ref[index].empty().text(name[index]);
                 input[index].remove();
             });
+
+            $('#customer').prop("disabled", false);
+            $('.mod-button').hide();
         });
-
-        $('#customer').prop("disabled", false);
-        $('.mod-button').hide();
-    });
-
-    $('#customer-cancel').click(function() {
-
-        $(ref).each(function(index) {
-            ref[index].empty().text(name[index]);
-            input[index].remove();
-        });
-
-        $('#customer').prop("disabled", false);
-        $('.mod-button').hide();
-    });
     {% endif %}
 
 });
@@ -193,25 +191,25 @@ $(function(){
                         〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
                         <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                         {% if is_granted('ROLE_USER') == false %}
-                        <div class="customer-edit customer-email">{{ Order.email }}</div>
-                        <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
-                        <div class="mod-button" style="display:none;">
-                            <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
-                            <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
-                        </div>
-                        <p class="btn_edit"><button type="button" id="customer" class="btn btn-default btn-sm">変更</button></p>
-                        <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
-                        <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
-                        <input type="hidden" id="customer-zip01" class="customer-in" name="customer_zip01" value="{{ Order.zip01 }}">
-                        <input type="hidden" id="customer-zip02" class="customer-in" name="customer_zip02" value="{{ Order.zip02 }}">
-                        <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">
-                        <input type="hidden" id="customer-addr01" class="customer-in" name="customer_addr01" value="{{ Order.addr01 }}">
-                        <input type="hidden" id="customer-addr02" class="customer-in" name="customer_addr02" value="{{ Order.addr02 }}">
-                        <input type="hidden" id="customer-tel01" class="customer-in" name="customer_tel01" value="{{ Order.tel01 }}">
-                        <input type="hidden" id="customer-tel02" class="customer-in" name="customer_tel02" value="{{ Order.tel02 }}">
-                        <input type="hidden" id="customer-tel03" class="customer-in" name="customer_tel03" value="{{ Order.tel03 }}">
-                        <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
-                        <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
+                            <div class="customer-edit customer-email">{{ Order.email }}</div>
+                            <div class="customer-edit customer-company_name">{{ Order.companyName }}</div>
+                            <div class="mod-button" style="display:none;">
+                                <span id="customer-ok"><button type="button" class="btn btn-default btn-sm">OK</button></span>
+                                <span id="customer-cancel"><button type="button" class="btn btn-default btn-sm">キャンセル</button></span>
+                            </div>
+                            <p class="btn_edit"><button type="button" id="customer" class="btn btn-default btn-sm">変更</button></p>
+                            <input type="hidden" id="customer-name01" class="customer-in" name="customer_name01" value="{{ Order.name01 }}">
+                            <input type="hidden" id="customer-name02" class="customer-in" name="customer_name02" value="{{ Order.name02 }}">
+                            <input type="hidden" id="customer-zip01" class="customer-in" name="customer_zip01" value="{{ Order.zip01 }}">
+                            <input type="hidden" id="customer-zip02" class="customer-in" name="customer_zip02" value="{{ Order.zip02 }}">
+                            <input type="hidden" id="customer-pref" class="customer-in" name="customer_pref" value="{{ Order.pref }}">
+                            <input type="hidden" id="customer-addr01" class="customer-in" name="customer_addr01" value="{{ Order.addr01 }}">
+                            <input type="hidden" id="customer-addr02" class="customer-in" name="customer_addr02" value="{{ Order.addr02 }}">
+                            <input type="hidden" id="customer-tel01" class="customer-in" name="customer_tel01" value="{{ Order.tel01 }}">
+                            <input type="hidden" id="customer-tel02" class="customer-in" name="customer_tel02" value="{{ Order.tel02 }}">
+                            <input type="hidden" id="customer-tel03" class="customer-in" name="customer_tel03" value="{{ Order.tel03 }}">
+                            <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
+                            <input type="hidden" id="customer-company-name" class="customer-in" name="customer_company_name" value="{{ Order.companyName }}">
                         {% endif %}
                     </div>
 
