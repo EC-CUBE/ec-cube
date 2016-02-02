@@ -1055,6 +1055,7 @@ class ShoppingController extends AbstractController
 
     /**
      * 非会員でのお客様情報変更時の入力チェック
+     * @param $data リクエストパラメータ
      */
     private function customerValidation($app, $data)
     {
