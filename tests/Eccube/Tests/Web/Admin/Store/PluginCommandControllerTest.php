@@ -239,31 +239,6 @@ PMEOD;
         $this->assertRegExp('/success/', $commandTester->getDisplay());
     }
 
-    /*
-    public function test_command_AdminStore_PluginCommand_Reload()
-    {
-        $tmpinfo = $this->setPluginOnFolder();
-
-        $application = new Application();
-        $application->add(new \Eccube\Command\PluginCommand($this->app));
-
-        $command = $application->find('plugin:develop');
-        $commandTester = new CommandTester($command);
-
-        // 圧縮プラグインインストール
-        $commandTester->execute(
-            array('mode' => 'install', '--path' => $tmpinfo['path'])
-        );
-
-        // 圧縮プラグインリロード
-        $commandTester->execute(
-            array('mode' => 'reload', '--code' => $tmpinfo['code'])
-        );
-
-        $this->assertRegExp('/success/', $commandTester->getDisplay());
-    }
-    */
-
     public function test_command_AdminStore_PluginCommand_install_OnlyDb()
     {
         $tmpinfo = $this->setPluginOnFolder();
@@ -314,6 +289,6 @@ PMEOD;
 
         $this->assertRegExp('/success/', $commandTester->getDisplay());
         // 削除されているか確認
-        $this->assertFileNotExists(__DIR__."/../../../../../../app/Plugin/$tmpname/config.yml");
+        $this->assertFileNotExists(__DIR__."/../../../../../../app/Plugin/".$tmpinfo['code']."/config.yml");
     }
 }
