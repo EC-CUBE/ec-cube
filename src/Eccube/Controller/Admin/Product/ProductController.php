@@ -47,9 +47,11 @@ class ProductController extends AbstractController
             ->createBuilder('admin_search_product')
             ->getForm();
 
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $searchForm,
-            )
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
 
@@ -72,10 +74,12 @@ class ProductController extends AbstractController
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                 $page_no = 1;
 
-                $event = new EventArgs(array(
+                $event = new EventArgs(
+                    array(
                         'queryBuilder' => $qb,
                         'searchData' => $searchData,
-                    )
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
                 $searchData = $event->getArgument('searchData');
@@ -121,10 +125,12 @@ class ProductController extends AbstractController
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
 
-                    $event = new EventArgs(array(
+                    $event = new EventArgs(
+                        array(
                             'queryBuilder' => $qb,
                             'searchData' => $searchData,
-                        )
+                        ),
+                        $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
                     $searchData = $event->getArgument('searchData');
@@ -232,9 +238,11 @@ class ProductController extends AbstractController
         }
 
         $form = $builder->getForm();
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
-            )
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
 
@@ -380,10 +388,12 @@ class ProductController extends AbstractController
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
-                $event = new EventArgs(array(
+                $event = new EventArgs(
+                    array(
                         'form' => $form,
                         'product' => $Product,
-                    )
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
