@@ -36,16 +36,7 @@ class ShoppingShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
-            ->add('company_name', 'text', array(
-                'label' => '会社名',
-                'required' => false,
-            ))
-            ->add('fax', 'tel', array(
-                'label' => 'FAX番号',
-                'required' => false,
-            ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
@@ -55,7 +46,7 @@ class ShoppingShippingType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Eccube\Entity\Shipping',
+            'data_class' => 'Eccube\Entity\CustomerAddress',
         ));
     }
 
