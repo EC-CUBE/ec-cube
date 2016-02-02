@@ -44,9 +44,10 @@ class PluginCommand extends \Knp\Command\Command
     {
         $this
             ->setName('plugin:develop')
-            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update)', null) 
+            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reload)', null)
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip') 
-            ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code') 
+            ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
+            ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
             ->setDescription('plugin commandline installer.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> plugin installer runner for developer;
@@ -68,18 +69,36 @@ EOF
         $mode = $input->getArgument('mode');
         $path = $input->getOption('path');
         $code = $input->getOption('code');
+        $uninstallForce =  $input->getOption('uninstall-force');
 
         $service = $this->app['eccube.service.plugin'];
 
         if ($mode == 'install') {
-            if (empty($path)) {
-                $output->writeln('path is required.');
-                return;
+            // アーカイブからインストール
+            if ($path) {
+                if ($service->install($path)) {
+                    $output->writeln('success');
+
+                    return;
+                }
             }
-            if ($service->install($path)) {
+            // 設置済ファイルからインストール
+            if ($code) {
+                $pluginDir = $service->calcPluginDir($code);
+                $service->checkPluginArchiveContent($pluginDir);
+                $config = $service->readYml($pluginDir.'/config.yml');
+                $event = $service->readYml($pluginDir.'/event.yml');
+                $service->checkSamePlugin($config['code']);
+                $service->registerPlugin($config, $event);
+
                 $output->writeln('success');
+
                 return;
             }
+
+            $output->writeln('path or code is required.');
+
+            return;
         }
         if ($mode == 'update') {
             if (empty($code)) {
@@ -96,7 +115,39 @@ EOF
                 return;
             }
         }
-        if (in_array($mode, array('enable', 'disable', 'uninstall'), true)) {
+
+        if ($mode == 'uninstall') {
+            if (empty($code)) {
+                $output->writeln('code is required.');
+                return;
+            }
+
+            $plugin = $this->getPluginFromCode($code);
+
+            // ディレクトリも含め全て削除.
+            if ($uninstallForce) {
+
+                if ($service->uninstall($plugin)) {
+                    $output->writeln('success');
+                    return;
+                }
+
+                return;
+            }
+
+            // ディレクトリは残し, プラグインを削除.
+            $pluginDir = $service->calcPluginDir($code);
+            $config = $service->readYml($pluginDir.'/config.yml');
+            $service->callPluginManagerMethod($config, 'disable');
+            $service->callPluginManagerMethod($config, 'uninstall');
+            $service->unregisterPlugin($plugin);
+
+            $output->writeln('success');
+            return;
+
+        }
+
+        if (in_array($mode, array('enable', 'disable'), true)) {
             if (empty($code)) {
                 $output->writeln('code is required.');
                 return;
