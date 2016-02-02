@@ -25,13 +25,12 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
-use Eccube\Exception\PluginException;
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
-use Monolog\Logger;
 
 class Application extends ApplicationTrait
 {
@@ -456,11 +455,14 @@ class Application extends ApplicationTrait
         );
 
         foreach ($finder as $dir) {
-            if (file_exists($dir->getRealPath().'/config.yml')) {
-                $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
-            }else{
-                $error = 'Application::initDoctrine : config.yamlがみつかりません'.$dir->getRealPath();
-                $this->log($error, array(), Logger::WARNING);
+
+            $file = $dir->getRealPath().'/config.yml';
+
+            if (file_exists($file)) {
+                $config = Yaml::parse(file_get_contents($file));
+            } else {
+                $code = $dir->getBaseName();
+                $this['monolog']->warning("skip {$code} orm.path loading. config.yml not found.", array('path' => $file));
                 continue;
             }
 

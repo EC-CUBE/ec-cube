@@ -31,8 +31,10 @@ use Eccube\Exception\PluginException;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
@@ -51,6 +53,19 @@ class PluginController extends AbstractController
         $configPages = array();
 
         $Plugins = $app['eccube.repository.plugin']->findBy(array(), array('name' => 'ASC'));
+
+        // ファイル設置プラグインの取得.
+        $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins, $app);
+        $unregisterdPluginsConfigPages = array();
+        foreach ($unregisterdPlugins as $unregisterdPlugin) {
+            try {
+                $code = $unregisterdPlugin['code'];
+                // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
+                $unregisterdPluginsConfigPages[$code] = $app->url('plugin_'.$code.'_config');
+            } catch (RouteNotFoundException $e) {
+                // プラグインで設定画面のルートが定義されていない場合は無視
+            }
+        }
 
         $officialPlugins = array();
         $unofficialPlugins = array();
@@ -132,7 +147,9 @@ class PluginController extends AbstractController
             'plugin_forms' => $pluginForms,
             'officialPlugins' => $officialPlugins,
             'unofficialPlugins' => $unofficialPlugins,
-            'configPages' => $configPages
+            'configPages' => $configPages,
+            'unregisterdPlugins' => $unregisterdPlugins,
+            'unregisterdPluginsConfigPages' => $unregisterdPluginsConfigPages,
         ));
 
     }
@@ -696,4 +713,47 @@ class PluginController extends AbstractController
         return $message;
     }
 
+
+    /**
+     * フォルダ設置のみのプラグインを取得する.
+     *
+     * @param array $plugins
+     * @param Application $app
+     * @return array
+     */
+    protected function getUnregisteredPlugins(array $plugins, \Eccube\Application $app)
+    {
+        $finder = new Finder();
+        $pluginCodes = array();
+
+        // DB登録済みプラグインコードのみ取得
+        foreach ($plugins as $key => $plugin) {
+            $pluginCodes[] = $plugin->getCode();
+        }
+        // DB登録済みプラグインコードPluginディレクトリから排他
+        $dirs = $finder->in($app['config']['plugin_realdir'])->depth(0)->directories();
+
+        // プラグイン基本チェック
+        $unregisteredPlugins = array();
+        foreach ($dirs as $dir) {
+            $pluginCode = $dir->getBasename();
+            if(in_array($pluginCode, $pluginCodes, true)) {
+                continue;
+            }
+            try {
+                $app['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
+            } catch(\Eccube\Exception\PluginException $e) {
+                //config.yamlに不備があった際は全てスキップ
+                $app['monolog']->warning($e->getMessage());
+                continue;
+            }
+            $config = $app['eccube.service.plugin']->readYml($dir->getRealPath().'/config.yml');
+            $unregisteredPlugins[$pluginCode]['name'] = isset($config['name']) ? $config['name'] : null;
+            $unregisteredPlugins[$pluginCode]['event'] = isset($config['event']) ? $config['event'] : null;
+            $unregisteredPlugins[$pluginCode]['version'] = isset($config['version']) ? $config['version'] : null;
+            $unregisteredPlugins[$pluginCode]['enable'] = Constant::DISABLED;
+            $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
+        }
+        return $unregisteredPlugins;
+    }
 }
