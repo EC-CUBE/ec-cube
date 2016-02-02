@@ -375,6 +375,9 @@ class PluginController extends AbstractController
                         $fs = new Filesystem();
                         $fs->remove($tmpDir);
                     }
+                    $app['monolog']->critical("plugin install failed.", array(
+                        'original-message' => $e->getMessage()
+                    ));
                     $errors[] = $e;
                 }
             }

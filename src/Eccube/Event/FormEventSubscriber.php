@@ -46,14 +46,19 @@ class FormEventSubscriber implements EventSubscriberInterface
         $app = \Eccube\Application::getInstance();
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse(file_get_contents($dir->getRealPath() . '/config.yml'));
+            $code = $dir->getBaseName();
+            $path = $dir->getRealPath();
+
             try {
-                $app['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
+                $app['eccube.service.plugin']->checkPluginArchiveContent($path);
             } catch(\Eccube\Exception\PluginException $e) {
-                $app['monolog']->warning($e->getMessage());
+                $app['monolog']->warning("skip {$code} form events loading. config.yml not foud or invalid.", array(
+                    'path' =>  $path,
+                    'original-message' => $e->getMessage()
+                ));
                 continue;
             }
-            $config = $app['eccube.service.plugin']->readYml($dir->getRealPath() . '/config.yml');
+            $config = $app['eccube.service.plugin']->readYml($path.'/config.yml');
 
             if (isset($config['form'])) {
                 foreach ($config['form'] as $event => $class) {
