@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {{ form_widget(form._token) }}
             <div class="dl_table">
                 <dl>
-                    <dt>{{ form_label(form.name) }}<span class="required">必須</span></dt>
+                    <dt>{{ form_label(form.name) }}</dt>
                     <dd class="form-group input_name">
                         {{ form_widget(form.name.name01) }}
                         {{ form_widget(form.name.name02) }}
@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </dd>
                 </dl>
                 <dl>
-                    <dt>{{ form_label(form.kana) }}<span class="required">必須</span></dt>
+                    <dt>{{ form_label(form.kana) }}</dt>
                     <dd class="form-group input_name">
                         {{ form_widget(form.kana.kana01) }}
                         {{ form_widget(form.kana.kana02) }}
@@ -66,7 +66,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </dd>
                 </dl>
                 <dl>
-                    <dt>{{ form_label(form.address) }}<span class="required">必須</span></dt>
+                    <dt>{{ form_label(form.address) }}</dt>
                     <dd>
                         <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
                         <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
@@ -76,7 +76,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </dd>
                 </dl>
                 <dl>
-                    <dt>{{ form_label(form.tel) }}<span class="required">必須</span></dt>
+                    <dt>{{ form_label(form.tel) }}</dt>
                     <dd>
                         <div class="form-inline form-group input_tel">
                             {{ form_widget(form.tel, {attr : {class : 'short'}}) }}
