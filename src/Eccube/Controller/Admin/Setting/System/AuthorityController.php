@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorityController extends AbstractController
@@ -44,6 +46,13 @@ class AuthorityController extends AbstractController
                 'data' => $AuthorityRoles,
             ))
             ->getForm();
+
+        $event = new EventArgs(array(
+                'form' => $form,
+                'AuthorityRoles' => $AuthorityRoles
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE, $event);
 
         if (count($AuthorityRoles) == 0) {
             // 1件もない場合、空行を追加
@@ -80,6 +89,13 @@ class AuthorityController extends AbstractController
                     }
                 }
                 $app['orm.em']->flush();
+
+                $event = new EventArgs(array(
+                        'form' => $form,
+                        'AuthorityRoles' => $AuthorityRoles
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_AUTHORITY_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.system.authority.save.complete', 'admin');
 

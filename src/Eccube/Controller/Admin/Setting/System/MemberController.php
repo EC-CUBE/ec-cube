@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -41,6 +43,13 @@ class MemberController extends AbstractController
 
         $form = $app->form()
             ->getForm();
+
+        $event = new EventArgs(array(
+                'form' => $form,
+                'Members' => $Members
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_INDEX_INITIALIZE, $event);
 
         return $app->render('Setting/System/member.twig', array(
             'form' => $form->createView(),
@@ -66,6 +75,13 @@ class MemberController extends AbstractController
             ->createBuilder('admin_member', $Member)
             ->getForm();
 
+        $event = new EventArgs(array(
+                'form' => $form,
+                'Member' => $Member
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_EDIT_INITIALIZE, $event);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -88,6 +104,13 @@ class MemberController extends AbstractController
                 $status = $app['eccube.repository.member']->save($Member);
 
                 if ($status) {
+                    $event = new EventArgs(array(
+                            'form' => $form,
+                            'Member' => $Member
+                        )
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_EDIT_COMPLETE, $event);
+
                     $app->addSuccess('admin.member.save.complete', 'admin');
 
                     return $app->redirect($app->url('admin_setting_system_member'));
@@ -161,11 +184,14 @@ class MemberController extends AbstractController
             $app->deleteMessage();
             return $app->redirect($app->url('admin_setting_system_member'));
         }
-
+        $event = new EventArgs();
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_DELETE_INITIALIZE, $event);
         $status = $app['eccube.repository.member']->delete($TargetMember);
 
         if ($status) {
             $app->addSuccess('admin.member.delete.complete', 'admin');
+            $event = new EventArgs();
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_DELETE_COMPLETE, $event);
         } else {
             $app->addError('admin.member.delete.error', 'admin');
         }

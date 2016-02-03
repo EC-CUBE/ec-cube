@@ -27,6 +27,8 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\MasterdataDataType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -39,6 +41,12 @@ class MasterdataController extends AbstractController
 
         $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
         $form = $builder->getForm();
+
+        $event = new EventArgs(array(
+                'form' => $form,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_INITIALIZE, $event);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -62,11 +70,24 @@ class MasterdataController extends AbstractController
                     // hidden値
                     $data['masterdata_name'] = $data['masterdata'];
                 }
+
+                $event = new EventArgs(array(
+                        'form' => $form,
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_COMPLETE, $event);
+
             }
         }
 
         $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit', $data);
         $form2 = $builder2->getForm();
+
+        $event = new EventArgs(array(
+                'form' => $form2,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
 
         return $app->render('Setting/System/masterdata.twig', array(
             'form' => $form->createView(),
@@ -78,6 +99,12 @@ class MasterdataController extends AbstractController
     {
         $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit');
         $form2 = $builder2->getForm();
+
+        $event = new EventArgs(array(
+                'form' => $form2,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_INITIALIZE, $event);
 
         if ('POST' === $request->getMethod()) {
             $form2->handleRequest($request);
@@ -104,6 +131,11 @@ class MasterdataController extends AbstractController
                 }
 
                 try {
+                    $event = new EventArgs(array(
+                            'form' => $form2,
+                        )
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_COMPLETE, $event);
                     $app['orm.em']->flush();
                     $app->addSuccess('admin.register.complete', 'admin');
                 } catch (\Exception $e) {
@@ -117,6 +149,12 @@ class MasterdataController extends AbstractController
 
         $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
         $form = $builder->getForm();
+
+        $event = new EventArgs(array(
+                'form' => $form,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_INITIALIZE, $event);
 
         return $app->render('Setting/System/masterdata.twig', array(
             'form' => $form->createView(),

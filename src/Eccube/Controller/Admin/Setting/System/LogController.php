@@ -25,6 +25,8 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 
 class LogController
@@ -40,11 +42,22 @@ class LogController
             ->createBuilder('admin_system_log')
             ->getForm();
 
+        $event = new EventArgs(array(
+                'form' => $form,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE, $event);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $formData = $form->getData();
             }
+            $event = new EventArgs(array(
+                    'form' => $form,
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_COMPLETE, $event);
         }
 
         $logFile = $app['config']['root_dir'].'/app/log/'.$formData['files'];
