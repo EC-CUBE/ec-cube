@@ -127,15 +127,15 @@ $(function() {
 
 {% block main %}
     <h1 class="page-heading">ご注文内容のご確認</h1>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
+    <div id="confirm" class="container-fluid">
+        <div id="confirm_flow_box" class="row">
+            <div id="confirm_flow_box__body" class="col-md-12">
                 {% if is_granted('ROLE_USER') %}
-                <div class="flowline step3">
+                <div id="confirm_flow_box__flow_state" class="flowline step3">
                 {% else %}
-                <div class="flowline step4">
+                <div id="confirm_flow_box__flow_state" class="flowline step4">
                 {% endif %}
-                    <ul class="clearfix">
+                    <ul id="confirm_flow_box__flow_state_list" class="clearfix">
                     <li><span class="flow_number">1</span><br>カートの商品</li>
                     {% if is_granted('ROLE_USER') %}
                         <li class="active"><span class="flow_number">2</span><br>ご注文内容確認</li>
@@ -148,7 +148,7 @@ $(function() {
                     </ul>
                 </div>
                 {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
-                    <div class="message">
+                    <div id="confirm_flow_box__message" class="message">
                         <p class="errormsg bg-danger">
                             <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
                         </p>
@@ -160,15 +160,15 @@ $(function() {
             {{ form_widget(form._token) }}
             <div id="shopping_confirm" class="row">
                 <div id="confirm_main" class="col-sm-8">
-                    <div class="cart_item table">
-                        <div class="tbody">
+                    <div id="cart_box" class="cart_item table">
+                        <div id="cart_box_list" class="tbody">
                             {% for orderDetail in Order.orderDetails %}
-                            <div class="item_box tr">
-                                <div class="td table">
-                                    <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" /></div>
-                                    <dl class="item_detail">
-                                        <dt class="item_name text-default">{{ orderDetail.productName }}</dt>
-                                        <dd class="item_pattern small">
+                            <div id="cart_box_list__item_box--{{ loop.index }}" class="item_box tr">
+                                <div id="cart_box_list__item--{{ loop.index }}" class="td table">
+                                    <div id="cart_box_list__photo--{{ loop.index }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ orderDetail.product.MainListImage|no_image_product }}" alt="{{ orderDetail.productName }}" /></div>
+                                    <dl id="cart_box_list__detail--{{ loop.index }}" class="item_detail">
+                                        <dt id="cart_box_list__name--{{ loop.index }}" class="item_name text-default">{{ orderDetail.productName }}</dt>
+                                        <dd id="cart_box_list__class_category--{{ loop.index }}" class="item_pattern small">
                                             {% if orderDetail.productClass.classCategory1 %}
                                                 {{ orderDetail.productClass.classCategory1.className }}：{{ orderDetail.productClass.classCategory1 }}
                                             {% endif %}
@@ -176,18 +176,18 @@ $(function() {
                                                 <br>{{ orderDetail.productClass.classCategory2.className }}：{{ orderDetail.productClass.classCategory2 }}
                                             {% endif %}
                                         </dd>
-                                        <dd class="item_price">{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}</dd>
-                                        <dd class="item_subtotal">小計：{{ orderDetail.totalPrice|price }}</dd>
+                                        <dd id="cart_box_list__price--{{ loop.index }}" class="item_price">{{ orderDetail.priceIncTax|price }} × {{ orderDetail.quantity|number_format }}</dd>
+                                        <dd id="cart_box_list__subtotal--{{ loop.index }}" class="item_subtotal">小計：{{ orderDetail.totalPrice|price }}</dd>
                                     </dl>
                                 </div>
                             </div><!--/item_box-->
                             {% endfor %}
                         </div>
                     </div><!--/cart_item-->
-                    <p><a href="{{ url('cart') }}" class="btn btn-default btn-sm">数量を変更または削除する</a></p>
+                    <p><a id="confirm_box__quantity_edit_button" href="{{ url('cart') }}" class="btn btn-default btn-sm">数量を変更または削除する</a></p>
                     <h2 class="heading02">お客様情報</h2>
-                    <div class="column is-edit">
-                        <p class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様<br>
+                    <div id="customer_detail_box" class="column is-edit">
+                        <p id="customer_detail_box__customer_address" class="address"><span class="customer-edit customer-name01">{{ Order.name01 }}</span> <span class="customer-edit customer-name02">{{ Order.name02 }}</span> 様<br>
                         〒<span class="customer-edit customer-zip01">{{ Order.zip01 }}</span>-<span class="customer-edit customer-zip02">{{ Order.zip02 }}</span> <span class="customer-edit customer-pref">{{ Order.pref }}</span><span class="customer-edit customer-addr01">{{ Order.addr01 }}</span><span class="customer-edit customer-addr02">{{ Order.addr02 }}</span><br>
                         <span class="customer-edit customer-tel01">{{ Order.tel01 }}</span>-<span class="customer-edit customer-tel02">{{ Order.tel02 }}</span>-<span class="customer-edit customer-tel03">{{ Order.tel03 }}</span></p>
                         {% if is_granted('ROLE_USER') == false %}
@@ -216,17 +216,17 @@ $(function() {
                     <h2 class="heading02">配送情報</h2>
                     {% for shipping in Order.shippings %}
                         {% set idx = loop.index0 %}
-                        <div class="column is-edit">
+                        <div id="shipping_confirm_box--{{ idx }}" class="column is-edit">
                             <h3>お届け先{% if Order.multiple %}({{ loop.index }}){% endif %}</h3>
-                            <div class="cart_item table">
-                                <div class="tbody">
+                            <div id="shipping_confirm_box__body--{{ idx }}" class="cart_item table">
+                                <div id="shipping_confirm_box__list--{{ idx }}" class="tbody">
                                 {% for shipmentItem in shipping.shipmentItems %}
-                                    <div class="item_box tr">
-                                        <div class="td table">
-                                            <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}" /></div>
-                                            <dl class="item_detail">
-                                                <dt class="item_name text-default">{{ shipmentItem.productName }}</dt>
-                                                <dd class="item_pattern small">
+                                    <div id="shipping_confirm_box__item--{{ idx }}_{{ shipmentItem.id }}" class="item_box tr">
+                                        <div id="shipping_box__body_inner--{{ idx }}_{{ shipmentItem.id }}" class="td table">
+                                            <div id="shipping_box__photo--{{ idx }}_{{ shipmentItem.id }}" class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ shipmentItem.product.MainListImage|no_image_product }}" alt="{{ shipmentItem.productName }}" /></div>
+                                            <dl id="shipping_box__detail--{{ idx }}_{{ shipmentItem.id }}" class="item_detail">
+                                                <dt id="shipping_box__name--{{ idx }}_{{ shipmentItem.id }}" class="item_name text-default">{{ shipmentItem.productName }}</dt>
+                                                <dd id="shipping_box__class_category--{{ idx }}_{{ shipmentItem.id }}" class="item_pattern small">
                                                     {% if shipmentItem.productClass.classCategory1 %}
                                                         {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
                                                     {% endif %}
@@ -234,8 +234,8 @@ $(function() {
                                                         <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
                                                     {% endif %}
                                                 </dd>
-                                                <dd class="item_price">{{ shipmentItem.priceIncTax|price }} × {{ shipmentItem.quantity|number_format }}</dd>
-                                                <dd class="item_subtotal">小計：{{ shipmentItem.totalPrice|price }}</dd>
+                                                <dd id="shipping_box__price--{{ idx }}_{{ shipmentItem.id }}" class="item_price">{{ shipmentItem.priceIncTax|price }} × {{ shipmentItem.quantity|number_format }}</dd>
+                                                <dd id="shipping_box__subtotal--{{ idx }}_{{ shipmentItem.id }}" class="item_subtotal">小計：{{ shipmentItem.totalPrice|price }}</dd>
                                             </dl>
                                         </div>
                                     </div><!--/item_box-->
@@ -243,41 +243,41 @@ $(function() {
                                 </div>
                             </div>
 
-                            <p class="address">{{ shipping.name01 }} {{ shipping.name02 }} 様<br>
+                            <p id="shopping_confirm_box__shipping_address_detail--{{ idx }}" class="address">{{ shipping.name01 }} {{ shipping.name02 }} 様<br>
                             〒{{ shipping.zip01 }}-{{ shipping.zip02 }} {{ shipping.pref }}{{ shipping.addr01 }}{{ shipping.addr02 }}<br>
                             {{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
-                            <div class="form-inline form-group">
+                            <div id="shopping_confirm_box__shipping_delivery--{{ idx }}" class="form-inline form-group">
                                 <label>配送方法</label>
                                 {{ form_widget(form.shippings[idx].delivery, {'attr': {'class': 'delivery'}}) }}
                                 {{ form_errors(form.shippings[idx].delivery) }}
                             </div>
 
-                            <div class="form-inline form-group">
+                            <div id="shopping_confirm_box__shipping_delivery_date_time--{{ idx }}" class="form-inline form-group">
                                 <label>お届け日</label>
                                 {{ form_widget(form.shippings[idx].shippingDeliveryDate) }}<br class="sp">
                                 <label>お届け時間</label>
                                 {{ form_widget(form.shippings[idx].deliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
                             {% else %}
-                            <p class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit">変更</a></p>
                             {% endif %}
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
                     {% endfor %}
                     {% if BaseInfo.optionMultipleShipping %}
                         <hr>
-                        <div><a href="{{ url('shopping_shipping_multiple_change') }}" class="btn btn-default btn-sm btn-shipping-multiple">お届け先を追加する</a></div>
+                        <div><a id="shopping_confirm_box__button_edit_multiple"  href="{{ url('shopping_shipping_multiple_change') }}" class="btn btn-default btn-sm btn-shipping-multiple">お届け先を追加する</a></div>
                     {% endif %}
 
                     <h2 class="heading02">お支払方法</h2>
-                    <div class="column">
-                        <div class="form-group">
-                            <ul class="payment_list">
+                    <div id="payment_list" class="column">
+                        <div id="payment_list__body" class="form-group">
+                            <ul id="payment_list__list" class="payment_list">
                             {% for key, child in form.payment %}
                             <li>
-                                {{ form_widget(child, {'attr': {'class': 'payment'}}) }}
+                                {{ form_widget(child, {'attr': {'class': 'payment','id' : 'shopping_confirm__item--'.loop.index }}) }}
                                 {% if form.payment.vars.choices[key].data.payment_image is not null %}
                                 <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}">
                                 {% endif %}
@@ -288,7 +288,7 @@ $(function() {
                         </div>
                     </div>
                     <h2 class="heading02">お問い合わせ欄</h2>
-                    <div class="column">
+                    <div id="contact_message" class="column">
                         {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
                         {{ form_errors(form.message) }}
                     </div>
@@ -302,22 +302,22 @@ $(function() {
                 </div><!-- /.col -->
 
                 <div id="confirm_side" class="col-sm-4">
-                    <div class="total_box">
-                        <dl>
+                    <div id="summary_box__quantity" class="total_box">
+                        <dl id="summary_box__subtotal">
                             <dt>小計</dt>
                             <dd class="text-primary">{{ Order.subtotal|price }}</dd>
                         </dl>
-                        <dl>
+                        <dl id="summary_box__quantity_price">
                             <dt>手数料</dt>
                             <dd>{{ Order.charge|price }}</dd>
                         </dl>
-                        <dl>
+                        <dl id="summary_box__shipping_price">
                             <dt>送料</dt>
                             <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                         </dl>
-                        <div class="total_amount">
-                            <p class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
-                            <p><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn prevention-mask">注文する</button></p>
+                        <div id="summary_box__result" class="total_amount">
+                            <p id="summary_box__total_amount" class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
+                            <p id="summary_box__confirm_button"><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn prevention-mask">注文する</button></p>
                         </div>
                     </div>
                 </div>
