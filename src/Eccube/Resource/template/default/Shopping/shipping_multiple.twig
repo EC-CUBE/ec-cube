@@ -84,7 +84,7 @@ $(function() {
 
 {% block main %}
     <h1 class="page-heading">お届け先の複数指定</h1>
-    <div id="multiple_list" class="container-fluid">
+    <div id="multiple_wrap" class="container-fluid">
         <form id="shipping-multiple-form" method="post" action="{{ url('shopping_shipping_multiple') }}">
             {{ form_widget(form._token) }}
             <div id="multiple_list_box" class="row">
@@ -97,7 +97,7 @@ $(function() {
 
                     {% if is_granted('ROLE_USER') %}
                     {% else %}
-                        <p><a id="link__new" href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
+                        <p><a href="{{ url('shopping_shipping_multiple_edit') }}" class="btn btn-default btn-sm">新規お届け先を追加する</a></p>
                     {% endif %}
 
                     {% for shipmentItem in shipmentItems %}
@@ -171,7 +171,7 @@ $(function() {
                             <p id="multiple_list__confirm_button">
                                 <button id="button__confirm" type="submit" class="btn btn-primary btn-block">選択したお届け先に送る</button>
                             </p>
-                            <p id="multiple_list__back_button"><a id="link__back" href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
+                            <p id="multiple_list__back_button"><a href="{{ url('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
                         </div>
                     </div>
 

@@ -127,7 +127,7 @@ $(function() {
 
 {% block main %}
     <h1 class="page-heading">ご注文内容のご確認</h1>
-    <div id="confirm" class="container-fluid">
+    <div id="confirm_wrap" class="container-fluid">
         <div id="confirm_flow_box" class="row">
             <div id="confirm_flow_box__body" class="col-md-12">
                 {% if is_granted('ROLE_USER') %}
@@ -302,7 +302,7 @@ $(function() {
                 </div><!-- /.col -->
 
                 <div id="confirm_side" class="col-sm-4">
-                    <div id="summary_box__quantity" class="total_box">
+                    <div id="summary_box__total_box" class="total_box">
                         <dl id="summary_box__subtotal">
                             <dt>小計</dt>
                             <dd class="text-primary">{{ Order.subtotal|price }}</dd>

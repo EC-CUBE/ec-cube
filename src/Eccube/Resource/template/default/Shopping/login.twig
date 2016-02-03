@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
 
     <h1 class="page-heading">ログイン</h1>
-    <div id="login" class="container-fluid">
+    <div id="login_wrap" class="container-fluid">
         <form method="post" action="{{ url('login_check') }}">
             <input type="hidden" name="_target_path" value="shopping" />
             <input type="hidden" name="_failure_path" value="shopping_login" />
@@ -34,17 +34,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             <div id="login_box" class="login_cart row">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div id="member_box" class="col-sm-8 col-sm-offset-2" style="height: 330px;">
+                <div id="customer_box" class="col-sm-8 col-sm-offset-2" style="height: 330px;">
                 {% else %}
-                <div id="member_box" class="col-sm-8" style="height: 330px;">
+                <div id="customer_box" class="col-sm-8" style="height: 330px;">
                 {% endif %}
-                    <div id="member_box__body" class="column">
-                        <div id="member_box__body_inner" class="column_inner clearfix">
+                    <div id="customer_box__body" class="column">
+                        <div id="customer_box__body_inner" class="column_inner clearfix">
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
-                            <div id="member_box__login_email" class="form-group">
+                            <div id="customer_box__login_email" class="form-group">
                                 {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
                             </div>
-                            <div id="member_box__login_pass" class="form-group">
+                            <div id="customer_box__login_pass" class="form-group">
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}
                                 {% if BaseInfo.option_remember_me %}
                                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
@@ -64,13 +64,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {% endfor %}
                             </div>
                             {% if error %}
-                                <div id="member_box__error_message" class="form-group">
+                                <div id="customer_box__error_message" class="form-group">
                                     <span class="text-danger">{{ error|trans|raw }}</span>
                                 </div>
                             {% endif %}
-                            <div id="member_box__login_button" class="btn_area">
+                            <div id="customer_box__login_button" class="btn_area">
                                 <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
-                                <ul id="member_box__login_menu">
+                                <ul id="customer_box__login_menu">
                                 <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
                                 <li><a href="{{ url('entry') }}">新規会員登録</a></li>
                                 </ul>

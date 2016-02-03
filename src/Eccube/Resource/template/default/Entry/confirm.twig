@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <h1 class="page-heading">新規会員登録確認</h1>
-    <div id="confirm" class="container-fluid">
+    <div id="confirm_wrap" class="container-fluid">
         <div id="confirm_box" class="row">
             <div id="confirm_box__body" class="col-md-10 col-md-offset-1">
                 <p id="confirm_box__message">下記の内容で送信してもよろしいでしょうか？<br/>よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
@@ -98,8 +98,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </dd>
                         </dl>
                     </div>
-                    <div id="confirm_box__birth" class="dl_table not_required">
-                        <dl>
+                    <div class="dl_table not_required">
+                        <dl id="confirm_box__birth">
                             <dt>{{ form_label(form.birth) }}</dt>
                             <dd>
                                 <div class="form-group form-inline">

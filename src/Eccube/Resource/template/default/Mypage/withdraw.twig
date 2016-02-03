@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 <h1 class="page-heading">マイページ/退会手続き</h1>
-<div id="withdraw" class="container-fluid">
+<div id="withdraw_wrap" class="container-fluid">
     {% include 'Mypage/navi.twig' %}
     <div id="withdraw_box" class="unsubscribe_box">
         <form method="post" action="{{ url('mypage_withdraw') }}">

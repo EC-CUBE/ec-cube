@@ -27,15 +27,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <h1 class="page-heading">マイページ/ご注文履歴</h1>
-    <div class="container-fluid">
+    <div id="history_wrap" class="container-fluid">
 
         {% include 'Mypage/navi.twig' %}
 
-        <div id="history__list" class="row">
-            <div id="history__list__body" class="col-md-12">
+        <div id="history_list" class="row">
+            <div id="history_list__body" class="col-md-12">
 
                 {% if pagination.totalItemCount > 0 %}
-                    <p id="history__list__total_count" class="intro"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
+                    <p id="history_list__total_count" class="intro"><strong>{{ pagination.totalItemCount }}件</strong>の履歴があります。</p>
 
                     {% for Order in pagination %}
                         <div id="history_list__item--{{ Order.id }}" class="historylist_column row">
