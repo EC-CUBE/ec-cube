@@ -390,7 +390,6 @@ class CsvImportController
 
                     $this->em->flush();
                     $this->em->getConnection()->commit();
-                    $this->em->close();
 
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
@@ -527,7 +526,6 @@ class CsvImportController
 
                     $this->em->flush();
                     $this->em->getConnection()->commit();
-                    $this->em->close();
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
@@ -590,7 +588,6 @@ class CsvImportController
         if ($this->hasErrors()) {
             if ($this->em) {
                 $this->em->getConnection()->rollback();
-                $this->em->close();
             }
         }
 
@@ -774,7 +771,7 @@ class CsvImportController
         if ($row['在庫数無制限フラグ'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
-            if ($row['在庫数無制限フラグ'] == (string)Constant::DISABLED) {
+            if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(Constant::DISABLED);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
@@ -788,7 +785,7 @@ class CsvImportController
                     }
                 }
 
-            } else if ($row['在庫数無制限フラグ'] == (string)Constant::ENABLED) {
+            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {
@@ -837,7 +834,7 @@ class CsvImportController
         if ($row['商品規格削除フラグ'] == '') {
             $ProductClass->setDelFlg(Constant::DISABLED);
         } else {
-            if ($row['商品規格削除フラグ'] == (string)Constant::DISABLED || $row['商品規格削除フラグ'] == (string)Constant::ENABLED) {
+            if ($row['商品規格削除フラグ'] == (string) Constant::DISABLED || $row['商品規格削除フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setDelFlg($row['商品規格削除フラグ']);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');
@@ -936,7 +933,7 @@ class CsvImportController
         if ($row['在庫数無制限フラグ'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
-            if ($row['在庫数無制限フラグ'] == (string)Constant::DISABLED) {
+            if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(Constant::DISABLED);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
@@ -950,7 +947,7 @@ class CsvImportController
                     }
                 }
 
-            } else if ($row['在庫数無制限フラグ'] == (string)Constant::ENABLED) {
+            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {
@@ -990,7 +987,7 @@ class CsvImportController
         if ($row['商品規格削除フラグ'] == '') {
             $ProductClass->setDelFlg(Constant::DISABLED);
         } else {
-            if ($row['商品規格削除フラグ'] == (string)Constant::DISABLED || $row['商品規格削除フラグ'] == (string)Constant::ENABLED) {
+            if ($row['商品規格削除フラグ'] == (string) Constant::DISABLED || $row['商品規格削除フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setDelFlg($row['商品規格削除フラグ']);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');

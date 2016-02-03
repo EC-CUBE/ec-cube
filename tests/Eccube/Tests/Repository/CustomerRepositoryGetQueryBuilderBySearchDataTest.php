@@ -2,17 +2,9 @@
 
 namespace Eccube\Tests\Repository;
 
-use Eccube\Tests\EccubeTestCase;
 use Eccube\Application;
-use Eccube\Common\Constant;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * CustomerRepository test cases.
@@ -440,13 +432,12 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'buy_total_end' => '1'
+            'buy_total_end' => '1',
         );
 
         $this->scenario();
-        // TODO buy_total = 0 で初期化されていれば, 1 ではなく 4 になる
-        // https://github.com/EC-CUBE/ec-cube/issues/946
-        $this->expected = 1;
+
+        $this->expected = 4;
         $this->actual = count($this->Results);
         $this->verify();
     }
@@ -492,14 +483,12 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'buy_times_end' => '1'
+            'buy_times_end' => '1',
         );
 
         $this->scenario();
-        // TODO buy_times = 0 で初期化されていれば, 1 ではなく 4 になる
-        // https://github.com/EC-CUBE/ec-cube/issues/946
 
-        $this->expected = 1;
+        $this->expected = 4;
         $this->actual = count($this->Results);
         $this->verify();
     }

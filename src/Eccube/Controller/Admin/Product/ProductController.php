@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,6 +46,14 @@ class ProductController extends AbstractController
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
 
         $pagination = array();
 
@@ -63,6 +73,17 @@ class ProductController extends AbstractController
                 // paginator
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                 $page_no = 1;
+
+                $event = new EventArgs(
+                    array(
+                        'queryBuilder' => $qb,
+                        'searchData' => $searchData,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+                $searchData = $event->getArgument('searchData');
+
                 $pagination = $app['paginator']()->paginate(
                     $qb,
                     $page_no,
@@ -103,6 +124,17 @@ class ProductController extends AbstractController
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                    $event = new EventArgs(
+                        array(
+                            'queryBuilder' => $qb,
+                            'searchData' => $searchData,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+                    $searchData = $event->getArgument('searchData');
+
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
@@ -130,7 +162,7 @@ class ProductController extends AbstractController
             }
         }
 
-        return $app->renderView('Product/index.twig', array(
+        return $app->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,
@@ -206,8 +238,16 @@ class ProductController extends AbstractController
         }
 
         $form = $builder->getForm();
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
+
         if (!$has_class) {
-            $ProductClass->setStockUnlimited((boolean) $ProductClass->getStockUnlimited());
+            $ProductClass->setStockUnlimited((boolean)$ProductClass->getStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
@@ -347,6 +387,15 @@ class ProductController extends AbstractController
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'product' => $Product,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {

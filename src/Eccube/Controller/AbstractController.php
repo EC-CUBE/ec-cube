@@ -35,8 +35,15 @@ class AbstractController
     {
     }
 
+    /**
+     * getBoundForm
+     * 
+     * @deprecated 
+     */
     protected function getBoundForm(Application $app, $type)
     {
+        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
+
         $form = $app['form.factory']
             ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
             ->getForm();
@@ -54,9 +61,11 @@ class AbstractController
     {
         $csrf = $app['form.csrf_provider'];
         $name = Constant::TOKEN_NAME;
+
         if (!$csrf->isTokenValid(new CsrfToken($name, $app['request']->request->get($name)))) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');
         }
+
         return true;
     }
 
