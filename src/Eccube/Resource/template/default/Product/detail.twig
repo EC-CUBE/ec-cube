@@ -193,6 +193,16 @@ $(function(){
                                     </dd>
                                 </dl>
 
+                                <div class="extra-form">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            {{ form_label(f) }}
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+
                                 {# カートボタン #}
                                 <div class="btn_area">
                                     <ul class="row">
