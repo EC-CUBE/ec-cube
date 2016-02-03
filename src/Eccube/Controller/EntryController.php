@@ -27,6 +27,8 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
@@ -51,6 +53,12 @@ class EntryController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
+        $event = new EventArgs(array(
+                'form' => $form,
+                'Customer' => $Customer
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE, $event);
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -67,6 +75,13 @@ class EntryController extends AbstractController
                         break;
 
                     case 'complete':
+                        $event = new EventArgs(array(
+                                'form' => $form,
+                                'Customer' => $Customer
+                            )
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
+
                         $Customer->setSalt(
                             $app['eccube.repository.customer']
                                 ->createSalt(5)
@@ -167,6 +182,12 @@ class EntryController extends AbstractController
             } catch (\Exception $e) {
                 throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
             }
+
+            $event = new EventArgs(array(
+                    'Customer' => $Customer
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
 
             $CustomerStatus = $app['eccube.repository.customer_status']->find(CustomerStatus::ACTIVE);
             $Customer->setStatus($CustomerStatus);

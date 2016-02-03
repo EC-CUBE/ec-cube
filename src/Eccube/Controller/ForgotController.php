@@ -27,6 +27,8 @@ use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class ForgotController extends AbstractController
 {
@@ -38,6 +40,12 @@ class ForgotController extends AbstractController
             ->createNamedBuilder('', 'forgot')
             ->getForm();
 
+        $event = new EventArgs(array(
+                'form' => $form,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_INITIALIZE, $event);
+
         if ('POST' === $request->getMethod()) {
 
             $form->handleRequest($request);
@@ -48,6 +56,13 @@ class ForgotController extends AbstractController
                             ->getActiveCustomerByEmail($form->get('login_email')->getData());
 
                 if (!is_null($Customer)) {
+
+                    $event = new EventArgs(array(
+                            'form' => $form,
+                            'Customer' => $Customer
+                        )
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE, $event);
 
                     // リセットキーの発行・有効期限の設定
                     $Customer
@@ -106,6 +121,12 @@ class ForgotController extends AbstractController
             // パスワードの発行・更新
             $pass = $app['eccube.repository.customer']->getResetPassword();
             $Customer->setPassword($pass);
+
+            $event = new EventArgs(array(
+                    'Customer' => $Customer
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
 
             // 発行したパスワードの暗号化
             $encPass = $app['eccube.repository.customer']->encryptPassword($app, $Customer);

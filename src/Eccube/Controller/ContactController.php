@@ -26,6 +26,8 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class ContactController
 {
@@ -38,7 +40,11 @@ class ContactController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
-
+        $event = new EventArgs(array(
+                'form' => $form,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE, $event);
         if ($app['security']->isGranted('ROLE_USER')) {
             /* @var $user \Eccube\Entity\Customer */
             $user = $app['user'];
@@ -74,6 +80,11 @@ class ContactController
                         ));
 
                     case 'complete':
+                        $event = new EventArgs(array(
+                                'form' => $form,
+                            )
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE, $event);
                         // メール送信
                         $app['eccube.service.mail']->sendContactMail($form->getData());
 

@@ -27,12 +27,20 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class CartController extends AbstractController
 {
     public function index(Application $app)
     {
         $Cart = $app['eccube.service.cart']->getCart();
+
+        $event = new EventArgs(array(
+                'Cart' => $Cart
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_INDEX_INITIALIZE, $event);
 
         /* @var $BaseInfo \Eccube\Entity\BaseInfo */
         /* @var $Cart \Eccube\Entity\Cart */
@@ -75,6 +83,11 @@ class CartController extends AbstractController
         $productClassId = $request->get('product_class_id');
         $quantity = $request->request->has('quantity') ? $request->get('quantity') : 1;
         try {
+            $event = new EventArgs(array(
+                    'request' => $request
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_COMPLETE, $event);
             $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
         } catch (CartException $e) {
             $app->addRequestError($e->getMessage());
@@ -88,6 +101,11 @@ class CartController extends AbstractController
         $this->isTokenValid($app);
 
         try {
+            $event = new EventArgs(array(
+                    'productClassId' => $productClassId
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_COMPLETE, $event);
             $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
         } catch (CartException $e) {
             $app->addRequestError($e->getMessage());
@@ -101,6 +119,11 @@ class CartController extends AbstractController
         $this->isTokenValid($app);
 
         try {
+            $event = new EventArgs(array(
+                    'productClassId' => $productClassId
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_COMPLETE, $event);
             $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
         } catch (CartException $e) {
             $app->addRequestError($e->getMessage());
@@ -112,6 +135,12 @@ class CartController extends AbstractController
     public function remove(Application $app, $productClassId)
     {
         $this->isTokenValid($app);
+
+        $event = new EventArgs(array(
+                'productClassId' => $productClassId
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_COMPLETE, $event);
 
         $app['eccube.service.cart']->removeProduct($productClassId)->save();
 
