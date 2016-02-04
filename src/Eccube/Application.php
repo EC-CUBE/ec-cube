@@ -378,7 +378,7 @@ class Application extends ApplicationTrait
                 $route = $request->attributes->get('_route');
 
                 // ユーザ作成画面
-                if ($route === trim($app['config']['user_data_route'])) {
+                if ($route === 'user_data') {
                     $params = $request->attributes->get('_route_params');
                     $route = $params['route'];
                     // プレビュー画面
@@ -497,6 +497,8 @@ class Application extends ApplicationTrait
                 'form' => array(
                     'login_path' => "/{$this['config']['admin_route']}/login",
                     'check_path' => "/{$this['config']['admin_route']}/login_check",
+                    'target_url' => "/{$this['config']['admin_route']}/",
+                    'failure_path' => "/{$this['config']['admin_route']}/",
                     'username_parameter' => 'login_id',
                     'password_parameter' => 'password',
                     'with_csrf' => true,
