@@ -72,10 +72,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     /**
      * 引数の配列から CSV を生成し, リソースを返す.
      */
-    public function createCsvFromArray(array $csv)
+    public function createCsvFromArray(array $csv, $filename = 'products.csv')
     {
         $dir = sys_get_temp_dir();
-        $filepath = $dir.'/products.csv';
+        $filepath = $dir.'/'.$filename;
         $fp = fopen($filepath, 'w');
         if ($fp !== false) {
             foreach ($csv as $row) {
@@ -88,8 +88,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         return $filepath;
     }
 
-
-    public function testCsvImport()
+    public function testCsvProduct()
     {
         // 3商品生成
         $csv = $this->createCsvAsArray();
@@ -242,15 +241,66 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify('class_category_id2 は 6');
     }
 
+    public function testCsvTemplateWithProduct()
+    {
+        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
+        $config = $this->app['config'];
+        $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
+        $this->app['config'] = $config;
+
+        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),商品種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,商品規格削除フラグ'."\n");
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->path('admin_product_csv_template', array('type' => 'product'))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testCsvCategory()
+    {
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+
+        $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
+
+        $Categories = $this->app['eccube.repository.category']->findAll();
+
+        $this->expected = 6;
+        $this->actual = count($Categories);
+        $this->verify();
+
+        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u',
+                            $crawler->filter('div.alert-success')->text());
+    }
+
+    public function testCsvTemplateWithCategory()
+    {
+        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
+        $config = $this->app['config'];
+        $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
+        $this->app['config'] = $config;
+
+        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID'."\n");
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->path('admin_product_csv_template', array('type' => 'category'))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
     /**
      * $this->filepath のファイルを CSV アップロードし, 完了画面の crawler を返す.
      */
-    public function scenario()
+    public function scenario($bind = 'admin_product_csv_import', $original_name = 'products.csv')
     {
         $file = new UploadedFile(
-            $this->filepath,          // file path
-            'products.csv',         // original name
-            'text/csv',        // mimeType
+            $this->filepath,    // file path
+            $original_name,     // original name
+            'text/csv',         // mimeType
             null,               // file size
             null,               // error
             true                // test mode
@@ -258,7 +308,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $crawler = $this->client->request(
             'POST',
-            $this->app->path('admin_product_csv_import'),
+            $this->app->path($bind),
             array(
                 'admin_csv_import' => array(
                     '_token' => 'dummy',
