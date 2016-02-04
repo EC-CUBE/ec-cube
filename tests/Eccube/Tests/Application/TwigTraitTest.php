@@ -11,7 +11,6 @@
 
 namespace Eccube\Tests\Application;
 
-use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -28,22 +27,16 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->createApplication();
 
-        $app['twig'] = $mailer = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
-        $mailer->expects($this->once())->method('render')->will($this->returnValue('foo'));
-
-        $response = $app->render('view');
+        $response = $app->render('error.twig');
         $this->assertEquals('Symfony\Component\HttpFoundation\Response', get_class($response));
-        $this->assertEquals('foo', $response->getContent());
+        $this->assertStringStartsWith('<!doctype html>', $response->getContent());
     }
 
     public function testRenderKeepResponse()
     {
         $app = $this->createApplication();
 
-        $app['twig'] = $mailer = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
-        $mailer->expects($this->once())->method('render')->will($this->returnValue('foo'));
-
-        $response = $app->render('view', array(), new Response('', 404));
+        $response = $app->render('error.twig', array(), new Response('', 404));
         $this->assertEquals(404, $response->getStatusCode());
     }
 
@@ -51,31 +44,36 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->createApplication();
 
-        $app['twig'] = $mailer = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
-        $mailer->expects($this->once())->method('display')->will($this->returnCallback(function () { echo 'foo'; }));
-
-        $response = $app->render('view', array(), new StreamedResponse());
+        $response = $app->render('error.twig', array(), new StreamedResponse());
         $this->assertEquals('Symfony\Component\HttpFoundation\StreamedResponse', get_class($response));
 
         ob_start();
         $response->send();
-        $this->assertEquals('foo', ob_get_clean());
+        $this->assertStringStartsWith('<!doctype html>', ob_get_clean());
     }
 
     public function testRenderView()
     {
         $app = $this->createApplication();
 
-        $app['twig'] = $mailer = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
-        $mailer->expects($this->once())->method('render');
-
-        $app->renderView('view');
+        $app->renderView('error.twig');
     }
 
     public function createApplication()
     {
         $app = new \Eccube\Application();
-        $app->register(new TwigServiceProvider());
+
+        $app->initialize();
+        $app->initializePlugin();
+        $app->boot();
+
+        $paths = array();
+        $paths[] = $app['config']['template_admin_realdir'];
+        $paths[] = $app['config']['template_realdir'];
+        $paths[] = $app['config']['template_default_realdir'];
+        $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+        $app['admin'] = true;
+        $app['front'] = true;
 
         return $app;
     }

@@ -208,44 +208,44 @@ final class EccubeEvents
      * Mypage/ChangeController
      */
     // index
-    const MYPAGE_CHANGE_INDEX_INITIALIZE = 'mypage.change.index.initialize';
-    const MYPAGE_CHANGE_INDEX_COMPLETE = 'mypage.change.index.complete';
+    const FRONT_CHANGE_INDEX_INITIALIZE = 'front.change.index.initialize';
+    const FRONT_CHANGE_INDEX_COMPLETE = 'front.change.index.complete';
     /**
      * Mypage/DeliveryController
      */
     // edit
-    const MYPAGE_DELIVERY_EDIT_INITIALIZE = 'mypage.delivery.edit.initialize';
-    const MYPAGE_DELIVERY_EDIT_COMPLETE = 'mypage.delivery.edit.complete';
+    const FRONT_DELIVERY_EDIT_INITIALIZE = 'front.delivery.edit.initialize';
+    const FRONT_DELIVERY_EDIT_COMPLETE = 'front.delivery.edit.complete';
     // delete
-    const MYPAGE_DELIVERY_DELETE_INITIALIZE = 'mypage.delivery.delete.initialize';
-    const MYPAGE_DELIVERY_DELETE_COMPLETE = 'mypage.delivery.delete.complete';
+    const FRONT_DELIVERY_DELETE_INITIALIZE = 'front.delivery.delete.initialize';
+    const FRONT_DELIVERY_DELETE_COMPLETE = 'front.delivery.delete.complete';
     /**
      * Mypage/MypageController
      */
     // login
-    const MYPAGE_MYPAGE_LOGIN_INITIALIZE = 'mypage.mypage.login.initialize';
-    const MYPAGE_MYPAGE_LOGIN_COMPLETE = 'mypage.mypage.login.complete';
+    const FRONT_MYPAGE_LOGIN_INITIALIZE = 'front.mypage.login.initialize';
+    const FRONT_MYPAGE_LOGIN_COMPLETE = 'front.mypage.login.complete';
     // index
-    const MYPAGE_MYPAGE_INDEX_INITIALIZE = 'mypage.mypage.index.initialize';
-    const MYPAGE_MYPAGE_INDEX_COMPLETE = 'mypage.mypage.index.complete';
+    const FRONT_MYPAGE_INDEX_INITIALIZE = 'front.mypage.index.initialize';
+    const FRONT_MYPAGE_INDEX_COMPLETE = 'front.mypage.index.complete';
     // history
-    const MYPAGE_MYPAGE_HISTORY_INITIALIZE = 'mypage.mypage.history.initialize';
-    const MYPAGE_MYPAGE_HISTORY_COMPLETE = 'mypage.mypage.history.complete';
+    const FRONT_MYPAGE_HISTORY_INITIALIZE = 'front.mypage.history.initialize';
+    const FRONT_MYPAGE_HISTORY_COMPLETE = 'front.mypage.history.complete';
     // order
-    const MYPAGE_MYPAGE_ORDER_INITIALIZE = 'mypage.mypage.order.initialize';
-    const MYPAGE_MYPAGE_ORDER_COMPLETE = 'mypage.mypage.order.complete';
+    const FRONT_MYPAGE_ORDER_INITIALIZE = 'front.mypage.order.initialize';
+    const FRONT_MYPAGE_ORDER_COMPLETE = 'front.mypage.order.complete';
     // favorite
-    const MYPAGE_MYPAGE_FAVORITE_INITIALIZE = 'mypage.mypage.favorite.initialize';
-    const MYPAGE_MYPAGE_FAVORITE_COMPLETE = 'mypage.mypage.favorite.complete';
+    const FRONT_MYPAGE_FAVORITE_INITIALIZE = 'front.mypage.favorite.initialize';
+    const FRONT_MYPAGE_FAVORITE_COMPLETE = 'front.mypage.favorite.complete';
     // delete
-    const MYPAGE_MYPAGE_DELETE_INITIALIZE = 'mypage.mypage.delete.initialize';
-    const MYPAGE_MYPAGE_DELETE_COMPLETE = 'mypage.mypage.delete.complete';
+    const FRONT_MYPAGE_DELETE_INITIALIZE = 'front.mypage.delete.initialize';
+    const FRONT_MYPAGE_DELETE_COMPLETE = 'front.mypage.delete.complete';
     /**
      * Mypage/WithdrawController
      */
     // index
-    const MYPAGE_WITHDRAW_INDEX_INITIALIZE = 'mypage.withdraw.index.initialize';
-    const MYPAGE_WITHDRAW_INDEX_COMPLETE = 'mypage.withdraw.index.complete';
+    const FRONT_WITHDRAW_INDEX_INITIALIZE = 'front.withdraw.index.initialize';
+    const FRONT_WITHDRAW_INDEX_COMPLETE = 'front.withdraw.index.complete';
     /**
      * CartController
      */
@@ -272,26 +272,55 @@ final class EccubeEvents
      * ProductController
      */
     // index
+    const FRONT_PRODUCT_INDEX_INITIALIZE = 'front.product.index.initialize';
+    const FRONT_PRODUCT_INDEX_SEARCH = 'front.product.index.search';
+    const FRONT_PRODUCT_INDEX_COMPLETE = 'front.product.index.complete';
+    const FRONT_PRODUCT_INDEX_DISP = 'front.product.index.disp';
+    const FRONT_PRODUCT_INDEX_ORDER = 'front.product.index.order';
     // detail
+    const FRONT_PRODUCT_DETAIL_INITIALIZE = 'front.product.detail.initialize';
+    const FRONT_PRODUCT_DETAIL_FAVORITE = 'front.product.detail.favorite';
+    const FRONT_PRODUCT_DETAIL_COMPLETE = 'front.product.detail.complete';
     /**
      * ShoppingController
      */
     // index
+    const FRONT_SHOPPING_INDEX_INITIALIZE = 'front.shopping.index.initialize';
     // confirm
+    const FRONT_SHOPPING_CONFIRM_INITIALIZE = 'front.shopping.confirm.initialize';
+    const FRONT_SHOPPING_CONFIRM_PROCESSING = 'front.shopping.confirm.processing';
+    const FRONT_SHOPPING_CONFIRM_COMPLETE = 'front.shopping.confirm.complete';
     // complete
+    const FRONT_SHOPPING_COMPLETE_INITIALIZE = 'front.shopping.complete.initialize';
     // delivery
+    const FRONT_SHOPPING_DELIVERY_INITIALIZE = 'front.shopping.delivery.initialize';
+    const FRONT_SHOPPING_DELIVERY_COMPLETE = 'front.shopping.delivery.complete';
     // payment
+    const FRONT_SHOPPING_PAYMENT_INITIALIZE = 'front.shopping.payment.initialize';
+    const FRONT_SHOPPING_PAYMENT_COMPLETE = 'front.shopping.payment.complete';
     // shippingChange
     // shipping
+    const FRONT_SHOPPING_SHIPPING_COMPLETE = 'front.shopping.shipping.complete';
     // shippingEditChange
     // shippingEdit
+    const FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE = 'front.shopping.shipping.edit.initialize';
+    const FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE = 'front.shopping.shipping.edit.complete';
     // customer
+    const FRONT_SHOPPING_CUSTOMER_INITIALIZE = 'front.shopping.customer.initialize';
     // login
+    const FRONT_SHOPPING_LOGIN_INITIALIZE = 'front.shopping.login.initialize';
     // nonmember
+    const FRONT_SHOPPING_NONMEMBER_INITIALIZE = 'front.shopping.nonmember.initialize';
+    const FRONT_SHOPPING_NONMEMBER_COMPLETE = 'front.shopping.nonmember.complete';
     // shippingMultipleChange
     // shippingMultiple
+    const FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE = 'front.shopping.shipping.multiple.initialize';
+    const FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE = 'front.shopping.shipping.multiple.complete';
     // shippingMultipleEdit
+    const FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE = 'front.shopping.shipping.multiple.edit.initialize';
+    const FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE = 'front.shopping.shipping.multiple.edit.complete';
     // shippingError
+    const FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE = 'front.shopping.shipping.error.complete';
     /**
      * UserDataController
      */

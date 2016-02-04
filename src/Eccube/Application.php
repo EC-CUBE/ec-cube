@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -206,7 +207,7 @@ class Application extends ApplicationTrait
                     break;
             }
 
-            return $app['twig']->render('error.twig', array(
+            return $app->render('error.twig', array(
                 'error_title' => $title,
                 'error_message' => $message,
             ));
@@ -217,6 +218,9 @@ class Application extends ApplicationTrait
 
         // init doctrine orm
         $this->initDoctrine();
+
+        // Set up the DBAL connection now to check for a proper connection to the database.
+        $this->checkDatabaseConnection();
 
         // init security
         $this->initSecurity();
@@ -302,6 +306,9 @@ class Application extends ApplicationTrait
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
 
+                $app['admin'] = false;
+                $app['front'] = false;
+
                 if (isset($app['profiler'])) {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
                 } else {
@@ -314,6 +321,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.'admin';
+                    $app['admin'] = true;
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
@@ -321,6 +329,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_default_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.$app['config']['template_code'];
+                    $app['front'] = true;
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
@@ -451,7 +460,13 @@ class Application extends ApplicationTrait
         );
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
+            if (file_exists($dir->getRealPath().'/config.yml')) {
+                $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
+            }else{
+                $error = 'Application::initDoctrine : config.yamlがみつかりません'.$dir->getRealPath();
+                $this->log($error, array(), Logger::WARNING);
+                continue;
+            }
 
             // Doctrine Extend
             if (isset($config['orm.path']) && is_array($config['orm.path'])) {
@@ -549,11 +564,11 @@ class Application extends ApplicationTrait
         $this['eccube.event_listner.security'] = $this->share(function($app) {
             return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         });
-        $this['user'] = $this->share(function($app) {
+        $this['user'] = function($app) {
             $token = $app['security']->getToken();
 
             return ($token !== null) ? $token->getUser() : null;
-        });
+        };
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
@@ -647,6 +662,7 @@ class Application extends ApplicationTrait
             ->getHandlers();
         foreach ($handlers as $handler) {
             if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
+
                 $priority = $handler->getPriority();
             } else {
                 // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
@@ -659,10 +675,13 @@ class Application extends ApplicationTrait
         // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
         foreach ($finder as $dir) {
             //config.ymlのないディレクトリは無視する
-            if (!file_exists($dir->getRealPath().'/config.yml')) {
+            try {
+                $this['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
+            } catch(\Eccube\Exception\PluginException $e) {
+                $this['monolog']->warning($e->getMessage());
                 continue;
             }
-            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
+            $config = $this['eccube.service.plugin']->readYml($dir->getRealPath().'/config.yml');
 
             $plugin = $this['orm.em']
                 ->getRepository('Eccube\Entity\Plugin')
@@ -709,9 +728,46 @@ class Application extends ApplicationTrait
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
+                    if (!class_exists($class)) {
+                        $this['monolog']->warning('該当クラスが見つかりません:' . $class);
+                        continue;
+                    }
                     $this->register(new $class($this));
                 }
             }
         }
+    }
+
+    /**
+     *
+     * データベースの接続を確認
+     * 成功 : trueを返却
+     *　失敗 : \Doctrine\DBAL\DBALExceptionエラーが発生( 接続に失敗した場合 )、エラー画面を表示しdie()
+     * 備考 : app['debug']がtrueの際は処理を行わない
+     * @return boolean true
+     *
+     */
+    protected function checkDatabaseConnection()
+    {
+        if ($this['debug']) {
+            return;
+        }
+        try {
+            $this['db']->connect();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this['monolog']->error($e->getMessage());
+            $this['twig.path'] = array(__DIR__.'/Resource/template/exception');
+            $html = $this['twig']->render('error.twig', array(
+                'error_title' => 'データーベース接続エラー',
+                'error_message' => 'データーベースを確認してください',
+            ));
+            $response = new Response();
+            $response->setContent($html);
+            $response->setStatusCode('500');
+            $response->headers->set('Content-Type', 'text/html');
+            $response->send();
+            die();
+        }
+        return true;
     }
 }

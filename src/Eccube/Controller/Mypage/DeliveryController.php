@@ -36,8 +36,9 @@ class DeliveryController extends AbstractController
     /**
      * Index
      *
-     * @param  Application $app
-     * @return string
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
@@ -51,9 +52,9 @@ class DeliveryController extends AbstractController
     /**
      * edit
      *
-     * @param  Application $app
-     * @request  Symfony\Component\HttpFoundation\Request $app
-     * @return mixed
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function edit(Application $app, Request $request, $id = null)
     {
@@ -89,28 +90,24 @@ class DeliveryController extends AbstractController
             ->createBuilder('customer_address', $CustomerAddress)
             ->getForm();
 
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
+                'customer' => $Customer,
                 'customerAddress' => $CustomerAddress
-            )
+            ),
+            $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_DELIVERY_EDIT_INITIALIZE, $event);
 
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $app['orm.em']->persist($CustomerAddress);
-                $app['orm.em']->flush();
-                $event = new EventArgs(array(
-                        'form' => $form,
-                        'customer' => $Customer
-                    )
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
-                $app->addSuccess('mypage.delivery.add.complete');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $app['orm.em']->persist($CustomerAddress);
+            $app['orm.em']->flush();
 
-                return $app->redirect($app->url('mypage_delivery'));
-            }
+            $app->addSuccess('mypage.delivery.add.complete');
+
+            return $app->redirect($app->url('mypage_delivery'));
         }
 
         $BaseInfo = $app['eccube.repository.base_info']->get();
@@ -122,6 +119,13 @@ class DeliveryController extends AbstractController
         ));
     }
 
+    /**
+     * delete
+     * 
+     * @param Application $app
+     * @param type $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function delete(Application $app, $id)
     {
         $this->isTokenValid($app);
@@ -133,12 +137,13 @@ class DeliveryController extends AbstractController
             $app->addError('mypage.address.delete.failed');
         } else {
 
-            $event = new EventArgs(array(
+            $event = new EventArgs(
+                array(
                     'form' => $form,
                     'customer' => $Customer
                 )
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_DELIVERY_DELETE_COMPLETE, $event);
 
             $app->addSuccess('mypage.address.delete.complete');
         }

@@ -32,17 +32,18 @@ use Eccube\Event\EventArgs;
 
 class ChangeController extends AbstractController
 {
-
     /**
      * Index
-     *
-     * @param  Application $app
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * 
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
         $Customer = $app->user();
-        $CustomerForRestore = clone $app->user();
+        $LoginCustomer = clone $Customer;
+        $app['orm.em']->detach($LoginCustomer);
 
         $previous_password = $Customer->getPassword();
         $Customer->setPassword($app['config']['default_password']);
@@ -52,44 +53,39 @@ class ChangeController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
-
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
                 'customer' => $Customer
-            )
+            ),
+            $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_CHANGE_INDEX_INITIALIZE, $event);
-
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $event = new EventArgs(array(
-                        'form' => $form,
-                    )
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_CHANGE_INDEX_COMPLETE, $event);
-
-                if ($Customer->getPassword() === $app['config']['default_password']) {
-                    $Customer->setPassword($previous_password);
-                } else {
-                    $Customer->setPassword(
-                        $app['eccube.repository.customer']->encryptPassword($app, $Customer)
-                        );
-                }
-
-                $app['orm.em']->persist($Customer);
-                $app['orm.em']->flush();
-
-                return $app->redirect($app->url('mypage_change_complete'));
-
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CHANGE_INDEX_INITIALIZE, $event);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'customer' => $Customer
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CHANGE_INDEX_COMPLETE, $event);
+            if ($Customer->getPassword() === $app['config']['default_password']) {
+                $Customer->setPassword($previous_password);
             } else {
-                // invalidでもSession上の$app->user()が置き換えられてしまうため復元する
-                $Customer = $CustomerForRestore;
-                $this->getSecurity($app)->getToken()->setUser($Customer);
+                $Customer->setPassword(
+                    $app['eccube.repository.customer']->encryptPassword($app, $Customer)
+                );
             }
+            $app['orm.em']->flush();
+
+            return $app->redirect($app->url('mypage_change_complete'));
         }
 
-        return $app->renderView('Mypage/change.twig', array(
+        $app['security']->getToken()->setUser($LoginCustomer);
+
+        return $app->render('Mypage/change.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -97,11 +93,12 @@ class ChangeController extends AbstractController
     /**
      * Complete
      *
-     * @param  Application $app
-     * @return mixed
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->renderView('Mypage/change_complete.twig');
+        return $app->render('Mypage/change_complete.twig');
     }
 }
