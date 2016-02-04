@@ -37,17 +37,19 @@ class MemberController extends AbstractController
     {
     }
 
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $Members = $app['eccube.repository.member']->findBy(array(), array('rank' => 'DESC'));
 
         $form = $app->form()
             ->getForm();
 
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
-                'Members' => $Members
-            )
+                'members' => $Members
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_INDEX_INITIALIZE, $event);
 
@@ -75,10 +77,12 @@ class MemberController extends AbstractController
             ->createBuilder('admin_member', $Member)
             ->getForm();
 
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
-                'Member' => $Member
-            )
+                'member' => $Member
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_EDIT_INITIALIZE, $event);
 
@@ -106,8 +110,9 @@ class MemberController extends AbstractController
                 if ($status) {
                     $event = new EventArgs(array(
                             'form' => $form,
-                            'Member' => $Member
-                        )
+                            'member' => $Member
+                        ),
+                        $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_EDIT_COMPLETE, $event);
 
@@ -184,13 +189,21 @@ class MemberController extends AbstractController
             $app->deleteMessage();
             return $app->redirect($app->url('admin_setting_system_member'));
         }
-        $event = new EventArgs();
+        $event = new EventArgs(
+            array(
+                'targetMember' => $TargetMember
+            ),
+            $request
+        );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_DELETE_INITIALIZE, $event);
         $status = $app['eccube.repository.member']->delete($TargetMember);
 
         if ($status) {
             $app->addSuccess('admin.member.delete.complete', 'admin');
-            $event = new EventArgs();
+            $event = new EventArgs(
+                array(),
+                $request
+            );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_DELETE_COMPLETE, $event);
         } else {
             $app->addError('admin.member.delete.error', 'admin');

@@ -42,9 +42,11 @@ class LogController
             ->createBuilder('admin_system_log')
             ->getForm();
 
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
-            )
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE, $event);
 
@@ -53,16 +55,18 @@ class LogController
             if ($form->isValid()) {
                 $formData = $form->getData();
             }
-            $event = new EventArgs(array(
+            $event = new EventArgs(
+                array(
                     'form' => $form,
-                )
+                ),
+                $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_COMPLETE, $event);
         }
 
         $logFile = $app['config']['root_dir'].'/app/log/'.$formData['files'];
 
-        return $app['view']->render('Setting/System/log.twig', array(
+        return $app->render('Setting/System/log.twig', array(
             'form' => $form->createView(),
             'log' => $this->parseLogFile($logFile, $formData),
         ));

@@ -43,9 +43,11 @@ class SecurityController extends AbstractController
         $builder = $app['form.factory']->createBuilder('admin_security');
         $form = $builder->getForm();
 
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
-            )
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SECURITY_INDEX_INITIALIZE, $event);
 
@@ -104,9 +106,11 @@ class SecurityController extends AbstractController
                     return $app->redirect($request->getBaseUrl() . '/' . $config['admin_route']);
                 }
 
-                $event = new EventArgs(array(
+                $event = new EventArgs(
+                    array(
                         'form' => $form,
-                    )
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SECURITY_INDEX_COMPLETE, $event);
 

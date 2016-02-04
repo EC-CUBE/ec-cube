@@ -47,10 +47,12 @@ class AuthorityController extends AbstractController
             ))
             ->getForm();
 
-        $event = new EventArgs(array(
+        $event = new EventArgs(
+            array(
                 'form' => $form,
-                'AuthorityRoles' => $AuthorityRoles
-            )
+                'authorityRoles' => $AuthorityRoles
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE, $event);
 
@@ -90,10 +92,12 @@ class AuthorityController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
-                $event = new EventArgs(array(
+                $event = new EventArgs(
+                    array(
                         'form' => $form,
-                        'AuthorityRoles' => $AuthorityRoles
-                    )
+                        'authorityRoles' => $AuthorityRoles
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_AUTHORITY_INDEX_COMPLETE, $event);
 

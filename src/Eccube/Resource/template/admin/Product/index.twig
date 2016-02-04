@@ -139,6 +139,9 @@ $(function() {
                                                     {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                                                 </div>
                                             </div>
+                                            <div class="col-sm-6">
+                                                {{ form_rest(searchForm) }}
+                                            </div>
                                         </div><!-- /.row -->
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -230,7 +233,6 @@ $(function() {
                                             <div class="item_id td">
                                                 {{Product.id}}
                                             </div>
-
                                             <div class="item_photo td">
                                                 <a href="{{ url('admin_product_product_edit', { id : Product.id }) }}">
                                                 	<img src="{{ app.config.image_save_urlpath }}/{{ Product.mainFileName|no_image_product }}" />
