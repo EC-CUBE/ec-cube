@@ -497,8 +497,6 @@ class Application extends ApplicationTrait
                 'form' => array(
                     'login_path' => "/{$this['config']['admin_route']}/login",
                     'check_path' => "/{$this['config']['admin_route']}/login_check",
-                    'target_url' => "/{$this['config']['admin_route']}/",
-                    'failure_path' => "/{$this['config']['admin_route']}/",
                     'username_parameter' => 'login_id',
                     'password_parameter' => 'password',
                     'with_csrf' => true,
