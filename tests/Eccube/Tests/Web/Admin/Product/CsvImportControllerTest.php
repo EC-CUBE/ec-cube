@@ -75,7 +75,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function createCsvFromArray(array $csv)
     {
         $dir = sys_get_temp_dir();
-        $filepath = $dir.'products.csv';
+        $filepath = $dir.'/products.csv';
         $fp = fopen($filepath, 'w');
         if ($fp !== false) {
             foreach ($csv as $row) {
@@ -98,6 +98,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 規格1のみの商品
         $csvClass1Only = $this->createCsvAsArray(false);
         $csvClass1Only[0][13] = null; // 規格分類2(ID)
+        $csvClass1Only[0][15] = 'class1-only'; // 商品コード
         $csv = array_merge($csv, $csvClass1Only);
 
         $this->filepath = $this->createCsvFromArray($csv);
@@ -112,6 +113,43 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
                             $crawler->filter('div.alert-success')->text());
+
+        // 規格1のみ商品の確認
+        // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
+        $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
+        $sql = "SELECT * FROM dtb_product_class WHERE product_code = 'class1-only' ORDER BY del_flg DESC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $this->expected = 2;
+        $this->actual = count($result);
+        $this->verify('取得できるのは2行');
+
+        $this->expected = 1;
+        $this->actual = $result[0]['del_flg'];
+        $this->verify('result[0] は del_flg = 1');
+
+        $this->expected = null;
+        $this->actual = $result[0]['class_category_id1'];
+        $this->verify('class_category_id1 は null');
+
+        $this->expected = null;
+        $this->actual = $result[0]['class_category_id2'];
+        $this->verify('class_category_id2 は null');
+
+        // del_flg = 0 の行の確認
+        $this->expected = 0;
+        $this->actual = $result[1]['del_flg'];
+        $this->verify('result[1] は del_flg = 0');
+
+        $this->expected = 3;
+        $this->actual = $result[1]['class_category_id1'];
+        $this->verify('class_category_id1 は 3');
+
+        $this->expected = null;
+        $this->actual = $result[1]['class_category_id2'];
+        $this->verify('class_category_id2 は null');
     }
 
     public function testCsvImportWithExistsProducts()
