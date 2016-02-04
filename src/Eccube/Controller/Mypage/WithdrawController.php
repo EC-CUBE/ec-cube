@@ -29,6 +29,8 @@ use Eccube\Controller\AbstractController;
 use Eccube\Util\Str;
 use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class WithdrawController extends AbstractController
 {
@@ -45,6 +47,12 @@ class WithdrawController extends AbstractController
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $app->form()->getForm();
 
+        $event = new EventArgs(array(
+                'form' => $form
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_WITHDRAW_INDEX_INITIALIZE, $event);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
@@ -58,6 +66,13 @@ class WithdrawController extends AbstractController
 
                         /* @var $Customer \Eccube\Entity\Customer */
                         $Customer = $app->user();
+
+                        $event = new EventArgs(array(
+                                'form' => $form,
+                                'customer' => $Customer
+                            )
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);
 
                         // 会員削除
                         $email = $Customer->getEmail();

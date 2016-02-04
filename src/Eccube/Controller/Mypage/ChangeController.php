@@ -27,6 +27,8 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class ChangeController extends AbstractController
 {
@@ -51,9 +53,22 @@ class ChangeController extends AbstractController
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
+        $event = new EventArgs(array(
+                'form' => $form,
+                'customer' => $Customer
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_CHANGE_INDEX_INITIALIZE, $event);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $event = new EventArgs(array(
+                        'form' => $form,
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_CHANGE_INDEX_COMPLETE, $event);
+
                 if ($Customer->getPassword() === $app['config']['default_password']) {
                     $Customer->setPassword($previous_password);
                 } else {

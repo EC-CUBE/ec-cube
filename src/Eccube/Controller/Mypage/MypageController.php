@@ -30,6 +30,8 @@ use Eccube\Controller\AbstractController;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class MypageController extends AbstractController
 {
@@ -52,6 +54,12 @@ class MypageController extends AbstractController
 
         $form = $builder->getForm();
 
+        $event = new EventArgs(array(
+                'form' => $form
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
+
         return $app->render('Mypage/login.twig', array(
             'error' => $app['security.last_error']($request),
             'form' => $form->createView(),
@@ -67,6 +75,12 @@ class MypageController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $Customer = $app['user'];
+
+        $event = new EventArgs(array(
+                'customer' => $Customer
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_INDEX_INITIALIZE, $event);
 
         $app['orm.em']
             ->getFilters()
@@ -100,10 +114,20 @@ class MypageController extends AbstractController
             'Eccube\Entity\ProductClass',
         ));
 
+        $event = new EventArgs(array());
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_HISTORY_INITIALIZE, $event);
+
         $Order = $app['eccube.repository.order']->findOneBy(array(
             'id' => $id,
             'Customer' => $app->user(),
         ));
+
+        $event = new EventArgs(array(
+                'order' => $Order
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_HISTORY_COMPLETE, $event);
+
         if (!$Order) {
             throw new NotFoundHttpException();
         }
@@ -132,6 +156,14 @@ class MypageController extends AbstractController
             'id' => $id,
             'Customer' => $Customer,
         ));
+
+        $event = new EventArgs(array(
+                'order' => $Order,
+                'customer' => $Customer
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
+
         if (!$Order) {
             throw new NotFoundHttpException();
         }
@@ -148,6 +180,13 @@ class MypageController extends AbstractController
             }
         }
 
+        $event = new EventArgs(array(
+                'order' => $Order,
+                'customer' => $Customer
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_ORDER_COMPLETE, $event);
+
         return $app->redirect($app->url('cart'));
     }
 
@@ -163,6 +202,12 @@ class MypageController extends AbstractController
 
         if ($BaseInfo->getOptionFavoriteProduct() == Constant::ENABLED) {
             $Customer = $app->user();
+
+            $event = new EventArgs(array(
+                    'customer' => $Customer
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_FAVORITE_INITIALIZE, $event);
 
             // paginator
             $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
@@ -193,7 +238,21 @@ class MypageController extends AbstractController
         $Customer = $app->user();
 
         $Product = $app['eccube.repository.product']->find($id);
+
+        $event = new EventArgs(array(
+                'customer' => $Customer,
+                'product' => $Product
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_DELETE_INITIALIZE, $event);
+
         if ($Product) {
+            $event = new EventArgs(array(
+                    'Customer' => $Customer,
+                    'Product' => $Product
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
             $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
         }
 

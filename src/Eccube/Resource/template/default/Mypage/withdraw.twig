@@ -39,6 +39,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
         <form method="post" action="{{ url('mypage_withdraw') }}">
             {{ form_widget(form._token) }}
+            <div class="extra-form">
+                {% for f in form.getIterator %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        {{ form_label(f) }}
+                        {{ form_widget(f) }}
+                        {{ form_errors(f) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
             <div class="row">
                 <div class="btn_group col-sm-offset-4 col-sm-4">
                     <p><button type="submit" class="btn btn-info btn-block" name="mode" value="confirm">会員退会手続きへ</button></p>

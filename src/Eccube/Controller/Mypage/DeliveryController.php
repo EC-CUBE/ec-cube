@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class DeliveryController extends AbstractController
 {
@@ -87,12 +89,24 @@ class DeliveryController extends AbstractController
             ->createBuilder('customer_address', $CustomerAddress)
             ->getForm();
 
+        $event = new EventArgs(array(
+                'form' => $form,
+                'customerAddress' => $CustomerAddress
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
+
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $app['orm.em']->persist($CustomerAddress);
                 $app['orm.em']->flush();
-
+                $event = new EventArgs(array(
+                        'form' => $form,
+                        'customer' => $Customer
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
                 $app->addSuccess('mypage.delivery.add.complete');
 
                 return $app->redirect($app->url('mypage_delivery'));
@@ -118,6 +132,14 @@ class DeliveryController extends AbstractController
         if (!$app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id)) {
             $app->addError('mypage.address.delete.failed');
         } else {
+
+            $event = new EventArgs(array(
+                    'form' => $form,
+                    'customer' => $Customer
+                )
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+
             $app->addSuccess('mypage.address.delete.complete');
         }
 
