@@ -182,6 +182,67 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 既存の規格なし商品に商品規格を追加する.
+     */
+    public function testCsvImportWithExistsProductsAddProductClass()
+    {
+        // 商品生成
+        $csv = $this->createCsvAsArray();
+        $csv[1][0] = 2;                        // 商品ID = 2 に規格を追加する
+        $csv[1][15] = 'add-class';             // 商品コード
+
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        $crawler = $this->scenario();
+
+        $Products = $this->app['eccube.repository.product']->findAll();
+
+        $this->expected = 2;    // 既存2商品
+        $this->actual = count($Products);
+        $this->verify();
+
+        $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
+                            $crawler->filter('div.alert-success')->text());
+
+        // 規格1のみ商品の確認
+        // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
+        $pdo = $this->app['orm.em']->getConnection()->getWrappedConnection();
+        $sql = "SELECT * FROM dtb_product_class WHERE product_id = 2 ORDER BY del_flg DESC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        $this->expected = 2;
+        $this->actual = count($result);
+        $this->verify('取得できるのは2行');
+
+        $this->expected = 1;
+        $this->actual = $result[0]['del_flg'];
+        $this->verify('result[0] は del_flg = 1');
+
+        $this->expected = null;
+        $this->actual = $result[0]['class_category_id1'];
+        $this->verify('class_category_id1 は null');
+
+        $this->expected = null;
+        $this->actual = $result[0]['class_category_id2'];
+        $this->verify('class_category_id2 は null');
+
+        // del_flg = 0 の行の確認
+        $this->expected = 0;
+        $this->actual = $result[1]['del_flg'];
+        $this->verify('result[1] は del_flg = 0');
+
+        $this->expected = 3;
+        $this->actual = $result[1]['class_category_id1'];
+        $this->verify('class_category_id1 は 3');
+
+        $this->expected = 6;
+        $this->actual = $result[1]['class_category_id2'];
+        $this->verify('class_category_id2 は 6');
+    }
+
+    /**
      * $this->filepath のファイルを CSV アップロードし, 完了画面の crawler を返す.
      */
     public function scenario()
