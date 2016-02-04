@@ -36,7 +36,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Eccube\Command\PluginCommand;
 
-class PluginCommandControllerTest extends AbstractAdminWebTestCase
+class PluginCommandTest extends AbstractAdminWebTestCase
 {
     protected $app;
     protected $pluginpath;
