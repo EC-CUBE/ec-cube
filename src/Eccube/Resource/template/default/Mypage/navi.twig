@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <ul>
         <li class="{% if mypageno|default('') == 'index' %}active{% endif %}"><a href="{{ url('mypage') }}">ご注文履歴</a></li>
         {% if favorite == 1 %}
-        <li  class="{% if mypageno|default('') == 'favorite' %}active{% endif %}"><a href="{{ url('mypage_favorite') }}">お気に入り一覧</a></li>
+        <li class="{% if mypageno|default('') == 'favorite' %}active{% endif %}"><a href="{{ url('mypage_favorite') }}">お気に入り一覧</a></li>
         {% endif %}
         <li class="{% if mypageno|default('') == 'change' %}active{% endif %}"><a href="{{ url('mypage_change') }}">会員情報編集</a></li>
         <li class="{% if mypageno|default('') == 'delivery' %}active{% endif %}"><a href="{{ url('mypage_delivery') }}">お届け先編集</a></li>

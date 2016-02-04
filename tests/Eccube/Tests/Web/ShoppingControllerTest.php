@@ -162,19 +162,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_delivery'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -199,19 +198,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_delivery'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 5, // delivery=5 は無効な値
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 5, // delivery=5 は無効な値
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -240,19 +238,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_payment'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -276,19 +273,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_payment'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 100, // payment=100 は無効な値
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 100, // payment=100 は無効な値
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 

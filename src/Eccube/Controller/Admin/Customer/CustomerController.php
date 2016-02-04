@@ -102,7 +102,7 @@ class CustomerController extends AbstractController
                 }
             }
         }
-        return $app->renderView('Customer/index.twig', array(
+        return $app->render('Customer/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'pageMaxis' => $pageMaxis,

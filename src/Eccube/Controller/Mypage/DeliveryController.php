@@ -34,8 +34,9 @@ class DeliveryController extends AbstractController
     /**
      * Index
      *
-     * @param  Application $app
-     * @return string
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
@@ -49,9 +50,9 @@ class DeliveryController extends AbstractController
     /**
      * edit
      *
-     * @param  Application $app
-     * @request  Symfony\Component\HttpFoundation\Request $app
-     * @return mixed
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function edit(Application $app, Request $request, $id = null)
     {
@@ -86,17 +87,15 @@ class DeliveryController extends AbstractController
         $form = $app['form.factory']
             ->createBuilder('customer_address', $CustomerAddress)
             ->getForm();
+        $form->handleRequest($request);
 
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $app['orm.em']->persist($CustomerAddress);
-                $app['orm.em']->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $app['orm.em']->persist($CustomerAddress);
+            $app['orm.em']->flush();
 
-                $app->addSuccess('mypage.delivery.add.complete');
+            $app->addSuccess('mypage.delivery.add.complete');
 
-                return $app->redirect($app->url('mypage_delivery'));
-            }
+            return $app->redirect($app->url('mypage_delivery'));
         }
 
         $BaseInfo = $app['eccube.repository.base_info']->get();
@@ -108,6 +107,13 @@ class DeliveryController extends AbstractController
         ));
     }
 
+    /**
+     * delete
+     * 
+     * @param Application $app
+     * @param type $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function delete(Application $app, $id)
     {
         $this->isTokenValid($app);

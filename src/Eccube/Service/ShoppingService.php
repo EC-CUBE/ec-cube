@@ -653,7 +653,6 @@ class ShoppingService
 
         $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
         $Shipping->setShippingDeliveryName($Delivery->getName());
-
     }
 
     /**

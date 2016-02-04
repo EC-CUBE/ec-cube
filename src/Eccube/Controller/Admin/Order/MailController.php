@@ -26,8 +26,8 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Application;
 use Eccube\Entity\MailHistory;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MailController
 {
@@ -79,7 +79,7 @@ class MailController
                         $form->get('template')->setData($MailTemplate);
 
 
-                        return $app->renderView('Order/mail_confirm.twig', array(
+                        return $app->render('Order/mail_confirm.twig', array(
                             'form' => $form->createView(),
                             'body' => $body,
                             'Order' => $Order,
@@ -114,7 +114,7 @@ class MailController
             }
         }
 
-        return $app->renderView('Order/mail.twig', array(
+        return $app->render('Order/mail.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
             'MailHistories' => $MailHistories
@@ -124,7 +124,7 @@ class MailController
 
     public function complete(Application $app)
     {
-        return $app->renderView('Order/mail_complete.twig');
+        return $app->render('Order/mail_complete.twig');
     }
 
 
@@ -139,7 +139,7 @@ class MailController
                 throw new NotFoundHttpException('history not found.');
             }
 
-            return $app->renderView('Order/mail_view.twig', array(
+            return $app->render('Order/mail_view.twig', array(
                 'subject' => $MailHistory->getSubject(),
                 'body' => $MailHistory->getMailBody()
             ));
@@ -202,7 +202,7 @@ class MailController
                         $form->setData($data);
                         $form->get('template')->setData($MailTemplate);
 
-                        return $app->renderView('Order/mail_all_confirm.twig', array(
+                        return $app->render('Order/mail_all_confirm.twig', array(
                             'form' => $form->createView(),
                             'body' => $body,
                             'ids' => $ids,
@@ -252,7 +252,7 @@ class MailController
             $ids = substr($ids, 0, -1);
         }
 
-        return $app->renderView('Order/mail_all.twig', array(
+        return $app->render('Order/mail_all.twig', array(
             'form' => $form->createView(),
             'ids' => $ids,
         ));
