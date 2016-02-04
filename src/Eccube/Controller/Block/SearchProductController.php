@@ -41,7 +41,7 @@ class SearchProductController
         $request = $app['request_stack']->getMasterRequest();
         $form->handleRequest($request);
 
-        return $app['view']->render('Block/search_product.twig', array(
+        return $app->render('Block/search_product.twig', array(
             'form' => $form->createView(),
         ));
     }

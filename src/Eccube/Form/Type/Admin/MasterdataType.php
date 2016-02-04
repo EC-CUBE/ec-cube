@@ -45,17 +45,27 @@ class MasterdataType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var $app \Eccube\Application */
         $app = $this->app;
 
         $masterdata = array();
 
-        foreach ($app['orm.em']->getMetadataFactory()->getAllMetadata() as $meta) {
-            if (strpos($meta->rootEntityName, 'Master') !== false
-                && $meta->hasField('id')
-                && $meta->hasField('name')
-                && $meta->hasField('rank')
-            ) {
-                $masterdata[$meta->getName()] = $meta->getTableName();
+        $driverChain = $app['orm.em']->getConfiguration()->getMetadataDriverImpl();
+        $drivers = $driverChain->getDrivers();
+
+        foreach ($drivers as $namespace => $driver) {
+            if ($namespace == 'Eccube\Entity') {
+                $classNames = $driver->getAllClassNames();
+                foreach ($classNames as $className) {
+                    $meta = $app['orm.em']->getMetadataFactory()->getMetadataFor($className);
+                    if (strpos($meta->rootEntityName, 'Master') !== false
+                        && $meta->hasField('id')
+                        && $meta->hasField('name')
+                        && $meta->hasField('rank')
+                    ) {
+                        $masterdata[$meta->getName()] = $meta->getTableName();
+                    }
+                }
             }
         }
 

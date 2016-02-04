@@ -93,7 +93,6 @@ class MypageController extends AbstractController
      */
     public function history(Application $app, Request $request, $id)
     {
-
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
         $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
@@ -122,7 +121,6 @@ class MypageController extends AbstractController
      */
     public function order(Application $app, Request $request, $id)
     {
-
         $this->isTokenValid($app);
 
         $Customer = $app->user();

@@ -222,11 +222,13 @@ class InstallController
                 $config = Yaml::parse(file_get_contents($config_file));
                 $database = $config['database'];
                 $sessionData['database'] = $database['driver'];
-                $sessionData['database_host'] = $database['host'];
-                $sessionData['database_port'] = $database['port'];
-                $sessionData['database_name'] = $database['dbname'];
-                $sessionData['database_user'] = $database['user'];
-                $sessionData['database_password'] = $database['password'];
+                if ($database['driver'] != 'pdo_sqlite') {
+                    $sessionData['database_host'] = $database['host'];
+                    $sessionData['database_port'] = $database['port'];
+                    $sessionData['database_name'] = $database['dbname'];
+                    $sessionData['database_user'] = $database['user'];
+                    $sessionData['database_password'] = $database['password'];
+                }
             }
         }
 

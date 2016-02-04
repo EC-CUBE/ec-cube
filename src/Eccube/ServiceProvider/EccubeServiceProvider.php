@@ -64,6 +64,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
+            $csvService->setEntityManager($app['orm.em']);
             $csvService->setConfig($app['config']);
             $csvService->setCsvRepository($app['eccube.repository.csv']);
             $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
