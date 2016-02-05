@@ -35,7 +35,6 @@ class EditControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
-        $this->Order = $this->createOrder($this->Customer);
         $this->Product = $this->createProduct();
     }
 
@@ -248,4 +247,99 @@ class EditControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    /**
+     * 管理画面から購入処理中で受注登録し, フロントを参照するテスト
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1452
+     */
+    public function testOrderProcessingToFrontConfirm()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
+        // 管理画面から受注登録
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_order_edit', array('id' => $Order->getId())),
+            array(
+                'order' => $formData,
+                'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $this->expected = $formData['OrderStatus'];
+        $this->actual = $EditedOrder->getOrderStatus()->getId();
+        $this->verify();
+
+        // フロント側から, product_class_id = 1 をカート投入
+        $client = $this->createClient();
+        $crawler = $client->request('POST', '/cart/add', array('product_class_id' => 1));
+        $this->app['eccube.service.cart']->lock();
+
+        $faker = $this->getFaker();
+        $tel = explode('-', $faker->phoneNumber);
+        $email = $faker->safeEmail;
+
+        $clientFormData = array(
+            'name' => array(
+                'name01' => $faker->lastName,
+                'name02' => $faker->firstName,
+            ),
+            'kana' => array(
+                'kana01' => $faker->lastKanaName ,
+                'kana02' => $faker->firstKanaName,
+            ),
+            'company_name' => $faker->company,
+            'zip' => array(
+                'zip01' => $faker->postcode1(),
+                'zip02' => $faker->postcode2(),
+            ),
+            'address' => array(
+                'pref' => '5',
+                'addr01' => $faker->city,
+                'addr02' => $faker->streetAddress,
+            ),
+            'tel' => array(
+                'tel01' => $tel[0],
+                'tel02' => $tel[1],
+                'tel03' => $tel[2],
+            ),
+            'email' => array(
+                'first' => $email,
+                'second' => $email,
+            ),
+            '_token' => 'dummy'
+        );
+
+        $client->request(
+            'POST',
+            $this->app->path('shopping_nonmember'),
+            array('nonmember' => $clientFormData)
+        );
+        $this->app['eccube.service.cart']->lock();
+
+        $crawler = $client->request('GET', $this->app->path('shopping'));
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $this->expected = 'ディナーフォーク';
+        $this->actual = $crawler->filter('dt.item_name')->last()->text();
+
+        $OrderDetails = $EditedOrder->getOrderDetails();
+        foreach ($OrderDetails as $OrderDetail) {
+            if ($this->actual == $OrderDetail->getProduct()->getName()) {
+                $this->fail('#1452 の不具合');
+            }
+        }
+
+        $this->verify('カートに投入した商品が表示される');
+    }
+
 }
