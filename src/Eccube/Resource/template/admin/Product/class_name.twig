@@ -87,6 +87,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ form_widget(form._token) }}
                             {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
                             {{ form_errors(form.name) }}
+                            <div class="extra-form">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_label(f) }}
+                                        {{ form_widget(f) }}
+                                        {{ form_errors(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             <button class="btn btn-default btn-sm" type="submit">規格作成</button>
                         </form>
                     </div>

@@ -190,6 +190,15 @@ class ProductController extends AbstractController
             }
         }
 
+        $event = new EventArgs(
+            array(
+                'images' => $images,
+                'files' => $files
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE, $event);
+
         return $app->json(array('files' => $files), 200);
     }
 
@@ -407,6 +416,15 @@ class ProductController extends AbstractController
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH, $event);
+
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
         }
@@ -466,6 +484,17 @@ class ProductController extends AbstractController
                 }
 
                 $app['orm.em']->persist($Product);
+
+                $event = new EventArgs(
+                    array(
+                        'product' => $Product,
+                        'productClass' => $ProductClasses,
+                        'deleteImages' => $deleteImages
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
+
                 $app['orm.em']->flush();
 
 
@@ -554,6 +583,20 @@ class ProductController extends AbstractController
                 }
 
                 $app['orm.em']->persist($CopyProduct);
+
+                $event = new EventArgs(
+                    array(
+                        'product' => $Product,
+                        'copyProduct' => $CopyProduct,
+                        'copyProductCategories' => $CopyProductCategories,
+                        'copyProductClasses' => $CopyProductClasses,
+                        'images' => $Images,
+                        'tags' => $Tags
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
+
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.product.copy.complete', 'admin');
@@ -571,6 +614,12 @@ class ProductController extends AbstractController
 
     public function display(Application $app, Request $request, $id = null)
     {
+        $event = new EventArgs(
+            array(),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
+
         if (!is_null($id)) {
             return $app->redirect($app->url('product_detail', array('id' => $id, 'admin' => '1')));
         }
@@ -655,6 +704,19 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
+
+        $event = new EventArgs(
+            array(
+                'product' => $Product,
+                'copyProduct' => $CopyProduct,
+                'copyProductCategories' => $CopyProductCategories,
+                'copyProductClasses' => $CopyProductClasses,
+                'images' => $Images,
+                'tags' => $Tags
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
         return $response;
     }
