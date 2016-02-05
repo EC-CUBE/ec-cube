@@ -153,6 +153,15 @@
                             {% endif %}
                         {% endif %}
                     </td>
+                    <div class="extra-form">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                {{ form_label(f) }}
+                                {{ form_widget(f) }}
+                                {{ form_errors(f) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     <td class="text-right">
                         <button onclick="fnAddOrderDetail($(this).parent().parent(), {{ Product.id }})" type="button" class="btn btn-default btn-sm" name="mode" value="modal">
                             決定

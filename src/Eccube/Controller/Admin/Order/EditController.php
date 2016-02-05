@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ShipmentItem;
+use Doctrine\Common\EventArgs;
+use Eccube\Event\EccubeEvents;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -61,6 +63,17 @@ class EditController extends AbstractController
             ->createBuilder('order', $TargetOrder);
 
         $form = $builder->getForm();
+
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'originOrder' => $OriginOrder,
+                'targetOrder' => $TargetOrder,
+                'originOrderDetails' => $OriginalOrderDetails
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -161,6 +174,16 @@ class EditController extends AbstractController
                         }
 
                         $app['orm.em']->persist($TargetOrder);
+                        $event = new EventArgs(
+                            array(
+                                'form' => $form,
+                                'originOrder' => $OriginOrder,
+                                'targetOrder' => $TargetOrder,
+                                'originOrderDetails' => $OriginalOrderDetails
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
                         $app['orm.em']->flush();
 
                         $Customer = $TargetOrder->getCustomer();
@@ -202,10 +225,32 @@ class EditController extends AbstractController
             ->createBuilder('admin_search_customer')
             ->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $searchCustomerModalForm,
+                'originOrder' => $OriginOrder,
+                'targetOrder' => $TargetOrder,
+                'originOrderDetails' => $OriginalOrderDetails
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE, $event);
+
         // 商品検索フォーム
         $searchProductModalForm = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchProductModalForm,
+                'originOrder' => $OriginOrder,
+                'targetOrder' => $TargetOrder,
+                'originOrderDetails' => $OriginalOrderDetails
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE, $event);
 
         // 配送業者のお届け時間
         $times = array();
@@ -248,6 +293,15 @@ class EditController extends AbstractController
                 ->getQuery()
                 ->getResult();
 
+            $event = new EventArgs(
+                array(
+                    'searchData' => $searchData,
+                    'customers' => $Customers
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+
             if (empty($Customers)) {
                 $app['monolog']->addDebug('search customer not found.');
             }
@@ -284,6 +338,14 @@ class EditController extends AbstractController
             /** @var $Customer \Eccube\Entity\Customer */
             $Customer = $app['eccube.repository.customer']
                 ->find($request->get('id'));
+
+            $event = new EventArgs(
+                array(
+                    'customer' => $Customer
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE, $event);
 
             if (is_null($Customer)) {
                 $app['monolog']->addDebug('search customer by id not found.');
@@ -337,6 +399,15 @@ class EditController extends AbstractController
                 ->getQueryBuilderBySearchData($searchData)
                 ->getQuery()
                 ->getResult();
+
+            $event = new EventArgs(
+                array(
+                    'searchData' => $searchData,
+                    'products' => $Products
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
 
             if (empty($Products)) {
                 $app['monolog']->addDebug('search product not found.');

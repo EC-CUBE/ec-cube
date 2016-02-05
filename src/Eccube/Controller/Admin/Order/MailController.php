@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Application;
 use Eccube\Entity\MailHistory;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -44,6 +46,16 @@ class MailController
         $builder = $app['form.factory']->createBuilder('mail');
         $form = $builder->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'order' => $Order,
+                'mailHistories' => $MailHistories,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE, $event);
+
         if ('POST' === $request->getMethod()) {
 
             $form->handleRequest($request);
@@ -56,6 +68,15 @@ class MailController
                     /** @var $data \Eccube\Entity\MailTemplate */
                     $MailTemplate = $form->get('template')->getData();
                     $form = $builder->getForm();
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'order' => $Order,
+                            'mailTemplate' => $MailTemplate,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
                     $form->get('template')->setData($MailTemplate);
                     $form->get('subject')->setData($MailTemplate->getSubject());
                     $form->get('header')->setData($MailTemplate->getHeader());
@@ -75,6 +96,17 @@ class MailController
                         $MailTemplate = $form->get('template')->getData();
 
                         $form = $builder->getForm();
+
+                        $event = new EventArgs(
+                            array(
+                                'form' => $form,
+                                'order' => $Order,
+                                'mailTemplate' => $MailTemplate,
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CONFIRM, $event);
+
                         $form->setData($data);
                         $form->get('template')->setData($MailTemplate);
 
@@ -102,6 +134,16 @@ class MailController
                             ->setMailTemplate($MailTemplate)
                             ->setSendDate(new \DateTime())
                             ->setOrder($Order);
+                        $event = new EventArgs(
+                            array(
+                                'form' => $form,
+                                'order' => $Order,
+                                'mailTemplate' => $MailTemplate,
+                                'mailHistory'
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE, $event);
                         $app['orm.em']->persist($MailHistory);
                         $app['orm.em']->flush($MailHistory);
 
@@ -139,6 +181,14 @@ class MailController
                 throw new NotFoundHttpException('history not found.');
             }
 
+            $event = new EventArgs(
+                array(
+                    'mailHistory' => $MailTemplate,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE, $event);
+
             return $app->render('Order/mail_view.twig', array(
                 'subject' => $MailHistory->getSubject(),
                 'body' => $MailHistory->getMailBody()
@@ -156,6 +206,14 @@ class MailController
 
         $form = $builder->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE, $event);
+
         $ids = '';
         if ('POST' === $request->getMethod()) {
 
@@ -171,6 +229,16 @@ class MailController
                     /** @var $data \Eccube\Entity\MailTemplate */
                     $MailTemplate = $form->get('template')->getData();
                     $form = $builder->getForm();
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'mailTemplate' => $MailTemplate
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE, $event);
+
                     $form->get('template')->setData($MailTemplate);
                     $form->get('subject')->setData($MailTemplate->getSubject());
                     $form->get('header')->setData($MailTemplate->getHeader());
@@ -199,6 +267,17 @@ class MailController
                         $MailTemplate = $form->get('template')->getData();
 
                         $form = $builder->getForm();
+
+                        $event = new EventArgs(
+                            array(
+                                'form' => $form,
+                                'mailTemplate' => $MailTemplate,
+                                'order' => $Order
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CONFIRM, $event);
+
                         $form->setData($data);
                         $form->get('template')->setData($MailTemplate);
 
@@ -235,6 +314,17 @@ class MailController
                                 ->setOrder($Order);
                             $app['orm.em']->persist($MailHistory);
                         }
+
+                        $event = new EventArgs(
+                            array(
+                                'form' => $form,
+                                'mailTemplate' => $MailTemplate,
+                                'mailHistory' => $MailHistory,
+                                'order' => $Order
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE, $event);
 
                         $app['orm.em']->flush($MailHistory);
 

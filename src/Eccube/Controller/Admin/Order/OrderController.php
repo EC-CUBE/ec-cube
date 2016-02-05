@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -42,6 +44,15 @@ class OrderController extends AbstractController
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_order')
             ->getForm();
+
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+                'session' => $session,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
 
         $pagination = array();
 
@@ -60,6 +71,16 @@ class OrderController extends AbstractController
 
                 // paginator
                 $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $searchForm,
+                        'qb' => $qb,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+
                 $page_no = 1;
                 $pagination = $app['paginator']()->paginate(
                     $qb,
@@ -96,6 +117,16 @@ class OrderController extends AbstractController
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $searchForm,
+                            'qb' => $qb,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
@@ -151,6 +182,15 @@ class OrderController extends AbstractController
         }
 
         $Order->setDelFlg(Constant::ENABLED);
+
+        $event = new EventArgs(
+            array(
+                'order' => $Order,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
+
         $app['orm.em']->persist($Order);
         $app['orm.em']->flush();
 
@@ -233,6 +273,15 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
 
+        $event = new EventArgs(
+            array(
+                'filename' => $filename,
+                'response' => $response,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EXPORT_ORDER_COMPLETE, $event);
+
         return $response;
     }
 
@@ -309,6 +358,15 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
+
+        $event = new EventArgs(
+            array(
+                'filename' => $filename,
+                'response' => $response,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EXPORT_SHIPPING_COMPLETE, $event);
 
         return $response;
     }
