@@ -220,6 +220,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       </div>
     </div>
     <!-- /.col -->
+    <div class="extra-form">
+      {% for f in form.getIterator %}
+        {% if f.vars.name matches '[^plg*]' %}
+          {{ form_label(f) }}
+          {{ form_widget(f) }}
+          {{ form_errors(f) }}
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
   <div class="row btn_area">
     <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">

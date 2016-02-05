@@ -27,6 +27,8 @@ use Doctrine\Common\Util\Debug;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Common\Constant;
+use Eccube\Event\EccubeEvents;
+use Doctrine\Common\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -58,6 +60,15 @@ class CustomerEditController extends AbstractController
         $form = $app['form.factory']
             ->createBuilder('admin_customer', $Customer)
             ->getForm();
+
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'customer' => $Customer
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -101,6 +112,17 @@ class CustomerEditController extends AbstractController
                 }
 
                 $app['orm.em']->persist($Customer);
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'customer' => $Customer,
+                        'customerAddress' => $CustomerAddress
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
+
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.customer.save.complete', 'admin');

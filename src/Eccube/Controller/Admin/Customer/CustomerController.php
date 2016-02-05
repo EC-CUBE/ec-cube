@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -41,6 +43,13 @@ class CustomerController extends AbstractController
         $searchForm = $app['form.factory']
             ->createBuilder('admin_search_customer')
             ->getForm();
+        $event = new EventArgs(
+            array(
+                'form' => $searchForm,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
 
         //アコーディオンの制御初期化( デフォルトでは閉じる )
         $active = false;
@@ -63,6 +72,14 @@ class CustomerController extends AbstractController
                     $page_no,
                     $page_count
                 );
+                $event = new EventArgs(
+                    array(
+                        'form' => $searchForm,
+                        'qb' => $qb,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.customer.search', $searchData);
@@ -85,6 +102,15 @@ class CustomerController extends AbstractController
                         $page_no,
                         $page_count
                     );
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $searchForm,
+                            'qb' => $qb,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
 
                     // セッションから検索条件を復元
                     if (count($searchData['sex']) > 0) {
@@ -129,6 +155,15 @@ class CustomerController extends AbstractController
         // メール送信
         $app['eccube.service.mail']->sendAdminCustomerConfirmMail($Customer, $activateUrl);
 
+        $event = new EventArgs(
+            array(
+                'customer' => $Customer,
+                'activeUrl' => $activateUrl
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
+
         $app->addSuccess('admin.customer.resend.complete', 'admin');
 
         return $app->redirect($app->url('admin_customer'));
@@ -149,6 +184,15 @@ class CustomerController extends AbstractController
 
         $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
+
+        $event = new EventArgs(
+            array(
+                'customer' => $Customer,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
+
         $app['orm.em']->flush();
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
@@ -210,6 +254,15 @@ class CustomerController extends AbstractController
         $filename = 'customer_' . $now->format('YmdHis') . '.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+
+        $event = new EventArgs(
+            array(
+                'response' => $response
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EXPORT_COMPLETE, $event);
+
         $response->send();
 
         return $response;

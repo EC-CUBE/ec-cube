@@ -93,19 +93,25 @@ final class EccubeEvents
      * Admin/Customer/CustomerController
      */
     // index
-
+    const ADMIN_CUSTOMER_INDEX_INITIALIZE = 'admin.customer.index.initialize';
+    const ADMIN_CUSTOMER_INDEX_SEARCH = 'admin.customer.index.search';
+    const ADMIN_CUSTOMER_INDEX_COMPLETE = 'admin.customer.index.complete';
     // resend
-
+    const ADMIN_CUSTOMER_RESEND_INITIALIZE = 'admin.customer.resend.initialize';
+    const ADMIN_CUSTOMER_RESEND_COMPLETE = 'admin.customer.resend.complete';
     // delete
-
+    const ADMIN_CUSTOMER_DELETE_INITIALIZE = 'admin.customer.delete.initialize';
+    const ADMIN_CUSTOMER_DELETE_COMPLETE = 'admin.customer.delete.complete';
     // export
-
+    const ADMIN_CUSTOMER_EXPORT_INITIALIZE = 'admin.customer.export.initialize';
+    const ADMIN_CUSTOMER_EXPORT_COMPLETE = 'admin.customer.export.complete';
 
     /**
      * Admin/Customer/CustomerEditController
      */
     // index
-
+    const ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE = 'admin.customer.edit.index.initialize';
+    const ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE = 'admin.customer.edit.index.complete';
 
     /**
      * Admin/Order/EditController
