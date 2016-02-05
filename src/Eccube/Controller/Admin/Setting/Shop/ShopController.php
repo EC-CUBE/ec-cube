@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class ShopController extends AbstractController
 {
@@ -37,10 +39,25 @@ class ShopController extends AbstractController
             ->createBuilder('shop_master', $BaseInfo)
             ->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'baseInfo' => $BaseInfo
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SHOP_INDEX_INITIALIZE, $event);
+
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $app['orm.em']->persist($BaseInfo);
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'baseInfo' => $BaseInfo
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SHOP_INDEX_COMPLETE, $event);
                 $app['orm.em']->flush();
                 $app->addSuccess('admin.shop.save.complete', 'admin');
 

@@ -239,63 +239,78 @@ final class EccubeEvents
      * Admin/Setting/Shop/CsvController
      */
     // index
-
+    const ADMIN_CSV_INDEX_INITIALIZE = 'admin.csv.index.initialize';
+    const ADMIN_CSV_INDEX_COMPLETE = 'admin.csv.index.complete';
 
     /**
      * Admin/Setting/Shop/CustomerAgreementController
      */
     // index
-
+    const ADMIN_CUSTOMER_AGREEMENT_INDEX_INITIALIZE = 'admin.customer.agreement.index.initialize';
+    const ADMIN_CUSTOMER_AGREEMENT_INDEX_COMPLETE = 'admin.customer.agreement.index.complete';
 
     /**
      * Admin/Setting/Shop/DeliveryController
      */
     // index
-
+    const ADMIN_DELIVERY_INDEX_INITIALIZE = 'admin.delivery.index.initialize';
+    const ADMIN_DELIVERY_INDEX_COMPLETE = 'admin.delivery.index.complete';
     // edit
-
+    const ADMIN_DELIVERY_EDIT_INITIALIZE = 'admin.delivery.edit.initialize';
+    const ADMIN_DELIVERY_EDIT_COMPLETE = 'admin.delivery.edit.complete';
     // delete
-
+    const ADMIN_DELIVERY_DELETE_INITIALIZE = 'admin.delivery.delete.initialize';
+    const ADMIN_DELIVERY_DELETE_COMPLETE = 'admin.delivery.delete.complete';
 
     /**
      * Admin/Setting/Shop/MailController
      */
     // index
-
+    const ADMIN_MAIL_INDEX_INITIALIZE = 'admin.mail.index.initialize';
+    const ADMIN_MAIL_INDEX_COMPLETE = 'admin.mail.index.complete';
 
     /**
      * Admin/Setting/Shop/PaymentController
      */
     // index
-
+    const ADMIN_PAYMENT_INDEX_INITIALIZE = 'admin.payment.index.initialize';
+    const ADMIN_PAYMENT_INDEX_COMPLETE = 'admin.payment.index.complete';
     // edit
-
+    const ADMIN_PAYMENT_EDIT_INITIALIZE = 'admin.payment.edit.initialize';
+    const ADMIN_PAYMENT_EDIT_COMPLETE = 'admin.payment.edit.complete';
     // imageAdd
-
+    const ADMIN_PAYMENT_IMAGE_ADD_INITIALIZE = 'admin.payment.image.add.initialize';
+    const ADMIN_PAYMENT_IMAGE_ADD_COMPLETE = 'admin.payment.image.add.complete';
     // delete
-
+    const ADMIN_PAYMENT_DELETE_INITIALIZE = 'admin.payment.delete.initialize';
+    const ADMIN_PAYMENT_DELETE_COMPLETE = 'admin.payment.delete.complete';
 
     /**
      * Admin/Setting/Shop/ShopController
      */
     // index
-
+    const ADMIN_SHOP_INDEX_INITIALIZE = 'admin.shop.index.initialize';
+    const ADMIN_SHOP_INDEX_COMPLETE = 'admin.shop.index.complete';
 
     /**
      * Admin/Setting/Shop/TaxRuleController
      */
     // index
-
+    const ADMIN_TAX_RULE_INDEX_INITIALIZE = 'admin.tax.rule.index.initialize';
+    const ADMIN_TAX_RULE_INDEX_COMPLETE = 'admin.tax.rule.index.complete';
     // delete
-
+    const ADMIN_TAX_RULE_DELETE_INITIALIZE = 'admin.tax.rule.delete.initialize';
+    const ADMIN_TAX_RULE_DELETE_COMPLETE = 'admin.tax.rule.delete.complete';
     // editParameter
-
+    const ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE = 'admin.tax.rule.edit.parameter.initialize';
+    const ADMIN_TAX_RULE_EDIT_PARAMETER_COMPLETE = 'admin.tax.rule.edit.parameter.complete';
 
     /**
      * Admin/Setting/Shop/TradelawController
      */
     // index
-
+    const ADMIN_TRADE_LAW_INDEX_INITIALIZE = 'admin.trade.law.index.initialize';
+    const ADMIN_TRADE_LAW_INDEX_COMPLETE = 'admin.trade.law.index.complete';
 
     /**
      * Admin/Setting/System/AuthorityController

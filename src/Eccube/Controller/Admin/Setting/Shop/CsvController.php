@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -77,6 +79,16 @@ class CsvController extends AbstractController
 
         $form = $builder->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'csvOutput' => $CsvOutput,
+                'csvType' => $CsvType
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CSV_INDEX_INITIALIZE, $event);
+
         if ('POST' === $request->getMethod()) {
 
             $data = $request->get('form');
@@ -101,6 +113,16 @@ class CsvController extends AbstractController
                     $rank++;
                 }
             }
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'csvOutput' => $CsvOutput,
+                    'csvType' => $CsvType
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CSV_INDEX_COMPLETE, $event);
 
             $app['orm.em']->flush();
 

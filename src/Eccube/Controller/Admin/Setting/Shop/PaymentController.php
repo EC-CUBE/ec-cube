@@ -27,6 +27,8 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -39,6 +41,12 @@ class PaymentController extends AbstractController
                 array('del_flg' => 0),
                 array('rank' => 'DESC')
             );
+        $event = new EventArgs(
+            array(
+                'payments' => $Payments
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_INDEX_COMPLETE, $event);
 
         return $app->render('Setting/Shop/payment.twig', array(
             'Payments' => $Payments,
@@ -53,6 +61,14 @@ class PaymentController extends AbstractController
         $form = $app['form.factory']
             ->createBuilder('payment_register')
             ->getForm();
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'payment' => $Payment
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_EDIT_INITIALIZE, $event);
+
         $form->setData($Payment);
 
         // 登録ボタン押下
@@ -78,6 +94,15 @@ class PaymentController extends AbstractController
                 }
 
                 $app['orm.em']->persist($PaymentData);
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'payment' => $Payment
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_EDIT_COMPLETE, $event);
+
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
@@ -103,6 +128,14 @@ class PaymentController extends AbstractController
             $filename = date('mdHis') . uniqid('_') . '.' . $extension;
             $image->move($app['config']['image_temp_realdir'], $filename);
         }
+        $event = new EventArgs(
+            array(
+                'images' => $images,
+                'filename' => $filename
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_IMAGE_ADD_COMPLETE, $event);
 
         return $app->json(array('filename' => $filename), 200);
     }
@@ -130,6 +163,13 @@ class PaymentController extends AbstractController
                 $rank ++;
             }
         }
+        $event = new EventArgs(
+            array(
+                'payment' => $Payment,
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_DELETE_COMPLETE, $event);
+
         $app['orm.em']->flush();
 
         $app->addSuccess('admin.delete.complete', 'admin') ;

@@ -27,6 +27,8 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 
 class DeliveryController extends AbstractController
@@ -47,6 +49,13 @@ class DeliveryController extends AbstractController
                 array('del_flg' => 0),
                 array('rank' => 'DESC')
             );
+
+        $event = new EventArgs(
+            array(
+                'deliveries' => $Deliveries
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_INDEX_COMPLETE, $event);
 
         return $app->render('Setting/Shop/delivery.twig', array(
             'Deliveries' => $Deliveries,
@@ -98,6 +107,16 @@ class DeliveryController extends AbstractController
             ->createBuilder('delivery', $Delivery)
             ->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'delivery' => $Delivery,
+                'prefs' => $Prefs,
+                'deliveryFees' => $DeliveryFees
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_EDIT_INITIALIZE, $event);
+
         // 支払方法をセット
         $Payments = array();
         foreach ($Delivery->getPaymentOptions() as $PaymentOption) {
@@ -148,6 +167,17 @@ class DeliveryController extends AbstractController
                 }
 
                 $app['orm.em']->persist($DeliveryData);
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'delivery' => $Delivery,
+                        'prefs' => $Prefs,
+                        'deliveryFees' => $DeliveryFees
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_EDIT_COMPLETE, $event);
+
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
@@ -190,6 +220,14 @@ class DeliveryController extends AbstractController
                 $rank++;
             }
         }
+        $event = new EventArgs(
+            array(
+                'delivs' => $Delivs,
+                'delivery' => $Delivery
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_DELETE_COMPLETE, $event);
+
         $app['orm.em']->flush();
 
         $app->addSuccess('admin.delete.complete', 'admin');

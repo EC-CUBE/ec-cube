@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class TradelawController extends AbstractController
 {
@@ -43,11 +45,28 @@ class TradelawController extends AbstractController
             ->createBuilder('tradelaw', $Help)
             ->getForm();
 
+        $event = new EventArgs(
+            array(
+                'form' => $form,
+                'help' => $Help
+            )
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TRADE_LAW_INDEX_INITIALIZE, $event);
+
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $Help = $form->getData();
                 $app['orm.em']->persist($Help);
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'help' => $Help
+                    )
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TRADE_LAW_INDEX_COMPLETE, $event);
+
                 $app['orm.em']->flush();
                 $app->addSuccess('admin.register.complete', 'admin');
                 return $app->redirect($app->url('admin_setting_shop_tradelaw'));
