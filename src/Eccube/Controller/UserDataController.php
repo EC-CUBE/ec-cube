@@ -54,6 +54,6 @@ class UserDataController
 
         $file = $PageLayout->getFileName() . '.twig';
 
-        return $app['twig']->render($file);
+        return $app->render($file);
     }
 }

@@ -49,7 +49,7 @@ class LogController
 
         $logFile = $app['config']['root_dir'].'/app/log/'.$formData['files'];
 
-        return $app['view']->render('Setting/System/log.twig', array(
+        return $app->render('Setting/System/log.twig', array(
             'form' => $form->createView(),
             'log' => $this->parseLogFile($logFile, $formData),
         ));

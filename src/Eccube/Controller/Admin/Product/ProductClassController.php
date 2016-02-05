@@ -24,17 +24,15 @@
 
 namespace Eccube\Controller\Admin\Product;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Validator\Constraints as Assert;
-
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class ProductClassController
@@ -130,7 +128,7 @@ class ProductClassController
                 }
             }
 
-            return $app->renderView('Product/product_class.twig', array(
+            return $app->render('Product/product_class.twig', array(
                 'form' => $form->createView(),
                 'classForm' => $productClassForm,
                 'Product' => $Product,
@@ -208,7 +206,7 @@ class ProductClassController
                     ->getForm()
                     ->createView();
 
-            return $app->renderView('Product/product_class.twig', array(
+            return $app->render('Product/product_class.twig', array(
                 'classForm' => $productClassForm,
                 'Product' => $Product,
                 'class_name1' => $ClassName1,
@@ -464,7 +462,7 @@ class ProductClassController
             ->getForm();
 
 
-        return $app->renderView('Product/product_class.twig', array(
+        return $app->render('Product/product_class.twig', array(
             'form' => $form->createView(),
             'classForm' => $classForm->createView(),
             'Product' => $Product,
@@ -659,7 +657,7 @@ class ProductClassController
     /**
      * 規格の分類判定
      *
-     * @param Eccube\Entity\ClassName $ClassesName
+     * @param $class_name
      * @return boolean
      */
     private function isValiedCategory($class_name)

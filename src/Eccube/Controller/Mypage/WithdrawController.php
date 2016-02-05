@@ -25,9 +25,9 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Util\Str;
-use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\Request;
 
 class WithdrawController extends AbstractController
@@ -36,49 +36,46 @@ class WithdrawController extends AbstractController
     /**
      * Index
      *
-     * @param  Application $app
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
-
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $app->form()->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            switch ($request->get('mode')) {
+                case 'confirm':
+                    return $app->render('Mypage/withdraw_confirm.twig', array(
+                        'form' => $form->createView(),
+                    ));
 
-            if ($form->isValid()) {
-                switch ($request->get('mode')) {
-                    case 'confirm':
-                        return $app->renderView('Mypage/withdraw_confirm.twig', array(
-                            'form' => $form->createView(),
-                        ));
-                    case 'complete':
+                case 'complete':
+                    /* @var $Customer \Eccube\Entity\Customer */
+                    $Customer = $app->user();
 
-                        /* @var $Customer \Eccube\Entity\Customer */
-                        $Customer = $app->user();
+                    // 会員削除
+                    $email = $Customer->getEmail();
+                    // メールアドレスにダミーをセット
+                    $Customer->setEmail(Str::random(60) . '@dummy.dummy');
+                    $Customer->setDelFlg(Constant::ENABLED);
 
-                        // 会員削除
-                        $email = $Customer->getEmail();
-                        // メールアドレスにダミーをセット
-                        $Customer->setEmail(Str::random(60) . '@dummy.dummy');
-                        $Customer->setDelFlg(Constant::ENABLED);
+                    $app['orm.em']->flush();
 
-                        $app['orm.em']->flush();
+                    // メール送信
+                    $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);
 
-                        // メール送信
-                        $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);
+                    // ログアウト
+                    $this->getSecurity($app)->setToken(null);
 
-                        // ログアウト
-                        $this->getSecurity($app)->setToken(null);
-
-                        return $app->redirect($app->url('mypage_withdraw_complete'));
-                }
+                    return $app->redirect($app->url('mypage_withdraw_complete'));
             }
         }
 
-        return $app->renderView('Mypage/withdraw.twig', array(
+        return $app->render('Mypage/withdraw.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -86,11 +83,12 @@ class WithdrawController extends AbstractController
     /**
      * Complete
      *
-     * @param  Application $app
-     * @return mixed
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->renderView('Mypage/withdraw_complete.twig');
+        return $app->render('Mypage/withdraw_complete.twig');
     }
 }

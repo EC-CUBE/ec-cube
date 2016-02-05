@@ -205,6 +205,65 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * CustomerAddress から個人情報を設定.
+     * 
+     * @param \Eccube\Entity\CustomerAddress $CustomerAddress
+     * @return \Eccube\Entity\Shipping
+     */
+    public function setFromCustomerAddress(CustomerAddress $CustomerAddress)
+    {
+        $this
+            ->setName01($CustomerAddress->getName01())
+            ->setName02($CustomerAddress->getName02())
+            ->setKana01($CustomerAddress->getKana01())
+            ->setKana02($CustomerAddress->getKana02())
+            ->setCompanyName($CustomerAddress->getCompanyName())
+            ->setTel01($CustomerAddress->getTel01())
+            ->setTel02($CustomerAddress->getTel02())
+            ->setTel03($CustomerAddress->getTel03())
+            ->setFax01($CustomerAddress->getFax01())
+            ->setFax02($CustomerAddress->getFax02())
+            ->setFax03($CustomerAddress->getFax03())
+            ->setZip01($CustomerAddress->getZip01())
+            ->setZip02($CustomerAddress->getZip02())
+            ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+            ->setPref($CustomerAddress->getPref())
+            ->setAddr01($CustomerAddress->getAddr01())
+            ->setAddr02($CustomerAddress->getAddr02());
+
+        return $this;
+    }
+
+    /**
+     * 個人情報をクリア.
+     * 
+     * @return \Eccube\Entity\Shipping
+     */
+    public function clearCustomerAddress()
+    {
+        $this
+            ->setName01(null)
+            ->setName02(null)
+            ->setKana01(null)
+            ->setKana02(null)
+            ->setCompanyName(null)
+            ->setTel01(null)
+            ->setTel02(null)
+            ->setTel03(null)
+            ->setFax01(null)
+            ->setFax02(null)
+            ->setFax03(null)
+            ->setZip01(null)
+            ->setZip02(null)
+            ->setZipCode(null)
+            ->setPref(null)
+            ->setAddr01(null)
+            ->setAddr02(null);
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer 
