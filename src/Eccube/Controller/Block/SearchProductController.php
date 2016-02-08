@@ -34,14 +34,13 @@ class SearchProductController
     public function index(Application $app, Request $request)
     {
         /** @var $form \Symfony\Component\Form\Form */
-        $form = $app['form.factory']
+        $builder = $app['form.factory']
             ->createNamedBuilder('', 'search_product')
-            ->setMethod('GET')
-            ->getForm();
+            ->setMethod('GET');
 
         $event = new EventArgs(
             array(
-                'form' => $form,
+                'builder' => $builder,
             ),
             $request
         );
@@ -49,6 +48,8 @@ class SearchProductController
 
         /** @var $request \Symfony\Component\HttpFoundation\Request */
         $request = $app['request_stack']->getMasterRequest();
+
+        $form = $builder->getForm();
         $form->handleRequest($request);
 
         return $app->render('Block/search_product.twig', array(
