@@ -651,10 +651,25 @@ class PluginController extends AbstractController
      */
     public function download(Application $app, Request $request)
     {
+        $url = $app['config']['cacert_pem_url'];
 
-        $url = 'http://curl.haxx.se/ca/cacert.pem';
-        $data = file_get_contents($url);
-        file_put_contents($app['config']['root_dir'] . '/app/config/eccube/' . $this->certFileName, $data);
+        $curl = curl_init($url);
+        $fileName = $app['config']['root_dir'] . '/app/config/eccube/' . $this->certFileName;
+        $fp = fopen($fileName, 'w');
+
+        curl_setopt($curl, CURLOPT_FILE, $fp);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+
+        curl_exec($curl);
+        curl_close($curl);
+        fclose($fp);
+
+        $f = new Filesystem();
+        if (!$f->exists($fileName)) {
+            $app->addSuccess('admin.plugin.download.pem.complete', 'admin');
+        } else {
+            $app->addError('admin.plugin.download.pem.error', 'admin');
+        }
 
         return $app->redirect($app->url('admin_store_authentication_setting'));
 
