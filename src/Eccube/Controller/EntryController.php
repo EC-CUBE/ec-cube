@@ -37,7 +37,7 @@ class EntryController extends AbstractController
 {
 
     /**
-     * Index
+     * 会員登録画面.
      *
      * @param  Application $app
      * @param  Request $request
@@ -50,17 +50,18 @@ class EntryController extends AbstractController
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createBuilder('entry', $Customer);
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $builder->getForm();
 
         $event = new EventArgs(
             array(
-                'form' => $form,
+                'builder' => $builder,
                 'customer' => $Customer
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE, $event);
+
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -76,13 +77,6 @@ class EntryController extends AbstractController
                     ));
 
                 case 'complete':
-                    $event = new EventArgs(array(
-                            'form' => $form,
-                            'customer' => $Customer
-                        ),
-                        $request
-                    );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
                     $Customer
                         ->setSalt(
                             $app['eccube.repository.customer']->createSalt(5)
@@ -102,6 +96,14 @@ class EntryController extends AbstractController
                     $app['orm.em']->persist($CustomerAddress);
                     $app['orm.em']->flush();
 
+                    $event = new EventArgs(array(
+                            'form' => $form,
+                            'customer' => $Customer,
+                            'customerAddress' => $CustomerAddress,
+                        ), $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
+
                     $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
                     /** @var $BaseInfo \Eccube\Entity\BaseInfo */
@@ -112,6 +114,10 @@ class EntryController extends AbstractController
                     if ($activateFlg) {
                         // メール送信
                         $app['eccube.service.mail']->sendCustomerConfirmMail($Customer, $activateUrl);
+
+                        if ($event->hasResponse()) {
+                            return $event->getResponse();
+                        }
 
                         return $app->redirect($app->url('entry_complete'));
                     // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
@@ -127,10 +133,10 @@ class EntryController extends AbstractController
     }
 
     /**
-     * Complete
+     * 会員登録完了画面.
      *
-     * @param  Application $app
-     * @return mixed
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function complete(Application $app)
     {
@@ -138,12 +144,12 @@ class EntryController extends AbstractController
     }
 
     /**
-     * 会員のアクティベート（本会員化）を行う
+     * 会員のアクティベート（本会員化）を行う.
      *
-     * @param  Application $app
-     * @param  Request $request
-     * @param  string $secret_key
-     * @return mixed
+     * @param Application $app
+     * @param Request $request
+     * @param $secret_key
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function activate(Application $app, Request $request, $secret_key)
     {
@@ -163,6 +169,11 @@ class EntryController extends AbstractController
                 throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
             }
 
+            $CustomerStatus = $app['eccube.repository.customer_status']->find(CustomerStatus::ACTIVE);
+            $Customer->setStatus($CustomerStatus);
+            $app['orm.em']->persist($Customer);
+            $app['orm.em']->flush();
+
             $event = new EventArgs(
                 array(
                     'customer' => $Customer
@@ -170,11 +181,6 @@ class EntryController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
-
-            $CustomerStatus = $app['eccube.repository.customer_status']->find(CustomerStatus::ACTIVE);
-            $Customer->setStatus($CustomerStatus);
-            $app['orm.em']->persist($Customer);
-            $app['orm.em']->flush();
 
             // メール送信
             $app['eccube.service.mail']->sendCustomerCompleteMail($Customer);
