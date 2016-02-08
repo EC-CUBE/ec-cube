@@ -28,15 +28,16 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
     {
         $this->app = $this->createApplication();
         // in the case of sqlite in-memory database only.
-        if (array_key_exists('memory', $this->app['config']['database'])
-            && $this->app['config']['database']['memory']) {
+        if ($this->isSqliteInMemory()) {
             $this->initializeDatabase();
         }
     }
 
     public function tearDown()
     {
-        $this->app['orm.em']->getConnection()->close();
+        if (!$this->isSqliteInMemory()) {
+            $this->app['orm.em']->getConnection()->close();
+        }
         $this->cleanUpProperties();
     }
 

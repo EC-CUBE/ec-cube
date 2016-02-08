@@ -440,13 +440,12 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'buy_total_end' => '1'
+            'buy_total_end' => '1',
         );
 
         $this->scenario();
-        // TODO buy_total = 0 で初期化されていれば, 1 ではなく 4 になる
-        // https://github.com/EC-CUBE/ec-cube/issues/946
-        $this->expected = 1;
+
+        $this->expected = 4;
         $this->actual = count($this->Results);
         $this->verify();
     }
@@ -492,14 +491,12 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'buy_times_end' => '1'
+            'buy_times_end' => '1',
         );
 
         $this->scenario();
-        // TODO buy_times = 0 で初期化されていれば, 1 ではなく 4 になる
-        // https://github.com/EC-CUBE/ec-cube/issues/946
 
-        $this->expected = 1;
+        $this->expected = 4;
         $this->actual = count($this->Results);
         $this->verify();
     }

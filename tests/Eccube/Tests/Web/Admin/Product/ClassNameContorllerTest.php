@@ -25,20 +25,68 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Entity\ClassName;
 
 class ClassNameControllerTest extends AbstractAdminWebTestCase
 {
     public function setUp()
     {
         parent::setUp();
+        $this->removeClass();
+        $this->Member = $this->app['eccube.repository.member']->find(2);
+
+        for ($i = 0; $i < 3; $i++) {
+            $ClassName = new ClassName();
+            $ClassName
+                ->setName('class-'.$i)
+                ->setCreator($this->Member)
+                ->setDelFlg(0)
+                ->setRank($i)
+                ;
+            $this->app['orm.em']->persist($ClassName);
+        }
+        $this->app['orm.em']->flush();
+    }
+
+    public function removeClass()
+    {
+        $ProductClasses = $this->app['eccube.repository.product_class']->findAll();
+        foreach ($ProductClasses as $ProductClass) {
+            $this->app['orm.em']->remove($ProductClass);
+        }
+        $ClassCategories = $this->app['eccube.repository.class_category']->findAll();
+        foreach ($ClassCategories as $ClassCategory) {
+            $this->app['orm.em']->remove($ClassCategory);
+        }
+        $this->app['orm.em']->flush();
+        $All = $this->app['eccube.repository.class_name']->findAll();
+        foreach ($All as $ClassName) {
+            $this->app['orm.em']->remove($ClassName);
+        }
+        $this->app['orm.em']->flush();
     }
 
     public function testRoutingAdminProductClassName()
     {
-        $this->client->request('GET',
+        $crawler = $this->client->request('GET',
             $this->app->url('admin_product_class_name')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testIndexWithPost()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_product_class_name'),
+            array('admin_class_name' => array(
+                '_token' => 'dummy',
+                'name' => '規格1'
+            ))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_class_name')));
+
     }
 
     public function testRoutingAdminProductClassNameEdit()
@@ -92,6 +140,28 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         // after
         $this->app['orm.em']->remove($TestClassName);
         $this->app['orm.em']->flush();
+    }
+
+    public function testMoveRank()
+    {
+        $ClassName = $this->app['eccube.repository.class_name']->findOneBy(array('name' => 'class-1'));
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_product_class_name_rank_move'),
+            array($ClassName->getId() => 10),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $MovedClassName = $this->app['eccube.repository.class_name']->find($ClassName->getId());
+        $this->expected = 10;
+        $this->actual = $MovedClassName->getRank();
+        $this->verify();
     }
 
     private function newTestClassName($TestCreator)

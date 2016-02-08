@@ -47,7 +47,7 @@ require_once __DIR__.'/../autoload.php';
 Debug::enable();
 
 // load configs.
-$app = new Eccube\Application();
+$app = \Eccube\Application::getInstance();
 
 // debug enable.
 $app['debug'] = true;

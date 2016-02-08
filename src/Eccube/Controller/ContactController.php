@@ -29,17 +29,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ContactController
 {
-
     public function index(Application $app, Request $request)
     {
-
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createBuilder('contact');
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
-        if ($app['security']->isGranted('ROLE_USER')) {
+        if ($app->isGranted('ROLE_USER')) {
             /* @var $user \Eccube\Entity\Customer */
             $user = $app['user'];
             $form->setData(array(
@@ -59,27 +57,24 @@ class ContactController
             ));
         }
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                switch ($request->get('mode')) {
-                    case 'confirm':
-                        $builder->setAttribute('freeze', true);
-                        $form = $builder->getForm();
-                        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            switch ($request->get('mode')) {
+                case 'confirm':
+                    $builder->setAttribute('freeze', true);
+                    $form = $builder->getForm();
+                    $form->handleRequest($request);
 
-                        return $app->render('Contact/confirm.twig', array(
-                            'form' => $form->createView(),
-                        ));
+                    return $app->render('Contact/confirm.twig', array(
+                        'form' => $form->createView(),
+                    ));
 
-                    case 'complete':
-                        // メール送信
-                        $app['eccube.service.mail']->sendContactMail($form->getData());
+                case 'complete':
+                    // メール送信
+                    $app['eccube.service.mail']->sendContactMail($form->getData());
 
-                        return $app->redirect($app->url('contact_complete'));
-                        break;
-                }
+                    return $app->redirect($app->url('contact_complete'));
             }
         }
 

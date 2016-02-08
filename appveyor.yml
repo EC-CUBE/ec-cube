@@ -49,6 +49,7 @@ install:
   - echo extension=php_pdo_mysql.dll >> C:\tools\php\php.ini
   - echo extension=php_pdo_pgsql.dll >> C:\tools\php\php.ini
   - echo extension=php_curl.dll >> C:\tools\php\php.ini
+  - echo extension=php_fileinfo.dll >> C:\tools\php\php.ini
   - echo output_buffering = Off >> C:\tools\php\php.ini
   - echo default_charset = UTF-8 >> C:\tools\php\php.ini
   - echo mbstring.language = Japanese >> C:\tools\php\php.ini
