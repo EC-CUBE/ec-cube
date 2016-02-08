@@ -27,14 +27,21 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
 
 class MypageController extends AbstractController
 {
+    /**
+     * ログイン画面.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function login(Application $app, Request $request)
     {
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -52,15 +59,15 @@ class MypageController extends AbstractController
             }
         }
 
-        $form = $builder->getForm();
-
         $event = new EventArgs(
             array(
-                'form' => $form
+                'builder' => $builder
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         return $app->render('Mypage/login.twig', array(
             'error' => $app['security.last_error']($request),
@@ -69,29 +76,33 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request     $request
+     * マイページ
      *
-     * @return string
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
         $Customer = $app['user'];
 
-        $event = new EventArgs(
-            array(
-                'customer' => $Customer
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_INDEX_INITIALIZE, $event);
-
+        // 購入処理中/決済処理中ステータスの受注を非表示にする.
         $app['orm.em']
             ->getFilters()
             ->enable('incomplete_order_status_hidden');
 
         // paginator
         $qb = $app['eccube.repository.order']->getQueryBuilderByCustomer($Customer);
+
+        $event = new EventArgs(
+            array(
+                'customer' => $Customer,
+                'qb' => $qb,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_INDEX_INITIALIZE, $event);
+
         $pagination = $app['paginator']()->paginate(
             $qb,
             $request->get('pageno', 1),
@@ -104,10 +115,12 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request     $request
+     * 購入履歴詳細を表示する.
      *
-     * @return string
+     * @param Application $app
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function history(Application $app, Request $request, $id)
     {
@@ -117,10 +130,7 @@ class MypageController extends AbstractController
             'Eccube\Entity\ProductClass',
         ));
 
-        $event = new EventArgs(
-            array(),
-            $request
-        );
+        $event = new EventArgs(array(), $request);
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_HISTORY_INITIALIZE, $event);
 
         $Order = $app['eccube.repository.order']->findOneBy(array(
@@ -146,11 +156,12 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request     $request
-     * @param id     $id
+     * 再購入を行う.
      *
-     * @return string
+     * @param Application $app
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function order(Application $app, Request $request, $id)
     {
@@ -198,14 +209,19 @@ class MypageController extends AbstractController
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_ORDER_COMPLETE, $event);
 
+        if ($event->getArgument() !== null) {
+            return $event->getResponse();
+        }
+
         return $app->redirect($app->url('cart'));
     }
 
     /**
-     * @param Application $app
-     * @param Request     $request
+     * お気に入り商品を表示する.
      *
-     * @return string
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function favorite(Application $app, Request $request)
     {
@@ -225,6 +241,17 @@ class MypageController extends AbstractController
 
             // paginator
             $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
+
+            $event = new EventArgs(
+                array(
+                    'qb' => $qb,
+                    'customer' => $Customer,
+                    'baseInfo' => $BaseInfo,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_FAVORITE_PROCESSING, $event);
+
             $pagination = $app['paginator']()->paginate(
                 $qb,
                 $request->get('pageno', 1),
@@ -240,12 +267,14 @@ class MypageController extends AbstractController
     }
 
     /**
-     * @param Application $app
-     * @param Request     $request
+     * お気に入り商品を削除する.
      *
-     * @return string
+     * @param Application $app
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
 
@@ -257,19 +286,20 @@ class MypageController extends AbstractController
             array(
                 'customer' => $Customer,
                 'product' => $Product
-            )
+            ), $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELETE_INITIALIZE, $event);
 
         if ($Product) {
+            $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
+
             $event = new EventArgs(
                 array(
                     'customer' => $Customer,
                     'product' => $Product
-                )
+                ), $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELETE_COMPLETE, $event);
-            $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
         }
 
         return $app->redirect($app->url('mypage_favorite'));
