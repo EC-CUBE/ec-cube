@@ -208,7 +208,7 @@ class MypageController extends AbstractController
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE, $event);
 
-        if ($event->getArgument() !== null) {
+        if ($event->getResponse() !== null) {
             return $event->getResponse();
         }
 
