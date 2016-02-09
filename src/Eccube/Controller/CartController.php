@@ -301,33 +301,14 @@ class CartController extends AbstractController
      * @param $quantity
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws CartException
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function setQuantity(Application $app, Request $request, $productClassId, $quantity)
     {
         $this->isTokenValid($app);
 
-        // FRONT_CART_SET_QUANTITY_INITIALIZE
-        $event = new EventArgs(
-            array('productClassId' => $productClassId, 'quantity' => $quantity),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_SET_QUANTITY_INITIALIZE, $event);
-
-        $productClassId = $event->getArgument('productClassId');
-        $quantity = $event->getArgument('productClassId');
-
         $app['eccube.service.cart']->setProductQuantity($productClassId, $quantity)->save();
-
-        // FRONT_CART_SET_QUANTITY_COMPLETE
-        $event = new EventArgs(
-            array('productClassId' => $productClassId, 'quantity' => $quantity),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_SET_QUANTITY_COMPLETE, $event);
-
-        if ($event->hasResponse()) {
-            return $event->getResponse();
-        }
 
         return $app->redirect($app->url('cart'));
     }
