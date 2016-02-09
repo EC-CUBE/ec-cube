@@ -44,7 +44,7 @@ class SearchProductController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
 
         /** @var $request \Symfony\Component\HttpFoundation\Request */
         $request = $app['request_stack']->getMasterRequest();
