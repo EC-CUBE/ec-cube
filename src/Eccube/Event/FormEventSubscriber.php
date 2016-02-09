@@ -24,12 +24,10 @@
 
 namespace Eccube\Event;
 
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
-use Monolog\Logger;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class FormEventSubscriber implements EventSubscriberInterface
 {
@@ -37,7 +35,7 @@ class FormEventSubscriber implements EventSubscriberInterface
     {
         $events = array();
         // YamlでParseしてがんばる
-        $basePath = __DIR__ . '/../../../app/Plugin';
+        $basePath = __DIR__.'/../../../app/Plugin';
         $finder = Finder::create()
             ->in($basePath)
             ->directories()
@@ -51,7 +49,7 @@ class FormEventSubscriber implements EventSubscriberInterface
 
             try {
                 $app['eccube.service.plugin']->checkPluginArchiveContent($path);
-            } catch(\Eccube\Exception\PluginException $e) {
+            } catch (\Eccube\Exception\PluginException $e) {
                 $app['monolog']->warning("skip {$code} form events loading. config.yml not foud or invalid.", array(
                     'path' =>  $path,
                     'original-message' => $e->getMessage()
@@ -62,7 +60,7 @@ class FormEventSubscriber implements EventSubscriberInterface
 
             if (isset($config['form'])) {
                 foreach ($config['form'] as $event => $class) {
-                    $events[$event][] = '\\Plugin\\' . $config['code'] . '\\' . $class;
+                    $events[$event][] = '\\Plugin\\'.$config['code'].'\\'.$class;
                 }
             }
         }
@@ -86,7 +84,7 @@ class FormEventSubscriber implements EventSubscriberInterface
         $events = self::getEvents();
 
         if (isset($events['onPreSetData'])) {
-            foreach($events['onPreSetData'] as $formEventClass) {
+            foreach ($events['onPreSetData'] as $formEventClass) {
                 $formEvent = new $formEventClass();
                 $formEvent->onPreSetData($event);
             }
@@ -98,7 +96,7 @@ class FormEventSubscriber implements EventSubscriberInterface
         $events = self::getEvents();
 
         if (isset($events['onPostSetData'])) {
-            foreach($events['onPostSetData'] as $formEventClass) {
+            foreach ($events['onPostSetData'] as $formEventClass) {
                 $formEvent = new $formEventClass();
                 $formEvent->onPostSetData($event);
             }
@@ -110,7 +108,7 @@ class FormEventSubscriber implements EventSubscriberInterface
         $events = self::getEvents();
 
         if (isset($events['onPreSubmit'])) {
-            foreach($events['onPreSubmit'] as $formEventClass) {
+            foreach ($events['onPreSubmit'] as $formEventClass) {
                 $formEvent = new $formEventClass();
                 $formEvent->onPreSubmit($event);
             }
@@ -122,7 +120,7 @@ class FormEventSubscriber implements EventSubscriberInterface
         $events = self::getEvents();
 
         if (isset($events['onSubmit'])) {
-            foreach($events['onSubmit'] as $formEventClass) {
+            foreach ($events['onSubmit'] as $formEventClass) {
                 $formEvent = new $formEventClass();
                 $formEvent->onSubmit($event);
             }
@@ -134,7 +132,7 @@ class FormEventSubscriber implements EventSubscriberInterface
         $events = self::getEvents();
 
         if (isset($events['onPostSubmit'])) {
-            foreach($events['onPostSubmit'] as $formEventClass) {
+            foreach ($events['onPostSubmit'] as $formEventClass) {
                 $formEvent = new $formEventClass();
                 $formEvent->onPostSubmit($event);
             }

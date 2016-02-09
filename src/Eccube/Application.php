@@ -25,7 +25,6 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
-use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -677,7 +676,7 @@ class Application extends ApplicationTrait
             $code = $dir->getBaseName();
             try {
                 $this['eccube.service.plugin']->checkPluginArchiveContent($path);
-            } catch(\Eccube\Exception\PluginException $e) {
+            } catch (\Eccube\Exception\PluginException $e) {
                 $this['monolog']->warning("skip {$code} config loading. config.yml not foud or invalid.", array(
                     'path' =>  $path,
                     'original-message' => $e->getMessage()

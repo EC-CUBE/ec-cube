@@ -69,7 +69,7 @@ EOF
         $mode = $input->getArgument('mode');
         $path = $input->getOption('path');
         $code = $input->getOption('code');
-        $uninstallForce =  $input->getOption('uninstall-force');
+        $uninstallForce = $input->getOption('uninstall-force');
 
         $service = $this->app['eccube.service.plugin'];
 
