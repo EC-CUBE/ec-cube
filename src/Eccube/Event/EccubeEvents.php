@@ -323,7 +323,8 @@ final class EccubeEvents
      * Mypage/ChangeController
      */
     // index
-
+    const FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE = 'front.mypage.change.index.initialize';
+    const FRONT_MYPAGE_CHANGE_INDEX_COMPLETE = 'front.mypage.change.index.complete';
 
     /**
      * Mypage/DeliveryController
