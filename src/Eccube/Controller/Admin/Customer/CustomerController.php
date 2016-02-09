@@ -40,16 +40,18 @@ class CustomerController extends AbstractController
     {
         $session = $request->getSession();
         $pagination = array();
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_customer')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_customer');
+
         $event = new EventArgs(
             array(
-                'form' => $searchForm,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
+
+        $searchForm = $builder->getForm();
 
         //アコーディオンの制御初期化( デフォルトでは閉じる )
         $active = false;
@@ -67,11 +69,7 @@ class CustomerController extends AbstractController
                 // paginator
                 $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
                 $page_no = 1;
-                $pagination = $app['paginator']()->paginate(
-                    $qb,
-                    $page_no,
-                    $page_count
-                );
+
                 $event = new EventArgs(
                     array(
                         'form' => $searchForm,
@@ -80,6 +78,12 @@ class CustomerController extends AbstractController
                     $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+
+                $pagination = $app['paginator']()->paginate(
+                    $qb,
+                    $page_no,
+                    $page_count
+                );
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.customer.search', $searchData);
@@ -97,11 +101,6 @@ class CustomerController extends AbstractController
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
-                    $pagination = $app['paginator']()->paginate(
-                        $qb,
-                        $page_no,
-                        $page_count
-                    );
 
                     $event = new EventArgs(
                         array(
@@ -111,6 +110,12 @@ class CustomerController extends AbstractController
                         $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+
+                    $pagination = $app['paginator']()->paginate(
+                        $qb,
+                        $page_no,
+                        $page_count
+                    );
 
                     // セッションから検索条件を復元
                     if (count($searchData['sex']) > 0) {
@@ -157,8 +162,8 @@ class CustomerController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'customer' => $Customer,
-                'activeUrl' => $activateUrl
+                'Customer' => $Customer,
+                'activeUrl' => $activateUrl,
             ),
             $request
         );
@@ -184,16 +189,16 @@ class CustomerController extends AbstractController
 
         $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
+        $app['orm.em']->flush();
 
         $event = new EventArgs(
             array(
-                'customer' => $Customer,
+                'Customer' => $Customer,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
 
-        $app['orm.em']->flush();
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_customer'));

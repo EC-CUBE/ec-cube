@@ -23,12 +23,11 @@
 
 namespace Eccube\Controller\Admin\Customer;
 
-use Doctrine\Common\Util\Debug;
 use Eccube\Application;
-use Eccube\Controller\AbstractController;
 use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
-use Doctrine\Common\EventArgs;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -48,7 +47,7 @@ class CustomerEditController extends AbstractController
             // 編集用にデフォルトパスワードをセット
             $previous_password = $Customer->getPassword();
             $Customer->setPassword($app['config']['default_password']);
-        // 新規登録
+            // 新規登録
         } else {
             $Customer = $app['eccube.repository.customer']->newCustomer();
             $CustomerAddress = new \Eccube\Entity\CustomerAddress();
@@ -57,18 +56,19 @@ class CustomerEditController extends AbstractController
         }
 
         // 会員登録フォーム
-        $form = $app['form.factory']
-            ->createBuilder('admin_customer', $Customer)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_customer', $Customer);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'customer' => $Customer
+                'builder' => $builder,
+                'Customer' => $Customer,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -88,7 +88,7 @@ class CustomerEditController extends AbstractController
                         ->setCompanyName($Customer->getCompanyName())
                         ->setZip01($Customer->getZip01())
                         ->setZip02($Customer->getZip02())
-                        ->setZipcode($Customer->getZip01().$Customer->getZip02())
+                        ->setZipcode($Customer->getZip01() . $Customer->getZip02())
                         ->setPref($Customer->getPref())
                         ->setAddr01($Customer->getAddr01())
                         ->setAddr02($Customer->getAddr02())
@@ -100,6 +100,7 @@ class CustomerEditController extends AbstractController
                         ->setFax03($Customer->getFax03())
                         ->setDelFlg(Constant::DISABLED)
                         ->setCustomer($Customer);
+
                     $app['orm.em']->persist($CustomerAddress);
                 }
 
@@ -113,25 +114,24 @@ class CustomerEditController extends AbstractController
 
                 $app['orm.em']->persist($Customer);
 
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'customer' => $Customer,
-                        'customerAddress' => $CustomerAddress
+                        'Customer' => $Customer,
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE, $event);
-
-                $app['orm.em']->flush();
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.customer.save.complete', 'admin');
 
                 return $app->redirect($app->url('admin_customer_edit', array(
                     'id' => $Customer->getId(),
                 )));
-            } else { 
-                $app->addError('admin.customer.save.failed','admin');
+            } else {
+                $app->addError('admin.customer.save.failed', 'admin');
             }
         }
 
