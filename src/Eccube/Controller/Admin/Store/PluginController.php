@@ -735,7 +735,7 @@ class PluginController extends AbstractController
             $statusCode = $info['http_code'];
             $message = $info['message'];
 
-            $message = $statusCode . ' : ' . $message;
+            $message = $statusCode.' : '.$message;
 
         } else {
             $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
