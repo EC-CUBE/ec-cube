@@ -508,3 +508,7 @@ body {
     filter: alpha(opacity=50);
     opacity: .5;
 }
+
+.extra-form {
+  margin: 10px 0;
+}
