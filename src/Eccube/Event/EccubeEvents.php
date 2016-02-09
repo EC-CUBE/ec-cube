@@ -330,30 +330,42 @@ final class EccubeEvents
      * Mypage/DeliveryController
      */
     // edit
+    const FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE = 'front.mypage.delivery.edit.initialize';
+    const FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE = 'front.mypage.delivery.edit.complete';
 
     // delete
-
+    const FRONT_MYPAGE_DELIVERY_DELETE_INITIALIZE = 'front.mypage.delete.initialize';
+    const FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE = 'front.mypage.delete.complete';
 
     /**
      * Mypage/MypageController
      */
     // login
+    const FROMT_MYPAGE_MYPAGE_LOGIN_INITIALIZE = 'front.mypage.mypage.login.initialize';
 
     // index
+    const FROMT_MYPAGE_MYPAGE_INDEX_SEARCH = 'front.mypage.mypage.index.search';
 
     // history
+    const FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE = 'front.mypage.mypage.history.initialize';
 
     // order
+    const FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE = 'front.mypage.mypage.order.initialize';
+    const FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE = 'front.mypage.mypage.order.complete';
 
     // favorite
+    const FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH = 'front.mypage.mypage.favorite.search';
 
     // delete
-
+    const FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE = 'front.mypage.mypage.delete.initialize';
+    const FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE = 'front.mypage.mypage.delete.complete';
 
     /**
      * Mypage/WithdrawController
      */
     // index
+    const FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE = 'front.mypage.withdraw.index.initialize';
+    const FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE = 'front.mypage.withdraw.index.complete';
 
     /**
      * CartController
