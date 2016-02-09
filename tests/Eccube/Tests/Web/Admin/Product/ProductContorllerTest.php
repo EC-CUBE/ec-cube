@@ -28,6 +28,40 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
+
+    public function createFormData()
+    {
+        $faker = $this->getFaker();
+        $form = array(
+            'class' => array(
+                'product_type' => 1,
+                'price01' => $faker->randomNumber(5),
+                'price02' => $faker->randomNumber(5),
+                'stock' => $faker->randomNumber(3),
+                'stock_unlimited' => 0,
+                'code' => $faker->word,
+                'sale_limit' => null,
+                'delivery_date' => ''
+            ),
+            'name' => $faker->word,
+            'product_image' => null,
+            'description_detail' => $faker->text,
+            'description_list' => $faker->paragraph,
+            'Category' => null,
+            'tag' => $faker->word,
+            'search_word' => $faker->word,
+            'free_area' => $faker->text,
+            'Status' => 1,
+            'note' => $faker->text,
+            'tags' => null,
+            'images' => null,
+            'add_images' => null,
+            'delete_images' => null,
+            '_token' => 'dummy',
+        );
+        return $form;
+    }
+
     public function testRoutingAdminProductProduct()
     {
         $this->client->request('GET',
@@ -55,11 +89,62 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ))
             ->getId();
 
-        $this->client->request('GET',
+        $crawler = $this->client->request('GET',
             $this->app->url('admin_product_product_edit', array('id' => $test_product_id))
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testEditWithPost()
+    {
+        $Product = $this->createProduct();
+        $formData = $this->createFormData();
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
+            array('admin_product' => $formData)
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+
+        $EditedProduct = $this->app['eccube.repository.product']->find($Product->getId());
+        $this->expected = $formData['name'];
+        $this->actual = $EditedProduct->getName();
+        $this->verify();
+    }
+
+    public function testDelete()
+    {
+        $Product = $this->createProduct();
+        $crawler = $this->client->request(
+            'DELETE',
+            $this->app->url('admin_product_product_delete', array('id' => $Product->getId()))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product')));
+
+        $DeletedProduct = $this->app['eccube.repository.product']->find($Product->getId());
+        $this->expected = 1;
+        $this->actual = $DeletedProduct->getDelFlg();
+        $this->verify();
+    }
+
+    public function testCopy()
+    {
+        $Product = $this->createProduct();
+        $AllProducts = $this->app['eccube.repository.product']->findAll();
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_copy', array('id' => $Product->getId()))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $AllProducts2 = $this->app['eccube.repository.product']->findAll();
+        $this->expected = count($AllProducts) + 1;
+        $this->actual = count($AllProducts2);
+        $this->verify();
     }
 
     private function newTestProduct($TestCreator)
