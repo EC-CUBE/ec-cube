@@ -54,7 +54,7 @@ class EntryController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'customer' => $Customer
+                'Customer' => $Customer
             ),
             $request
         );
@@ -98,8 +98,8 @@ class EntryController extends AbstractController
 
                     $event = new EventArgs(array(
                             'form' => $form,
-                            'customer' => $Customer,
-                            'customerAddress' => $CustomerAddress,
+                            'Customer' => $Customer,
+                            'CustomerAddress' => $CustomerAddress,
                         ), $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
@@ -176,7 +176,7 @@ class EntryController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                    'customer' => $Customer
+                    'Customer' => $Customer
                 ),
                 $request
             );
