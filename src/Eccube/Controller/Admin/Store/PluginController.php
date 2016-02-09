@@ -63,7 +63,7 @@ class PluginController extends AbstractController
         foreach ($Plugins as $Plugin) {
 
             $form = $app['form.factory']
-                ->createNamedBuilder('form' . $Plugin->getId(), 'plugin_management', null, array(
+                ->createNamedBuilder('form'.$Plugin->getId(), 'plugin_management', null, array(
                     'plugin_id' => $Plugin->getId(),
                 ))
                 ->getForm();
@@ -72,7 +72,7 @@ class PluginController extends AbstractController
 
             try {
                 // プラグイン用設定画面があれば表示(プラグイン用のサービスプロバイダーに定義されているか)
-                $configPages[$Plugin->getCode()] = $app->url('plugin_' . $Plugin->getCode() . '_config');
+                $configPages[$Plugin->getCode()] = $app->url('plugin_'.$Plugin->getCode().'_config');
             } catch (\Exception $e) {
                 // プラグインで設定画面のルートが定義されていない場合は無視
             }
@@ -94,7 +94,7 @@ class PluginController extends AbstractController
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $app['config']['owners_store_url'] . '?method=list';
+            $url = $app['config']['owners_store_url'].'?method=list';
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json) {
@@ -155,7 +155,7 @@ class PluginController extends AbstractController
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         $form = $app['form.factory']
-            ->createNamedBuilder('form' . $id, 'plugin_management', null, array(
+            ->createNamedBuilder('form'.$id, 'plugin_management', null, array(
                 'plugin_id' => null, // placeHolder
             ))
             ->getForm();
@@ -173,10 +173,10 @@ class PluginController extends AbstractController
                     $formFile = $form['plugin_archive']->getData();
 
                     $tmpDir = $app['eccube.service.plugin']->createTempDir();
-                    $tmpFile = sha1(Str::random(32)) . '.' . $formFile->getClientOriginalExtension();
+                    $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension();
 
                     $formFile->move($tmpDir, $tmpFile);
-                    $app['eccube.service.plugin']->update($Plugin, $tmpDir . '/' . $tmpFile);
+                    $app['eccube.service.plugin']->update($Plugin, $tmpDir.'/'.$tmpFile);
 
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
@@ -345,11 +345,11 @@ class PluginController extends AbstractController
                     $formFile = $form['plugin_archive']->getData();
 
                     $tmpDir = $service->createTempDir();
-                    $tmpFile = sha1(Str::random(32)) . '.' . $formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
+                    $tmpFile = sha1(Str::random(32)).'.'.$formFile->getClientOriginalExtension(); // 拡張子を付けないとpharが動かないので付ける
 
                     $formFile->move($tmpDir, $tmpFile);
 
-                    $service->install($tmpDir . '/' . $tmpFile);
+                    $service->install($tmpDir.'/'.$tmpFile);
 
                     $fs = new Filesystem();
                     $fs->remove($tmpDir);
@@ -396,7 +396,7 @@ class PluginController extends AbstractController
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $app['config']['owners_store_url'] . '?method=list';
+            $url = $app['config']['owners_store_url'].'?method=list';
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
@@ -470,7 +470,7 @@ class PluginController extends AbstractController
                         }
 
                     } else {
-                        $message = $data['error_code'] . ' : ' . $data['error_message'];
+                        $message = $data['error_code'].' : '.$data['error_message'];
                     }
                 } else {
                     $success = 0;
@@ -512,7 +512,7 @@ class PluginController extends AbstractController
         if (!is_null($authKey)) {
 
             // オーナーズストア通信
-            $url = $app['config']['owners_store_url'] . '?method=download&product_id=' . $id;
+            $url = $app['config']['owners_store_url'].'?method=download&product_id='.$id;
             list($json, $info) = $this->getRequestApi($request, $authKey, $url, $app);
 
             if ($json === false) {
@@ -537,22 +537,22 @@ class PluginController extends AbstractController
                             $extension = pathinfo($item['file_name'], PATHINFO_EXTENSION);
 
                             $tmpDir = $service->createTempDir();
-                            $tmpFile = sha1(Str::random(32)) . '.' . $extension;
+                            $tmpFile = sha1(Str::random(32)).'.'.$extension;
 
                             // ファイル作成
                             $fs = new Filesystem();
-                            $fs->dumpFile($tmpDir . '/' . $tmpFile, $file);
+                            $fs->dumpFile($tmpDir.'/'.$tmpFile, $file);
 
                             if ($action == 'install') {
 
-                                $service->install($tmpDir . '/' . $tmpFile, $id);
+                                $service->install($tmpDir.'/'.$tmpFile, $id);
                                 $app->addSuccess('admin.plugin.install.complete', 'admin');
 
                             } else if ($action == 'update') {
 
                                 $Plugin = $app['eccube.repository.plugin']->findOneBy(array('source' => $id));
 
-                                $service->update($Plugin, $tmpDir . '/' . $tmpFile);
+                                $service->update($Plugin, $tmpDir.'/'.$tmpFile);
                                 $app->addSuccess('admin.plugin.update.complete', 'admin');
 
                                 Cache::clear($app, false);
@@ -563,7 +563,7 @@ class PluginController extends AbstractController
                             $fs->remove($tmpDir);
 
                             // ダウンロード完了通知処理(正常終了時)
-                            $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=1&version=' . $version;
+                            $url = $app['config']['owners_store_url'].'?method=commit&product_id='.$id.'&status=1&version='.$version;
                             $this->getRequestApi($request, $authKey, $url, $app);
 
                             return $app->redirect($app->url('admin_store_plugin'));
@@ -577,7 +577,7 @@ class PluginController extends AbstractController
                         }
 
                     } else {
-                        $message = $data['error_code'] . ' : ' . $data['error_message'];
+                        $message = $data['error_code'].' : '.$data['error_message'];
                     }
                 } else {
                     $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
@@ -586,7 +586,7 @@ class PluginController extends AbstractController
         }
 
         // ダウンロード完了通知処理(エラー発生時)
-        $url = $app['config']['owners_store_url'] . '?method=commit&product_id=' . $id . '&status=0&version=' . $version . '&message=' . urlencode($message);
+        $url = $app['config']['owners_store_url'].'?method=commit&product_id='.$id.'&status=0&version='.$version.'&message='.urlencode($message);
         $this->getRequestApi($request, $authKey, $url, $app);
 
         $app->addError($message, 'admin');
@@ -654,7 +654,7 @@ class PluginController extends AbstractController
         $url = $app['config']['cacert_pem_url'];
 
         $curl = curl_init($url);
-        $fileName = $app['config']['root_dir'] . '/app/config/eccube/' . $this->certFileName;
+        $fileName = $app['config']['root_dir'].'/app/config/eccube/'.$this->certFileName;
         $fp = fopen($fileName, 'w');
 
         curl_setopt($curl, CURLOPT_FILE, $fp);
@@ -681,8 +681,8 @@ class PluginController extends AbstractController
      *
      * @param Request $request
      * @param $authKey
-     * @param $url
-     * @param $app
+     * @param string $url
+     * @param Application $app
      * @return array
      */
     private function getRequestApi(Request $request, $authKey, $url, $app)
@@ -692,9 +692,9 @@ class PluginController extends AbstractController
         $options = array(           // オプション配列
             //HEADER
             CURLOPT_HTTPHEADER => array(
-                'Authorization: ' . base64_encode($authKey),
-                'x-eccube-store-url: ' . base64_encode($request->getSchemeAndHttpHost() . $request->getBasePath()),
-                'x-eccube-store-version: ' . base64_encode(Constant::VERSION),
+                'Authorization: '.base64_encode($authKey),
+                'x-eccube-store-url: '.base64_encode($request->getSchemeAndHttpHost().$request->getBasePath()),
+                'x-eccube-store-version: '.base64_encode(Constant::VERSION),
             ),
             CURLOPT_HTTPGET => true,
             CURLOPT_SSL_VERIFYPEER => true,
@@ -704,7 +704,7 @@ class PluginController extends AbstractController
 
         curl_setopt_array($curl, $options); /// オプション値を設定
 
-        $certFile = $app['config']['root_dir'] . '/app/config/eccube/'. $this->certFileName;
+        $certFile = $app['config']['root_dir'].'/app/config/eccube/'.$this->certFileName;
         if (file_exists($certFile)) {
             // php5.6でサーバ上に適切な証明書がなければhttps通信エラーが発生するため、
             // http://curl.haxx.se/ca/cacert.pem を利用して通信する
