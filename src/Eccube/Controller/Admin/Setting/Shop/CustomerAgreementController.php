@@ -27,6 +27,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Component\HttpFoundation\Request;
 
 class CustomerAgreementController extends AbstractController
 {
@@ -36,20 +37,24 @@ class CustomerAgreementController extends AbstractController
     {
     }
 
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $Help = $app['eccube.repository.help']->get();
 
-        $form = $app['form.factory']
-            ->createBuilder('customer_agreement', $Help)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('customer_agreement', $Help);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'help' => $Help
-            )
+                'builder' => $builder,
+                'Help' => $Help,
+            ),
+            $request
         );
+
+        $form = $builder->getForm();
+
+
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_INITIALIZE, $event);
 
         if ('POST' === $app['request']->getMethod()) {
@@ -57,24 +62,28 @@ class CustomerAgreementController extends AbstractController
             if ($form->isValid()) {
                 $Help = $form->getData();
                 $app['orm.em']->persist($Help);
+
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'help' => $Help
-                    )
+                        'Help' => $Help,
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_COMPLETE, $event);
-                $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
                 return $app->redirect($app->url('admin_setting_shop_customer_agreement'));
+
             } else {
                 $app->addError('admin.register.failed', 'admin');
             }
         }
 
         return $app->render('Setting/Shop/customer_agreement.twig', array(
-                        'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 }

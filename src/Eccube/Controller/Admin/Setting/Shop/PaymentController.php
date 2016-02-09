@@ -34,17 +34,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends AbstractController
 {
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $Payments = $app['eccube.repository.payment']
             ->findBy(
                 array('del_flg' => 0),
                 array('rank' => 'DESC')
             );
+
         $event = new EventArgs(
             array(
-                'payments' => $Payments
-            )
+                'payments' => $Payments,
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_INDEX_COMPLETE, $event);
 
@@ -53,21 +55,24 @@ class PaymentController extends AbstractController
         ));
     }
 
-    public function edit(Application $app, $id = null)
+    public function edit(Application $app, Request $request, $id = null)
     {
         $Payment = $app['eccube.repository.payment']
             ->findOrCreate($id);
 
-        $form = $app['form.factory']
-            ->createBuilder('payment_register')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('payment_register');
+
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'payment' => $Payment
-            )
+                'builder' => $builder,
+                'Payment' => $Payment,
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->setData($Payment);
 
@@ -95,15 +100,16 @@ class PaymentController extends AbstractController
 
                 $app['orm.em']->persist($PaymentData);
 
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'payment' => $Payment
-                    )
+                        'Payment' => $Payment,
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_EDIT_COMPLETE, $event);
-
-                $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
@@ -131,7 +137,7 @@ class PaymentController extends AbstractController
         $event = new EventArgs(
             array(
                 'images' => $images,
-                'filename' => $filename
+                'filename' => $filename,
             ),
             $request
         );
@@ -140,7 +146,7 @@ class PaymentController extends AbstractController
         return $app->json(array('filename' => $filename), 200);
     }
 
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
 
@@ -163,14 +169,16 @@ class PaymentController extends AbstractController
                 $rank ++;
             }
         }
-        $event = new EventArgs(
-            array(
-                'payment' => $Payment,
-            )
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_DELETE_COMPLETE, $event);
 
         $app['orm.em']->flush();
+
+        $event = new EventArgs(
+            array(
+                'Payment' => $Payment,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.delete.complete', 'admin') ;
 

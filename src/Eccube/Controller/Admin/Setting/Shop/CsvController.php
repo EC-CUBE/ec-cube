@@ -77,17 +77,17 @@ class CsvController extends AbstractController
             'choices' => $CsvOutput,
         ));
 
-        $form = $builder->getForm();
-
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'csvOutput' => $CsvOutput,
-                'csvType' => $CsvType
+                'builder' => $builder,
+                'CsvOutput' => $CsvOutput,
+                'CsvType' => $CsvType,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CSV_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
 
@@ -114,17 +114,17 @@ class CsvController extends AbstractController
                 }
             }
 
+            $app['orm.em']->flush();
+
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'csvOutput' => $CsvOutput,
-                    'csvType' => $CsvType
+                    'CsvOutput' => $CsvOutput,
+                    'CsvType' => $CsvType,
                 ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CSV_INDEX_COMPLETE, $event);
-
-            $app['orm.em']->flush();
 
             $app->addSuccess('admin.shop.csv.save.complete', 'admin');
 

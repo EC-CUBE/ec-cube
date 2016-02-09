@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Component\HttpFoundation\Request;
 
 class TradelawController extends AbstractController
 {
@@ -37,21 +38,23 @@ class TradelawController extends AbstractController
     {
     }
 
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $Help = $app['eccube.repository.help']->get();
 
-        $form = $app['form.factory']
-            ->createBuilder('tradelaw', $Help)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('tradelaw', $Help);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'help' => $Help
-            )
+                'builder' => $builder,
+                'Help' => $Help,
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TRADE_LAW_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);
@@ -59,16 +62,19 @@ class TradelawController extends AbstractController
                 $Help = $form->getData();
                 $app['orm.em']->persist($Help);
 
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'help' => $Help
-                    )
+                        'Help' => $Help,
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TRADE_LAW_INDEX_COMPLETE, $event);
 
-                $app['orm.em']->flush();
                 $app->addSuccess('admin.register.complete', 'admin');
+
                 return $app->redirect($app->url('admin_setting_shop_tradelaw'));
             } else {
                 $app->addError('admin.register.failed', 'admin');
@@ -76,7 +82,7 @@ class TradelawController extends AbstractController
         }
 
         return $app->render('Setting/Shop/tradelaw.twig', array(
-                        'form' => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 }

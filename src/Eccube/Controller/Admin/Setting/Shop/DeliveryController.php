@@ -42,7 +42,7 @@ class DeliveryController extends AbstractController
     {
     }
 
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $Deliveries = $app['eccube.repository.delivery']
             ->findBy(
@@ -52,8 +52,9 @@ class DeliveryController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'deliveries' => $Deliveries
-            )
+                'deliveries' => $Deliveries,
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_INDEX_COMPLETE, $event);
 
@@ -62,7 +63,7 @@ class DeliveryController extends AbstractController
         ));
     }
 
-    public function edit(Application $app, $id = 0)
+    public function edit(Application $app, Request $request, $id = 0)
     {
         /* @var $Delivery \Eccube\Entity\Delivery */
         $Delivery = $app['eccube.repository.delivery']
@@ -103,19 +104,21 @@ class DeliveryController extends AbstractController
             $Delivery->addDeliveryTime($DeliveryTime);
         }
 
-        $form = $app['form.factory']
-            ->createBuilder('delivery', $Delivery)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('delivery', $Delivery);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'delivery' => $Delivery,
-                'prefs' => $Prefs,
-                'deliveryFees' => $DeliveryFees
-            )
+                'builder' => $builder,
+                'Delivery' => $Delivery,
+                'Prefs' => $Prefs,
+                'deliveryFees' => $DeliveryFees,
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         // 支払方法をセット
         $Payments = array();
@@ -168,17 +171,18 @@ class DeliveryController extends AbstractController
 
                 $app['orm.em']->persist($DeliveryData);
 
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'delivery' => $Delivery,
-                        'prefs' => $Prefs,
-                        'deliveryFees' => $DeliveryFees
-                    )
+                        'Delivery' => $Delivery,
+                        'Prefs' => $Prefs,
+                        'deliveryFees' => $DeliveryFees,
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_EDIT_COMPLETE, $event);
-
-                $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
@@ -191,7 +195,7 @@ class DeliveryController extends AbstractController
         ));
     }
 
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
 
@@ -220,15 +224,17 @@ class DeliveryController extends AbstractController
                 $rank++;
             }
         }
-        $event = new EventArgs(
-            array(
-                'delivs' => $Delivs,
-                'delivery' => $Delivery
-            )
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_DELETE_COMPLETE, $event);
 
         $app['orm.em']->flush();
+
+        $event = new EventArgs(
+            array(
+                'Delivs' => $Delivs,
+                'Delivery' => $Delivery,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.delete.complete', 'admin');
 

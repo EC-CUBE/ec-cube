@@ -28,37 +28,43 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Component\HttpFoundation\Request;
 
 class ShopController extends AbstractController
 {
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
-        $form = $app['form.factory']
-            ->createBuilder('shop_master', $BaseInfo)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('shop_master', $BaseInfo);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'baseInfo' => $BaseInfo
-            )
+                'builder' => $builder,
+                'BaseInfo' => $BaseInfo,
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SHOP_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ($app['request']->getMethod() === 'POST') {
             $form->handleRequest($app['request']);
             if ($form->isValid()) {
                 $app['orm.em']->persist($BaseInfo);
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'baseInfo' => $BaseInfo
-                    )
+                        'BaseInfo' => $BaseInfo,
+                    ),
+                    $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SHOP_INDEX_COMPLETE, $event);
-                $app['orm.em']->flush();
+
                 $app->addSuccess('admin.shop.save.complete', 'admin');
 
                 return $app->redirect($app->url('admin_setting_shop'));

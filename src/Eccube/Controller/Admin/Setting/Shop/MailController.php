@@ -46,9 +46,19 @@ class MailController extends AbstractController
             }
         }
 
-        $form = $app['form.factory']
-            ->createBuilder('mail', $Mail)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('mail', $Mail);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Mail' => $Mail,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MAIL_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form['template']->setData($Mail);
 
@@ -65,6 +75,15 @@ class MailController extends AbstractController
             if ($form->isValid()) {
 
                 $app['orm.em']->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Mail' => $Mail,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MAIL_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.mail.save.complete', 'admin');
 
