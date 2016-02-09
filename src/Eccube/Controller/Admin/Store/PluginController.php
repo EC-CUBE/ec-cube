@@ -375,7 +375,7 @@ class PluginController extends AbstractController
                         $fs = new Filesystem();
                         $fs->remove($tmpDir);
                     }
-                    $app['monolog']->critical("plugin install failed.", array(
+                    $app['monolog']->error("plugin install failed.", array(
                         'original-message' => $e->getMessage()
                     ));
                     $errors[] = $e;
@@ -740,12 +740,12 @@ class PluginController extends AbstractController
         $unregisteredPlugins = array();
         foreach ($dirs as $dir) {
             $pluginCode = $dir->getBasename();
-            if(in_array($pluginCode, $pluginCodes, true)) {
+            if (in_array($pluginCode, $pluginCodes, true)) {
                 continue;
             }
             try {
                 $app['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
-            } catch(\Eccube\Exception\PluginException $e) {
+            } catch (\Eccube\Exception\PluginException $e) {
                 //config.yamlに不備があった際は全てスキップ
                 $app['monolog']->warning($e->getMessage());
                 continue;
@@ -757,6 +757,7 @@ class PluginController extends AbstractController
             $unregisteredPlugins[$pluginCode]['enable'] = Constant::DISABLED;
             $unregisteredPlugins[$pluginCode]['code'] = isset($config['code']) ? $config['code'] : null;
         }
+
         return $unregisteredPlugins;
     }
 }
