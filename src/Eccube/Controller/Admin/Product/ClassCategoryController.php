@@ -51,19 +51,20 @@ class ClassCategoryController extends AbstractController
         }
 
         //
-        $form = $app['form.factory']
-            ->createBuilder('admin_class_category', $TargetClassCategory)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_class_category', $TargetClassCategory);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'className' => $ClassName,
-                'targetClassCategory' => $TargetClassCategory
+                'builder' => $builder,
+                'ClassName' => $ClassName,
+                'TargetClassCategory' => $TargetClassCategory
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
@@ -75,8 +76,8 @@ class ClassCategoryController extends AbstractController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'className' => $ClassName,
-                            'targetClassCategory' => $TargetClassCategory
+                            'ClassName' => $ClassName,
+                            'TargetClassCategory' => $TargetClassCategory
                         ),
                         $request
                     );
@@ -130,8 +131,8 @@ class ClassCategoryController extends AbstractController
 
                 $event = new EventArgs(
                     array(
-                        'className' => $ClassName,
-                        'targetClassCategory' => $TargetClassCategory
+                        'ClassName' => $ClassName,
+                        'TargetClassCategory' => $TargetClassCategory
                     ),
                     $request
                 );

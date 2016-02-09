@@ -44,18 +44,19 @@ class ClassNameController extends AbstractController
             $TargetClassName = new \Eccube\Entity\ClassName();
         }
 
-        $form = $app['form.factory']
-            ->createBuilder('admin_class_name', $TargetClassName)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_class_name', $TargetClassName);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'targetClassName' => $TargetClassName
+                'builder' => $builder,
+                'TargetClassName' => $TargetClassName
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
@@ -67,7 +68,7 @@ class ClassNameController extends AbstractController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'targetClassName' => $TargetClassName
+                            'TargetClassName' => $TargetClassName
                         ),
                         $request
                     );
@@ -107,7 +108,7 @@ class ClassNameController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                    'targetClassName' => $TargetClassName
+                    'TargetClassName' => $TargetClassName
                 ),
                 $request
             );

@@ -43,17 +43,18 @@ class ProductController extends AbstractController
 
         $session = $app['session'];
 
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_product')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_product');
 
         $event = new EventArgs(
             array(
-                'form' => $searchForm,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
+
+        $searchForm = $builder->getForm();
 
         $pagination = array();
 
@@ -76,7 +77,7 @@ class ProductController extends AbstractController
 
                 $event = new EventArgs(
                     array(
-                        'queryBuilder' => $qb,
+                        'qb' => $qb,
                         'searchData' => $searchData,
                     ),
                     $request
@@ -127,7 +128,7 @@ class ProductController extends AbstractController
 
                     $event = new EventArgs(
                         array(
-                            'queryBuilder' => $qb,
+                            'qb' => $qb,
                             'searchData' => $searchData,
                         ),
                         $request
@@ -246,14 +247,16 @@ class ProductController extends AbstractController
             $builder->remove('class');
         }
 
-        $form = $builder->getForm();
         $event = new EventArgs(
             array(
-                'form' => $form,
+                'builder' => $builder,
+                'Product' => $Product,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if (!$has_class) {
             $ProductClass->setStockUnlimited((boolean)$ProductClass->getStockUnlimited());
@@ -395,16 +398,16 @@ class ProductController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
-                $app->addSuccess('admin.register.complete', 'admin');
-
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'product' => $Product,
+                        'Product' => $Product,
                     ),
                     $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
+
+                $app->addSuccess('admin.register.complete', 'admin');
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
@@ -413,17 +416,19 @@ class ProductController extends AbstractController
         }
 
         // 検索結果の保持
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_product')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_product');
 
         $event = new EventArgs(
             array(
-                'form' => $searchForm,
+                'builder' => $builder,
+                'Product' => $Product,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH, $event);
+
+        $searchForm = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
@@ -485,18 +490,17 @@ class ProductController extends AbstractController
 
                 $app['orm.em']->persist($Product);
 
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
-                        'product' => $Product,
-                        'productClass' => $ProductClasses,
-                        'deleteImages' => $deleteImages
+                        'Product' => $Product,
+                        'ProductClass' => $ProductClasses,
+                        'deleteImages' => $deleteImages,
                     ),
                     $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
-
-                $app['orm.em']->flush();
-
 
                 // 画像ファイルの削除(commit後に削除させる)
                 foreach ($deleteImages as $deleteImage) {
@@ -584,6 +588,8 @@ class ProductController extends AbstractController
 
                 $app['orm.em']->persist($CopyProduct);
 
+                $app['orm.em']->flush();
+
                 $event = new EventArgs(
                     array(
                         'product' => $Product,
@@ -591,13 +597,11 @@ class ProductController extends AbstractController
                         'copyProductCategories' => $CopyProductCategories,
                         'copyProductClasses' => $CopyProductClasses,
                         'images' => $Images,
-                        'tags' => $Tags
+                        'tags' => $Tags,
                     ),
                     $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
-
-                $app['orm.em']->flush();
 
                 $app->addSuccess('admin.product.copy.complete', 'admin');
 
@@ -704,19 +708,6 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
-
-        $event = new EventArgs(
-            array(
-                'product' => $Product,
-                'copyProduct' => $CopyProduct,
-                'copyProductCategories' => $CopyProductCategories,
-                'copyProductClasses' => $CopyProductClasses,
-                'images' => $Images,
-                'tags' => $Tags
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
         return $response;
     }

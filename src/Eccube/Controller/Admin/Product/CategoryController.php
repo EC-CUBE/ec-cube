@@ -63,19 +63,20 @@ class CategoryController extends AbstractController
         }
 
         //
-        $form = $app['form.factory']
-            ->createBuilder('admin_category', $TargetCategory)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_category', $TargetCategory);
 
         $event = new EventArgs(
-        array(
-            'form' => $form,
-            'parent' => $Parent,
-            'targetCategory' => $TargetCategory
-        ),
-        $request
+            array(
+                'builder' => $builder,
+                'Parent' => $Parent,
+                'TargetCategory' => $TargetCategory,
+            ),
+            $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         //
         if ($request->getMethod() === 'POST') {
@@ -91,8 +92,8 @@ class CategoryController extends AbstractController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'parent' => $Parent,
-                            'targetCategory' => $TargetCategory
+                            'Parent' => $Parent,
+                            'TargetCategory' => $TargetCategory,
                         ),
                         $request
                     );
@@ -144,8 +145,8 @@ class CategoryController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                    'parent' => $Parent,
-                    'targetCategory' => $TargetCategory
+                    'Parent' => $Parent,
+                    'TargetCategory' => $TargetCategory
                 ),
                 $request
             );
@@ -235,14 +236,6 @@ class CategoryController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
-
-        $event = new EventArgs(
-            array(
-                'response' => $response,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
 
         return $response;
     }

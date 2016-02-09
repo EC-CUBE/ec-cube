@@ -35,8 +35,6 @@ use Eccube\Entity\ProductStock;
 use Eccube\Exception\CsvImportException;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\Str;
-use Eccube\Event\EccubeEvents;
-use Doctrine\Common\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -63,14 +61,6 @@ class CsvImportController
     public function csvProduct(Application $app, Request $request)
     {
         $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
-
-        $event = new EventArgs(
-            array(
-                'form' => $form
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_IMPORT_CSV_PRODUCT_INITIALIZE, $event);
 
         $headers = $this->getProductCsvHeader();
 
@@ -398,14 +388,6 @@ class CsvImportController
 
                     }
 
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form
-                        ),
-                        $request
-                    );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_IMPORT_CSV_PRODUCT_COMPLETE, $event);
-
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
@@ -425,14 +407,6 @@ class CsvImportController
     {
 
         $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
-
-        $event = new EventArgs(
-            array(
-                'form' => $form
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_IMPORT_CSV_CATEGORY_INITIALIZE, $event);
 
         $headers = $this->getCategoryCsvHeader();
 
@@ -550,14 +524,6 @@ class CsvImportController
 
                     }
 
-                    $event = new EventArgs(
-                        array(
-                            'form' => $form
-                        ),
-                        $request
-                    );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_IMPORT_CSV_CATEGORY_COMPLETE, $event);
-
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
@@ -607,14 +573,6 @@ class CsvImportController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
-
-        $event = new EventArgs(
-            array(
-                'response' => $response
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CSV_IMPORT_CSV_TEMPLATE_COMPLETE, $event);
 
         return $response;
     }

@@ -85,15 +85,6 @@ $(function() {
                     </div>
                     <div id="spinner"></div>
                 </div><!-- /.box-body -->
-                <div class="extra-form">
-                    {% for f in form.getIterator %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            {{ form_label(f) }}
-                            {{ form_widget(f) }}
-                            {{ form_errors(f) }}
-                        {% endif %}
-                    {% endfor %}
-                </div>
                 <div class="box-footer text-center">
                     <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
                 </div><!-- /.box-footer -->
