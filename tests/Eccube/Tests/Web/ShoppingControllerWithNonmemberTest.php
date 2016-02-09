@@ -126,7 +126,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
 
     public function testNonmemberWithCustomerLogin()
     {
-        $client = $this->createClient();
+        $client = $this->client;
 
         // ユーザーが会員ログイン済みの場合
         $this->logIn();
