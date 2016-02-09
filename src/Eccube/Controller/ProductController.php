@@ -64,16 +64,17 @@ class ProductController
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
-        /* @var $searchForm \Symfony\Component\Form\FormInterface */
-        $searchForm = $builder->getForm();
 
         $event = new EventArgs(
             array(
-                'form' => $searchForm,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE, $event);
+
+        /* @var $searchForm \Symfony\Component\Form\FormInterface */
+        $searchForm = $builder->getForm();
 
         $searchForm->handleRequest($request);
 
@@ -148,15 +149,16 @@ class ProductController
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
-        $dispNumberForm = $builder->getForm();
 
         $event = new EventArgs(
             array(
-                'dispNumberForm' => $dispNumberForm,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_DISP, $event);
+
+        $dispNumberForm = $builder->getForm();
 
         $dispNumberForm->handleRequest($request);
 
@@ -170,15 +172,16 @@ class ProductController
         if ($request->getMethod() === 'GET') {
             $builder->setMethod('GET');
         }
-        $orderByForm = $builder->getForm();
 
         $event = new EventArgs(
             array(
-                'orderByForm' => $orderByForm,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_ORDER, $event);
+
+        $orderByForm = $builder->getForm();
 
         $orderByForm->handleRequest($request);
 
@@ -216,17 +219,18 @@ class ProductController
             'product' => $Product,
             'id_add_product_id' => false,
         ));
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $builder->getForm();
 
         $event = new EventArgs(
             array(
-                'form' => $form,
+                'builder' => $builder,
                 'product' => $Product,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE, $event);
+
+        /* @var $form \Symfony\Component\Form\FormInterface */
+        $form = $builder->getForm();
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
