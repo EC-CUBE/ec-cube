@@ -27,21 +27,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <h1 class="page-heading">マイページ/お気に入り一覧</h1>
-    <div class="container-fluid">
+    <div id="favorite" class="container-fluid">
 
         {% include 'Mypage/navi.twig' %}
 
-        <div class="row">
-            <div class="col-md-12">
+        <div id="favorite_list_box" class="row">
+            <div id="favorite_list_box__body" class="col-md-12">
             {% if pagination.totalItemCount > 0 %}
-                <p class="intro"><strong>{{ pagination.totalItemCount }}件</strong>のお気に入りがあります。</p>
+                <p id="favorite_lst__total_item_count" class="intro"><strong>{{ pagination.totalItemCount }}件</strong>のお気に入りがあります。</p>
                 <div id="item_list">
-                    <div class="row no-padding">
+                    <div id="favorite_list__list" class="row no-padding">
                         {% for Product in pagination %}
-                        <div class="col-sm-3 col-xs-6">
-                            <div class="product_item">
+                        <div id="favorite__list--{{ Product.id }}" class="col-sm-3 col-xs-6">
+                            <div id="favorite_list__item--{{ Product.id }}" class="product_item">
                                 <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                                    <div class="item_photo">
+                                    <div id="favorite_list__image--{{ Product.id }}" class="item_photo">
                                         <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}" alt="{{ Product.name }}"/>
                                     </div>
                                 </a>
@@ -49,9 +49,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <button type="button" class="btn_circle"><svg class="cb cb-close"><use xlink:href="#cb-close"></use></svg></button>
                                 </a>
                                 <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                                    <dl>
-                                        <dt class="item_name" style="height: 22px;"> {{ Product.name }}</dt>
-                                        <dd class="item_price">
+                                    <dl id="favorite_list__detail--{{ Product.id }}">
+                                        <dt id="favorite_list__name--{{ Product.id }}" class="item_name" style="height: 22px;"> {{ Product.name }}</dt>
+                                        <dd id="favorite_list__price02_inc_tax--{{ Product.id }}" class="item_price">
                                             {% if Product.price02_inc_tax_min == Product.price02_inc_tax_max %}
                                                 {{ Product.price02_inc_tax_min|price }}
                                             {% else %}
@@ -65,11 +65,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% endfor %}
                     </div>
                 </div>
-                <div class="paging">
+                <div id="favorite_list__pagination" class="paging">
                     {% include "pagination.twig" with {'pages': pagination.paginationData} %}
                 </div>
             {% else %}
-                <p class="intro">お気に入りが登録されていません。</p>
+                <p id="favorite_list__not_found_message" class="intro">お気に入りが登録されていません。</p>
             {% endif %}
             </div>
         </div>
