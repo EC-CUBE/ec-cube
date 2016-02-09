@@ -260,14 +260,6 @@ class CustomerController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
 
-        $event = new EventArgs(
-            array(
-                'response' => $response
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_EXPORT_COMPLETE, $event);
-
         $response->send();
 
         return $response;
