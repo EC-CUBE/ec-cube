@@ -47,7 +47,7 @@ class EventArgs extends GenericEvent
      * @param array $arguments
      * @param Request $request
      */
-    public function __construct(array $arguments = array(), Request $request)
+    public function __construct(array $arguments = array(), Request $request = null)
     {
         parent::__construct(null, $arguments);
         $this->request = $request;

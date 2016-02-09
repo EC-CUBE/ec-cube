@@ -469,4 +469,17 @@ final class EccubeEvents
     // index
 
 
+    /**
+     * MailService
+     */
+    const MAIL_CUSTOMER_CONFIRM = 'mail.customer.confirm';
+    const MAIL_CUSTOMER_COMPLETE = 'mail.customer.complete';
+    const MAIL_CUSTOMER_WITHDRAW = 'mail.customer.withdraw';
+    const MAIL_CONTACT = 'mail.contact';
+    const MAIL_ORDER = 'mail.order';
+    const MAIL_ADMIN_CUSTOMER_CONFIRM = 'mail.admin.customer.confirm';
+    const MAIL_ADMIN_ORDER = 'mail.admin.order';
+    const MAIL_PASSWORD_RESET = 'mail.password.reset';
+    const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
+
 }
