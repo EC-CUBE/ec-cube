@@ -20,20 +20,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+
 namespace Eccube\Event;
+
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 class EventArgs extends GenericEvent
 {
+
     /**
      * @var Request
      */
     private $request;
+
     /**
      * @var Response
      */
     private $response;
+
     /**
      * EventArgs constructor.
      * @param array $arguments
@@ -44,6 +52,7 @@ class EventArgs extends GenericEvent
         parent::__construct(null, $arguments);
         $this->request = $request;
     }
+
     /**
      * @param Request $request
      */
@@ -51,6 +60,7 @@ class EventArgs extends GenericEvent
     {
         $this->request = $request;
     }
+
     /**
      * @return Request
      */
@@ -58,6 +68,7 @@ class EventArgs extends GenericEvent
     {
         return $this->request;
     }
+
     /**
      * @param Response $response
      */
@@ -65,6 +76,7 @@ class EventArgs extends GenericEvent
     {
         $this->response = $response;
     }
+
     /**
      * @return Response
      */
@@ -72,4 +84,5 @@ class EventArgs extends GenericEvent
     {
         return $this->response;
     }
+
 }
