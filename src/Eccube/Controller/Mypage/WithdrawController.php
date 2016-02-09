@@ -51,7 +51,7 @@ class WithdrawController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_WITHDRAW_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -79,10 +79,10 @@ class WithdrawController extends AbstractController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'customer' => $Customer
+                            'Customer' => $Customer
                         ), $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_WITHDRAW_INDEX_COMPLETE, $event);
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);
 
                     // メール送信
                     $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);

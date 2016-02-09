@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="login_box" class="row">
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="column">
+
                         <div class="column_inner clearfix">
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
                             <div class="form-group">
@@ -50,12 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
                                 {% endif %}
                             </div>
-                            {% if error %}
-                            <div class="form-group">
-                                <span class="text-danger">{{ error|trans|raw }}</span>
-                            </div>
-                            {% endif %}
-                            <div class="extra-form">
+                            <div class="form-group extra-form">
                                 {% for f in form.getIterator %}
                                     {% if f.vars.name matches '[^plg*]' %}
                                         {{ form_label(f) }}
@@ -64,6 +60,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
                                 {% endfor %}
                             </div>
+                            {% if error %}
+                            <div class="form-group">
+                                <span class="text-danger">{{ error|trans|raw }}</span>
+                            </div>
+                            {% endif %}
                             <div class="btn_area">
                                 <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
                                 <ul>

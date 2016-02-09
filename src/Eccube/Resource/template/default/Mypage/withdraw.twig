@@ -30,6 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <div class="container-fluid">
     {% include 'Mypage/navi.twig' %}
     <div class="unsubscribe_box">
+        <form method="post" action="{{ url('mypage_withdraw') }}">
+        {{ form_widget(form._token) }}
         <div class="row no-padding">
             <div class="col-sm-6 col-sm-offset-3">
                     <div class="icon"><svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg></div>
@@ -37,22 +39,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <p>会員を退会された場合には、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますがよろしいでしょうか？</p>
             </div>
         </div>
-        <form method="post" action="{{ url('mypage_withdraw') }}">
-            {{ form_widget(form._token) }}
-            <div class="extra-form">
+        <div class="row">
+            <div class="dl_table extra-form">
                 {% for f in form.getIterator %}
                     {% if f.vars.name matches '[^plg*]' %}
-                        {{ form_label(f) }}
-                        {{ form_widget(f) }}
-                        {{ form_errors(f) }}
+                        {{ form_row(f) }}
                     {% endif %}
                 {% endfor %}
             </div>
-            <div class="row">
-                <div class="btn_group col-sm-offset-4 col-sm-4">
-                    <p><button type="submit" class="btn btn-info btn-block" name="mode" value="confirm">会員退会手続きへ</button></p>
-                </div>
+        </div>
+        <div class="row">
+            <div class="btn_group col-sm-offset-4 col-sm-4">
+                <p><button type="submit" class="btn btn-info btn-block" name="mode" value="confirm">会員退会手続きへ</button></p>
             </div>
+        </div>
         </form>
     </div>
 </div>

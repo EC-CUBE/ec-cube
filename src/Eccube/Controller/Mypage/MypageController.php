@@ -65,7 +65,7 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FROMT_MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -96,12 +96,12 @@ class MypageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'customer' => $Customer,
                 'qb' => $qb,
+                'Customer' => $Customer,
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::MYPAGE_MYPAGE_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FROMT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
 
         $pagination = $app['paginator']()->paginate(
             $qb,
@@ -130,9 +130,6 @@ class MypageController extends AbstractController
             'Eccube\Entity\ProductClass',
         ));
 
-        $event = new EventArgs(array(), $request);
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_HISTORY_INITIALIZE, $event);
-
         $Order = $app['eccube.repository.order']->findOneBy(array(
             'id' => $id,
             'Customer' => $app->user(),
@@ -140,11 +137,13 @@ class MypageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'order' => $Order
+                'Order' => $Order
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_HISTORY_COMPLETE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE, $event);
+
+        $Order = $event->getArgument('Order');
 
         if (!$Order) {
             throw new NotFoundHttpException();
@@ -177,12 +176,12 @@ class MypageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'order' => $Order,
-                'customer' => $Customer
+                'Order' => $Order,
+                'Customer' => $Customer
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_ORDER_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
 
         if (!$Order) {
             throw new NotFoundHttpException();
@@ -202,12 +201,12 @@ class MypageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'order' => $Order,
-                'customer' => $Customer
+                'Order' => $Order,
+                'Customer' => $Customer
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_ORDER_COMPLETE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE, $event);
 
         if ($event->getArgument() !== null) {
             return $event->getResponse();
@@ -230,27 +229,17 @@ class MypageController extends AbstractController
         if ($BaseInfo->getOptionFavoriteProduct() == Constant::ENABLED) {
             $Customer = $app->user();
 
-            $event = new EventArgs(
-                array(
-                    'customer' => $Customer,
-                    'baseInfo' => $BaseInfo
-                ),
-                $request
-            );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_FAVORITE_INITIALIZE, $event);
-
             // paginator
             $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
 
             $event = new EventArgs(
                 array(
                     'qb' => $qb,
-                    'customer' => $Customer,
-                    'baseInfo' => $BaseInfo,
+                    'Customer' => $Customer,
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_FAVORITE_PROCESSING, $event);
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH, $event);
 
             $pagination = $app['paginator']()->paginate(
                 $qb,
@@ -284,22 +273,22 @@ class MypageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'customer' => $Customer,
-                'product' => $Product
+                'Customer' => $Customer,
+                'Product' => $Product
             ), $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELETE_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE, $event);
 
         if ($Product) {
             $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
 
             $event = new EventArgs(
                 array(
-                    'customer' => $Customer,
-                    'product' => $Product
+                    'Customer' => $Customer,
+                    'Product' => $Product
                 ), $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELETE_COMPLETE, $event);
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
         }
 
         return $app->redirect($app->url('mypage_favorite'));
