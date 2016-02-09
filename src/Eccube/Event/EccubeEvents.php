@@ -173,18 +173,24 @@ final class EccubeEvents
      * Admin/Setting/Shop/TradelawController
      */
     // index
+
+
     /**
      * Admin/Setting/System/AuthorityController
      */
     // index
     const ADMIN_AUTHORITY_INDEX_INITIALIZE = 'admin.authority.index.initialize';
     const ADMIN_AUTHORITY_INDEX_COMPLETE = 'admin.authority.index.complete';
+
+
     /**
      * Admin/Setting/System/LogController
      */
     // index
     const ADMIN_LOG_INDEX_INITIALIZE = 'admin.log.index.initialize';
     const ADMIN_LOG_INDEX_COMPLETE = 'admin.log.index.complete';
+
+
     /**
      * Admin/Setting/System/MasterdataController
      */
@@ -192,31 +198,28 @@ final class EccubeEvents
     const ADMIN_MASTERDATA_INDEX_INITIALIZE = 'admin.log.index.initialize';
     const ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.log.index.form2.initialize';
     const ADMIN_MASTERDATA_INDEX_COMPLETE = 'admin.log.index.complete';
+
     // edit
     const ADMIN_MASTERDATA_EDIT_INITIALIZE = 'admin.masterdata.edit.initialize';
+    const ADMIN_MASTERDATA_EDIT_FORM_INITIALIZE = 'admin.masterdata.edit.form.initialize';
     const ADMIN_MASTERDATA_EDIT_COMPLETE = 'admin.masterdata.edit.complete';
+
+
     /**
      * Admin/Setting/System/MemberController
      */
     // index
     const ADMIN_MEMBER_INDEX_INITIALIZE = 'admin.member.index.initialize';
+
     // edit
     const ADMIN_MEMBER_EDIT_INITIALIZE = 'admin.member.edit.initialize';
     const ADMIN_MEMBER_EDIT_COMPLETE = 'admin.member.edit.complete';
+
     // delete
     const ADMIN_MEMBER_DELETE_INITIALIZE = 'admin.member.delete.initialize';
     const ADMIN_MEMBER_DELETE_COMPLETE = 'admin.member.delete.complete';
-    /**
-     * Admin/Setting/System/SecurityController
-     */
-    // index
-    const ADMIN_SECURITY_INDEX_INITIALIZE = 'admin.security.index.initialize';
-    const ADMIN_SECURITY_INDEX_COMPLETE = 'admin.security.index.complete';
-    /**
-     * Admin/Setting/System/SystemController
-     */
-    // index
-    const ADMIN_SYSTEM_INDEX_INITIALIZE = 'admin.system.index.initialize';
+
+
     /**
      * Block/SearchProductController
      */

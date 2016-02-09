@@ -26,12 +26,9 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
-use Eccube\Util\Str;
 use Eccube\Controller\AbstractController;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
+use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 
 
@@ -42,14 +39,6 @@ class SecurityController extends AbstractController
 
         $builder = $app['form.factory']->createBuilder('admin_security');
         $form = $builder->getForm();
-
-        $event = new EventArgs(
-            array(
-                'form' => $form,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SECURITY_INDEX_INITIALIZE, $event);
 
         if ('POST' === $request->getMethod()) {
 
@@ -105,14 +94,6 @@ class SecurityController extends AbstractController
                     // 管理者画面へ再ログイン
                     return $app->redirect($request->getBaseUrl() . '/' . $config['admin_route']);
                 }
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SECURITY_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.system.security.save.complete', 'admin');
 

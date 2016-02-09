@@ -38,17 +38,19 @@ class LogController
         $formData['files'] = 'site_'.date('Y-m-d').'.log';
         $formData['line_max'] = '50';
 
-        $form = $app['form.factory']
-            ->createBuilder('admin_system_log')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_system_log');
 
         $event = new EventArgs(
             array(
-                'form' => $form,
+                'builder' => $builder,
+                'data' => $formData,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
