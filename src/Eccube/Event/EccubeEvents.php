@@ -113,15 +113,21 @@ final class EccubeEvents
     // index
     const ADMIN_ORDER_EDIT_INDEX_INITIALIZE = 'admin.order.edit.index.initialize';
     const ADMIN_ORDER_EDIT_INDEX_COMPLETE = 'admin.order.edit.index.complete';
+
     // searchCustomer
     const ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE = 'admin.order.edit.search.customer.initialize';
+    const ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH = 'admin.order.edit.search.customer.search';
     const ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE = 'admin.order.edit.search.customer.complete';
+
     // searchCustomerById
     const ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_INITIALIZE = 'admin.order.edit.search.customer.by.id.initialize';
     const ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE = 'admin.order.edit.search.customer.by.id.complete';
+
     // searchProduct
     const ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE = 'admin.order.edit.search.product.initialize';
+    const ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH = 'admin.order.edit.search.product.search';
     const ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE = 'admin.order.edit.search.product.complete';
+
 
     /**
      * Admin/Order/MailController
@@ -131,31 +137,31 @@ final class EccubeEvents
     const ADMIN_ORDER_MAIL_INDEX_CHANGE = 'admin.order.mail.index.change';
     const ADMIN_ORDER_MAIL_INDEX_CONFIRM = 'admin.order.mail.index.confirm';
     const ADMIN_ORDER_MAIL_INDEX_COMPLETE = 'admin.order.mail.index.complete';
+
     // view
-    const ADMIN_ORDER_MAIL_VIEW_INITIALIZE = 'admin.order.mail.view.initialize';
     const ADMIN_ORDER_MAIL_VIEW_COMPLETE = 'admin.order.mail.view.complete';
+
     // mailAll
     const ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE = 'admin.order.mail.mail.all.initialize';
     const ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE = 'admin.order.mail.mail.all.change';
     const ADMIN_ORDER_MAIL_MAIL_ALL_CONFIRM = 'admin.order.mail.mail.all.confirm';
     const ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE = 'admin.order.mail.mail.all.complete';
 
+
     /**
      * Admin/Order/OrderController
      */
     // index
     const ADMIN_ORDER_INDEX_INITIALIZE = 'admin.order.index.initialize';
-    const ADMIN_ORDER_INDEX_COMPLETE = 'admin.order.index.complete';
     const ADMIN_ORDER_INDEX_SEARCH = 'admin.order.index.search';
+
     // delete
-    const ADMIN_ORDER_DELETE_INITIALIZE = 'admin.order.delete.initialize';
     const ADMIN_ORDER_DELETE_COMPLETE = 'admin.order.delete.complete';
+
     // exportOrder
-    const ADMIN_ORDER_EXPORT_ORDER_INITIALIZE = 'admin.order.export.order.initialize';
-    const ADMIN_ORDER_EXPORT_ORDER_COMPLETE = 'admin.order.export.order.complete';
+
     // exportShipping
-    const ADMIN_ORDER_EXPORT_SHIPPING_INITIALIZE = 'admin.order.export.shipping.initialize';
-    const ADMIN_ORDER_EXPORT_SHIPPING_COMPLETE = 'admin.order.export.shipping.complete';
+
 
     /**
      * Admin/Product/CategoryController

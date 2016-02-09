@@ -41,18 +41,18 @@ class OrderController extends AbstractController
 
         $session = $request->getSession();
 
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_order')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_order');
 
         $event = new EventArgs(
             array(
-                'form' => $searchForm,
-                'session' => $session,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+
+        $searchForm = $builder->getForm();
 
         $pagination = array();
 
@@ -169,7 +169,7 @@ class OrderController extends AbstractController
 
     }
 
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
 
@@ -183,14 +183,6 @@ class OrderController extends AbstractController
 
         $Order->setDelFlg(Constant::ENABLED);
 
-        $event = new EventArgs(
-            array(
-                'order' => $Order,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
-
         $app['orm.em']->persist($Order);
         $app['orm.em']->flush();
 
@@ -199,6 +191,15 @@ class OrderController extends AbstractController
             // 会員の場合、購入回数、購入金額などを更新
             $app['eccube.repository.customer']->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
         }
+
+        $event = new EventArgs(
+            array(
+                'Order' => $Order,
+                'Customer' => $Customer,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.order.delete.complete', 'admin');
 
@@ -272,15 +273,6 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
-
-        $event = new EventArgs(
-            array(
-                'filename' => $filename,
-                'response' => $response,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EXPORT_ORDER_COMPLETE, $event);
 
         return $response;
     }
@@ -358,15 +350,6 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
-
-        $event = new EventArgs(
-            array(
-                'filename' => $filename,
-                'response' => $response,
-            ),
-            $request
-        );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EXPORT_SHIPPING_COMPLETE, $event);
 
         return $response;
     }
