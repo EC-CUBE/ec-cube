@@ -235,12 +235,18 @@ final class EccubeEvents
     // add
     const FRONT_CART_ADD_INITIALIZE = 'front.cart.add.initialize';
     const FRONT_CART_ADD_COMPLETE = 'front.cart.add.complete';
+    const FRONT_CART_ADD_EXCEPTION = 'front.cart.add.exception';
+
     // up
     const FRONT_CART_UP_INITIALIZE = 'front.cart.up.initialize';
     const FRONT_CART_UP_COMPLETE = 'front.cart.up.complete';
+    const FRONT_CART_UP_EXCEPTION = 'front.cart.up.exception';
+
     // down
     const FRONT_CART_DOWN_INITIALIZE = 'front.cart.down.initialize';
     const FRONT_CART_DOWN_COMPLETE = 'front.cart.down.complete';
+    const FRONT_CART_DOWN_EXCEPTION = 'front.cart.down.exception';
+
     // remove
     const FRONT_CART_REMOVE_INITIALIZE = 'front.cart.remove.initialize';
     const FRONT_CART_REMOVE_COMPLETE = 'front.cart.remove.complete';
