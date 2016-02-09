@@ -132,7 +132,7 @@ class CartController extends AbstractController
 
             // FRONT_CART_ADD_EXCEPTION
             $event = new EventArgs(
-                array('Exception' => $e,),
+                array('exception' => $e,),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_EXCEPTION, $event);
@@ -187,7 +187,7 @@ class CartController extends AbstractController
 
             // FRONT_CART_UP_EXCEPTION
             $event = new EventArgs(
-                array('Exception' => $e,),
+                array('exception' => $e,),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_EXCEPTION, $event);
