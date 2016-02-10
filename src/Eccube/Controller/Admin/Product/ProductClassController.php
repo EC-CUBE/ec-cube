@@ -29,6 +29,8 @@ use Eccube\Common\Constant;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -57,7 +59,9 @@ class ProductClassController
         if (!$Product->hasProductClass()) {
             // 登録画面を表示
 
-            $form = $app->form()
+            $builder = $app['form.factory']->createBuilder();
+
+            $builder
                 ->add('class_name1', 'entity', array(
                     'class' => 'Eccube\Entity\ClassName',
                     'property' => 'name',
@@ -71,8 +75,18 @@ class ProductClassController
                     'property' => 'name',
                     'empty_value' => '規格2を選択',
                     'required' => false,
-                ))
-                ->getForm();
+                ));
+
+            $event = new EventArgs(
+                array(
+                    'builder' => $builder,
+                    'Product' => $Product,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE, $event);
+
+            $form = $builder->getForm();
 
             $productClassForm = null;
 
@@ -115,16 +129,31 @@ class ProductClassController
                             $this->setDefualtProductClass($app, $productClass, $sourceProduct);
                         }
 
-                        $productClassForm = $app->form()
+
+                        $builder = $app['form.factory']->createBuilder();
+
+                        $builder
                             ->add('product_classes', 'collection', array(
                                 'type' => 'admin_product_class',
                                 'allow_add' => true,
                                 'allow_delete' => true,
                                 'data' => $ProductClasses,
-                             ))
-                            ->getForm()
-                            ->createView();
+                             ));
+
+                        $event = new EventArgs(
+                            array(
+                                'builder' => $builder,
+                                'Product' => $Product,
+                                'ProductClasses' => $ProductClasses,
+                            ),
+                            $request
+                        );
+                        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
+
+                        $productClassForm = $builder->getForm()->createView();
+
                     }
+
                 }
             }
 
@@ -196,15 +225,27 @@ class ProductClassController
                 $ProductClasses->add($mergeProductClass);
             }
 
-            $productClassForm = $app->form()
-                    ->add('product_classes', 'collection', array(
-                        'type' => 'admin_product_class',
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'data' => $ProductClasses,
-                    ))
-                    ->getForm()
-                    ->createView();
+            $builder = $app['form.factory']->createBuilder();
+
+            $builder
+                ->add('product_classes', 'collection', array(
+                    'type' => 'admin_product_class',
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'data' => $ProductClasses,
+                ));
+
+            $event = new EventArgs(
+                array(
+                    'builder' => $builder,
+                    'Product' => $Product,
+                    'ProductClasses' => $ProductClasses,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
+
+            $productClassForm = $builder->getForm()->createView();
 
             return $app->render('Product/product_class.twig', array(
                 'classForm' => $productClassForm,
@@ -234,13 +275,24 @@ class ProductClassController
             throw new NotFoundHttpException();
         }
 
-        $form = $app->form()
+        $builder = $app['form.factory']->createBuilder();
+        $builder
                 ->add('product_classes', 'collection', array(
                     'type' => 'admin_product_class',
                     'allow_add' => true,
                     'allow_delete' => true,
-            ))
-            ->getForm();
+            ));
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'product' => $Product
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
 
@@ -289,6 +341,16 @@ class ProductClassController
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null));
 
                     $defaultProductClass->setDelFlg(Constant::ENABLED);
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Product' => $Product,
+                            'defaultProductClass' => $defaultProductClass
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_COMPLETE, $event);
 
                     $app['orm.em']->flush();
 
@@ -379,6 +441,16 @@ class ProductClassController
                     // 選択された商品規格を登録
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Product' => $Product,
+                            'updateProductClasses' => $updateProductClasses
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_UPDATE, $event);
+
                     $app['orm.em']->flush();
 
                     $app->addSuccess('admin.product.product_class.update.complete', 'admin');
@@ -408,6 +480,16 @@ class ProductClassController
                             ->findOneBy(array('Product' => $Product, 'ClassCategory1' => null, 'ClassCategory2' => null, 'del_flg' => Constant::ENABLED));
 
                     $defaultProductClass->setDelFlg(Constant::DISABLED);
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Product' => $Product,
+                            'defaultProductClass' => $defaultProductClass
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_DELETE, $event);
 
                     $app['orm.em']->flush();
 

@@ -173,8 +173,11 @@ final class EccubeEvents
      * Admin/Product/CategoryController
      */
     // index
+    const ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE = 'admin.product.category.index.initialize';
+    const ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE = 'admin.product.category.index.complete';
 
     // delete
+    const ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE = 'admin.product.category.delete.complete';
 
     // export
 
@@ -183,16 +186,22 @@ final class EccubeEvents
      * Admin/Product/ClassCategoryController
      */
     // index
+    const ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE = 'admin.product.class.category.index.initialize';
+    const ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE = 'admin.product.class.category.index.complete';
 
     // delete
+    const ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE = 'admin.product.class.category.delete.complete';
 
 
     /**
      * Admin/Product/ClassNameController
      */
     // index
+    const ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE = 'admin.product.class.name.index.initialize';
+    const ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE = 'admin.product.class.name.index.complete';
 
     // delete
+    const ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE = 'admin.product.class.name.delete.complete';
 
 
     /**
@@ -209,8 +218,14 @@ final class EccubeEvents
      * Admin/Product/ProductClassController
      */
     // index
+    const ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE = 'admin.product.product.class.index.initialize';
+    const ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES = 'admin.product.product.class.index.classes';
 
     // edit
+    const ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_INITIALIZE = 'admin.product.product.class.edit.initialize';
+    const ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_COMPLETE = 'admin.product.product.class.edit.complete';
+    const ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_UPDATE = 'admin.product.product.class.edit.update';
+    const ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_DELETE = 'admin.product.product.class.edit.delete';
 
 
     /**
@@ -221,16 +236,21 @@ final class EccubeEvents
     const ADMIN_PRODUCT_INDEX_SEARCH = 'admin.product.index.search';
 
     // addImage
+    const ADMIN_PRODUCT_ADD_IMAGE_COMPLETE = 'admin.product.add.image.complete';
 
     // edit
     const ADMIN_PRODUCT_EDIT_INITIALIZE = 'admin.product.edit.initialize';
+    const ADMIN_PRODUCT_EDIT_SEARCH = 'admin.product.edit.search';
     const ADMIN_PRODUCT_EDIT_COMPLETE = 'admin.product.edit.complete';
 
     // delete
+    const ADMIN_PRODUCT_DELETE_COMPLETE = 'admin.product.delete.complete';
 
     // copy
+    const ADMIN_PRODUCT_COPY_COMPLETE = 'admin.product.copy.complete';
 
     // display
+    const ADMIN_PRODUCT_DISPLAY_COMPLETE = 'admin.product.display.complete';
 
     // export
 
