@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorityController extends AbstractController
@@ -35,21 +37,31 @@ class AuthorityController extends AbstractController
     {
         $AuthorityRoles = $app['eccube.repository.authority_role']->findAllSort();
 
-        $form = $app->form()
+        $builder = $app['form.factory']->createBuilder();
+        $builder
             ->add('AuthorityRoles', 'collection', array(
                 'type' => 'admin_authority_role',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
                 'data' => $AuthorityRoles,
-            ))
-            ->getForm();
+            ));
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'AuthorityRoles' => $AuthorityRoles
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if (count($AuthorityRoles) == 0) {
             // 1件もない場合、空行を追加
             $form->get('AuthorityRoles')->add(uniqid(), 'admin_authority_role');
         }
-
 
 
         if ('POST' === $request->getMethod()) {
@@ -80,6 +92,15 @@ class AuthorityController extends AbstractController
                     }
                 }
                 $app['orm.em']->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'AuthorityRoles' => $AuthorityRoles
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_AUTHORITY_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.system.authority.save.complete', 'admin');
 
