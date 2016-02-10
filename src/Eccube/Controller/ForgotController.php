@@ -24,19 +24,36 @@
 namespace Eccube\Controller;
 
 use Eccube\Application;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ForgotController extends AbstractController
 {
-
+    /**
+     * パスワードリマインダ.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function index(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']
-            ->createNamedBuilder('', 'forgot')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createNamedBuilder('', 'forgot');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -52,6 +69,15 @@ class ForgotController extends AbstractController
                 // リセットキーを更新
                 $app['orm.em']->persist($Customer);
                 $app['orm.em']->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Customer' => $Customer
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE, $event);
 
                 // 完了URLの生成
                 $reset_url = $app->url('forgot_reset', array('reset_key' => $Customer->getResetKey()));
@@ -73,11 +99,26 @@ class ForgotController extends AbstractController
         ));
     }
 
+    /**
+     * パスワードリマインダ完了画面.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function complete(Application $app, Request $request)
     {
         return $app->render('Forgot/complete.twig');
     }
 
+    /**
+     * パスワード再発行実行画面.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $reset_key
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function reset(Application $app, Request $request, $reset_key)
     {
         $errors = $app['validator']->validateValue($reset_key, array(
@@ -109,6 +150,14 @@ class ForgotController extends AbstractController
             // パスワードを更新
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
+
+            $event = new EventArgs(
+                array(
+                    'Customer' => $Customer,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_FORGOT_RESET_COMPLETE, $event);
 
             // メール送信
             $app['eccube.service.mail']->sendPasswordResetCompleteMail($Customer, $pass);

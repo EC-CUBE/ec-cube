@@ -422,37 +422,53 @@ final class EccubeEvents
      * CartController
      */
     // index
-
+    const FRONT_CART_INDEX_INITIALIZE = 'front.cart.index.initialize';
+    const FRONT_CART_INDEX_COMPLETE = 'front.cart.index.complete';
     // add
+    const FRONT_CART_ADD_INITIALIZE = 'front.cart.add.initialize';
+    const FRONT_CART_ADD_COMPLETE = 'front.cart.add.complete';
+    const FRONT_CART_ADD_EXCEPTION = 'front.cart.add.exception';
 
     // up
+    const FRONT_CART_UP_INITIALIZE = 'front.cart.up.initialize';
+    const FRONT_CART_UP_COMPLETE = 'front.cart.up.complete';
+    const FRONT_CART_UP_EXCEPTION = 'front.cart.up.exception';
 
     // down
+    const FRONT_CART_DOWN_INITIALIZE = 'front.cart.down.initialize';
+    const FRONT_CART_DOWN_COMPLETE = 'front.cart.down.complete';
+    const FRONT_CART_DOWN_EXCEPTION = 'front.cart.down.exception';
 
     // remove
-
+    const FRONT_CART_REMOVE_INITIALIZE = 'front.cart.remove.initialize';
+    const FRONT_CART_REMOVE_COMPLETE = 'front.cart.remove.complete';
 
     /**
      * ContactController
      */
     // index
-
+    const FRONT_CONTACT_INDEX_INITIALIZE = 'front.contact.index.initialize';
+    const FRONT_CONTACT_INDEX_COMPLETE = 'front.contact.index.complete';
 
     /**
      * EntryController
      */
     // index
-
+    const FRONT_ENTRY_INDEX_INITIALIZE = 'front.entry.index.initialize';
+    const FRONT_ENTRY_INDEX_COMPLETE = 'front.entry.index.complete';
     // activate
-
+    const FRONT_ENTRY_ACTIVATE_INITIALIZE = 'front.entry.activate.initialize';
+    const FRONT_ENTRY_ACTIVATE_COMPLETE = 'front.entry.activate.complete';
 
     /**
      * ForgotController
      */
     // index
-
+    const FRONT_FORGOT_INDEX_INITIALIZE = 'front.forgot.index.initialize';
+    const FRONT_FORGOT_INDEX_COMPLETE = 'front.forgot.index.complete';
     // reset
-
+    const FRONT_FORGOT_RESET_INITIALIZE = 'front.reset.index.initialize';
+    const FRONT_FORGOT_RESET_COMPLETE = 'front.reset.index.complete';
 
     /**
      * ProductController
