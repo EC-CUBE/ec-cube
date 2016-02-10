@@ -26,10 +26,9 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
-use Eccube\Form\Type\Admin\MasterdataDataType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class MasterdataController extends AbstractController
 {
@@ -38,6 +37,15 @@ class MasterdataController extends AbstractController
         $data = array();
 
         $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_INITIALIZE, $event);
+
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -62,10 +70,28 @@ class MasterdataController extends AbstractController
                     // hidden値
                     $data['masterdata_name'] = $data['masterdata'];
                 }
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_COMPLETE, $event);
+
             }
         }
 
         $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit', $data);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder2,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
+
         $form2 = $builder2->getForm();
 
         return $app->render('Setting/System/masterdata.twig', array(
@@ -77,6 +103,15 @@ class MasterdataController extends AbstractController
     public function edit(Application $app, Request $request)
     {
         $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder2,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_INITIALIZE, $event);
+
         $form2 = $builder2->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -105,6 +140,15 @@ class MasterdataController extends AbstractController
 
                 try {
                     $app['orm.em']->flush();
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form2,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_COMPLETE, $event);
+
                     $app->addSuccess('admin.register.complete', 'admin');
                 } catch (\Exception $e) {
                     // 外部キー制約などで削除できない場合に例外エラーになる
@@ -116,6 +160,15 @@ class MasterdataController extends AbstractController
         }
 
         $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
+
         $form = $builder->getForm();
 
         return $app->render('Setting/System/masterdata.twig', array(

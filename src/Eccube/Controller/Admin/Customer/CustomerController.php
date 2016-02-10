@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -38,9 +40,18 @@ class CustomerController extends AbstractController
     {
         $session = $request->getSession();
         $pagination = array();
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_customer')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_customer');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE, $event);
+
+        $searchForm = $builder->getForm();
 
         //アコーディオンの制御初期化( デフォルトでは閉じる )
         $active = false;
@@ -58,6 +69,16 @@ class CustomerController extends AbstractController
                 // paginator
                 $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
                 $page_no = 1;
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $searchForm,
+                        'qb' => $qb,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+
                 $pagination = $app['paginator']()->paginate(
                     $qb,
                     $page_no,
@@ -80,6 +101,16 @@ class CustomerController extends AbstractController
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $searchForm,
+                            'qb' => $qb,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH, $event);
+
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
@@ -129,6 +160,15 @@ class CustomerController extends AbstractController
         // メール送信
         $app['eccube.service.mail']->sendAdminCustomerConfirmMail($Customer, $activateUrl);
 
+        $event = new EventArgs(
+            array(
+                'Customer' => $Customer,
+                'activeUrl' => $activateUrl,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE, $event);
+
         $app->addSuccess('admin.customer.resend.complete', 'admin');
 
         return $app->redirect($app->url('admin_customer'));
@@ -150,6 +190,15 @@ class CustomerController extends AbstractController
         $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
         $app['orm.em']->flush();
+
+        $event = new EventArgs(
+            array(
+                'Customer' => $Customer,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE, $event);
+
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
         return $app->redirect($app->url('admin_customer'));
@@ -210,6 +259,7 @@ class CustomerController extends AbstractController
         $filename = 'customer_' . $now->format('YmdHis') . '.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+
         $response->send();
 
         return $response;

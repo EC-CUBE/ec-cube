@@ -26,6 +26,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ form_widget(form.category_id) }}
                             <div class="input_search clearfix">
                                 {{ form_widget(form.name, {'attr': { 'placeholder' : "キーワードを入力" }} ) }}
+                                <div class="extra-form">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            {{ form_label(f) }}
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                                 <button type="submit" class="bt_search"><svg class="cb cb-search"><use xlink:href="#cb-search" /></svg></button>
                             </div>
                         </div>

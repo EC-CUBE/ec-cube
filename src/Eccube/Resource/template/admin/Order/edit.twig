@@ -695,7 +695,15 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
            </div>
             {% endfor %}
 
-
+            <div class="extra-form">
+                {% for f in form.getIterator %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        {{ form_label(f) }}
+                        {{ form_widget(f) }}
+                        {{ form_errors(f) }}
+                    {% endif %}
+                {% endfor %}
+            </div>
 
             <div class="box">
                 <div class="box-header">
@@ -739,6 +747,15 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 <div class="form-group">
                     {{ form_widget(searchCustomerModalForm.multi, { attr : { placeholder : '会員ID・メールアドレス・お名前' } } ) }}
                 </div>
+                <div class="extra-form">
+                    {% for f in form.getIterator %}
+                        {% if f.vars.name matches '[^plg*]' %}
+                            {{ form_label(f) }}
+                            {{ form_widget(f) }}
+                            {{ form_errors(f) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
                 <div class="form-group">
                     <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >検索</button>
                 </div>
@@ -777,6 +794,15 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 </div>
                 <div class="form-group">
                     {{ form_widget(searchProductModalForm.category_id) }}
+                </div>
+                <div class="extra-form">
+                    {% for f in form.getIterator %}
+                        {% if f.vars.name matches '[^plg*]' %}
+                            {{ form_label(f) }}
+                            {{ form_widget(f) }}
+                            {{ form_errors(f) }}
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div class="form-group">
                     <button type="button" id="searchProductModalButton" class="btn btn-primary">検索</button>

@@ -27,6 +27,8 @@ namespace Eccube\Controller\Admin\Setting\Shop;
 use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +36,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxRuleController extends AbstractController
 {
+
     /**
      * 税率設定の初期表示・登録
      *
@@ -70,6 +73,16 @@ class TaxRuleController extends AbstractController
             $builder = $builder->remove('apply_date');
         }
 
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'BaseInfo' => $BaseInfo,
+                'TargetTaxRule' => $TargetTaxRule,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_INDEX_INITIALIZE, $event);
+
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
 
@@ -77,7 +90,18 @@ class TaxRuleController extends AbstractController
             $form->handleRequest($request);
             if ($this->isValid($app['orm.em'], $form)) {
                 $app['orm.em']->persist($TargetTaxRule);
+
                 $app['orm.em']->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'baseInfo' => $BaseInfo,
+                        'targetTaxRule' => $TargetTaxRule,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.tax.save.complete', 'admin');
 
@@ -99,10 +123,11 @@ class TaxRuleController extends AbstractController
      * 税率設定の削除
      *
      * @param Application $app
+     * @param Request $request
      * @param $id
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
 
@@ -114,6 +139,15 @@ class TaxRuleController extends AbstractController
 
         if (!$TargetTaxRule->isDefaultTaxRule()) {
             $app['eccube.repository.tax_rule']->delete($TargetTaxRule);
+
+            $event = new EventArgs(
+                array(
+                    'TargetTaxRule' => $TargetTaxRule,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_DELETE_COMPLETE, $event);
+
             $app->addSuccess('admin.shop.tax.delete.complete', 'admin');
         }
 
@@ -129,9 +163,18 @@ class TaxRuleController extends AbstractController
      */
     public function editParameter(Application $app, Request $request)
     {
-        $form = $app['form.factory']
-            ->createBuilder('tax_rule')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('tax_rule');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -142,7 +185,17 @@ class TaxRuleController extends AbstractController
                 /** @var  $BaseInfo \Eccube\Entity\BaseInfo */
                 $BaseInfo = $app['eccube.repository.base_info']->get();
                 $BaseInfo->setOptionProductTaxRule($optionForm->getData());
+
                 $app['orm.em']->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'BaseInfo' => $BaseInfo,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.tax.save.complete', 'admin');
             }

@@ -27,6 +27,8 @@ namespace Eccube\Controller\Admin\Product;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -61,9 +63,20 @@ class CategoryController extends AbstractController
         }
 
         //
-        $form = $app['form.factory']
-            ->createBuilder('admin_category', $TargetCategory)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_category', $TargetCategory);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Parent' => $Parent,
+                'TargetCategory' => $TargetCategory,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         //
         if ($request->getMethod() === 'POST') {
@@ -75,6 +88,17 @@ class CategoryController extends AbstractController
                 $status = $app['eccube.repository.category']->save($TargetCategory);
 
                 if ($status) {
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Parent' => $Parent,
+                            'TargetCategory' => $TargetCategory,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE, $event);
+
                     $app->addSuccess('admin.category.save.complete', 'admin');
 
                     if ($Parent) {
@@ -118,6 +142,16 @@ class CategoryController extends AbstractController
         $status = $app['eccube.repository.category']->delete($TargetCategory);
 
         if ($status === true) {
+
+            $event = new EventArgs(
+                array(
+                    'Parent' => $Parent,
+                    'TargetCategory' => $TargetCategory
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE, $event);
+
             $app->addSuccess('admin.category.delete.complete', 'admin');
         } else {
             $app->addError('admin.category.delete.error', 'admin');

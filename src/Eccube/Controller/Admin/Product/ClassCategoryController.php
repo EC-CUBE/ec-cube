@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -49,9 +51,20 @@ class ClassCategoryController extends AbstractController
         }
 
         //
-        $form = $app['form.factory']
-            ->createBuilder('admin_class_category', $TargetClassCategory)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_class_category', $TargetClassCategory);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'ClassName' => $ClassName,
+                'TargetClassCategory' => $TargetClassCategory
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
@@ -59,6 +72,17 @@ class ClassCategoryController extends AbstractController
                 $status = $app['eccube.repository.class_category']->save($TargetClassCategory);
 
                 if ($status) {
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'ClassName' => $ClassName,
+                            'TargetClassCategory' => $TargetClassCategory
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE, $event);
+
                     $app->addSuccess('admin.class_category.save.complete', 'admin');
 
                     return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
@@ -104,6 +128,16 @@ class ClassCategoryController extends AbstractController
             $status = $app['eccube.repository.class_category']->delete($TargetClassCategory);
 
             if ($status === true) {
+
+                $event = new EventArgs(
+                    array(
+                        'ClassName' => $ClassName,
+                        'TargetClassCategory' => $TargetClassCategory
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE, $event);
+
                 $app->addSuccess('admin.class_category.delete.complete', 'admin');
             } else {
                 $app->addError('admin.class_category.delete.error', 'admin');
