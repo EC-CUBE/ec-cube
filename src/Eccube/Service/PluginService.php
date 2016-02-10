@@ -74,6 +74,7 @@ class PluginService
         }
 
         return true;
+
     }
 
     public function createTempDir()
@@ -228,7 +229,12 @@ class PluginService
                             ->setdelFlg(Constant::DISABLED)
                             ->setHandler($handler[0])
                             ->setHandlerType($handler[1])
-                            ->setPriority($this->app['eccube.repository.plugin_event_handler']->calcNewPriority($event, $handler[1]));
+                            ->setPriority(
+                                $this->app['eccube.repository.plugin_event_handler']->calcNewPriority(
+                                    $event,
+                                    $handler[1]
+                                )
+                            );
                         $em->persist($peh);
                         $em->flush();
                     }
@@ -264,8 +270,8 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
 
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
-        $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'disable');
+        $this->callPluginManagerMethod($this->readYml($pluginDir.'/'.self::CONFIG_YML), 'uninstall');
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
 
@@ -306,7 +312,10 @@ class PluginService
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
             $em->persist($plugin);
-            $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
+            $this->callPluginManagerMethod(
+                $this->readYml($pluginDir.'/'.self::CONFIG_YML),
+                $enable ? 'enable' : 'disable'
+            );
             $em->flush();
             $em->getConnection()->commit();
         } catch (\Exception $e) {
@@ -377,11 +386,15 @@ class PluginService
                             throw new PluginException('Handler name format error');
                         }
                         // updateで追加されたハンドラかどうか調べる
-                        $peh = $rep->findBy(array('del_flg' => Constant::DISABLED,
-                            'plugin_id' => $plugin->getId(),
-                            'event' => $event,
-                            'handler' => $handler[0],
-                            'handler_type' => $handler[1],));
+                        $peh = $rep->findBy(
+                            array(
+                                'del_flg' => Constant::DISABLED,
+                                'plugin_id' => $plugin->getId(),
+                                'event' => $event,
+                                'handler' => $handler[0],
+                                'handler_type' => $handler[1],
+                            )
+                        );
 
                         if (!$peh) { // 新規にevent.ymlに定義されたハンドラなのでinsertする
                             $peh = new \Eccube\Entity\PluginEventHandler();
@@ -398,7 +411,9 @@ class PluginService
                 }
 
                 # アップデート後のevent.ymlで削除されたハンドラをdtb_plugin_event_handlerから探して削除
-                foreach ($rep->findBy(array('del_flg' => Constant::DISABLED, 'plugin_id' => $plugin->getId())) as $peh) {
+                foreach ($rep->findBy(
+                    array('del_flg' => Constant::DISABLED, 'plugin_id' => $plugin->getId())
+                ) as $peh) {
                     if (!isset($event_yml[$peh->getEvent()])) {
                         $em->remove($peh);
                         $em->flush();
