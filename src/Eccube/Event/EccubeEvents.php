@@ -381,7 +381,7 @@ final class EccubeEvents
      * Block/SearchProductController
      */
     // index
-
+    const FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE = 'front.block.search.product.index.initialize';
 
     /**
      * Mypage/ChangeController

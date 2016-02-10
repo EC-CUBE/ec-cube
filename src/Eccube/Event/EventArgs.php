@@ -21,9 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Event;
-
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventArgs extends GenericEvent
 {
-
     /**
      * @var Request
      */
@@ -84,5 +81,4 @@ class EventArgs extends GenericEvent
     {
         return $this->response;
     }
-
 }
