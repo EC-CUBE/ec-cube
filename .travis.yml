@@ -10,34 +10,34 @@ cache:
     - vendor
     - $HOME/.composer/cache
 php:
-  - 5.3.3
-  - 5.3
-  - 5.4
-  - 5.5
+#  - 5.3.3
+#  - 5.3
+#  - 5.4
+#  - 5.5
   - 5.6
-  - hhvm
-  - 7.0
+#  - hhvm
+#  - 7.0
 
 matrix:
   fast_finish: true
-  exclude:
-    - php: hhvm
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres # driver currently unsupported by HHVM
-  allow_failures:
-    - php: hhvm
-    - php: 7.0
-    - php: 5.3.3
-    - PHP: 5.3
-      env: DB=sqlite
-    - PHP: 5.4
-      env: DB=sqlite
-    - PHP: 5.5
-      env: DB=sqlite
-    - PHP: 5.6
-      env: DB=sqlite
+#  exclude:
+#    - php: hhvm
+#      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres # driver currently unsupported by HHVM
+#  allow_failures:
+#    - php: hhvm
+#    - php: 7.0
+#    - php: 5.3.3
+#    - PHP: 5.3
+#      env: DB=sqlite
+#    - PHP: 5.4
+#      env: DB=sqlite
+#    - PHP: 5.5
+#      env: DB=sqlite
+#    - PHP: 5.6
+#      env: DB=sqlite
 env:
-  - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
-  - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+#  - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
+#  - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
   - DB=sqlite
 
 install: gem install mailcatcher
