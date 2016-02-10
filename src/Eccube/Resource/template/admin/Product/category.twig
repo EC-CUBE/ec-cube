@@ -106,12 +106,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 <div class="box-body">
                     <div class="row">
-                        <div class="form-inline col-md-9">
-                            {% if TargetCategory.level < app.config.category_nest_level %}
+                        <div class="col-md-9">
                             <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
-                                {{ form_widget(form._token) }}
-                                {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
-                                {{ form_errors(form.name) }}
+                                <div class="form-group">
+                                    {% if TargetCategory.level < app.config.category_nest_level %}
+                                        <div class="col-md-12 form-inline">
+                                            {{ form_widget(form._token) }}
+                                            {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
+                                            {{ form_errors(form.name) }}
+                                            <button class="btn btn-default btn-sm" type="submit">カテゴリ作成</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
                                 <div class="extra-form">
                                     {% for f in form.getIterator %}
                                         {% if f.vars.name matches '[^plg*]' %}
@@ -121,9 +127,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         {% endif %}
                                     {% endfor %}
                                 </div>
-                                <button class="btn btn-default btn-sm" type="submit">カテゴリ作成</button>
                             </form>
-                            {% endif %}
                         </div>
                         <div class="dl_dropdown col-md-3">
                             <div class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"/></svg></a>
