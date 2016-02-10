@@ -65,9 +65,9 @@ class EditController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'originOrder' => $OriginOrder,
-                'targetOrder' => $TargetOrder,
-                'originOrderDetails' => $OriginalOrderDetails,
+                'OriginOrder' => $OriginOrder,
+                'TargetOrder' => $TargetOrder,
+                'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -173,6 +173,7 @@ class EditController extends AbstractController
                             }
                         }
 
+                        $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
                         $Customer = $TargetOrder->getCustomer();
@@ -181,14 +182,13 @@ class EditController extends AbstractController
                             $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
                         }
 
-                        $app['orm.em']->persist($TargetOrder);
 
                         $event = new EventArgs(
                             array(
                                 'form' => $form,
-                                'originOrder' => $OriginOrder,
-                                'targetOrder' => $TargetOrder,
-                                'originOrderDetails' => $OriginalOrderDetails,
+                                'OriginOrder' => $OriginOrder,
+                                'TargetOrder' => $TargetOrder,
+                                'OriginOrderDetails' => $OriginalOrderDetails,
                                 'Customer' => $Customer,
                             ),
                             $request
@@ -230,9 +230,9 @@ class EditController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'originOrder' => $OriginOrder,
-                'targetOrder' => $TargetOrder,
-                'originOrderDetails' => $OriginalOrderDetails,
+                'OriginOrder' => $OriginOrder,
+                'TargetOrder' => $TargetOrder,
+                'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -247,9 +247,9 @@ class EditController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'originOrder' => $OriginOrder,
-                'targetOrder' => $TargetOrder,
-                'originOrderDetails' => $OriginalOrderDetails,
+                'OriginOrder' => $OriginOrder,
+                'TargetOrder' => $TargetOrder,
+                'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
