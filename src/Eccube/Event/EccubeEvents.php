@@ -89,7 +89,6 @@ final class EccubeEvents
 
     // delete
 
-
     /**
      * Admin/Customer/CustomerController
      */
@@ -294,42 +293,45 @@ final class EccubeEvents
      * Admin/Setting/System/AuthorityController
      */
     // index
+    const ADMIN_AUTHORITY_INDEX_INITIALIZE = 'admin.authority.index.initialize';
+    const ADMIN_AUTHORITY_INDEX_COMPLETE = 'admin.authority.index.complete';
 
 
     /**
      * Admin/Setting/System/LogController
      */
     // index
+    const ADMIN_LOG_INDEX_INITIALIZE = 'admin.log.index.initialize';
+    const ADMIN_LOG_INDEX_COMPLETE = 'admin.log.index.complete';
 
 
     /**
      * Admin/Setting/System/MasterdataController
      */
     // index
+    const ADMIN_MASTERDATA_INDEX_INITIALIZE = 'admin.log.index.initialize';
+    const ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.log.index.form2.initialize';
+    const ADMIN_MASTERDATA_INDEX_COMPLETE = 'admin.log.index.complete';
 
     // edit
+    const ADMIN_MASTERDATA_EDIT_INITIALIZE = 'admin.masterdata.edit.initialize';
+    const ADMIN_MASTERDATA_EDIT_FORM_INITIALIZE = 'admin.masterdata.edit.form.initialize';
+    const ADMIN_MASTERDATA_EDIT_COMPLETE = 'admin.masterdata.edit.complete';
 
 
     /**
      * Admin/Setting/System/MemberController
      */
     // index
+    const ADMIN_MEMBER_INDEX_INITIALIZE = 'admin.member.index.initialize';
 
     // edit
+    const ADMIN_MEMBER_EDIT_INITIALIZE = 'admin.member.edit.initialize';
+    const ADMIN_MEMBER_EDIT_COMPLETE = 'admin.member.edit.complete';
 
     // delete
-
-
-    /**
-     * Admin/Setting/System/SecurityController
-     */
-    // index
-
-
-    /**
-     * Admin/Setting/System/SystemController
-     */
-    // index
+    const ADMIN_MEMBER_DELETE_INITIALIZE = 'admin.member.delete.initialize';
+    const ADMIN_MEMBER_DELETE_COMPLETE = 'admin.member.delete.complete';
 
 
     /**
@@ -487,5 +489,18 @@ final class EccubeEvents
      */
     // index
 
+
+    /**
+     * MailService
+     */
+    const MAIL_CUSTOMER_CONFIRM = 'mail.customer.confirm';
+    const MAIL_CUSTOMER_COMPLETE = 'mail.customer.complete';
+    const MAIL_CUSTOMER_WITHDRAW = 'mail.customer.withdraw';
+    const MAIL_CONTACT = 'mail.contact';
+    const MAIL_ORDER = 'mail.order';
+    const MAIL_ADMIN_CUSTOMER_CONFIRM = 'mail.admin.customer.confirm';
+    const MAIL_ADMIN_ORDER = 'mail.admin.order';
+    const MAIL_PASSWORD_RESET = 'mail.password.reset';
+    const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
 
 }
