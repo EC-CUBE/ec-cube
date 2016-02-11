@@ -83,6 +83,14 @@ $(function() {
 
                         {{ form_row(form.select) }}
 
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
                     </div><!-- /.box-body -->
                 </form>
             </div><!-- /.box -->

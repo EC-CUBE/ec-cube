@@ -73,6 +73,14 @@
                             {{ form_errors(form.block_html) }}
                         </div>
                     </div>
+
+                    <div class="extra-form">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                {{ form_row(f) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
 

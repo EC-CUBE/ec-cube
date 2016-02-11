@@ -59,9 +59,13 @@ class ApplicationTrait extends \Silex\Application
         $this->addWarning('admin.delete.warning', 'admin');
     }
 
-    public function setLoginTargetPath($targetPath)
+    public function setLoginTargetPath($targetPath, $namespace = null)
     {
-        $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+        if (is_null($namespace)) {
+            $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+        } else {
+            $this['session']->getFlashBag()->set('eccube.' . $namespace . '.login.target.path', $targetPath);
+        }
     }
 
     public function isAdminRequest()

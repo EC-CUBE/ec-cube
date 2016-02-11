@@ -89,6 +89,14 @@
                                 {{ form_errors(form.tpl_data) }}
                             </div>
                         </div>
+
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
                 <div class="box form-horizontal">

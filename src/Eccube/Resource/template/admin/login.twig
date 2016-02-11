@@ -38,6 +38,11 @@ $(function() {
         <div class="login-box-body">
             <p class="login-logo2"><img src="{{ app.config.admin_urlpath }}/assets/img/logo2.png" width="106"></p>
             <form name="form1" id="form1" method="post" action="{{ path(app.config.admin_route ~ '_login_check') }}">
+                {% if app.session.flashBag.has('eccube.admin.login.target.path') %}
+                    {% for targetPath in app.session.flashBag.get('eccube.admin.login.target.path') %}
+                        <input type="hidden" name="_target_path" value="{{ targetPath }}" />
+                    {% endfor %}
+                {% endif %}
                 <div class="form-group has-feedback">
                     {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'size': 20, 'class': 'box25', 'placeholder': 'ログインID'}}) }}
                 </div>

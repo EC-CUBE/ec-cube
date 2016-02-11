@@ -33,9 +33,12 @@ final class EccubeEvents
      */
     // login
     const ADMIN_ADMIM_LOGIN_INITIALIZE = 'admin.admin.login.initialize';
-    const ADMIN_ADMIM_LOGIN_COMPLETE = 'admin.admin.login.complete';
 
     // index
+    const ADMIN_ADMIM_INDEX_INITIALIZE = 'admin.admin.index.initialize';
+    const ADMIN_ADMIM_INDEX_ORDER = 'admin.admin.index.order';
+    const ADMIN_ADMIM_INDEX_SALES = 'admin.admin.index.sales';
+    const ADMIN_ADMIM_INDEX_COMPLETE = 'admin.admin.index.complete';
 
     // searchNonStockProducts
 
@@ -44,11 +47,14 @@ final class EccubeEvents
      * Admin/Content/BlockController
      */
     // index
-    const ADMIN_BLOCK_INDEX_INITIALIZE = 'admin.block.index.initialize';
+    const ADMIN_CONTENT_BLOCK_INDEX_COMPLETE = 'admin.content.block.index.complete';
 
     // edit
+    const ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE = 'admin.content.block.edit.initialize';
+    const ADMIN_CONTENT_BLOCK_EDIT_COMPLETE = 'admin.content.block.edit.complete';
 
     // delete
+    const ADMIN_CONTENT_BLOCK_DELETE_COMPLETE = 'admin.content.block.delete.complete';
 
     /**
      * Admin/Content/FileController
@@ -68,26 +74,37 @@ final class EccubeEvents
      * Admin/Content/LayoutController
      */
     // index
+    const ADMIN_CONTENT_LAYOUT_INDEX_INITIALIZE = 'admin.content.layout.index.initialize';
+    const ADMIN_CONTENT_LAYOUT_INDEX_COMPLETE = 'admin.content.layout.index.complete';
 
 
     /**
      * Admin/Content/NewsController
      */
     // index
+    const ADMIN_CONTENT_NEWS_INDEX_INITIALIZE = 'admin.content.news.index.initialize';
+    const ADMIN_CONTENT_NEWS_INDEX_COMPLETE = 'admin.content.news.index.complete';
 
     // edit
+    const ADMIN_CONTENT_NEWS_EDIT_INITIALIZE = 'admin.content.news.edit.initialize';
+    const ADMIN_CONTENT_NEWS_EDIT_COMPLETE = 'admin.content.news.edit.complete';
 
     // delete
+    const ADMIN_CONTENT_NEWS_DELETE_COMPLETE = 'admin.content.news.delete.complete';
 
 
     /**
      * Admin/Content/PageController
      */
     // index
+    const ADMIN_CONTENT_PAGE_INDEX_COMPLETE = 'admin.content.page.index.initialize';
 
     // edit
+    const ADMIN_CONTENT_PAGE_EDIT_INITIALIZE = 'admin.content.page.edit.initialize';
+    const ADMIN_CONTENT_PAGE_EDIT_COMPLETE = 'admin.content.page.edit.complete';
 
     // delete
+    const ADMIN_CONTENT_PAGE_DELETE_COMPLETE = 'admin.content.page.delete.complete';
 
     /**
      * Admin/Customer/CustomerController
