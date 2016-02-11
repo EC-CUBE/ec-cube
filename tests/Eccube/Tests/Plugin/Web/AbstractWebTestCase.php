@@ -69,4 +69,25 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
         $this->expectOutputString($expected, $message);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function logIn($user = null)
+    {
+        $firewall = 'customer';
+
+        if (!is_object($user)) {
+            $user = $this->createCustomer();
+        }
+        $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
+
+        $this->app['security.token_storage']->setToken($token);
+        $this->app['session']->set('_security_' . $firewall, serialize($token));
+        $this->app['session']->save();
+
+        $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());
+        $this->client->getCookieJar()->set($cookie);
+        return $user;
+    }
 }
