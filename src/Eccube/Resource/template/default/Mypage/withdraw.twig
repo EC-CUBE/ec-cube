@@ -40,13 +40,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div>
         <div class="row">
-            <div class="dl_table extra-form">
-                {% for f in form.getIterator %}
-                    {% if f.vars.name matches '[^plg*]' %}
+            {% for f in form %}
+                {% if f.vars.name matches '[^plg*]' %}
+                    <div class="extra-form dl_table">
                         {{ form_row(f) }}
-                    {% endif %}
-                {% endfor %}
-            </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
         <div class="row">
             <div class="btn_group col-sm-offset-4 col-sm-4">

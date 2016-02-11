@@ -159,6 +159,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ form_errors(form.class_name2) }}
 
                         </div>
+                        <div class="extra-form form-inline row">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    <div class="col-sm-12 form-group">
+                                    {{ form_label(f) }}
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     {% else %}
                         <button type="button" id="delete" class="btn btn-default pull-right" name="mode" value="delete">商品規格を初期化</button>
                         <div>
@@ -280,15 +291,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
             </div><!-- /.box-body -->
-                <div class="extra-form">
-                    {% for f in classForm.getIterator %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            {{ form_label(f) }}
-                            {{ form_widget(f) }}
-                            {{ form_errors(f) }}
-                        {% endif %}
-                    {% endfor %}
-                </div>
             {% else %}
             <div class="box-header">
                 <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>

@@ -163,15 +163,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                         </div>
                     </div><!--/cart_item-->
-                    <div class="extra-form">
-                        {% for f in form.getIterator %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                {{ form_label(f) }}
-                                {{ form_widget(f) }}
-                                {{ form_errors(f) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
                     <div class="total_box">
                         <dl class="total_price">
                             <dt>合計：</dt>

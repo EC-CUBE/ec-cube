@@ -148,15 +148,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </dl>
                 </div>
                 <input type="hidden" name="mode" value="confirm">
-                <div class="extra-form">
-                    {% for f in form.getIterator %}
-                        {% if f.vars.name matches '[^plg*]' %}
-                            {{ form_label(f) }}
-                            {{ form_widget(f) }}
-                            {{ form_errors(f) }}
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                {% for f in form %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        <div class="extra-form dl_table">
+                            {{ form_row(f) }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
                 <p class="form_terms_link"><a href="{{ url('help_agreement') }}" target="_blank">利用規約</a>に同意してお進みください
                 </p>
 

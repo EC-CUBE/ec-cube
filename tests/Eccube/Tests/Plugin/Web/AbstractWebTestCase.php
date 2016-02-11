@@ -29,6 +29,16 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+/**
+ * プラグインのフックポイント検証用のテストケース
+ *
+ * 全フックポイントを利用するHookPointプラグインをロードし、WebTestで画面を巡回させる
+ * HookPointプラグインの各メソッドは、自身のフックポイント名をechoしている
+ * テストケース側では、出力された内容を`expectOutputString`メソッドで確認し、フックポイントの呼び出しが行われているかを検証する
+ *
+ * Class AbstractWebTestCase
+ * @package Eccube\Tests\Plugin\Web
+ */
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
     protected $client;

@@ -159,6 +159,13 @@ $(function() {
                             <button type="button" class="btn btn-default btn-sm add" data-idx="{{ idx }}">お届け先追加</button>
                         </p>
                     {% endfor %}
+                    <div class="extra-form">
+                        {% for f in form %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                {{ form_row(f) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     <div class="row no-padding">
                         <div class="btn_group col-sm-offset-4 col-sm-4">
                             <p>

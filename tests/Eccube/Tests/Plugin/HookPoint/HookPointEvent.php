@@ -209,40 +209,49 @@ class HookPointEvent
 // index
     public function onAdminMail1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE;
     }
 
     public function onAdminMail2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE;
     }
 
     public function onAdminMail3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CONFIRM;
     }
 
     public function onAdminMail4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE;
     }
 
 // view
     public function onAdminMail5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE;
     }
 
 // mailAll
     public function onAdminMail6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE;
     }
 
     public function onAdminMail7(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE;
     }
 
     public function onAdminMail8(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CONFIRM;
     }
 
     public function onAdminMail9(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE;
     }
 
 
@@ -276,15 +285,18 @@ class HookPointEvent
 // index
     public function onAdminCategory1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE;
     }
 
     public function onAdminCategory2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE;
     }
 
 // delete
     public function onAdminCategory3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE;
     }
 
 // export
@@ -295,15 +307,18 @@ class HookPointEvent
 // index
     public function onAdminClassCategory1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_INITIALIZE;
     }
 
     public function onAdminClassCategory2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_INDEX_COMPLETE;
     }
 
 // delete
     public function onAdminClassCategory3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE;
     }
 
 
@@ -313,15 +328,18 @@ class HookPointEvent
 // index
     public function onAdminClassName1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_INITIALIZE;
     }
 
     public function onAdminClassName2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_INDEX_COMPLETE;
     }
 
 // delete
     public function onAdminClassName3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CLASS_NAME_DELETE_COMPLETE;
     }
 
 
@@ -340,15 +358,18 @@ class HookPointEvent
 // index
     public function onAdminProductClass1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE;
     }
 
     public function onAdminProductClass2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES;
     }
 
 // edit
     public function onAdminProductClass3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_INITIALIZE;
     }
 
     public function onAdminProductClass4(EventArgs $event)
@@ -370,43 +391,52 @@ class HookPointEvent
 // index
     public function onAdminProduct1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE;
     }
 
     public function onAdminProduct2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH;
     }
 
 // addImage
     public function onAdminProduct3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE;
     }
 
 // edit
     public function onAdminProduct4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE;
     }
 
     public function onAdminProduct5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH;
     }
 
     public function onAdminProduct6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE;
     }
 
 // delete
     public function onAdminProduct7(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE;
     }
 
 // copy
     public function onAdminProduct8(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE;
     }
 
 // display
     public function onAdminProduct9(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE;
     }
 
 // export
@@ -1127,7 +1157,7 @@ class HookPointEvent
         echo EccubeEvents::MAIL_ADMIN_ORDER;
 
         $message = $event->getArgument('message');
-        $message->setBody('onMail7');
+        $message->setBody(EccubeEvents::MAIL_ADMIN_ORDER);
     }
 
     function onMail8(EventArgs $event)

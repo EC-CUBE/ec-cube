@@ -183,7 +183,7 @@ class MailService
         $event = new EventArgs(
             array(
                 'message' => $message,
-                'data' => $formData,
+                'formData' => $formData,
                 'BaseInfo' => $this->BaseInfo,
             ),
             null
@@ -235,8 +235,8 @@ class MailService
         $event = new EventArgs(
             array(
                 'message' => $message,
-                'order' => $Order,
-                'mailTemplate' => $MailTemplate,
+                'Order' => $Order,
+                'MailTemplate' => $MailTemplate,
                 'BaseInfo' => $this->BaseInfo,
             ),
             null
@@ -314,8 +314,8 @@ class MailService
         $event = new EventArgs(
             array(
                 'message' => $message,
-                'order' => $Order,
-                'data' => $formData,
+                'Order' => $Order,
+                'formData' => $formData,
                 'BaseInfo' => $this->BaseInfo,
             ),
             null

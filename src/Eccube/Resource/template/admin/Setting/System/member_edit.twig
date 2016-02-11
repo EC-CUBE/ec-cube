@@ -46,17 +46,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {{ form_row(form.password.second, { type : 'password' }) }}
                         {{ form_row(form.Authority) }}
                         {{ form_row(form.Work) }}
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
 
                     </div><!-- /.box-body -->
-                    <div class="extra-form">
-                        {% for f in form.getIterator %}
-                            {% if f.vars.name matches '[^plg*]' %}
-                                {{ form_label(f) }}
-                                {{ form_widget(f) }}
-                                {{ form_errors(f) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
                 </form>
             </div><!-- /.box -->
 

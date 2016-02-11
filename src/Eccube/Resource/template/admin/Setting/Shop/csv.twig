@@ -118,16 +118,16 @@ $(function() {
                             </div>
                         </div><!-- /.col -->
                     </div>
+                    <div class="extra-form row">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                <div class="col-md-12 form-group">
+                                    {{ form_row(f) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="extra-form">
-                {% for f in form.getIterator %}
-                    {% if f.vars.name matches '[^plg*]' %}
-                        {{ form_label(f) }}
-                        {{ form_widget(f) }}
-                        {{ form_errors(f) }}
-                    {% endif %}
-                {% endfor %}
             </div>
             <div class="col-md-3" id="aside_column">
                 <div class="col_inner">

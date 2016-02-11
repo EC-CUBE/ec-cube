@@ -37,14 +37,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h3 class="box-title">マスターデータ管理</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <div class="form-inline">
+                    <div class="form-inline form-group">
                         <div class="form-group">
                             {{ form_widget(form.masterdata, {'attr': {'class': 'form-control'}}) }}
                             {{ form_errors(form.masterdata) }}
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">選択</button>
+                            <button class="btn btn-primary btn-block" onclick="document.form1.submit();">選択</button>
                         </div>
+                    </div>
+                    <div class="extra-form clearfix">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                <div class="form-group">
+                                    {{ form_label(f) }}
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
@@ -94,15 +105,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div><!-- /.box-body -->
         </div>
-        <div class="extra-form">
-            {% for f in form.getIterator %}
-                {% if f.vars.name matches '[^plg*]' %}
-                    {{ form_label(f) }}
-                    {{ form_widget(f) }}
-                    {{ form_errors(f) }}
-                {% endif %}
-            {% endfor %}
-        </div>
+
         <div class="col-md-3">
             <div class="col_inner" id="aside_column">
                 <div class="box no-header">

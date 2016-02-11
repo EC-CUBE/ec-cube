@@ -273,13 +273,11 @@ final class EccubeEvents
      * Admin/Setting/Shop/DeliveryController
      */
     // index
-    const ADMIN_DELIVERY_INDEX_INITIALIZE = 'admin.delivery.index.initialize';
     const ADMIN_DELIVERY_INDEX_COMPLETE = 'admin.delivery.index.complete';
     // edit
     const ADMIN_DELIVERY_EDIT_INITIALIZE = 'admin.delivery.edit.initialize';
     const ADMIN_DELIVERY_EDIT_COMPLETE = 'admin.delivery.edit.complete';
     // delete
-    const ADMIN_DELIVERY_DELETE_INITIALIZE = 'admin.delivery.delete.initialize';
     const ADMIN_DELIVERY_DELETE_COMPLETE = 'admin.delivery.delete.complete';
 
     /**
@@ -293,16 +291,13 @@ final class EccubeEvents
      * Admin/Setting/Shop/PaymentController
      */
     // index
-    const ADMIN_PAYMENT_INDEX_INITIALIZE = 'admin.payment.index.initialize';
     const ADMIN_PAYMENT_INDEX_COMPLETE = 'admin.payment.index.complete';
     // edit
     const ADMIN_PAYMENT_EDIT_INITIALIZE = 'admin.payment.edit.initialize';
     const ADMIN_PAYMENT_EDIT_COMPLETE = 'admin.payment.edit.complete';
     // imageAdd
-    const ADMIN_PAYMENT_IMAGE_ADD_INITIALIZE = 'admin.payment.image.add.initialize';
     const ADMIN_PAYMENT_IMAGE_ADD_COMPLETE = 'admin.payment.image.add.complete';
     // delete
-    const ADMIN_PAYMENT_DELETE_INITIALIZE = 'admin.payment.delete.initialize';
     const ADMIN_PAYMENT_DELETE_COMPLETE = 'admin.payment.delete.complete';
 
     /**
@@ -319,7 +314,6 @@ final class EccubeEvents
     const ADMIN_TAX_RULE_INDEX_INITIALIZE = 'admin.tax.rule.index.initialize';
     const ADMIN_TAX_RULE_INDEX_COMPLETE = 'admin.tax.rule.index.complete';
     // delete
-    const ADMIN_TAX_RULE_DELETE_INITIALIZE = 'admin.tax.rule.delete.initialize';
     const ADMIN_TAX_RULE_DELETE_COMPLETE = 'admin.tax.rule.delete.complete';
     // editParameter
     const ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE = 'admin.tax.rule.edit.parameter.initialize';
@@ -352,9 +346,9 @@ final class EccubeEvents
      * Admin/Setting/System/MasterdataController
      */
     // index
-    const ADMIN_MASTERDATA_INDEX_INITIALIZE = 'admin.log.index.initialize';
-    const ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.log.index.form2.initialize';
-    const ADMIN_MASTERDATA_INDEX_COMPLETE = 'admin.log.index.complete';
+    const ADMIN_MASTERDATA_INDEX_INITIALIZE = 'admin.masterdata.index.initialize';
+    const ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.masterdata.index.form2.initialize';
+    const ADMIN_MASTERDATA_INDEX_COMPLETE = 'admin.masterdata.index.complete';
 
     // edit
     const ADMIN_MASTERDATA_EDIT_INITIALIZE = 'admin.masterdata.edit.initialize';
@@ -398,7 +392,6 @@ final class EccubeEvents
     const FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE = 'front.mypage.delivery.edit.complete';
 
     // delete
-    const FRONT_MYPAGE_DELIVERY_DELETE_INITIALIZE = 'front.mypage.delete.initialize';
     const FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE = 'front.mypage.delete.complete';
 
     /**
@@ -456,6 +449,11 @@ final class EccubeEvents
     const FRONT_CART_REMOVE_INITIALIZE = 'front.cart.remove.initialize';
     const FRONT_CART_REMOVE_COMPLETE = 'front.cart.remove.complete';
 
+    // buystep
+    const FRONT_CART_BUYSTEP_INITIALIZE = 'front.cart.buystep.initialize';
+    const FRONT_CART_BUYSTEP_COMPLETE = 'front.cart.buystep.complete';
+
+
     /**
      * ContactController
      */
@@ -470,7 +468,6 @@ final class EccubeEvents
     const FRONT_ENTRY_INDEX_INITIALIZE = 'front.entry.index.initialize';
     const FRONT_ENTRY_INDEX_COMPLETE = 'front.entry.index.complete';
     // activate
-    const FRONT_ENTRY_ACTIVATE_INITIALIZE = 'front.entry.activate.initialize';
     const FRONT_ENTRY_ACTIVATE_COMPLETE = 'front.entry.activate.complete';
 
     /**
@@ -480,7 +477,6 @@ final class EccubeEvents
     const FRONT_FORGOT_INDEX_INITIALIZE = 'front.forgot.index.initialize';
     const FRONT_FORGOT_INDEX_COMPLETE = 'front.forgot.index.complete';
     // reset
-    const FRONT_FORGOT_RESET_INITIALIZE = 'front.reset.index.initialize';
     const FRONT_FORGOT_RESET_COMPLETE = 'front.reset.index.complete';
 
     /**
@@ -560,6 +556,7 @@ final class EccubeEvents
      * UserDataController
      */
     // index
+    const FRONT_USER_DATA_INDEX_INITIALIZE = 'front.user.data.index.initialize';
 
 
     /**
