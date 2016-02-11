@@ -151,45 +151,55 @@ class HookPointEvent
 // index
     public function onAdminOrderEdit1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE;
     }
 
     public function onAdminOrderEdit2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE;
     }
 
 // searchCustomer
     public function onAdminOrderEdit3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_INITIALIZE;
     }
 
     public function onAdminOrderEdit4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH;
     }
 
     public function onAdminOrderEdit5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE;
     }
 
 // searchCustomerById
     public function onAdminOrderEdit6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_INITIALIZE;
     }
 
     public function onAdminOrderEdit7(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE;
     }
 
 // searchProduct
     public function onAdminOrderEdit8(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_INITIALIZE;
     }
 
     public function onAdminOrderEdit9(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH;
     }
 
     public function onAdminOrderEdit10(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE;
     }
 
 
