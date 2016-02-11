@@ -826,10 +826,12 @@ class HookPointEvent
 // index
     public function onContact1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE;
     }
 
     public function onContact2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE;
     }
 
 
