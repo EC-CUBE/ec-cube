@@ -136,10 +136,12 @@ class HookPointEvent
 // index
     public function onAdminCustomerEdit1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_INITIALIZE;
     }
 
     public function onAdminCustomerEdit2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CUSTOMER_EDIT_INDEX_COMPLETE;
     }
 
 
