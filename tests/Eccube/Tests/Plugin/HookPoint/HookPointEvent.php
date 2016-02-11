@@ -424,6 +424,7 @@ class HookPointEvent
 // display
     public function onAdminProduct9(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE;
     }
 
 // export
