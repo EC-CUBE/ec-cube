@@ -285,15 +285,18 @@ class HookPointEvent
 // index
     public function onAdminCategory1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_INITIALIZE;
     }
 
     public function onAdminCategory2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CATEGORY_INDEX_COMPLETE;
     }
 
 // delete
     public function onAdminCategory3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_CATEGORY_DELETE_COMPLETE;
     }
 
 // export
