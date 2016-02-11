@@ -700,13 +700,13 @@ class HookPointEvent
 // login
     public function onMypage1(EventArgs $event)
     {
-        echo EccubeEvents::FROMT_MYPAGE_MYPAGE_LOGIN_INITIALIZE;
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE;
     }
 
 // index
     public function onMypage2(EventArgs $event)
     {
-        echo EccubeEvents::FROMT_MYPAGE_MYPAGE_INDEX_SEARCH;
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH;
     }
 
 // history

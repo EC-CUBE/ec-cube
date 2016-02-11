@@ -405,10 +405,10 @@ final class EccubeEvents
      * Mypage/MypageController
      */
     // login
-    const FROMT_MYPAGE_MYPAGE_LOGIN_INITIALIZE = 'front.mypage.mypage.login.initialize';
+    const FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE = 'front.mypage.mypage.login.initialize';
 
     // index
-    const FROMT_MYPAGE_MYPAGE_INDEX_SEARCH = 'front.mypage.mypage.index.search';
+    const FRONT_MYPAGE_MYPAGE_INDEX_SEARCH = 'front.mypage.mypage.index.search';
 
     // history
     const FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE = 'front.mypage.mypage.history.initialize';

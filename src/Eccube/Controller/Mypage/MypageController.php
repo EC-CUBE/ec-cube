@@ -65,7 +65,7 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FROMT_MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -101,7 +101,7 @@ class MypageController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FROMT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH, $event);
 
         $pagination = $app['paginator']()->paginate(
             $qb,

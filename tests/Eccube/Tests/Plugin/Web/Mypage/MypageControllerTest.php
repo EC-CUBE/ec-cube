@@ -118,7 +118,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::FROMT_MYPAGE_MYPAGE_LOGIN_INITIALIZE,
+            EccubeEvents::FRONT_MYPAGE_MYPAGE_LOGIN_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -137,7 +137,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::FROMT_MYPAGE_MYPAGE_INDEX_SEARCH,
+            EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH,
         );
         $this->verifyOutputString($hookpoins);
     }
