@@ -37,7 +37,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $this->initializeMailCatcher();
     }
 
-    public function _tearDown()
+    public function tearDown()
     {
         $this->cleanUpMailCatcherMessages();
         parent::tearDown();

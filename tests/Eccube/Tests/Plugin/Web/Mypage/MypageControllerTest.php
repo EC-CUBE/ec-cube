@@ -67,6 +67,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->app['orm.em']->flush();
 
         $hookpoins = array(
+            EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE,
             EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE,
         );
         $this->verifyOutputString($hookpoins);

@@ -83,14 +83,6 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->verifyOutputString($expected);
-
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
-
-        // 件名の書き換えを検証
-        $this->expected = '会員登録のご確認';
-        $this->actual = $Message->subject;
-        $this->verify();
     }
 
     public function testDelete()

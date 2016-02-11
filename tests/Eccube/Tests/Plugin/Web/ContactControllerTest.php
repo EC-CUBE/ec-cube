@@ -106,60 +106,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $hookpoins = array(
             EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE,
             EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE,
-        );
-        $this->verifyOutputString($hookpoins);
-    }
-
-    /**
-     * 必須項目のみのテストケース
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1314
-     */
-    public function testCompleteWithRequired()
-    {
-        $client = $this->createClient();
-
-        $formData = $this->createFormData();
-        $formData['kana']['kana01'] = null;
-        $formData['kana']['kana02'] = null;
-        $formData['zip']['zip01'] = null;
-        $formData['zip']['zip02'] = null;
-        $formData['address']['pref'] = null;
-        $formData['address']['addr01'] = null;
-        $formData['address']['addr02'] = null;
-        $formData['tel']['tel01'] = null;
-        $formData['tel']['tel02'] = null;
-        $formData['tel']['tel03'] = null;
-
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('contact'),
-            array('contact' => $formData,
-                  'mode' => 'complete')
-        );
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('contact_complete')));
-
-        $hookpoins = array(
-            EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE,
-            EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE,
-        );
-        $this->verifyOutputString($hookpoins);
-    }
-
-    public function testCompleteWithLogin()
-    {
-        $client = $this->createClient();
-        $this->logIn();
-        $crawler = $client->request(
-            'POST',
-            $this->app->path('contact'),
-            array('contact' => $this->createFormData(),
-                  'mode' => 'complete')
-        );
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('contact_complete')));
-
-        $hookpoins = array(
-            EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE,
-            EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE,
+            EccubeEvents::MAIL_CONTACT,
         );
         $this->verifyOutputString($hookpoins);
     }

@@ -17,7 +17,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->Customer = $this->createCustomer();
     }
 
-    public function _tearDown()
+    public function tearDown()
     {
         $this->cleanUpMailCatcherMessages();
         parent::tearDown();

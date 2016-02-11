@@ -1107,72 +1107,45 @@ class HookPointEvent
     function onMail1(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CUSTOMER_CONFIRM;
-
-        $message = $event->getArgument('message');
-        $message->setBody('onMail1');
     }
 
     function onMail2(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CUSTOMER_COMPLETE;
-
-        $message = $event->getArgument('message');
-        $message->setBody('onMail2');
     }
 
     function onMail3(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CUSTOMER_WITHDRAW;
-
-        $message = $event->getArgument('message');
-        $message->setBody('onMail3');
     }
 
     function onMail4(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CONTACT;
-
-        $message = $event->getArgument('message');
-        $message->setBody('onMail4');
     }
 
     function onMail5(EventArgs $event)
     {
         echo EccubeEvents::MAIL_ORDER;
-
-        $message = $event->getArgument('message');
-        $message->setBody('onMail5');
     }
 
     function onMail6(EventArgs $event)
     {
         echo EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM;
-
-        $message = $event->getArgument('message');
-        $message->setSubject('会員登録のご確認');
     }
 
     function onMail7(EventArgs $event)
     {
         echo EccubeEvents::MAIL_ADMIN_ORDER;
-
-        $message = $event->getArgument('message');
-        $message->setBody(EccubeEvents::MAIL_ADMIN_ORDER);
     }
 
     function onMail8(EventArgs $event)
     {
         echo EccubeEvents::MAIL_PASSWORD_RESET;
-
-        $message = $event->getArgument('message');
-        $message->setBody('onMail8');
     }
 
     function onMail9(EventArgs $event)
     {
         echo EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE;
-
-        $message = $event->getArgument('message');
-        $message->setBody('onMail9');
     }
 }
