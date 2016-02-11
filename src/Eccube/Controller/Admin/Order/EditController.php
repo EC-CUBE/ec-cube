@@ -303,7 +303,7 @@ class EditController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
-            $searchData = $event->getArgument('searchData');
+            $searchData = $event->getArgument('data');
 
             $Customers = $qb->getQuery()->getResult();
 
