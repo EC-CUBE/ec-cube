@@ -865,19 +865,23 @@ class HookPointEvent
 // index
     public function onForgot1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_FORGOT_INDEX_INITIALIZE;
     }
 
     public function onForgot2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE;
     }
 
 // reset
     public function onForgot3(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_FORGOT_RESET_INITIALIZE;
     }
 
     public function onForgot4(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_FORGOT_RESET_COMPLETE;
     }
 
 
