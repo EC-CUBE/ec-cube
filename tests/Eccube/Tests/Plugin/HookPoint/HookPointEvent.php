@@ -379,38 +379,46 @@ class HookPointEvent
 // index
     public function onAdminProduct1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE;
     }
 
     public function onAdminProduct2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH;
     }
 
 // addImage
     public function onAdminProduct3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE;
     }
 
 // edit
     public function onAdminProduct4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE;
     }
 
     public function onAdminProduct5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH;
     }
 
     public function onAdminProduct6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE;
     }
 
 // delete
     public function onAdminProduct7(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE;
     }
 
 // copy
     public function onAdminProduct8(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE;
     }
 
 // display
