@@ -52,10 +52,8 @@ class CustomerAgreementController extends AbstractController
             $request
         );
 
-        $form = $builder->getForm();
-
-
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_INITIALIZE, $event);
+        $form = $builder->getForm();
 
         if ('POST' === $app['request']->getMethod()) {
             $form->handleRequest($app['request']);

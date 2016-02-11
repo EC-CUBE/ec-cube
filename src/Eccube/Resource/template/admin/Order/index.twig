@@ -227,6 +227,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ form_widget(searchForm.buy_product_name) }}
                   </div>
                 </div>
+                  <div class="extra-form col-md-12">
+                      {% for f in searchForm.getIterator %}
+                          {% if f.vars.name matches '[^plg*]' %}
+                            <div class="form-group">
+                              {{ form_label(f) }}
+                              {{ form_widget(f) }}
+                              {{ form_errors(f) }}
+                            </div>
+                          {% endif %}
+                      {% endfor %}
+                  </div>
+
               </div><!-- /.row -->
               <div class="row">
                 <div class="col-sm-12">
@@ -238,15 +250,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
       </div>
       <!-- /.col -->
-      <div class="extra-form">
-        {% for f in searchForm.getIterator %}
-            {% if f.vars.name matches '[^plg*]' %}
-                {{ form_label(f) }}
-                {{ form_widget(f) }}
-                {{ form_errors(f) }}
-            {% endif %}
-        {% endfor %}
-        </div>
     </div>
     <div class="row btn_area">
       <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">

@@ -689,21 +689,18 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_errors(shippingForm.shipping_delivery_date) }}
                                 </div>
                             </div>
+                            <div class="extra-form">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_row(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div><!-- /.box-body -->
            </div>
             {% endfor %}
-
-            <div class="extra-form">
-                {% for f in form.getIterator %}
-                    {% if f.vars.name matches '[^plg*]' %}
-                        {{ form_label(f) }}
-                        {{ form_widget(f) }}
-                        {{ form_errors(f) }}
-                    {% endif %}
-                {% endfor %}
-            </div>
 
             <div class="box">
                 <div class="box-header">
@@ -747,8 +744,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 <div class="form-group">
                     {{ form_widget(searchCustomerModalForm.multi, { attr : { placeholder : '会員ID・メールアドレス・お名前' } } ) }}
                 </div>
-                <div class="extra-form">
-                    {% for f in form.getIterator %}
+                <div class="extra-form form-group">
+                    {% for f in searchCustomerModalForm.getIterator %}
                         {% if f.vars.name matches '[^plg*]' %}
                             {{ form_label(f) }}
                             {{ form_widget(f) }}
@@ -795,8 +792,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 <div class="form-group">
                     {{ form_widget(searchProductModalForm.category_id) }}
                 </div>
-                <div class="extra-form">
-                    {% for f in form.getIterator %}
+                <div class="extra-form form-group">
+                    {% for f in searchProductModalForm.getIterator %}
                         {% if f.vars.name matches '[^plg*]' %}
                             {{ form_label(f) }}
                             {{ form_widget(f) }}

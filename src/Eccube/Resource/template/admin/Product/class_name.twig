@@ -82,23 +82,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <div class="form-inline">
-                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_product_class_name_edit', {id: TargetClassName.id}) }}{% else %}{{ url('admin_product_class_name') }}{% endif %}">
-                            {{ form_widget(form._token) }}
-                            {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
-                            {{ form_errors(form.name) }}
-                            <div class="extra-form">
-                                {% for f in form.getIterator %}
-                                    {% if f.vars.name matches '[^plg*]' %}
-                                        {{ form_label(f) }}
-                                        {{ form_widget(f) }}
-                                        {{ form_errors(f) }}
-                                    {% endif %}
-                                {% endfor %}
+                    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_product_class_name_edit', {id: TargetClassName.id}) }}{% else %}{{ url('admin_product_class_name') }}{% endif %}">
+                        <div class="form-group">
+                            <div class="col-md-12 form-inline">
+                                {{ form_widget(form._token) }}
+                                {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
+                                {{ form_errors(form.name) }}
+                                <button class="btn btn-default btn-sm" type="submit">規格作成</button>
                             </div>
-                            <button class="btn btn-default btn-sm" type="submit">規格作成</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_label(f) }}
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </form>
                 </div><!-- /.box-header -->
                 {% if ClassNames|length > 0 %}
                     <div class="box-body no-padding no-border">

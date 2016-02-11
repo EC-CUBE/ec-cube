@@ -139,15 +139,16 @@ $(function() {
                                                     {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                                                 </div>
                                             </div>
-                                            <div class="extra-form">
+                                            <div class="extra-form col-md-12">
                                                 {% for f in searchForm.getIterator %}
                                                     {% if f.vars.name matches '[^plg*]' %}
-                                                        {{ form_label(f) }}
-                                                        {{ form_widget(f) }}
-                                                        {{ form_errors(f) }}
+                                                        <div class="form-group">
+                                                            {{ form_label(f) }}
+                                                            {{ form_widget(f) }}
+                                                            {{ form_errors(f) }}
+                                                        </div>
                                                     {% endif %}
                                                 {% endfor %}
-                                            </div>
                                             <div class="col-sm-6">
                                                 {{ form_rest(searchForm) }}
                                             </div>

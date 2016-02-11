@@ -273,13 +273,11 @@ final class EccubeEvents
      * Admin/Setting/Shop/DeliveryController
      */
     // index
-    const ADMIN_DELIVERY_INDEX_INITIALIZE = 'admin.delivery.index.initialize';
     const ADMIN_DELIVERY_INDEX_COMPLETE = 'admin.delivery.index.complete';
     // edit
     const ADMIN_DELIVERY_EDIT_INITIALIZE = 'admin.delivery.edit.initialize';
     const ADMIN_DELIVERY_EDIT_COMPLETE = 'admin.delivery.edit.complete';
     // delete
-    const ADMIN_DELIVERY_DELETE_INITIALIZE = 'admin.delivery.delete.initialize';
     const ADMIN_DELIVERY_DELETE_COMPLETE = 'admin.delivery.delete.complete';
 
     /**
@@ -293,16 +291,13 @@ final class EccubeEvents
      * Admin/Setting/Shop/PaymentController
      */
     // index
-    const ADMIN_PAYMENT_INDEX_INITIALIZE = 'admin.payment.index.initialize';
     const ADMIN_PAYMENT_INDEX_COMPLETE = 'admin.payment.index.complete';
     // edit
     const ADMIN_PAYMENT_EDIT_INITIALIZE = 'admin.payment.edit.initialize';
     const ADMIN_PAYMENT_EDIT_COMPLETE = 'admin.payment.edit.complete';
     // imageAdd
-    const ADMIN_PAYMENT_IMAGE_ADD_INITIALIZE = 'admin.payment.image.add.initialize';
     const ADMIN_PAYMENT_IMAGE_ADD_COMPLETE = 'admin.payment.image.add.complete';
     // delete
-    const ADMIN_PAYMENT_DELETE_INITIALIZE = 'admin.payment.delete.initialize';
     const ADMIN_PAYMENT_DELETE_COMPLETE = 'admin.payment.delete.complete';
 
     /**
@@ -319,7 +314,6 @@ final class EccubeEvents
     const ADMIN_TAX_RULE_INDEX_INITIALIZE = 'admin.tax.rule.index.initialize';
     const ADMIN_TAX_RULE_INDEX_COMPLETE = 'admin.tax.rule.index.complete';
     // delete
-    const ADMIN_TAX_RULE_DELETE_INITIALIZE = 'admin.tax.rule.delete.initialize';
     const ADMIN_TAX_RULE_DELETE_COMPLETE = 'admin.tax.rule.delete.complete';
     // editParameter
     const ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE = 'admin.tax.rule.edit.parameter.initialize';
@@ -352,9 +346,9 @@ final class EccubeEvents
      * Admin/Setting/System/MasterdataController
      */
     // index
-    const ADMIN_MASTERDATA_INDEX_INITIALIZE = 'admin.log.index.initialize';
-    const ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.log.index.form2.initialize';
-    const ADMIN_MASTERDATA_INDEX_COMPLETE = 'admin.log.index.complete';
+    const ADMIN_MASTERDATA_INDEX_INITIALIZE = 'admin.masterdata.index.initialize';
+    const ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.masterdata.index.form2.initialize';
+    const ADMIN_MASTERDATA_INDEX_COMPLETE = 'admin.masterdata.index.complete';
 
     // edit
     const ADMIN_MASTERDATA_EDIT_INITIALIZE = 'admin.masterdata.edit.initialize';

@@ -121,6 +121,14 @@ $(function() {
                         {{ form_row(form.good_traded) }}
                         {{ form_row(form.message) }}
 
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
@@ -175,15 +183,6 @@ $(function() {
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
-            </div>
-            <div class="extra-form">
-                {% for f in form.getIterator %}
-                    {% if f.vars.name matches '[^plg*]' %}
-                        {{ form_label(f) }}
-                        {{ form_widget(f) }}
-                        {{ form_errors(f) }}
-                    {% endif %}
-                {% endfor %}
             </div>
             <div class="col-md-3" id="aside_column">
                 <div class="col_inner">

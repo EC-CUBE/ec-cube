@@ -163,7 +163,7 @@ class CustomerController extends AbstractController
         $event = new EventArgs(
             array(
                 'Customer' => $Customer,
-                'activeUrl' => $activateUrl,
+                'activateUrl' => $activateUrl,
             ),
             $request
         );
