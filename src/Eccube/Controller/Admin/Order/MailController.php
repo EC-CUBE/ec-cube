@@ -325,7 +325,7 @@ class MailController
                                 'form' => $form,
                                 'MailTemplate' => $MailTemplate,
                                 'MailHistory' => $MailHistory,
-                                'order' => $Order
+                                'Order' => $Order
                             ),
                             $request
                         );

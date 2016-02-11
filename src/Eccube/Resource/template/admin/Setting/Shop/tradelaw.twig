@@ -116,17 +116,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ form_row(form.law_term04) }}
                     {{ form_row(form.law_term05) }}
                     {{ form_row(form.law_term06) }}
+                    <div class="extra-form">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                {{ form_row(f) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
-        </div>
-        <div class="extra-form">
-            {% for f in form.getIterator %}
-                {% if f.vars.name matches '[^plg*]' %}
-                    {{ form_label(f) }}
-                    {{ form_widget(f) }}
-                    {{ form_errors(f) }}
-                {% endif %}
-            {% endfor %}
         </div>
         <div class="col-md-3">
             <div class="col_inner" id="aside_column">

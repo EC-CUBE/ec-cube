@@ -49,6 +49,7 @@ class LogController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE, $event);
+        $formData = $event->getArgument('data');
 
         $form = $builder->getForm();
 

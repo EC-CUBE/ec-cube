@@ -41,7 +41,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 oldRanks.push(this.dataset.rank);
             });
             // rsort
-            oldRanks.sort(function(a,b){return a - b;}).reverse();
+            oldRanks.sort(function(a, b) {
+                return a - b;
+            }).reverse();
 
             $("div.tableish").sortable({
                 items: '> .item_box',
@@ -85,22 +87,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <h3 class="box-title">規格名： {{ ClassName.name }}</h3>
                 </div>
                 <div class="box-body">
-                    <div class="form-inline">
-                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
-                            {{ form_widget(form._token) }}
-                            {{ form_widget(form.name, {attr: {placeholder: '分類名を入力'}}) }}
-                            <div class="extra-form">
-                                {% for f in form.getIterator %}
-                                    {% if f.vars.name matches '[^plg*]' %}
-                                        {{ form_label(f) }}
-                                        {{ form_widget(f) }}
-                                        {{ form_errors(f) }}
-                                    {% endif %}
-                                {% endfor %}
+                    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
+                        <div class="form-group">
+                            <div class="col-md-12 form-inline">
+                                {{ form_widget(form._token) }}
+                                {{ form_widget(form.name, {attr: {placeholder: '分類名を入力'}}) }}
+                                <button class="btn btn-default btn-sm" type="submit">分類作成</button>
                             </div>
-                            <button class="btn btn-default btn-sm" type="submit">分類作成</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_label(f) }}
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </form>
                 </div><!-- /.box-header -->
                 {% if ClassCategories|length > 0 %}
                     <div class="box-body no-padding no-border">
@@ -109,9 +113,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                                 {% for ClassCategory in ClassCategories %}
 
-                                    <div class="item_box tr" data-category-id="{{ ClassCategory.id }}" data-rank="{{ ClassCategory.rank }}">
+                                    <div class="item_box tr" data-category-id="{{ ClassCategory.id }}"
+                                         data-rank="{{ ClassCategory.rank }}">
                                         <div class="icon_sortable td">
-                                            <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
+                                            <svg class="cb cb-ellipsis-v">
+                                                <use xlink:href="#cb-ellipsis-v"/>
+                                            </svg>
                                         </div>
                                         <div class="item_pattern td">
                                             <a href="{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: ClassCategory.id}) }}">
@@ -120,7 +127,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                         <div class="icon_edit td">
                                             <div class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"/></svg></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
                                                     {% if ClassCategory.id != TargetClassCategory.id %}
                                                         <li>
@@ -130,7 +137,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <li><a>編集中</a></li>
                                                     {% endif %}
                                                     <li>
-                                                        <a href="{{ url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }} data-method="delete"
+                                                        <a href="{{ url('admin_product_class_category_delete', {class_name_id: ClassName.id, id: ClassCategory.id }) }}" {{ csrf_token_for_anchor() }}
+                                                           data-method="delete"
                                                            data-message="分類名を削除すると、その分類を利用している商品規格が無効になります。整合性の問題を把握し、バックアップを行ってから削除することを推奨致します。">削除</a>
                                                     </li>
                                                 </ul>
@@ -144,7 +152,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div><!-- /.box-body -->
                 {% else %}
                     <div class="box-body no-padding">
-                        <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
+                        <div class="data-empty">
+                            <svg class="cb cb-inbox"><use xlink:href="#cb-inbox"/></svg>
+                            <p>データはありません</p>
+                        </div>
                     </div><!-- /.box-body -->
                 {% endif %}
                 <!-- ▲ データがある時 ▲ -->

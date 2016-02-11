@@ -122,16 +122,18 @@ class ShoppingController extends AbstractController
         $app['orm.em']->refresh($Order);
 
         // form作成
-        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'order' => $Order,
+                'builder' => $builder,
+                'Order' => $Order,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$app['session']->has($this->sessionMultipleKey)) {
@@ -171,16 +173,18 @@ class ShoppingController extends AbstractController
         }
 
         // form作成
-        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'order' => $Order,
+                'builder' => $builder,
+                'Order' => $Order,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -228,7 +232,7 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'order' => $Order,
+                    'Order' => $Order,
                 ),
                 $request
             );
@@ -266,8 +270,8 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'order' => $Order,
-                    'mailHistory' => $MailHistory,
+                    'Order' => $Order,
+                    'MailHistory' => $MailHistory,
                 ),
                 $request
             );
@@ -338,16 +342,18 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'order' => $Order,
+                'builder' => $builder,
+                'Order' => $Order,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_DELIVERY_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -401,7 +407,7 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'order' => $Order,
+                    'Order' => $Order,
                 ),
                 $request
             );
@@ -431,16 +437,18 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'order' => $Order,
+                'builder' => $builder,
+                'Order' => $Order,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_PAYMENT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -465,7 +473,7 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'order' => $Order,
+                    'Order' => $Order,
                 ),
                 $request
             );
@@ -495,7 +503,19 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Order' => $Order,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -574,7 +594,7 @@ class ShoppingController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                    'order' => $Order,
+                    'Order' => $Order,
                     'shippingId' => $id,
                 ),
                 $request
@@ -609,7 +629,19 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Order' => $Order,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -672,18 +704,19 @@ class ShoppingController extends AbstractController
         }
 
         $builder = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress);
-        $form = $builder->getForm();
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'order' => $Order,
-                'shipping' => $Shipping,
-                'customerAdderss' => $CustomerAddress,
+                'builder' => $builder,
+                'Order' => $Order,
+                'Shipping' => $Shipping,
+                'CustomerAdderss' => $CustomerAddress,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -704,8 +737,8 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'shipping' => $Shipping,
-                    'customerAdderss' => $CustomerAddress,
+                    'Shipping' => $Shipping,
+                    'CustomerAdderss' => $CustomerAddress,
                 ),
                 $request
             );
@@ -776,7 +809,7 @@ class ShoppingController extends AbstractController
 
                 $event = new EventArgs(
                     array(
-                        'order' => $Order,
+                        'Order' => $Order,
                         'data' => $data,
                     ),
                     $request
@@ -819,15 +852,15 @@ class ShoppingController extends AbstractController
             }
         }
 
-        $form = $builder->getForm();
-
         $event = new EventArgs(
             array(
-                'form' => $form,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         return $app->render('Shopping/login.twig', array(
             'error' => $app['security.last_error']($request),
@@ -859,15 +892,17 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        $form = $app['form.factory']->createBuilder('nonmember')->getForm();
+        $builder = $app['form.factory']->createBuilder('nonmember');
 
         $event = new EventArgs(
             array(
-                'form' => $form,
+                'builder' => $builder,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -940,7 +975,7 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'order' => $Order,
+                    'Order' => $Order,
                 ),
                 $request
             );
@@ -973,7 +1008,19 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        $form = $app['eccube.service.shopping']->getShippingForm($Order);
+        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Order' => $Order,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -1044,8 +1091,8 @@ class ShoppingController extends AbstractController
             }
         }
 
-        $form = $app->form()->getForm();
-        $form
+        $builder = $app->form();
+        $builder
             ->add('shipping_multiple', 'collection', array(
                 'type' => 'shipping_multiple',
                 'data' => $shipmentItems,
@@ -1055,12 +1102,14 @@ class ShoppingController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'order' => $Order,
+                'builder' => $builder,
+                'Order' => $Order,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -1178,7 +1227,7 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'order' => $Order,
+                    'Order' => $Order,
                 ),
                 $request
             );
@@ -1212,16 +1261,18 @@ class ShoppingController extends AbstractController
         $CustomerAddress->setCustomer($Customer);
         $Customer->addCustomerAddress($CustomerAddress);
 
-        $form = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress)->getForm();
+        $builder = $app['form.factory']->createBuilder('shopping_shipping', $CustomerAddress);
 
         $event = new EventArgs(
             array(
-                'form' => $form,
-                'customer' => $Customer,
+                'builder' => $builder,
+                'Customer' => $Customer,
             ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         $form->handleRequest($request);
 
@@ -1235,7 +1286,7 @@ class ShoppingController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'customerAddresses' => $customerAddresses,
+                    'CustomerAddresses' => $customerAddresses,
                 ),
                 $request
             );

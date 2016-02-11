@@ -96,8 +96,8 @@ class TaxRuleController extends AbstractController
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'baseInfo' => $BaseInfo,
-                        'targetTaxRule' => $TargetTaxRule,
+                        'BaseInfo' => $BaseInfo,
+                        'TargetTaxRule' => $TargetTaxRule,
                     ),
                     $request
                 );
