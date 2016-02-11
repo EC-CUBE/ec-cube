@@ -37,7 +37,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
     public function _tearDown()
     {
-        //$this->cleanUpMailCatcherMessages();
+        $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
@@ -120,6 +120,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
             array(
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
+                EccubeEvents::MAIL_ORDER,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE,
             )
         );
@@ -557,6 +558,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
             array(
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
+                EccubeEvents::MAIL_ORDER,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE,
             )
         );

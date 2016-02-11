@@ -63,7 +63,9 @@ class ForgotControllerTest extends AbstractWebTestCase
         $hookpoins = array(
             EccubeEvents::FRONT_FORGOT_INDEX_INITIALIZE,
             EccubeEvents::FRONT_FORGOT_INDEX_COMPLETE,
+            EccubeEvents::MAIL_PASSWORD_RESET,
             EccubeEvents::FRONT_FORGOT_RESET_COMPLETE,
+            EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE,
         );
         $this->verifyOutputString($hookpoins);
     }

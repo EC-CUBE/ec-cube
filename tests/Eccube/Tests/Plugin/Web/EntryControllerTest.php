@@ -152,6 +152,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $hookpoins = array(
             EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE,
             EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE,
+            EccubeEvents::MAIL_CUSTOMER_CONFIRM,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -172,6 +173,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $hookpoins = array(
             EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE,
+            EccubeEvents::MAIL_CUSTOMER_COMPLETE,
         );
         $this->verifyOutputString($hookpoins);
     }

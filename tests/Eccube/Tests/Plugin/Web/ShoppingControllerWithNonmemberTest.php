@@ -116,6 +116,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
             array(
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
+                EccubeEvents::MAIL_ORDER,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE,
             )
         );
