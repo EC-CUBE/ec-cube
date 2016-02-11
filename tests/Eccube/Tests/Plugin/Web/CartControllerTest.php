@@ -25,10 +25,10 @@
 namespace Eccube\Tests\Plugin\Web;
 
 use Eccube\Event\EccubeEvents;
-use Eccube\Tests\Plugin\AbstractPluginTestCase;
+use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CartControllerTest extends AbstractPluginTestCase
+class CartControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCart()
     {
