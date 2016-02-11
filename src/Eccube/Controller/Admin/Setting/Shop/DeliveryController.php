@@ -52,7 +52,7 @@ class DeliveryController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'deliveries' => $Deliveries,
+                'Deliveries' => $Deliveries,
             ),
             $request
         );
@@ -178,7 +178,7 @@ class DeliveryController extends AbstractController
                         'form' => $form,
                         'Delivery' => $Delivery,
                         'Prefs' => $Prefs,
-                        'deliveryFees' => $DeliveryFees,
+                        'DeliveryFees' => $DeliveryFees,
                     ),
                     $request
                 );

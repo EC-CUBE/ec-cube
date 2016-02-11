@@ -303,6 +303,7 @@ class EditController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
+            $searchData = $event->getArgument('searchData');
 
             $Customers = $qb->getQuery()->getResult();
 
@@ -332,6 +333,7 @@ class EditController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+            $data = $event->getArgument('data');
 
             return $app->json($data);
         }
@@ -398,6 +400,7 @@ class EditController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_BY_ID_COMPLETE, $event);
+            $data = $event->getArgument('data');
 
             return $app->json($data);
         }
@@ -429,6 +432,7 @@ class EditController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
+            $searchData = $event->getArgument('searchData');
 
             /** @var $Products \Eccube\Entity\Product[] */
             $Products = $qb->getQuery()->getResult();
