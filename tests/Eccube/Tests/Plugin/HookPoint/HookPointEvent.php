@@ -741,10 +741,12 @@ class HookPointEvent
 // index
     public function onWithdraw1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE;
     }
 
     public function onWithdraw2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE;
     }
 
 
