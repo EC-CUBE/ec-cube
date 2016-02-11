@@ -37,7 +37,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
     public function _tearDown()
     {
-        $this->cleanUpMailCatcherMessages();
+        //$this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
