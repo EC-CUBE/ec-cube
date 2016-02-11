@@ -209,40 +209,49 @@ class HookPointEvent
 // index
     public function onAdminMail1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_INITIALIZE;
     }
 
     public function onAdminMail2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE;
     }
 
     public function onAdminMail3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CONFIRM;
     }
 
     public function onAdminMail4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_INDEX_COMPLETE;
     }
 
 // view
     public function onAdminMail5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_VIEW_COMPLETE;
     }
 
 // mailAll
     public function onAdminMail6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE;
     }
 
     public function onAdminMail7(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE;
     }
 
     public function onAdminMail8(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_CONFIRM;
     }
 
     public function onAdminMail9(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE;
     }
 
 
@@ -1065,8 +1074,9 @@ class HookPointEvent
 
     function onMail7(EventArgs $event)
     {
+        echo EccubeEvents::MAIL_ADMIN_ORDER;
         $message = $event->getArgument('message');
-        $message->setBody('onMail7');
+        $message->setBody(EccubeEvents::MAIL_ADMIN_ORDER);
     }
 
     function onMail8(EventArgs $event)
