@@ -26,6 +26,8 @@ namespace Eccube\Tests\Plugin\Web;
 
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
