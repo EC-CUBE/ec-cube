@@ -890,35 +890,43 @@ class HookPointEvent
 // index
     public function onProduct1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE;
     }
 
     public function onProduct2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH;
     }
 
     public function onProduct3(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_INDEX_COMPLETE;
     }
 
     public function onProduct4(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_INDEX_DISP;
     }
 
     public function onProduct5(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_INDEX_ORDER;
     }
 
 // detail
     public function onProduct6(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE;
     }
 
     public function onProduct7(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_DETAIL_FAVORITE;
     }
 
     public function onProduct8(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_PRODUCT_DETAIL_COMPLETE;
     }
 
 
