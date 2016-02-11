@@ -964,6 +964,7 @@ class ShoppingService
      *
      * @param Order $Order
      * @return \Symfony\Component\Form\Form
+     * @deprecated since 3.0, to be removed in 3.1
      */
     public function getShippingForm(Order $Order)
     {
@@ -989,6 +990,37 @@ class ShoppingService
         $form = $builder->getForm();
 
         return $form;
+
+    }
+
+    /**
+     * お届け先ごとにFormBuilderを作成
+     *
+     * @param Order $Order
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    public function getShippingFormBuilder(Order $Order)
+    {
+        $message = $Order->getMessage();
+
+        $deliveries = $this->getDeliveriesOrder($Order);
+
+        // 配送業者の支払方法を取得
+        $payments = $this->getFormPayments($deliveries, $Order);
+
+        $builder = $this->app['form.factory']->createBuilder('shopping', null, array(
+            'payments' => $payments,
+            'payment' => $Order->getPayment(),
+            'message' => $message,
+        ));
+
+        $builder
+            ->add('shippings', 'collection', array(
+                'type' => 'shipping_item',
+                'data' => $Order->getShippings(),
+            ));
+
+        return $builder;
 
     }
 

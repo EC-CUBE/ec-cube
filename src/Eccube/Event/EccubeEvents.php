@@ -392,7 +392,6 @@ final class EccubeEvents
     const FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE = 'front.mypage.delivery.edit.complete';
 
     // delete
-    const FRONT_MYPAGE_DELIVERY_DELETE_INITIALIZE = 'front.mypage.delete.initialize';
     const FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE = 'front.mypage.delete.complete';
 
     /**
@@ -450,6 +449,11 @@ final class EccubeEvents
     const FRONT_CART_REMOVE_INITIALIZE = 'front.cart.remove.initialize';
     const FRONT_CART_REMOVE_COMPLETE = 'front.cart.remove.complete';
 
+    // buystep
+    const FRONT_CART_BUYSTEP_INITIALIZE = 'front.cart.buystep.initialize';
+    const FRONT_CART_BUYSTEP_COMPLETE = 'front.cart.buystep.complete';
+
+
     /**
      * ContactController
      */
@@ -464,7 +468,6 @@ final class EccubeEvents
     const FRONT_ENTRY_INDEX_INITIALIZE = 'front.entry.index.initialize';
     const FRONT_ENTRY_INDEX_COMPLETE = 'front.entry.index.complete';
     // activate
-    const FRONT_ENTRY_ACTIVATE_INITIALIZE = 'front.entry.activate.initialize';
     const FRONT_ENTRY_ACTIVATE_COMPLETE = 'front.entry.activate.complete';
 
     /**
@@ -474,7 +477,6 @@ final class EccubeEvents
     const FRONT_FORGOT_INDEX_INITIALIZE = 'front.forgot.index.initialize';
     const FRONT_FORGOT_INDEX_COMPLETE = 'front.forgot.index.complete';
     // reset
-    const FRONT_FORGOT_RESET_INITIALIZE = 'front.reset.index.initialize';
     const FRONT_FORGOT_RESET_COMPLETE = 'front.reset.index.complete';
 
     /**
@@ -554,6 +556,7 @@ final class EccubeEvents
      * UserDataController
      */
     // index
+    const FRONT_USER_DATA_INDEX_INITIALIZE = 'front.user.data.index.initialize';
 
 
     /**

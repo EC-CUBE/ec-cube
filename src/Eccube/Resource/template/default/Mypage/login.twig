@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endif %}
                                 {% endif %}
                             </div>
-                            <div class="form-group extra-form">
+                            <div class="extra-form form-group">
                                 {% for f in form.getIterator %}
                                     {% if f.vars.name matches '[^plg*]' %}
                                         {{ form_label(f) }}

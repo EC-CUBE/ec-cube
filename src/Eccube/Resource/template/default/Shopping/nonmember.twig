@@ -104,9 +104,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </dd>
                     </dl>
-
-
                 </div>
+                {% for f in form %}
+                    {% if f.vars.name matches '[^plg*]' %}
+                        <div class="extra-form dl_table">
+                            {{ form_row(f) }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
                 <div class="row no-padding">
                     <div class="btn_group col-sm-offset-4 col-sm-4">
                         <p>

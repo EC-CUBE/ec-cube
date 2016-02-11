@@ -292,6 +292,13 @@ $(function() {
                         {{ form_widget(form.message, {'attr': {'placeholder': 'お問い合わせ事項がございましたら、こちらにご入力ください。(3000文字まで)', 'rows': '6'}}) }}
                         {{ form_errors(form.message) }}
                     </div>
+                    <div class="extra-form column">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                {{ form_row(f) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div><!-- /.col -->
 
                 <div id="confirm_side" class="col-sm-4">
