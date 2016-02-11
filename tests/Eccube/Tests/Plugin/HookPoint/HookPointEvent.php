@@ -840,19 +840,23 @@ class HookPointEvent
 // index
     public function onEntry1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE;
     }
 
     public function onEntry2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE;
     }
 
 // activate
     public function onEntry3(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_ENTRY_ACTIVATE_INITIALIZE;
     }
 
     public function onEntry4(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE;
     }
 
 
