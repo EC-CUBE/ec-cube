@@ -22,20 +22,20 @@
  */
 
 
-namespace Eccube\Tests\Plugin;
+namespace Eccube\Tests\Plugin\Web;
 
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractPluginTestCase extends EccubeTestCase
+abstract class AbstractWebTestCase extends EccubeTestCase
 {
     protected $client;
 
     // テスト用プラグイン.
-    protected $from = __DIR__.'/HookPoint';
+    protected $from = __DIR__.'/../HookPoint';
 
     // テスト用プラグイン設置先.
-    protected $to = __DIR__.'/../../../../app/Plugin/HookPoint';
+    protected $to = __DIR__.'/../../../../../app/Plugin/HookPoint';
 
     public function setUp()
     {
