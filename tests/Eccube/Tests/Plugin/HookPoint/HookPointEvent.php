@@ -108,32 +108,24 @@ class HookPointEvent
 // index
     public function onAdminCustomer1(EventArgs $event)
     {
-        $builder = $event->getArgument('builder');
-        $builder
-            ->add('plg_hoge', 'text', array(
-                'required' => true,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                ),
-                'mapped' => false,
-            ));
-
-
-
+        echo EccubeEvents::ADMIN_CUSTOMER_INDEX_INITIALIZE;
     }
 
     public function onAdminCustomer2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH;
     }
 
 // resend
     public function onAdminCustomer3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CUSTOMER_RESEND_COMPLETE;
     }
 
 // delete
     public function onAdminCustomer4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE;
     }
 
 // export
@@ -1050,8 +1042,10 @@ class HookPointEvent
 
     function onMail6(EventArgs $event)
     {
+        echo EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM;
+
         $message = $event->getArgument('message');
-        $message->setBody('onMail6');
+        $message->setSubject('会員登録のご確認');
     }
 
     function onMail7(EventArgs $event)
