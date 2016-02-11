@@ -700,39 +700,47 @@ class HookPointEvent
 // login
     public function onMypage1(EventArgs $event)
     {
+        echo EccubeEvents::FROMT_MYPAGE_MYPAGE_LOGIN_INITIALIZE;
     }
 
 // index
     public function onMypage2(EventArgs $event)
     {
+        echo EccubeEvents::FROMT_MYPAGE_MYPAGE_INDEX_SEARCH;
     }
 
 // history
     public function onMypage3(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_HISTORY_INITIALIZE;
     }
 
 // order
     public function onMypage4(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE;
     }
 
     public function onMypage5(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_COMPLETE;
     }
 
 // favorite
     public function onMypage6(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH;
     }
 
 // delete
     public function onMypage7(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE;
     }
 
     public function onMypage8(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE;
     }
 
 
