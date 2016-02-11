@@ -178,6 +178,24 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verifyOutputString($expected);
     }
 
+    public function testDisplay()
+    {
+        $Product = $this->createProduct();
+        $AllProducts = $this->app['eccube.repository.product']->findAll();
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_display', array('id' => $Product->getId()))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $expected = array(
+            EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE,
+        );
+
+        $this->verifyOutputString($expected);
+    }
+
     private function newTestProduct($TestCreator)
     {
         $TestProduct = new \Eccube\Entity\Product();
