@@ -936,42 +936,51 @@ class HookPointEvent
 // index
     public function onShopping1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE;
     }
 
 // confirm
     public function onShopping2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE;
     }
 
     public function onShopping3(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING;
     }
 
     public function onShopping4(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE;
     }
 
 // complete
     public function onShopping5(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_COMPLETE_INITIALIZE;
     }
 
 // delivery
     public function onShopping6(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_DELIVERY_INITIALIZE;
     }
 
     public function onShopping7(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_DELIVERY_COMPLETE;
     }
 
 // payment
     public function onShopping8(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_PAYMENT_INITIALIZE;
     }
 
     public function onShopping9(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_PAYMENT_COMPLETE;
     }
 
 // shippingChange
@@ -979,6 +988,7 @@ class HookPointEvent
 // shipping
     public function onShopping10(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE;
     }
 
 // shippingEditChange
@@ -986,29 +996,35 @@ class HookPointEvent
 // shippingEdit
     public function onShopping11(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE;
     }
 
     public function onShopping12(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE;
     }
 
 // customer
     public function onShopping13(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE;
     }
 
 // login
     public function onShopping14(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE;
     }
 
 // nonmember
     public function onShopping15(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE;
     }
 
     public function onShopping16(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE;
     }
 
 // shippingMultipleChange
@@ -1016,24 +1032,29 @@ class HookPointEvent
 // shippingMultiple
     public function onShopping17(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE;
     }
 
     public function onShopping18(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE;
     }
 
 // shippingMultipleEdit
     public function onShopping19(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE;
     }
 
     public function onShopping20(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE;
     }
 
 // shippingError
     public function onShopping21(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_ERROR_COMPLETE;
     }
 
 
