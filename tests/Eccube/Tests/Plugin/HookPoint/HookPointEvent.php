@@ -358,15 +358,18 @@ class HookPointEvent
 // index
     public function onAdminProductClass1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE;
     }
 
     public function onAdminProductClass2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES;
     }
 
 // edit
     public function onAdminProductClass3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_INITIALIZE;
     }
 
     public function onAdminProductClass4(EventArgs $event)
