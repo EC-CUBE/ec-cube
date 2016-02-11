@@ -242,15 +242,18 @@ class HookPointEvent
 // index
     public function onAdminOrder1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE;
     }
 
     public function onAdminOrder2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_INDEX_SEARCH;
     }
 
 // delete
     public function onAdminOrder3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE;
     }
 
 // exportOrder
