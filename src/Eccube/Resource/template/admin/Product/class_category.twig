@@ -80,13 +80,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+    <div id="edit_list" class="row">
+        <div id="edit_list_box" class="col-md-12">
+            <div id="edit_list_box__body" class="box">
+                <div id="edit_box__header" class="box-header">
                     <h3 class="box-title">規格名： {{ ClassName.name }}</h3>
                 </div>
-                <div class="box-body">
+                <div id="edit_box__body" class="box-body">
                     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassCategory.id %}{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: TargetClassCategory.id}) }}{% else %}{{ url('admin_product_class_category', {'class_name_id': ClassName.id}) }}{% endif %}">
                         <div class="form-group">
                             <div class="col-md-12 form-inline">
@@ -107,28 +107,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </form>
                 </div><!-- /.box-header -->
                 {% if ClassCategories|length > 0 %}
-                    <div class="box-body no-padding no-border">
-                        <div class="sortable_list">
-                            <div class="tableish">
+                    <div id="sortable_list_box" class="box-body no-padding no-border">
+                        <div id="list_box" class="sortable_list">
+                            <div id="sortable_list_box__body" class="tableish">
 
                                 {% for ClassCategory in ClassCategories %}
 
-                                    <div class="item_box tr" data-category-id="{{ ClassCategory.id }}"
-                                         data-rank="{{ ClassCategory.rank }}">
+                                    <div id="sortable_list_box__item--{{ ClassCategory.id }}" class="item_box tr" data-category-id="{{ ClassCategory.id }}" data-rank="{{ ClassCategory.rank }}">
                                         <div class="icon_sortable td">
                                             <svg class="cb cb-ellipsis-v">
                                                 <use xlink:href="#cb-ellipsis-v"/>
                                             </svg>
                                         </div>
-                                        <div class="item_pattern td">
+                                        <div id="sortable_list_box__name--{{ ClassCategory.id }}" class="item_pattern td">
                                             <a href="{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: ClassCategory.id}) }}">
                                                 {{ ClassCategory.name }}
                                             </a>
                                         </div>
-                                        <div class="icon_edit td">
-                                            <div class="dropdown">
+                                        <div id="sortable_list_box__menu_box--{{ ClassCategory.id }}" class="icon_edit td">
+                                            <div id="sortable_list_box__menu_box_toggle--{{ ClassCategory.id }}" class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h"/></svg></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                <ul id="sortable_list_box__menu--{{ ClassCategory.id }}" class="dropdown-menu dropdown-menu-right">
                                                     {% if ClassCategory.id != TargetClassCategory.id %}
                                                         <li>
                                                             <a href="{{ url('admin_product_class_category_edit', {class_name_id: ClassName.id, id: ClassCategory.id}) }}">編集</a>
@@ -151,8 +150,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div><!-- /.box-body -->
                 {% else %}
-                    <div class="box-body no-padding">
-                        <div class="data-empty">
+                    <div  id="sortable_list_box" class="box-body no-padding">
+                        <div id="sortable_list_box__not_find_message" class="data-empty">
                             <svg class="cb cb-inbox"><use xlink:href="#cb-inbox"/></svg>
                             <p>データはありません</p>
                         </div>
@@ -162,8 +161,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
         </div><!-- /.col -->
     </div>
-    <div class="row">
-        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+    <div id="edit_list__footer" class="row">
+        <div id="edit_list__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
             <p><a href="{{ url('admin_product_class_name') }}">規格一覧に戻る</a></p>
         </div>
     </div>
