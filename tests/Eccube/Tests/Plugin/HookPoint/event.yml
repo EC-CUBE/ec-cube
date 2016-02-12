@@ -398,8 +398,6 @@ admin.tax.rule.index.complete:
   - [onAdminTax2, NORMAL]
 
 # delete
-admin.tax.rule.delete.initialize:
-  - [onAdminTax3, NORMAL]
 admin.tax.rule.delete.complete:
   - [onAdminTax4, NORMAL]
 

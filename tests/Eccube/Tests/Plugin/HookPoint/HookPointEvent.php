@@ -651,28 +651,29 @@ class HookPointEvent
 // index
     public function onAdminTax1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_TAX_RULE_INDEX_INITIALIZE;
     }
 
     public function onAdminTax2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_TAX_RULE_INDEX_COMPLETE;
     }
 
 // delete
-    public function onAdminTax3(EventArgs $event)
-    {
-    }
-
     public function onAdminTax4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_TAX_RULE_DELETE_COMPLETE;
     }
 
 // editParameter
     public function onAdminTax5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE;
     }
 
     public function onAdminTax6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_COMPLETE;
     }
 
 
