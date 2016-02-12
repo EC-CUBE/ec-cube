@@ -48,6 +48,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
     }
 
+    public function testRoutingShoppingCustomerLogin()
+    {
+        $this->app['eccube.service.cart']->lock();
+        $client = $this->client;
+        $crawler = $client->request('GET', '/shopping/login');
+
+        $hookpoints = array(
+            EccubeEvents::FRONT_SHOPPING_LOGIN_INITIALIZE,
+        );
+        $this->verifyOutputString($hookpoints);
+    }
+
     public function testShoppingIndexWithCartUnlock()
     {
         $this->app['eccube.service.cart']->unlock();

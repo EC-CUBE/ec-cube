@@ -25,8 +25,8 @@
 namespace Eccube\Tests\Plugin\Web;
 
 use Eccube\Tests\EccubeTestCase;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -44,16 +44,18 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     protected $client;
 
     // テスト用プラグイン.
-    protected $from = __DIR__.'/../HookPoint';
+    protected $from;
 
     // テスト用プラグイン設置先.
-    protected $to = __DIR__.'/../../../../../app/Plugin/HookPoint';
+    protected $to;
 
     public function setUp()
     {
+        $from = __DIR__.'/../HookPoint';
+        $to = __DIR__.'/../../../../../app/Plugin/HookPoint';
         // テスト用プラグインを設置.
         $fs = new Filesystem();
-        $fs->mirror($this->from, $this->to);
+        $fs->mirror($from, $to);
 
         parent::setUp();
         $this->client = $this->createClient();
@@ -61,9 +63,10 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
     public function tearDown()
     {
+        $to = __DIR__.'/../../../../../app/Plugin/HookPoint';
         // テスト用プラグインを削除.
         $fs = new Filesystem();
-        $fs->remove($this->to);
+        $fs->remove($to);
 
         parent::tearDown();
         $this->client = null;

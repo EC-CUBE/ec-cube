@@ -83,7 +83,6 @@ final class EccubeEvents
      */
     // index
     const ADMIN_CONTENT_NEWS_INDEX_INITIALIZE = 'admin.content.news.index.initialize';
-    const ADMIN_CONTENT_NEWS_INDEX_COMPLETE = 'admin.content.news.index.complete';
 
     // edit
     const ADMIN_CONTENT_NEWS_EDIT_INITIALIZE = 'admin.content.news.edit.initialize';

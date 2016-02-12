@@ -57,25 +57,93 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->verifyOutputString($hookpoins);
     }
 
-    public function testRoutingProductFavoriteAdd()
+    public function testRoutingProductAdd()
     {
-        // TODO お気に入りを通すリクエストを作成する
+
+        // データ整備後にテストを実施すること
         $this->markTestSkipped();
 
         // お気に入り商品機能を有効化
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
 
+        $this->logIn();
         $client = $this->client;
-        $client->request('POST',
-            $this->app->url('product_detail', array('id' => '1'))
+
+        /** @var \Eccube\Entity\Product $Product */
+        $Product = $this->app['eccube.repository.product']->find(1);
+
+        $ProductClasses = $Product->getProductClasses();
+        $categories1  = $Product->getClassCategories1();
+        $categories2  = $Product->getClassCategories2($categories1[0]);
+
+
+        $form = $this->createFormData();
+        $client->request(
+            'POST',
+            $this->app->url('product_detail', array('id' => '1')),
+            $form
         );
-        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $hookpoins = array(
+            EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE,
+            EccubeEvents::FRONT_PRODUCT_DETAIL_COMPLETE,
+        );
+        $this->verifyOutputString($hookpoins);
+    }
+
+    public function testRoutingProductFavoriteAdd()
+    {
+
+        // データ整備後にテストを実施すること
+        $this->markTestSkipped();
+
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+
+        $this->logIn();
+        $client = $this->client;
+
+        $form = $this->createFormData2();
+        $client->request(
+            'POST',
+            $this->app->url('product_detail', array('id' => '1')),
+            $form
+        );
 
         $hookpoins = array(
             EccubeEvents::FRONT_PRODUCT_DETAIL_INITIALIZE,
             EccubeEvents::FRONT_PRODUCT_DETAIL_FAVORITE,
         );
         $this->verifyOutputString($hookpoins);
+    }
+
+    protected function createFormData()
+    {
+
+        $form = array(
+            'mode' => null,
+            'product_id' => 1,
+            'product_class_id' => 1,
+            'quantity' => 1,
+            //'classcategory_id1' => 3,
+            //'classcategory_id2' => 6,
+            '_token' => 'dummy',
+        );
+        return $form;
+    }
+
+    protected function createFormData2()
+    {
+
+        $form = array(
+            'mode' => 'add_favorite',
+            'product_id' => 1,
+            'product_class_id' => 1,
+            'quantity' => 1,
+            '_token' => 'dummy',
+        );
+        return $form;
     }
 }

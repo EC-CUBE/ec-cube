@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Plugin\Web\Admin\Content;
 
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
@@ -35,10 +37,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->client->request('GET', $this->app->url('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $hookpoins = array(
+        $hookpoints = array(
             EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE,
         );
-        $this->verifyOutputString($hookpoins);
+        $this->verifyOutputString($hookpoints);
     }
 
     public function test_routing_AdminContentPage_edit()
@@ -51,10 +53,28 @@ class PageControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $hookpoins = array(
+        $hookpoints = array(
             EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE,
         );
-        $this->verifyOutputString($hookpoins);
+        $this->verifyOutputString($hookpoints);
+    }
+
+
+    public function test_routing_AdminContentPage_edit_post()
+    {
+        $form = $this->createFormData();
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->path('admin_content_page_new'),
+            array('main_edit' => $form)
+        );
+
+        $hookpoints = array(
+            EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE,
+            EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE,
+        );
+
+        $this->verifyOutputString($hookpoints);
     }
 
     public function test_routing_AdminContentPage_delete()
@@ -62,16 +82,42 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $redirectUrl = $this->app->url('admin_content_page');
 
+        $DeviceType = $this->app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
+        $PageLayout = new PageLayout();
+        $PageLayout->setDeviceType($DeviceType);
+        $PageLayout->setEditFlg(PageLayout::EDIT_FLG_USER);
+        $PageLayout->setUrl('dummy');
+        $this->app['orm.em']->persist($PageLayout);
+        $this->app['orm.em']->flush();
+
         $this->client->request('DELETE',
             $this->app->url(
                 'admin_content_page_delete',
-                array('id' => 1)
+                array('id' => $PageLayout->getId())
             )
         );
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $actual = $this->client->getResponse()->isRedirect($redirectUrl);
+        $hookpoints = array(
+            EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE,
+        );
+        $this->verifyOutputString($hookpoints);
 
-        $this->assertTrue($actual);
+    }
+
+    protected function createFormData()
+    {
+
+        $form = array(
+            'name' => '名称',
+            'url' => 'page',
+            'file_name' => 'dummy',
+            'tpl_data' => 'dummydata',
+            '_token' => 'dummy'
+        );
+        return $form;
     }
 
 }

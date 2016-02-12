@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Plugin\Web\Admin\Content;
 
+use Eccube\Entity\Block;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
@@ -90,44 +92,36 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentBlock_blockDelete()
     {
-        $this->markTestIncomplete('このテストは、まだ実装中です。');
 
-        {
-            $crawler = $this->client->request(
-                'POST',
-                $this->app->url('admin_content_block_new', array('id' => 1)),
-                array('block' => array(
-                    'name' => 'newblock',
-                    'file_name' => 'file_name',
-                    'block_html' => '<p>test</p>',
-                    'DeviceType' => 1,
-                    'id' => 71,
-                    '_token' => 'token',
-                    'deletable_flg' => 1,
-                ))
-            );
-            $this->assertTrue($this->client->getResponse()->isRedirect(
-                $this->app->url('admin_content_block_edit', array('id' => 71))
-            ));
-        }
 
         $redirectUrl = $this->app->url('admin_content_block');
+
+        $DeviceType = $this->app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
+        $Block = new Block();
+        $Block->setDeviceType($DeviceType);
+        $Block->setFileName('dummy');
+        $Block->setLogicFlg($Block::UNUSED_BLOCK_ID);
+        $Block->setDeletableFlg(2);
+        $this->app['orm.em']->persist($Block);
+        $this->app['orm.em']->flush();
 
         $this->client->request('DELETE',
             $this->app->url(
                 'admin_content_block_delete',
-                array('id' => 71)
+                array('id' => $Block->getId())
             )
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
-
         $this->assertSame(true, $actual);
 
-        $hookpoins = array(
+        $hookpoints = array(
             EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE,
         );
-        $this->verifyOutputString($hookpoins);
+        $this->verifyOutputString($hookpoints);
+
     }
 
 }

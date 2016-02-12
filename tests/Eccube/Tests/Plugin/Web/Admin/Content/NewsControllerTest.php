@@ -76,6 +76,23 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $this->deleteTestNews($TestNews);
     }
 
+    public function testRoutingAdminContentNewsEditPost()
+    {
+        $form = $this->createFormData();
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->path('admin_content_news_new'),
+            array('admin_news' => $form)
+        );
+
+        $hookpoints = array(
+            EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE,
+            EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE,
+        );
+        $this->verifyOutputString($hookpoints);
+
+    }
+
 
     public function testRoutingAdminContentNewsDelete()
     {
@@ -203,5 +220,19 @@ class NewsControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         return $test_news_id;
+    }
+
+    protected function createFormData()
+    {
+
+        $form = array(
+            'date' => '2016-02-11',
+            'title' => 'dummy',
+            'url' => 'http://examples.com',
+            'comment' => 'dummy',
+            'select' => '0',
+            '_token' => 'dummy'
+        );
+        return $form;
     }
 }
