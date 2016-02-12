@@ -542,10 +542,12 @@ class HookPointEvent
 // index
     public function onAdminAgree1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CSV_INDEX_INITIALIZE;
     }
 
     public function onAdminAgree2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CSV_INDEX_COMPLETE;
     }
 
 
