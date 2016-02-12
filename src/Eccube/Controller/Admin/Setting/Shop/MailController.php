@@ -56,7 +56,7 @@ class MailController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MAIL_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -83,7 +83,7 @@ class MailController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MAIL_INDEX_COMPLETE, $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.mail.save.complete', 'admin');
 

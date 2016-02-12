@@ -48,7 +48,7 @@ class LogController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE, $event);
         $formData = $event->getArgument('data');
 
         $form = $builder->getForm();
@@ -64,7 +64,7 @@ class LogController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_LOG_INDEX_COMPLETE, $event);
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
         }
 
         $logFile = $app['config']['root_dir'].'/app/log/'.$formData['files'];

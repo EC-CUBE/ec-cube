@@ -48,7 +48,7 @@ class PaymentController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_INDEX_COMPLETE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE, $event);
 
         return $app->render('Setting/Shop/payment.twig', array(
             'Payments' => $Payments,
@@ -70,7 +70,7 @@ class PaymentController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_EDIT_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -109,7 +109,7 @@ class PaymentController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_EDIT_COMPLETE, $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE, $event);
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
@@ -141,7 +141,7 @@ class PaymentController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_IMAGE_ADD_COMPLETE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE, $event);
         $images = $event->getArgument('images');
         $filename = $event->getArgument('filename');
 
@@ -180,7 +180,7 @@ class PaymentController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PAYMENT_DELETE_COMPLETE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.delete.complete', 'admin') ;
 

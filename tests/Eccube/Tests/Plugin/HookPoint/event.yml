@@ -61,8 +61,6 @@ admin.content.layout.index.complete:
 # index
 admin.content.news.index.initialize:
   - [onAdminContentNews1, NORMAL]
-admin.content.news.index.complete:
-  - [onAdminContentNews2, NORMAL]
 
 # edit
 admin.content.news.edit.initialize:
@@ -311,108 +309,108 @@ admin.product.display.complete:
 # Admin/Setting/Shop/CsvController
 
 # index
-admin.csv.index.initialize:
+admin.setting.shop.csv.index.initialize:
   - [onAdminCsv1, NORMAL]
-admin.csv.index.complete:
+admin.setting.shop.csv.index.complete:
   - [onAdminCsv2, NORMAL]
 
 
 # Admin/Setting/Shop/CustomerAgreementController
 
 # index
-admin.customer.agreement.index.initialize:
+admin.setting.shop.customer.agreement.index.initialize:
   - [onAdminAgree1, NORMAL]
-admin.customer.agreement.index.complete:
+admin.setting.shop.customer.agreement.index.complete:
   - [onAdminAgree2, NORMAL]
 
 
 # Admin/Setting/Shop/DeliveryController
 
 # index
-admin.delivery.index.complete:
-  - [onAdminDelivery1, NORMAL]
+admin.setting.shop.delivery.index.complete:
+  - [onAdminDelivery2, NORMAL]
 
 # edit
-admin.delivery.edit.initialize:
-  - [onAdminDelivery2, NORMAL]
-admin.delivery.edit.complete:
+admin.setting.shop.delivery.edit.initialize:
   - [onAdminDelivery3, NORMAL]
+admin.setting.shop.delivery.edit.complete:
+  - [onAdminDelivery4, NORMAL]
 
 # delete
-admin.delivery.delete.complete:
-  - [onAdminDelivery4, NORMAL]
+admin.setting.shop.delivery.delete.complete:
+  - [onAdminDelivery6, NORMAL]
 
 
 # Admin/Setting/Shop/MailController
 
 # index
-admin.mail.index.initialize:
-  - [onAdminShopMail1, NORMAL]
-admin.mail.index.complete:
-  - [onAdminShopMail2, NORMAL]
+admin.setting.shop.mail.index.initialize:
+  - [onAdminShop1, NORMAL]
+admin.setting.shop.mail.index.complete:
+  - [onAdminShop2, NORMAL]
 
 
 # Admin/Setting/Shop/PaymentController
 
 # index
-admin.payment.index.complete:
-  - [onAdminPayment1, NORMAL]
-# edit
-admin.payment.edit.initialize:
+admin.setting.shop.payment.index.complete:
   - [onAdminPayment2, NORMAL]
-admin.payment.edit.complete:
+# edit
+admin.setting.shop.payment.edit.initialize:
   - [onAdminPayment3, NORMAL]
-# imageAdd
-admin.payment.image.add.complete:
+admin.setting.shop.payment.edit.complete:
   - [onAdminPayment4, NORMAL]
+# imageAdd
+admin.setting.shop.payment.image.add.complete:
+  - [onAdminPayment6, NORMAL]
 # delete
-admin.payment.delete.complete:
-  - [onAdminPayment5, NORMAL]
+admin.setting.shop.payment.delete.complete:
+  - [onAdminPayment8, NORMAL]
 
 
 # Admin/Setting/Shop/ShopController
 
 # index
-admin.shop.index.initialize:
+admin.setting.shop.shop.index.initialize:
   - [onAdminShop1, NORMAL]
-admin.shop.index.complete:
+admin.setting.shop.shop.index.complete:
   - [onAdminShop2, NORMAL]
 
 
 # Admin/Setting/Shop/TaxRuleController
 
 # index
-admin.tax.rule.index.initialize:
+admin.setting.shop.tax.rule.index.initialize:
   - [onAdminTax1, NORMAL]
-admin.tax.rule.index.complete:
+admin.setting.shop.tax.rule.index.complete:
   - [onAdminTax2, NORMAL]
 
 # delete
-admin.tax.rule.delete.complete:
+admin.setting.shop.tax.rule.delete.complete:
   - [onAdminTax4, NORMAL]
 
 # editParameter
-admin.tax.rule.edit.parameter.initialize:
+admin.setting.shop.tax.rule.edit.parameter.initialize:
   - [onAdminTax5, NORMAL]
-admin.tax.rule.edit.parameter.complete:
+admin.setting.shop.tax.rule.edit.parameter.complete:
   - [onAdminTax6, NORMAL]
 
 
 # Admin/Setting/Shop/TradelawController
 
 # index
-admin.trade.law.index.initialize:
+admin.setting.shop.trade.law.index.initialize:
   - [onAdminTrade1, NORMAL]
-admin.trade.law.index.complete:
+admin.setting.shop.trade.law.index.complete:
   - [onAdminTrade2, NORMAL]
 
 
 # Admin/Setting/System/AuthorityController
 
 # index
-admin.authority.index.initialize:
+admin.setting.system.authority.index.initialize:
   - [onAdminAuthority1, NORMAL]
-admin.authority.index.complete:
+admin.setting.system.authority.index.complete:
   - [onAdminAuthority2, NORMAL]
 
 
@@ -420,9 +418,9 @@ admin.authority.index.complete:
 # Admin/Setting/System/LogController
 
 # index
-admin.log.index.initialize:
+admin.setting.system.log.index.initialize:
   - [onAdminLog1, NORMAL]
-admin.log.index.complete:
+admin.setting.system.log.index.complete:
   - [onAdminLog2, NORMAL]
 
 
@@ -430,19 +428,19 @@ admin.log.index.complete:
 # Admin/Setting/System/MasterdataController
 
 # index
-admin.masterdata.index.initialize:
+admin.setting.system.log.index.initialize:
   - [onAdminMasterdata1, NORMAL]
-admin.masterdata.index.form2.initialize:
+admin.setting.system.log.index.form2.initialize:
   - [onAdminMasterdata2, NORMAL]
-admin.masterdata.index.complete:
+admin.setting.system.log.index.complete:
   - [onAdminMasterdata3, NORMAL]
 
 # edit
-admin.masterdata.edit.initialize:
+admin.setting.system.masterdata.edit.initialize:
   - [onAdminMasterdata4, NORMAL]
-admin.masterdata.edit.form.initialize:
+admin.setting.system.masterdata.edit.form.initialize:
   - [onAdminMasterdata5, NORMAL]
-admin.masterdata.edit.complete:
+admin.setting.system.masterdata.edit.complete:
   - [onAdminMasterdata6, NORMAL]
 
 
@@ -450,19 +448,19 @@ admin.masterdata.edit.complete:
 # Admin/Setting/System/MemberController
 
 # index
-admin.member.index.initialize:
+admin.setting.system.member.index.initialize:
   - [onAdminMember1, NORMAL]
 
 # edit
-admin.member.edit.initialize:
+admin.setting.system.member.edit.initialize:
   - [onAdminMember2, NORMAL]
-admin.member.edit.complete:
+admin.setting.system.member.edit.complete:
   - [onAdminMember3, NORMAL]
 
 # delete
-admin.member.delete.initialize:
+admin.setting.system.member.delete.initialize:
   - [onAdminMember4, NORMAL]
-admin.member.delete.complete:
+admin.setting.system.member.delete.complete:
   - [onAdminMember5, NORMAL]
 
 
@@ -574,6 +572,11 @@ front.cart.remove.initialize:
 front.cart.remove.complete:
   - [onCart13, NORMAL]
 
+# buystep
+front.cart.buystep.initialize:
+  - [onCart14, NORMAL]
+front.cart.buystep.complete:
+  - [onCart15, NORMAL]
 
 # ContactController
 
@@ -593,8 +596,6 @@ front.entry.index.complete:
   - [onEntry2, NORMAL]
 
 # activate
-front.entry.activate.initialize:
-  - [onEntry3, NORMAL]
 front.entry.activate.complete:
   - [onEntry4, NORMAL]
 
@@ -608,8 +609,6 @@ front.forgot.index.complete:
   - [onForgot2, NORMAL]
 
 # reset
-front.reset.index.initialize:
-  - [onForgot3, NORMAL]
 front.reset.index.complete:
   - [onForgot4, NORMAL]
 
@@ -719,6 +718,8 @@ front.shopping.shipping.error.complete:
 # UserDataController
 
 # index
+front.user.data.index.initialize:
+  - [onUserData1, NORMAL]
 
 
 # MailService

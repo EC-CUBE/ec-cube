@@ -131,12 +131,6 @@ class HookPointEvent
         echo EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE;
     }
 
-    function onAdminContentNews2(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_COMPLETE;
-    }
-
-
 // edit
     function onAdminContentNews3(EventArgs $event)
     {
@@ -528,12 +522,10 @@ class HookPointEvent
 // index
     public function onAdminCsv1(EventArgs $event)
     {
-        echo EccubeEvents::FRONT_CART_INDEX_INITIALIZE;
     }
 
     public function onAdminCsv2(EventArgs $event)
     {
-        echo EccubeEvents::FRONT_CART_INDEX_COMPLETE;
     }
 
 
@@ -542,94 +534,83 @@ class HookPointEvent
 // index
     public function onAdminAgree1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_INITIALIZE;
     }
 
     public function onAdminAgree2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_COMPLETE;
     }
 
-    // Admin/Setting/Shop/DeliveryController
+
+// Admin/Setting/Shop/DeliveryController
 
 // index
-    function onAdminDelivery1(EventArgs $event)
+    public function onAdminDelivery2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_DELIVERY_INDEX_COMPLETE;
     }
 
 // edit
-    function onAdminDelivery2(EventArgs $event)
+    public function onAdminDelivery3(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_DELIVERY_EDIT_INITIALIZE;
     }
 
-    function onAdminDelivery3(EventArgs $event)
+    public function onAdminDelivery4(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_DELIVERY_EDIT_COMPLETE;
     }
 
 // delete
-    function onAdminDelivery4(EventArgs $event)
+    public function onAdminDelivery6(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_DELIVERY_DELETE_COMPLETE;
     }
+
 
 // Admin/Setting/Shop/MailController
 
 // index
-    function onAdminShopMail1(EventArgs $event)
+    public function onAdminShopMail1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MAIL_INDEX_INITIALIZE;
     }
 
-    function onAdminShopMail2(EventArgs $event)
+    public function onAdminShopMail2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MAIL_INDEX_COMPLETE;
     }
+
 
 // Admin/Setting/Shop/PaymentController
 
 // index
-    function onAdminPayment1(EventArgs $event)
+    public function onAdminPayment2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_PAYMENT_INDEX_COMPLETE;
     }
 
 // edit
-    function onAdminPayment2(EventArgs $event)
+    public function onAdminPayment3(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_PAYMENT_EDIT_INITIALIZE;
     }
 
-    function onAdminPayment3(EventArgs $event)
+    public function onAdminPayment4(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_PAYMENT_EDIT_COMPLETE;
     }
 
 // imageAdd
-    function onAdminPayment4(EventArgs $event)
+    public function onAdminPayment6(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_PAYMENT_IMAGE_ADD_COMPLETE;
     }
 
 // delete
-    function onAdminPayment5(EventArgs $event)
+    public function onAdminPayment8(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_PAYMENT_DELETE_COMPLETE;
     }
+
 
 // Admin/Setting/Shop/ShopController
 
 // index
     public function onAdminShop1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_SHOP_INDEX_INITIALIZE;
     }
 
     public function onAdminShop2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_SHOP_INDEX_COMPLETE;
     }
 
 
@@ -638,29 +619,24 @@ class HookPointEvent
 // index
     public function onAdminTax1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_TAX_RULE_INDEX_INITIALIZE;
     }
 
     public function onAdminTax2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_TAX_RULE_INDEX_COMPLETE;
     }
 
 // delete
     public function onAdminTax4(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_TAX_RULE_DELETE_COMPLETE;
     }
 
 // editParameter
     public function onAdminTax5(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE;
     }
 
     public function onAdminTax6(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_COMPLETE;
     }
 
 
@@ -669,12 +645,10 @@ class HookPointEvent
 // index
     public function onAdminTrade1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_TRADE_LAW_INDEX_INITIALIZE;
     }
 
     public function onAdminTrade2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_TRADE_LAW_INDEX_COMPLETE;
     }
 
 
@@ -683,12 +657,10 @@ class HookPointEvent
 // index
     public function onAdminAuthority1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE;
     }
 
     public function onAdminAuthority2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_AUTHORITY_INDEX_COMPLETE;
     }
 
 
@@ -698,80 +670,69 @@ class HookPointEvent
 // index
     public function onAdminLog1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE;
     }
 
     public function onAdminLog2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_LOG_INDEX_COMPLETE;
     }
+
 
 
 // Admin/Setting/System/MasterdataController
 
 // index
-    function onAdminMasterdata1(EventArgs $event)
+    public function onAdminMasterdata1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MASTERDATA_INDEX_INITIALIZE;
     }
 
-    function onAdminMasterdata2(EventArgs $event)
+    public function onAdminMasterdata2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE;
     }
 
-    function onAdminMasterdata3(EventArgs $event)
+    public function onAdminMasterdata3(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MASTERDATA_INDEX_COMPLETE;
     }
-
 
 // edit
-    function onAdminMasterdata4(EventArgs $event)
+    public function onAdminMasterdata4(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MASTERDATA_EDIT_INITIALIZE;
     }
 
-    function onAdminMasterdata5(EventArgs $event)
+    public function onAdminMasterdata5(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MASTERDATA_EDIT_FORM_INITIALIZE;
     }
 
-    function onAdminMasterdata6(EventArgs $event)
+    public function onAdminMasterdata6(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MASTERDATA_EDIT_COMPLETE;
     }
+
 
 
 // Admin/Setting/System/MemberController
 
 // index
-    function onAdminMember1(EventArgs $event)
+    public function onAdminMember1(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MEMBER_INDEX_INITIALIZE;
     }
 
 // edit
-    function onAdminMember2(EventArgs $event)
+    public function onAdminMember2(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MEMBER_EDIT_INITIALIZE;
     }
 
-    function onAdminMember3(EventArgs $event)
+    public function onAdminMember3(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MEMBER_EDIT_COMPLETE;
     }
 
 // delete
-    function onAdminMember4(EventArgs $event)
+    public function onAdminMember4(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MEMBER_DELETE_INITIALIZE;
     }
 
-    function onAdminMember5(EventArgs $event)
+    public function onAdminMember5(EventArgs $event)
     {
-        echo EccubeEvents::ADMIN_MEMBER_DELETE_COMPLETE;
     }
+
 
 
 // Block/SearchProductController
@@ -811,10 +772,6 @@ class HookPointEvent
     }
 
 // delete
-    public function onMypageDelivery3(EventArgs $event)
-    {
-    }
-
     public function onMypageDelivery4(EventArgs $event)
     {
         echo EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE;
@@ -956,6 +913,14 @@ class HookPointEvent
         echo EccubeEvents::FRONT_CART_REMOVE_COMPLETE;
     }
 
+// buystep
+    public function onCart14(EventArgs $event)
+    {
+    }
+
+    public function onCart15(EventArgs $event)
+    {
+    }
 
 // ContactController
 
@@ -985,11 +950,6 @@ class HookPointEvent
     }
 
 // activate
-    public function onEntry3(EventArgs $event)
-    {
-        echo EccubeEvents::FRONT_ENTRY_ACTIVATE_INITIALIZE;
-    }
-
     public function onEntry4(EventArgs $event)
     {
         echo EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE;
@@ -1010,11 +970,6 @@ class HookPointEvent
     }
 
 // reset
-    public function onForgot3(EventArgs $event)
-    {
-        echo EccubeEvents::FRONT_FORGOT_RESET_INITIALIZE;
-    }
-
     public function onForgot4(EventArgs $event)
     {
         echo EccubeEvents::FRONT_FORGOT_RESET_COMPLETE;
@@ -1198,6 +1153,9 @@ class HookPointEvent
 // UserDataController
 
 // index
+    public function onUserData1(EventArgs $event)
+    {
+    }
 
 
     function onMail1(EventArgs $event)

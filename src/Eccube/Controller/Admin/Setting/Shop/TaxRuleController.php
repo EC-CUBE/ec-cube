@@ -81,7 +81,7 @@ class TaxRuleController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE, $event);
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
@@ -101,7 +101,7 @@ class TaxRuleController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_INDEX_COMPLETE, $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.tax.save.complete', 'admin');
 
@@ -146,7 +146,7 @@ class TaxRuleController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_DELETE_COMPLETE, $event);
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.shop.tax.delete.complete', 'admin');
         }
@@ -172,7 +172,7 @@ class TaxRuleController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -195,7 +195,7 @@ class TaxRuleController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_COMPLETE, $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE, $event);
 
                 $app->addSuccess('admin.shop.tax.save.complete', 'admin');
             }

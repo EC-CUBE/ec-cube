@@ -49,7 +49,7 @@ class MemberController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -83,7 +83,7 @@ class MemberController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_EDIT_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -115,7 +115,7 @@ class MemberController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_EDIT_COMPLETE, $event);
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE, $event);
 
                     $app->addSuccess('admin.member.save.complete', 'admin');
 
@@ -197,7 +197,7 @@ class MemberController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_DELETE_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE, $event);
 
         $status = $app['eccube.repository.member']->delete($TargetMember);
 
@@ -207,7 +207,7 @@ class MemberController extends AbstractController
                 array(),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MEMBER_DELETE_COMPLETE, $event);
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE, $event);
         } else {
             $app->addError('admin.member.delete.error', 'admin');
         }

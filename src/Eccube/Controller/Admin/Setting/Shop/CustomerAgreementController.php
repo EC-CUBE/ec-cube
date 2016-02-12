@@ -52,7 +52,7 @@ class CustomerAgreementController extends AbstractController
             $request
         );
 
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE, $event);
         $form = $builder->getForm();
 
         if ('POST' === $app['request']->getMethod()) {
@@ -70,7 +70,7 @@ class CustomerAgreementController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_COMPLETE, $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE, $event);
 
                 $app->addSuccess('admin.register.complete', 'admin');
                 return $app->redirect($app->url('admin_setting_shop_customer_agreement'));

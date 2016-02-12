@@ -56,7 +56,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_INDEX_COMPLETE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE, $event);
 
         return $app->render('Setting/Shop/delivery.twig', array(
             'Deliveries' => $Deliveries,
@@ -116,7 +116,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_EDIT_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -182,7 +182,7 @@ class DeliveryController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_EDIT_COMPLETE, $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE, $event);
 
                 $app->addSuccess('admin.register.complete', 'admin');
 
@@ -234,7 +234,7 @@ class DeliveryController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_DELIVERY_DELETE_COMPLETE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.delete.complete', 'admin');
 

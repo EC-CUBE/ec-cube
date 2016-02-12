@@ -275,116 +275,116 @@ final class EccubeEvents
      * Admin/Setting/Shop/CsvController
      */
     // index
-    const ADMIN_CSV_INDEX_INITIALIZE = 'admin.csv.index.initialize';
-    const ADMIN_CSV_INDEX_COMPLETE = 'admin.csv.index.complete';
+    const ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE = 'admin.setting.shop.csv.index.initialize';
+    const ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE = 'admin.setting.shop.csv.index.complete';
 
     /**
      * Admin/Setting/Shop/CustomerAgreementController
      */
     // index
-    const ADMIN_CUSTOMER_AGREEMENT_INDEX_INITIALIZE = 'admin.customer.agreement.index.initialize';
-    const ADMIN_CUSTOMER_AGREEMENT_INDEX_COMPLETE = 'admin.customer.agreement.index.complete';
+    const ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE = 'admin.setting.shop.customer.agreement.index.initialize';
+    const ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE = 'admin.setting.shop.customer.agreement.index.complete';
 
     /**
      * Admin/Setting/Shop/DeliveryController
      */
     // index
-    const ADMIN_DELIVERY_INDEX_COMPLETE = 'admin.delivery.index.complete';
+    const ADMIN_SETTING_SHOP_DELIVERY_INDEX_COMPLETE = 'admin.setting.shop.delivery.index.complete';
     // edit
-    const ADMIN_DELIVERY_EDIT_INITIALIZE = 'admin.delivery.edit.initialize';
-    const ADMIN_DELIVERY_EDIT_COMPLETE = 'admin.delivery.edit.complete';
+    const ADMIN_SETTING_SHOP_DELIVERY_EDIT_INITIALIZE = 'admin.setting.shop.delivery.edit.initialize';
+    const ADMIN_SETTING_SHOP_DELIVERY_EDIT_COMPLETE = 'admin.setting.shop.delivery.edit.complete';
     // delete
-    const ADMIN_DELIVERY_DELETE_COMPLETE = 'admin.delivery.delete.complete';
+    const ADMIN_SETTING_SHOP_DELIVERY_DELETE_COMPLETE = 'admin.setting.shop.delivery.delete.complete';
 
     /**
      * Admin/Setting/Shop/MailController
      */
     // index
-    const ADMIN_MAIL_INDEX_INITIALIZE = 'admin.mail.index.initialize';
-    const ADMIN_MAIL_INDEX_COMPLETE = 'admin.mail.index.complete';
+    const ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE = 'admin.setting.shop.mail.index.initialize';
+    const ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE = 'admin.setting.shop.mail.index.complete';
 
     /**
      * Admin/Setting/Shop/PaymentController
      */
     // index
-    const ADMIN_PAYMENT_INDEX_COMPLETE = 'admin.payment.index.complete';
+    const ADMIN_SETTING_SHOP_PAYMENT_INDEX_COMPLETE = 'admin.setting.shop.payment.index.complete';
     // edit
-    const ADMIN_PAYMENT_EDIT_INITIALIZE = 'admin.payment.edit.initialize';
-    const ADMIN_PAYMENT_EDIT_COMPLETE = 'admin.payment.edit.complete';
+    const ADMIN_SETTING_SHOP_PAYMENT_EDIT_INITIALIZE = 'admin.setting.shop.payment.edit.initialize';
+    const ADMIN_SETTING_SHOP_PAYMENT_EDIT_COMPLETE = 'admin.setting.shop.payment.edit.complete';
     // imageAdd
-    const ADMIN_PAYMENT_IMAGE_ADD_COMPLETE = 'admin.payment.image.add.complete';
+    const ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE = 'admin.setting.shop.payment.image.add.complete';
     // delete
-    const ADMIN_PAYMENT_DELETE_COMPLETE = 'admin.payment.delete.complete';
+    const ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE = 'admin.setting.shop.payment.delete.complete';
 
     /**
      * Admin/Setting/Shop/ShopController
      */
     // index
-    const ADMIN_SHOP_INDEX_INITIALIZE = 'admin.shop.index.initialize';
-    const ADMIN_SHOP_INDEX_COMPLETE = 'admin.shop.index.complete';
+    const ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE = 'admin.setting.shop.shop.index.initialize';
+    const ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE = 'admin.setting.shop.shop.index.complete';
 
     /**
      * Admin/Setting/Shop/TaxRuleController
      */
     // index
-    const ADMIN_TAX_RULE_INDEX_INITIALIZE = 'admin.tax.rule.index.initialize';
-    const ADMIN_TAX_RULE_INDEX_COMPLETE = 'admin.tax.rule.index.complete';
+    const ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE = 'admin.setting.shop.tax.rule.index.initialize';
+    const ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE = 'admin.setting.shop.tax.rule.index.complete';
     // delete
-    const ADMIN_TAX_RULE_DELETE_COMPLETE = 'admin.tax.rule.delete.complete';
+    const ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE = 'admin.setting.shop.tax.rule.delete.complete';
     // editParameter
-    const ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE = 'admin.tax.rule.edit.parameter.initialize';
-    const ADMIN_TAX_RULE_EDIT_PARAMETER_COMPLETE = 'admin.tax.rule.edit.parameter.complete';
+    const ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE = 'admin.setting.shop.tax.rule.edit.parameter.initialize';
+    const ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE = 'admin.setting.shop.tax.rule.edit.parameter.complete';
 
     /**
      * Admin/Setting/Shop/TradelawController
      */
     // index
-    const ADMIN_TRADE_LAW_INDEX_INITIALIZE = 'admin.trade.law.index.initialize';
-    const ADMIN_TRADE_LAW_INDEX_COMPLETE = 'admin.trade.law.index.complete';
+    const ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_INITIALIZE = 'admin.setting.shop.trade.law.index.initialize';
+    const ADMIN_SETTING_SHOP_TRADE_LAW_INDEX_COMPLETE = 'admin.setting.shop.trade.law.index.complete';
 
     /**
      * Admin/Setting/System/AuthorityController
      */
     // index
-    const ADMIN_AUTHORITY_INDEX_INITIALIZE = 'admin.authority.index.initialize';
-    const ADMIN_AUTHORITY_INDEX_COMPLETE = 'admin.authority.index.complete';
+    const ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE = 'admin.setting.system.authority.index.initialize';
+    const ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE = 'admin.setting.system.authority.index.complete';
 
 
     /**
      * Admin/Setting/System/LogController
      */
     // index
-    const ADMIN_LOG_INDEX_INITIALIZE = 'admin.log.index.initialize';
-    const ADMIN_LOG_INDEX_COMPLETE = 'admin.log.index.complete';
+    const ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE = 'admin.setting.system.log.index.initialize';
+    const ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE = 'admin.setting.system.log.index.complete';
 
 
     /**
      * Admin/Setting/System/MasterdataController
      */
     // index
-    const ADMIN_MASTERDATA_INDEX_INITIALIZE = 'admin.masterdata.index.initialize';
-    const ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.masterdata.index.form2.initialize';
-    const ADMIN_MASTERDATA_INDEX_COMPLETE = 'admin.masterdata.index.complete';
+    const ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE = 'admin.setting.system.masterdata.index.initialize';
+    const ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE = 'admin.setting.system.masterdata.index.form2.initialize';
+    const ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE = 'admin.setting.system.masterdata.index.complete';
 
     // edit
-    const ADMIN_MASTERDATA_EDIT_INITIALIZE = 'admin.masterdata.edit.initialize';
-    const ADMIN_MASTERDATA_EDIT_FORM_INITIALIZE = 'admin.masterdata.edit.form.initialize';
-    const ADMIN_MASTERDATA_EDIT_COMPLETE = 'admin.masterdata.edit.complete';
+    const ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE = 'admin.setting.system.masterdata.edit.initialize';
+    const ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE = 'admin.setting.system.masterdata.edit.form.initialize';
+    const ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE = 'admin.setting.system.masterdata.edit.complete';
 
 
     /**
      * Admin/Setting/System/MemberController
      */
     // index
-    const ADMIN_MEMBER_INDEX_INITIALIZE = 'admin.member.index.initialize';
+    const ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE = 'admin.setting.system.member.index.initialize';
 
     // edit
-    const ADMIN_MEMBER_EDIT_INITIALIZE = 'admin.member.edit.initialize';
-    const ADMIN_MEMBER_EDIT_COMPLETE = 'admin.member.edit.complete';
+    const ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE = 'admin.setting.system.member.edit.initialize';
+    const ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE = 'admin.setting.system.member.edit.complete';
 
     // delete
-    const ADMIN_MEMBER_DELETE_INITIALIZE = 'admin.member.delete.initialize';
-    const ADMIN_MEMBER_DELETE_COMPLETE = 'admin.member.delete.complete';
+    const ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE = 'admin.setting.system.member.delete.initialize';
+    const ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE = 'admin.setting.system.member.delete.complete';
 
 
     /**

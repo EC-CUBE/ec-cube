@@ -85,7 +85,7 @@ class CsvController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CSV_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -124,7 +124,7 @@ class CsvController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CSV_INDEX_COMPLETE, $event);
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE, $event);
 
             $app->addSuccess('admin.shop.csv.save.complete', 'admin');
 

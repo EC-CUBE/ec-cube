@@ -44,7 +44,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -77,7 +77,7 @@ class MasterdataController extends AbstractController
                     ),
                     $request
                 );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_COMPLETE, $event);
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE, $event);
 
             }
         }
@@ -90,7 +90,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
 
         $form2 = $builder2->getForm();
 
@@ -110,7 +110,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE, $event);
 
         $form2 = $builder2->getForm();
 
@@ -147,7 +147,7 @@ class MasterdataController extends AbstractController
                         ),
                         $request
                     );
-                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_COMPLETE, $event);
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE, $event);
 
                     $app->addSuccess('admin.register.complete', 'admin');
                 } catch (\Exception $e) {
@@ -167,7 +167,7 @@ class MasterdataController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
