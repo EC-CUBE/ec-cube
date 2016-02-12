@@ -35,7 +35,7 @@ class CustomerAgreementControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_CSV_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_CUSTOMER_AGREEMENT_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
