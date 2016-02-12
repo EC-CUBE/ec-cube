@@ -689,6 +689,7 @@ class HookPointEvent
 // index
     public function onBlock1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE;
     }
 
 
