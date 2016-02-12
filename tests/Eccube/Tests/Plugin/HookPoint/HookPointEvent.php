@@ -707,62 +707,71 @@ class HookPointEvent
     }
 
 
-
 // Admin/Setting/System/MasterdataController
 
 // index
-    public function onAdminMasterdata1(EventArgs $event)
+    function onAdminMasterdata1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MASTERDATA_INDEX_INITIALIZE;
     }
 
-    public function onAdminMasterdata2(EventArgs $event)
+    function onAdminMasterdata2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MASTERDATA_INDEX_FORM2_INITIALIZE;
     }
 
-    public function onAdminMasterdata3(EventArgs $event)
+    function onAdminMasterdata3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MASTERDATA_INDEX_COMPLETE;
     }
+
 
 // edit
-    public function onAdminMasterdata4(EventArgs $event)
+    function onAdminMasterdata4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MASTERDATA_EDIT_INITIALIZE;
     }
 
-    public function onAdminMasterdata5(EventArgs $event)
+    function onAdminMasterdata5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MASTERDATA_EDIT_FORM_INITIALIZE;
     }
 
-    public function onAdminMasterdata6(EventArgs $event)
+    function onAdminMasterdata6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MASTERDATA_EDIT_COMPLETE;
     }
-
 
 
 // Admin/Setting/System/MemberController
 
 // index
-    public function onAdminMember1(EventArgs $event)
+    function onAdminMember1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MEMBER_INDEX_INITIALIZE;
     }
 
 // edit
-    public function onAdminMember2(EventArgs $event)
+    function onAdminMember2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MEMBER_EDIT_INITIALIZE;
     }
 
-    public function onAdminMember3(EventArgs $event)
+    function onAdminMember3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MEMBER_EDIT_COMPLETE;
     }
 
 // delete
-    public function onAdminMember4(EventArgs $event)
+    function onAdminMember4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MEMBER_DELETE_INITIALIZE;
     }
 
-    public function onAdminMember5(EventArgs $event)
+    function onAdminMember5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MEMBER_DELETE_COMPLETE;
     }
-
 
 
 // Block/SearchProductController

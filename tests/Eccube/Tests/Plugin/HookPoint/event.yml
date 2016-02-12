@@ -430,11 +430,11 @@ admin.log.index.complete:
 # Admin/Setting/System/MasterdataController
 
 # index
-admin.log.index.initialize:
+admin.masterdata.index.initialize:
   - [onAdminMasterdata1, NORMAL]
-admin.log.index.form2.initialize:
+admin.masterdata.index.form2.initialize:
   - [onAdminMasterdata2, NORMAL]
-admin.log.index.complete:
+admin.masterdata.index.complete:
   - [onAdminMasterdata3, NORMAL]
 
 # edit
