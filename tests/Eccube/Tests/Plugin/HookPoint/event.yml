@@ -4,24 +4,34 @@
 # login
 admin.admin.login.initialize:
   - [onAdminLogin1, NORMAL]
-admin.admin.login.complete:
-  - [onAdminLogin2, NORMAL]
 
 # index
+admin.admin.index.initialize:
+  - [onAdminIndex1, NORMAL]
+admin.admin.index.order:
+  - [onAdminIndex2, NORMAL]
+admin.admin.index.sales:
+  - [onAdminIndex3, NORMAL]
+admin.admin.index.complete:
+  - [onAdminIndex4, NORMAL]
 
 # searchNonStockProducts
-
-
 
 # Admin/Content/BlockController
 
 # index
-admin.block.index.initialize:
-  - [onAdminBlock1, NORMAL]
+admin.content.block.index.complete:
+  - [onAdminContentBlock1, NORMAL]
 
 # edit
+admin.content.block.edit.initialize:
+  - [onAdminContentBlock2, NORMAL]
+admin.content.block.edit.complete:
+  - [onAdminContentBlock3, NORMAL]
 
 # delete
+admin.content.block.delete.complete:
+  - [onAdminContentBlock4, NORMAL]
 
 
 # Admin/Content/FileController
@@ -41,27 +51,44 @@ admin.block.index.initialize:
 # Admin/Content/LayoutController
 
 # index
-
-
+admin.content.layout.index.initialize:
+  - [onAdminContentLayout1, NORMAL]
+admin.content.layout.index.complete:
+  - [onAdminContentLayout2, NORMAL]
 
 # Admin/Content/NewsController
 
 # index
+admin.content.news.index.initialize:
+  - [onAdminContentNews1, NORMAL]
+admin.content.news.index.complete:
+  - [onAdminContentNews2, NORMAL]
 
 # edit
+admin.content.news.edit.initialize:
+  - [onAdminContentNews3, NORMAL]
+admin.content.news.edit.complete:
+  - [onAdminContentNews4, NORMAL]
 
 # delete
-
-
+admin.content.news.delete.complete:
+  - [onAdminContentNews5, NORMAL]
 
 # Admin/Content/PageController
 
 # index
+admin.content.page.index.initialize:
+  - [onAdminContentPage1, NORMAL]
 
 # edit
+admin.content.page.edit.initialize:
+  - [onAdminContentPage2, NORMAL]
+admin.content.page.edit.complete:
+  - [onAdminContentPage3, NORMAL]
 
 # delete
-
+admin.content.page.delete.complete:
+  - [onAdminContentPage4, NORMAL]
 
 # Admin/Customer/CustomerController
 
@@ -727,82 +754,3 @@ mail.password.reset:
   - [onMail8, NORMAL]
 mail.password.reset.complete:
   - [onMail9, NORMAL]
-
-
-# Admin/AdminContoller
-
-# login
-admin.admin.login.initialize:
-  - [onAdmin1, NORMAL]
-
-# index
-admin.admin.index.initialize:
-  - [onAdmin2, NORMAL]
-admin.admin.index.order:
-  - [onAdmin3, NORMAL]
-admin.admin.index.sales:
-  - [onAdmin4, NORMAL]
-admin.admin.index.complete:
-  - [onAdmin5, NORMAL]
-
-
-# Admin/Content/BlockController
-
-# index
-admin.content.block.index.complete:
-  - [onAdminContentBlock1, NORMAL]
-
-# edit
-admin.content.block.edit.initialize:
-  - [onAdminContentBlock2, NORMAL]
-admin.content.block.edit.complete:
-  - [onAdminContentBlock3, NORMAL]
-
-# delete
-admin.content.block.delete.complete:
-  - [onAdminContentBlock4, NORMAL]
-
-
-# Admin/Content/LayoutController
-
-# index
-admin.content.layout.index.initialize:
-  - [onAdminContentLayout1, NORMAL]
-admin.content.layout.index.complete:
-  - [onAdminContentLayout2, NORMAL]
-
-
-# Admin/Content/NewsController
-
-# index
-admin.content.news.index.initialize:
-  - [onAdminContentNews1, NORMAL]
-admin.content.news.index.complete:
-  - [onAdminContentNews2, NORMAL]
-
-# edit
-admin.content.news.edit.initialize:
-  - [onAdminContentNews3, NORMAL]
-admin.content.news.edit.complete:
-  - [onAdminContentNews4, NORMAL]
-
-# delete
-admin.content.news.delete.complete:
-  - [onAdminContentNews5, NORMAL]
-
-
-# Admin/Content/PageController
-
-# index
-admin.content.page.index.initialize:
-  - [onAdminContentPage1, NORMAL]
-
-# edit
-admin.content.page.edit.initialize:
-  - [onAdminContentPage2, NORMAL]
-admin.content.page.edit.complete:
-  - [onAdminContentPage3, NORMAL]
-
-# delete
-admin.content.page.delete.complete:
-  - [onAdminContentPage4, NORMAL]

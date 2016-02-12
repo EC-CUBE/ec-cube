@@ -44,27 +44,56 @@ class HookPointEvent
 // login
     public function onAdminLogin1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE;
     }
 
-    public function onAdminLogin2(EventArgs $event)
-    {
-    }
 
 // index
+    function onAdminIndex1(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE;
+    }
+
+    function onAdminIndex2(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_ADMIM_INDEX_ORDER;
+    }
+
+    function onAdminIndex3(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_ADMIM_INDEX_SALES;
+    }
+
+    function onAdminIndex4(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE;
+    }
 
 // searchNonStockProducts
-
 
 // Admin/Content/BlockController
 
 // index
-    public function onAdminBlock1(EventArgs $event)
+    function onAdminContentBlock1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE;
     }
 
 // edit
+    function onAdminContentBlock2(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE;
+    }
+    function onAdminContentBlock3(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE;
+    }
 
 // delete
+    function onAdminContentBlock4(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE;
+    }
 
 
 // Admin/Content/FileController
@@ -83,24 +112,76 @@ class HookPointEvent
 // Admin/Content/LayoutController
 
 // index
+    function onAdminContentLayout1(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_INITIALIZE;
+    }
+
+    function onAdminContentLayout2(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_COMPLETE;
+    }
 
 
 // Admin/Content/NewsController
 
 // index
+    function onAdminContentNews1(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE;
+    }
+
+    function onAdminContentNews2(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_COMPLETE;
+    }
+
 
 // edit
+    function onAdminContentNews3(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE;
+    }
+
+    function onAdminContentNews4(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE;
+    }
+
 
 // delete
+    function onAdminContentNews5(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE;
+    }
 
 
 // Admin/Content/PageController
 
 // index
+    function onAdminContentPage1(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE;
+    }
+
 
 // edit
+    function onAdminContentPage2(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE;
+    }
+
+    function onAdminContentPage3(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE;
+    }
+
 
 // delete
+    function onAdminContentPage4(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE;
+    }
 
 
 // Admin/Customer/CustomerController
@@ -1154,128 +1235,4 @@ class HookPointEvent
     {
         echo EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE;
     }
-
-// Admin/AdminContoller
-
-// login
-
-    function onAdmin1(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE;
-    }
-    function onAdmin2(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE;
-    }
-    function onAdmin3(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_ADMIM_INDEX_ORDER;
-    }
-    function onAdmin4(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_ADMIM_INDEX_SALES;
-    }
-    function onAdmin5(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE;
-    }
-
-// Admin/Content/BlockController
-
-    // index
-    function onAdminContentBlock1(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE;
-    }
-
-    // edit
-    function onAdminContentBlock2(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE;
-    }
-    function onAdminContentBlock3(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE;
-    }
-
-    // delete
-    function onAdminContentBlock4(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE;
-    }
-
-// Admin/Content/LayoutController
-
-// index
-
-    function onAdminContentLayout1(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_INITIALIZE;
-    }
-
-    function onAdminContentLayout2(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_COMPLETE;
-    }
-
-// Admin/Content/NewsController
-
-// index
-    function onAdminContentNews1(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE;
-    }
-
-    function onAdminContentNews2(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_COMPLETE;
-    }
-
-
-// edit
-    function onAdminContentNews3(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE;
-    }
-
-    function onAdminContentNews4(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE;
-    }
-
-
-// delete
-    function onAdminContentNews5(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE;
-    }
-
-
-// Admin/Content/PageController
-
-// index
-    function onAdminContentPage1(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE;
-    }
-
-
-// edit
-    function onAdminContentPage2(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE;
-    }
-
-    function onAdminContentPage3(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE;
-    }
-
-
-// delete
-    function onAdminContentPage4(EventArgs $event)
-    {
-        echo EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE;
-    }
-
 }
