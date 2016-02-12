@@ -29,6 +29,31 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
 class ProductClassControllerTest extends AbstractAdminWebTestCase
 {
+    public function testRoutingAdminProductProductClass()
+    {
+        // before
+        $TestCreator = $this->app['orm.em']
+            ->getRepository('\Eccube\Entity\Member')
+            ->find(1);
+        $TestProduct = $this->newTestProduct($TestCreator);
+        $this->app['orm.em']->persist($TestProduct);
+        $this->app['orm.em']->flush();
+
+        $this->client->request('GET',
+            $this->app->url('admin_product_product_class', array('id' => $TestProduct->getId()))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $expected = array(
+            EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_INITIALIZE,
+        );
+        $this->verifyOutputString($expected);
+
+        // after
+        $this->app['orm.em']->remove($TestProduct);
+        $this->app['orm.em']->flush();
+    }
+
     public function testRoutingAdminProductProductClassEdit()
     {
         // before
