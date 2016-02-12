@@ -637,10 +637,12 @@ class HookPointEvent
 // index
     public function onAdminShop1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SHOP_INDEX_INITIALIZE;
     }
 
     public function onAdminShop2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SHOP_INDEX_COMPLETE;
     }
 
 
