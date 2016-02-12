@@ -528,10 +528,12 @@ class HookPointEvent
 // index
     public function onAdminCsv1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_CART_INDEX_INITIALIZE;
     }
 
     public function onAdminCsv2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_CART_INDEX_COMPLETE;
     }
 
 
