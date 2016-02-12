@@ -492,8 +492,6 @@ front.mypage.delivery.edit.complete:
   - [onMypageDelivery2, NORMAL]
 
 # delete
-front.mypage.delete.initialize:
-  - [onMypageDelivery3, NORMAL]
 front.mypage.delete.complete:
   - [onMypageDelivery4, NORMAL]
 
