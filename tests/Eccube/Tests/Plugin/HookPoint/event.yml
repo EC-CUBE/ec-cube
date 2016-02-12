@@ -347,9 +347,9 @@ admin.delivery.delete.complete:
 
 # index
 admin.mail.index.initialize:
-  - [onAdminShop1, NORMAL]
+  - [onAdminShopMail1, NORMAL]
 admin.mail.index.complete:
-  - [onAdminShop2, NORMAL]
+  - [onAdminShopMail2, NORMAL]
 
 
 # Admin/Setting/Shop/PaymentController
