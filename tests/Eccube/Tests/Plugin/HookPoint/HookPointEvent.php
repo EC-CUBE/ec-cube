@@ -550,87 +550,74 @@ class HookPointEvent
         echo EccubeEvents::ADMIN_CSV_INDEX_COMPLETE;
     }
 
-
-// Admin/Setting/Shop/DeliveryController
+    // Admin/Setting/Shop/DeliveryController
 
 // index
-    public function onAdminDelivery1(EventArgs $event)
+    function onAdminDelivery1(EventArgs $event)
     {
-    }
-
-    public function onAdminDelivery2(EventArgs $event)
-    {
+        echo EccubeEvents::ADMIN_DELIVERY_INDEX_COMPLETE;
     }
 
 // edit
-    public function onAdminDelivery3(EventArgs $event)
+    function onAdminDelivery2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_DELIVERY_EDIT_INITIALIZE;
     }
 
-    public function onAdminDelivery4(EventArgs $event)
+    function onAdminDelivery3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_DELIVERY_EDIT_COMPLETE;
     }
 
 // delete
-    public function onAdminDelivery5(EventArgs $event)
+    function onAdminDelivery4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_DELIVERY_DELETE_COMPLETE;
     }
-
-    public function onAdminDelivery6(EventArgs $event)
-    {
-    }
-
 
 // Admin/Setting/Shop/MailController
 
 // index
-    public function onAdminShopMail1(EventArgs $event)
+    function onAdminShopMail1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MAIL_INDEX_INITIALIZE;
     }
 
-    public function onAdminShopMail2(EventArgs $event)
+    function onAdminShopMail2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_MAIL_INDEX_COMPLETE;
     }
-
 
 // Admin/Setting/Shop/PaymentController
 
 // index
-    public function onAdminPayment1(EventArgs $event)
+    function onAdminPayment1(EventArgs $event)
     {
-    }
-
-    public function onAdminPayment2(EventArgs $event)
-    {
+        echo EccubeEvents::ADMIN_PAYMENT_INDEX_COMPLETE;
     }
 
 // edit
-    public function onAdminPayment3(EventArgs $event)
+    function onAdminPayment2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PAYMENT_EDIT_INITIALIZE;
     }
 
-    public function onAdminPayment4(EventArgs $event)
+    function onAdminPayment3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PAYMENT_EDIT_COMPLETE;
     }
 
 // imageAdd
-    public function onAdminPayment5(EventArgs $event)
+    function onAdminPayment4(EventArgs $event)
     {
-    }
-
-    public function onAdminPayment6(EventArgs $event)
-    {
+        echo EccubeEvents::ADMIN_PAYMENT_IMAGE_ADD_COMPLETE;
     }
 
 // delete
-    public function onAdminPayment7(EventArgs $event)
+    function onAdminPayment5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_PAYMENT_DELETE_COMPLETE;
     }
-
-    public function onAdminPayment8(EventArgs $event)
-    {
-    }
-
 
 // Admin/Setting/Shop/ShopController
 
@@ -682,10 +669,12 @@ class HookPointEvent
 // index
     public function onAdminTrade1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_TRADE_LAW_INDEX_INITIALIZE;
     }
 
     public function onAdminTrade2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_TRADE_LAW_INDEX_COMPLETE;
     }
 
 

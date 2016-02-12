@@ -329,22 +329,18 @@ admin.customer.agreement.index.complete:
 # Admin/Setting/Shop/DeliveryController
 
 # index
-admin.delivery.index.initialize:
-  - [onAdminDelivery1, NORMAL]
 admin.delivery.index.complete:
-  - [onAdminDelivery2, NORMAL]
+  - [onAdminDelivery1, NORMAL]
 
 # edit
 admin.delivery.edit.initialize:
-  - [onAdminDelivery3, NORMAL]
+  - [onAdminDelivery2, NORMAL]
 admin.delivery.edit.complete:
-  - [onAdminDelivery4, NORMAL]
+  - [onAdminDelivery3, NORMAL]
 
 # delete
-admin.delivery.delete.initialize:
-  - [onAdminDelivery5, NORMAL]
 admin.delivery.delete.complete:
-  - [onAdminDelivery6, NORMAL]
+  - [onAdminDelivery4, NORMAL]
 
 
 # Admin/Setting/Shop/MailController
@@ -359,25 +355,19 @@ admin.mail.index.complete:
 # Admin/Setting/Shop/PaymentController
 
 # index
-admin.payment.index.initialize:
-  - [onAdminPayment1, NORMAL]
 admin.payment.index.complete:
-  - [onAdminPayment2, NORMAL]
+  - [onAdminPayment1, NORMAL]
 # edit
 admin.payment.edit.initialize:
-  - [onAdminPayment3, NORMAL]
+  - [onAdminPayment2, NORMAL]
 admin.payment.edit.complete:
-  - [onAdminPayment4, NORMAL]
+  - [onAdminPayment3, NORMAL]
 # imageAdd
-admin.payment.image.add.initialize:
-  - [onAdminPayment5, NORMAL]
 admin.payment.image.add.complete:
-  - [onAdminPayment6, NORMAL]
+  - [onAdminPayment4, NORMAL]
 # delete
-admin.payment.delete.initialize:
-  - [onAdminPayment7, NORMAL]
 admin.payment.delete.complete:
-  - [onAdminPayment8, NORMAL]
+  - [onAdminPayment5, NORMAL]
 
 
 # Admin/Setting/Shop/ShopController
