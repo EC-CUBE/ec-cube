@@ -697,10 +697,12 @@ class HookPointEvent
 // index
     public function onMypageChange1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE;
     }
 
     public function onMypageChange2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE;
     }
 
 
@@ -709,10 +711,12 @@ class HookPointEvent
 // edit
     public function onMypageDelivery1(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE;
     }
 
     public function onMypageDelivery2(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE;
     }
 
 // delete
