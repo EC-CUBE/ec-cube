@@ -183,7 +183,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->verifyOutputString($hookpoins);
     }
 
-    public function _testDelete()
+    public function testDelete()
     {
         $this->logIn($this->Customer);
         $client = $this->client;
@@ -205,12 +205,12 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->assertNull($CustomerAddress);
 
         $hookpoins = array(
-            // Nothing
+            EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE,
         );
         $this->verifyOutputString($hookpoins);
     }
 
-    public function _testDeleteWithFailure()
+    public function testDeleteWithFailure()
     {
         $this->logIn($this->Customer);
         $client = $this->client;

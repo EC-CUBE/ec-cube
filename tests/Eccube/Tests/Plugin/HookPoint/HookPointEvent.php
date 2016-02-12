@@ -726,6 +726,7 @@ class HookPointEvent
 
     public function onMypageDelivery4(EventArgs $event)
     {
+        echo EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE;
     }
 
 
