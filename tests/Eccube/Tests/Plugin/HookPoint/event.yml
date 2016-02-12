@@ -423,7 +423,7 @@ admin.authority.index.complete:
 admin.log.index.initialize:
   - [onAdminLog1, NORMAL]
 admin.log.index.complete:
-  - [onAdminLog1, NORMAL]
+  - [onAdminLog2, NORMAL]
 
 
 

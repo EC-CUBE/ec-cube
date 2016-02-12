@@ -698,10 +698,12 @@ class HookPointEvent
 // index
     public function onAdminLog1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE;
     }
 
     public function onAdminLog2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_LOG_INDEX_COMPLETE;
     }
 
 
