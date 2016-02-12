@@ -31,17 +31,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
 <form name="form1" method="post" action="{{ url('admin_content_cache') }}">
     {{ form_widget(form._token) }}
-    <div class="row">
+    <div id="cache" class="row">
         <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+            <div id="cache_box" class="box">
+                <div id="cache_box__header" class="box-header">
                     <h3 class="box-title">キャッシュ管理</h3>
-                    <div style="margin-left: 10px;">
+                    <div id="cache_box__message" style="margin-left: 10px;">
                         <p class="text-danger">本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュをクリアをする必要があります。</p>
                         <p>キャッシュをクリアをするには「キャッシュクリア」ボタンを押してください。</p>
                     </div>
                 </div>
-                <div class="box-body">
+                <div id="cache_box__clear_button" class="box-body">
                     <button type="submit" class="btn btn-primary" name="mode" value="twig">キャッシュクリア</button>
                 </div>
             </div>
