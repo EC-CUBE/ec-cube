@@ -683,10 +683,12 @@ class HookPointEvent
 // index
     public function onAdminAuthority1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE;
     }
 
     public function onAdminAuthority2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_AUTHORITY_INDEX_COMPLETE;
     }
 
 
