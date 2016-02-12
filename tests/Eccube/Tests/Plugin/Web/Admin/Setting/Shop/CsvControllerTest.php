@@ -49,7 +49,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_CSV_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }

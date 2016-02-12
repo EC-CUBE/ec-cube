@@ -39,7 +39,7 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -57,7 +57,7 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
             ),
         ));
         $hookpoins = array(
-            EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE,
         );
 
         // makes the POST request
@@ -72,8 +72,8 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_setting_system_authority')));
 
         $hookpoins = array_merge($hookpoins, array(
-            EccubeEvents::ADMIN_AUTHORITY_INDEX_INITIALIZE,
-            EccubeEvents::ADMIN_AUTHORITY_INDEX_COMPLETE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE,
         ));
         $this->verifyOutputString($hookpoins);
     }

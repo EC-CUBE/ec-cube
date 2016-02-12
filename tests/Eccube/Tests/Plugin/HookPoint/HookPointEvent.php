@@ -522,10 +522,12 @@ class HookPointEvent
 // index
     public function onAdminCsv1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_INITIALIZE;
     }
 
     public function onAdminCsv2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_CSV_INDEX_COMPLETE;
     }
 
 
@@ -534,10 +536,12 @@ class HookPointEvent
 // index
     public function onAdminAgree1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_INITIALIZE;
     }
 
     public function onAdminAgree2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_CUSTOMER_AGREEMENT_INDEX_COMPLETE;
     }
 
 
@@ -607,10 +611,12 @@ class HookPointEvent
 // index
     public function onAdminShop1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE;
     }
 
     public function onAdminShop2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE;
     }
 
 
@@ -619,24 +625,29 @@ class HookPointEvent
 // index
     public function onAdminTax1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE;
     }
 
     public function onAdminTax2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_COMPLETE;
     }
 
 // delete
     public function onAdminTax4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE;
     }
 
 // editParameter
     public function onAdminTax5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE;
     }
 
     public function onAdminTax6(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE;
     }
 
 
@@ -657,10 +668,12 @@ class HookPointEvent
 // index
     public function onAdminAuthority1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_INITIALIZE;
     }
 
     public function onAdminAuthority2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_AUTHORITY_INDEX_COMPLETE;
     }
 
 
@@ -670,10 +683,12 @@ class HookPointEvent
 // index
     public function onAdminLog1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE;
     }
 
     public function onAdminLog2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE;
     }
 
 
@@ -713,24 +728,29 @@ class HookPointEvent
 // index
     public function onAdminMember1(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE;
     }
 
 // edit
     public function onAdminMember2(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE;
     }
 
     public function onAdminMember3(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE;
     }
 
 // delete
     public function onAdminMember4(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE;
     }
 
     public function onAdminMember5(EventArgs $event)
     {
+        echo EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE;
     }
 
 

@@ -42,7 +42,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_MEMBER_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -55,7 +55,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_MEMBER_EDIT_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -79,7 +79,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_MEMBER_EDIT_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_EDIT_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
 
@@ -108,8 +108,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_MEMBER_DELETE_INITIALIZE,
-            EccubeEvents::ADMIN_MEMBER_DELETE_COMPLETE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE,
         );
         $this->verifyOutputString($hookpoins);
 

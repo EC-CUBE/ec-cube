@@ -42,7 +42,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_SHOP_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }

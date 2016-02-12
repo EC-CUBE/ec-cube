@@ -39,7 +39,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_TAX_RULE_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -53,7 +53,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_TAX_RULE_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -68,7 +68,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(true, $this->client->getResponse()->isRedirect($redirectUrl));
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_TAX_RULE_EDIT_PARAMETER_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }

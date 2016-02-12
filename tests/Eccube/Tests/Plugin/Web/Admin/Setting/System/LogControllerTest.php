@@ -43,7 +43,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE,
         );
         $this->verifyOutputString($hookpoins);
     }
@@ -57,8 +57,8 @@ class LogControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $hookpoins = array(
-            EccubeEvents::ADMIN_LOG_INDEX_INITIALIZE,
-            EccubeEvents::ADMIN_LOG_INDEX_COMPLETE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE,
         );
         $this->verifyOutputString($hookpoins);
     }
