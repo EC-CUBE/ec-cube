@@ -277,7 +277,7 @@ $(function() {
                             <ul id="payment_list__list" class="payment_list">
                             {% for key, child in form.payment %}
                             <li>
-                                {{ form_widget(child, {'attr': {'class': 'payment','id' : 'shopping_confirm__item--'.loop.index }}) }}
+                                {{ form_widget(child, {'attr': {'class': 'payment' }}) }}
                                 {% if form.payment.vars.choices[key].data.payment_image is not null %}
                                 <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}">
                                 {% endif %}
