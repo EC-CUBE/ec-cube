@@ -141,7 +141,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 {% block main %}
-<div id="edit_info_box" class="row">
+<div id="edit_info_wrap" class="row">
     <div id="edit_info_box" class="col-md-12">
         <form class="form-inline" method="post" action="{{ url('admin_product_product_class', {id : Product.id}) }}">
             <div id="edit_info_box__body" class="box">
@@ -190,7 +190,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% if classForm is not null %}
 <form id="product-class-form" class="form-inline" method="post" action="{{ url('admin_product_product_class_edit', { id : Product.id}) }}">
 {{ form_widget(classForm._token) }}
-<div id="result" class="row">
+<div id="result_wrap" class="row">
     <div id="result_box" class="col-md-12">
         <div id="result_box__body" class="box">
             {% if classForm.product_classes|length > 0 and has_class_category_flg %}
@@ -284,7 +284,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {{ form_widget(product_class_form.product_type) }}
                                     {{ form_errors(product_class_form.product_type) }}
                                 </td>
-                            </tr><!-- product_class_result_list__item-->
+                            </tr>
                             {% endfor %}
                             </tbody>
                         </table>

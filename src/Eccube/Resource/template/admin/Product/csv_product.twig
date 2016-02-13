@@ -64,7 +64,7 @@ $(function() {
 {% endblock javascript %}
 
 {% block main %}
-<div id="upload_file" class="row">
+<div id="upload_wrap" class="row">
     <div id="upload_file_box" class="col-md-12">
         <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_csv_import') }}" {{ form_enctype(form) }}>
             {{ form_widget(form._token) }}

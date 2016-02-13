@@ -45,7 +45,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <form name="tradelaw_form" role="form" id="tradelaw_form" method="post" action="{{ url('admin_setting_shop_tradelaw') }}">
     {{ form_widget(form._token) }}
     <div class="row" id="aside_wrap">
-        <div id="detail" class="col-md-9">
+        <div id="detail_wrap" class="col-md-9">
             <div id="detail_box" class="box form-horizontal">
                 <div id="detail_box__header" class="box-header">
                     <h3 class="box-title">特定商取引法</h3>
@@ -128,11 +128,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
         <div id="common_box" class="col-md-3">
             <div class="col_inner" id="aside_column">
-                <div id="common_box__header" class="box no-header">
-                    <div id="common_box__body" class="box-body">
-                        <div id="common_button_box" class="row">
-                            <div id="common_button_box__body" class="col-xs-12">
-                                <div id="common_button_box__body_inner" class="form-group">
+                <div id="common_button_box" class="box no-header">
+                    <div id="common_button_box__body" class="box-body">
+                        <div  class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
                                     <div id="common_button_box__insert_button" class="row text-center">
                                         <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                             <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>

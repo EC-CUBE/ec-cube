@@ -206,7 +206,7 @@ function fnClass(action) {
             <form role="form" name="form1" id="form1" method="post" action="" novalidate enctype="multipart/form-data">
             {{ form_widget(form._token) }}
             <div class="row" id="aside_wrap">
-                <div id="detail" class="col-md-9">
+                <div id="detail_wrap" class="col-md-9">
                     <div id="detail_box" class="box form-horizontal">
                         <div id="detail_box__header" class="box-header">
                             <h3 class="box-title">基本情報</h3>
@@ -379,7 +379,7 @@ function fnClass(action) {
                             <div id="common_button_box__body" class="box-body">
                                 <div id="common_button_box__status" class="row">
                                     <div class="col-xs-12">
-                                        <div id="aside_column" class="form-group">
+                                        <div class="form-group">
                                             {{ form_widget(form.Status) }}
                                             {{ form_errors(form.Status) }}
                                         </div>

@@ -68,7 +68,7 @@ $(function() {
     <div class="col-md-12">
         <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_category_csv_import') }}" {{ form_enctype(form) }}>
             {{ form_widget(form._token) }}
-            <div id="upload_box" class="box">
+            <div id="upload_wrap" class="box">
                 <div id="upload_box__header" class="box-header">
                     <h3 class="box-title">カテゴリ登録CSV</h3>
                 </div><!-- /.box-header -->
@@ -85,8 +85,8 @@ $(function() {
                     </div>
                     <div id="spinner"></div>
                 </div><!-- /.box-body -->
-                <div id="upload-button" class="box-footer text-center">
-                    <button type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
+                <div class="box-footer text-center">
+                    <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
                 </div><!-- /.box-footer -->
             </div><!-- /.box -->
         </form>

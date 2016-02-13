@@ -43,7 +43,7 @@ $(function(){
     <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="">
         {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
-            <div id="detail" class="col-md-9">
+            <div id="detail_wrap" class="col-md-9">
                 <div id="delivery_info_box" class="box">
                     <div id="delivery_info_box__header" class="box-header">
                         <h3 class="box-title">基本情報</h3>
@@ -83,7 +83,7 @@ $(function(){
                     <div id="delivery_times_box__body" class="box-body accpanel">
                         {% for child in form.delivery_times %}
                             {% if loop.first %}
-                                <div id="delivery_times_box__body_inner" aclass="form-group">
+                                <div id="delivery_times_box__body_inner" class="form-group">
                             {% endif %}
 
                             <label class="col-sm-2 control-label">
@@ -144,7 +144,7 @@ $(function(){
             <div id="common_box" class="col-md-3">
                 <div class="col_inner" id="aside_column">
                     <div id="common_button_box" class="box no-header">
-                        <div id="common_button_box__body"  class="box-body">
+                        <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                     <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
