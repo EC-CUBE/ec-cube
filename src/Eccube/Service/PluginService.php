@@ -121,7 +121,6 @@ class PluginService
         try {
             $meta = $this->readYml($dir . '/config.yml');
         } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
-            $this->app['monolog']->warning($e->getMessage());
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
 
