@@ -62,7 +62,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div>
-        </div><!-- /.col --> 
+        </div><!-- /.col -->
     </div>
     </form>
 
@@ -76,7 +76,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div class="form-group">
                         <label class="col-md-7 control-label">オーナーズストア通信できない方は証明書をダウンロードしてお試しください。</label>
                         <div class="col-md-5">
-                            <a href="{{ url('admin_setting_system_authority_download') }}" class="btn btn-default">ダウンロード</a>
+                            <a href="{{ url('admin_setting_system_authority_download') }}" class="btn btn-default" {{ csrf_token_for_anchor() }} data-method="put" data-confirm="false">ダウンロード</a>
                         </div>
                     </div>
                 </div><!-- /.box-body -->

@@ -671,6 +671,9 @@ class PluginController extends AbstractController
      */
     public function download(Application $app, Request $request)
     {
+
+        $this->isTokenValid($app);
+
         $url = $app['config']['cacert_pem_url'];
 
         $curl = curl_init($url);
@@ -685,7 +688,7 @@ class PluginController extends AbstractController
         fclose($fp);
 
         $f = new Filesystem();
-        if (!$f->exists($fileName)) {
+        if ($f->exists($fileName)) {
             $app->addSuccess('admin.plugin.download.pem.complete', 'admin');
         } else {
             $app->addError('admin.plugin.download.pem.error', 'admin');
