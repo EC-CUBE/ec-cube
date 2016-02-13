@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
 <form name="form1" method="post" action="{{ url('admin_content_cache') }}">
     {{ form_widget(form._token) }}
-    <div id="cache" class="row">
+    <div id="cache_wrap" class="row">
         <div class="col-md-12">
             <div id="cache_box" class="box">
                 <div id="cache_box__header" class="box-header">

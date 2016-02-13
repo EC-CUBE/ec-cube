@@ -40,7 +40,7 @@ $(function() {
 {% endblock javascript %}
 
 {% block main %}
-<div id="top" class="row">
+<div id="top_wrap" class="row">
     <div id="top_box" class="col-md-9">
         <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail_all') }}">
         {{ form_widget(form._token) }}

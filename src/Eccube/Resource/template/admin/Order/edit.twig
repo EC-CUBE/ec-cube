@@ -231,7 +231,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
     <form name="form1" method="post" action="?">
     <input type="hidden" name="modal" value="">
     {{ form_widget(form._token) }}
-        <div id="detail" class="col-md-12">
+        <div id="detail_wrap" class="col-md-12">
             <div class="col_inner">
                 <div id="number_info_box" class="box no-header">
                     <div id="number_info_box__body" class="box-body">
@@ -457,9 +457,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {% endfor %}
                         </div>
 
-                        <div id="product_info_result_box--1" class="row with-border2 no-margin text-right">
+                        <div id="product_info_result_box__sub_price" class="row with-border2 no-margin text-right">
                             <div class="col-lg-7 col-lg-offset-5">
-                                <dl id="product_info_result_box__body--1" class="dl-horizontal">
+                                <dl id="product_info_result_box__body_sub_price" class="dl-horizontal">
                                     <dt id="product_info_result_box__subtotal">小計：</dt>
                                     <dd>{{ Order.subtotal|price }}</dd>
                                     <dt id="product_info_result_box__discount">値引き：</dt>
@@ -481,9 +481,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                         </div>
 
-                        <div id="product_info_result_box--2" class="row with-border2 no-margin text-right  ta">
+                        <div id="product_info_result_box__summary" class="row with-border2 no-margin text-right  ta">
                             <div class="col-lg-7 col-lg-offset-5">
-                                <dl id="product_info_result_box__body--2" class="dl-horizontal">
+                                <dl id="product_info_result_box__body_summary" class="dl-horizontal">
                                     <dt id="product_info_result_box__total">合計：</dt>
                                     <dd>{{ Order.total|price }}</dd>
                                     <dt id="product_info_result_box__payment_total">お支払合計：</dt>
@@ -545,12 +545,12 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}
                             {{ form_widget(shipmentItemForm.Product) }}
                             {{ form_widget(shipmentItemForm.ProductClass) }}
-                            <div id="shipment_item__id--{{ loop.index }}" class="item_box shipment_item_idx{{ shippingIndex }}">
-                                <div id="shipment_item__detail--{{ loop.index }}" class="item_detail">
-                                    <div id="shipment_item__name_detail--{{ loop.index }}" class="item_name_area">
-                                        <strong id="shipment_item__product_name--{{ loop.index }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
-                                        <span id="shipment_item__product_code--{{ loop.index }}" class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
-                                            <span id="shipment_item__class_category_name--{{ loop.index }}" class="item_pattern small">
+                            <div id="shipment_item__id--{{ shippingIndex }}" class="item_box shipment_item_idx{{ shippingIndex }}">
+                                <div id="shipment_item__detail--{{ shippingIndex }}" class="item_detail">
+                                    <div id="shipment_item__name_detail--{{ shippingIndex }}" class="item_name_area">
+                                        <strong id="shipment_item__product_name--{{ shippingIndex }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
+                                        <span id="shipment_item__product_code--{{ shippingIndex }}" class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
+                                            <span id="shipment_item__class_category_name--{{ shippingIndex }}" class="item_pattern small">
                                                 {% if shipmentItemForm.vars.value.class_category_name1 is not empty %}
                                                     / (
                                                     {{ shipmentItemForm.vars.value.class_name1 }}：
@@ -564,11 +564,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 {% endif %}
                                             </span>
                                     </div>
-                                    <div id="shipment_item__info_item--{{ loop.index }}" class="row">
-                                        <div id="shipment_item__price--{{ loop.index }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                    <div id="shipment_item__info_item--{{ shippingIndex }}" class="row">
+                                        <div id="shipment_item__price--{{ shippingIndex }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             {{ form_widget(shipmentItemForm.price, {'read_only': 'readonly'}) }}
                                         </div>
-                                        <div id="shipment_item__quantity--{{ loop.index }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                        <div id="shipment_item__quantity--{{ shippingIndex }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             <span class="item_quantity">
                                                 数量：{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
                                                 {{ form_errors(shipmentItemForm.quantity) }}

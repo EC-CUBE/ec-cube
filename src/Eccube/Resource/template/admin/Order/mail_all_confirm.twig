@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}メール通知{% endblock %}
 
 {% block main %}
-<div id="confirm" class="row">
+<div id="confirm_wrap" class="row">
     <div id="confirm_box" class="col-md-9">
         <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail_all') }}">
         {{ form_widget(form._token) }}

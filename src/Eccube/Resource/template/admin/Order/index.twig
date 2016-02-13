@@ -112,7 +112,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 <!--検索条件設定テーブルここから-->
-<div id="search_box" class="search-box">
+<div id="search_wrap" class="search-box">
   <form name="search_form" id="search_form" method="post" action="{{ url('admin_order') }}">
     {{ form_widget(searchForm._token) }}
     <div id="search_box_main" class="row">
@@ -309,7 +309,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             <table class="table table-striped">
                                 <thead>
                                     <tr id="result_list_main__header">
-                                        <th id="result_list_main__header_id_check" class="text-center"><input type="checkbox" id="check-all"></th>
+                                        <th class="text-center"><input type="checkbox" id="check-all"></th>
                                         <th id="result_list_main__header_order_date">受注日</th>
                                         <th id="result_list_main__header_id">注文番号</th>
                                         <th id="result_list_main__header_name">お名前</th>

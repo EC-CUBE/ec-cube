@@ -62,7 +62,7 @@ $(function() {
 {% block main %}
 
 {% if MailHistories %}
-<div id="history" class="row">
+<div id="history_wrap" class="row">
     <div id="history_box" class="col-md-9">
         <div id="history_box_body" class="box">
             <div id="history_box__header" class="box-header">
@@ -73,7 +73,7 @@ $(function() {
                     <div id="history_box__list" class="table-responsive with-border">
                         <table class="table table-striped">
                             <thead>
-                                <tr id="history_box__header">
+                                <tr id="history_box__item_header">
                                     <th id="history_box__header_send_date">処理日</th>
                                     <th id="history_box__header_mail_template">通知メール</th>
                                     <th id="history_box__header_subject">件名</th>
@@ -96,7 +96,7 @@ $(function() {
     </div><!-- /.col --> 
 </div>
 {% endif %}
-<div id="edit" class="row">
+<div id="edit_wrap" class="row">
     <div id="edit_box" class="col-md-9">
         <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail', {id : Order.id}) }}">
         {{ form_widget(form._token) }}
