@@ -27,15 +27,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}メール通知{% endblock %}
 
 {% block main %}
-<div class="row">
-    <div class="col-md-9">
-        <div class="box">
-            <div class="box-header">
+<div id="complete" class="row">
+    <div id="complete_box" class="col-md-9">
+        <div id="complete_box__body" class="box">
+            <div id="complete_box__header" class="box-header">
                 <h3 class="box-title">メール配信完了しました。</h3>
             </div><!-- /.box-header -->
         </div><!-- /.box -->
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+        <div id="complete_box__footer" class="row">
+            <div id="complete_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                 <p><a href="{{ url('admin_order') }}">検索結果へ戻る</a></p>
             </div>
         </div>
