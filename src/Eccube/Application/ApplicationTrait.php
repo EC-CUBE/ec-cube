@@ -233,8 +233,8 @@ class ApplicationTrait extends \Silex\Application
 
         $eventName = $view;
         if ($this->isAdminRequest()) {
-            // 管理画面の場合、event名に「admin.」を付ける
-            $eventName = 'admin.' . $view;
+            // 管理画面の場合、event名に「Admin/」を付ける
+            $eventName = 'Admin/' . $view;
         }
         $this['monolog']->debug('Template Event Name : ' . $eventName);
 
