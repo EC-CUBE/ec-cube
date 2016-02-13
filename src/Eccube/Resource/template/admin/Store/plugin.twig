@@ -58,6 +58,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ include('Store/plugin_table.twig', {'Plugins': unofficialPlugins}) }}
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">独自プラグイン</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    {{ include('Store/unregisterd_plugin_table.twig', {'Plugins': unregisterdPlugins}) }}
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
         </div><!-- /.col -->
     </div>
 {% endblock %}
