@@ -20,28 +20,28 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% if pages.pageCount > 1 %}
-<div id="default_pagination" class="pagination">
+<div id="pagination_wrap" class="pagination">
     <ul>
         {% if pages.previous is defined %}
-        <li id="default_pagination__preview" class="pagenation__item-previous">
-            <a id="link__prev" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
-               aria-label="Previous"><span aria-hidden="true">前へ</span></a>
-        </li>
+            <li class="pagenation__item-previous">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
+                   aria-label="Previous"><span aria-hidden="true">前へ</span></a>
+            </li>
         {% endif %}
 
         {% for page in pages.pagesInRange %}
             {% if page == pages.current %}
-                <li id="default_pagination__page--{{ page }}" class="pagenation__item active"><a id="link__curr" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+                <li class="pagenation__item active"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% else %}
-                <li id="default_pagination__page--{{ page }}" class="pagenation__item"><a id="link__item--{{ page }}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
+                <li class="pagenation__item"><a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': page})) }}"> {{ page }} </a></li>
             {% endif %}
         {% endfor %}
 
         {% if pages.next is defined %}
-        <li id="default_pagination__next" class="pagenation__item-next">
-            <a id="link__next" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
-               aria-label="Next"><span aria-hidden="true">次へ</span></a>
-        </li>
+            <li class="pagenation__item-next">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
+                   aria-label="Next"><span aria-hidden="true">次へ</span></a>
+            </li>
         {% endif %}
     </ul>
 </div>
