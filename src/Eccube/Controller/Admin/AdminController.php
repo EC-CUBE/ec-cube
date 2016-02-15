@@ -29,6 +29,8 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends AbstractController
@@ -40,9 +42,18 @@ class AdminController extends AbstractController
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app['form.factory']
-            ->createNamedBuilder('', 'admin_login')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createNamedBuilder('', 'admin_login');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_LOGIN_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         return $app->render('login.twig', array(
             'error' => $app['security.last_error']($request),
@@ -61,17 +72,33 @@ class AdminController extends AbstractController
         }
 
         // 受注マスター検索用フォーム
-        $searchOrderForm = $app['form.factory']
-            ->createBuilder('admin_search_order')
-            ->getForm();
+        $searchOrderBuilder = $app['form.factory']
+            ->createBuilder('admin_search_order');
         // 商品マスター検索用フォーム
-        $searchProductForm = $app['form.factory']
-            ->createBuilder('admin_search_product')
-            ->getForm();
+        $searchProductBuilder = $app['form.factory']
+            ->createBuilder('admin_search_product');
         // 会員マスター検索用フォーム
-        $searchCustomerForm = $app['form.factory']
-            ->createBuilder('admin_search_customer')
-            ->getForm();
+        $searchCustomerBuilder = $app['form.factory']
+            ->createBuilder('admin_search_customer');
+
+        $event = new EventArgs(
+            array(
+                'searchOrderBuilder' => $searchOrderBuilder,
+                'searchProductBuilder' => $searchProductBuilder,
+                'searchCustomerBuilder' => $searchCustomerBuilder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE, $event);
+
+        // 受注マスター検索用フォーム
+        $searchOrderForm = $searchOrderBuilder->getForm();
+
+        // 商品マスター検索用フォーム
+        $searchProductForm = $searchProductBuilder->getForm();
+
+        // 会員マスター検索用フォーム
+        $searchCustomerForm = $searchCustomerBuilder->getForm();
 
         /**
          * 受注状況.
@@ -81,6 +108,14 @@ class AdminController extends AbstractController
         $excludes[] = $app['config']['order_processing'];
         $excludes[] = $app['config']['order_cancel'];
         $excludes[] = $app['config']['order_deliv'];
+
+        $event = new EventArgs(
+            array(
+                'excludes' => $excludes,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
 
         // 受注ステータスごとの受注件数.
         $Orders = $this->getOrderEachStatus($app['orm.em'], $excludes);
@@ -94,6 +129,14 @@ class AdminController extends AbstractController
         $excludes[] = $app['config']['order_processing'];
         $excludes[] = $app['config']['order_cancel'];
         $excludes[] = $app['config']['order_pending'];
+
+        $event = new EventArgs(
+            array(
+                'excludes' => $excludes,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
 
         // 今日の売上/件数
         $salesToday = $this->getSalesByDay($app['orm.em'], new \DateTime(), $excludes);
@@ -109,6 +152,20 @@ class AdminController extends AbstractController
         $countNonStockProducts = $this->countNonStockProducts($app['orm.em']);
         // 本会員数
         $countCustomers = $this->countCustomers($app['orm.em']);
+
+        $event = new EventArgs(
+            array(
+                'Orders' => $Orders,
+                'OrderStatuses' => $OrderStatuses,
+                'salesThisMonth' => $salesThisMonth,
+                'salesToday' => $salesToday,
+                'salesYesterday' => $salesYesterday,
+                'countNonStockProducts' => $countNonStockProducts,
+                'countCustomers' => $countCustomers,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE, $event);
 
         return $app->render('index.twig', array(
             'searchOrderForm' => $searchOrderForm->createView(),

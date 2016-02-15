@@ -27,25 +27,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}メール通知{% endblock %}
 
 {% block main %}
-<div class="row">
-    <div class="col-md-9">
+<div id="confirm_wrap" class="row">
+    <div id="confirm_box" class="col-md-9">
         <form id="order-mail-form" class="form-horizontal" method="post" action="{{ url('admin_order_mail_all') }}">
         {{ form_widget(form._token) }}
         <input type="hidden" name="ids" value="{{ ids }}">
-        <div class="box">
-            <div class="box-header">
+        <div id="confirm_box__body" class="box">
+            <div id="confirm_box__header" class="box-header">
                 <h3 class="box-title">メール配信</h3>
                 <span class="text-danger">※本文は1通分の例です。受注情報は各メールごとに異なります。</span>
             </div><!-- /.box-header -->
-            <div class="box-body">
-                <div class="form-group">
+            <div id="confirm_box__body_inner" class="box-body">
+                <div id="confirm_box__subject" class="form-group">
                     <label class="col-sm-2 control-label">タイトル</label>
                     <div class="col-sm-9 col-lg-10">
                         {{ form_widget(form.subject) }}
                         {{ form_errors(form.subject) }}
                     </div>
                 </div>
-                <div class="form-group">
+                <div id="confirm_box__item_body" class="form-group">
                     <label class="col-sm-2 control-label">本文</label>
                     <div class="col-sm-9 col-lg-10">
                         {{ body|raw|nl2br }}
@@ -56,8 +56,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {{ form_widget(form.footer, {freeze_display_text: false}) }}
             </div><!-- /.box-body -->
         </div><!-- /.box -->
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+        <div class="extra-form">
+            {% for f in form.getIterator %}
+                {% if f.vars.name matches '[^plg*]' %}
+                    {{ form_label(f) }}
+                    {{ form_widget(f) }}
+                    {{ form_errors(f) }}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div id="confirm_box__footer" class="row">
+            <div id="confirm_box__button_menu" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                 <p><button type="submit" class="btn btn-info btn-lg" name="mode" value="back">戻る</button></p>
                 <p><button type="submit" class="btn btn-primary btn-lg" name="mode" value="complete">メール送信</button></p>
             </div>

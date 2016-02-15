@@ -460,11 +460,14 @@ class Application extends ApplicationTrait
         );
 
         foreach ($finder as $dir) {
-            if (file_exists($dir->getRealPath().'/config.yml')) {
-                $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
-            }else{
-                $error = 'Application::initDoctrine : config.yamlがみつかりません'.$dir->getRealPath();
-                $this->log($error, array(), Logger::WARNING);
+
+            $file = $dir->getRealPath().'/config.yml';
+
+            if (file_exists($file)) {
+                $config = Yaml::parse(file_get_contents($file));
+            } else {
+                $code = $dir->getBaseName();
+                $this['monolog']->warning("skip {$code} orm.path loading. config.yml not found.", array('path' => $file));
                 continue;
             }
 
@@ -823,10 +826,15 @@ class Application extends ApplicationTrait
         // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
         foreach ($finder as $dir) {
             //config.ymlのないディレクトリは無視する
+            $path = $dir->getRealPath();
+            $code = $dir->getBaseName();
             try {
-                $this['eccube.service.plugin']->checkPluginArchiveContent($dir->getRealPath());
-            } catch(\Eccube\Exception\PluginException $e) {
-                $this['monolog']->warning($e->getMessage());
+                $this['eccube.service.plugin']->checkPluginArchiveContent($path);
+            } catch (\Eccube\Exception\PluginException $e) {
+                $this['monolog']->warning("skip {$code} config loading. config.yml not foud or invalid.", array(
+                    'path' =>  $path,
+                    'original-message' => $e->getMessage()
+                ));
                 continue;
             }
             $config = $this['eccube.service.plugin']->readYml($dir->getRealPath().'/config.yml');
@@ -854,9 +862,19 @@ class Application extends ApplicationTrait
             // Type: Event
             if (isset($config['event'])) {
                 $class = '\\Plugin\\'.$config['code'].'\\'.$config['event'];
-                $subscriber = new $class($this);
+                $eventExists = true;
 
-                if (file_exists($dir->getRealPath().'/event.yml')) {
+                if (!class_exists($class)) {
+                    $this['monolog']->warning("skip {$code} loading. event class not foud.", array(
+                        'class' =>  $class,
+                    ));
+                    $eventExists = false;
+                }
+
+                if ($eventExists && file_exists($dir->getRealPath().'/event.yml')) {
+
+                    $subscriber = new $class($this);
+
                     foreach (Yaml::parse(file_get_contents($dir->getRealPath().'/event.yml')) as $event => $handlers) {
                         foreach ($handlers as $handler) {
                             if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
@@ -877,7 +895,9 @@ class Application extends ApplicationTrait
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
                     if (!class_exists($class)) {
-                        $this['monolog']->warning('該当クラスが見つかりません:' . $class);
+                        $this['monolog']->warning("skip {$code} loading. service provider class not foud.", array(
+                            'class' =>  $class,
+                        ));
                         continue;
                     }
                     $this->register(new $class($this));

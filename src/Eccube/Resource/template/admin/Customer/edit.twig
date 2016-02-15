@@ -46,22 +46,22 @@
 <div class="row" id="aside_wrap">
     <form name="customer_form" role="form" id="customer_form" method="post" action="{%- if Customer.id %}{{ url('admin_customer_edit', { id : Customer.id }) }}{% else %}{{ url('admin_customer_new') }}{% endif -%}">
         {{ form_widget(form._token) }}
-        <div class="col-md-9">
-            <div class="box accordion">
-                <div class="box-header toggle active">
+        <div id="detail_wrap" class="col-md-9">
+            <div id="detail_box" class="box accordion">
+                <div id="detail_box__header" class="box-header toggle active">
                     <h3 class="box-title">会員情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel" style="display: block;">
+                <div id="detail_box__body" class="box-body accpanel" style="display: block;">
                     <div class="form-horizontal">
                         {# 会員ID #}
                         {% if Customer.id %}
-                        <div class="form-group">
+                        <div id="detail_box__id" class="form-group">
                             <label class="col-sm-3 col-lg-2 control-label">会員ID</label>
                             <div class="col-sm-9 col-lg-10">{{ Customer.id }}</div>
                         </div>
                         {% endif %}
                         {# 名前 #}
-                        <div class="form-group">
+                        <div id="detail_box__name" class="form-group">
                             {{ form_label(form.name) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
                                 {{ form_widget(form.name.name01) }}
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         {# 名前(カナ) #}
-                        <div class="form-group">
+                        <div id="detail_box__kana" class="form-group">
                             {{ form_label(form.kana) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
                                 {{ form_widget(form.kana.kana01) }}
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         {# 会社名 #}
-                        <div class="form-group">
+                        <div id="detail_box__company_name" class="form-group">
                             {{ form_label(form.company_name) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.company_name) }}
@@ -89,9 +89,9 @@
                             </div>
                         </div>
                         {# 住所：郵便番号 #}
-                        <div class="form-group">
+                        <div id="detail_box__address" class="form-group">
                             {{ form_label(form.address) }}
-                            <div class="col-sm-9 col-lg-10 input_zip form-inline">
+                            <div id="detail_box__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip) }}
                                 {{ form_errors(form.zip.zip01) }}
@@ -101,27 +101,27 @@
                         </div>
                         {# 住所：都道府県 #}
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
+                            <div id="detail_box__pref" class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
                                 {{ form_widget(form.address.pref) }}
                                 {{ form_errors(form.address.pref) }}
                             </div>
                         </div>
                         {# 住所：住所1 #}
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                            <div id="detail_box__addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                                 {{ form_errors(form.address.addr01) }}
                             </div>
                         </div>
                         {# 住所：住所2 #}
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                            <div id="detail_box__addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                                 {{ form_errors(form.address.addr02) }}
                             </div>
                         </div>
                         {# メールアドレス #}
-                        <div class="form-group">
+                        <div id="detail_box__email" class="form-group">
                             {{ form_label(form.email) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.email) }}
@@ -129,7 +129,7 @@
                             </div>
                         </div>
                         {# 電話番号 #}
-                        <div class="form-group">
+                        <div id="detail_box__tel" class="form-group">
                             {{ form_label(form.tel) }}
                             <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                 {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
@@ -139,7 +139,7 @@
                             </div>
                         </div>
                         {# FAX番号 #}
-                        <div class="form-group">
+                        <div id="detail_box__fox" class="form-group">
                             {{ form_label(form.fax) }}
                             <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                 {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}-{{ form_widget(form.fax.fax03) }}
@@ -149,14 +149,14 @@
                             </div>
                         </div>
                         {# パスワード #}
-                        <div class="form-group">
+                        <div id="detail_box__password_first" class="form-group">
                             {{ form_label(form.password.first) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.password.first, { type : 'password'}) }}
                                 {{ form_errors(form.password.first) }}
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div id="detail_box__password_second" class="form-group">
                             {{ form_label(form.password.second) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.password.second, { type : 'password'}) }}
@@ -164,7 +164,7 @@
                             </div>
                         </div>
                         {# 性別 #}
-                        <div class="form-group">
+                        <div id="detail_box__sex" class="form-group">
                             {{ form_label(form.sex) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.sex) }}
@@ -172,7 +172,7 @@
                             </div>
                         </div>
                         {# 職業 #}
-                        <div class="form-group">
+                        <div id="detail_box__job" class="form-group">
                             {{ form_label(form.job) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.job) }}
@@ -180,7 +180,7 @@
                             </div>
                         </div>
                         {# 生年月日 #}
-                        <div class="form-group">
+                        <div id="detail_box__birth" class="form-group">
                             {{ form_label(form.birth) }}
                             <div class="col-sm-9 col-lg-10">
                                 <div class="form-inline">
@@ -189,46 +189,52 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
-
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
 
             {% if Customer.id %}
-            <div class="box accordion">
-                <div class="box-header toggle">
+            <div id="history_box" class="box accordion">
+                <div id="history_box__toggle" class="box-header toggle">
                     <h3 class="box-title">購入履歴<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel">
+                <div id="history_box__body" class="box-body accpanel">
                     {% if Customer.Orders|length > 0 %}
-                    <div class="table_list">
+                    <div id="history_box__list" class="table_list">
                         <div class="table-responsive with-border">
                             <table class="table table-striped">
                                 <thead>
-                                    <tr>
-                                        <th>注文日時</th>
-                                        <th>受注番号</th>
-                                        <th>購入金額</th>
-                                        <th>発送日</th>
-                                        <th>支払方法</th>
+                                    <tr id="history_box__list_header">
+                                        <th id="history_box__header_order_date">注文日時</th>
+                                        <th id="history_box__header_order_id">受注番号</th>
+                                        <th id="history_box__header_order_total">購入金額</th>
+                                        <th id="history_box__header_commit_date">発送日</th>
+                                        <th id="history_box__header_payment_method">支払方法</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for Order in Customer.Orders %}
-                                    <tr>
-                                        <td class="member_id">
+                                    <tr id="history_box__item--{{ Order.id }}">
+                                        <td id="history_box__order_date--{{ Order.id }}" class="member_id">
                                             {{ Order.order_date|date_format }}
                                         </td>
-                                        <td class="member_name">
+                                        <td id="history_box__order_id--{{ Order.id }}" class="member_name">
                                             <a href="{{ url('admin_order_edit', { 'id' : Order.id }) }}">{{ Order.id }}</a>
                                         </td>
-                                        <td class="member_tel">
+                                        <td id="history_box__order_total--{{ Order.id }}" class="member_tel">
                                             {{ Order.total|price }}
                                         </td>
-                                        <td class="member_mail">
+                                        <td id="history_box__commit_date--{{ Order.id }}" class="member_mail">
                                             {{ Order.commit_date|date_format|default('未発送') }}
                                         </td>
-                                        <td class="member_mail">
+                                        <td id="history_box__payment_method--{{ Order.id }}" class="member_mail">
                                             {{ Order.payment_method }}
                                         </td>
                                     </tr>
@@ -238,7 +244,7 @@
                         </div>
                     </div>
                     {% else %}
-                    <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
+                    <div id="history_box__header" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p>
                     </div>
                     {% endif %}
                 </div>
@@ -247,19 +253,19 @@
 
         </div><!-- /.col -->
 
-        <div class="col-md-3" id="aside_column">
+        <div id="common_box" class="col-md-3" id="aside_column">
             <div class="col_inner">
-                <div class="box no-header">
-                    <div class="box-body">
+                <div id="button_box" class="box no-header">
+                    <div id="button_box__body" class="box-body">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="form-group">
+                                <div id="button_box__status" class="form-group">
                                     {{ form_widget(form.status) }}
                                     {{ form_errors(form.status) }}
                                 </div>
                             </div>
                         </div>
-                        <div class="row text-center">
+                        <div id="button_box__insert_button" class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                 <button class="btn btn-primary btn-block btn-lg" type="submit">会員情報を登録</button>
                             </div>
@@ -267,11 +273,11 @@
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
-                <div class="box">
-                    <div class="box-header">
+                <div id="shop_note_box" class="box">
+                    <div id="shop_note_box__header" class="box-header">
                         <h3 class="box-title">ショップ用メモ欄</h3>
                     </div><!-- /.box-header -->
-                    <div class="box-body">
+                    <div id="shop_note_box__note" class="box-body">
                         {{ form_widget(form.note) }}
                         {{ form_errors(form.note) }}
                     </div>

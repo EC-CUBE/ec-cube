@@ -26,13 +26,15 @@ namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DeliveryController extends AbstractController
 {
     /**
-     * Index
+     * お届け先一覧画面.
      *
      * @param Application $app
      * @param Request $request
@@ -48,7 +50,7 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * edit
+     * お届け先編集画面.
      *
      * @param Application $app
      * @param Request $request
@@ -83,15 +85,35 @@ class DeliveryController extends AbstractController
             $parentPage  = $app->url('mypage_delivery');
         }
 
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app['form.factory']
-            ->createBuilder('customer_address', $CustomerAddress)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('customer_address', $CustomerAddress);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Customer' => $Customer,
+                'CustomerAddress' => $CustomerAddress
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $app['orm.em']->persist($CustomerAddress);
             $app['orm.em']->flush();
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Customer' => $Customer,
+                    'CustomerAddress' => $CustomerAddress
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE, $event);
 
             $app->addSuccess('mypage.delivery.add.complete');
 
@@ -108,23 +130,33 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * delete
-     * 
+     * お届け先を削除する.
+     *
      * @param Application $app
-     * @param type $id
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
 
         $Customer = $app['user'];
 
-        // 別のお届け先削除
-        if (!$app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id)) {
-            $app->addError('mypage.address.delete.failed');
-        } else {
+        $status = $app['eccube.repository.customer_address']->deleteByCustomerAndId($Customer, $id);
+
+        if ($status) {
+            $event = new EventArgs(
+                array(
+                    'id' => $id,
+                    'Customer' => $Customer
+                ), $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
+
             $app->addSuccess('mypage.address.delete.complete');
+
+        } else {
+            $app->addError('mypage.address.delete.failed');
         }
 
         return $app->redirect($app->url('mypage_delivery'));

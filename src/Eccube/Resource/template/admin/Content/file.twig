@@ -61,18 +61,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <input type="hidden" name="select_file" value="" />
     <div class="row" id="aside_wrap">
 
-        <div class="col-md-9">
-            <div class="box">
-                <div class="box-header form-horizontal">
+        <div id="upload_wrap" class="col-md-9">
+            <div id="upload_list_box" class="box">
+                <div id="upload_box" class="box-header form-horizontal">
                     {{ form_widget(form._token) }}
-                    <div class="form-group">
+                    <div id="upload_box__body" class="form-group">
                         <label class="col-sm-4 col-lg-3 control-label">ファイルのアップロード</label>
-                        <div class="col-sm-8 col-lg-9 padT07">
+                        <div id="upload_box__file" class="col-sm-8 col-lg-9 padT07">
                             {{ form_widget(form.file) }}
                             <div class="marT10"><a class="btn btn-default btn-sm" href="javascript;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">アップロード</a></div>
                         </div>
                     </div>
-                    <div class="form-group form-inline">
+                    <div id="create_box__create_file" class="form-group form-inline">
                         <label class="col-sm-4 col-lg-3 control-label">フォルダ作成</label>
                         <div class="col-sm-8 col-lg-9">
                             {{ form_widget(form.create_file) }}
@@ -80,40 +80,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                 {% if error is not null %}
-                    <p class="text-danger errormsg">{{ error.message }}</p>
+                    <p id="upload_box__error_message" class="text-danger errormsg">{{ error.message }}</p>
                 {% endif %}
 
                 </div><!-- /.box-header -->
 
                 <div id="bread" style="margin-left: 10px;"></div>
-                <div class="box-body">
-                    <div class="table_list">
-                        <div class="table-responsive">
+                <div id="result_list" class="box-body">
+                    <div id="result_list__list_box" class="table_list">
+                        <div id="result_list__list" class="table-responsive">
                             <table class="table table-striped with-border">
                                 <thead>
-                                    <tr>
-                                        <th>ファイル名</th>
-                                        <th>サイズ</th>
-                                        <th>更新日付</th>
-                                        <th>表示</th>
-                                        <th>ダウンロード</th>
-                                        <th>削除</th>
+                                    <tr id="result_list__header">
+                                        <th id="result_list__header_name">ファイル名</th>
+                                        <th id="result_list__header_size">サイズ</th>
+                                        <th id="result_list__header_time">更新日付</th>
+                                        <th id="result_list__header_view">表示</th>
+                                        <th id="result_list__header_download">ダウンロード</th>
+                                        <th id="result_list__header_delete">削除</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                 {% if tpl_is_top_dir == false %}
                     <tr id="parent_dir" onclick="eccube.setValue('select_file', '{{ tpl_parent_dir }}', 'form1'); eccube.fileManager.selectFile('parent_dir', '#808080');" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ tpl_parent_dir }}', true, '{{ tpl_now_dir }}', true)" style="">
-                        <td><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h" /></svg></td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        <td id="result_list__name"><svg class="cb cb-ellipsis-h"><use xlink:href="#cb-ellipsis-h" /></svg></td>
+                        <td id="result_list__size">&nbsp;</td>
+                        <td id="result_list__time">&nbsp;</td>
+                        <td id="result_list__view">&nbsp;</td>
+                        <td id="result_list__download">&nbsp;</td>
+                        <td id="result_list__delete">&nbsp;</td>
                     </tr>
                 {% endif %}
                 {% for file in arrFileList %}
                     <tr id="{{ loop.index }}" style="">
-                        <td class="file-name" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %} '{{ tpl_now_dir }}', false)">
+                        <td id="result_list__name--{{ loop.index }}" class="file-name" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %} '{{ tpl_now_dir }}', false)">
                             {% if file.is_dir %}
                                 <svg class="cb cb-folder"><use xlink:href="#cb-folder" /></svg>
                             {% else %}
@@ -121,13 +121,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% endif %}
                             {{ file.file_name }}
                         </td>
-                        <td class="text-right">
+                        <td id="result_list__size--{{ loop.index }}" class="text-right">
                             {{ file.file_size }}
                         </td>
-                        <td class="text-center">
+                        <td id="result_list__time--{{ loop.index }}" class="text-center">
                             {{ file.file_time }}
                         </td>
-                        <td class="text-center">
+                        <td id="result_list__view--{{ loop.index }}" class="text-center">
                             {% if file.is_dir %}
                                 <a href="javascript:;" onclick="eccube.setValue('tree_select_file', '{{ file.file_path }}', 'form1'); eccube.fileManager.selectFile('{{ loop.index }}', '#808080');eccube.setModeAndSubmit('move','',''); return false;">表示</a>
                             {% else %}
@@ -136,13 +136,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </td>
                         {% if file.is_dir %}
                             {# ディレクトリはダウンロード不可 #}
-                            <td class="text-center">-</td>
+                            <td id="result_list__download--{{ loop.index }}" class="text-center">-</td>
                         {% else %}
-                            <td class="text-center">
+                            <td id="result_list__download--{{ loop.index }}"class="text-center">
                                 <a href="{{ url('admin_content_file_download') }}?select_file={{ file.file_path|e('url') }}" target="_blank">ダウンロード</a>
                             </td>
                         {% endif %}
-                        <td class="text-center">
+                        <td id="result_list__delete--{{ loop.index }}" class="text-center">
                             <a href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="一度削除したデータは元に戻せません。削除してもよろしいですか？">削除</a>
                         </td>
                     </tr>
@@ -155,11 +155,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
         </div><!-- /.col -->
         
-        <div class="col-md-3">
+        <div id="common_box" class="col-md-3">
             <div class="col_inner" id="aside_column">
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="row">
+                <div id="tree_box" class="box no-header">
+                    <div id="tree_box__body" class="box-body">
+                        <div id="tree_box__tree" class="row">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                 <div id="tree"></div>
                             </div>

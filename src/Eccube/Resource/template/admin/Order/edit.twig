@@ -231,43 +231,43 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
     <form name="form1" method="post" action="?">
     <input type="hidden" name="modal" value="">
     {{ form_widget(form._token) }}
-        <div class="col-md-12">
+        <div id="detail_wrap" class="col-md-12">
             <div class="col_inner">
-                <div class="box no-header">
-                    <div class="box-body">
+                <div id="number_info_box" class="box no-header">
+                    <div id="number_info_box__body" class="box-body">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div id="number_info_box__order_status" class="col-sm-4">
                                 <h4>注文番号 <span class="number">{{ Order.id }}</span></h4>
                                 <div class="form-group">
                                     {{ form_widget(form.OrderStatus) }}
                                     {{ form_errors(form.OrderStatus) }}
                                 </div>
-                                <div class="small text-danger">キャンセルの場合は在庫数を手動で戻してください</div>
+                                <div id="number_info_box__order_status_info" class="small text-danger">キャンセルの場合は在庫数を手動で戻してください</div>
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
-                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date|date_format }}</p>
-                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date|date_format }}</p>
-                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date|date_format }}</p>
-                                <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date|date_format }}</p>
+                                <p id="number_info_box__order_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date|date_format }}</p>
+                                <p id="number_info_box__payment_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date|date_format }}</p>
+                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date|date_format }}</p>
+                                <p id="number_info_box__update_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date|date_format }}</p>
                             </div>
                         </div>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div>
-            <div class="box accordion">
-                <div class="box-header toggle active">
+            <div id="customer_info_box"  class="box accordion">
+                <div id="customer_info_box__toggle" class="box-header toggle active">
                     <h3 class="box-title">注文者情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel" style="display: block;">
-                    <div class="order_list form-horizontal">
+                <div id="customer_info_box__body" class="box-body accpanel" style="display: block;">
+                    <div id="customer_info_list" class="order_list form-horizontal">
                         {% if Order.id is empty %}
-                        <div class="btn_area">
+                        <div id="customer_info_list__button_search" class="btn_area">
                             <ul>
                                 <li><a class="btn btn-default" data-toggle="modal" data-target="#searchCustomerModal">会員検索</a></li>
                             </ul>
                         </div>
                         {% endif %}
-                        <div class="form-group">
+                        <div id="customer_info_list__customer" class="form-group">
                             <div class="col-sm-3 col-lg-2">会員ID</div>
                             <div class="col-sm-9 col-lg-10">
                                 <p id="order_CustomerId">{{ form.Customer.vars.value is empty ? '非会員' :  form.Customer.vars.value }}</p>
@@ -276,7 +276,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
 
                         </div>
-                        <div class="form-group">
+                        <div id="customer_info_list__name" class="form-group">
                             {{ form_label(form.name) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
                                 {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
@@ -285,7 +285,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {{ form_errors(form.name.name02) }}
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div id="customer_info_list__kana" class="form-group">
                             {{ form_label(form.kana) }}
                             <div class="col-sm-9 col-lg-10 input_name form-inline">
                                 {{ form_widget(form.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
@@ -295,9 +295,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                         </div>
                         {# 住所：郵便番号 #}
-                        <div class="form-group">
+                        <div id="customer_info_list__address" class="form-group">
                             {{ form_label(form.address) }}
-                            <div class="col-sm-9 col-lg-10 input_zip form-inline">
+                            <div id="customer_info_list__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
                                 〒{{ form_widget(form.zip.zip01) }}-{{ form_widget(form.zip.zip02) }}
                                 {{ form_errors(form.zip.zip01) }}
                                 {{ form_errors(form.zip.zip02) }}
@@ -306,27 +306,27 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         </div>
                         {# 住所：都道府県 #}
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
+                            <div id="customer_info_list__pref" class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
                                 {{ form_widget(form.address.pref) }}
                                 {{ form_errors(form.address.pref) }}
                             </div>
                         </div>
                         {# 住所：住所1 #}
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                            <div id="customer_info_list__addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                                 {{ form_errors(form.address.addr01) }}
                             </div>
                         </div>
                         {# 住所：住所2 #}
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                            <div id="customer_info_list__addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                 {{ form_widget(form.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                                 {{ form_errors(form.address.addr02) }}
                             </div>
                         </div>
                         {# メールアドレス #}
-                        <div class="form-group">
+                        <div id="customer_info_list__email" class="form-group">
                             {{ form_label(form.email) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.email) }}
@@ -334,7 +334,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                         </div>
                         {# 電話番号 #}
-                        <div class="form-group">
+                        <div id="customer_info_list__tel" class="form-group">
                             {{ form_label(form.tel) }}
                             <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                 {{ form_widget(form.tel.tel01) }}-{{ form_widget(form.tel.tel02) }}-{{ form_widget(form.tel.tel03) }}
@@ -344,7 +344,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                         </div>
                         {# FAX番号 #}
-                        <div class="form-group">
+                        <div id="customer_info_list__fax" class="form-group">
                             {{ form_label(form.fax) }}
                             <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                 {{ form_widget(form.fax.fax01) }}-{{ form_widget(form.fax.fax02) }}-{{ form_widget(form.fax.fax03) }}
@@ -352,7 +352,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                         </div>
                         {# 会社名 #}
-                        <div class="form-group">
+                        <div id="customer_info_list__company_name" class="form-group">
                             {{ form_label(form.company_name) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.company_name) }}
@@ -360,7 +360,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                         </div>
                         {# 注文時お問い合わせ #}
-                        <div class="form-group">
+                        <div id="customer_info_list__message" class="form-group">
                             {{ form_label(form.message) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.message, { attr : { placeholder : '3000文字まで入力可能' }}) }}
@@ -371,14 +371,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
 
-            <div class="box accordion">
-                <div class="box-header toggle active">
+            <div id="product_info_box" class="box accordion">
+                <div id="product_info_box__toggle" class="box-header toggle active">
                     <h3 class="box-title">受注商品情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel" style="display: block;">
-                    <div class="order_list">
+                <div id="product_info_box__body" class="box-body accpanel" style="display: block;">
+                    <div id="product_info_list" class="order_list">
                         <div class="btn_area">
-                            <ul>
+                            <ul id="product_info_list__search_menu">
                                 {% if BaseInfo.optionMultipleShipping != 1 %}
                                 <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal">商品の追加</a></li>
                                 {% endif %}
@@ -393,14 +393,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {% endfilter %}">
 
                             {% for orderDetailForm in form.OrderDetails %}
-                                <div class="item_box">
+                                <div id="product_info_list__item--{{ loop.index }}" class="item_box">
                                     {{ form_widget(orderDetailForm.Product) }}
                                     {{ form_widget(orderDetailForm.ProductClass) }}
-                                    <div class="item_detail">
-                                        <div class="item_name_area">
-                                            <strong class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
-                                            <span class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span>
-                                            <span class="item_pattern small">
+                                    <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
+                                        <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
+                                            <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
+                                            <span id="product_info_list__product_code--{{ loop.index }}" class="item_id small">{{ orderDetailForm.vars.value.product_code }}</span>
+                                            <span id="product_info_list__class_category_name--{{ loop.index }}" class="item_pattern small">
                                                 {% if orderDetailForm.vars.value.class_category_name1 is not empty %}
                                                 / (
                                                     {{ orderDetailForm.vars.value.class_name1 }}：
@@ -415,14 +415,14 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                             </span>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                            <div id="product_info_list__price--{{ loop.index }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                                 <span class="input-group item_price col-xs-8 col-sm-6 col-md-12">
                                                     {{ form_widget(orderDetailForm.price) }}
                                                     {{ form_errors(orderDetailForm.price) }}
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                                <span class="item_quantity">
+                                                <span id="product_info_list__quantity--{{ loop.index }}" class="item_quantity">
                                                     {% if BaseInfo.optionMultipleShipping %}
                                                         数量：{{ form_widget(orderDetailForm.quantity, {'read_only': 'readonly'}) }}
                                                     {% else %}
@@ -432,7 +432,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 </span>
                                             </div>
                                             <div class="col-md-4 col-lg-3 form-group form-inline text-right">
-                                                <span class="item_tax">
+                                                <span id="product_info_list__tax_rate--{{ loop.index }}" class="item_tax">
                                                     税率：
                                                     <span class="input-group">
                                                     {{ form_widget(orderDetailForm.tax_rate) }}
@@ -441,7 +441,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                     </span>
                                                 </span>
                                             </div>
-                                            <div class="col-md-12 col-lg-3 item_subtotal text-right">
+                                            <div id="product_info_list__total_price--{{ loop.index }}" class="col-md-12 col-lg-3 item_subtotal text-right">
                                                 <span>小計：</span> {{ orderDetailForm.vars.value.total_price|price }}
                                             </div>
                                         </div>
@@ -449,7 +449,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     </div>
                                     {% if BaseInfo.optionMultipleShipping %}
                                     {% else %}
-                                    <div class="icon_edit">
+                                    <div id="product_info_list__button_multiple_shipping_delete--{{ loop.index }}" class="icon_edit">
                                         <button class="btn btn-default btn-sm delete-item">削除</button>
                                     </div>
                                     {% endif %}
@@ -457,22 +457,22 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             {% endfor %}
                         </div>
 
-                        <div class="row with-border2 no-margin text-right">
+                        <div id="product_info_result_box__sub_price" class="row with-border2 no-margin text-right">
                             <div class="col-lg-7 col-lg-offset-5">
-                                <dl class="dl-horizontal">
-                                    <dt>小計：</dt>
+                                <dl id="product_info_result_box__body_sub_price" class="dl-horizontal">
+                                    <dt id="product_info_result_box__subtotal">小計：</dt>
                                     <dd>{{ Order.subtotal|price }}</dd>
-                                    <dt>値引き：</dt>
+                                    <dt id="product_info_result_box__discount">値引き：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.discount) }}
                                         {{ form_errors(form.discount) }}
                                     </dd>
-                                    <dt>送料：</dt>
+                                    <dt id="product_info_result_box__delivery_fee_total">送料：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.delivery_fee_total) }}
                                         {{ form_errors(form.delivery_fee_total) }}
                                     </dd>
-                                    <dt>手数料：</dt>
+                                    <dt id="product_info_result_box__charge">手数料：</dt>
                                     <dd class="form-group form-inline">
                                         {{ form_widget(form.charge) }}
                                         {{ form_errors(form.charge) }}
@@ -481,12 +481,12 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                         </div>
 
-                        <div class="row with-border2 no-margin text-right  ta">
+                        <div id="product_info_result_box__summary" class="row with-border2 no-margin text-right  ta">
                             <div class="col-lg-7 col-lg-offset-5">
-                                <dl class="dl-horizontal">
-                                    <dt>合計：</dt>
+                                <dl id="product_info_result_box__body_summary" class="dl-horizontal">
+                                    <dt id="product_info_result_box__total">合計：</dt>
                                     <dd>{{ Order.total|price }}</dd>
-                                    <dt>お支払合計：</dt>
+                                    <dt id="product_info_result_box__payment_total">お支払合計：</dt>
                                     <dd>{{ Order.payment_total|price }}</dd>
                                 </dl>
                             </div>
@@ -496,12 +496,12 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             </div>
 
             {# お支払情報 #}
-            <div class="box accordion">
-                <div class="box-header toggle active">
+            <div id="payment_info_box" class="box accordion">
+                <div id="payment_info_box__toggle" class="box-header toggle active">
                     <h3 class="box-title">お支払情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                <div class="box-body accpanel" style="display: block;">
-                    <dl class="dl-horizontal">
+                <div id="payment_info_box__body" class="box-body accpanel" style="display: block;">
+                    <dl id="payment_info_box__payment_method" class="dl-horizontal">
                         <dt>お支払方法</dt>
                         <dd class="form-group form-inline">
                             {{ form.vars.value.payment_method }}<br/>
@@ -515,18 +515,18 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 
             {# お届け先情報 #}
             {% if BaseInfo.optionMultipleShipping %}
-            <div><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
+            <div id="shipping_info__button_new"><button type="submit" class="btn btn-default" name="mode" value="add_delivery">お届け先を新規追加</button></div>
             {% endif %}
             {% for shippingForm in form.Shippings %}
             {% set shippingIndex = loop.index0 %}
-            <div class="box accordion">
-                <div class="box-header toggle active">
+            <div id="shipping_info_box--{{ loop.index }}" class="box accordion">
+                <div id="shipping_info_box__toggle--{{ loop.index }}" class="box-header toggle active">
                     <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                    <div class="box-body accpanel" style="display: block;">
-                    <div class="order_list">
+                    <div id="shipping_info_box__body--{{ loop.index }}" class="box-body accpanel" style="display: block;">
+                    <div id="shipping_info_list--{{ loop.index }}" class="order_list">
                         <div class="btn_area">
-                            <ul>
+                            <ul id="shipping_info_list__menu--{{ loop.index }}">
                                 <li><a class="btn btn-default copyCustomerToShippingButton" data-idx="{{ loop.index0 }}">注文者情報をコピー</a></li>
                                 {% if BaseInfo.optionMultipleShipping %}
                                 <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal" data-idx="{{ loop.index0 }}">商品の追加</a></li>
@@ -538,19 +538,19 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         <div class="tableish"
                              id="shipment_item_list{{ loop.index0 }}"
                              data-prototype="
-                                {% filter escape %}
+                             {% filter escape %}
                                      {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': shippingForm.ShipmentItems.vars.prototype }) }}
-                                {% endfilter %}">
+                             {% endfilter %}">
 
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}
                             {{ form_widget(shipmentItemForm.Product) }}
                             {{ form_widget(shipmentItemForm.ProductClass) }}
-                            <div class="item_box shipment_item_idx{{ shippingIndex }}">
-                                <div class="item_detail">
-                                    <div class="item_name_area">
-                                        <strong class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
-                                        <span class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
-                                            <span class="item_pattern small">
+                            <div id="shipment_item__id--{{ shippingIndex }}" class="item_box shipment_item_idx{{ shippingIndex }}">
+                                <div id="shipment_item__detail--{{ shippingIndex }}" class="item_detail">
+                                    <div id="shipment_item__name_detail--{{ shippingIndex }}" class="item_name_area">
+                                        <strong id="shipment_item__product_name--{{ shippingIndex }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
+                                        <span id="shipment_item__product_code--{{ shippingIndex }}" class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
+                                            <span id="shipment_item__class_category_name--{{ shippingIndex }}" class="item_pattern small">
                                                 {% if shipmentItemForm.vars.value.class_category_name1 is not empty %}
                                                     / (
                                                     {{ shipmentItemForm.vars.value.class_name1 }}：
@@ -564,11 +564,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 {% endif %}
                                             </span>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                    <div id="shipment_item__info_item--{{ shippingIndex }}" class="row">
+                                        <div id="shipment_item__price--{{ shippingIndex }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             {{ form_widget(shipmentItemForm.price, {'read_only': 'readonly'}) }}
                                         </div>
-                                        <div class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                        <div id="shipment_item__quantity--{{ shippingIndex }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             <span class="item_quantity">
                                                 数量：{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
                                                 {{ form_errors(shipmentItemForm.quantity) }}
@@ -583,8 +583,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         {% endif %}
 
                         <hr>
-                        <div class="form-horizontal">
-                            <div class="form-group">
+                        <div id="shipment_item_detail--{{ loop.index }}" class="form-horizontal">
+                            <div id="shipment_item_detail__name--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.name) }}
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.name.name01, { attr : { placeholder: '姓' }}) }}
@@ -593,7 +593,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_errors(shippingForm.name.name02) }}
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div id="shipment_item_detail__kana--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.kana) }}
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
@@ -602,7 +602,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_errors(shippingForm.kana.kana02) }}
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div id="shipment_item_detail__company_name--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.company_name) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.company_name) }}
@@ -610,9 +610,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# 住所：郵便番号 #}
-                            <div class="form-group">
+                            <div id="shipment_item_detail__address--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.address) }}
-                                <div class="col-sm-9 col-lg-10 input_zip form-inline">
+                                <div id="shipment_item_detail__zip--{{ loop.index }}" class="col-sm-9 col-lg-10 input_zip form-inline">
                                     〒{{ form_widget(shippingForm.zip.zip01) }}-{{ form_widget(shippingForm.zip.zip02) }}
                                     {{ form_errors(shippingForm.zip.zip01) }}
                                     {{ form_errors(shippingForm.zip.zip02) }}
@@ -620,27 +620,27 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                             {# 住所：都道府県 #}
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
+                                <div id="shipment_item_detail__pref--{{ loop.index }}" class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
                                     {{ form_widget(shippingForm.address.pref) }}
                                     {{ form_errors(shippingForm.address.pref) }}
                                 </div>
                             </div>
                             {# 住所：住所1 #}
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                                <div id="shipment_item_detail__addr01--{{ loop.index }}" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                                     {{ form_errors(shippingForm.address.addr01) }}
                                 </div>
                             </div>
                             {# 住所：住所2 #}
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                                <div id="shipment_item_detail__addr02--{{ loop.index }}" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                                     {{ form_errors(shippingForm.address.addr02) }}
                                 </div>
                             </div>
                             {# 電話番号 #}
-                            <div class="form-group">
+                            <div id="shipment_item_detail__tel--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.tel) }}
                                 <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                     {{ form_widget(shippingForm.tel.tel01) }}-{{ form_widget(shippingForm.tel.tel02) }}-{{ form_widget(shippingForm.tel.tel03) }}
@@ -650,7 +650,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# FAX番号 #}
-                            <div class="form-group">
+                            <div id="shipment_item_detail__fax--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.fax) }}
                                 <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                     {{ form_widget(shippingForm.fax.fax01) }}-{{ form_widget(shippingForm.fax.fax02) }}-{{ form_widget(shippingForm.fax.fax03) }}
@@ -658,9 +658,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# 配送業者 #}
-                            <div class="form-group">
+                            <div id="shipment_item_detail__delivery--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.Delivery) }}
-                                <div class="col-sm-9 col-lg-10">
+                                <div id="shipment_item_detail__delivery_name--{{ loop.index }}" class="col-sm-9 col-lg-10">
                                     {% if shippingForm.vars.value.shipping_delivery_name is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_name }}<br/>
                                     {% endif %}
@@ -669,7 +669,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# お届け時間 #}
-                            <div class="form-group">
+                            <div id="shipment_item_detail__delivery_time--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.DeliveryTime) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {% if shippingForm.vars.value.shipping_delivery_time is not empty %}
@@ -682,12 +682,19 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# お届け日 #}
-                            <div class="form-group">
+                            <div id="shipment_item_detail__shipping_delivery_date--{{ loop.index }}" class="form-group">
                                 {{ form_label(shippingForm.shipping_delivery_date) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}
                                     {{ form_errors(shippingForm.shipping_delivery_date) }}
                                 </div>
+                            </div>
+                            <div class="extra-form">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_row(f) }}
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -695,23 +702,21 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
            </div>
             {% endfor %}
 
-
-
-            <div class="box">
-                <div class="box-header">
+            <div id="shop_info_box" class="box">
+                <div id="shop_info_box__header" class="box-header">
                     <h3 class="box-title">ショップ用メモ欄</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">{{ form_widget(form.note) }}</div>
+                <div id="shop_info_box__note" class="box-body">{{ form_widget(form.note) }}</div>
             </div><!-- /.box -->
 
-            <div class="row btn_area">
+            <div id="detail__insert_button" class="row btn_area">
                 <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
                     <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">受注情報を登録</button>
                 </p>
                 <!-- /.col -->
             </div>
 
-            <div class="row hidden-xs hidden-sm">
+            <div id="detail__back_button" class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     {% if id is not null %}
                         <p><a href="{{ url('admin_order') }}">戻る</a></p>
@@ -730,30 +735,39 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 {# 会員検索モーダル #}
 <div class="modal fade" id="searchCustomerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div id="search_customer_modal_box" class="modal-content">
+            <div id="search_customer_modal_box__header" class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">会員検索</h4>
             </div>
-            <div class="modal-body">
+            <div id="search_customer_modal_box__body" class="modal-body">
                 <div class="form-group">
                     {{ form_widget(searchCustomerModalForm.multi, { attr : { placeholder : '会員ID・メールアドレス・お名前' } } ) }}
                 </div>
-                <div class="form-group">
+                <div class="extra-form form-group">
+                    {% for f in searchCustomerModalForm.getIterator %}
+                        {% if f.vars.name matches '[^plg*]' %}
+                            {{ form_label(f) }}
+                            {{ form_widget(f) }}
+                            {{ form_errors(f) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div id="search_customer_modal_box__button_search" class="form-group">
                     <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >検索</button>
                 </div>
-                <div class="form-group">
+                <div id="search_customer_modal_box__body_inner" class="form-group">
                     <div class="table-responsive">
                         <table class="table table-striped" id="searchCustomerModalList">
-                            <thead>
-                            <tr>
+                            <thead >
+                            <tr id="search_customer_modal_box__body_inner_header">
                                 <th>会員ID</th>
                                 <th>お名前(カナ)</th>
                                 <th>電話番号</th>
                                 <th>決定</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="search_customer_modal_box__body_inner_body">
                             </tbody>
                         </table>
                     </div>
@@ -766,19 +780,28 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
 {# 商品検索モーダル #}
 <div class="modal fade" id="searchProductModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div id="search_product_modal_box" class="modal-content">
+            <div id="search_product_modal_box__header" class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="modal-close" aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">商品検索</h4>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
+            <div id="search_product_modal_box__body" class="modal-body">
+                <div id="search_product_modal_box__id" class="form-group">
                     {{ form_widget(searchProductModalForm.id, { attr : { placeholder : '商品名・ID・コード' } } ) }}
                 </div>
-                <div class="form-group">
+                <div id="search_product_modal_box__category_id" class="form-group">
                     {{ form_widget(searchProductModalForm.category_id) }}
                 </div>
-                <div class="form-group">
+                <div class="extra-form form-group">
+                    {% for f in searchProductModalForm.getIterator %}
+                        {% if f.vars.name matches '[^plg*]' %}
+                            {{ form_label(f) }}
+                            {{ form_widget(f) }}
+                            {{ form_errors(f) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div id="search_product_modal_box__button_search" class="form-group">
                     <button type="button" id="searchProductModalButton" class="btn btn-primary">検索</button>
                 </div>
                 <div class="form-group" id="searchProductModalList">

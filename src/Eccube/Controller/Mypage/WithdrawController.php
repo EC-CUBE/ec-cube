@@ -27,23 +27,34 @@ namespace Eccube\Controller\Mypage;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
 
 class WithdrawController extends AbstractController
 {
-
     /**
-     * Index
+     * 退会画面.
      *
      * @param Application $app
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app->form()->getForm();
+        $builder = $app->form();
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,6 +76,14 @@ class WithdrawController extends AbstractController
 
                     $app['orm.em']->flush();
 
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Customer' => $Customer
+                        ), $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);
+
                     // メール送信
                     $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);
 
@@ -81,7 +100,7 @@ class WithdrawController extends AbstractController
     }
 
     /**
-     * Complete
+     * 退会完了画面.
      *
      * @param Application $app
      * @param Request $request

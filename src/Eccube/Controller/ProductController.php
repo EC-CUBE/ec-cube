@@ -90,6 +90,7 @@ class ProductController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_PRODUCT_INDEX_SEARCH, $event);
+        $searchData = $event->getArgument('searchData');
 
         $pagination = $app['paginator']()->paginate(
             $qb,
@@ -122,7 +123,7 @@ class ProductController
                     $event = new EventArgs(
                         array(
                             'form' => $addCartForm,
-                            'product' => $Product,
+                            'Product' => $Product,
                         ),
                         $request
                     );
@@ -223,7 +224,7 @@ class ProductController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'product' => $Product,
+                'Product' => $Product,
             ),
             $request
         );
@@ -246,7 +247,7 @@ class ProductController
                         $event = new EventArgs(
                             array(
                                 'form' => $form,
-                                'product' => $Product,
+                                'Product' => $Product,
                             ),
                             $request
                         );
@@ -274,7 +275,7 @@ class ProductController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'product' => $Product,
+                            'Product' => $Product,
                         ),
                         $request
                     );

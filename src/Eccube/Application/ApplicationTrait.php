@@ -59,9 +59,13 @@ class ApplicationTrait extends \Silex\Application
         $this->addWarning('admin.delete.warning', 'admin');
     }
 
-    public function setLoginTargetPath($targetPath)
+    public function setLoginTargetPath($targetPath, $namespace = null)
     {
-        $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+        if (is_null($namespace)) {
+            $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+        } else {
+            $this['session']->getFlashBag()->set('eccube.' . $namespace . '.login.target.path', $targetPath);
+        }
     }
 
     public function isAdminRequest()
@@ -229,8 +233,8 @@ class ApplicationTrait extends \Silex\Application
 
         $eventName = $view;
         if ($this->isAdminRequest()) {
-            // 管理画面の場合、event名に「admin.」を付ける
-            $eventName = 'admin.' . $view;
+            // 管理画面の場合、event名に「Admin/」を付ける
+            $eventName = 'Admin/' . $view;
         }
         $this['monolog']->debug('Template Event Name : ' . $eventName);
 

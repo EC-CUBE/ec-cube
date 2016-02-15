@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 <h1 class="page-heading">マイページ/退会手続き</h1>
-<div class="container-fluid">
+<div id="confirm_wrap" class="container-fluid">
     {% include 'Mypage/navi.twig' %}
-    <div class="unsubscribe_box">
-        <div class="row no-padding">
-            <div class="col-sm-6 col-sm-offset-3">
+    <div id="confirm_box" class="unsubscribe_box">
+        <div id="confirm_box__body" class="row no-padding">
+            <div id="confirm_box__message" class="col-sm-6 col-sm-offset-3">
                     <div class="icon"><svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg></div>
                     <h3>退会手続きを実行してもよろしいでしょうか？</h3>
                     <p>退会手続きが完了した時点で、現在保存されている購入履歴やお届け先等の情報は、すべて削除されますのでご注意ください。</p>
@@ -39,8 +39,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
         <form method="post" action="{{ url('mypage_withdraw') }}">
             {{ form_widget(form._token) }}
-                <div class="row">
-                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                <div id="confirm_box__footer" class="row">
+                    <div id="confirm_box__complete_button" class="btn_group col-sm-offset-4 col-sm-4">
                         <p><a href="{{ url('mypage') }}" class="btn btn-info btn-block">いいえ、退会しません</a></p>
                         <p><button type="submit" class="btn btn-default btn-block" name="mode" value="complete">はい、退会します</button></p>
                     </div>

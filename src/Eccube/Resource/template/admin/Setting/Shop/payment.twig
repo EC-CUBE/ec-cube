@@ -27,37 +27,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}支払方法管理{% endblock %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header with-arrow">
+    <div id="payment_wrap" class="row">
+        <div id="payment_list_box" class="col-md-12">
+            <div id="payment_list_box__body" class="box">
+                <div id="payment_list_box__header" class="box-header with-arrow">
                     <h3 class="box-title">
                         支払方法
                     </h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="table_list">
-                        <div class="table-responsive with-border">
+                <div id="payment_list_box__body_inner" class="box-body">
+                    <div id="payment_list__list" class="table_list">
+                        <div id="payment_list__list_body" class="table-responsive with-border">
                             <table class="table table-striped">
                                 <thead>
-                                <tr>
-                                    <th>支払方法</th>
-                                    <th>手数料</th>
-                                    <th>利用条件</th>
-                                    <th>&nbsp;</th>
+                                <tr id="payment_list__list_header">
+                                    <th id="payment_list__header_method">支払方法</th>
+                                    <th id="payment_list__header_charge">手数料</th>
+                                    <th id="payment_list__header_rule">利用条件</th>
+                                    <th id="payment_list__header_menu_box">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <form name="delete_form" id="delete_form" action="" method="post">
                                     </form>
                                     {% for Payment in Payments %}
-                                    <tr>
+                                    <tr id="payment_list__item--{{ Payment.id }}">
 
-                                        <td class="member_name">{{ Payment.method }}</td>
-                                        <td class="member_name">
+                                        <td id="payment_list__method--{{ Payment.id }}" class="member_name">{{ Payment.method }}</td>
+                                        <td id="payment_list__charge--{{ Payment.id }}" class="member_name">
                                             {{ Payment.charge }}
                                         </td>
-                                        <td class="member_name">
+                                        <td id="payment_list__rule--{{ Payment.id }}" class="member_name">
                                             {% if Payment.rule_min > 0 %}
                                                 {{ Payment.rule_min }}
                                             {% else %}
@@ -70,10 +70,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 ～無制限
                                             {% endif %}
                                         </td>
-                                        <td class="icon_edit">
-                                            <div class="dropdown">
+                                        <td id="payment_list__menu_box--{{ Payment.id }}" class="icon_edit">
+                                            <div id="payment_list__menu_toggle--{{ Payment.id }}" class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                <ul id="payment_list__menu--{{ Payment.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li>
                                                         {% if Payment.fix_flg == 1 %}
                                                             <a href="{{ url('admin_setting_shop_payment_edit', { id: Payment.id}) }}">編集</a>
@@ -111,8 +111,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div><!-- /.col -->
     </div>
 
-    <div class="row">
-        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
+    <div id="payment_list__footer" class="row">
+        <div id="payment_list__insert_button" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center btn_area">
             <a href="{{ url('admin_setting_shop_payment_new') }}" class="btn btn-primary btn-block btn-lg">支払方法を新規入力</a>
         </div>
     </div>
