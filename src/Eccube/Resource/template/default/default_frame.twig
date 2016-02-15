@@ -57,7 +57,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {# ▲Head COLUMN #}
 
 </head>
-<body class="{{ body_class|default('other_page') }}">
+<body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">
 <div id="wrapper">
     <header id="header">
         <div class="container-fluid inner">
