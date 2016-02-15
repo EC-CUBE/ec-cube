@@ -245,10 +245,10 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div id="number_info_box__order_status_info" class="small text-danger">キャンセルの場合は在庫数を手動で戻してください</div>
                             </div>
                             <div class="col-sm-6 col-sm-offset-2">
-                                <p id="number_info_box__order_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date|date_format }}</p>
-                                <p id="number_info_box__payment_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date|date_format }}</p>
-                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date|date_format }}</p>
-                                <p id="number_info_box__update_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date|date_format }}</p>
+                                <p id="number_info_box__order_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>受注日：{{ Order.order_date ? Order.order_date |date("Y/m/d H:i:s") : '' }}</p>
+                                <p id="number_info_box__payment_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>入金日：{{ Order.payment_date ? Order.payment_date|date("Y/m/d H:i:s") : '' }}</p>
+                                <p id="number_info_box__commit_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>発送日：{{ Order.commit_date ? Order.commit_date|date("Y/m/d H:i:s") : '' }}</p>
+                                <p id="number_info_box__update_date"><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Order.update_date ? Order.update_date|date("Y/m/d H:i:s") : '' }}</p>
                             </div>
                         </div>
                     </div><!-- /.box-body -->
