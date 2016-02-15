@@ -349,6 +349,8 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
     /**
      * 購入確認画面→お届け先の設定→お届け先追加→購入完了
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1305
      */
     public function testShippingShippingPost()
     {
@@ -415,8 +417,8 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        // FIXME https://github.com/EC-CUBE/ec-cube/issues/1305
-        // $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+        // https://github.com/EC-CUBE/ec-cube/issues/1305
+        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
         $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
     }
 

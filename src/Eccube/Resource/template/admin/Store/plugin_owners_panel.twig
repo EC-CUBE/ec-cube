@@ -66,7 +66,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <dt class="plugin-size">ファイルサイズ</dt><dd>約 {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
         </dl>
         <p class="plugin-developer">
-            <strong>提供元</strong> : <a href="{{ item.developer_url }}" target="_blank">{{ item.developer }}</a>
+            <strong>提供元</strong> : {% if item.developer_url is not null %}<a href="{{ item.developer_url }}" target="_blank">{{ item.developer }}</a>{% else %}{{ item.developer }}{% endif %}
         </p>
     </div>
 </div>
