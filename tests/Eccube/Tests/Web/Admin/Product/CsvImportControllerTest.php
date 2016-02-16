@@ -3,7 +3,6 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Eccube\Common\Constant;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CsvImportControllerTest extends AbstractAdminWebTestCase
@@ -111,7 +110,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
-                            $crawler->filter('div.alert-success')->text());
+            $crawler->filter('div.alert-success')->text());
 
         // 規格1のみ商品の確認
         // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
@@ -176,7 +175,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify('fork-0[0-9]-new に商品コードを変更したのは '.$this->expected.'商品規格');
 
         $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
-                            $crawler->filter('div.alert-success')->text());
+            $crawler->filter('div.alert-success')->text());
 
     }
 
@@ -201,7 +200,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
-                            $crawler->filter('div.alert-success')->text());
+            $crawler->filter('div.alert-success')->text());
 
         // 規格1のみ商品の確認
         // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
@@ -272,7 +271,27 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u',
-                            $crawler->filter('div.alert-success')->text());
+            $crawler->filter('div.alert-success')->text());
+    }
+
+    public function testCsvCategoryWithNew()
+    {
+        $csv = array(
+            array('カテゴリID', 'カテゴリ名', '親カテゴリID'),
+            array('', '新カテゴリ', '')
+        );
+        $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
+
+        $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
+
+        $Categories = $this->app['eccube.repository.category']->findBy(array('name' => '新カテゴリ'));
+
+        $this->expected = 1;
+        $this->actual = count($Categories);
+        $this->verify();
+
+        $this->assertRegexp('/カテゴリ登録CSVファイルをアップロードしました。/u',
+            $crawler->filter('div.alert-success')->text());
     }
 
     public function testCsvTemplateWithCategory()
