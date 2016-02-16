@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -39,9 +41,18 @@ class OrderController extends AbstractController
 
         $session = $request->getSession();
 
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_order')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_order');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_INITIALIZE, $event);
+
+        $searchForm = $builder->getForm();
 
         $pagination = array();
 
@@ -60,6 +71,16 @@ class OrderController extends AbstractController
 
                 // paginator
                 $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $searchForm,
+                        'qb' => $qb,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+
                 $page_no = 1;
                 $pagination = $app['paginator']()->paginate(
                     $qb,
@@ -96,6 +117,16 @@ class OrderController extends AbstractController
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.order']->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $searchForm,
+                            'qb' => $qb,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_INDEX_SEARCH, $event);
+
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
@@ -138,7 +169,7 @@ class OrderController extends AbstractController
 
     }
 
-    public function delete(Application $app, $id)
+    public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
 
@@ -151,6 +182,7 @@ class OrderController extends AbstractController
         }
 
         $Order->setDelFlg(Constant::ENABLED);
+
         $app['orm.em']->persist($Order);
         $app['orm.em']->flush();
 
@@ -159,6 +191,15 @@ class OrderController extends AbstractController
             // 会員の場合、購入回数、購入金額などを更新
             $app['eccube.repository.customer']->updateBuyData($app, $Customer, $Order->getOrderStatus()->getId());
         }
+
+        $event = new EventArgs(
+            array(
+                'Order' => $Order,
+                'Customer' => $Customer,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.order.delete.complete', 'admin');
 

@@ -68,19 +68,19 @@ $(function() {
     <div class="col-md-12">
         <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_category_csv_import') }}" {{ form_enctype(form) }}>
             {{ form_widget(form._token) }}
-            <div class="box">
-                <div class="box-header">
+            <div id="upload_wrap" class="box">
+                <div id="upload_box__header" class="box-header">
                     <h3 class="box-title">カテゴリ登録CSV</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="form-group">
+                <div id="upload_box__body" class="box-body">
+                    <div id="upload_box__body_inner" class="form-group">
                         <label class="col-sm-5 control-label">CSVファイル選択</label>
-                        <div class="col-sm-7">
+                        <div id="upload_box__file" class="col-sm-7">
                             {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
                             {{ form_errors(form.import_file) }}
                         </div>
                         {% for error in errors %}
-                            <div class="text-danger">{{ error.message }}</div>
+                            <div id="upload_box__error" class="text-danger">{{ error.message }}</div>
                         {% endfor %}
                     </div>
                     <div id="spinner"></div>
@@ -93,29 +93,29 @@ $(function() {
     </div><!-- /.col -->
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="box">
-            <div class="box-header">
+<div id="file_format" class="row">
+    <div id="file_format_box" class="col-md-12">
+        <div id="file_format_box__body" class="box">
+            <div id="file_format_box__header" class="box-header">
                 <a href="{{ url('admin_product_csv_template', {'type': 'category'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
                 <h3 class="box-title">カテゴリ登録CSVファイルフォーマット</h3>
             </div><!-- /.box-header -->
-            <div class="box-body no-padding">
-                <div class="table_list">
-                    <div class="table-responsive no-border table-menu table-responsive-overflow">
+            <div id="file_format_box__body_inner" class="box-body no-padding">
+                <div id="file_format_box__list_box" class="table_list">
+                    <div id="file_format_box__list_box_body" class="table-responsive no-border table-menu table-responsive-overflow">
                         <table class="table table-striped">
                             <thead>
-                                <tr class="text-nowrap">
+                                <tr id="file_format_box__header" class="text-nowrap">
                                     {% for header in headers|keys %}
-                                        <th>{{ header }}</th>
+                                        <th id="file_format_box__header--{{ loop.index }}">{{ header }}</th>
                                     {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="text-nowrap">
-                                    <td>新規登録時は未設定<br>既存カテゴリの更新はカテゴリIDを設定</td>
-                                    <td>必須</td>
-                                    <td></td>
+                                <tr id="file_format_box__list" class="text-nowrap">
+                                    <td id="file_format_box__id">新規登録時は未設定<br>既存カテゴリの更新はカテゴリIDを設定</td>
+                                    <td id="file_format_box__name">必須</td>
+                                    <td id="file_format_box__parent_id"></td>
                                 </tr>
                             </tbody>
                         </table>

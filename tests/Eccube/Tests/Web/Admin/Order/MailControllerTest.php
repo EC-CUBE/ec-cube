@@ -2,10 +2,10 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Common\Constant;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class MailControllerTest extends AbstractAdminWebTestCase
 {

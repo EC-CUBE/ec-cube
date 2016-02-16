@@ -55,17 +55,17 @@ $(function() {
 
 {% block main %}
     <div class="row" id="aside_wrap">
-        <div class="col-md-9">
-            <div class="box">
-                <div class="box-header">
+        <div id="detail_wrap" class="col-md-9">
+            <div id="detail_box" class="box">
+                <div id="detail_box__header" class="box-header">
                     <h3 class="box-title">新着情報登録・編集</h3>
                 </div><!-- /.box-header -->
                 <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="?">
-                    <div class="box-body">
+                    <div id="detail_box__body" class="box-body">
 
                         {{ form_row(form._token) }}
 
-                        <div class="form-group">
+                        <div id="detail_box__date" class="form-group">
                             {{ form_label(form.date) }}
                             <div class="col-sm-10">
                                 {{ form_widget(form.date, {'attr': {'class': 'input_cal'}}) }}
@@ -83,23 +83,31 @@ $(function() {
 
                         {{ form_row(form.select) }}
 
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
                     </div><!-- /.box-body -->
                 </form>
             </div><!-- /.box -->
 
-            <div class="row">
-                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+            <div id="detail_box__footer" class="row">
+                <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     <p><a href="{{ url('admin_content_news') }}">戻る</a></p>
                 </div>
             </div>
 
         </div><!-- /.col -->
 
-        <div class="col-md-3">
+        <div id="common_box" class="col-md-3">
             <div class="col_inner" id="aside_column">
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="row text-center">
+                <div id="common_box__body" class="box no-header">
+                    <div id="common_button_box" class="box-body">
+                        <div id="common_button_box__insert_button" class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                 <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
                             </div>

@@ -456,7 +456,6 @@ class CsvImportController
 
                         if ($row['カテゴリID'] == '') {
                             $Category = new Category();
-                            $this->em->persist($Category);
                         } else {
                             if (!is_numeric($row['カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');

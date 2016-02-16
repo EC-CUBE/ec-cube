@@ -20,13 +20,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 {% if pages.pageCount > 1 %}
-<div class="pagination">
+<div id="pagination_wrap" class="pagination">
     <ul>
         {% if pages.previous is defined %}
-        <li class="pagenation__item-previous">
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
-               aria-label="Previous"><span aria-hidden="true">前へ</span></a>
-        </li>
+            <li class="pagenation__item-previous">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.previous})) }}"
+                   aria-label="Previous"><span aria-hidden="true">前へ</span></a>
+            </li>
         {% endif %}
 
         {% for page in pages.pagesInRange %}
@@ -38,10 +38,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% endfor %}
 
         {% if pages.next is defined %}
-        <li class="pagenation__item-next">
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
-               aria-label="Next"><span aria-hidden="true">次へ</span></a>
-        </li>
+            <li class="pagenation__item-next">
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pageno': pages.next})) }}"
+                   aria-label="Next"><span aria-hidden="true">次へ</span></a>
+            </li>
         {% endif %}
     </ul>
 </div>

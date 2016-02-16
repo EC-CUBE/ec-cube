@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -206,7 +207,7 @@ class Application extends ApplicationTrait
                     break;
             }
 
-            return $app['twig']->render('error.twig', array(
+            return $app->render('error.twig', array(
                 'error_title' => $title,
                 'error_message' => $message,
             ));
@@ -305,6 +306,9 @@ class Application extends ApplicationTrait
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
 
+                $app['admin'] = false;
+                $app['front'] = false;
+
                 if (isset($app['profiler'])) {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
                 } else {
@@ -317,6 +321,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.'admin';
+                    $app['admin'] = true;
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
@@ -324,6 +329,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_default_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.$app['config']['template_code'];
+                    $app['front'] = true;
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
@@ -638,6 +644,154 @@ class Application extends ApplicationTrait
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
             $route = $event->getRequest()->attributes->get('_route');
             $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
+        });
+
+        // Request Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function(\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::REQUEST '.$route);
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
+
+            if (strpos('admin', $route) === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.request', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.request', $event);
+            }
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.request", $event);
+
+        }, 30); // Routing(32)が解決しし, 認証判定(8)が実行される前のタイミング.
+
+        // Controller Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function(\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::CONTROLLER '.$route);
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.controller', $event);
+
+            if (strpos('admin', $route) === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.controller', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.controller', $event);
+            }
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.controller", $event);
+        });
+
+        // Response Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::RESPONSE '.$route);
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.response", $event);
+
+            if (strpos('admin', $route) === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.response', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.response', $event);
+            }
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.response', $event);
+        });
+
+        // Exception Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function(\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::EXCEPTION '.$route);
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.exception", $event);
+
+            if (strpos('admin', $route) === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.exception', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.exception', $event);
+            }
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.exception', $event);
+        });
+
+        // Terminate Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function(\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) use ($app) {
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::TERMINATE '.$route);
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.terminate", $event);
+
+            if (strpos('admin', $route) === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.terminate', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.terminate', $event);
+            }
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
         });
     }
 

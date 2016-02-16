@@ -1,0 +1,6 @@
+name: HookPoint確認用
+code: HookPoint
+version: 1.0.0
+event: HookPointEvent
+#service:
+#    - HookPointServiceProvider
