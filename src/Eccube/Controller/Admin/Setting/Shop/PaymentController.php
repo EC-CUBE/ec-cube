@@ -142,7 +142,6 @@ class PaymentController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_IMAGE_ADD_COMPLETE, $event);
-        $images = $event->getArgument('images');
         $filename = $event->getArgument('filename');
 
         return $app->json(array('filename' => $filename), 200);

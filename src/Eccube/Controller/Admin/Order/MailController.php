@@ -323,9 +323,7 @@ class MailController
                         $event = new EventArgs(
                             array(
                                 'form' => $form,
-                                'MailTemplate' => $MailTemplate,
                                 'MailHistory' => $MailHistory,
-                                'Order' => $Order,
                             ),
                             $request
                         );
