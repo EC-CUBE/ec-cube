@@ -35,16 +35,19 @@ $(function() {
 
     $('.btn-shipping').click(function() {
         $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
         return false;
     });
 
     $('.btn-shipping-edit').click(function() {
         $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
         return false;
     });
 
     $('.btn-shipping-multiple').click(function() {
         $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
         return false;
     });
 
