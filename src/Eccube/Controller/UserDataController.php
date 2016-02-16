@@ -59,7 +59,7 @@ class UserDataController
 
         $event = new EventArgs(
             array(
-                'DeviceTyp' => $DeviceType,
+                'DeviceType' => $DeviceType,
                 'PageLayout' => $PageLayout,
                 'file' => $file,
             ),

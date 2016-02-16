@@ -73,8 +73,8 @@ class LayoutController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'builderLayoutr' => $builderLayout,
-                'DeviceTyp' => $DeviceType,
+                'builderLayout' => $builderLayout,
+                'DeviceType' => $DeviceType,
                 'TargetPageLayout' => $TargetPageLayout,
                 'OrigTargetPageLayout' => $OrigTargetPageLayout,
                 'Blocks' => $Blocks,
@@ -156,7 +156,7 @@ class LayoutController
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'DeviceTyp' => $DeviceType,
+                        'DeviceType' => $DeviceType,
                         'TargetPageLayout' => $TargetPageLayout,
                         'OrigTargetPageLayout' => $OrigTargetPageLayout,
                         'Blocks' => $Blocks,

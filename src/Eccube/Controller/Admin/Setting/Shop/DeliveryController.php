@@ -112,7 +112,7 @@ class DeliveryController extends AbstractController
                 'builder' => $builder,
                 'Delivery' => $Delivery,
                 'Prefs' => $Prefs,
-                'deliveryFees' => $DeliveryFees,
+                'DeliveryFees' => $DeliveryFees,
             ),
             $request
         );

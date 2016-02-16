@@ -236,7 +236,7 @@ class MailController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'MailTemplate' => $MailTemplate
+                            'MailTemplate' => $MailTemplate,
                         ),
                         $request
                     );
@@ -275,7 +275,7 @@ class MailController
                             array(
                                 'form' => $form,
                                 'MailTemplate' => $MailTemplate,
-                                'Order' => $Order
+                                'Order' => $Order,
                             ),
                             $request
                         );
@@ -325,7 +325,7 @@ class MailController
                                 'form' => $form,
                                 'MailTemplate' => $MailTemplate,
                                 'MailHistory' => $MailHistory,
-                                'Order' => $Order
+                                'Order' => $Order,
                             ),
                             $request
                         );

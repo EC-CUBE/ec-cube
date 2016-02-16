@@ -73,7 +73,7 @@ class ForgotController extends AbstractController
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'Customer' => $Customer
+                        'Customer' => $Customer,
                     ),
                     $request
                 );

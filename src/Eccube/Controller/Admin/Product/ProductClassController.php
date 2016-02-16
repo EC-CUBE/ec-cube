@@ -286,7 +286,7 @@ class ProductClassController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'product' => $Product
+                'Product' => $Product,
             ),
             $request
         );
@@ -346,7 +346,7 @@ class ProductClassController
                         array(
                             'form' => $form,
                             'Product' => $Product,
-                            'defaultProductClass' => $defaultProductClass
+                            'defaultProductClass' => $defaultProductClass,
                         ),
                         $request
                     );
@@ -445,7 +445,7 @@ class ProductClassController
                         array(
                             'form' => $form,
                             'Product' => $Product,
-                            'updateProductClasses' => $updateProductClasses
+                            'updateProductClasses' => $updateProductClasses,
                         ),
                         $request
                     );
@@ -485,7 +485,7 @@ class ProductClassController
                         array(
                             'form' => $form,
                             'Product' => $Product,
-                            'defaultProductClass' => $defaultProductClass
+                            'defaultProductClass' => $defaultProductClass,
                         ),
                         $request
                     );

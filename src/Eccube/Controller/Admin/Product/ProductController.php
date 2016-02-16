@@ -194,7 +194,7 @@ class ProductController extends AbstractController
         $event = new EventArgs(
             array(
                 'images' => $images,
-                'files' => $files
+                'files' => $files,
             ),
             $request
         );

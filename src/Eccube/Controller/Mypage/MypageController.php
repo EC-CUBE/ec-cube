@@ -61,7 +61,7 @@ class MypageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'builder' => $builder
+                'builder' => $builder,
             ),
             $request
         );
@@ -137,7 +137,7 @@ class MypageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'Order' => $Order
+                'Order' => $Order,
             ),
             $request
         );
@@ -177,7 +177,7 @@ class MypageController extends AbstractController
         $event = new EventArgs(
             array(
                 'Order' => $Order,
-                'Customer' => $Customer
+                'Customer' => $Customer,
             ),
             $request
         );
@@ -202,7 +202,7 @@ class MypageController extends AbstractController
         $event = new EventArgs(
             array(
                 'Order' => $Order,
-                'Customer' => $Customer
+                'Customer' => $Customer,
             ),
             $request
         );
@@ -274,7 +274,7 @@ class MypageController extends AbstractController
         $event = new EventArgs(
             array(
                 'Customer' => $Customer,
-                'Product' => $Product
+                'Product' => $Product,
             ), $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE, $event);
@@ -285,7 +285,7 @@ class MypageController extends AbstractController
             $event = new EventArgs(
                 array(
                     'Customer' => $Customer,
-                    'Product' => $Product
+                    'Product' => $Product,
                 ), $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);

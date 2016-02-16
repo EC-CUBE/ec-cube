@@ -45,7 +45,7 @@ class PageController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'DeviceTyp' => $DeviceType,
+                'DeviceType' => $DeviceType,
                 'PageLayouts' => $PageLayouts,
             ),
             $request
@@ -181,7 +181,7 @@ class PageController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                    'DeviceTyp' => $DeviceType,
+                    'DeviceType' => $DeviceType,
                     'PageLayout' => $PageLayout,
                 ),
                 $request

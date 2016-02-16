@@ -65,7 +65,9 @@ class ContactController
 
         // FRONT_CONTACT_INDEX_INITIALIZE
         $event = new EventArgs(
-            array('builder' => $builder,),
+            array(
+                'builder' => $builder,
+            ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE, $event);
@@ -89,7 +91,10 @@ class ContactController
                     $data = $form->getData();
 
                     $event = new EventArgs(
-                        array('form' => $form, 'data' => $data),
+                        array(
+                            'form' => $form,
+                            'data' => $data,
+                        ),
                         $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE, $event);
