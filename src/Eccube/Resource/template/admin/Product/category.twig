@@ -119,12 +119,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     {% endif %}
                                 </div>
-                                <div class="extra-form">
+                                <div class="extra-form clearfix">
                                     {% for f in form.getIterator %}
                                         {% if f.vars.name matches '[^plg*]' %}
-                                            {{ form_label(f) }}
-                                            {{ form_widget(f) }}
-                                            {{ form_errors(f) }}
+                                            <div class="col-md-12 form-group">
+                                                {{ form_label(f) }}
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
                                         {% endif %}
                                     {% endfor %}
                                 </div>
