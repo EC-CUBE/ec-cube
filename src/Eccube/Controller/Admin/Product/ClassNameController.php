@@ -50,7 +50,7 @@ class ClassNameController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'TargetClassName' => $TargetClassName
+                'TargetClassName' => $TargetClassName,
             ),
             $request
         );
@@ -68,7 +68,7 @@ class ClassNameController extends AbstractController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'TargetClassName' => $TargetClassName
+                            'TargetClassName' => $TargetClassName,
                         ),
                         $request
                     );
@@ -108,7 +108,7 @@ class ClassNameController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                    'TargetClassName' => $TargetClassName
+                    'TargetClassName' => $TargetClassName,
                 ),
                 $request
             );

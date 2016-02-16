@@ -146,7 +146,7 @@ class CategoryController extends AbstractController
             $event = new EventArgs(
                 array(
                     'Parent' => $Parent,
-                    'TargetCategory' => $TargetCategory
+                    'TargetCategory' => $TargetCategory,
                 ),
                 $request
             );

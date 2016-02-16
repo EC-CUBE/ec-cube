@@ -58,7 +58,7 @@ class ClassCategoryController extends AbstractController
             array(
                 'builder' => $builder,
                 'ClassName' => $ClassName,
-                'TargetClassCategory' => $TargetClassCategory
+                'TargetClassCategory' => $TargetClassCategory,
             ),
             $request
         );
@@ -77,7 +77,7 @@ class ClassCategoryController extends AbstractController
                         array(
                             'form' => $form,
                             'ClassName' => $ClassName,
-                            'TargetClassCategory' => $TargetClassCategory
+                            'TargetClassCategory' => $TargetClassCategory,
                         ),
                         $request
                     );
@@ -132,7 +132,7 @@ class ClassCategoryController extends AbstractController
                 $event = new EventArgs(
                     array(
                         'ClassName' => $ClassName,
-                        'TargetClassCategory' => $TargetClassCategory
+                        'TargetClassCategory' => $TargetClassCategory,
                     ),
                     $request
                 );

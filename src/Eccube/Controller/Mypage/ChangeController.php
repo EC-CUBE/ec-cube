@@ -54,7 +54,7 @@ class ChangeController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'Customer' => $Customer
+                'Customer' => $Customer,
             ),
             $request
         );
@@ -78,7 +78,7 @@ class ChangeController extends AbstractController
             $event = new EventArgs(
                 array(
                     'form' => $form,
-                    'Customer' => $Customer
+                    'Customer' => $Customer,
                 ),
                 $request
             );

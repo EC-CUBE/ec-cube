@@ -92,7 +92,7 @@ class DeliveryController extends AbstractController
             array(
                 'builder' => $builder,
                 'Customer' => $Customer,
-                'CustomerAddress' => $CustomerAddress
+                'CustomerAddress' => $CustomerAddress,
             ),
             $request
         );
@@ -109,7 +109,7 @@ class DeliveryController extends AbstractController
                 array(
                     'form' => $form,
                     'Customer' => $Customer,
-                    'CustomerAddress' => $CustomerAddress
+                    'CustomerAddress' => $CustomerAddress,
                 ),
                 $request
             );
@@ -148,7 +148,7 @@ class DeliveryController extends AbstractController
             $event = new EventArgs(
                 array(
                     'id' => $id,
-                    'Customer' => $Customer
+                    'Customer' => $Customer,
                 ), $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);

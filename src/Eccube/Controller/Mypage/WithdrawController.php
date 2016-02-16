@@ -47,7 +47,7 @@ class WithdrawController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'builder' => $builder
+                'builder' => $builder,
             ),
             $request
         );
@@ -79,7 +79,7 @@ class WithdrawController extends AbstractController
                     $event = new EventArgs(
                         array(
                             'form' => $form,
-                            'Customer' => $Customer
+                            'Customer' => $Customer,
                         ), $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);

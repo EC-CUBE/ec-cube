@@ -50,7 +50,7 @@ class AuthorityController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'AuthorityRoles' => $AuthorityRoles
+                'AuthorityRoles' => $AuthorityRoles,
             ),
             $request
         );
@@ -96,7 +96,7 @@ class AuthorityController extends AbstractController
                 $event = new EventArgs(
                     array(
                         'form' => $form,
-                        'AuthorityRoles' => $AuthorityRoles
+                        'AuthorityRoles' => $AuthorityRoles,
                     ),
                     $request
                 );

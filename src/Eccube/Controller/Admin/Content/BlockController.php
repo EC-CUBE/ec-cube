@@ -46,7 +46,7 @@ class BlockController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'DeviceTyp' => $DeviceType,
+                'DeviceType' => $DeviceType,
                 'Blocks' => $Blocks,
             ),
             $request
@@ -88,7 +88,7 @@ class BlockController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'DeviceTyp' => $DeviceType,
+                'DeviceType' => $DeviceType,
                 'Block' => $Block,
                 'html' => $html,
             ),

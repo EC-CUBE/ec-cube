@@ -44,7 +44,10 @@ class CartController extends AbstractController
         $Cart = $app['eccube.service.cart']->getCart();
 
         // FRONT_CART_INDEX_INITIALIZE
-        $event = new EventArgs(array(), $request);
+        $event = new EventArgs(
+            array(),
+            $request
+        );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_INDEX_INITIALIZE, $event);
 
         /* @var $BaseInfo \Eccube\Entity\BaseInfo */
@@ -73,7 +76,10 @@ class CartController extends AbstractController
         }
 
         // FRONT_CART_INDEX_COMPLETE
-        $event = new EventArgs(array(), $request);
+        $event = new EventArgs(
+            array(),
+            $request
+        );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_INDEX_COMPLETE, $event);
 
         if ($event->hasResponse()) {
@@ -105,7 +111,10 @@ class CartController extends AbstractController
 
         // FRONT_CART_ADD_INITIALIZE
         $event = new EventArgs(
-            array('productClassId' => $productClassId, 'quantity' => $quantity,),
+            array(
+                'productClassId' => $productClassId,
+                'quantity' => $quantity,
+            ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_INITIALIZE, $event);
@@ -119,7 +128,10 @@ class CartController extends AbstractController
 
             // FRONT_CART_ADD_COMPLETE
             $event = new EventArgs(
-                array('productClassId' => $productClassId, 'quantity' => $quantity,),
+                array(
+                    'productClassId' => $productClassId,
+                    'quantity' => $quantity,
+                ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_COMPLETE, $event);
@@ -132,7 +144,9 @@ class CartController extends AbstractController
 
             // FRONT_CART_ADD_EXCEPTION
             $event = new EventArgs(
-                array('exception' => $e,),
+                array(
+                    'exception' => $e,
+                ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_EXCEPTION, $event);
@@ -161,7 +175,9 @@ class CartController extends AbstractController
 
         // FRONT_CART_UP_INITIALIZE
         $event = new EventArgs(
-            array('productClassId' => $productClassId,),
+            array(
+                'productClassId' => $productClassId,
+            ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_INITIALIZE, $event);
@@ -174,7 +190,9 @@ class CartController extends AbstractController
 
             // FRONT_CART_UP_COMPLETE
             $event = new EventArgs(
-                array('productClassId' => $productClassId,),
+                array(
+                    'productClassId' => $productClassId,
+                ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_COMPLETE, $event);
@@ -187,7 +205,9 @@ class CartController extends AbstractController
 
             // FRONT_CART_UP_EXCEPTION
             $event = new EventArgs(
-                array('exception' => $e,),
+                array(
+                    'exception' => $e,
+                ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_EXCEPTION, $event);
@@ -217,7 +237,9 @@ class CartController extends AbstractController
 
         // FRONT_CART_DOWN_INITIALIZE
         $event = new EventArgs(
-            array('productClassId' => $productClassId,),
+            array(
+                'productClassId' => $productClassId,
+            ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_INITIALIZE, $event);
@@ -228,7 +250,9 @@ class CartController extends AbstractController
 
             // FRONT_CART_UP_COMPLETE
             $event = new EventArgs(
-                array('productClassId' => $productClassId,),
+                array(
+                    'productClassId' => $productClassId,
+                ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_COMPLETE, $event);
@@ -241,7 +265,9 @@ class CartController extends AbstractController
 
             // FRONT_CART_DOWN_EXCEPTION
             $event = new EventArgs(
-                array('Exception' => $e,),
+                array(
+                    'exception' => $e,
+                ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_EXCEPTION, $event);
@@ -270,7 +296,9 @@ class CartController extends AbstractController
 
         // FRONT_CART_REMOVE_INITIALIZE
         $event = new EventArgs(
-            array('productClassId' => $productClassId,),
+            array(
+                'productClassId' => $productClassId,
+            ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_INITIALIZE, $event);
@@ -280,7 +308,9 @@ class CartController extends AbstractController
 
         // FRONT_CART_REMOVE_COMPLETE
         $event = new EventArgs(
-            array('productClassId' => $productClassId,),
+            array(
+                'productClassId' => $productClassId,
+            ),
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_REMOVE_COMPLETE, $event);
@@ -323,14 +353,20 @@ class CartController extends AbstractController
     public function buystep(Application $app, Request $request)
     {
         // FRONT_CART_BUYSTEP_INITIALIZE
-        $event = new EventArgs(array(), $request);
+        $event = new EventArgs(
+            array(),
+            $request
+        );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_INITIALIZE, $event);
 
         $app['eccube.service.cart']->lock();
         $app['eccube.service.cart']->save();
 
         // FRONT_CART_BUYSTEP_COMPLETE
-        $event = new EventArgs(array(), $request);
+        $event = new EventArgs(
+            array(),
+            $request
+        );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_BUYSTEP_COMPLETE, $event);
 
         if ($event->hasResponse()) {

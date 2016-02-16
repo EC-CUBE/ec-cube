@@ -710,7 +710,7 @@ class ShoppingController extends AbstractController
                 'builder' => $builder,
                 'Order' => $Order,
                 'Shipping' => $Shipping,
-                'CustomerAdderss' => $CustomerAddress,
+                'CustomerAddress' => $CustomerAddress,
             ),
             $request
         );
@@ -738,7 +738,7 @@ class ShoppingController extends AbstractController
                 array(
                     'form' => $form,
                     'Shipping' => $Shipping,
-                    'CustomerAdderss' => $CustomerAddress,
+                    'CustomerAddress' => $CustomerAddress,
                 ),
                 $request
             );

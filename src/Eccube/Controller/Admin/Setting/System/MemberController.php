@@ -79,7 +79,7 @@ class MemberController extends AbstractController
         $event = new EventArgs(
             array(
                 'builder' => $builder,
-                'Member' => $Member
+                'Member' => $Member,
             ),
             $request
         );
@@ -109,9 +109,10 @@ class MemberController extends AbstractController
                 $status = $app['eccube.repository.member']->save($Member);
 
                 if ($status) {
-                    $event = new EventArgs(array(
+                    $event = new EventArgs(
+                        array(
                             'form' => $form,
-                            'Member' => $Member
+                            'Member' => $Member,
                         ),
                         $request
                     );
@@ -193,7 +194,7 @@ class MemberController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'TargetMember' => $TargetMember
+                'TargetMember' => $TargetMember,
             ),
             $request
         );

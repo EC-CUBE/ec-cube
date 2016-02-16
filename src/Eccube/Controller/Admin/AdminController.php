@@ -47,7 +47,7 @@ class AdminController extends AbstractController
 
         $event = new EventArgs(
             array(
-                'builder' => $builder
+                'builder' => $builder,
             ),
             $request
         );
