@@ -199,7 +199,6 @@ class ProductController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE, $event);
-        $images = $event->getArgument('images');
         $files = $event->getArgument('files');
 
         return $app->json(array('files' => $files), 200);
