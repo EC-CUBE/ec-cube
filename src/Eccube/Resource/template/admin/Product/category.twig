@@ -106,8 +106,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
                 <div id="edit_box" class="box-body">
                     <div id="edit_box__body" class="row">
-                        <div id="edit_box__body_inner" class="form-inline col-md-9">
-                            {% if TargetCategory.level < app.config.category_nest_level %}
+                        <div id="edit_box__body_inner" class="col-md-9">
                             <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
                                 <div class="form-group">
                                     {% if TargetCategory.level < app.config.category_nest_level %}
@@ -119,7 +118,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </div>
                                     {% endif %}
                                 </div>
-                                <div class="extra-form clearfix">
+                                <div class="extra-form">
                                     {% for f in form.getIterator %}
                                         {% if f.vars.name matches '[^plg*]' %}
                                             <div class="col-md-12 form-group">
@@ -131,7 +130,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     {% endfor %}
                                 </div>
                             </form>
-                            {% endif %}
                         </div>
                         <div id="csv_menu_box" class="dl_dropdown col-md-3">
                             <div id="csv_menu_box__toggle" class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"/></svg></a>
