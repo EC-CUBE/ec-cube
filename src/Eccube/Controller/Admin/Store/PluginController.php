@@ -39,7 +39,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginController extends AbstractController
 {
-
     /**
      * @var string 証明書ファイル
      */
@@ -53,7 +52,6 @@ class PluginController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-
         $pluginForms = array();
         $configPages = array();
 
@@ -76,7 +74,6 @@ class PluginController extends AbstractController
         $unofficialPlugins = array();
 
         foreach ($Plugins as $Plugin) {
-
             $form = $app['form.factory']
                 ->createNamedBuilder('form'.$Plugin->getId(), 'plugin_management', null, array(
                     'plugin_id' => $Plugin->getId(),
@@ -98,7 +95,6 @@ class PluginController extends AbstractController
             } else {
                 $officialPlugins[] = $Plugin;
             }
-
         }
 
         // オーナーズストアからダウンロード可能プラグイン情報を取得
@@ -156,7 +152,6 @@ class PluginController extends AbstractController
             'unregisterdPlugins' => $unregisterdPlugins,
             'unregisterdPluginsConfigPages' => $unregisterdPluginsConfigPages,
         ));
-
     }
 
     /**
@@ -168,7 +163,6 @@ class PluginController extends AbstractController
      */
     public function update(Application $app, Request $request, $id)
     {
-
         $Plugin = $app['eccube.repository.plugin']->find($id);
 
         $form = $app['form.factory']
@@ -183,10 +177,8 @@ class PluginController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $tmpDir = null;
                 try {
-
                     $formFile = $form['plugin_archive']->getData();
 
                     $tmpDir = $app['eccube.service.plugin']->createTempDir();
@@ -203,7 +195,6 @@ class PluginController extends AbstractController
                     Cache::clear($app, false);
 
                     return $app->redirect($app->url('admin_store_plugin'));
-
                 } catch (PluginException $e) {
                     if (!empty($tmpDir) && file_exists($tmpDir)) {
                         $fs = new Filesystem();
@@ -216,9 +207,7 @@ class PluginController extends AbstractController
                 foreach ($errors as $error) {
                     $message = $error->getMessage();
                 }
-
             }
-
         }
 
         $app->addError($message, 'admin');
@@ -317,7 +306,6 @@ class PluginController extends AbstractController
         return $app->render('Store/plugin_handler.twig', array(
             'handlersPerEvent' => $HandlersPerEvent
         ));
-
     }
 
     public function handler_up(Application $app, $handlerId)
@@ -354,7 +342,6 @@ class PluginController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $tmpDir = null;
                 try {
                     $service = $app['eccube.service.plugin'];
@@ -374,7 +361,6 @@ class PluginController extends AbstractController
                     $app->addSuccess('admin.plugin.install.complete', 'admin');
 
                     return $app->redirect($app->url('admin_store_plugin'));
-
                 } catch (PluginException $e) {
                     if (!empty($tmpDir) && file_exists($tmpDir)) {
                         $fs = new Filesystem();
@@ -392,7 +378,6 @@ class PluginController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
         ));
-
     }
 
     /**
@@ -424,7 +409,6 @@ class PluginController extends AbstractController
                 $success = 0;
 
                 $message = $this->getResponseErrorMessage($info);
-
             } else {
                 // 接続成功時
 
@@ -488,7 +472,6 @@ class PluginController extends AbstractController
                             }
                             $i++;
                         }
-
                     } else {
                         $message = $data['error_code'].' : '.$data['error_message'];
                     }
@@ -497,7 +480,6 @@ class PluginController extends AbstractController
                     $message = "EC-CUBEオーナーズストアにエラーが発生しています。";
                 }
             }
-
         } else {
             $authResult = false;
         }
@@ -509,7 +491,6 @@ class PluginController extends AbstractController
             'promotionItems' => $promotionItems,
             'message' => $message,
         ));
-
     }
 
     /**
@@ -523,7 +504,6 @@ class PluginController extends AbstractController
      */
     public function upgrade(Application $app, Request $request, $action, $id, $version)
     {
-
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $authKey = $BaseInfo->getAuthenticationKey();
@@ -539,7 +519,6 @@ class PluginController extends AbstractController
                 // 接続失敗時
 
                 $message = $this->getResponseErrorMessage($info);
-
             } else {
                 // 接続成功時
 
@@ -564,19 +543,15 @@ class PluginController extends AbstractController
                             $fs->dumpFile($tmpDir.'/'.$tmpFile, $file);
 
                             if ($action == 'install') {
-
                                 $service->install($tmpDir.'/'.$tmpFile, $id);
                                 $app->addSuccess('admin.plugin.install.complete', 'admin');
-
-                            } else if ($action == 'update') {
-
+                            } elseif ($action == 'update') {
                                 $Plugin = $app['eccube.repository.plugin']->findOneBy(array('source' => $id));
 
                                 $service->update($Plugin, $tmpDir.'/'.$tmpFile);
                                 $app->addSuccess('admin.plugin.update.complete', 'admin');
 
                                 Cache::clear($app, false);
-
                             }
 
                             $fs = new Filesystem();
@@ -587,7 +562,6 @@ class PluginController extends AbstractController
                             $this->getRequestApi($request, $authKey, $url, $app);
 
                             return $app->redirect($app->url('admin_store_plugin'));
-
                         } catch (PluginException $e) {
                             if (!empty($tmpDir) && file_exists($tmpDir)) {
                                 $fs = new Filesystem();
@@ -595,7 +569,6 @@ class PluginController extends AbstractController
                             }
                             $message = $e->getMessage();
                         }
-
                     } else {
                         $message = $data['error_code'].' : '.$data['error_message'];
                     }
@@ -622,7 +595,6 @@ class PluginController extends AbstractController
      */
     public function authenticationSetting(Application $app, Request $request)
     {
-
         $form = $app->form()->getForm();
 
         $BaseInfo = $app['eccube.repository.base_info']->get();
@@ -650,7 +622,6 @@ class PluginController extends AbstractController
                 $app['orm.em']->flush($BaseInfo);
 
                 $app->addSuccess('admin.plugin.authentication.setting.complete', 'admin');
-
             }
         }
 
@@ -658,7 +629,6 @@ class PluginController extends AbstractController
         return $app->render('Store/authentication_setting.twig', array(
             'form' => $form->createView(),
         ));
-
     }
 
 
@@ -671,7 +641,6 @@ class PluginController extends AbstractController
      */
     public function download(Application $app, Request $request)
     {
-
         $this->isTokenValid($app);
 
         $url = $app['config']['cacert_pem_url'];
@@ -695,7 +664,6 @@ class PluginController extends AbstractController
         }
 
         return $app->redirect($app->url('admin_store_authentication_setting'));
-
     }
 
 
@@ -759,7 +727,6 @@ class PluginController extends AbstractController
             $message = $info['message'];
 
             $message = $statusCode.' : '.$message;
-
         } else {
             $message = "タイムアウトエラーまたはURLの指定に誤りがあります。";
         }

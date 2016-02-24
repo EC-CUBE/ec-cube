@@ -7,7 +7,6 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
 class CustomerEditControllerTest extends AbstractAdminWebTestCase
 {
-
     protected $Customer;
 
     public function setUp()

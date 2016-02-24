@@ -29,7 +29,6 @@ use Eccube\Entity\BlocPosition;
 
 class BlockController
 {
-
     public function index(Application $app)
     {
         $position = $app['request']->get('position');

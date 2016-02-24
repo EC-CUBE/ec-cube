@@ -29,7 +29,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class InstallControllerTest extends AbstractInstallWebTestCase
 {
-
     public function setUp()
     {
         parent::setUp();

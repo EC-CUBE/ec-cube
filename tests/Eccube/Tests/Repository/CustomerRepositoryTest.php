@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
  */
 class CustomerRepositoryTest extends EccubeTestCase
 {
-
     protected $email;
 
     public function setUp()
@@ -198,7 +197,6 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->app['eccube.repository.customer']->updateBuyData($this->app, $this->Customer, $this->app['config']['order_cancel']);
         $this->expected = $this->Customer->getBuyTimes();
         $this->verify();
-
     }
 }
 

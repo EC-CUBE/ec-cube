@@ -41,7 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingController extends AbstractController
 {
-
     /**
      * @var string 非会員用セッションキー
      */
@@ -216,7 +215,6 @@ class ShoppingController extends AbstractController
 
                 $em->flush();
                 $em->getConnection()->commit();
-
             } catch (\Exception $e) {
                 $em->getConnection()->rollback();
 
@@ -1305,7 +1303,6 @@ class ShoppingController extends AbstractController
      */
     public function shoppingError(Application $app, Request $request)
     {
-
         $event = new EventArgs(
             array(),
             $request

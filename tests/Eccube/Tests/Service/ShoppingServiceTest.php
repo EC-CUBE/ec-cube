@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
 {
-
     protected $Customer;
     protected $CartService;
     protected $ProductType1;
@@ -107,7 +106,6 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->expected = $NewOrder->getPreOrderId();
         $this->actual = $Order->getPreOrderId();
         $this->verify();
-
     }
 
     public function testGetNonMemberIsNull()

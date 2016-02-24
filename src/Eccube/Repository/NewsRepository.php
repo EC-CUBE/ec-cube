@@ -34,7 +34,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class NewsRepository extends EntityRepository
 {
-
     /**
      * News の順位を1上げる.
      *

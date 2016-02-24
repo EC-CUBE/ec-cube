@@ -30,7 +30,6 @@ use Eccube\Application;
 
 class AuthorityVoter implements VoterInterface
 {
-
     public $app;
 
     public function __construct(Application $app)
@@ -50,7 +49,6 @@ class AuthorityVoter implements VoterInterface
 
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-
         $request = null;
         try {
             $request = $this->app['request'];

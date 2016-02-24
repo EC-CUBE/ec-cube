@@ -26,7 +26,6 @@ namespace Eccube\Tests\Web;
 
 class ShoppingControllerTest extends AbstractWebTestCase
 {
-
     public function setUp()
     {
         parent::setUp();

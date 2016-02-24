@@ -28,7 +28,6 @@ use Eccube\Application;
 
 class PaymentRepositoryTest extends EccubeTestCase
 {
-
     public function test_findAllowedPayment()
     {
         $productTypes = array(7, 6);

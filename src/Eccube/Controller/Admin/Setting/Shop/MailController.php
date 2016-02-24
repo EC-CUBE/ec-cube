@@ -73,7 +73,6 @@ class MailController extends AbstractController
             }
 
             if ($form->isValid()) {
-
                 $app['orm.em']->flush();
 
                 $event = new EventArgs(

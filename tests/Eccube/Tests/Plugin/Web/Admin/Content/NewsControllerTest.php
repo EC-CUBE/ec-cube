@@ -28,7 +28,6 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
 class NewsControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testRoutingAdminContentNews()
     {
         $this->client->request('GET', $this->app->url('admin_content_news'));
@@ -90,7 +89,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
             EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE,
         );
         $this->verifyOutputString($hookpoints);
-
     }
 
 
@@ -224,7 +222,6 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     protected function createFormData()
     {
-
         $form = array(
             'date' => '2016-02-11',
             'title' => 'dummy',

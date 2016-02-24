@@ -20,7 +20,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
  */
 class MemberRepositoryTest extends EccubeTestCase
 {
-
     protected $Member;
     public function setUp()
     {

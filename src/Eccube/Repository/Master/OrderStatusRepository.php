@@ -37,7 +37,6 @@ class OrderStatusRepository extends EntityRepository
 {
     public function findAllArray()
     {
-
         $query = $this
             ->getEntityManager()
             ->createQuery('SELECT os FROM Eccube\Entity\Master\OrderStatus os INDEX BY os.id ORDER BY os.rank ASC')
@@ -47,6 +46,5 @@ class OrderStatusRepository extends EntityRepository
         ;
 
         return $result;
-
     }
 }

@@ -39,7 +39,7 @@ class Version20150806220909 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $t=$schema->getTable('dtb_product_class');
-        if(!$t->hasColumn('stock_unlimited') && $t->hasColumn('stock_unlimited_tmp')){
+        if (!$t->hasColumn('stock_unlimited') && $t->hasColumn('stock_unlimited_tmp')) {
             $t->addColumn('stock_unlimited', 'smallint', array('NotNull'=>true, 'Default'=>0));
         }
     }
@@ -50,6 +50,5 @@ class Version20150806220909 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

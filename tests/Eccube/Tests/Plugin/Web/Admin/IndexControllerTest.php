@@ -27,7 +27,6 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testRoutingAdminIndex()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('admin_homepage'));
@@ -44,7 +43,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminNonStock()
     {
-        $this->client->request('POST', $this->app['url_generator']->generate('admin_homepage_nonstock'));        
+        $this->client->request('POST', $this->app['url_generator']->generate('admin_homepage_nonstock'));
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $hookpoins = array(

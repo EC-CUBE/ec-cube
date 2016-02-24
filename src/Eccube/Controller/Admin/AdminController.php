@@ -201,7 +201,7 @@ class AdminController extends AbstractController
             if ($form->isValid()) {
                 // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
                 $searchData = array();
-                $searchData['stock_status'] = Constant::DISABLED;    
+                $searchData['stock_status'] = Constant::DISABLED;
                 $session = $request->getSession();
                 $session->set('eccube.admin.product.search', $searchData);
 
@@ -240,7 +240,8 @@ class AdminController extends AbstractController
                     t1.status
                 ORDER BY
                     t1.status';
-        $rsm = new ResultSetMapping();;
+        $rsm = new ResultSetMapping();
+        ;
         $rsm->addScalarResult('status', 'status');
         $rsm->addScalarResult('count', 'count');
         $query = $em->createNativeQuery($sql, $rsm);

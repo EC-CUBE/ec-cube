@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150716110827 extends AbstractMigration
 {
-
     const NAME = 'dtb_csv';
 
     /**
@@ -52,7 +51,6 @@ class Version20150716110827 extends AbstractMigration
             array('creator_id'),
             array('member_id')
         );
-
     }
 
     /**
@@ -65,6 +63,5 @@ class Version20150716110827 extends AbstractMigration
             return true;
         }
         $schema->dropTable(self::NAME);
-
     }
 }

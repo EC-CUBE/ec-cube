@@ -6,7 +6,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testIndex()
     {
         $this->client->request('GET', $this->app->url('admin_content_layout'));

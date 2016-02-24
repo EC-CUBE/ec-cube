@@ -31,7 +31,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PluginEventHandler
 {
-
     const EVENT_PRIORITY_LATEST = -500; // ハンドラテーブルに登録されていない場合の優先度
     const EVENT_PRIORITY_DISABLED = 0; // ハンドラを無効にする
 
@@ -284,5 +283,4 @@ class PluginEventHandler
         $this->Plugin = $Plugin;
         return $this;
     }
-
 }

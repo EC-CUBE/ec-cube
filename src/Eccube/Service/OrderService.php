@@ -198,6 +198,4 @@ class OrderService
     {
         $this->app['eccube.service.shopping']->setCustomerUpdate($Order, $user);
     }
-
-
 }

@@ -31,13 +31,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $payments = $options['payments'];
         $payment = $options['payment'];
         $message = $options['message'];
@@ -60,7 +58,6 @@ class ShoppingType extends AbstractType
                     new Assert\Length(array('min' => 0, 'max' => 3000))),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

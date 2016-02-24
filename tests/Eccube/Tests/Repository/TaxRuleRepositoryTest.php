@@ -17,7 +17,6 @@ use Doctrine\ORM\NoResultException;
  */
 class TaxRuleRepositoryTest extends EccubeTestCase
 {
-
     protected $BaseInfo;
     protected $Product;
     protected $TaxRule2;

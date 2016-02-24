@@ -36,39 +36,35 @@ use Eccube\Exception\PluginException;
  */
 class PluginEventHandlerRepository extends EntityRepository
 {
-
     public function getHandlers()
     {
         $qb = $this->createQueryBuilder('e')
             ->innerJoin('e.Plugin', 'p')
-            ->andWhere('e.del_flg = 0 ')  
-            ->Orderby('e.event','ASC') 
+            ->andWhere('e.del_flg = 0 ')
+            ->Orderby('e.event','ASC')
             ->addOrderby('e.priority','DESC');
-            ;
+        ;
 
         return $qb->getQuery()->getResult();
     }
 
     public function getPriorityRange($type)
     {
-
-        if(PluginEventHandler::EVENT_HANDLER_TYPE_FIRST==$type){
+        if (PluginEventHandler::EVENT_HANDLER_TYPE_FIRST==$type) {
             $range_start=PluginEventHandler::EVENT_PRIORITY_FIRST_START;
             $range_end=PluginEventHandler::EVENT_PRIORITY_FIRST_END;
-        }elseif(PluginEventHandler::EVENT_HANDLER_TYPE_LAST==$type){
+        } elseif (PluginEventHandler::EVENT_HANDLER_TYPE_LAST==$type) {
             $range_start=PluginEventHandler::EVENT_PRIORITY_LAST_START;
             $range_end=PluginEventHandler::EVENT_PRIORITY_LAST_END;
-        }else{
+        } else {
             $range_start=PluginEventHandler::EVENT_PRIORITY_NORMAL_START;
             $range_end=PluginEventHandler::EVENT_PRIORITY_NORMAL_END;
         }
         return array($range_start,$range_end);
-
     }
 
     public function calcNewPriority($event , $type)
     {
-
         list($range_start,$range_end) = $this->getPriorityRange($type);
 
         $qb = $this->createQueryBuilder('e');
@@ -80,24 +76,22 @@ class PluginEventHandlerRepository extends EntityRepository
            ->orderBy('e.priority','ASC');
 
         $result=$qb->getQuery()->getResult();
-        if(count($result)){
-             return $result[0]->getPriority() -1;
-        }else{
-             return $range_start;
+        if (count($result)) {
+            return $result[0]->getPriority() -1;
+        } else {
+            return $range_start;
         }
-
     }
 
     public function upPriority($pluginEventHandler,$up=true)
     {
-
         list($range_start,$range_end) = $this->getPriorityRange($pluginEventHandler->getHandlerType());
 
         $qb = $this->createQueryBuilder('e');
 
         $qb->andWhere("e.priority >= $range_end ")
            ->andWhere("e.priority <= $range_start ")
-           ->andWhere("e.del_flg = 0 ") 
+           ->andWhere("e.del_flg = 0 ")
            ->andWhere('e.priority '.($up ?  '>' : '<' ).' :pri')
            ->andWhere('e.event = :event')
            ->setParameter('event',$pluginEventHandler->getEvent())
@@ -107,7 +101,7 @@ class PluginEventHandlerRepository extends EntityRepository
 
         $result=$qb->getQuery()->getResult();
 
-        if(count($result)){
+        if (count($result)) {
             $em =$this->getEntityManager();
             $em->getConnection()->beginTransaction();
             // 2個のentityのprioriryを入れ替える
@@ -119,12 +113,9 @@ class PluginEventHandlerRepository extends EntityRepository
             $em->flush();
             $em->getConnection()->commit();
             # 移動する
-        }else{
+        } else {
             # 移動しない
             throw new PluginException("Can't swap");
         }
-
-
     }
-
 }

@@ -54,7 +54,8 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testBuyProductName_NotValiedData(){
+    public function testBuyProductName_NotValiedData()
+    {
         $formData = array(
             'buy_product_name' => str_repeat('A' , 55)
         );
@@ -63,7 +64,8 @@ class SearchCustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCas
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testBuyProductCode_NotValiedData(){
+    public function testBuyProductCode_NotValiedData()
+    {
         $formData = array(
             'buy_product_code' => str_repeat('A' , 55)
         );

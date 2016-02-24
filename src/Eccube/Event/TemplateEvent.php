@@ -33,7 +33,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TemplateEvent extends Event
 {
-
     /**
      * @var string
      */
@@ -133,5 +132,4 @@ class TemplateEvent extends Event
     {
         $this->response = $response;
     }
-
 }

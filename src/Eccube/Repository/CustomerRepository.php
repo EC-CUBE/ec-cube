@@ -183,7 +183,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         // birth_month
         // TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
         if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
-//            $qb
+            //            $qb
 //                ->andWhere('extract(month from c.birth) = :birth_month')
 //                ->setParameter('birth_month', $searchData['birth_month']);
         }
@@ -461,7 +461,6 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
 
             $Customer->setBuyTimes($data['buy_times']);
             $Customer->setBuyTotal($data['buy_total']);
-
         } else {
             // 受注データが存在しなければ初期化
             $Customer->setFirstBuyDate(null);

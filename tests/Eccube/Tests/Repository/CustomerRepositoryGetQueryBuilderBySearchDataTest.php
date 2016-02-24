@@ -118,7 +118,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
         $this->verify();
-
     }
 
     public function testMultiWithNameHasSpaceEn()
@@ -141,7 +140,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->expected = '名';
         $this->actual = $this->Results[0]->getName02();
         $this->verify();
-
     }
 
     public function testMultiWithNameHasSpaceJa()
@@ -164,7 +162,6 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->expected = '名';
         $this->actual = $this->Results[0]->getName02();
         $this->verify();
-
     }
 
     public function testMultiWithKana()

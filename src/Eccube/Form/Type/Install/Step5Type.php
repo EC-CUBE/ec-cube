@@ -49,7 +49,6 @@ class Step5Type extends AbstractType
                 'required' => false,
             ))
         ;
-
     }
 
     /**

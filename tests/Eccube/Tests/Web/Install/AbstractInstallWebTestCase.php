@@ -29,7 +29,6 @@ use Eccube\InstallApplication;
 
 abstract class AbstractInstallWebTestCase extends WebTestCase
 {
-
     protected $client = null;
     protected static $server = null;
 

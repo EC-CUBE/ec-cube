@@ -146,7 +146,6 @@ class InstallController
         $sessionData = $this->getSessionData($request);
 
         if (empty($sessionData['shop_name'])) {
-
             $config_file = $this->config_path . '/config.yml';
             $fs = new Filesystem();
 
@@ -211,7 +210,6 @@ class InstallController
         $sessionData = $this->getSessionData($request);
 
         if (empty($sessionData['database'])) {
-
             $config_file = $this->config_path.'/database.yml';
             $fs = new Filesystem();
 
@@ -235,7 +233,6 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
-
             return $app->redirect($app->url('install_step5'));
         }
 
@@ -256,7 +253,6 @@ class InstallController
         $form->setData($sessionData);
 
         if ($this->isValid($request, $form)) {
-
             $this
                 ->createDatabaseYamlFile($sessionData)
                 ->createMailYamlFile($sessionData)
@@ -279,7 +275,6 @@ class InstallController
                 $this
                     ->setPDO()
                     ->update();
-
             }
 
 
@@ -379,7 +374,6 @@ class InstallController
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
             $this->PDO->connect();
-
         } catch (\Exception $e) {
             $this->PDO->close();
             throw $e;
@@ -463,7 +457,6 @@ class InstallController
         $this->PDO->beginTransaction();
 
         try {
-
             $config = array(
                 'auth_type' => '',
                 'auth_magic' => $config['config']['auth_magic'],
@@ -523,7 +516,6 @@ class InstallController
         $this->PDO->beginTransaction();
 
         try {
-
             $config = array(
                 'auth_type' => '',
                 'auth_magic' => $config['config']['auth_magic'],
@@ -542,7 +534,6 @@ class InstallController
                 // 同一の管理者IDであればパスワードのみ更新
                 $sth = $this->PDO->prepare("UPDATE dtb_member set password = :admin_pass, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
                 $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt, ':login_id' => $this->session_data['login_id']));
-
             } else {
                 // 新しい管理者IDが入力されたらinsert
                 $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
@@ -729,7 +720,6 @@ class InstallController
                 $replace,
                 file_get_contents($this->dist_path . '/database.yml.dist')
             );
-
         } else {
             $content = Yaml::dump(
                 array(

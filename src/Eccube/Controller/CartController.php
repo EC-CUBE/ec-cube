@@ -120,7 +120,6 @@ class CartController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_ADD_INITIALIZE, $event);
 
         try {
-
             $productClassId = $event->getArgument('productClassId');
             $quantity = $event->getArgument('quantity');
 
@@ -139,7 +138,6 @@ class CartController extends AbstractController
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
-
         } catch (CartException $e) {
 
             // FRONT_CART_ADD_EXCEPTION
@@ -183,7 +181,6 @@ class CartController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_UP_INITIALIZE, $event);
 
         try {
-
             $productClassId = $event->getArgument('productClassId');
 
             $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
@@ -200,7 +197,6 @@ class CartController extends AbstractController
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
-
         } catch (CartException $e) {
 
             // FRONT_CART_UP_EXCEPTION
@@ -260,7 +256,6 @@ class CartController extends AbstractController
             if ($event->hasResponse()) {
                 return $event->getResponse();
             }
-
         } catch (CartException $e) {
 
             // FRONT_CART_DOWN_EXCEPTION

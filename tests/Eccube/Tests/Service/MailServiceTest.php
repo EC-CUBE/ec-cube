@@ -23,7 +23,6 @@ use Eccube\Service\MailService;
  */
 class MailServiceTest extends AbstractServiceTestCase
 {
-
     protected $client;
     protected $Customer;
     protected $BaseInfo;

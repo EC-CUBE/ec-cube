@@ -113,7 +113,6 @@ class PageLayoutRepository extends EntityRepository
         }
 
         return $ownResult;
-
     }
 
     public function getByUrl(DeviceType $DeviceType, $url)

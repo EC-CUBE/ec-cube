@@ -35,10 +35,8 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderController extends AbstractController
 {
-
     public function index(Application $app, Request $request, $page_no = null)
     {
-
         $session = $request->getSession();
 
         $builder = $app['form.factory']
@@ -63,7 +61,6 @@ class OrderController extends AbstractController
         $active = false;
 
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
@@ -166,7 +163,6 @@ class OrderController extends AbstractController
             'page_count' => $page_count,
             'active' => $active,
         ));
-
     }
 
     public function delete(Application $app, Request $request, $id)
@@ -258,7 +254,6 @@ class OrderController extends AbstractController
                             $data = $csvService->getData($Csv, $OrderDetail);
                         }
                         $row[] = $data;
-
                     }
 
                     //$row[] = number_format(memory_get_usage(true));

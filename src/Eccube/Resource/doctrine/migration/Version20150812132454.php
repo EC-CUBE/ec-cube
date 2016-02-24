@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150812132454 extends AbstractMigration
 {
-
     const NAME = 'dtb_base_info';
 
     /**
@@ -21,10 +20,9 @@ class Version20150812132454 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $t = $schema->getTable(self::NAME);
 
-        if($t->hasColumn('option_delivery_fee')){
+        if ($t->hasColumn('option_delivery_fee')) {
             $t->dropColumn('option_delivery_fee');
         }
-
     }
 
     /**
@@ -33,6 +31,5 @@ class Version20150812132454 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

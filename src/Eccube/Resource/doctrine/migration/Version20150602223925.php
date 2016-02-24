@@ -16,7 +16,6 @@ class Version20150602223925 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-
     }
 
     /**
@@ -25,8 +24,8 @@ class Version20150602223925 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }
 
 # migrationファイルが一つもないとこけるのでダミーファイル
+

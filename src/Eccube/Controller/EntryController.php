@@ -35,7 +35,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryController extends AbstractController
 {
-
     /**
      * 会員登録画面.
      *

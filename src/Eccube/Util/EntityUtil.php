@@ -28,7 +28,6 @@ use Doctrine\ORM\Proxy\Proxy;
 
 class EntityUtil
 {
-
     /**
      * LAZY loading したエンティティの有無をチェックする.
      *

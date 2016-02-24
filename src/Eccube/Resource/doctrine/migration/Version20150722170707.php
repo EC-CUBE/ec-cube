@@ -15,8 +15,7 @@ class Version20150722170707 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-
-        if($this->connection->getDatabasePlatform()->getName() == "mysql"){
+        if ($this->connection->getDatabasePlatform()->getName() == "mysql") {
             // this up() migration is auto-generated, please modify it to your needs
             $this->addSql("alter table  dtb_base_info                 collate utf8_general_ci ;");
             $this->addSql("alter table  dtb_block                     collate utf8_general_ci ;");
@@ -310,7 +309,6 @@ class Version20150722170707 extends AbstractMigration
             $this->addSql("alter table mtb_product_list_max      modify name                    longtext                COLLATE utf8_general_ci ;");
             $this->addSql("alter table mtb_product_list_order_by modify name                    longtext                COLLATE utf8_general_ci ;");
         }
-
     }
 
     /**
@@ -319,7 +317,5 @@ class Version20150722170707 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }
-

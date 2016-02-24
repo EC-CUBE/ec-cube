@@ -28,7 +28,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class TemplateControllerTest extends AbstractAdminWebTestCase
 {
-
     public function test_routing_AdminTemplate_index()
     {
         $this->client->request('GET', $this->app->url('admin_store_template'));

@@ -28,14 +28,12 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class BlockControllerTest extends AbstractAdminWebTestCase
 {
-
     public function tearDown()
     {
         parent::tearDown();
     }
     public function test_routing_AdminContentBlock_index()
     {
-
         $this->client->request('GET', $this->app->url('admin_content_block'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -82,7 +80,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentBlock_defaultBlockDelete()
     {
-
         $redirectUrl = $this->app->url('admin_content_block');
 
         $this->client->request('DELETE',
@@ -96,5 +93,4 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
         $this->assertSame(true, $actual);
     }
-
 }

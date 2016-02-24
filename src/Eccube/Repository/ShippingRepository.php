@@ -34,7 +34,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class ShippingRepository extends EntityRepository
 {
-
     /**
      * 同一商品のお届け先情報を取得
      *
@@ -54,7 +53,5 @@ class ShippingRepository extends EntityRepository
             ->getResult();
 
         return $shippings;
-
     }
-
 }

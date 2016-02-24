@@ -34,7 +34,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController
 {
-
     private $title;
 
     public function __construct()

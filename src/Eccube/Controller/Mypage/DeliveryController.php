@@ -154,7 +154,6 @@ class DeliveryController extends AbstractController
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE, $event);
 
             $app->addSuccess('mypage.address.delete.complete');
-
         } else {
             $app->addError('mypage.address.delete.failed');
         }

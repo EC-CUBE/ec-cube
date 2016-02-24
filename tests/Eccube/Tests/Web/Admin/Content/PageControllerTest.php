@@ -30,7 +30,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class PageControllerTest extends AbstractAdminWebTestCase
 {
-
     public function test_routing_AdminContentPage_index()
     {
         $this->client->request('GET', $this->app->url('admin_content_page'));
@@ -50,7 +49,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentPage_delete()
     {
-
         $redirectUrl = $this->app->url('admin_content_page');
 
         $this->client->request('DELETE',
@@ -67,7 +65,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentPage_delete_flg_user()
     {
-
         $redirectUrl = $this->app->url('admin_content_page');
 
         $DeviceType = $this->app['eccube.repository.master.device_type']
@@ -87,7 +84,5 @@ class PageControllerTest extends AbstractAdminWebTestCase
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
     }
-
 }

@@ -28,8 +28,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class EntityToIdTransformer implements DataTransformerInterface {
-
+class EntityToIdTransformer implements DataTransformerInterface
+{
     /**
      * @var ObjectManager
      */

@@ -44,13 +44,11 @@ class BlockRepository extends EntityRepository
 
     public function findOrCreate($block_id, $DeviceType)
     {
-
         if ($block_id == null) {
             return $this->newBlock($DeviceType);
         } else {
             return $this->getBlock($block_id, $DeviceType);
         }
-
     }
 
     public function newBlock($DeviceType)
@@ -69,7 +67,6 @@ class BlockRepository extends EntityRepository
      */
     private function getNewBlockId($DeviceType)
     {
-
         $qb = $this->createQueryBuilder('b')
             ->select('max(b.id) +1 as block_id')
             ->where('b.DeviceType = :DeviceType')
@@ -77,7 +74,6 @@ class BlockRepository extends EntityRepository
         $result = $qb->getQuery()->getSingleResult();
 
         return $result['block_id'];
-
     }
 
     /**

@@ -24,7 +24,8 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     protected $Results;
     protected $searchData;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->createProduct();
         $this->Customer = $this->createCustomer();
@@ -62,7 +63,6 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->expected = 2;
         $this->actual = count($this->Results);
         $this->verify();
-
     }
 
     public function testMultiWithName()

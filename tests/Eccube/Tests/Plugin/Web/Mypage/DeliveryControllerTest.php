@@ -30,7 +30,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DeliveryControllerTest extends AbstractWebTestCase
 {
-
     protected $Customer;
 
     public function setUp()

@@ -38,7 +38,6 @@ class CsvController extends AbstractController
 {
     public function index(Application $app, Request $request, $id = CsvType::CSV_TYPE_ORDER)
     {
-
         $CsvType = $app['eccube.repository.master.csv_type']->find($id);
         if (is_null($CsvType)) {
             throw new NotFoundHttpException();
@@ -90,7 +89,6 @@ class CsvController extends AbstractController
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
-
             $data = $request->get('form');
             if (isset($data['csv_not_output'])) {
                 $Csvs = $data['csv_not_output'];
@@ -136,7 +134,5 @@ class CsvController extends AbstractController
             'form' => $form->createView(),
             'id' => $id,
         ));
-
     }
-
 }

@@ -280,7 +280,6 @@ class CartService
             if (!$this->canAddProductPayment($ProductClass->getProductType())) {
                 throw new CartException('cart.product.payment.kind');
             }
-
         }
 
         $tmp_subtotal = 0;
@@ -395,7 +394,6 @@ class CartService
 
         // 支払条件に一致しない
         return false;
-
     }
 
     /**
@@ -522,7 +520,6 @@ class CartService
      */
     public function getProductTypes()
     {
-
         $productTypes = array();
         foreach ($this->getCart()->getCartItems() as $item) {
             /* @var $ProductClass \Eccube\Entity\ProductClass */
@@ -530,7 +527,6 @@ class CartService
             $productTypes[] = $ProductClass->getProductType();
         }
         return array_unique($productTypes);
-
     }
 
     /**
@@ -578,5 +574,4 @@ class CartService
         $this->session->getFlashBag()->set('eccube.front.request.error', $error);
         return $this;
     }
-
 }

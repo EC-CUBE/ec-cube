@@ -65,7 +65,6 @@ class ChangeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             if ($Customer->getPassword() === $app['config']['default_password']) {
                 $Customer->setPassword($previous_password);
             } else {

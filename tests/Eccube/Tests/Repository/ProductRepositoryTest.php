@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
-
     public function testGet()
     {
         $Product = $this->app['eccube.repository.product']->findOneBy(

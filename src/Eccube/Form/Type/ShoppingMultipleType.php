@@ -31,13 +31,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShoppingMultipleType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $deliveries = $options['deliveries'];
         $delivery = $options['delivery'];
         $deliveryDates = $options['deliveryDates'];
@@ -63,7 +61,6 @@ class ShoppingMultipleType extends AbstractType
                 'empty_data' => null,
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -73,7 +70,6 @@ class ShoppingMultipleType extends AbstractType
             'delivery' => null,
             'deliveryDates' => array(),
         ));
-
     }
 
     /**

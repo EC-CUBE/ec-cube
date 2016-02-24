@@ -172,7 +172,7 @@ class ShippingType extends AbstractType
                     'empty_value' => '指定なし',
                     'empty_data' => null,
                     'required' => false,
-                    'query_builder' => function (EntityRepository $er) use($Delivery) {
+                    'query_builder' => function (EntityRepository $er) use ($Delivery) {
                         return $er->createQueryBuilder('dt')
                             ->where('dt.Delivery = :Delivery')
                             ->setParameter('Delivery', $Delivery);
@@ -201,7 +201,7 @@ class ShippingType extends AbstractType
                     'empty_value' => '指定なし',
                     'empty_data' => null,
                     'required' => false,
-                    'query_builder' => function (EntityRepository $er) use($Delivery) {
+                    'query_builder' => function (EntityRepository $er) use ($Delivery) {
                         return $er->createQueryBuilder('dt')
                             ->where('dt.Delivery = :Delivery')
                             ->setParameter('Delivery', $Delivery);

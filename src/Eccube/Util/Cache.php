@@ -31,7 +31,6 @@ use Symfony\Component\Finder\Finder;
  */
 class Cache
 {
-
     /**
      * キャッシュを削除する.
      *

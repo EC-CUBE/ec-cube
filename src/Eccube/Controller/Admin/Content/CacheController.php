@@ -31,18 +31,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CacheController extends AbstractController
 {
-
     public function index(Application $app, Request $request)
     {
-
         $form = $app->form()->getForm();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 switch ($request->get('mode')) {
                     case 'twig':
                         // Twigキャッシュクリア

@@ -7,7 +7,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class OrderControllerTest extends AbstractAdminWebTestCase
 {
-
     public function setUp()
     {
         parent::setUp();

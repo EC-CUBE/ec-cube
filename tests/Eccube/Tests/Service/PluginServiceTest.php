@@ -61,9 +61,10 @@ class PluginServiceTest extends AbstractServiceTestCase
      */
 
     // テスト用のダミープラグインを配置する
-    private function createTempDir(){
+    private function createTempDir()
+    {
         $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
-        if(!mkdir($t)){
+        if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }
         return $t;
@@ -95,11 +96,11 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
 
-        try{
+        try {
             $service->install($tmpfile);
             $this->fail("checkSamePlugin dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){
-        }catch(\Exception $e){
+        } catch (\Eccube\Exception\PluginException $e) {
+        } catch (\Exception $e) {
             $this->fail("checkSamePlugin throw unexpected exception.".$e->toString());
         }
         // 同じプラグインの二重インストールが蹴られるか
@@ -108,8 +109,6 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
         $this->assertTrue($service->uninstall($plugin));
-
-
     }
 
     // 必須ファイルがないプラグインがインストール出来ないこと
@@ -129,7 +128,6 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar->addFromString('dummy','dummy');
         // インストールできるか
         $service->install($tmpfile);
-
     }
 
     // config.ymlのフォーマット確認
@@ -145,74 +143,81 @@ class PluginServiceTest extends AbstractServiceTestCase
         #$config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
-        try{
+        try {
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        } catch (\Eccube\Exception\PluginException $e) {
+        }
 
         $config=array();
         $config['name'] = $tmpname;
         #$config['code'] = $tmpname;
         $config['version'] = $tmpname;
-        try{
+        try {
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        } catch (\Eccube\Exception\PluginException $e) {
+        }
 
         $config=array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         #$config['version'] = $tmpname;
-        try{
+        try {
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        } catch (\Eccube\Exception\PluginException $e) {
+        }
 
         // 禁止文字のチェック
 
         $config['name'] = $tmpname."@";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
-        try{
+        try {
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        } catch (\Eccube\Exception\PluginException $e) {
+        }
 
         $config=array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname."#";
         $config['version'] = $tmpname;
-        try{
+        try {
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        } catch (\Eccube\Exception\PluginException $e) {
+        }
 
         // 長さのチェック
         $config=array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = str_repeat('a',256);
-        try{
+        try {
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        } catch (\Eccube\Exception\PluginException $e) {
+        }
 
         $config=array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         $config['event'] = "&".$tmpname;
-        try{
+        try {
             file_put_contents($tmpfile,Yaml::dump($config));
             $service->checkPluginArchiveContent($tmpfile);
             $this->fail("testConfigYmlFormat dont throw exception.");
-        }catch(\Eccube\Exception\PluginException $e){ }
+        } catch (\Eccube\Exception\PluginException $e) {
+        }
     }
 
     // config.ymlに異常な項目がある場合
@@ -316,21 +321,20 @@ EOD;
         // event.ymlとdtb_plugin_event_handlerの内容を照合(優先度、ハンドラメソッド名、イベント名)
         $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
 
-        foreach($plugin->getPluginEventHandlers() as $handler){
-            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL){
+        foreach ($plugin->getPluginEventHandlers() as $handler) {
+            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandler',$handler->getHandler());
                 $this->assertEquals('eccube.event.app.before',$handler->getEvent());
             }
-            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_FIRST){
+            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_FIRST) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_FIRST_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_FIRST_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandlerFirst',$handler->getHandler());
                 $this->assertEquals('eccube.event.app.before',$handler->getEvent());
-
             }
-            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST){
+            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandlerLast',$handler->getHandler());
@@ -376,14 +380,14 @@ EOD;
         $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('code'=>$tmpname)));
         $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
 
-        foreach($plugin->getPluginEventHandlers() as $handler){
-            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL){
+        foreach ($plugin->getPluginEventHandlers() as $handler) {
+            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandler',$handler->getHandler());
                 $this->assertEquals('eccube.event.app.before',$handler->getEvent());
             }
-            if($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST){
+            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_START,$handler->getPriority() );
                 $this->assertContains($handler->getHandler(), array('dummyHandlerLast','dummyCartHandlerLast'));
@@ -456,13 +460,13 @@ EOD;
         $this->assertTrue($service->install($tmpfile));
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable()); // インストール直後にプラグインがdisableになっているか
-        try{
+        try {
             $this->assertTrue($service->enable($plugin));// enableにしようとするが、例外発生
-        }catch(\Exception $e){ }
+        } catch (\Exception $e) {
+        }
         $this->app['orm.em']->detach($plugin);
         $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable()); // プラグインがdisableのままになっていることを確認
-
     }
 
     // インストーラを含むプラグインが正しくインストールできるか
@@ -521,7 +525,8 @@ EOD;
         // インストールできるか、インストーラが呼ばれるか
         ob_start();
         $this->assertTrue($service->install($tmpfile));
-        $this->assertRegexp('/Installed/',ob_get_contents()); ob_end_clean();
+        $this->assertRegexp('/Installed/',ob_get_contents());
+        ob_end_clean();
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
 
@@ -529,17 +534,20 @@ EOD;
 
         ob_start();
         $service->enable($plugin);
-        $this->assertRegexp('/Enabled/',ob_get_contents()); ob_end_clean();
+        $this->assertRegexp('/Enabled/',ob_get_contents());
+        ob_end_clean();
         ob_start();
         $service->disable($plugin);
-        $this->assertRegexp('/Disabled/',ob_get_contents()); ob_end_clean();
+        $this->assertRegexp('/Disabled/',ob_get_contents());
+        ob_end_clean();
 
 
         // アンインストールできるか、アンインストーラが呼ばれるか
         ob_start();
         $service->disable($plugin);
         $this->assertTrue($service->uninstall($plugin));
-        $this->assertRegexp('/DisabledUninstalled/',ob_get_contents()); ob_end_clean();
+        $this->assertRegexp('/DisabledUninstalled/',ob_get_contents());
+        ob_end_clean();
     }
 
 

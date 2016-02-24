@@ -28,7 +28,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
 {
-
     public function createFormData()
     {
         $faker = $this->getFaker();
@@ -80,7 +79,6 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductProductEdit()
     {
-
         $TestProduct = $this->createProduct();
 
         $test_product_id = $this->app['eccube.repository.product']
@@ -196,6 +194,4 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $TestProductStock->setCreator($TestCreator);
         return $TestProductStock;
     }
-
-
 }

@@ -10,7 +10,6 @@ use Doctrine\DBAL\Migrations\MigrationException;
 
 abstract class EccubeDatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
 {
-
     protected static $app;
     /**
      * @see http://jamesmcfadden.co.uk/database-unit-testing-with-doctrine-2-and-phpunit/

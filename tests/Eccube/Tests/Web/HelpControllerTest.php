@@ -26,7 +26,6 @@ namespace Eccube\Tests\Web;
 
 class HelpControllerTest extends AbstractWebTestCase
 {
-
     /**
      * 特定商取引法のテスト
      */

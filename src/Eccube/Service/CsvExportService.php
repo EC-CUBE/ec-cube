@@ -284,11 +284,9 @@ class CsvExportService
                 }
             }
             return implode($this->config['csv_export_multidata_separator'], $array);
-
         } elseif ($data instanceof \DateTime) {
             // datetimeの場合は文字列に変換する.
             return $data->format($this->config['csv_export_date_format']);
-
         } else {
             // スカラ値の場合はそのまま.
             return $data;

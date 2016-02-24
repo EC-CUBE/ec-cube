@@ -88,7 +88,6 @@ class CategoryController extends AbstractController
                 $status = $app['eccube.repository.category']->save($TargetCategory);
 
                 if ($status) {
-
                     $event = new EventArgs(
                         array(
                             'form' => $form,
@@ -142,7 +141,6 @@ class CategoryController extends AbstractController
         $status = $app['eccube.repository.category']->delete($TargetCategory);
 
         if ($status === true) {
-
             $event = new EventArgs(
                 array(
                     'Parent' => $Parent,

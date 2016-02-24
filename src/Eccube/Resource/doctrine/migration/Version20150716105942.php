@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150716105942 extends AbstractMigration
 {
-
     const NAME = 'mtb_csv_type';
 
     /**
@@ -27,7 +26,6 @@ class Version20150716105942 extends AbstractMigration
         $table->addColumn('name', 'text', array('NotNull' => false));
         $table->addColumn('rank', 'smallint', array('NotNull' => true));
         $table->setPrimaryKey(array('id'));
-
     }
 
     /**
@@ -40,6 +38,5 @@ class Version20150716105942 extends AbstractMigration
             return true;
         }
         $schema->dropTable(self::NAME);
-
     }
 }

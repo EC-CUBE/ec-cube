@@ -33,7 +33,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingMultipleItemType extends AbstractType
 {
-
     public $app;
 
     public function __construct(\Eccube\Application $app)
@@ -128,7 +127,6 @@ class ShippingMultipleItemType extends AbstractType
 
             })
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
-
     }
 
     /**

@@ -16,9 +16,10 @@ use Eccube\Common\Constant;
  */
 class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 {
-    private function createTempDir(){
+    private function createTempDir()
+    {
         $t = sys_get_temp_dir()."/plugintest.".sha1(mt_rand());
-        if(!mkdir($t)){
+        if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }
         return $t;
@@ -74,11 +75,11 @@ EOD;
         $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
         $service = $this->app['eccube.service.plugin'];
-        try{
-
+        try {
             $this->assertTrue($service->install($tmpfile));
             $this->fail("BrokenManager dont throw exception.");
-        }catch(\Exception $e){ }
+        } catch (\Exception $e) {
+        }
 
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");

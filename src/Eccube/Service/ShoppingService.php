@@ -91,7 +91,6 @@ class ShoppingService
         $Order = $this->app['eccube.repository.order']->findOneBy($condition);
 
         return $Order;
-
     }
 
     /**
@@ -113,7 +112,6 @@ class ShoppingService
         $Customer->setPref($this->app['eccube.repository.master.pref']->find($nonMember['pref']));
 
         return $Customer;
-
     }
 
     /**
@@ -149,7 +147,6 @@ class ShoppingService
      */
     public function registerPreOrder(Customer $Customer, $preOrderId)
     {
-
         $this->em = $this->app['orm.em'];
 
         // 受注情報を作成
@@ -208,7 +205,6 @@ class ShoppingService
         $this->em->flush();
 
         return $Order;
-
     }
 
     /**
@@ -291,7 +287,6 @@ class ShoppingService
         $productTypes = $this->cartService->getProductTypes();
 
         return $this->getDeliveries($productTypes);
-
     }
 
     /**
@@ -307,7 +302,6 @@ class ShoppingService
         $productTypes = $this->orderService->getProductTypes($Order);
 
         return $this->getDeliveries($productTypes);
-
     }
 
     /**
@@ -332,11 +326,9 @@ class ShoppingService
                 // 商品種別が複数ある場合、配送対象となる配送業者を取得
                 $deliveries = $this->app['eccube.repository.delivery']->findAllowedDeliveries($productTypes, $payments);
             }
-
         }
 
         return $deliveries;
-
     }
 
 
@@ -463,7 +455,6 @@ class ShoppingService
         }
 
         return $Order;
-
     }
 
     /**
@@ -514,7 +505,6 @@ class ShoppingService
      */
     public function getNewShipmentItem(Order $Order, Product $Product, ProductClass $ProductClass, $quantity)
     {
-
         $ShipmentItem = new ShipmentItem();
         $shippings = $Order->getShippings();
 
@@ -564,7 +554,6 @@ class ShoppingService
         $this->em->persist($ShipmentItem);
 
         return $ShipmentItem;
-
     }
 
     /**
@@ -581,7 +570,6 @@ class ShoppingService
         }
 
         return $deliveryFeeTotal;
-
     }
 
     /**
@@ -628,7 +616,6 @@ class ShoppingService
         $this->app['orm.em']->flush();
 
         return $Order;
-
     }
 
     /**
@@ -727,7 +714,6 @@ class ShoppingService
                     return false;
                 }
             }
-
         }
 
         // 在庫チェック
@@ -747,7 +733,6 @@ class ShoppingService
         }
 
         return true;
-
     }
 
     /**
@@ -766,7 +751,6 @@ class ShoppingService
         // お届け先情報を更新
         $shippings = $data['shippings'];
         foreach ($shippings as $Shipping) {
-
             $Delivery = $Shipping->getDelivery();
 
             $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array(
@@ -796,7 +780,6 @@ class ShoppingService
 
         // 配送料無料条件(合計数量)
         $this->setDeliveryFreeQuantity($Order);
-
     }
 
 
@@ -808,14 +791,12 @@ class ShoppingService
      */
     public function setStockUpdate($em, Order $Order)
     {
-
         $orderDetails = $Order->getOrderDetails();
 
         // 在庫情報更新
         foreach ($orderDetails as $orderDetail) {
             // 在庫が無制限かチェックし、制限ありなら在庫数を更新
             if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
-
                 $productStock = $em->getRepository('Eccube\Entity\ProductStock')->find(
                     $orderDetail->getProductClass()->getProductStock()->getId()
                 );
@@ -826,10 +807,8 @@ class ShoppingService
 
                 // 商品規格情報の在庫数を更新
                 $orderDetail->getProductClass()->setStock($stock);
-
             }
         }
-
     }
 
 
@@ -841,7 +820,6 @@ class ShoppingService
      */
     public function setCustomerUpdate(Order $Order, Customer $user)
     {
-
         $orderDetails = $Order->getOrderDetails();
 
         // 顧客情報を更新
@@ -854,7 +832,6 @@ class ShoppingService
 
         $user->setBuyTimes($user->getBuyTimes() + 1);
         $user->setBuyTotal($user->getBuyTotal() + $Order->getTotal());
-
     }
 
 
@@ -881,7 +858,6 @@ class ShoppingService
         }
 
         return $pays;
-
     }
 
     /**
@@ -926,7 +902,6 @@ class ShoppingService
         }
 
         return $deliveryDates;
-
     }
 
     /**
@@ -938,7 +913,6 @@ class ShoppingService
      */
     public function getFormPayments($deliveries, Order $Order)
     {
-
         $productTypes = $this->orderService->getProductTypes($Order);
 
         if ($this->BaseInfo->getOptionMultipleShipping() == Constant::ENABLED && count($productTypes) > 1) {
@@ -951,12 +925,10 @@ class ShoppingService
             $shippings = $Order->getShippings();
             $Shipping = $shippings[0];
             $payments = $this->app['eccube.repository.payment']->findPayments($Shipping->getDelivery(), true);
-
         }
         $payments = $this->getPayments($payments, $Order->getSubTotal());
 
         return $payments;
-
     }
 
     /**
@@ -990,7 +962,6 @@ class ShoppingService
         $form = $builder->getForm();
 
         return $form;
-
     }
 
     /**
@@ -1021,7 +992,5 @@ class ShoppingService
             ));
 
         return $builder;
-
     }
-
 }

@@ -27,7 +27,6 @@ namespace Eccube\Event;
 
 final class EccubeEvents
 {
-
     /**
      * Admin/AdminContoller
      */
@@ -587,5 +586,4 @@ final class EccubeEvents
     const MAIL_ADMIN_ORDER = 'mail.admin.order';
     const MAIL_PASSWORD_RESET = 'mail.password.reset';
     const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
-
 }

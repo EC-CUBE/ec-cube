@@ -33,10 +33,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginManagementType extends AbstractType
 {
-
     public function __construct()
     {
-
     }
 
     /**
@@ -44,7 +42,6 @@ class PluginManagementType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $plugin_id = $options['plugin_id'];
 
         $builder
@@ -84,5 +81,4 @@ class PluginManagementType extends AbstractType
     {
         $resolver->setRequired(array('plugin_id'));
     }
-
 }

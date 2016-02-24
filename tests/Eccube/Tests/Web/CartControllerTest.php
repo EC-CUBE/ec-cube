@@ -26,7 +26,6 @@ namespace Eccube\Tests\Web;
 
 class CartControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingCart()
     {
         $this->client->request('GET', '/cart');

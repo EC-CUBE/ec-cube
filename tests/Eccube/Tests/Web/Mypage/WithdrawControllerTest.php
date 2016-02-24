@@ -6,7 +6,6 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class WithdrawControllerTest extends AbstractWebTestCase
 {
-
     protected $Customer;
 
     public function setUp()

@@ -36,7 +36,6 @@ use Symfony\Component\Validator\ExecutionContext;
 
 class AddCartType extends AbstractType
 {
-
     public $config;
     public $security;
     public $customerFavoriteProductRepository;
@@ -197,7 +196,6 @@ class AddCartType extends AbstractType
                     )),
                 ), '[classcategory_id2]');
             }
-
         }
     }
 }

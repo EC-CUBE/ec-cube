@@ -26,7 +26,6 @@ namespace Eccube\Tests\Web;
 
 class ContactControllerTest extends AbstractWebTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -122,7 +121,6 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
         $this->actual = $Message->subject;
         $this->verify();
-
     }
 
     /**
@@ -181,7 +179,6 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
         $this->actual = $Message->subject;
         $this->verify();
-
     }
 
     public function testRoutingComplete()

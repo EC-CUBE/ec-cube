@@ -49,7 +49,6 @@ class Step1Type extends AbstractType
                 'required' => false,
             ))
         ;
-
     }
 
     /**

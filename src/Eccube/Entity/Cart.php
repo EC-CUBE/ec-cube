@@ -227,5 +227,4 @@ class Cart extends \Eccube\Entity\AbstractEntity
 
         return $this;
     }
-
 }

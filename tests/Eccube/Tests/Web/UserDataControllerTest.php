@@ -37,7 +37,6 @@ class UserDataControllerTest extends AbstractWebTestCase
             ->setEditFlg(PageLayout::EDIT_FLG_USER);
         $this->app['orm.em']->persist($PageLayout);
         $this->app['orm.em']->flush();
-
     }
 
     public function testIndex()

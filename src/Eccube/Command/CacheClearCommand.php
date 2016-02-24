@@ -31,15 +31,16 @@ use Symfony\Component\Console\Input\InputOption;
 
 class CacheClearCommand extends \Knp\Command\Command
 {
-
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) {
+    public function __construct(\Eccube\Application $app, $name = null)
+    {
         parent::__construct($name);
         $this->app = $app;
     }
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
             ->setName('cache:clear')
             ->setDefinition(array(
@@ -53,11 +54,9 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         \Eccube\Util\Cache::clear($this->app,$input->getOption('all'));
         $output->writeln(sprintf("%s <info>success</info>", 'cache:clear'));
-
     }
-
 }

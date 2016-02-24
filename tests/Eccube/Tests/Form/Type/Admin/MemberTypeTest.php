@@ -27,7 +27,6 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 

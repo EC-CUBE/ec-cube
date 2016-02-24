@@ -32,7 +32,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AuthorityController extends AbstractController
 {
-
     public function index(Application $app, Request $request)
     {
         $AuthorityRoles = $app['eccube.repository.authority_role']->findAllSort();
@@ -65,7 +64,6 @@ class AuthorityController extends AbstractController
 
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -105,7 +103,6 @@ class AuthorityController extends AbstractController
                 $app->addSuccess('admin.system.authority.save.complete', 'admin');
 
                 return $app->redirect($app->url('admin_setting_system_authority'));
-
             }
         }
 

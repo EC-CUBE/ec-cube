@@ -26,7 +26,6 @@ namespace Eccube\Tests\Form\Type;
 
 class TaxRuleTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 

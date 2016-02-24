@@ -35,7 +35,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class FreezeTypeExtension extends AbstractTypeExtension
 {
-
     /**
      * {@inheritdoc}
      */

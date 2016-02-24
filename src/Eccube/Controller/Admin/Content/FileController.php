@@ -39,7 +39,8 @@ class FileController extends AbstractController
     private $error = null;
     private $encode = '';
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->encode = self::UTF;
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->encode = self::SJIS;
@@ -113,7 +114,6 @@ class FileController extends AbstractController
 
     public function create(Application $app, Request $request)
     {
-
         $form = $app['form.factory']->createBuilder('form')
             ->add('file', 'file')
             ->add('create_file', 'text')
@@ -122,7 +122,6 @@ class FileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $fs = new Filesystem();
             $filename = $form->get('create_file')->getData();
 
@@ -148,7 +147,6 @@ class FileController extends AbstractController
 
     public function delete(Application $app, Request $request)
     {
-
         $this->isTokenValid($app);
 
         $topDir = $app['config']['user_data_realdir'];

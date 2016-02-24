@@ -21,7 +21,8 @@ class OrderRepositoryTest extends EccubeTestCase
     protected $Customer;
     protected $Order;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->createProduct();
         $this->Customer = $this->createCustomer();

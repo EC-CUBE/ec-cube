@@ -176,7 +176,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
             $crawler->filter('div.alert-success')->text());
-
     }
 
     /**

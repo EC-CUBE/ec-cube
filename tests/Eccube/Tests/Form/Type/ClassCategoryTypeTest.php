@@ -26,7 +26,6 @@ namespace Eccube\Tests\Form\Type;
 
 class ClassNameTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -92,5 +91,4 @@ class ClassNameTypeTest extends AbstractTypeTestCase
 
         $this->assertTrue($this->form->isValid());
     }
-
 }

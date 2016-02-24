@@ -13,7 +13,6 @@ use Eccube\Entity\Help;
  */
 class HelpRepositoryTest extends EccubeTestCase
 {
-
     public function testGet()
     {
         $Help = $this->app['eccube.repository.help']->get();

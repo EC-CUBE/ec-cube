@@ -27,7 +27,6 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -92,5 +91,4 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->assertTrue($this->form->isValid());
     }
-
 }

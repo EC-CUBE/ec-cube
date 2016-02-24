@@ -46,7 +46,6 @@ class Step4Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $database = array();
         if (extension_loaded('pdo_pgsql')) {
             $database['pdo_pgsql'] = 'PostgreSQL';
@@ -106,7 +105,6 @@ class Step4Type extends AbstractType
                             'driver' => $data['database'],
                             'path' => __DIR__.'/../../../../../app/config/eccube/eccube.db'
                         );
-
                     } else {
                         $connectionParams = array(
                             'dbname' => $data['database_name'],
@@ -137,7 +135,7 @@ class Step4Type extends AbstractType
     public function validate($data, ExecutionContext $context, $param = null)
     {
         $parameters = $this->app['request']->get('install_step4');
-        if ($parameters['database'] != 'pdo_sqlite'){
+        if ($parameters['database'] != 'pdo_sqlite') {
             $context->validateValue($data, array(
                 new Assert\NotBlank()
             ));

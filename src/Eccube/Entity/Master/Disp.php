@@ -29,8 +29,6 @@ namespace Eccube\Entity\Master;
  */
 class Disp extends \Eccube\Entity\AbstractEntity
 {
-
-
     const DISPLAY_SHOW = 1;
 
     const DISPLAY_HIDE = 2;

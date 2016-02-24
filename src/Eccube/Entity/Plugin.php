@@ -110,7 +110,6 @@ class Plugin
     public function __construct()
     {
         $this->PluginEventHandlers = new \Doctrine\Common\Collections\ArrayCollection();
-
     }
 
     /**

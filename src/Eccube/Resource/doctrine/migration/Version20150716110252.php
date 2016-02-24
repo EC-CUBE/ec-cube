@@ -11,7 +11,6 @@ use Eccube\Entity\Master\CsvType;
  */
 class Version20150716110252 extends AbstractMigration
 {
-
     const NAME = 'mtb_csv_type';
 
     /**
@@ -67,6 +66,5 @@ class Version20150716110252 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
 //        $this->addSql('DELETE FROM ' . self::NAME);
-
     }
 }

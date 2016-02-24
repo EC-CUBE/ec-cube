@@ -29,7 +29,6 @@ use Eccube\Event\EccubeEvents;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingList()
     {
         $client = $this->client;
@@ -121,7 +120,6 @@ class ProductControllerTest extends AbstractWebTestCase
 
     protected function createFormData()
     {
-
         $form = array(
             'mode' => null,
             'product_id' => 1,
@@ -136,7 +134,6 @@ class ProductControllerTest extends AbstractWebTestCase
 
     protected function createFormData2()
     {
-
         $form = array(
             'mode' => 'add_favorite',
             'product_id' => 1,

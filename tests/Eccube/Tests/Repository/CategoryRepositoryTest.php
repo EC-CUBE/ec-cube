@@ -96,7 +96,8 @@ class CategoryRepositoryTest extends EccubeTestCase
     /**
      * 既存のデータを論理削除しておく.
      */
-    public function remove() {
+    public function remove()
+    {
         $Categories = $this->app['eccube.repository.category']->findAll();
         foreach ($Categories as $Category) {
             $Category->setDelFlg(Constant::ENABLED);

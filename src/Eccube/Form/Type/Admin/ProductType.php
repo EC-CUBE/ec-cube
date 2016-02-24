@@ -137,7 +137,6 @@ class ProductType extends AbstractType
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
-
     }
 
     /**

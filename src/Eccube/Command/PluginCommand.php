@@ -31,21 +31,20 @@ use Symfony\Component\Console\Input\InputOption;
 
 class PluginCommand extends \Knp\Command\Command
 {
-
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) 
+    public function __construct(\Eccube\Application $app, $name = null)
     {
         parent::__construct($name);
         $this->app = $app;
     }
 
-    protected function configure() 
+    protected function configure()
     {
         $this
             ->setName('plugin:develop')
             ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reload)', null)
-            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip') 
+            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
             ->setDescription('plugin commandline installer.')
@@ -56,12 +55,12 @@ EOF
     }
 
 
-    protected function getPluginFromCode($pluginCode) 
+    protected function getPluginFromCode($pluginCode)
     {
         return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0, 'code'=>$pluginCode));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) 
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->app->initialize();
         $this->app->boot();
@@ -126,7 +125,6 @@ EOF
 
             // ディレクトリも含め全て削除.
             if ($uninstallForce) {
-
                 if ($service->uninstall($plugin)) {
                     $output->writeln('success');
                     return;
@@ -144,7 +142,6 @@ EOF
 
             $output->writeln('success');
             return;
-
         }
 
         if (in_array($mode, array('enable', 'disable'), true)) {

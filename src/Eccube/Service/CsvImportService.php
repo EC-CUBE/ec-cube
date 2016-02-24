@@ -49,7 +49,6 @@ use Eccube\Application;
  */
 class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 {
-
     const DUPLICATE_HEADERS_INCREMENT = 1;
     const DUPLICATE_HEADERS_MERGE = 2;
 
@@ -158,7 +157,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
             } else {
                 return $line;
             }
-
         };
 
         return null;
@@ -204,7 +202,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         $headers = $this->readHeaderRow($rowNumber);
 
         if ($headers === false) {
-            return false;            
+            return false;
         }
         $this->setColumnHeaders($headers);
         return true;
@@ -399,5 +397,4 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
         return $values;
     }
-
 }

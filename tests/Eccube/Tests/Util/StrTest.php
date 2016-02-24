@@ -70,7 +70,6 @@ class StrTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertLineFeed()
     {
-
         $this->expected = "aaaa\n";
 
         $param = "aaaa\r\n";

@@ -30,7 +30,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MypageControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingFavorite()
     {
         $this->logIn();
@@ -172,5 +171,4 @@ class MypageControllerTest extends AbstractWebTestCase
 
         return $CustomerFavoriteProduct;
     }
-
 }

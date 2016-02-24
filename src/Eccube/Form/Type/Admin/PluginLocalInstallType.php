@@ -31,13 +31,11 @@ use \Symfony\Component\Validator\Constraints as Assert;
 
 class PluginLocalInstallType extends AbstractType
 {
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('plugin_archive', 'file', array(
                 'label' => false,

@@ -27,7 +27,6 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 class LoginControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingAdminLogin()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('admin_login'));
@@ -37,7 +36,6 @@ class LoginControllerTest extends AbstractWebTestCase
             200,
             $this->client->getResponse()->getStatusCode()
         );
-
     }
 
     public function testRoutingAdminLoginCheck()
@@ -64,5 +62,4 @@ class LoginControllerTest extends AbstractWebTestCase
             $this->client->getResponse()->getStatusCode()
         );
     }
-
 }

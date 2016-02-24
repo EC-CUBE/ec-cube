@@ -74,7 +74,6 @@ class CustomerAgreementController extends AbstractController
 
                 $app->addSuccess('admin.register.complete', 'admin');
                 return $app->redirect($app->url('admin_setting_shop_customer_agreement'));
-
             } else {
                 $app->addError('admin.register.failed', 'admin');
             }

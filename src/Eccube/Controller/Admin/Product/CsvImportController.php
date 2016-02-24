@@ -43,7 +43,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CsvImportController
 {
-
     private $errors = array();
 
     private $fileName;
@@ -65,15 +64,12 @@ class CsvImportController
         $headers = $this->getProductCsvHeader();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
-
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
@@ -104,7 +100,6 @@ class CsvImportController
 
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
-
                         if ($headerSize != count($row)) {
                             $this->addErrors(($data->key() + 1) . '行目のCSVフォーマットが一致しません。');
                             return $this->render($app, $form, $headers, $this->productTwig);
@@ -124,7 +119,6 @@ class CsvImportController
                                 $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->productTwig);
                             }
-
                         }
 
                         if ($row['公開ステータス(ID)'] == '') {
@@ -216,7 +210,6 @@ class CsvImportController
                             }
 
                             if ($row['規格分類1(ID)'] != '') {
-
                                 if ($row['規格分類1(ID)'] == $row['規格分類2(ID)']) {
                                     $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)と規格分類2(ID)には同じ値を使用できません。');
                                 } else {
@@ -265,13 +258,11 @@ class CsvImportController
                                     $this->em->persist($ProductClass);
                                     $this->em->persist($ProductStock);
                                 }
-
                             } else {
                                 if ($row['規格分類2(ID)'] != '') {
                                     $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
                                 }
                             }
-
                         } else {
                             // 商品規格の更新
 
@@ -280,7 +271,6 @@ class CsvImportController
                             $classCategoryId2 = $row['規格分類2(ID)'] == '' ? null : $row['規格分類2(ID)'];
 
                             foreach ($ProductClasses as $pc) {
-
                                 $classCategory1 = is_null($pc->getClassCategory1()) ? null : $pc->getClassCategory1()->getId();
                                 $classCategory2 = is_null($pc->getClassCategory2()) ? null : $pc->getClassCategory2()->getId();
 
@@ -352,7 +342,6 @@ class CsvImportController
                                             } else {
                                                 $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
                                             }
-
                                         }
                                     } else {
                                         if ($pc->getClassCategory1() != null && $pc->getClassCategory2() != null) {
@@ -374,9 +363,7 @@ class CsvImportController
 
                                     $Product->addProductClass($ProductClass);
                                 }
-
                             }
-
                         }
 
 
@@ -385,7 +372,6 @@ class CsvImportController
                         }
 
                         $this->em->persist($Product);
-
                     }
 
                     $this->em->flush();
@@ -393,7 +379,6 @@ class CsvImportController
 
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
-
             }
         }
 
@@ -405,21 +390,17 @@ class CsvImportController
      */
     public function csvCategory(Application $app, Request $request)
     {
-
         $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
 
         $headers = $this->getCategoryCsvHeader();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
-
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
@@ -448,7 +429,6 @@ class CsvImportController
 
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
-
                         if ($headerSize != count($row)) {
                             $this->addErrors(($data->key() + 1) . '行目のCSVフォーマットが一致しません。');
                             return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -470,7 +450,6 @@ class CsvImportController
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDと親カテゴリIDが同じです。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-
                         }
 
                         if (Str::isBlank($row['カテゴリ名'])) {
@@ -481,7 +460,6 @@ class CsvImportController
                         }
 
                         if ($row['親カテゴリID'] != '') {
-
                             if (!is_numeric($row['親カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
@@ -492,7 +470,6 @@ class CsvImportController
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
-
                         } else {
                             $ParentCategory = null;
                         }
@@ -520,7 +497,6 @@ class CsvImportController
                         }
 
                         $this->em->persist($Category);
-
                     }
 
                     $this->em->flush();
@@ -528,7 +504,6 @@ class CsvImportController
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
-
             }
         }
 
@@ -548,7 +523,7 @@ class CsvImportController
         if ($type == 'product') {
             $headers = $this->getProductCsvHeader();
             $filename = 'product.csv';
-        } else if ($type == 'category') {
+        } elseif ($type == 'category') {
             $headers = $this->getCategoryCsvHeader();
             $filename = 'category.csv';
         } else {
@@ -583,7 +558,6 @@ class CsvImportController
      */
     protected function render($app, $form, $headers, $twig)
     {
-
         if ($this->hasErrors()) {
             if ($this->em) {
                 $this->em->getConnection()->rollback();
@@ -662,7 +636,6 @@ class CsvImportController
             $images = explode(',', $row['商品画像']);
             $rank = 1;
             foreach ($images as $image) {
-
                 $ProductImage = new ProductImage();
                 $ProductImage->setFileName(Str::trimAll($image));
                 $ProductImage->setProduct($Product);
@@ -694,7 +667,6 @@ class CsvImportController
             $categories = explode(',', $row['商品カテゴリ(ID)']);
             $rank = 1;
             foreach ($categories as $category) {
-
                 if (is_numeric($category)) {
                     $Category = $app['eccube.repository.category']->find($category);
                     if (!$Category) {
@@ -714,7 +686,6 @@ class CsvImportController
                     $this->addErrors(($data->key() + 1) . '行目の商品カテゴリ(ID)「' . $category . '」が存在しません。');
                 }
             }
-
         }
     }
 
@@ -783,8 +754,7 @@ class CsvImportController
                         $this->addErrors(($data->key() + 1) . '行目の在庫数は0以上の数値を設定してください。');
                     }
                 }
-
-            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
+            } elseif ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {
@@ -856,7 +826,6 @@ class CsvImportController
         $this->em->persist($ProductStock);
 
         return $ProductClass;
-
     }
 
 
@@ -865,7 +834,6 @@ class CsvImportController
      */
     protected function updateProductClass($row, Product $Product, ProductClass $ProductClass, $app, $data)
     {
-
         $ProductClass->setProduct($Product);
 
         if ($row['商品種別(ID)'] == '') {
@@ -945,8 +913,7 @@ class CsvImportController
                         $this->addErrors(($data->key() + 1) . '行目の在庫数は0以上の数値を設定してください。');
                     }
                 }
-
-            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
+            } elseif ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {

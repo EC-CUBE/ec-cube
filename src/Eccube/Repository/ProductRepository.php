@@ -37,7 +37,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepository extends EntityRepository
 {
-
     /**
      * get Product.
      *
@@ -112,7 +111,7 @@ class ProductRepository extends EntityRepository
             $qb->groupBy('p');
             $qb->orderBy('price02_min', 'ASC');
             // 新着順
-        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
+        } elseif (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->orderBy('p.create_date', 'DESC');
         } else {
             if ($categoryJoin === false) {

@@ -6,7 +6,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CustomerEditControllerTest extends AbstractAdminWebTestCase
 {
-
     protected $Customer;
 
     public function setUp()
@@ -100,6 +99,4 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->actual = $EditedCustomer->getEmail();
         $this->verify();
     }
-
-
 }

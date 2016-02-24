@@ -83,7 +83,6 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->flush();
         $this->app['orm.em']->remove($TestProduct);
         $this->app['orm.em']->flush();
-
     }
 
     private function newTestProduct($TestCreator)
@@ -161,5 +160,4 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
         $TestProductStock->setCreator($TestCreator);
         return $TestProductStock;
     }
-
 }

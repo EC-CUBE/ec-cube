@@ -32,7 +32,6 @@ use Eccube\Util\Str;
 
 class CartServiceTest extends AbstractServiceTestCase
 {
-
     protected $Product;
 
     public function setUp()
@@ -321,7 +320,6 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testCanAddProductPaymentWithCartEmpty()
     {
-
         $this->actual = $this->app['eccube.service.cart']->canAddProductPayment($this->ProductType1);
         $this->assertTrue($this->actual, 'カートが空の場合は true');
 

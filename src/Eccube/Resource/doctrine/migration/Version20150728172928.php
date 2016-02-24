@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150728172928 extends AbstractMigration
 {
-
     const NAME = 'dtb_product';
 
     /**
@@ -22,7 +21,6 @@ class Version20150728172928 extends AbstractMigration
         $t = $schema->getTable(self::NAME);
 
         if ($t->hasColumn('delivery_date_id')) {
-
             $keys = $t->getForeignKeys();
             foreach ($keys as $key) {
                 $column = $key->getColumns();
@@ -33,7 +31,6 @@ class Version20150728172928 extends AbstractMigration
                     break;
                 }
             }
-
         }
     }
 
@@ -43,6 +40,5 @@ class Version20150728172928 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

@@ -75,5 +75,4 @@ class SecurityTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
-
 }

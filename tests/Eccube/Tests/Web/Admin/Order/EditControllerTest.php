@@ -341,5 +341,4 @@ class EditControllerTest extends AbstractAdminWebTestCase
 
         $this->verify('カートに投入した商品が表示される');
     }
-
 }

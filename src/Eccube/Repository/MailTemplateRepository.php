@@ -47,10 +47,8 @@ class MailTemplateRepository extends EntityRepository
                 ->setDelFlg(0)
                 ->setCreator($Creator)
             ;
-
         } else {
             $MailTemplate = $this->find($id);
-
         }
 
         return $MailTemplate;

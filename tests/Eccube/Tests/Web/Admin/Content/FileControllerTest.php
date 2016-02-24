@@ -9,14 +9,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileControllerTest extends AbstractAdminWebTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->app['config'];
-        $config['template_default_realdir'] = sys_get_temp_dir().'/FileController'.sha1(mt_rand());; // vfs が使えないため
-        if (!file_exists($config['template_default_realdir'].'/user_data')){
+        $config['template_default_realdir'] = sys_get_temp_dir().'/FileController'.sha1(mt_rand()); // vfs が使えないため
+        if (!file_exists($config['template_default_realdir'].'/user_data')) {
             mkdir($config['template_default_realdir'].'/user_data', 0777 , true);
         }
         $config['user_data_realdir'] = $config['template_default_realdir'].'/user_data';

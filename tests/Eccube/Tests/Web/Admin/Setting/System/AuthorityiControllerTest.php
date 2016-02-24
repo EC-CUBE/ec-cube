@@ -28,7 +28,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class AuthorityiControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testRoutingAdminSettingSystemAuthority()
     {
         $client = $this->client;
@@ -62,7 +61,7 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = '/abab';
         $values = $crawler->filter('input[name="form[AuthorityRoles][0][deny_url]"]')->extract(array('value'));
-         $this->actual = $values[0];
+        $this->actual = $values[0];
         $this->verify();
 
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -82,7 +81,6 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
 
     protected function createFormData()
     {
-
         $AuthorityRole = $this->newTestAuthorityRole();
         $form = array(
             array(
@@ -93,5 +91,4 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
 
         return $form;
     }
-
 }

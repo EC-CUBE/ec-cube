@@ -11,7 +11,7 @@ use Eccube\Entity\AbstractEntity;
  */
 class AbstractEntityTest extends \PHPUnit_Framework_TestCase
 {
-     private $objEntity;
+    private $objEntity;
 
     public function testNewInstance()
     {
@@ -253,7 +253,6 @@ class TestEntity extends AbstractEntity
 
 class TestExtendsEntity extends TestEntity
 {
-
     private $field4;
 
     public function __construct($arrProps = array())

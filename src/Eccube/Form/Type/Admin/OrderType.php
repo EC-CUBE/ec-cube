@@ -36,7 +36,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderType extends AbstractType
 {
-
     protected $app;
 
     public function __construct($app)
@@ -237,7 +236,6 @@ class OrderType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
 
             if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
-
                 $data = $event->getData();
 
                 $orderDetails = &$data['OrderDetails'];

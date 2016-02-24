@@ -27,7 +27,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class NewsControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testRoutingAdminContentNews()
     {
         $this->client->request('GET', $this->app->url('admin_content_news'));

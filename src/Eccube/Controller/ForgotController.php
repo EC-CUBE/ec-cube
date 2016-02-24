@@ -41,7 +41,6 @@ class ForgotController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-
         $builder = $app['form.factory']
             ->createNamedBuilder('', 'forgot');
 
@@ -172,5 +171,4 @@ class ForgotController extends AbstractController
 
         return $app->render('Forgot/reset.twig');
     }
-
 }

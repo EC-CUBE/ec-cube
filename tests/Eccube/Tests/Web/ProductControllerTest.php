@@ -28,7 +28,6 @@ use Eccube\Common\Constant;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingList()
     {
         $client = $this->client;
@@ -55,5 +54,4 @@ class ProductControllerTest extends AbstractWebTestCase
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
-
 }

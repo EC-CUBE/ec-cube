@@ -50,7 +50,6 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     public function testGetCsv()
     {
-
         $CsvType = $this->app['eccube.repository.master.csv_type']->find(1);
         $this->assertNotEmpty($CsvType);
 
@@ -74,5 +73,4 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
         $this->app['orm.em']->getConnection()->rollback();
     }
-
 }

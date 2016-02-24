@@ -28,7 +28,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     protected $ProductListMax;
     protected $ProductListOrderBy;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->ProductListMax = new \Eccube\Entity\Master\ProductListMax();
         $this->ProductListOrderBy = new \Eccube\Entity\Master\ProductListOrderBy();

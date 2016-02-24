@@ -30,7 +30,6 @@ use Eccube\Application;
  */
 class AbstractRepositoryTestCase extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * {@inheritdoc}
      */

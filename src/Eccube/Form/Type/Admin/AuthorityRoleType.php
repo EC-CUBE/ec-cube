@@ -67,7 +67,7 @@ class AuthorityRoleType extends AbstractType
 
                 if (!$Authority && !empty($denyUrl)) {
                     $form['Authority']->addError(new FormError('権限が選択されていません。'));
-                } else if ($Authority && empty($denyUrl)) {
+                } elseif ($Authority && empty($denyUrl)) {
                     $form['deny_url']->addError(new FormError('拒否URLが入力されていません。'));
                 }
             })

@@ -31,7 +31,6 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
 class PageControllerTest extends AbstractAdminWebTestCase
 {
-
     public function test_routing_AdminContentPage_index()
     {
         $this->client->request('GET', $this->app->url('admin_content_page'));
@@ -79,7 +78,6 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentPage_delete()
     {
-
         $redirectUrl = $this->app->url('admin_content_page');
 
         $DeviceType = $this->app['eccube.repository.master.device_type']
@@ -104,12 +102,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
             EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE,
         );
         $this->verifyOutputString($hookpoints);
-
     }
 
     protected function createFormData()
     {
-
         $form = array(
             'name' => '名称',
             'url' => 'page',
@@ -119,5 +115,4 @@ class PageControllerTest extends AbstractAdminWebTestCase
         );
         return $form;
     }
-
 }

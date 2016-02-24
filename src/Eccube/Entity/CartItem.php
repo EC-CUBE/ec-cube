@@ -26,7 +26,6 @@ namespace Eccube\Entity;
 
 class CartItem extends \Eccube\Entity\AbstractEntity
 {
-
     private $class_name;
     private $class_id;
     private $price;

@@ -58,10 +58,8 @@ class DeliveryRepository extends EntityRepository
                 ->setDelFlg(0)
                 ->setCreator($Creator)
                 ->setProductType($ProductType);
-
         } else {
             $Delivery = $this->find($id);
-
         }
 
         return $Delivery;
@@ -75,7 +73,6 @@ class DeliveryRepository extends EntityRepository
      */
     public function getDeliveries($productTypes)
     {
-
         $deliveries = $this->createQueryBuilder('d')
             ->where('d.ProductType in (:productTypes)')
             ->setParameter('productTypes', $productTypes)
@@ -83,7 +80,6 @@ class DeliveryRepository extends EntityRepository
             ->getResult();
 
         return $deliveries;
-
     }
 
     /**
@@ -94,7 +90,6 @@ class DeliveryRepository extends EntityRepository
      */
     public function findAllowedDeliveries($productTypes, $payments)
     {
-
         $d = $this->getDeliveries($productTypes);
         $arr = array();
 
@@ -109,10 +104,8 @@ class DeliveryRepository extends EntityRepository
                     }
                 }
             }
-
         }
 
         return array_values($arr);
-
     }
 }

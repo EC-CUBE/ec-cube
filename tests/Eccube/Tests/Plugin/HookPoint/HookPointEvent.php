@@ -29,7 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class HookPointEvent
 {
-
     /** @var  \Eccube\Application $app */
     private $app;
 
@@ -49,22 +48,22 @@ class HookPointEvent
 
 
 // index
-    function onAdminIndex1(EventArgs $event)
+    public function onAdminIndex1(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_ADMIM_INDEX_INITIALIZE;
     }
 
-    function onAdminIndex2(EventArgs $event)
+    public function onAdminIndex2(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_ADMIM_INDEX_ORDER;
     }
 
-    function onAdminIndex3(EventArgs $event)
+    public function onAdminIndex3(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_ADMIM_INDEX_SALES;
     }
 
-    function onAdminIndex4(EventArgs $event)
+    public function onAdminIndex4(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_ADMIM_INDEX_COMPLETE;
     }
@@ -74,23 +73,23 @@ class HookPointEvent
 // Admin/Content/BlockController
 
 // index
-    function onAdminContentBlock1(EventArgs $event)
+    public function onAdminContentBlock1(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_BLOCK_INDEX_COMPLETE;
     }
 
 // edit
-    function onAdminContentBlock2(EventArgs $event)
+    public function onAdminContentBlock2(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_INITIALIZE;
     }
-    function onAdminContentBlock3(EventArgs $event)
+    public function onAdminContentBlock3(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_BLOCK_EDIT_COMPLETE;
     }
 
 // delete
-    function onAdminContentBlock4(EventArgs $event)
+    public function onAdminContentBlock4(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE;
     }
@@ -112,12 +111,12 @@ class HookPointEvent
 // Admin/Content/LayoutController
 
 // index
-    function onAdminContentLayout1(EventArgs $event)
+    public function onAdminContentLayout1(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_INITIALIZE;
     }
 
-    function onAdminContentLayout2(EventArgs $event)
+    public function onAdminContentLayout2(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_LAYOUT_INDEX_COMPLETE;
     }
@@ -126,25 +125,25 @@ class HookPointEvent
 // Admin/Content/NewsController
 
 // index
-    function onAdminContentNews1(EventArgs $event)
+    public function onAdminContentNews1(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE;
     }
 
 // edit
-    function onAdminContentNews3(EventArgs $event)
+    public function onAdminContentNews3(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE;
     }
 
-    function onAdminContentNews4(EventArgs $event)
+    public function onAdminContentNews4(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE;
     }
 
 
 // delete
-    function onAdminContentNews5(EventArgs $event)
+    public function onAdminContentNews5(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE;
     }
@@ -153,26 +152,26 @@ class HookPointEvent
 // Admin/Content/PageController
 
 // index
-    function onAdminContentPage1(EventArgs $event)
+    public function onAdminContentPage1(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE;
     }
 
 
 // edit
-    function onAdminContentPage2(EventArgs $event)
+    public function onAdminContentPage2(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE;
     }
 
-    function onAdminContentPage3(EventArgs $event)
+    public function onAdminContentPage3(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE;
     }
 
 
 // delete
-    function onAdminContentPage4(EventArgs $event)
+    public function onAdminContentPage4(EventArgs $event)
     {
         echo EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE;
     }
@@ -1178,47 +1177,47 @@ class HookPointEvent
     }
 
 
-    function onMail1(EventArgs $event)
+    public function onMail1(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CUSTOMER_CONFIRM;
     }
 
-    function onMail2(EventArgs $event)
+    public function onMail2(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CUSTOMER_COMPLETE;
     }
 
-    function onMail3(EventArgs $event)
+    public function onMail3(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CUSTOMER_WITHDRAW;
     }
 
-    function onMail4(EventArgs $event)
+    public function onMail4(EventArgs $event)
     {
         echo EccubeEvents::MAIL_CONTACT;
     }
 
-    function onMail5(EventArgs $event)
+    public function onMail5(EventArgs $event)
     {
         echo EccubeEvents::MAIL_ORDER;
     }
 
-    function onMail6(EventArgs $event)
+    public function onMail6(EventArgs $event)
     {
         echo EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM;
     }
 
-    function onMail7(EventArgs $event)
+    public function onMail7(EventArgs $event)
     {
         echo EccubeEvents::MAIL_ADMIN_ORDER;
     }
 
-    function onMail8(EventArgs $event)
+    public function onMail8(EventArgs $event)
     {
         echo EccubeEvents::MAIL_PASSWORD_RESET;
     }
 
-    function onMail9(EventArgs $event)
+    public function onMail9(EventArgs $event)
     {
         echo EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE;
     }

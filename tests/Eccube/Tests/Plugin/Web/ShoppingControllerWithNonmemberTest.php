@@ -28,7 +28,6 @@ use Eccube\Event\EccubeEvents;
 
 class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
 {
-
     protected $Product;
 
     public function setUp()

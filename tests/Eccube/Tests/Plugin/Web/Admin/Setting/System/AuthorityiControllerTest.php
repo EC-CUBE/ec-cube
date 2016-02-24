@@ -29,7 +29,6 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
 class AuthorityiControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testRoutingAdminSettingSystemAuthority()
     {
         $client = $this->client;
@@ -102,5 +101,4 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
 
         return $form;
     }
-
 }

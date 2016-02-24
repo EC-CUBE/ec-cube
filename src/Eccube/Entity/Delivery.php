@@ -436,5 +436,4 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     {
         return $this->PaymentOptions;
     }
-
 }

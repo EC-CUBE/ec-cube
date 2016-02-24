@@ -9,7 +9,6 @@ use org\bovigo\vfs\vfsStream;
 
 class CsvExportServiceTest extends AbstractServiceTestCase
 {
-
     protected $url;
 
     public function setUp()

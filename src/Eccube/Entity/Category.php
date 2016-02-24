@@ -121,7 +121,6 @@ class Category extends \Eccube\Entity\AbstractEntity
     public function getSelfAndDescendants()
     {
         return array_merge(array($this), $this->getDescendants());
-
     }
 
     /**

@@ -28,7 +28,6 @@ use Eccube\Application;
 
 class HelpController extends AbstractController
 {
-
     public function tradelaw(Application $app)
     {
         $Help = $app['eccube.repository.help']->get();

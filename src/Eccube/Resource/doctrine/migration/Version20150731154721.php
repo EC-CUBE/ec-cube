@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150731154721 extends AbstractMigration
 {
-
     const NAME = 'dtb_base_info';
 
     /**
@@ -24,7 +23,6 @@ class Version20150731154721 extends AbstractMigration
         if (!$table->hasColumn('option_remember_me')) {
             $table->addColumn('option_remember_me', 'smallint', array('NotNull' => false, 'default' => 0));
         }
-
     }
 
     /**
@@ -33,6 +31,5 @@ class Version20150731154721 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

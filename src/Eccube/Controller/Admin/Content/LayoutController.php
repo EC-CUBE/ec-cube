@@ -192,9 +192,7 @@ class LayoutController
                     $app->addSuccess('admin.register.complete', 'admin');
                     return $app->redirect($app->url('admin_content_layout_edit', array('id' => $id)));
                 }
-
             }
-
         }
 
         return $app->render('Content/layout.twig', array(
@@ -209,5 +207,4 @@ class LayoutController
         $this->isPreview = true;
         return $this->index($app, $request, 0, $id);
     }
-
 }

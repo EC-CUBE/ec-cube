@@ -34,7 +34,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class AuthorityRoleRepository extends EntityRepository
 {
-
     /**
      * 権限、拒否URLでソートする
      *

@@ -29,7 +29,6 @@ use Eccube\Tests\Plugin\Web\Admin\AbstractAdminWebTestCase;
 
 class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
-
     public function test_routeing_AdminBasisTax_index()
     {
         $this->client->request(

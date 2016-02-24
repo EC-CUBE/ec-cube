@@ -39,7 +39,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductClassController
 {
-
     /**
      * 商品規格が登録されていなければ新規登録、登録されていれば更新画面を表示する
      */
@@ -91,11 +90,9 @@ class ProductClassController
             $productClassForm = null;
 
             if ('POST' === $request->getMethod()) {
-
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-
                     $data = $form->getData();
 
                     $ClassName1 = $data['class_name1'];
@@ -106,7 +103,7 @@ class ProductClassController
                     $class2Valied = $this->isValiedCategory($ClassName2);
 
                     // 規格が選択されていないか、選択された状態で分類が保有されていれば、画面表示
-                    if($class1Valied && $class2Valied){
+                    if ($class1Valied && $class2Valied) {
                         $hasClassCategoryFlg = true;
                     }
 
@@ -114,7 +111,6 @@ class ProductClassController
                         // 規格1と規格2が同じ値はエラー
 
                         $form['class_name2']->addError(new FormError('規格1と規格2は、同じ値を使用できません。'));
-
                     } else {
 
                         // 規格分類が設定されていない商品規格を取得
@@ -151,9 +147,7 @@ class ProductClassController
                         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_INDEX_CLASSES, $event);
 
                         $productClassForm = $builder->getForm()->createView();
-
                     }
-
                 }
             }
 
@@ -165,7 +159,6 @@ class ProductClassController
                 'error' => null,
                 'has_class_category_flg' => $hasClassCategoryFlg,
             ));
-
         } else {
             // 既に商品規格が登録されている場合、商品規格画面を表示する
 
@@ -204,10 +197,10 @@ class ProductClassController
                 foreach ($ProductClasses as $productClass) {
                     if ($productClass->getClassCategory1() == $createProductClass->getClassCategory1() &&
                             $productClass->getClassCategory2() == $createProductClass->getClassCategory2()) {
-                                // チェックボックスを追加
+                        // チェックボックスを追加
                                 $productClass->setAdd(true);
-                                $flag = true;
-                                break;
+                        $flag = true;
+                        break;
                     }
                 }
 
@@ -256,9 +249,7 @@ class ProductClassController
                 'error' => null,
                 'has_class_category_flg' => true,
             ));
-
         }
-
     }
 
 
@@ -297,7 +288,6 @@ class ProductClassController
         $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             switch ($request->get('mode')) {
@@ -431,7 +421,6 @@ class ProductClassController
                             if ($productClass->getProduct()->getId() == $id &&
                                     $productClass->getClassCategory1() == $rc->getClassCategory1() &&
                                     $productClass->getClassCategory2() == $rc->getClassCategory2()) {
-
                                 $productClass->setDelFlg(Constant::ENABLED);
                                 break;
                             }
@@ -499,7 +488,6 @@ class ProductClassController
                 default:
                     break;
             }
-
         }
 
         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
@@ -513,7 +501,6 @@ class ProductClassController
      */
     protected function render($app, $Product, $ProductClass, $not_product_class, $classForm, $error = null)
     {
-
         $ClassName1 = null;
         $ClassName2 = null;
         // 規格を取得
@@ -562,7 +549,6 @@ class ProductClassController
      */
     private function createProductClasses($app, Product $Product, ClassName $ClassName1 = null, ClassName $ClassName2 = null)
     {
-
         $ClassCategories1 = array();
         if ($ClassName1) {
             $ClassCategories1 = $app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName1));
@@ -593,7 +579,6 @@ class ProductClassController
                 $ProductClass->setDelFlg(Constant::DISABLED);
                 $ProductClasses[] = $ProductClass;
             }
-
         }
         return $ProductClasses;
     }
@@ -647,7 +632,8 @@ class ProductClassController
      * @param $productClassDest コピー先となる商品規格
      * @param $productClassOrig コピー元となる商品規格
      */
-    private function setDefualtProductClass($app, $productClassDest, $productClassOrig) {
+    private function setDefualtProductClass($app, $productClassDest, $productClassOrig)
+    {
         $productClassDest->setDeliveryDate($productClassOrig->getDeliveryDate());
         $productClassDest->setProduct($productClassOrig->getProduct());
         $productClassDest->setProductType($productClassOrig->getProductType());
@@ -662,7 +648,7 @@ class ProductClassController
         // 個別消費税
         $BaseInfo = $app['eccube.repository.base_info']->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
-            if($productClassOrig->getTaxRate()) {
+            if ($productClassOrig->getTaxRate()) {
                 $productClassDest->setTaxRate($productClassOrig->getTaxRate());
                 if ($productClassDest->getTaxRule() && !$productClassDest->getTaxRule()->getDelFlg()) {
                     $productClassDest->getTaxRule()->setTaxRate($productClassOrig->getTaxRate());
@@ -688,13 +674,12 @@ class ProductClassController
      *
      * @param $ProductClasses 登録される商品規格
      */
-    private function insertProductClass($app, $Product, $ProductClasses) {
-
+    private function insertProductClass($app, $Product, $ProductClasses)
+    {
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
         // 選択された商品を登録
         foreach ($ProductClasses as $ProductClass) {
-
             $ProductClass->setDelFlg(Constant::DISABLED);
             $ProductClass->setProduct($Product);
             $app['orm.em']->persist($ProductClass);
@@ -710,7 +695,6 @@ class ProductClassController
                 $ProductStock->setStock(null);
             }
             $app['orm.em']->persist($ProductStock);
-
         }
 
         // 商品税率が設定されている場合、商品税率をセット
@@ -733,7 +717,6 @@ class ProductClassController
                 }
             }
         }
-
     }
 
     /**

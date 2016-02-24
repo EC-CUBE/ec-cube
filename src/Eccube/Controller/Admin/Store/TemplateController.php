@@ -38,7 +38,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class TemplateController extends AbstractController
 {
-
     /**
      * テンプレート一覧画面
      *
@@ -47,7 +46,6 @@ class TemplateController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
-
         $DeviceType = $app['eccube.repository.master.device_type']
             ->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -321,5 +319,4 @@ class TemplateController extends AbstractController
             'form' => $form->createView(),
         ));
     }
-
 }

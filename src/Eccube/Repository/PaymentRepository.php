@@ -57,10 +57,8 @@ class PaymentRepository extends EntityRepository
                 ->setFixFlg(1)
                 ->setChargeFlg(1)
                 ->setCreator($Creator);
-
         } else {
             $Payment = $this->find($id);
-
         }
 
         return $Payment;
@@ -68,7 +66,6 @@ class PaymentRepository extends EntityRepository
 
     public function findAllArray()
     {
-
         $query = $this
             ->getEntityManager()
             ->createQuery('SELECT p FROM Eccube\Entity\Payment p INDEX BY p.id');
@@ -76,7 +73,6 @@ class PaymentRepository extends EntityRepository
             ->getResult(Query::HYDRATE_ARRAY);
 
         return $result;
-
     }
 
     /**
@@ -89,7 +85,6 @@ class PaymentRepository extends EntityRepository
      */
     public function findPayments($delivery, $returnType = false)
     {
-
         $query = $this->createQueryBuilder('p')
             ->innerJoin('Eccube\Entity\PaymentOption', 'po', 'WITH', 'po.payment_id = p.id')
             ->where('po.Delivery = (:delivery)')
@@ -123,7 +118,6 @@ class PaymentRepository extends EntityRepository
             $p = $this->findPayments($Delivery);
 
             if ($i != 0) {
-
                 $arr = array();
                 foreach ($p as $payment) {
                     foreach ($payments as $pay) {
@@ -135,7 +129,6 @@ class PaymentRepository extends EntityRepository
                 }
 
                 $payments = $arr;
-
             } else {
                 $payments = $p;
             }
@@ -143,6 +136,5 @@ class PaymentRepository extends EntityRepository
         }
 
         return $payments;
-
     }
 }

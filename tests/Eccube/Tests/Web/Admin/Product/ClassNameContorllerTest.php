@@ -86,7 +86,6 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_class_name')));
-
     }
 
     public function testRoutingAdminProductClassNameEdit()

@@ -29,7 +29,6 @@ use Eccube\Common\Constant;
 
 class SystemController
 {
-
     private $maintitle;
 
     private $subtitle;
@@ -61,8 +60,8 @@ class SystemController
         ));
     }
 
-     public function getSystemInfo(Application $app)
-     {
+    public function getSystemInfo(Application $app)
+    {
         $system = $app['eccube.service.system'];
         $server = $app['request'];
 
@@ -78,5 +77,5 @@ class SystemController
         $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $server->headers->get('User-Agent'));
 
         return $arrSystemInfo;
-     }
+    }
 }

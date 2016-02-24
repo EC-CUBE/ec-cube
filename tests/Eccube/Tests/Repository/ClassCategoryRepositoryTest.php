@@ -231,6 +231,5 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
 
         $result = $this->app['eccube.repository.class_category']->delete($ClassCategory);
         $this->assertFalse($result, '削除に失敗するはず');
-
     }
 }

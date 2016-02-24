@@ -28,7 +28,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CacheControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testRoutingAdminContentCache()
     {
         $client = $this->client;
@@ -57,5 +56,4 @@ class CacheControllerTest extends AbstractAdminWebTestCase
 
         $this->assertFalse(file_exists($cacheDir.'/twig/sample'), 'sampleは削除済');
     }
-
 }

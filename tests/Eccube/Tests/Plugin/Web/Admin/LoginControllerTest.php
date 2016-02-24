@@ -28,7 +28,6 @@ use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 
 class LoginControllerTest extends AbstractWebTestCase
 {
-
     public function testRoutingAdminLogin()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('admin_login'));
@@ -79,5 +78,4 @@ class LoginControllerTest extends AbstractWebTestCase
         );
         $this->verifyOutputString($hookpoins);
     }
-
 }

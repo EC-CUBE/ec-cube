@@ -36,7 +36,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxRuleController extends AbstractController
 {
-
     /**
      * 税率設定の初期表示・登録
      *

@@ -23,8 +23,8 @@
 
 namespace Eccube\Common;
 
-class Constant {
-
+class Constant
+{
     /**
      * EC-CUBE VERSION.
      */
@@ -44,5 +44,4 @@ class Constant {
      * Csrf Token Name.
      */
     const TOKEN_NAME = '_token';
-
 }

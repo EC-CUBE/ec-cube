@@ -131,7 +131,6 @@ class MemberController extends AbstractController
             'form' => $form->createView(),
             'Member' => $Member,
         ));
-
     }
 
     public function up(Application $app, Request $request, $id)

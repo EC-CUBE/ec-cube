@@ -26,7 +26,6 @@ namespace Eccube\Tests\Form\Type;
 
 class CustomerLoginTypeTest extends AbstractTypeTestCase
 {
-
     /** @var \Eccube\Application */
     protected $app;
 
@@ -53,5 +52,4 @@ class CustomerLoginTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
-
 }

@@ -60,7 +60,6 @@ class CustomerController extends AbstractController
         $page_count = $app['config']['default_page_count'];
 
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {

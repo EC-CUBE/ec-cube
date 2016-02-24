@@ -27,7 +27,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class Str
 {
-
     /**
      * The MIT License (MIT)
      *
@@ -141,7 +140,6 @@ class Str
         }
 
         return null;
-
     }
 
     /**
@@ -276,7 +274,6 @@ class Str
 
         $value = trim($value);
         if (strlen($value) > 0) {
-
             return false;
         }
 

@@ -375,7 +375,6 @@ class Application extends ApplicationTrait
 
                     $app['twig']->addGlobal('AuthorityRoles', $roles);
                 }
-
             } else {
                 // フロント画面
                 $request = $event->getRequest();
@@ -460,7 +459,6 @@ class Application extends ApplicationTrait
         );
 
         foreach ($finder as $dir) {
-
             $file = $dir->getRealPath().'/config.yml';
 
             if (file_exists($file)) {
@@ -591,7 +589,6 @@ class Application extends ApplicationTrait
         $this['security.access_manager'] = $this->share(function($app) {
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
         });
-
     }
 
     public function initializePlugin()
@@ -813,7 +810,6 @@ class Application extends ApplicationTrait
             ->getHandlers();
         foreach ($handlers as $handler) {
             if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
-
                 $priority = $handler->getPriority();
             } else {
                 // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
@@ -872,7 +868,6 @@ class Application extends ApplicationTrait
                 }
 
                 if ($eventExists && file_exists($dir->getRealPath().'/event.yml')) {
-
                     $subscriber = new $class($this);
 
                     foreach (Yaml::parse(file_get_contents($dir->getRealPath().'/event.yml')) as $event => $handlers) {

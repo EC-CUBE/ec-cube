@@ -28,7 +28,6 @@ use Eccube\Event\EccubeEvents;
 
 class ShoppingControllerTest extends AbstractWebTestCase
 {
-
     public function setUp()
     {
         parent::setUp();

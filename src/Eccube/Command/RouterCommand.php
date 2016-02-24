@@ -33,15 +33,16 @@ use Symfony\Component\Console\Helper\TableHelper;
 
 class RouterCommand extends \Knp\Command\Command
 {
-
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) {
+    public function __construct(\Eccube\Application $app, $name = null)
+    {
         parent::__construct($name);
         $this->app = $app;
     }
 
-    protected function configure() {
+    protected function configure()
+    {
         $this
             ->setName('router:debug')
             ->setDefinition(array(
@@ -58,8 +59,8 @@ EOF
     }
 
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
-
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $this->app->initialize();
         $this->app->boot();
 
@@ -111,7 +112,7 @@ EOF
             } else {
                 ksort($routes);
             }
-        } else if (strtoupper($orderby) === "PATH") {
+        } elseif (strtoupper($orderby) === "PATH") {
             uasort($routes, function($a, $b) {
                 return strcmp($a->getPattern(), $b->getPattern());
             });
@@ -158,5 +159,4 @@ EOF
 
         $table->render($output);
     }
-
 }

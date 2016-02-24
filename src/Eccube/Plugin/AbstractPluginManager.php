@@ -5,8 +5,8 @@ namespace Eccube\Plugin;
 use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 
-class AbstractPluginManager {
-
+class AbstractPluginManager
+{
     CONST MIGRATION_TABLE_PREFIX = 'migration_';
 
     public function migrationSchema($app,$migrationFilePath,$pluginCode,$version=null)
@@ -19,8 +19,6 @@ class AbstractPluginManager {
         $migration = new Migration($config);
                                   // null 又は 'last' を渡すと最新バージョンまでマイグレートする
                                   // 0か'first'を渡すと最初に戻る
-        $migration->migrate($version, false); 
-
-
+        $migration->migrate($version, false);
     }
 }

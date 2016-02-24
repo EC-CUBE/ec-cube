@@ -28,7 +28,6 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class PasswordEncoder implements PasswordEncoderInterface
 {
-
     /* @var $config array */
     public $config;
 
@@ -93,5 +92,4 @@ class PasswordEncoder implements PasswordEncoderInterface
 
         return false;
     }
-
 }

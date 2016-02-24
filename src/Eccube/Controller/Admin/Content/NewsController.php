@@ -111,7 +111,6 @@ class NewsController extends AbstractController
                 $status = $app['eccube.repository.news']->save($News);
 
                 if ($status) {
-
                     $event = new EventArgs(
                         array(
                             'form' => $form,

@@ -36,7 +36,6 @@ class SystemService
 
     public function getDbversion()
     {
-
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 

@@ -87,7 +87,6 @@ class EditController extends AbstractController
                     if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
                         $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
                     } elseif ($form->isValid()) {
-
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
                         // お支払い方法の更新
@@ -135,7 +134,6 @@ class EditController extends AbstractController
                                 $app['orm.em']->persist($Shipping);
                             }
                         } else {
-
                             $NewShipmentItems = new ArrayCollection();
 
                             foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
@@ -156,7 +154,6 @@ class EditController extends AbstractController
                                     ->setQuantity($OrderDetail->getQuantity())
                                     ->setOrder($TargetOrder);
                                 $NewShipmentItems[] = $NewShipmentItem;
-
                             }
                             // 配送商品の更新. delete/insert.
                             $Shippings = $TargetOrder->getShippings();

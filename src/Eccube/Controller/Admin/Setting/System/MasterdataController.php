@@ -78,7 +78,6 @@ class MasterdataController extends AbstractController
                     $request
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE, $event);
-
             }
         }
 

@@ -10,7 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20151110174227 extends AbstractMigration
 {
-
     const DTB_MAIL_HISTORY = 'dtb_mail_history';
     const DTB_MEMBER = 'dtb_member';
 
@@ -24,7 +23,7 @@ class Version20151110174227 extends AbstractMigration
         $t_dtb_mail_history = $schema->getTable(self::DTB_MAIL_HISTORY);
 
         $keyName = '';
-        if($t_dtb_mail_history->hasColumn('creator_id')){
+        if ($t_dtb_mail_history->hasColumn('creator_id')) {
             $keys = $t_dtb_mail_history->getForeignKeys();
             foreach ($keys as $key) {
                 $column = $key->getColumns();

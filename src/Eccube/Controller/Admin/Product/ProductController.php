@@ -40,7 +40,6 @@ class ProductController extends AbstractController
 {
     public function index(Application $app, Request $request, $page_no = null)
     {
-
         $session = $app['session'];
 
         $builder = $app['form.factory']
@@ -65,7 +64,6 @@ class ProductController extends AbstractController
         $active = false;
 
         if ('POST' === $request->getMethod()) {
-
             $searchForm->handleRequest($request);
 
             if ($searchForm->isValid()) {
@@ -372,7 +370,6 @@ class ProductController extends AbstractController
                     if ($ProductImage instanceof \Eccube\Entity\ProductImage) {
                         $Product->removeProductImage($ProductImage);
                         $app['orm.em']->remove($ProductImage);
-
                     }
                     $app['orm.em']->persist($Product);
 
@@ -486,7 +483,6 @@ class ProductController extends AbstractController
                         $Product->removeProductCategory($ProductCategory);
                         $app['orm.em']->remove($ProductCategory);
                     }
-
                 }
 
                 $app['orm.em']->persist($Product);

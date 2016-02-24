@@ -36,12 +36,10 @@ class SecurityController extends AbstractController
 {
     public function index(Application $app, Request $request)
     {
-
         $builder = $app['form.factory']->createBuilder('admin_security');
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -96,7 +94,6 @@ class SecurityController extends AbstractController
                 }
 
                 $app->addSuccess('admin.system.security.save.complete', 'admin');
-
             }
         } else {
             // セキュリティ情報の取得

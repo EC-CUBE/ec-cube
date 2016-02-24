@@ -64,7 +64,6 @@ class ClassNameController extends AbstractController
                 $status = $app['eccube.repository.class_name']->save($TargetClassName);
 
                 if ($status) {
-
                     $event = new EventArgs(
                         array(
                             'form' => $form,
@@ -105,7 +104,6 @@ class ClassNameController extends AbstractController
         $status = $app['eccube.repository.class_name']->delete($TargetClassName);
 
         if ($status === true) {
-
             $event = new EventArgs(
                 array(
                     'TargetClassName' => $TargetClassName,

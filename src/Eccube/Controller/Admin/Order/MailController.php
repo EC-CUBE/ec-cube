@@ -58,7 +58,6 @@ class MailController
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             $mode = $request->get('mode');
@@ -83,7 +82,7 @@ class MailController
                     $form->get('header')->setData($MailTemplate->getHeader());
                     $form->get('footer')->setData($MailTemplate->getFooter());
                 }
-            } else if ($form->isValid()) {
+            } elseif ($form->isValid()) {
                 switch ($mode) {
                     case 'confirm':
                         // フォームをFreezeして再生成.
@@ -175,7 +174,6 @@ class MailController
 
     public function view(Application $app, Request $request)
     {
-
         if ($request->isXmlHttpRequest()) {
             $id = $request->get('id');
             $MailHistory = $app['eccube.repository.mail_history']->find($id);
@@ -197,14 +195,12 @@ class MailController
                 'body' => $MailHistory->getMailBody()
             ));
         }
-
     }
 
 
 
     public function mailAll(Application $app, Request $request)
     {
-
         $builder = $app['form.factory']->createBuilder('mail');
 
         $event = new EventArgs(
@@ -219,7 +215,6 @@ class MailController
 
         $ids = '';
         if ('POST' === $request->getMethod()) {
-
             $form->handleRequest($request);
 
             $mode = $request->get('mode');
@@ -247,7 +242,7 @@ class MailController
                     $form->get('header')->setData($MailTemplate->getHeader());
                     $form->get('footer')->setData($MailTemplate->getFooter());
                 }
-            } else if ($form->isValid()) {
+            } elseif ($form->isValid()) {
                 switch ($mode) {
                     case 'confirm':
                         // フォームをFreezeして再生成.
@@ -298,7 +293,6 @@ class MailController
                         $ids = explode(',', $ids);
 
                         foreach ($ids as $value) {
-
                             $Order = $app['eccube.repository.order']->find($value);
 
                             $body = $this->createBody($app, $data['header'], $data['footer'], $Order);

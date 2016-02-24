@@ -28,7 +28,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ShopControllerTest extends AbstractAdminWebTestCase
 {
-
     public function testRoutingAdminBasis()
     {
         $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop'));

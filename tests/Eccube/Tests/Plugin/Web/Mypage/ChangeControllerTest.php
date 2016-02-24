@@ -29,7 +29,6 @@ use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 
 class ChangeControllerTest extends AbstractWebTestCase
 {
-
     protected $Customer;
 
     public function setUp()
@@ -131,7 +130,6 @@ class ChangeControllerTest extends AbstractWebTestCase
             EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE,
         );
         $this->verifyOutputString($hookpoins);
-
     }
 
     public function testIndexWithPostDefaultPassword()
