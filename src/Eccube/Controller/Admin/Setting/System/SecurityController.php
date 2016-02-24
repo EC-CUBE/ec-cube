@@ -48,7 +48,7 @@ class SecurityController extends AbstractController
                 // 現在のセキュリティ情報を更新
                 $adminRoot = $app['config']['admin_route'];
 
-                $configFile = $app['config']['root_dir'] . '/app/config/eccube/config.yml';
+                $configFile = $app['config']['root_dir'].'/app/config/eccube/config.yml';
                 $config = Yaml::parse(file_get_contents($configFile));
                 // trim処理
                 $allowHost = Str::convertLineFeed($data['admin_allow_host']);
@@ -78,7 +78,7 @@ class SecurityController extends AbstractController
 
                 if ($adminRoot != $data['admin_route_dir']) {
                     // admin_routeが変更されればpath.ymlを更新
-                    $pathFile = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
+                    $pathFile = $app['config']['root_dir'].'/app/config/eccube/path.yml';
                     $config = Yaml::parse(file_get_contents($pathFile));
                     $config['admin_route'] = $data['admin_route_dir'];
 
@@ -90,7 +90,7 @@ class SecurityController extends AbstractController
                     $this->getSecurity($app)->setToken(null);
 
                     // 管理者画面へ再ログイン
-                    return $app->redirect($request->getBaseUrl() . '/' . $config['admin_route']);
+                    return $app->redirect($request->getBaseUrl().'/'.$config['admin_route']);
                 }
 
                 $app->addSuccess('admin.system.security.save.complete', 'admin');

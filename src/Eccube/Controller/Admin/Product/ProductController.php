@@ -182,7 +182,7 @@ class ProductController extends AbstractController
             foreach ($images as $img) {
                 foreach ($img as $image) {
                     $extension = $image->getClientOriginalExtension();
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
                 }
@@ -356,7 +356,7 @@ class ProductController extends AbstractController
                     $app['orm.em']->persist($ProductImage);
 
                     // 移動
-                    $file = new File($app['config']['image_temp_realdir'] . '/' . $add_image);
+                    $file = new File($app['config']['image_temp_realdir'].'/'.$add_image);
                     $file->move($app['config']['image_save_realdir']);
                 }
 
@@ -375,7 +375,7 @@ class ProductController extends AbstractController
 
                     // 削除
                     $fs = new Filesystem();
-                    $fs->remove($app['config']['image_save_realdir'] . '/' . $delete_image);
+                    $fs->remove($app['config']['image_save_realdir'].'/'.$delete_image);
                 }
                 $app['orm.em']->persist($Product);
                 $app['orm.em']->flush();
@@ -504,7 +504,7 @@ class ProductController extends AbstractController
                 foreach ($deleteImages as $deleteImage) {
                     try {
                         $fs = new Filesystem();
-                        $fs->remove($app['config']['image_save_realdir'] . '/' . $deleteImage);
+                        $fs->remove($app['config']['image_save_realdir'].'/'.$deleteImage);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
@@ -568,10 +568,10 @@ class ProductController extends AbstractController
 
                     // 画像ファイルを新規作成
                     $extension = pathinfo($Image->getFileName(), PATHINFO_EXTENSION);
-                    $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+                    $filename = date('mdHis').uniqid('_').'.'.$extension;
                     try {
                         $fs = new Filesystem();
-                        $fs->copy($app['config']['image_save_realdir'] . '/' . $Image->getFileName(), $app['config']['image_save_realdir'] . '/' . $filename);
+                        $fs->copy($app['config']['image_save_realdir'].'/'.$Image->getFileName(), $app['config']['image_save_realdir'].'/'.$filename);
                     } catch (\Exception $e) {
                         // エラーが発生しても無視する
                     }
@@ -702,9 +702,9 @@ class ProductController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'product_' . $now->format('YmdHis') . '.csv';
+        $filename = 'product_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         return $response;

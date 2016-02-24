@@ -71,7 +71,7 @@ class WithdrawController extends AbstractController
                     // 会員削除
                     $email = $Customer->getEmail();
                     // メールアドレスにダミーをセット
-                    $Customer->setEmail(Str::random(60) . '@dummy.dummy');
+                    $Customer->setEmail(Str::random(60).'@dummy.dummy');
                     $Customer->setDelFlg(Constant::ENABLED);
 
                     $app['orm.em']->flush();

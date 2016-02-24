@@ -67,7 +67,7 @@ class SearchProductType extends AbstractType
             ))
             ->add('status', 'disp', array(
                 'label' => '種別',
-                'multiple'=> true,
+                'multiple' => true,
                 'required' => false,
             ))
             ->add('create_date_start', 'date', array(

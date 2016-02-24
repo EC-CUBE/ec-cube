@@ -118,7 +118,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->subject;
         $this->verify();
     }
@@ -155,7 +155,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->subject;
         $this->verify();
     }
@@ -176,7 +176,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->subject;
         $this->verify();
     }

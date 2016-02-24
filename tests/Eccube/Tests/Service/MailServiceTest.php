@@ -53,7 +53,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $url;
         $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -76,7 +76,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 会員登録が完了しました。';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -100,7 +100,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 退会手続きのご完了';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -161,7 +161,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -221,7 +221,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -248,7 +248,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -275,7 +275,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $url;
         $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -308,7 +308,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] '.$subject;
+        $this->expected = '['.$this->BaseInfo->getShopName().'] '.$subject;
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -335,7 +335,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->expected = $url;
         $this->verifyRegExp($Message, 'URLは'.$url.'ではありません');
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->subject;
         $this->verify();
 
@@ -360,7 +360,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Messages = $this->getMessages();
         $Message = $this->getMessage($Messages[0]->id);
 
-        $this->expected = '[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ';
+        $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のお知らせ';
         $this->actual = $Message->subject;
         $this->verify();
 

@@ -39,7 +39,7 @@ class Version20150806222639 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $t=$schema->getTable('dtb_product_class');
+        $t = $schema->getTable('dtb_product_class');
         if ($t->hasColumn('stock_unlimited_tmp')) {
             $this->addSql('update dtb_product_class set stock_unlimited = stock_unlimited_tmp;');
             $t->dropColumn('stock_unlimited_tmp');

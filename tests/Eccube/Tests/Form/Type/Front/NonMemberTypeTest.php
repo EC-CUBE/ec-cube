@@ -57,8 +57,8 @@ class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'tel03' => '1111',
         ),
         'email' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
         ),
     );
 

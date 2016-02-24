@@ -119,7 +119,7 @@ class PluginService
     public function checkPluginArchiveContent($dir)
     {
         try {
-            $meta = $this->readYml($dir . '/config.yml');
+            $meta = $this->readYml($dir.'/config.yml');
         } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }

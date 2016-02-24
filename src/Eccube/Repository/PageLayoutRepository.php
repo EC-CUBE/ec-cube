@@ -256,7 +256,7 @@ class PageLayoutRepository extends EntityRepository
         }
 
         foreach ($readPaths as $readPath) {
-            $filePath = $readPath . '/' . $fileName . '.twig';
+            $filePath = $readPath.'/'.$fileName.'.twig';
             $fs = new Filesystem();
             if ($fs->exists($filePath)) {
                 return array(

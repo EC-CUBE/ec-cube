@@ -91,10 +91,10 @@ class PaymentController extends AbstractController
                 // ファイルアップロード
                 $file = $form['payment_image']->getData();
                 $fs = new Filesystem();
-                if ($file && $fs->exists($app['config']['image_temp_realdir'] . '/' . $file)) {
+                if ($file && $fs->exists($app['config']['image_temp_realdir'].'/'.$file)) {
                     $fs->rename(
-                        $app['config']['image_temp_realdir'] . '/' . $file,
-                        $app['config']['image_save_realdir'] . '/' . $file
+                        $app['config']['image_temp_realdir'].'/'.$file,
+                        $app['config']['image_save_realdir'].'/'.$file
                     );
                 }
 
@@ -131,7 +131,7 @@ class PaymentController extends AbstractController
         if (isset($images['payment_image_file'])) {
             $image = $images['payment_image_file'];
             $extension = $image->guessExtension();
-            $filename = date('mdHis') . uniqid('_') . '.' . $extension;
+            $filename = date('mdHis').uniqid('_').'.'.$extension;
             $image->move($app['config']['image_temp_realdir'], $filename);
         }
         $event = new EventArgs(

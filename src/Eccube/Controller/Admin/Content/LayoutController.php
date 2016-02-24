@@ -109,20 +109,20 @@ class LayoutController
                 $max = count($Blocks);
                 for ($i = 0; $i < $max; $i++) {
                     // block_id が取得できない場合は INSERT しない
-                    if (!isset($data['id_' . $i])) {
+                    if (!isset($data['id_'.$i])) {
                         continue;
                     }
                     // 未使用は INSERT しない
-                    if ($data['target_id_' . $i] == \Eccube\Entity\PageLayout::TARGET_ID_UNUSED) {
+                    if ($data['target_id_'.$i] == \Eccube\Entity\PageLayout::TARGET_ID_UNUSED) {
                         continue;
                     }
                     // 他のページに anywhere が存在する場合は INSERT しない
-                    $anywhere = (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) ? 1 : 0;
-                    if (isset($data['anywhere_' . $i]) && $data['anywhere_' . $i] == 1) {
+                    $anywhere = (isset($data['anywhere_'.$i]) && $data['anywhere_'.$i] == 1) ? 1 : 0;
+                    if (isset($data['anywhere_'.$i]) && $data['anywhere_'.$i] == 1) {
                         $Other = $app['orm.em']->getRepository('Eccube\Entity\BlockPosition')
                             ->findBy(array(
                                 'anywhere' => 1,
-                                'block_id' => $data['id_' . $i],
+                                'block_id' => $data['id_'.$i],
                             ));
                         if (count($Other) > 0) {
                             continue;
@@ -132,14 +132,14 @@ class LayoutController
                     $BlockPosition = new \Eccube\Entity\BlockPosition();
                     $Block = $app['orm.em']->getRepository('Eccube\Entity\Block')
                         ->findOneBy(array(
-                            'id' => $data['id_' . $i],
+                            'id' => $data['id_'.$i],
                             'DeviceType' => $DeviceType,
                         ));
                     $BlockPosition
                         ->setPageId($id)
-                        ->setBlockId($data['id_' . $i])
-                        ->setBlockRow($data['top_' . $i])
-                        ->setTargetId($data['target_id_' . $i])
+                        ->setBlockId($data['id_'.$i])
+                        ->setBlockRow($data['top_'.$i])
+                        ->setTargetId($data['target_id_'.$i])
                         ->setBlock($Block)
                         ->setPageLayout($TargetPageLayout)
                         ->setAnywhere($anywhere);

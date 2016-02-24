@@ -38,7 +38,7 @@ abstract class EccubeDatabaseTestCase extends \PHPUnit_Extensions_Database_TestC
         $config = new Configuration($app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
-        $migrationDir = __DIR__ . '/../../../src/Eccube/Resource/doctrine/migration';
+        $migrationDir = __DIR__.'/../../../src/Eccube/Resource/doctrine/migration';
         $config->setMigrationsDirectory($migrationDir);
         $config->registerMigrationsFromDirectory($migrationDir);
 

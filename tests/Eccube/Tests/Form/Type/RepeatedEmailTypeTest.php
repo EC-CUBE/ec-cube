@@ -34,8 +34,8 @@ class RepeatedEmailTypeTest extends \PHPUnit_Framework_TestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'email' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
         ),
     );
 

@@ -36,8 +36,8 @@ class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'password' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
         ),
     );
 
@@ -85,7 +85,7 @@ class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalid_LengthMin()
     {
-        $password = str_repeat('1', $this->config['password_min_len']-1);
+        $password = str_repeat('1', $this->config['password_min_len'] - 1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;
@@ -96,7 +96,7 @@ class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalid_LengthMax()
     {
-        $password = str_repeat('1', $this->config['password_max_len']+1);
+        $password = str_repeat('1', $this->config['password_max_len'] + 1);
 
         $this->formData['password']['first'] = $password;
         $this->formData['password']['second'] = $password;

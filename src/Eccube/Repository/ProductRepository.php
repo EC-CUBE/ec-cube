@@ -98,7 +98,7 @@ class ProductRepository extends EntityRepository
                 $key = sprintf('keyword%s', $index);
                 $qb
                     ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s', $key, $key))
-                    ->setParameter($key, '%' . $keyword . '%');
+                    ->setParameter($key, '%'.$keyword.'%');
             }
         }
 
@@ -143,7 +143,7 @@ class ProductRepository extends EntityRepository
             $qb
                 ->andWhere('p.id = :id OR p.name LIKE :likeid OR pc.code LIKE :likeid')
                 ->setParameter('id', $id)
-                ->setParameter('likeid', '%' . $searchData['id'] . '%');
+                ->setParameter('likeid', '%'.$searchData['id'].'%');
         }
 
         // code

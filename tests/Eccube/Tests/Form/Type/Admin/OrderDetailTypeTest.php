@@ -38,7 +38,7 @@ class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'price' => '10000',
-        'quantity'=> '10000',
+        'quantity' => '10000',
         'tax_rate' => '10.0',
     );
 

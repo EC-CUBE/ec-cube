@@ -111,7 +111,7 @@ class EccubeExtension extends \Twig_Extension
     public function getCsrfTokenForAnchor()
     {
         $token = $this->app['form.csrf_provider']->getToken(Constant::TOKEN_NAME)->getValue();
-        return 'token-for-anchor=\'' . $token . '\'';
+        return 'token-for-anchor=\''.$token.'\'';
     }
 
     /**
@@ -146,7 +146,7 @@ class EccubeExtension extends \Twig_Extension
     public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
     {
         $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = '¥ ' . $price;
+        $price = '¥ '.$price;
 
         return $price;
     }

@@ -100,14 +100,14 @@ class OrderRepository extends EntityRepository
         if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
-                ->setParameter('name', '%' . $searchData['name'] . '%');
+                ->setParameter('name', '%'.$searchData['name'].'%');
         }
 
         // kana
         if (isset($searchData['kana']) && Str::isNotBlank($searchData['kana'])) {
             $qb
                 ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
-                ->setParameter('kana', '%' . $searchData['kana'] . '%');
+                ->setParameter('kana', '%'.$searchData['kana'].'%');
         }
 
         // email
@@ -244,7 +244,7 @@ class OrderRepository extends EntityRepository
             $qb
                 ->leftJoin('o.OrderDetails', 'od')
                 ->andWhere('od.product_name LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }
 
         // Order By
@@ -273,10 +273,10 @@ class OrderRepository extends EntityRepository
         if (isset( $searchData['multi']) && Str::isNotBlank($searchData['multi'])) {
             $multi = preg_match('/^\d+$/', $searchData['multi']) ? $searchData['multi'] : null;
             $qb
-                ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR ' .
+                ->andWhere('o.id = :multi OR o.name01 LIKE :likemulti OR o.name02 LIKE :likemulti OR '.
                            'o.kana01 LIKE :likemulti OR o.kana02 LIKE :likemulti OR o.company_name LIKE :likemulti')
                 ->setParameter('multi', $multi)
-                ->setParameter('likemulti', '%' . $searchData['multi'] . '%');
+                ->setParameter('likemulti', '%'.$searchData['multi'].'%');
         }
 
         // order_id_end
@@ -301,28 +301,28 @@ class OrderRepository extends EntityRepository
         if (isset($searchData['name']) && Str::isNotBlank($searchData['name'])) {
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
-                ->setParameter('name', '%' . $searchData['name'] . '%');
+                ->setParameter('name', '%'.$searchData['name'].'%');
         }
 
         // kana
         if (isset($searchData['kana']) && Str::isNotBlank($searchData['kana'])) {
             $qb
                 ->andWhere('CONCAT(o.kana01, o.kana02) LIKE :kana')
-                ->setParameter('kana', '%' . $searchData['kana'] . '%');
+                ->setParameter('kana', '%'.$searchData['kana'].'%');
         }
 
         // email
         if (isset($searchData['email']) && Str::isNotBlank($searchData['email'])) {
             $qb
                 ->andWhere('o.email like :email')
-                ->setParameter('email', '%' . $searchData['email'] . '%');
+                ->setParameter('email', '%'.$searchData['email'].'%');
         }
 
         // tel
         if (isset($searchData['tel']) && Str::isNotBlank($searchData['tel'])) {
             $qb
                 ->andWhere('CONCAT(o.tel01, o.tel02, o.tel03) LIKE :tel')
-                ->setParameter('tel', '%' . $searchData['tel'] . '%');
+                ->setParameter('tel', '%'.$searchData['tel'].'%');
         }
 
         // sex
@@ -434,7 +434,7 @@ class OrderRepository extends EntityRepository
             $qb
                 ->leftJoin('o.OrderDetails', 'od')
                 ->andWhere('od.product_name LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%' . $searchData['buy_product_name'] . '%');
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_name'].'%');
         }
 
 

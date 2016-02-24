@@ -32,7 +32,7 @@ class NoStockHiddenFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         if ($targetEntity->reflClass->getName() === 'Eccube\Entity\ProductClass') {
-            return $targetTableAlias . '.stock >= 1 OR ' . $targetTableAlias . '.stock_unlimited = 1';
+            return $targetTableAlias.'.stock >= 1 OR '.$targetTableAlias.'.stock_unlimited = 1';
         } else {
             return "";
         }

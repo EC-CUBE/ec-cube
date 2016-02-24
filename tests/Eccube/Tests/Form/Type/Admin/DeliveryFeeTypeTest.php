@@ -108,7 +108,7 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
 
     public function testInvalidData_PriceLen()
     {
-        $this->form->submit(array('fee' => str_repeat('1', $this->app['config']['price_len']+1)));
+        $this->form->submit(array('fee' => str_repeat('1', $this->app['config']['price_len'] + 1)));
         $this->assertFalse($this->form->isValid());
     }
 }

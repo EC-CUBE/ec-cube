@@ -74,7 +74,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 退会手続きのご完了';
+        $this->expected = '['.$BaseInfo->getShopName().'] 退会手続きのご完了';
         $this->actual = $Message->subject;
         $this->verify();
     }

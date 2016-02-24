@@ -224,7 +224,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 ->setParent($TestParentCategory)
                 ->setCreator($TestCreator);
         } else {
-            $TestCategory->setName($TestParentCategory->getName() . '_c')
+            $TestCategory->setName($TestParentCategory->getName().'_c')
                 ->setRank($TestParentCategory->getRank() + 1)
                 ->setLevel($TestParentCategory->getLevel() + 1)
                 ->setDelFlg(false)

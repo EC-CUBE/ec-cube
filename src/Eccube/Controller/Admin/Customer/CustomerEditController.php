@@ -88,7 +88,7 @@ class CustomerEditController extends AbstractController
                         ->setCompanyName($Customer->getCompanyName())
                         ->setZip01($Customer->getZip01())
                         ->setZip02($Customer->getZip02())
-                        ->setZipcode($Customer->getZip01() . $Customer->getZip02())
+                        ->setZipcode($Customer->getZip01().$Customer->getZip02())
                         ->setPref($Customer->getPref())
                         ->setAddr01($Customer->getAddr01())
                         ->setAddr02($Customer->getAddr02())

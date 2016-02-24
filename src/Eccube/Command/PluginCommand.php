@@ -57,7 +57,7 @@ EOF
 
     protected function getPluginFromCode($pluginCode)
     {
-        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0, 'code'=>$pluginCode));
+        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg' => 0, 'code' => $pluginCode));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

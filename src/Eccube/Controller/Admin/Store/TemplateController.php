@@ -63,15 +63,15 @@ class TemplateController extends AbstractController
                     ->find($form['selected']->getData());
 
                 // path.ymlの再構築
-                $file = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
+                $file = $app['config']['root_dir'].'/app/config/eccube/path.yml';
                 $config = Yaml::parse(file_get_contents($file));
 
                 $templateCode = $Template->getCode();
                 $config['template_code'] = $templateCode;
-                $config['template_realdir'] = $config['root_dir'] . '/app/template/' . $templateCode;
-                $config['template_html_realdir'] = $config['root_dir'] . '/html/template/' . $templateCode;
-                $config['front_urlpath'] = $config['root_urlpath'] . '/template/' . $templateCode;
-                $config['block_realdir'] =$config['template_realdir'] . '/Block';
+                $config['template_realdir'] = $config['root_dir'].'/app/template/'.$templateCode;
+                $config['template_html_realdir'] = $config['root_dir'].'/html/template/'.$templateCode;
+                $config['front_urlpath'] = $config['root_urlpath'].'/template/'.$templateCode;
+                $config['block_realdir'] = $config['template_realdir'].'/Block';
 
                 file_put_contents($file, Yaml::dump($config));
 
@@ -106,19 +106,19 @@ class TemplateController extends AbstractController
         // 該当テンプレートのディレクトリ
         $config = $app['config'];
         $templateCode = $Template->getCode();
-        $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
-        $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+        $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
+        $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
 
         // 一時ディレクトリ
         $uniqId = sha1(Str::random(32));
-        $tmpDir = $config['template_temp_realdir'] . '/' . $uniqId;
-        $appDir = $tmpDir . '/app';
-        $htmlDir = $tmpDir . '/html';
+        $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
+        $appDir = $tmpDir.'/app';
+        $htmlDir = $tmpDir.'/html';
 
         // ファイル名
-        $tarFile = $config['template_temp_realdir'] . '/' . $uniqId . '.tar';
-        $tarGzFile = $tarFile . '.gz';
-        $downloadFileName = $Template->getCode() . '.tar.gz';
+        $tarFile = $config['template_temp_realdir'].'/'.$uniqId.'.tar';
+        $tarGzFile = $tarFile.'.gz';
+        $downloadFileName = $Template->getCode().'.tar.gz';
 
         // 該当テンプレートを一時ディレクトリへコピーする.
         $fs = new Filesystem();
@@ -143,9 +143,9 @@ class TemplateController extends AbstractController
             $tarFile,
             $tarGzFile
         ) {
-            $app['monolog']->addDebug('remove temp file: ' . $tmpDir);
-            $app['monolog']->addDebug('remove temp file: ' . $tarFile);
-            $app['monolog']->addDebug('remove temp file: ' . $tarGzFile);
+            $app['monolog']->addDebug('remove temp file: '.$tmpDir);
+            $app['monolog']->addDebug('remove temp file: '.$tarFile);
+            $app['monolog']->addDebug('remove temp file: '.$tarGzFile);
             $fs = new Filesystem();
             $fs->remove($tmpDir);
             $fs->remove($tarFile);
@@ -186,8 +186,8 @@ class TemplateController extends AbstractController
         // テンプレートディレクトリの削除
         $config = $app['config'];
         $templateCode = $Template->getCode();
-        $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
-        $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+        $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
+        $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
 
         $fs = new Filesystem();
         $fs->remove($targetRealDir);
@@ -230,18 +230,18 @@ class TemplateController extends AbstractController
                 // 該当テンプレートのディレクトリ
                 $config = $app['config'];
                 $templateCode = $Template->getCode();
-                $targetRealDir = $config['root_dir'] . '/app/template/' . $templateCode;
-                $targetHtmlRealDir = $config['root_dir'] . '/html/template/' . $templateCode;
+                $targetRealDir = $config['root_dir'].'/app/template/'.$templateCode;
+                $targetHtmlRealDir = $config['root_dir'].'/html/template/'.$templateCode;
 
                 // 一時ディレクトリ
                 $uniqId = sha1(Str::random(32));
-                $tmpDir = $config['template_temp_realdir'] . '/' . $uniqId;
-                $appDir = $tmpDir . '/app';
-                $htmlDir = $tmpDir . '/html';
+                $tmpDir = $config['template_temp_realdir'].'/'.$uniqId;
+                $appDir = $tmpDir.'/app';
+                $htmlDir = $tmpDir.'/html';
 
                 $formFile = $form['file']->getData();
                 // ファイル名
-                $archive = $templateCode . '.' . $formFile->getClientOriginalExtension();
+                $archive = $templateCode.'.'.$formFile->getClientOriginalExtension();
 
                 // ファイルを一時ディレクトリへ移動.
                 $formFile->move($tmpDir, $archive);
@@ -250,11 +250,11 @@ class TemplateController extends AbstractController
                 try {
                     if ($formFile->getClientOriginalExtension() == 'zip') {
                         $zip = new \ZipArchive();
-                        $zip->open($tmpDir . '/' . $archive);
+                        $zip->open($tmpDir.'/'.$archive);
                         $zip->extractTo($tmpDir);
                         $zip->close();
                     } else {
-                        $phar = new \PharData($tmpDir . '/' . $archive);
+                        $phar = new \PharData($tmpDir.'/'.$archive);
                         $phar->extractTo($tmpDir, null, true);
                     }
                 } catch (\Exception $e) {

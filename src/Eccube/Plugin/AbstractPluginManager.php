@@ -9,7 +9,7 @@ class AbstractPluginManager
 {
     CONST MIGRATION_TABLE_PREFIX = 'migration_';
 
-    public function migrationSchema($app,$migrationFilePath,$pluginCode,$version=null)
+    public function migrationSchema($app,$migrationFilePath,$pluginCode,$version = null)
     {
         $config = new Configuration($app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');

@@ -50,7 +50,7 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 
         $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_ADMIN'));
 
-        $this->app['session']->set('_security_' . $firewall, serialize($token));
+        $this->app['session']->set('_security_'.$firewall, serialize($token));
         $this->app['session']->save();
 
         $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());

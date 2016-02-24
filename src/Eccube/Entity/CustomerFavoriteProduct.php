@@ -64,7 +64,7 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
      *
      * @return integer
      */
-    public function getId ()
+    public function getId()
     {
         return $this->id;
     }

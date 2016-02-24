@@ -38,7 +38,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
     /** @var array デフォルト値（正常系）を設定 */
     protected $formData = array(
         'method' => '1',
-        'charge'=> '10000',
+        'charge' => '10000',
         'rule_min' => '100',
         'rule_max' => '10000'
     );

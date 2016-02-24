@@ -75,7 +75,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $name = str_repeat('S', $this->app['config']['stext_len']).'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);
@@ -95,7 +95,7 @@ class MemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidDepartment_MaxLengthInvalid()
     {
-        $department = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $department = str_repeat('S', $this->app['config']['stext_len']).'S';
 
         $this->formData['department'] = $department;
         $this->form->submit($this->formData);

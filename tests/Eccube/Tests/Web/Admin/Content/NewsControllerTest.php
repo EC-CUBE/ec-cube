@@ -130,8 +130,8 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $TestNews = new \Eccube\Entity\News();
         $TestNews
             ->setDate(new \DateTime())
-            ->setTitle('テストタイトル' . $rank)
-            ->setComment('テスト内容' . $rank)
+            ->setTitle('テストタイトル'.$rank)
+            ->setComment('テスト内容'.$rank)
             ->setUrl('http://example.com/')
             ->setRank(100 + $rank)
             ->setSelect(0)

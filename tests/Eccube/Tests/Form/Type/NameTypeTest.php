@@ -77,7 +77,7 @@ class NameTypeTest extends \PHPUnit_Framework_TestCase
     {
         $data = array(
             'name' => array(
-                'name01' => str_repeat('ア', $this->maxLength+1),
+                'name01' => str_repeat('ア', $this->maxLength + 1),
                 'name02' => 'にゅうりょく',
             ));
 
@@ -90,7 +90,7 @@ class NameTypeTest extends \PHPUnit_Framework_TestCase
         $data = array(
             'name' => array(
                 'name01' => 'にゅうりょく',
-                'name02' => str_repeat('ア', $this->maxLength+1),
+                'name02' => str_repeat('ア', $this->maxLength + 1),
             ));
 
         $this->form->submit($data);

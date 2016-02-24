@@ -263,7 +263,7 @@ class ShoppingService
             ->setFax03($Customer->getFax03())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+            ->setZipCode($Customer->getZip01().$Customer->getZip02())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02())
@@ -398,7 +398,7 @@ class ShoppingService
                 ->setFax03($CustomerAddress->getFax03())
                 ->setZip01($CustomerAddress->getZip01())
                 ->setZip02($CustomerAddress->getZip02())
-                ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+                ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
                 ->setPref($CustomerAddress->getPref())
                 ->setAddr01($CustomerAddress->getAddr01())
                 ->setAddr02($CustomerAddress->getAddr02());
@@ -417,7 +417,7 @@ class ShoppingService
                 ->setFax03($Customer->getFax03())
                 ->setZip01($Customer->getZip01())
                 ->setZip02($Customer->getZip02())
-                ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+                ->setZipCode($Customer->getZip01().$Customer->getZip02())
                 ->setPref($Customer->getPref())
                 ->setAddr01($Customer->getAddr01())
                 ->setAddr02($Customer->getAddr02());
@@ -890,10 +890,10 @@ class ShoppingService
 
         // 配送日数が設定されている
         if ($deliveryDateFlag) {
-            $period = new \DatePeriod (
-                new \DateTime($minDate . ' day'),
+            $period = new \DatePeriod(
+                new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'] . ' day')
+                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {

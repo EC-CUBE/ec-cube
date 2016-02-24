@@ -82,7 +82,7 @@ class SecurityType extends AbstractType
                         )
                     );
                     if ($errors->count() != 0) {
-                        $form['admin_allow_host']->addError(new FormError($ip . 'はIPv4アドレスではありません。'));
+                        $form['admin_allow_host']->addError(new FormError($ip.'はIPv4アドレスではありません。'));
                     }
                 }
             })

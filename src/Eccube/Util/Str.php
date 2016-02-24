@@ -157,7 +157,7 @@ class Str
             return $value;
         }
 
-        return rtrim(mb_substr($value, 0, $length, 'UTF-8')) . $end;
+        return rtrim(mb_substr($value, 0, $length, 'UTF-8')).$end;
     }
 
 
@@ -184,18 +184,18 @@ class Str
         }
         if ($diff->m == 1 || $diff->days > 0) {
             if ($diff->days <= 31) {
-                return $diff->days . '日前';
+                return $diff->days.'日前';
             }
             // return $date->format("Y/m/d H:i");
             return $date->format("Y/m/d");
         }
         if ($diff->h > 0) {
-            return $diff->h . "時間前";
+            return $diff->h."時間前";
         }
         if ($diff->i > 0) {
-            return $diff->i . "分前";
+            return $diff->i."分前";
         }
-        return $diff->s . "秒前";
+        return $diff->s."秒前";
     }
 
     /**

@@ -94,7 +94,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LoginId_Min()
     {
-        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_min_len']-1);
+        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_min_len'] - 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -102,7 +102,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LoginId_Max()
     {
-        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_max_len']+1);
+        $this->formData['login_id'] = str_repeat('a', $this->app['config']['id_max_len'] + 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -142,7 +142,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LoginPass_Min()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_min_len']-1);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_min_len'] - 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -150,7 +150,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalid_LoginPass_Max()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_max_len']+1);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['password_max_len'] + 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -190,7 +190,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalid_AdminDir_Min()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_min_len']-1);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_min_len'] - 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -198,7 +198,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalid_AdminDir_Max()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_max_len']+1);
+        $this->formData['login_pass'] = str_repeat('a', $this->app['config']['id_max_len'] + 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

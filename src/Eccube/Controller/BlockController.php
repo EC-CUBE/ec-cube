@@ -37,7 +37,7 @@ class BlockController
 
         if ($app['eccube.layout']) {
             foreach ($app['eccube.layout']->getBlocPositions() as $blocPositions) {
-                if ($blocPositions->getTargetId() == constant("Eccube\Entity\BlocPosition::" . $position)) {
+                if ($blocPositions->getTargetId() == constant("Eccube\Entity\BlocPosition::".$position)) {
                     $blocks[] = $blocPositions->getBloc();
                 }
             }

@@ -255,9 +255,9 @@ class CustomerController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'customer_' . $now->format('YmdHis') . '.csv';
+        $filename = 'customer_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 
         $response->send();
 

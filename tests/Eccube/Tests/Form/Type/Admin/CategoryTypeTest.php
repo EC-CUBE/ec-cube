@@ -74,7 +74,7 @@ class CategoryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $str = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $str = str_repeat('S', $this->app['config']['stext_len']).'S';
 
         $this->formData['name'] = $str;
         $this->form->submit($this->formData);

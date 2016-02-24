@@ -256,7 +256,7 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      */
     public function __toString()
     {
-        return $this->getName01() . ' ' . $this->getName02();
+        return $this->getName01().' '.$this->getName02();
     }
 
     /**

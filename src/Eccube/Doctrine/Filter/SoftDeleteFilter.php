@@ -46,7 +46,7 @@ class SoftDeleteFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         if ($targetEntity->hasField('del_flg') && !in_array($targetEntity->getName(), $this->getExcludes())) {
-            return $targetTableAlias . '.del_flg = 0';
+            return $targetTableAlias.'.del_flg = 0';
         } else {
             return "";
         }

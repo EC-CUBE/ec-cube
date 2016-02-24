@@ -52,7 +52,7 @@ class PasswordEncoder implements PasswordEncoderInterface
         if ($this->config['auth_type'] == 'PLAIN') {
             $res = $raw;
         } else {
-            $res = hash_hmac($this->config['password_hash_algos'], $raw . ':' . $this->config['auth_magic'], $salt);
+            $res = hash_hmac($this->config['password_hash_algos'], $raw.':'.$this->config['auth_magic'], $salt);
         }
 
         return $res;
@@ -80,7 +80,7 @@ class PasswordEncoder implements PasswordEncoderInterface
         } else {
             // 旧バージョン(2.11未満)からの移行を考慮
             if (empty($salt)) {
-                $hash = sha1($raw . ':' . $this->config['auth_magic']);
+                $hash = sha1($raw.':'.$this->config['auth_magic']);
             } else {
                 $hash = $this->encodePassword($raw, $salt);
             }

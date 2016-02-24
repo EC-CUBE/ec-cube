@@ -128,7 +128,7 @@ class KanaTypeTest extends \PHPUnit_Framework_TestCase
     {
         $data = array(
             'kana' => array(
-                'kana01' => str_repeat('ア', $this->maxLength+1),
+                'kana01' => str_repeat('ア', $this->maxLength + 1),
                 'kana02' => 'にゅうりょく',
             ));
 
@@ -141,7 +141,7 @@ class KanaTypeTest extends \PHPUnit_Framework_TestCase
         $data = array(
             'kana' => array(
                 'kana01' => 'にゅうりょく',
-                'kana02' => str_repeat('ア', $this->maxLength+1),
+                'kana02' => str_repeat('ア', $this->maxLength + 1),
             ));
 
         $this->form->submit($data);

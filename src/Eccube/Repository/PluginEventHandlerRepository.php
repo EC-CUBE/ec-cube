@@ -50,15 +50,15 @@ class PluginEventHandlerRepository extends EntityRepository
 
     public function getPriorityRange($type)
     {
-        if (PluginEventHandler::EVENT_HANDLER_TYPE_FIRST==$type) {
-            $range_start=PluginEventHandler::EVENT_PRIORITY_FIRST_START;
-            $range_end=PluginEventHandler::EVENT_PRIORITY_FIRST_END;
-        } elseif (PluginEventHandler::EVENT_HANDLER_TYPE_LAST==$type) {
-            $range_start=PluginEventHandler::EVENT_PRIORITY_LAST_START;
-            $range_end=PluginEventHandler::EVENT_PRIORITY_LAST_END;
+        if (PluginEventHandler::EVENT_HANDLER_TYPE_FIRST == $type) {
+            $range_start = PluginEventHandler::EVENT_PRIORITY_FIRST_START;
+            $range_end = PluginEventHandler::EVENT_PRIORITY_FIRST_END;
+        } elseif (PluginEventHandler::EVENT_HANDLER_TYPE_LAST == $type) {
+            $range_start = PluginEventHandler::EVENT_PRIORITY_LAST_START;
+            $range_end = PluginEventHandler::EVENT_PRIORITY_LAST_END;
         } else {
-            $range_start=PluginEventHandler::EVENT_PRIORITY_NORMAL_START;
-            $range_end=PluginEventHandler::EVENT_PRIORITY_NORMAL_END;
+            $range_start = PluginEventHandler::EVENT_PRIORITY_NORMAL_START;
+            $range_end = PluginEventHandler::EVENT_PRIORITY_NORMAL_END;
         }
         return array($range_start,$range_end);
     }
@@ -75,15 +75,15 @@ class PluginEventHandlerRepository extends EntityRepository
            ->setMaxResults(1)
            ->orderBy('e.priority','ASC');
 
-        $result=$qb->getQuery()->getResult();
+        $result = $qb->getQuery()->getResult();
         if (count($result)) {
-            return $result[0]->getPriority() -1;
+            return $result[0]->getPriority() - 1;
         } else {
             return $range_start;
         }
     }
 
-    public function upPriority($pluginEventHandler,$up=true)
+    public function upPriority($pluginEventHandler,$up = true)
     {
         list($range_start,$range_end) = $this->getPriorityRange($pluginEventHandler->getHandlerType());
 
@@ -99,13 +99,13 @@ class PluginEventHandlerRepository extends EntityRepository
            ->setMaxResults(1)
            ->orderBy('e.priority', ($up ? 'ASC':'DESC' )  );
 
-        $result=$qb->getQuery()->getResult();
+        $result = $qb->getQuery()->getResult();
 
         if (count($result)) {
-            $em =$this->getEntityManager();
+            $em = $this->getEntityManager();
             $em->getConnection()->beginTransaction();
             // 2個のentityのprioriryを入れ替える
-            $tmp=$pluginEventHandler->getPriority();
+            $tmp = $pluginEventHandler->getPriority();
             $pluginEventHandler->setPriority($result[0]->getPriority());
             $result[0]->setPriority($tmp);
             $em->persist($result[0]);

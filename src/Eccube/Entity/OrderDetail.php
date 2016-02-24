@@ -61,7 +61,7 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
     {
         $downloable = clone $this->getOrder()->getPaymentDate();
         if ($BaseInfo->getDownloadableDays()) {
-            $downloable->add(new \DateInterval("P" . $BaseInfo->getDownloadableDays() . "D"));
+            $downloable->add(new \DateInterval("P".$BaseInfo->getDownloadableDays()."D"));
         }
 
         if ($BaseInfo->getDownloadableDaysUnlimited() === 1 && $this->getOrder()->getPaymentDate()) {

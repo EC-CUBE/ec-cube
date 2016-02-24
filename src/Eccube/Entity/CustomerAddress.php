@@ -158,7 +158,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
      */
     public function getShippingMultipleDefaultName()
     {
-        return $this->getName01() . ' ' . $this->getAddr02() . ' ' . $this->getPref()->getName() . $this->getAddr01();
+        return $this->getName01().' '.$this->getAddr02().' '.$this->getPref()->getName().$this->getAddr01();
     }
     
     /**
@@ -184,7 +184,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
             ->setFax03($Customer->getFax03())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+            ->setZipCode($Customer->getZip01().$Customer->getZip02())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02());
@@ -214,7 +214,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
             ->setFax03($Shipping->getFax03())
             ->setZip01($Shipping->getZip01())
             ->setZip02($Shipping->getZip02())
-            ->setZipCode($Shipping->getZip01() . $Shipping->getZip02())
+            ->setZipCode($Shipping->getZip01().$Shipping->getZip02())
             ->setPref($Shipping->getPref())
             ->setAddr01($Shipping->getAddr01())
             ->setAddr02($Shipping->getAddr02());

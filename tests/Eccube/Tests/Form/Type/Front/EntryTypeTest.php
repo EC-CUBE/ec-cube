@@ -62,12 +62,12 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'fax03' => '4444',
         ),
         'email' => array(
-            'first' =>'eccube@example.com',
-            'second' =>'eccube@example.com',
+            'first' => 'eccube@example.com',
+            'second' => 'eccube@example.com',
         ),
         'password' => array(
-            'first' =>'12345678',
-            'second' =>'12345678',
+            'first' => '12345678',
+            'second' => '12345678',
         ),
         'birth' => array(
             'year' => '1980',

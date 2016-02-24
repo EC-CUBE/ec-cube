@@ -183,7 +183,7 @@ class BlockRepository extends EntityRepository
             $this->app['config']['block_default_realdir'],
         );
         foreach ($readPaths as $readPath) {
-            $filePath = $readPath . '/' . $fileName . '.twig';
+            $filePath = $readPath.'/'.$fileName.'.twig';
             $fs = new Filesystem();
             if ($fs->exists($filePath)) {
                 return array(

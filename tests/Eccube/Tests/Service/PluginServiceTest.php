@@ -80,14 +80,14 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginMinimum()
     {
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
+        $tmpname = "dummy".sha1(mt_rand());
+        $config = array();
         $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname."_version";
 
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
@@ -106,7 +106,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // 同じプラグインの二重インストールが蹴られるか
 
         // アンインストールできるか
-        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable());
         $this->assertTrue($service->uninstall($plugin));
     }
@@ -120,9 +120,9 @@ class PluginServiceTest extends AbstractServiceTestCase
         $service = $this->app['eccube.service.plugin'];
 
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpname = "dummy".sha1(mt_rand());
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('dummy','dummy');
@@ -134,12 +134,12 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testConfigYmlFormat()
     {
         $service = $this->app['eccube.service.plugin'];
-        $tmpname='dummy'.mt_rand();
-        $tmpfile=sys_get_temp_dir().'/dummy'.mt_rand();
+        $tmpname = 'dummy'.mt_rand();
+        $tmpfile = sys_get_temp_dir().'/dummy'.mt_rand();
 
 
         // 必須項目のチェック
-        $config=array();
+        $config = array();
         #$config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
@@ -150,7 +150,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         } catch (\Eccube\Exception\PluginException $e) {
         }
 
-        $config=array();
+        $config = array();
         $config['name'] = $tmpname;
         #$config['code'] = $tmpname;
         $config['version'] = $tmpname;
@@ -161,7 +161,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         } catch (\Eccube\Exception\PluginException $e) {
         }
 
-        $config=array();
+        $config = array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         #$config['version'] = $tmpname;
@@ -184,7 +184,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         } catch (\Eccube\Exception\PluginException $e) {
         }
 
-        $config=array();
+        $config = array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname."#";
         $config['version'] = $tmpname;
@@ -196,7 +196,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
 
         // 長さのチェック
-        $config=array();
+        $config = array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = str_repeat('a',256);
@@ -207,7 +207,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         } catch (\Eccube\Exception\PluginException $e) {
         }
 
-        $config=array();
+        $config = array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
@@ -224,13 +224,13 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testnstallPluginMalformedConfigError()
     {
         $service = $this->app['eccube.service.plugin'];
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
         $tar = new \PharData($tmpfile);
 
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
+        $tmpname = "dummy".sha1(mt_rand());
+        $config = array();
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         $tar->addFromString('config.yml',Yaml::dump($config));
@@ -246,21 +246,21 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginWithEvent()
     {
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
+        $tmpname = "dummy".sha1(mt_rand());
+        $config = array();
         $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         $config['event'] = 'DummyEvent';
 
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
 
 
-        $dummyEvent=<<<'EOD'
+        $dummyEvent = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
 
@@ -289,11 +289,11 @@ class DummyEvent
 }
 
 EOD;
-        $dummyEvent=str_replace('@@@@',$tmpname,$dummyEvent); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $dummyEvent = str_replace('@@@@',$tmpname,$dummyEvent); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("DummyEvent.php" , $dummyEvent);
 
         // イベント定義を作成する
-        $event=array();
+        $event = array();
         $event['eccube.event.app.before'] = array();
         $event['eccube.event.app.before'][] = array("dummyHandler",'NORMAL');
         $event['eccube.event.app.before'][] = array("dummyHandlerFirst",'FIRST');
@@ -305,15 +305,15 @@ EOD;
 
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
-        $rep= $this->app['eccube.repository.plugin'];
+        $rep = $this->app['eccube.repository.plugin'];
 
-        $plugin=$rep->findOneBy(array('code'=>$tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
+        $plugin = $rep->findOneBy(array('code' => $tmpname)); // EntityManagerの内部状態を一旦クリア // associationがうまく取れないため
         $this->app['orm.em']->detach($plugin);
 
 
         // インストールした内容は正しいか
         // config.ymlとdtb_pluginの内容を照合
-        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('code'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin = $rep->findOneBy(array('code' => $tmpname)));
         $this->assertEquals($plugin->getClassName(),"DummyEvent");
         $this->assertEquals($plugin->getName(),$tmpname."_name");
         $this->assertEquals($plugin->getVersion(),$tmpname);
@@ -322,19 +322,19 @@ EOD;
         $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
 
         foreach ($plugin->getPluginEventHandlers() as $handler) {
-            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL) {
+            if ($handler->getHandlerType() == \Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandler',$handler->getHandler());
                 $this->assertEquals('eccube.event.app.before',$handler->getEvent());
             }
-            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_FIRST) {
+            if ($handler->getHandlerType() == \Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_FIRST) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_FIRST_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_FIRST_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandlerFirst',$handler->getHandler());
                 $this->assertEquals('eccube.event.app.before',$handler->getEvent());
             }
-            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST) {
+            if ($handler->getHandlerType() == \Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandlerLast',$handler->getHandler());
@@ -352,7 +352,7 @@ EOD;
         $this->assertTrue($service->enable($plugin));
 
         // イベント定義を更新する
-        $event=array();
+        $event = array();
         $event['eccube.event.controller.cart.after'] = array();
         $event['eccube.event.controller.cart.after'][] = array("dummyCartHandlerLast",'LAST');
         $event['eccube.event.app.before'] = array();
@@ -362,7 +362,7 @@ EOD;
         $tar->addFromString('event.yml',Yaml::dump($event));
 
         // config.ymlを更新する
-        $config=array();
+        $config = array();
         $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname."u";
@@ -377,17 +377,17 @@ EOD;
 
         // イベントハンドラが新しいevent.ymlと整合しているか(追加、削除)
         $this->app['orm.em']->detach($plugin);
-        $this->assertTrue((boolean)$plugin=$rep->findOneBy(array('code'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin = $rep->findOneBy(array('code' => $tmpname)));
         $this->assertEquals(3,count($plugin->getPluginEventHandlers()->toArray()));
 
         foreach ($plugin->getPluginEventHandlers() as $handler) {
-            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL) {
+            if ($handler->getHandlerType() == \Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_NORMAL) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_NORMAL_START,$handler->getPriority() );
                 $this->assertEquals('dummyHandler',$handler->getHandler());
                 $this->assertEquals('eccube.event.app.before',$handler->getEvent());
             }
-            if ($handler->getHandlerType()==\Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST) {
+            if ($handler->getHandlerType() == \Eccube\Entity\PluginEventHandler::EVENT_HANDLER_TYPE_LAST) {
                 $this->assertGreaterThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_END,$handler->getPriority() );
                 $this->assertLessThanOrEqual(\Eccube\Entity\PluginEventHandler::EVENT_PRIORITY_LAST_START,$handler->getPriority() );
                 $this->assertContains($handler->getHandler(), array('dummyHandlerLast','dummyCartHandlerLast'));
@@ -400,7 +400,7 @@ EOD;
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
         // ちゃんとファイルが消えているか
-        $this->assertFalse((boolean)$rep->findOneBy(array('name'=>$tmpname,'enable'=>1)));
+        $this->assertFalse((boolean)$rep->findOneBy(array('name' => $tmpname,'enable' => 1)));
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/config.yml");
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/event.yml");
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname/DummyEvent.php");
@@ -410,18 +410,18 @@ EOD;
     public function testInstallPluginWithBrokenManagerAfterInstall()
     {
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
+        $tmpname = "dummy".sha1(mt_rand());
+        $config = array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
 
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $dummyManager=<<<'EOD'
+        $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
 
@@ -452,20 +452,20 @@ class PluginManager extends AbstractPluginManager
 }
 
 EOD;
-        $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $dummyManager = str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
         $service = $this->app['eccube.service.plugin'];
 
         // 正しくインストールでき、enableのハンドラが呼ばれないことを確認
         $this->assertTrue($service->install($tmpfile));
-        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin = $this->app['eccube.repository.plugin']->findOneBy(array('name' => $tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable()); // インストール直後にプラグインがdisableになっているか
         try {
             $this->assertTrue($service->enable($plugin));// enableにしようとするが、例外発生
         } catch (\Exception $e) {
         }
         $this->app['orm.em']->detach($plugin);
-        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin = $this->app['eccube.repository.plugin']->findOneBy(array('name' => $tmpname)));
         $this->assertEquals(Constant::DISABLED,$plugin->getEnable()); // プラグインがdisableのままになっていることを確認
     }
 
@@ -473,18 +473,18 @@ EOD;
     public function testInstallPluginWithManager()
     {
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
+        $tmpname = "dummy".sha1(mt_rand());
+        $config = array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
 
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $dummyManager=<<<'EOD'
+        $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
 
@@ -518,7 +518,7 @@ class PluginManager extends AbstractPluginManager
 }
 
 EOD;
-        $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $dummyManager = str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
         $service = $this->app['eccube.service.plugin'];
 
@@ -530,7 +530,7 @@ EOD;
         $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
 
-        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin = $this->app['eccube.repository.plugin']->findOneBy(array('name' => $tmpname)));
 
         ob_start();
         $service->enable($plugin);
@@ -556,16 +556,16 @@ EOD;
     public function testInstallPluginWithConst()
     {
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
+        $tmpname = "dummy".sha1(mt_rand());
+        $config = array();
         $config['name'] = $tmpname."_name";
         $config['code'] = $tmpname;
         $config['version'] = $tmpname."_version";
         $config['const']['A'] = 'A';
         $config['const']['C'] =  1;
 
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
@@ -574,7 +574,7 @@ EOD;
         // インストールできるか
         $this->assertTrue($service->install($tmpfile));
 
-        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
+        $this->assertTrue((boolean)$plugin = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $tmpname)));
 
         // インストール後disable状態でもconstがロードされているか
         $config = $this->app['config'];

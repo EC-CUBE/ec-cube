@@ -55,7 +55,7 @@ class UserDataController
         $paths[] = $app['config']['user_data_realdir'];
         $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
-        $file = $PageLayout->getFileName() . '.twig';
+        $file = $PageLayout->getFileName().'.twig';
 
         $event = new EventArgs(
             array(

@@ -72,7 +72,7 @@ class SystemController
             array('title' => 'WEBサーバー',   'value' => $server->server->get("SERVER_SOFTWARE")),
         );
 
-        $value = phpversion() . ' (' . implode(', ', get_loaded_extensions()) . ')';
+        $value = phpversion().' ('.implode(', ', get_loaded_extensions()).')';
         $arrSystemInfo[] = array('title' => 'PHP', 'value' => $value);
         $arrSystemInfo[] = array('title' => 'HTTPユーザーエージェント', 'value' => $server->headers->get('User-Agent'));
 

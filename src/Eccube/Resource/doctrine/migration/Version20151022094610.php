@@ -10,9 +10,9 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20151022094610 extends AbstractMigration
 {
-    const DTB_CATEGORY='dtb_category';
-    const DTB_CLASS_CATEGORY='dtb_class_category';
-    const DTB_CLASS_NAME='dtb_class_name';
+    const DTB_CATEGORY = 'dtb_category';
+    const DTB_CLASS_CATEGORY = 'dtb_class_category';
+    const DTB_CLASS_NAME = 'dtb_class_name';
 
     /**
      * @param Schema $schema
@@ -21,28 +21,28 @@ class Version20151022094610 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         // dtb_category
-        $t_dtb_category=$schema->getTable(self::DTB_CATEGORY);
+        $t_dtb_category = $schema->getTable(self::DTB_CATEGORY);
         if ($t_dtb_category->hasColumn('category_name')) {
-            $t_dtb_category->changeColumn('category_name', array('NotNull'=>true));
+            $t_dtb_category->changeColumn('category_name', array('NotNull' => true));
         }
         if ($t_dtb_category->hasColumn('rank')) {
-            $t_dtb_category->changeColumn('rank', array('NotNull'=>true));
+            $t_dtb_category->changeColumn('rank', array('NotNull' => true));
         }
         // dtb_class_category
-        $t_dtb_class_category=$schema->getTable(self::DTB_CLASS_CATEGORY);
+        $t_dtb_class_category = $schema->getTable(self::DTB_CLASS_CATEGORY);
         if ($t_dtb_class_category->hasColumn('name')) {
-            $t_dtb_class_category->changeColumn('name', array('NotNull'=>true));
+            $t_dtb_class_category->changeColumn('name', array('NotNull' => true));
         }
         if ($t_dtb_class_category->hasColumn('rank')) {
-            $t_dtb_class_category->changeColumn('rank', array('NotNull'=>true));
+            $t_dtb_class_category->changeColumn('rank', array('NotNull' => true));
         }
         // dtb_class_name
-        $t_dtb_class_name=$schema->getTable(self::DTB_CLASS_NAME);
+        $t_dtb_class_name = $schema->getTable(self::DTB_CLASS_NAME);
         if ($t_dtb_class_name->hasColumn('name')) {
-            $t_dtb_class_name->changeColumn('name', array('NotNull'=>true));
+            $t_dtb_class_name->changeColumn('name', array('NotNull' => true));
         }
         if ($t_dtb_class_name->hasColumn('rank')) {
-            $t_dtb_class_name->changeColumn('rank', array('NotNull'=>true));
+            $t_dtb_class_name->changeColumn('rank', array('NotNull' => true));
         }
     }
 

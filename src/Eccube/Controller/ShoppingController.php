@@ -257,7 +257,7 @@ class ShoppingController extends AbstractController
 
             $MailHistory = new MailHistory();
             $MailHistory
-                ->setSubject('[' . $app['eccube.repository.base_info']->get()->getShopName() . '] ' . $MailTemplate->getSubject())
+                ->setSubject('['.$app['eccube.repository.base_info']->get()->getShopName().'] '.$MailTemplate->getSubject())
                 ->setMailBody($body)
                 ->setMailTemplate($MailTemplate)
                 ->setSendDate(new \DateTime())
@@ -793,7 +793,7 @@ class ShoppingController extends AbstractController
                     ->setTel03($data['customer_tel03'])
                     ->setZip01($data['customer_zip01'])
                     ->setZip02($data['customer_zip02'])
-                    ->setZipCode($data['customer_zip01'] . $data['customer_zip02'])
+                    ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
                     ->setPref($pref)
                     ->setAddr01($data['customer_addr01'])
                     ->setAddr02($data['customer_addr02'])
@@ -919,7 +919,7 @@ class ShoppingController extends AbstractController
                 ->setTel03($data['tel03'])
                 ->setZip01($data['zip01'])
                 ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'] . $data['zip02'])
+                ->setZipCode($data['zip01'].$data['zip02'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02']);
@@ -938,7 +938,7 @@ class ShoppingController extends AbstractController
                 ->setTel03($data['tel03'])
                 ->setZip01($data['zip01'])
                 ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'] . $data['zip02'])
+                ->setZipCode($data['zip01'].$data['zip02'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02'])

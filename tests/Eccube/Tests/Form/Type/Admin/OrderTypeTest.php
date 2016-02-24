@@ -40,7 +40,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'name01' => 'たかはし',
             'name02' => 'しんいち',
         ),
-        'kana'=> array(
+        'kana' => array(
             'kana01' => 'タカハシ',
             'kana02' => 'シンイチ',
         ),

@@ -226,7 +226,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
             ->setFax03($CustomerAddress->getFax03())
             ->setZip01($CustomerAddress->getZip01())
             ->setZip02($CustomerAddress->getZip02())
-            ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+            ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
             ->setPref($CustomerAddress->getPref())
             ->setAddr01($CustomerAddress->getAddr01())
             ->setAddr02($CustomerAddress->getAddr02());

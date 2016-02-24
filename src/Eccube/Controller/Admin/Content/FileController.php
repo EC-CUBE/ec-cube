@@ -83,7 +83,7 @@ class FileController extends AbstractController
         $arrFileList = $this->getFileList($app, $nowDir);
 
         $javascript = $this->getJsArrayList($tree);
-        $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '" . $nowDir . "', 'tree_select_file', 'tree_status', 'move');";
+        $onload = "eccube.fileManager.viewFileTree('tree', arrTree, '".$nowDir."', 'tree_select_file', 'tree_status', 'move');";
 
         return $app->render('Content/file.twig', array(
             'form' => $form->createView(),
@@ -138,7 +138,7 @@ class FileController extends AbstractController
                 $nowDir = $this->checkDir($request->get('now_dir'), $topDir)
                     ? $this->normalizePath($request->get('now_dir'))
                     : $topDir;
-                $fs->mkdir($nowDir . '/' . $filename);
+                $fs->mkdir($nowDir.'/'.$filename);
             }
         }
 
@@ -217,7 +217,7 @@ class FileController extends AbstractController
     {
         $str = "arrTree = new Array();\n";
         foreach ($tree as $key => $val) {
-            $str .= 'arrTree[' . $key . "] = new Array(" . $key . ", '" . $val['type'] . "', '" . $val['path'] . "', " . $val['rank'] . ',';
+            $str .= 'arrTree['.$key."] = new Array(".$key.", '".$val['type']."', '".$val['path']."', ".$val['rank'].',';
             if ($val['open']) {
                 $str .= "true);\n";
             } else {

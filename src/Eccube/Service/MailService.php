@@ -58,7 +58,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] 会員登録のご確認')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -93,7 +93,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録が完了しました。')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] 会員登録が完了しました。')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -129,7 +129,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 退会手続きのご完了')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] 退会手続きのご完了')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($email))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -166,7 +166,7 @@ class MailService
 
         // 問い合わせ者にメール送信
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] お問い合わせを受け付けました。')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] お問い合わせを受け付けました。')
             ->setFrom(array($this->BaseInfo->getEmail02() => $this->BaseInfo->getShopName()))
             ->setTo(array($formData['email']))
             ->setBcc($this->BaseInfo->getEmail02())
@@ -216,7 +216,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $MailTemplate->getSubject())
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getSubject())
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -253,7 +253,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] 会員登録のご確認')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] 会員登録のご確認')
             ->setFrom(array($this->BaseInfo->getEmail03() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -291,7 +291,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] ' . $formData['subject'])
+            ->setSubject('['.$this->BaseInfo->getShopName().'] '.$formData['subject'])
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Order->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -326,7 +326,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のご確認')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] パスワード変更のご確認')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())
@@ -361,7 +361,7 @@ class MailService
         ));
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('[' . $this->BaseInfo->getShopName() . '] パスワード変更のお知らせ')
+            ->setSubject('['.$this->BaseInfo->getShopName().'] パスワード変更のお知らせ')
             ->setFrom(array($this->BaseInfo->getEmail01() => $this->BaseInfo->getShopName()))
             ->setTo(array($Customer->getEmail()))
             ->setBcc($this->BaseInfo->getEmail01())

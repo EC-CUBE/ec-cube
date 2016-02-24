@@ -59,7 +59,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
         $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
 
         $this->app['security.token_storage']->setToken($token);
-        $this->app['session']->set('_security_' . $firewall, serialize($token));
+        $this->app['session']->set('_security_'.$firewall, serialize($token));
         $this->app['session']->save();
 
         $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());

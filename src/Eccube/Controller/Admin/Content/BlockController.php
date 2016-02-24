@@ -113,13 +113,13 @@ class BlockController extends AbstractController
                 // ファイル生成・更新
                 $tplDir = $app['config']['block_realdir'];
 
-                $filePath = $tplDir . '/' . $Block->getFileName() . '.twig';
+                $filePath = $tplDir.'/'.$Block->getFileName().'.twig';
 
                 $fs = new Filesystem();
                 $fs->dumpFile($filePath, $form->get('block_html')->getData());
                 // 更新でファイル名を変更した場合、以前のファイルを削除
                 if ($Block->getFileName() != $previous_filename && !is_null($previous_filename)) {
-                    $oldFilePath = $tplDir . $previous_filename;
+                    $oldFilePath = $tplDir.$previous_filename;
                     if ($fs->exists($oldFilePath)) {
                         $fs->remove($oldFilePath);
                     }
@@ -171,7 +171,7 @@ class BlockController extends AbstractController
         // テンプレートが変更されていた場合、DBからはブロック削除されるがtwigファイルは残る
         if ($Block->getDeletableFlg() > 0) {
             $tplDir = $app['config']['block_realdir'];
-            $file = $tplDir . '/' . $Block->getFileName() . '.twig';
+            $file = $tplDir.'/'.$Block->getFileName().'.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {
                 $fs->remove($file);

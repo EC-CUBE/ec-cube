@@ -382,8 +382,8 @@ class Product extends \Eccube\Entity\AbstractEntity
 
             $class_category_id1 = $ClassCategory1 ? (string) $ClassCategory1->getId() : '__unselected2';
             $class_category_id2 = $ClassCategory2 ? (string) $ClassCategory2->getId() : '';
-            $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
-            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName() . ($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
+            $class_category_name1 = $ClassCategory1 ? $ClassCategory1->getName().($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
+            $class_category_name2 = $ClassCategory2 ? $ClassCategory2->getName().($ProductClass->getStockFind() ? '' : ' (品切れ中)') : '';
 
             $class_categories[$class_category_id1]['#'] = array(
                 'classcategory_id2' => '',

@@ -45,7 +45,7 @@ class AbstractController
         @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
 
         $form = $app['form.factory']
-            ->createBuilder($app['eccube.form.type.' . $type], $app['eccube.entity.' . $type])
+            ->createBuilder($app['eccube.form.type.'.$type], $app['eccube.entity.'.$type])
             ->getForm();
         $form->handleRequest($app['request']);
 

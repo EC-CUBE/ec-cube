@@ -63,7 +63,7 @@ class ForgotController extends AbstractController
                 // リセットキーの発行・有効期限の設定
                 $Customer
                     ->setResetKey($app['eccube.repository.customer']->getUniqueResetKey($app))
-                    ->setResetExpire(new \DateTime('+' . $app['config']['customer_reset_expire'] .' min'));
+                    ->setResetExpire(new \DateTime('+'.$app['config']['customer_reset_expire'].' min'));
 
                 // リセットキーを更新
                 $app['orm.em']->persist($Customer);
@@ -86,7 +86,7 @@ class ForgotController extends AbstractController
 
                 // ログ出力
                 $app['monolog']->addInfo(
-                    'send reset password mail to:'  . "{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+                    'send reset password mail to:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
                 );
             }
 
@@ -163,7 +163,7 @@ class ForgotController extends AbstractController
 
             // ログ出力
             $app['monolog']->addInfo(
-                'reset password complete:' . "{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
+                'reset password complete:'."{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
             );
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');

@@ -74,7 +74,7 @@ class ClassCategoryTypeTest extends AbstractTypeTestCase
 
     public function testInvalidName_MaxLengthInvalid()
     {
-        $name = str_repeat('S', $this->app['config']['stext_len']) . 'S';
+        $name = str_repeat('S', $this->app['config']['stext_len']).'S';
 
         $this->formData['name'] = $name;
         $this->form->submit($this->formData);

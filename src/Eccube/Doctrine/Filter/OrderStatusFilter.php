@@ -33,12 +33,12 @@ class OrderStatusFilter extends SQLFilter
     {
         // 決済処理中/購入処理中を除く.
         if ($targetEntity->reflClass->getName() === 'Eccube\Entity\Order') {
-            return $targetTableAlias . '.status <> 7 AND ' . $targetTableAlias . '.status <> 8';
+            return $targetTableAlias.'.status <> 7 AND '.$targetTableAlias.'.status <> 8';
         }
 
         // 決済処理中/購入処理中を除く.
         if ($targetEntity->reflClass->getName() === 'Eccube\Entity\Master\OrderStatus') {
-            return $targetTableAlias . '.id <> 7 AND ' . $targetTableAlias . '.id <> 8';
+            return $targetTableAlias.'.id <> 7 AND '.$targetTableAlias.'.id <> 8';
         }
 
         return '';

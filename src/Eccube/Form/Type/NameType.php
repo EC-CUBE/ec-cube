@@ -62,10 +62,10 @@ class NameType extends AbstractType
         }
 
         if (empty($options['lastname_name'])) {
-            $options['lastname_name'] = $builder->getName() . '01';
+            $options['lastname_name'] = $builder->getName().'01';
         }
         if (empty($options['firstname_name'])) {
-            $options['firstname_name'] = $builder->getName() . '02';
+            $options['firstname_name'] = $builder->getName().'02';
         }
 
         $builder

@@ -331,7 +331,7 @@ class MailController
             }
         } else {
             foreach ($_GET as $key => $value) {
-                $ids = str_replace('ids', '', $key) . ',' . $ids;
+                $ids = str_replace('ids', '', $key).','.$ids;
             }
             $ids = substr($ids, 0, -1);
         }

@@ -52,7 +52,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         // メール受信確認
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
-        $this->expected = '[' . $BaseInfo->getShopName() . '] パスワード変更のご確認';
+        $this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->subject;
         $this->verify();
         $this->cleanUpMailCatcherMessages();
@@ -77,7 +77,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         // 再発行メール受信確認
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
-        $this->expected = '[' . $BaseInfo->getShopName() . '] パスワード変更のお知らせ';
+        $this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のお知らせ';
         $this->actual = $Message->subject;
         $this->verify();
 

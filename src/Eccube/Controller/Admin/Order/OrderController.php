@@ -264,9 +264,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'order_' . $now->format('YmdHis') . '.csv';
+        $filename = 'order_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         return $response;
@@ -341,9 +341,9 @@ class OrderController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'shipping_' . $now->format('YmdHis') . '.csv';
+        $filename = 'shipping_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
         $response->send();
 
         return $response;

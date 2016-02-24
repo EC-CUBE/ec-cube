@@ -56,7 +56,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         // メール URL クリック
         $crawler = $client->request(
             'GET',
-            'http://localhost/forgot/reset/' . $key
+            'http://localhost/forgot/reset/'.$key
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
 

@@ -155,9 +155,9 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             } else {
                 $qb
                     ->andWhere('CONCAT(c.name01, c.name02) LIKE :name OR CONCAT(c.kana01, c.kana02) LIKE :kana OR c.email LIKE :email')
-                    ->setParameter('name', '%' . $clean_key_multi . '%')
-                    ->setParameter('kana', '%' . $clean_key_multi . '%')
-                    ->setParameter('email', '%' . $clean_key_multi . '%');
+                    ->setParameter('name', '%'.$clean_key_multi.'%')
+                    ->setParameter('kana', '%'.$clean_key_multi.'%')
+                    ->setParameter('email', '%'.$clean_key_multi.'%');
             }
         }
 
@@ -210,7 +210,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
         if (isset($searchData['tel']) && Str::isNotBlank($searchData['tel'])) {
             $qb
                 ->andWhere('CONCAT(c.tel01, c.tel02, c.tel03) LIKE :tel')
-                ->setParameter('tel', '%' . $searchData['tel'] . '%');
+                ->setParameter('tel', '%'.$searchData['tel'].'%');
         }
 
         // buy_total
@@ -304,7 +304,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->leftJoin('c.Orders', 'o')
                 ->leftJoin('o.OrderDetails', 'od')
                 ->andWhere('od.product_name LIKE :buy_product_name OR od.product_code LIKE :buy_product_name')
-                ->setParameter('buy_product_name', '%' . $searchData['buy_product_code'] . '%');
+                ->setParameter('buy_product_name', '%'.$searchData['buy_product_code'].'%');
         }
 
         // Order By

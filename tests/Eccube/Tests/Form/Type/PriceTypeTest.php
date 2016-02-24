@@ -102,7 +102,7 @@ class PriceTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidData_PriceLen()
     {
-        $this->form->submit(str_repeat('1', $this->config['price_len']+1));
+        $this->form->submit(str_repeat('1', $this->config['price_len'] + 1));
         $this->assertFalse($this->form->isValid());
     }
 

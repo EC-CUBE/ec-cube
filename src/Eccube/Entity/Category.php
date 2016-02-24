@@ -98,7 +98,7 @@ class Category extends \Eccube\Entity\AbstractEntity
 
     public function getNameWithLevel()
     {
-        return str_repeat('　', $this->getLevel() - 1) . $this->getName();
+        return str_repeat('　', $this->getLevel() - 1).$this->getName();
     }
 
     public function getDescendants()

@@ -109,7 +109,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['subject'];
+        $this->expected = '['.$BaseInfo->getShopName().'] '.$form['subject'];
         $this->actual = $Message->subject;
         $this->verify();
     }
@@ -195,7 +195,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] '.$form['subject'];
+        $this->expected = '['.$BaseInfo->getShopName().'] '.$form['subject'];
         $this->actual = $Message->subject;
         $this->verify();
     }

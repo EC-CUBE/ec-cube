@@ -46,18 +46,18 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
     public function testInstallPluginWithBrokenManager()
     {
         // インストールするプラグインを作成する
-        $tmpname="dummy".sha1(mt_rand());
-        $config=array();
+        $tmpname = "dummy".sha1(mt_rand());
+        $config = array();
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
 
-        $tmpdir=$this->createTempDir();
-        $tmpfile=$tmpdir.'/plugin.tar';
+        $tmpdir = $this->createTempDir();
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('config.yml',Yaml::dump($config));
-        $dummyManager=<<<'EOD'
+        $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
 
@@ -72,7 +72,7 @@ class PluginManager extends AbstractPluginManager
 }
 
 EOD;
-        $dummyManager=str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
+        $dummyManager = str_replace('@@@@',$tmpname,$dummyManager); // イベントクラス名はランダムなのでヒアドキュメントの@@@@部分を置換
         $tar->addFromString("PluginManager.php" , $dummyManager);
         $service = $this->app['eccube.service.plugin'];
         try {
@@ -84,6 +84,6 @@ EOD;
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
         $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
         // XXX PHPUnit によってロールバックが遅延してしまうので, 検証できないが, 消えているはず
-        $this->assertFalse((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('name'=>$tmpname)));
+        $this->assertFalse((boolean)$plugin = $this->app['eccube.repository.plugin']->findOneBy(array('name' => $tmpname)));
     }
 }

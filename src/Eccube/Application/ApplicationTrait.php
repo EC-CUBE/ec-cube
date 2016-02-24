@@ -20,32 +20,32 @@ class ApplicationTrait extends \Silex\Application
      */
     public function addSuccess($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.success', $message);
+        $this['session']->getFlashBag()->add('eccube.'.$namespace.'.success', $message);
     }
 
     public function addError($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.error', $message);
+        $this['session']->getFlashBag()->add('eccube.'.$namespace.'.error', $message);
     }
 
     public function addDanger($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.danger', $message);
+        $this['session']->getFlashBag()->add('eccube.'.$namespace.'.danger', $message);
     }
 
     public function addWarning($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.warning', $message);
+        $this['session']->getFlashBag()->add('eccube.'.$namespace.'.warning', $message);
     }
 
     public function addInfo($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->add('eccube.' . $namespace . '.info', $message);
+        $this['session']->getFlashBag()->add('eccube.'.$namespace.'.info', $message);
     }
 
     public function addRequestError($message, $namespace = 'front')
     {
-        $this['session']->getFlashBag()->set('eccube.' . $namespace . '.request.error', $message);
+        $this['session']->getFlashBag()->set('eccube.'.$namespace.'.request.error', $message);
     }
 
     public function clearMessage()
@@ -64,7 +64,7 @@ class ApplicationTrait extends \Silex\Application
         if (is_null($namespace)) {
             $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
         } else {
-            $this['session']->getFlashBag()->set('eccube.' . $namespace . '.login.target.path', $targetPath);
+            $this['session']->getFlashBag()->set('eccube.'.$namespace.'.login.target.path', $targetPath);
         }
     }
 
@@ -234,9 +234,9 @@ class ApplicationTrait extends \Silex\Application
         $eventName = $view;
         if ($this->isAdminRequest()) {
             // 管理画面の場合、event名に「Admin/」を付ける
-            $eventName = 'Admin/' . $view;
+            $eventName = 'Admin/'.$view;
         }
-        $this['monolog']->debug('Template Event Name : ' . $eventName);
+        $this['monolog']->debug('Template Event Name : '.$eventName);
 
         $this['eccube.event.dispatcher']->dispatch($eventName, $event);
 

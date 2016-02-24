@@ -356,7 +356,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
             if ($count > 1) {
                 $incrementedHeaders[] = $header;
                 for ($i = 1; $i < $count; $i++) {
-                    $incrementedHeaders[] = $header . $i;
+                    $incrementedHeaders[] = $header.$i;
                 }
             } else {
                 $incrementedHeaders[] = $header;

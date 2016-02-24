@@ -187,7 +187,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録のご確認';
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->subject;
         $this->verify();
     }
@@ -216,7 +216,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録が完了しました。';
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->subject;
         $this->verify();
     }

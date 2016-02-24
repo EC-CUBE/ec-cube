@@ -60,9 +60,9 @@ class InstallController
 
     public function __construct()
     {
-        $this->config_path = __DIR__ . '/../../../../app/config/eccube';
-        $this->dist_path = __DIR__ . '/../../Resource/config';
-        $this->cache_path = __DIR__ . '/../../../../app/cache';
+        $this->config_path = __DIR__.'/../../../../app/config/eccube';
+        $this->dist_path = __DIR__.'/../../Resource/config';
+        $this->cache_path = __DIR__.'/../../../../app/cache';
     }
 
     private function isValid(Request $request, Form $form)
@@ -146,7 +146,7 @@ class InstallController
         $sessionData = $this->getSessionData($request);
 
         if (empty($sessionData['shop_name'])) {
-            $config_file = $this->config_path . '/config.yml';
+            $config_file = $this->config_path.'/config.yml';
             $fs = new Filesystem();
 
             if ($fs->exists($config_file)) {
@@ -160,11 +160,11 @@ class InstallController
                 }
 
                 // セキュリティの設定
-                $config_file = $this->config_path . '/path.yml';
+                $config_file = $this->config_path.'/path.yml';
                 $config = Yaml::parse(file_get_contents($config_file));
                 $sessionData['admin_dir'] = $config['admin_route'];
 
-                $config_file = $this->config_path . '/config.yml';
+                $config_file = $this->config_path.'/config.yml';
                 $config = Yaml::parse(file_get_contents($config_file));
 
                 $allowHost = $config['admin_allow_host'];
@@ -174,7 +174,7 @@ class InstallController
                 $sessionData['admin_force_ssl'] = (bool)$config['force_ssl'];
 
                 // メール設定
-                $config_file = $this->config_path . '/mail.yml';
+                $config_file = $this->config_path.'/mail.yml';
                 $config = Yaml::parse(file_get_contents($config_file));
                 $mail = $config['mail'];
                 $sessionData['mail_backend'] = $mail['transport'];
@@ -282,7 +282,7 @@ class InstallController
                 $host = $request->getSchemeAndHttpHost();
                 $basePath = $request->getBasePath();
                 $params = array(
-                    'http_url' => $host . $basePath,
+                    'http_url' => $host.$basePath,
                     'shop_name' => $sessionData['shop_name'],
                 );
 
@@ -303,13 +303,13 @@ class InstallController
     //    インストール完了
     public function complete(InstallApplication $app, Request $request)
     {
-        $config_file = $this->config_path . '/path.yml';
+        $config_file = $this->config_path.'/path.yml';
         $config = Yaml::parse(file_get_contents($config_file));
 
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
 
-        $adminUrl = $host . $basePath . '/' . $config['admin_dir'];
+        $adminUrl = $host.$basePath.'/'.$config['admin_dir'];
 
         return $app['twig']->render('complete.twig', array(
             'admin_url' => $adminUrl,
@@ -329,17 +329,17 @@ class InstallController
     {
         foreach ($this->required_modules as $module) {
             if (!extension_loaded($module)) {
-                $app->addDanger('[必須] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+                $app->addDanger('[必須] '.$module.' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
-            $app->addDanger('[必須] ' . 'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+            $app->addDanger('[必須] '.'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
         }
 
         foreach ($this->recommended_module as $module) {
             if (!extension_loaded($module)) {
-                $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+                $app->addWarning('[推奨] '.$module.' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
@@ -357,7 +357,7 @@ class InstallController
             if (!function_exists('apache_get_modules')) {
                 $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
-                $app->addDanger('[必須] ' . 'mod_rewriteを有効にしてください。', 'install');
+                $app->addDanger('[必須] '.'mod_rewriteを有効にしてください。', 'install');
             }
         } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Microsoft-IIS', $_SERVER['SERVER_SOFTWARE']) !== false) {
             // iis
@@ -368,7 +368,7 @@ class InstallController
 
     private function setPDO()
     {
-        $config_file = $this->config_path . '/database.yml';
+        $config_file = $this->config_path.'/database.yml';
         $config = Yaml::parse(file_get_contents($config_file));
 
         try {
@@ -402,7 +402,7 @@ class InstallController
      */
     private function getEntityManager()
     {
-        $config_file = $this->config_path . '/database.yml';
+        $config_file = $this->config_path.'/database.yml';
         $database = Yaml::parse(file_get_contents($config_file));
 
         $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
@@ -410,15 +410,15 @@ class InstallController
         ));
 
         $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
+            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => array(
                     array(
                         'type' => 'yml',
                         'namespace' => 'Eccube\Entity',
                         'path' => array(
-                            __DIR__ . '/../../Resource/doctrine',
-                            __DIR__ . '/../../Resource/doctrine/master',
+                            __DIR__.'/../../Resource/doctrine',
+                            __DIR__.'/../../Resource/doctrine/master',
                         ),
                     ),
 
@@ -446,11 +446,11 @@ class InstallController
     {
         $this->resetNatTimer();
 
-        $config_file = $this->config_path . '/database.yml';
+        $config_file = $this->config_path.'/database.yml';
         $database = Yaml::parse(file_get_contents($config_file));
         $config['database'] = $database['database'];
 
-        $config_file = $this->config_path . '/config.yml';
+        $config_file = $this->config_path.'/config.yml';
         $baseConfig = Yaml::parse(file_get_contents($config_file));
         $config['config'] = $baseConfig;
 
@@ -505,11 +505,11 @@ class InstallController
     {
         $this->resetNatTimer();
 
-        $config_file = $this->config_path . '/database.yml';
+        $config_file = $this->config_path.'/database.yml';
         $database = Yaml::parse(file_get_contents($config_file));
         $config['database'] = $database['database'];
 
-        $config_file = $this->config_path . '/config.yml';
+        $config_file = $this->config_path.'/config.yml';
         $baseConfig = Yaml::parse(file_get_contents($config_file));
         $config['config'] = $baseConfig;
 
@@ -572,7 +572,7 @@ class InstallController
         $config = new Configuration($app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
-        $migrationDir = __DIR__ . '/../../Resource/doctrine/migration';
+        $migrationDir = __DIR__.'/../../Resource/doctrine/migration';
         $config->setMigrationsDirectory($migrationDir);
         $config->registerMigrationsFromDirectory($migrationDir);
 
@@ -603,7 +603,7 @@ class InstallController
     private function getProtectedDirs()
     {
         $protectedDirs = array();
-        $base = __DIR__ . '/../../../..';
+        $base = __DIR__.'/../../../..';
         $dirs = array(
             '/html',
             '/app',
@@ -616,7 +616,7 @@ class InstallController
         );
 
         foreach ($dirs as $dir) {
-            if (!is_writable($base . $dir)) {
+            if (!is_writable($base.$dir)) {
                 $protectedDirs[] = $dir;
             }
         }
@@ -627,7 +627,7 @@ class InstallController
     private function createConfigYamlFile($data, $auth = true)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/config.yml';
+        $config_file = $this->config_path.'/config.yml';
 
         if ($fs->exists($config_file)) {
             $config = Yaml::parse(file_get_contents($config_file));
@@ -658,7 +658,7 @@ class InstallController
         $content = str_replace(
             $target,
             $replace,
-            file_get_contents($this->dist_path . '/config.yml.dist')
+            file_get_contents($this->dist_path.'/config.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -672,7 +672,7 @@ class InstallController
 
     private function addInstallStatus()
     {
-        $config_file = $this->config_path . '/config.yml';
+        $config_file = $this->config_path.'/config.yml';
         $config = Yaml::parse(file_get_contents($config_file));
         $config['eccube_install'] = 1;
         $yml = Yaml::dump($config);
@@ -684,7 +684,7 @@ class InstallController
     private function createDatabaseYamlFile($data)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/database.yml';
+        $config_file = $this->config_path.'/database.yml';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -718,7 +718,7 @@ class InstallController
             $content = str_replace(
                 $target,
                 $replace,
-                file_get_contents($this->dist_path . '/database.yml.dist')
+                file_get_contents($this->dist_path.'/database.yml.dist')
             );
         } else {
             $content = Yaml::dump(
@@ -738,7 +738,7 @@ class InstallController
     private function createMailYamlFile($data)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/mail.yml';
+        $config_file = $this->config_path.'/mail.yml';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -755,7 +755,7 @@ class InstallController
         $content = str_replace(
             $target,
             $replace,
-            file_get_contents($this->dist_path . '/mail.yml.dist')
+            file_get_contents($this->dist_path.'/mail.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -765,7 +765,7 @@ class InstallController
     private function createPathYamlFile($data, Request $request)
     {
         $fs = new Filesystem();
-        $config_file = $this->config_path . '/path.yml';
+        $config_file = $this->config_path.'/path.yml';
         if ($fs->exists($config_file)) {
             $fs->remove($config_file);
         }
@@ -773,7 +773,7 @@ class InstallController
         $ADMIN_ROUTE = $data['admin_dir'];
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
-        $ROOT_DIR = realpath(__DIR__ . '/../../../../');
+        $ROOT_DIR = realpath(__DIR__.'/../../../../');
         $ROOT_URLPATH = $request->getBasePath();
 
         $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}');
@@ -783,7 +783,7 @@ class InstallController
         $content = str_replace(
             $target,
             $replace,
-            file_get_contents($this->dist_path . '/path.yml.dist')
+            file_get_contents($this->dist_path.'/path.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -792,7 +792,7 @@ class InstallController
 
     private function sendAppData($params)
     {
-        $config_file = $this->config_path . '/database.yml';
+        $config_file = $this->config_path.'/database.yml';
         $db_config = Yaml::parse(file_get_contents($config_file));
 
         $this->setPDO();
@@ -804,7 +804,7 @@ class InstallController
         }
 
         if ($db_config['database']['driver'] === 'pdo_mysql') {
-            $db_ver = 'MySQL:' . $version;
+            $db_ver = 'MySQL:'.$version;
         } else {
             $db_ver = $version;
         }
@@ -822,7 +822,7 @@ class InstallController
 
         $header = array(
             'Content-Type: application/x-www-form-urlencoded',
-            'Content-Length: ' . strlen($data),
+            'Content-Length: '.strlen($data),
         );
         $context = stream_context_create(
             array(

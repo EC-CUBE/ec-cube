@@ -34,7 +34,7 @@ class Zip extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getState() . $this->getCity() . $this->getTown();
+        return $this->getState().$this->getCity().$this->getTown();
     }
 
     /**

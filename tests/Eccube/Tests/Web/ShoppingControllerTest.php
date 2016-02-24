@@ -98,7 +98,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->subject;
         $this->verify();
 

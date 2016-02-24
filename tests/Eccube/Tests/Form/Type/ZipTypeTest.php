@@ -61,7 +61,7 @@ class ZipTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidZip01_LengthMin()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']-1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len'] - 1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -69,7 +69,7 @@ class ZipTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidZip01_LengthMax()
     {
-        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len']+1);
+        $this->formData['zip']['zip01'] = str_repeat('1', $this->config['zip01_len'] + 1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -77,7 +77,7 @@ class ZipTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidZip02_LengthMin()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']-1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len'] - 1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
@@ -85,7 +85,7 @@ class ZipTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidZip02_LengthMax()
     {
-        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len']+1);
+        $this->formData['zip']['zip02'] = str_repeat('1', $this->config['zip02_len'] + 1);
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
