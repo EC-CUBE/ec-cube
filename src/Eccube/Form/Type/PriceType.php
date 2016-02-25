@@ -47,7 +47,7 @@ class PriceType extends AbstractType
             new Assert\GreaterThanOrEqual(array('value' => 0)),
         );
 
-        $constraints = function (Options $options) use ($defaultValues) {
+        $constraints = function(Options $options) use ($defaultValues) {
             if (false !== $options['required']) {
                 return array_merge($defaultValues, array(new Assert\NotBlank()));
             }

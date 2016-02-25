@@ -112,7 +112,7 @@ class AddCartType extends AbstractType
                 }
             }
 
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($Product) {
                 $data = $event->getData();
                 $form = $event->getForm();
                 if ($Product->getClassName2()) {

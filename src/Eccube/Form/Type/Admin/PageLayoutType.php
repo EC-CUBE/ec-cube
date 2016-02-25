@@ -41,7 +41,7 @@ class PageLayoutType extends AbstractType
                 'label' => false,
                 'class' => 'Eccube\Entity\PageLayout',
                 'property' => 'name',
-                'query_builder' => function (EntityRepository $er) {
+                'query_builder' => function(EntityRepository $er) {
                     return $er
                         ->createQueryBuilder('l')
                         ->where('l.id <> 0')

@@ -76,7 +76,7 @@ class TelType extends AbstractType
         $builder->setAttribute('tel02_name', $options['tel02_name']);
         $builder->setAttribute('tel03_name', $options['tel03_name']);
         // todo 変
-        $builder->addEventListener(FormEvents::POST_BIND, function ($event) use ($builder) {
+        $builder->addEventListener(FormEvents::POST_BIND, function($event) use ($builder) {
             $form = $event->getForm();
             $count = 0;
             if ($form[$builder->getName().'01']->getData() != '') {

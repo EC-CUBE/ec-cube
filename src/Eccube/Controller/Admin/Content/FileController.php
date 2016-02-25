@@ -268,7 +268,7 @@ class FileController extends AbstractController
     private function getFileList($app, $nowDir)
     {
         $topDir = $app['config']['user_data_realdir'];
-        $filter = function (\SplFileInfo $file) use ($topDir) {
+        $filter = function(\SplFileInfo $file) use ($topDir) {
             $acceptPath = realpath($topDir);
             $targetPath = $file->getRealPath();
             return (strpos($targetPath, $acceptPath) === 0);

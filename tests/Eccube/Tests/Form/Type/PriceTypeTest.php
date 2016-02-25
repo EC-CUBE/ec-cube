@@ -129,7 +129,7 @@ class PriceTypeTest extends \PHPUnit_Framework_TestCase
         $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
         $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
+        $app['form.types'] = $app->share($app->extend('form.types', function($types) use ($app, $self) {
             $types[] = new \Eccube\Form\Type\PriceType($self->config);
 
             return $types;

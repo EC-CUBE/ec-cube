@@ -141,7 +141,7 @@ class ShippingType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
                     $form->add('ShipmentItems', 'collection', array(
@@ -152,7 +152,7 @@ class ShippingType extends AbstractType
                     ));
                 }
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
@@ -172,7 +172,7 @@ class ShippingType extends AbstractType
                     'empty_value' => '指定なし',
                     'empty_data' => null,
                     'required' => false,
-                    'query_builder' => function (EntityRepository $er) use ($Delivery) {
+                    'query_builder' => function(EntityRepository $er) use ($Delivery) {
                         return $er->createQueryBuilder('dt')
                             ->where('dt.Delivery = :Delivery')
                             ->setParameter('Delivery', $Delivery);
@@ -180,7 +180,7 @@ class ShippingType extends AbstractType
                 ));
 
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($app) {
                 $data = $event->getData();
                 $form = $event->getForm();
                 if (!$data) {
@@ -201,14 +201,14 @@ class ShippingType extends AbstractType
                     'empty_value' => '指定なし',
                     'empty_data' => null,
                     'required' => false,
-                    'query_builder' => function (EntityRepository $er) use ($Delivery) {
+                    'query_builder' => function(EntityRepository $er) use ($Delivery) {
                         return $er->createQueryBuilder('dt')
                             ->where('dt.Delivery = :Delivery')
                             ->setParameter('Delivery', $Delivery);
                     },
                 ));
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
                     $shipmentItems = $form['ShipmentItems']->getData();

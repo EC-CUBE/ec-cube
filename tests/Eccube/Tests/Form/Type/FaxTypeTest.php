@@ -311,7 +311,7 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+        $app['form.types'] = $app->share($app->extend('form.types', function($types) use ($app) {
             $types[] = new \Eccube\Form\Type\TelType();
             $types[] = new \Eccube\Form\Type\FaxType();
 

@@ -64,7 +64,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $this->app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_ORDER);
         $this->app['eccube.service.csv.export']->setExportQueryBuilder($qb);
 
-        $this->app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+        $this->app['eccube.service.csv.export']->exportData(function($entity, $csvService) {
 
             $Csvs = $csvService->getCsvs();
 

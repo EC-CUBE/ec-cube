@@ -138,7 +138,7 @@ class TemplateController extends AbstractController
 
         // ダウンロード完了後にファイルを削除する.
         // http://stackoverflow.com/questions/15238897/removing-file-after-delivering-response-with-silex-symfony
-        $app->finish(function (Request $request, Response $response, \Silex\Application $app) use (
+        $app->finish(function(Request $request, Response $response, \Silex\Application $app) use (
             $tmpDir,
             $tarFile,
             $tarGzFile

@@ -28,7 +28,7 @@ class ValidatorServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['validator'] = $app->share(function ($app) {
+        $app['validator'] = $app->share(function($app) {
 
             return new Validator(
                 $app['validator.mapping.class_metadata_factory'],
@@ -39,17 +39,17 @@ class ValidatorServiceProvider implements ServiceProviderInterface
             );
         });
 
-        $app['validator.mapping.class_metadata_factory'] = $app->share(function ($app) {
+        $app['validator.mapping.class_metadata_factory'] = $app->share(function($app) {
             return new ClassMetadataFactory(new StaticMethodLoader());
         });
 
-        $app['validator.validator_factory'] = $app->share(function () use ($app) {
+        $app['validator.validator_factory'] = $app->share(function() use ($app) {
             $validators = isset($app['validator.validator_service_ids']) ? $app['validator.validator_service_ids'] : array();
 
             return new ConstraintValidatorFactory($app, $validators);
         });
 
-        $app['validator.object_initializers'] = $app->share(function ($app) {
+        $app['validator.object_initializers'] = $app->share(function($app) {
             return array();
         });
     }

@@ -148,7 +148,7 @@ class ProductClassType extends AbstractType
                 'required' => false,
                 'value' => 1,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
 

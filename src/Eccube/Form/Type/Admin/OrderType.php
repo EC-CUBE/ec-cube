@@ -233,7 +233,7 @@ class OrderType extends AbstractType
                     '\Eccube\Entity\Customer'
                 )));
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($BaseInfo) {
 
             if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                 $data = $event->getData();
@@ -272,7 +272,7 @@ class OrderType extends AbstractType
             }
 
         });
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
             $form = $event->getForm();
             $orderDetails = $form['OrderDetails']->getData();
             if (empty($orderDetails) || count($orderDetails) < 1) {

@@ -59,7 +59,7 @@ class AuthorityRoleType extends AbstractType
                 'label' => '拒否URL',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
                 $form = $event->getForm();
 
                 $Authority = $form['Authority']->getData();

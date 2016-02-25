@@ -42,7 +42,7 @@ class SearchProductType extends AbstractType
         $builder->add('category_id', 'entity', array(
             'class' => 'Eccube\Entity\Category',
             'property' => 'NameWithLevel',
-            'query_builder' => function (EntityRepository $er) {
+            'query_builder' => function(EntityRepository $er) {
                 return $er
                     ->createQueryBuilder('c')
                     ->orderBy('c.rank', 'DESC');

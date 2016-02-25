@@ -95,7 +95,7 @@ class Step4Type extends AbstractType
                     new Assert\Callback(array($this, 'validate')),
                 ),
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) {
                 $form = $event->getForm();
                 $data = $form->getData();
                 try {

@@ -70,7 +70,7 @@ class SecurityType extends AbstractType
                 'label' => 'SSLを強制',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $data = $form->getData();
 

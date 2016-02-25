@@ -130,7 +130,7 @@ class ZipTypeTest extends \PHPUnit_Framework_TestCase
 
         // fix php5.3
         $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
+        $app['form.types'] = $app->share($app->extend('form.types', function($types) use ($app, $self) {
             $types[] = new \Eccube\Form\Type\ZipType($self->config);
 
             return $types;

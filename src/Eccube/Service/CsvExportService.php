@@ -304,7 +304,7 @@ class CsvExportService
     {
         $config = $this->config;
 
-        return function ($value) use ($config) {
+        return function($value) use ($config) {
             return mb_convert_encoding(
                 (string) $value, $config['csv_export_encoding'], 'UTF-8'
             );
@@ -429,7 +429,7 @@ class CsvExportService
             if ($Conditions instanceof ArrayCollection) {
                 $Conditions = new ArrayCollection(
                     array_map(
-                        function ($Entity) use ($em) {
+                        function($Entity) use ($em) {
                             return $em->getRepository(get_class($Entity))->find($Entity->getId());
                         }, $Conditions->toArray()
                     )

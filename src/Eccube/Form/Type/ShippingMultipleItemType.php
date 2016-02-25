@@ -62,7 +62,7 @@ class ShippingMultipleItemType extends AbstractType
                     new Assert\Regex(array('pattern' => '/^\d+$/')),
                 ),
             ))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($app) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($app) {
                 $form = $event->getForm();
 
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -71,7 +71,7 @@ class ShippingMultipleItemType extends AbstractType
                     $form->add('customer_address', 'entity', array(
                         'class' => 'Eccube\Entity\CustomerAddress',
                         'property' => 'shippingMultipleDefaultName',
-                        'query_builder' => function (EntityRepository $er) use ($Customer) {
+                        'query_builder' => function(EntityRepository $er) use ($Customer) {
                             return $er->createQueryBuilder('ca')
                                 ->where('ca.Customer = :Customer')
                                 ->orderBy("ca.id", "ASC")
@@ -103,7 +103,7 @@ class ShippingMultipleItemType extends AbstractType
                     }
                 }
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */

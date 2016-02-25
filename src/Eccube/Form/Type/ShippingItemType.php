@@ -48,7 +48,7 @@ class ShippingItemType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function ($event) use ($app) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function($event) use ($app) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
@@ -102,7 +102,7 @@ class ShippingItemType extends AbstractType
                         'empty_data' => null,
                     ));
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */
@@ -118,7 +118,7 @@ class ShippingItemType extends AbstractType
                 }
 
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
                 /** @var \Eccube\Entity\Shipping $data */
                 $data = $event->getData();
                 /** @var \Symfony\Component\Form\Form $form */

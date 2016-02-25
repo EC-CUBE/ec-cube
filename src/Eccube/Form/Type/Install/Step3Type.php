@@ -141,7 +141,7 @@ class Step3Type extends AbstractType
                 'help' => 'メーラーバックエンドがSMTPかつSMTP-AUTH使用時のみ指定',
                 'required' => false,
             ))
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) use ($app) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $data = $form->getData();
 

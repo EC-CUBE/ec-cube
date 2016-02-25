@@ -453,7 +453,7 @@ abstract class EccubeTestCase extends WebTestCase
         $app['session.test'] = true;
         $app['exception_handler']->disable();
 
-        $app['form.csrf_provider'] = $app->share(function () {
+        $app['form.csrf_provider'] = $app->share(function() {
             return new CsrfTokenMock();
         });
 

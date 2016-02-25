@@ -219,7 +219,7 @@ class CustomerController extends AbstractController
         $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($app, $request) {
+        $response->setCallback(function() use ($app, $request) {
 
             // CSV種別を元に初期化.
             $app['eccube.service.csv.export']->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
@@ -233,7 +233,7 @@ class CustomerController extends AbstractController
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+            $app['eccube.service.csv.export']->exportData(function($entity, $csvService) {
 
                 $Csvs = $csvService->getCsvs();
 

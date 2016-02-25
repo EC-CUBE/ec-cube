@@ -530,7 +530,7 @@ class CsvImportController
             throw new NotFoundHttpException();
         }
 
-        $response->setCallback(function () use ($app, $request, $headers) {
+        $response->setCallback(function() use ($app, $request, $headers) {
 
             // ヘッダ行の出力
             $row = array();

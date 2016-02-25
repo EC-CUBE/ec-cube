@@ -241,7 +241,7 @@ class ApplicationTrait extends \Silex\Application
         $this['eccube.event.dispatcher']->dispatch($eventName, $event);
 
         if ($response instanceof StreamedResponse) {
-            $response->setCallback(function () use ($twig, $view, $parameters) {
+            $response->setCallback(function() use ($twig, $view, $parameters) {
                 $twig->display($view, $parameters);
             });
         } else {
