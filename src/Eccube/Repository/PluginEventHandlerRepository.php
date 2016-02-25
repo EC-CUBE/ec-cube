@@ -69,11 +69,11 @@ class PluginEventHandlerRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('e');
         $qb->andWhere("e.priority >= $range_end ")
-           ->andWhere("e.priority <= $range_start ")
-           ->andWhere('e.event = :event')
-           ->setParameter('event',$event)
-           ->setMaxResults(1)
-           ->orderBy('e.priority','ASC');
+            ->andWhere("e.priority <= $range_start ")
+            ->andWhere('e.event = :event')
+            ->setParameter('event',$event)
+            ->setMaxResults(1)
+            ->orderBy('e.priority','ASC');
 
         $result = $qb->getQuery()->getResult();
         if (count($result)) {
@@ -90,14 +90,14 @@ class PluginEventHandlerRepository extends EntityRepository
         $qb = $this->createQueryBuilder('e');
 
         $qb->andWhere("e.priority >= $range_end ")
-           ->andWhere("e.priority <= $range_start ")
-           ->andWhere("e.del_flg = 0 ")
-           ->andWhere('e.priority '.($up ?  '>' : '<' ).' :pri')
-           ->andWhere('e.event = :event')
-           ->setParameter('event',$pluginEventHandler->getEvent())
-           ->setParameter('pri',  $pluginEventHandler->getPriority()  )
-           ->setMaxResults(1)
-           ->orderBy('e.priority', ($up ? 'ASC':'DESC' )  );
+            ->andWhere("e.priority <= $range_start ")
+            ->andWhere("e.del_flg = 0 ")
+            ->andWhere('e.priority '.($up ?  '>' : '<' ).' :pri')
+            ->andWhere('e.event = :event')
+            ->setParameter('event',$pluginEventHandler->getEvent())
+            ->setParameter('pri',  $pluginEventHandler->getPriority()  )
+            ->setMaxResults(1)
+            ->orderBy('e.priority', ($up ? 'ASC':'DESC' )  );
 
         $result = $qb->getQuery()->getResult();
 

@@ -48,7 +48,7 @@ class SystemController
 
                 return $phpinfo;
 
-               break;
+                break;
             default:
                 break;
         }

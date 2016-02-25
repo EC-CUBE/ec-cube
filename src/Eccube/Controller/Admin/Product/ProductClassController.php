@@ -134,7 +134,7 @@ class ProductClassController
                                 'allow_add' => true,
                                 'allow_delete' => true,
                                 'data' => $ProductClasses,
-                             ));
+                                ));
 
                         $event = new EventArgs(
                             array(
@@ -388,7 +388,7 @@ class ProductClassController
                     $updateProductClasses = array();
                     foreach ($checkProductClasses as $cp) {
                         $flag = false;
-                        
+
                         // 既に登録済みの商品規格か確認
                         foreach ($ProductClasses as $productClass) {
                             if ($productClass->getProduct()->getId() == $id &&
@@ -644,7 +644,7 @@ class ProductClassController
         $productClassDest->setPrice01($productClassOrig->getPrice01());
         $productClassDest->setPrice02($productClassOrig->getPrice02());
         $productClassDest->setDeliveryFee($productClassOrig->getDeliveryFee());
-        
+
         // 個別消費税
         $BaseInfo = $app['eccube.repository.base_info']->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {

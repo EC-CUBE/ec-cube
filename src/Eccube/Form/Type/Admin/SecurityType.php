@@ -55,7 +55,7 @@ class SecurityType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(array('max' => $this->config['stext_len'])),
                     new Assert\Regex(array(
-                       'pattern' => "/^[0-9a-zA-Z]+$/",
+                        'pattern' => "/^[0-9a-zA-Z]+$/",
                    )),
                 ),
             ))
