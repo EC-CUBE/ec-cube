@@ -34,6 +34,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends AbstractController
@@ -177,6 +178,10 @@ class ProductController extends AbstractController
 
     public function addImage(Application $app, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         $images = $request->files->get('admin_product');
 
         $files = array();

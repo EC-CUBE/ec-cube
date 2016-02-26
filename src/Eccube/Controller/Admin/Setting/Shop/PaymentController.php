@@ -31,6 +31,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PaymentController extends AbstractController
 {
@@ -126,6 +127,10 @@ class PaymentController extends AbstractController
 
     public function imageAdd(Application $app, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         $images = $request->files->get('payment_register');
         $filename = null;
         if (isset($images['payment_image_file'])) {
