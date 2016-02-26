@@ -59,7 +59,7 @@ class AuthorityVoter implements VoterInterface
             return;
         }
 
-        $path = $request->getPathInfo();
+        $path = urldecode($request->getPathInfo());
 
         $Member = $this->app->user();
 
