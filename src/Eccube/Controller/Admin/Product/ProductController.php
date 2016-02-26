@@ -527,6 +527,8 @@ class ProductController extends AbstractController
 
     public function copy(Application $app, Request $request, $id = null)
     {
+        $this->isTokenValid($app);
+
         if (!is_null($id)) {
             $Product = $app['eccube.repository.product']->find($id);
             if ($Product instanceof \Eccube\Entity\Product) {
