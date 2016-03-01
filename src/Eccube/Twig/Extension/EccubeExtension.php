@@ -27,6 +27,7 @@ namespace Eccube\Twig\Extension;
 use Eccube\Common\Constant;
 use Eccube\Util\Str;
 use Silex\Application;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class EccubeExtension extends \Twig_Extension
 {
