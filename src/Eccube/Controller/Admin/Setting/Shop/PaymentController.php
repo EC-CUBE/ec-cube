@@ -131,11 +131,16 @@ class PaymentController extends AbstractController
             throw new BadRequestHttpException();
         }
 
+        $allowExtensions = array('gif', 'jpg', 'jpeg', 'png');
         $images = $request->files->get('payment_register');
         $filename = null;
         if (isset($images['payment_image_file'])) {
             $image = $images['payment_image_file'];
             $extension = $image->guessExtension();
+            $extension = strtolower($extension);
+            if (!in_array($extension, $allowExtensions)) {
+                throw new BadRequestHttpException();
+            }
             $filename = date('mdHis') . uniqid('_') . '.' . $extension;
             $image->move($app['config']['image_temp_realdir'], $filename);
         }

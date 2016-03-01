@@ -184,11 +184,16 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
+        $allowExtensions = array('gif', 'jpg', 'jpeg', 'png');
         $files = array();
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
                     $extension = $image->getClientOriginalExtension();
+                    $extension = strtolower($extension);
+                    if (!in_array($extension, $allowExtensions)) {
+                        throw new BadRequestHttpException();
+                    }
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
