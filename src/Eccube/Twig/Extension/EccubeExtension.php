@@ -193,7 +193,7 @@ class EccubeExtension extends \Twig_Extension
     {
         $RoutingExtension = $this->app['twig']->getExtension('routing');
         try {
-            return $RoutingExtension->getUrl($name, $parameters, $relative);
+            return $RoutingExtension->getPath($name, $parameters, $relative);
         } catch (RouteNotFoundException $e) {
             trigger_error($e->getMessage(), E_USER_WARNING);
         }
