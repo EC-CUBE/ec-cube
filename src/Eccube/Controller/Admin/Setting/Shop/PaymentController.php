@@ -32,6 +32,7 @@ use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 class PaymentController extends AbstractController
 {
@@ -131,16 +132,18 @@ class PaymentController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $allowExtensions = array('gif', 'jpg', 'jpeg', 'png');
         $images = $request->files->get('payment_register');
         $filename = null;
         if (isset($images['payment_image_file'])) {
             $image = $images['payment_image_file'];
-            $extension = $image->guessExtension();
-            $extension = strtolower($extension);
-            if (!in_array($extension, $allowExtensions)) {
-                throw new BadRequestHttpException();
+
+            //ファイルフォーマット検証
+            $mimeType = $image->getMimeType();
+            if (0 !== strpos($mimeType, 'image')) {
+                throw new UnsupportedMediaTypeHttpException();
             }
+
+            $extension = $image->guessExtension();
             $filename = date('mdHis') . uniqid('_') . '.' . $extension;
             $image->move($app['config']['image_temp_realdir'], $filename);
         }

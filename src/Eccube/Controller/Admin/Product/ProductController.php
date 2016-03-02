@@ -36,6 +36,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 class ProductController extends AbstractController
 {
@@ -184,16 +185,17 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
-        $allowExtensions = array('gif', 'jpg', 'jpeg', 'png');
         $files = array();
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
-                    $extension = $image->getClientOriginalExtension();
-                    $extension = strtolower($extension);
-                    if (!in_array($extension, $allowExtensions)) {
-                        throw new BadRequestHttpException();
+                    //ファイルフォーマット検証
+                    $mimeType = $image->getMimeType();
+                    if (0 !== strpos($mimeType, 'image')) {
+                        throw new UnsupportedMediaTypeHttpException();
                     }
+
+                    $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
                     $files[] = $filename;
