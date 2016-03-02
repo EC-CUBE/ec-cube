@@ -20,15 +20,6 @@ if (file_exists($autoload) && is_readable($autoload)) {
     die('Composer is not installed.');
 }
 
-// autoloader cache
-if (extension_loaded('apc') && ini_get('apc.enabled')) {
-    $apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader(sha1(__FILE__), $loader);
-    $apcLoader->register();
-    $loader->unregister();
-} elseif (extension_loaded('wincache') && ini_get('wincache.fcenabled')) {
-    $winCacheLoader = new Symfony\Component\ClassLoader\WinCacheClassLoader(sha1(__FILE__), $loader);
-    $winCacheLoader->register();
-    $loader->unregister();
-}
+
 
 return $loader;
