@@ -12,7 +12,7 @@
 * 予めMySQLもしくはPostgreSQLでデータベースを作成しておいて下さい。
 * htmlのフォルダが、DocumentRootとなるように設置してください
 * htmlがDocumentRootでない場合は、http://{DocumentRoot}/{htmlへのパス} となります。
-
+### new comment
 
 ### シェルスクリプトインストーラー
 
