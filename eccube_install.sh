@@ -56,7 +56,7 @@ CONSTANT_YML_DIST="${DIST_DIR}/constant.yml.dist"
 export ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 export ROOT_DIR=${BASE_DIR}
-export ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html"}
+export ROOT_URLPATH=${ROOT_URLPATH:-"/eccube/html"}
 export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
 export USER_DATA_ROUTE=${USER_DATA_ROUTE:-"user_data"}
 export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}
@@ -66,8 +66,8 @@ export ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd63
 export AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 
 export DBSERVER=${DBSERVER-"127.0.0.1"}
-export DBNAME=${DBNAME:-"cube3_dev"}
-export DBUSER=${DBUSER:-"cube3_dev_user"}
+export DBNAME=${DBNAME:-"eccube"}
+export DBUSER=${DBUSER:-"root"}
 export DBPASS=${DBPASS:-"password"}
 
 export MAIL_BACKEND=${MAILER_BACKEND:-"smtp"}
