@@ -107,7 +107,6 @@ class ShoppingController extends AbstractController
                 $Order = $app['eccube.service.shopping']->createOrder($Customer);
             } catch (CartException $e) {
                 $app->addRequestError($e->getMessage());
-
                 return $app->redirect($app->url('cart'));
             }
 
@@ -144,13 +143,10 @@ class ShoppingController extends AbstractController
             $app['session']->set($this->sessionMultipleKey, 'multiple');
         }
 
-        return $app->render(
-            'Shopping/index.twig',
-            array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-            )
-        );
+        return $app->render('Shopping/index.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
     }
 
     /**
@@ -169,7 +165,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -206,7 +201,6 @@ class ShoppingController extends AbstractController
                     $em->getConnection()->rollback();
 
                     $app->addError('front.shopping.stock.error');
-
                     return $app->redirect($app->url('shopping_error'));
                 }
 
@@ -229,7 +223,6 @@ class ShoppingController extends AbstractController
                 $app->log($e);
 
                 $app->addError('front.shopping.system.error');
-
                 return $app->redirect($app->url('shopping_error'));
             }
 
@@ -258,20 +251,15 @@ class ShoppingController extends AbstractController
             // 送信履歴を保存.
             $MailTemplate = $app['eccube.repository.mail_template']->find(1);
 
-            $body = $app->renderView(
-                $MailTemplate->getFileName(),
-                array(
-                    'header' => $MailTemplate->getHeader(),
-                    'footer' => $MailTemplate->getFooter(),
-                    'Order' => $Order,
-                )
-            );
+            $body = $app->renderView($MailTemplate->getFileName(), array(
+                'header' => $MailTemplate->getHeader(),
+                'footer' => $MailTemplate->getFooter(),
+                'Order' => $Order,
+            ));
 
             $MailHistory = new MailHistory();
             $MailHistory
-                ->setSubject(
-                    '['.$app['eccube.repository.base_info']->get()->getShopName().'] '.$MailTemplate->getSubject()
-                )
+                ->setSubject('[' . $app['eccube.repository.base_info']->get()->getShopName() . '] ' . $MailTemplate->getSubject())
                 ->setMailBody($body)
                 ->setMailTemplate($MailTemplate)
                 ->setSendDate(new \DateTime())
@@ -297,13 +285,10 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping_complete'));
         }
 
-        return $app->render(
-            'Shopping/index.twig',
-            array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-            )
-        );
+        return $app->render('Shopping/index.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
     }
 
 
@@ -330,12 +315,9 @@ class ShoppingController extends AbstractController
         // 受注IDセッションを削除
         $app['session']->remove($this->sessionOrderKey);
 
-        return $app->render(
-            'Shopping/complete.twig',
-            array(
-                'orderId' => $orderId,
-            )
-        );
+        return $app->render('Shopping/complete.twig', array(
+            'orderId' => $orderId,
+        ));
     }
 
 
@@ -353,7 +335,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -388,12 +369,10 @@ class ShoppingController extends AbstractController
                 $Delivery = $Shipping->getDelivery();
 
                 if ($Delivery) {
-                    $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(
-                        array(
-                            'Delivery' => $Delivery,
-                            'Pref' => $Shipping->getPref(),
-                        )
-                    );
+                    $deliveryFee = $app['eccube.repository.delivery_fee']->findOneBy(array(
+                        'Delivery' => $Delivery,
+                        'Pref' => $Shipping->getPref()
+                    ));
 
                     // 商品ごとの配送料合計
                     if (!is_null($BaseInfo->getOptionProductDeliveryFee())) {
@@ -437,13 +416,10 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render(
-            'Shopping/index.twig',
-            array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-            )
-        );
+        return $app->render('Shopping/index.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
     }
 
     /**
@@ -454,7 +430,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -507,13 +482,10 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render(
-            'Shopping/index.twig',
-            array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-            )
-        );
+        return $app->render('Shopping/index.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
     }
 
     /**
@@ -524,7 +496,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -558,13 +529,10 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping_shipping', array('id' => $id)));
         }
 
-        return $app->render(
-            'Shopping/index.twig',
-            array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-            )
-        );
+        return $app->render('Shopping/index.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
     }
 
     /**
@@ -594,12 +562,10 @@ class ShoppingController extends AbstractController
             }
 
             // 選択されたお届け先情報を取得
-            $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(
-                array(
-                    'Customer' => $app->user(),
-                    'id' => $address,
-                )
-            );
+            $CustomerAddress = $app['eccube.repository.customer_address']->findOneBy(array(
+                'Customer' => $app->user(),
+                'id' => $address,
+            ));
             if (is_null($CustomerAddress)) {
                 throw new NotFoundHttpException();
             }
@@ -656,7 +622,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -690,13 +655,10 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping_shipping_edit', array('id' => $id)));
         }
 
-        return $app->render(
-            'Shopping/index.twig',
-            array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-            )
-        );
+        return $app->render('Shopping/index.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
     }
 
     /**
@@ -731,7 +693,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -778,7 +739,7 @@ class ShoppingController extends AbstractController
             // 配送料金の設定
             $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
 
-            // 配送先を更新 
+            // 配送先を更新
             $app['orm.em']->flush();
 
             $event = new EventArgs(
@@ -794,14 +755,11 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render(
-            'Shopping/shipping_edit.twig',
-            array(
-                'form' => $form->createView(),
-                'shippingId' => $id,
-                'title' => $title,
-            )
-        );
+        return $app->render('Shopping/shipping_edit.twig', array(
+            'form' => $form->createView(),
+            'shippingId' => $id,
+            'title' => $title,
+        ));
     }
 
     /**
@@ -820,7 +778,6 @@ class ShoppingController extends AbstractController
                     if ($error->count() != 0) {
                         $response = new Response(json_encode('NG'), 400);
                         $response->headers->set('Content-Type', 'application/json');
-
                         return $response;
                     }
                 }
@@ -829,14 +786,12 @@ class ShoppingController extends AbstractController
                 if (!$pref) {
                     $response = new Response(json_encode('NG'), 400);
                     $response->headers->set('Content-Type', 'application/json');
-
                     return $response;
                 }
 
                 $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
                 if (!$Order) {
                     $app->addError('front.shopping.order.error');
-
                     return $app->redirect($app->url('shopping_error'));
                 }
 
@@ -849,7 +804,7 @@ class ShoppingController extends AbstractController
                     ->setTel03($data['customer_tel03'])
                     ->setZip01($data['customer_zip01'])
                     ->setZip02($data['customer_zip02'])
-                    ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
+                    ->setZipCode($data['customer_zip01'] . $data['customer_zip02'])
                     ->setPref($pref)
                     ->setAddr01($data['customer_addr01'])
                     ->setAddr02($data['customer_addr02'])
@@ -916,13 +871,10 @@ class ShoppingController extends AbstractController
 
         $form = $builder->getForm();
 
-        return $app->render(
-            'Shopping/login.twig',
-            array(
-                'error' => $app['security.last_error']($request),
-                'form' => $form->createView(),
-            )
-        );
+        return $app->render('Shopping/login.twig', array(
+            'error' => $app['security.last_error']($request),
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -978,7 +930,7 @@ class ShoppingController extends AbstractController
                 ->setTel03($data['tel03'])
                 ->setZip01($data['zip01'])
                 ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'].$data['zip02'])
+                ->setZipCode($data['zip01'] . $data['zip02'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02']);
@@ -997,7 +949,7 @@ class ShoppingController extends AbstractController
                 ->setTel03($data['tel03'])
                 ->setZip01($data['zip01'])
                 ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'].$data['zip02'])
+                ->setZipCode($data['zip01'] . $data['zip02'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02'])
@@ -1015,7 +967,6 @@ class ShoppingController extends AbstractController
                     $app['eccube.service.shopping']->createOrder($Customer);
                 } catch (CartException $e) {
                     $app->addRequestError($e->getMessage());
-
                     return $app->redirect($app->url('cart'));
                 }
             }
@@ -1046,12 +997,9 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render(
-            'Shopping/nonmember.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
+        return $app->render('Shopping/nonmember.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -1062,7 +1010,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -1096,13 +1043,10 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping_shipping_multiple'));
         }
 
-        return $app->render(
-            'Shopping/index.twig',
-            array(
-                'form' => $form->createView(),
-                'Order' => $Order,
-            )
-        );
+        return $app->render('Shopping/index.twig', array(
+            'form' => $form->createView(),
+            'Order' => $Order,
+        ));
     }
 
 
@@ -1127,7 +1071,6 @@ class ShoppingController extends AbstractController
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
-
             return $app->redirect($app->url('shopping_error'));
         }
 
@@ -1159,16 +1102,12 @@ class ShoppingController extends AbstractController
 
         $builder = $app->form();
         $builder
-            ->add(
-                'shipping_multiple',
-                'collection',
-                array(
-                    'type' => 'shipping_multiple',
-                    'data' => $shipmentItems,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                )
-            );
+            ->add('shipping_multiple', 'collection', array(
+                'type' => 'shipping_multiple',
+                'data' => $shipmentItems,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ));
 
         $event = new EventArgs(
             array(
@@ -1211,15 +1150,12 @@ class ShoppingController extends AbstractController
                         $errors[] = array('message' => '数量の数が異なっています。');
 
                         // 対象がなければエラー
-                        return $app->render(
-                            'Shopping/shipping_multiple.twig',
-                            array(
-                                'form' => $form->createView(),
-                                'shipmentItems' => $shipmentItems,
-                                'compItemQuantities' => $compItemQuantities,
-                                'errors' => $errors,
-                            )
-                        );
+                        return $app->render('Shopping/shipping_multiple.twig', array(
+                            'form' => $form->createView(),
+                            'shipmentItems' => $shipmentItems,
+                            'compItemQuantities' => $compItemQuantities,
+                            'errors' => $errors,
+                        ));
                     }
                 }
             }
@@ -1309,15 +1245,12 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        return $app->render(
-            'Shopping/shipping_multiple.twig',
-            array(
-                'form' => $form->createView(),
-                'shipmentItems' => $shipmentItems,
-                'compItemQuantities' => $compItemQuantities,
-                'errors' => $errors,
-            )
-        );
+        return $app->render('Shopping/shipping_multiple.twig', array(
+            'form' => $form->createView(),
+            'shipmentItems' => $shipmentItems,
+            'compItemQuantities' => $compItemQuantities,
+            'errors' => $errors,
+        ));
     }
 
     /**
@@ -1346,10 +1279,7 @@ class ShoppingController extends AbstractController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(
-            EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE,
-            $event
-        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_INITIALIZE, $event);
 
         $form = $builder->getForm();
 
@@ -1369,20 +1299,14 @@ class ShoppingController extends AbstractController
                 ),
                 $request
             );
-            $app['eccube.event.dispatcher']->dispatch(
-                EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE,
-                $event
-            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE, $event);
 
             return $app->redirect($app->url('shopping_shipping_multiple'));
         }
 
-        return $app->render(
-            'Shopping/shipping_multiple_edit.twig',
-            array(
-                'form' => $form->createView(),
-            )
-        );
+        return $app->render('Shopping/shipping_multiple_edit.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -1413,103 +1337,66 @@ class ShoppingController extends AbstractController
         // 入力チェック
         $errors = array();
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_name01'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Length(array('max' => $app['config']['name_len'],)),
-                new Assert\Regex(
-                    array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
-                ),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_name01'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['name_len'],)),
+            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_name02'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Length(array('max' => $app['config']['name_len'],)),
-                new Assert\Regex(
-                    array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace')
-                ),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_name02'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['name_len'], )),
+            new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_company_name'],
-            array(
-                new Assert\Length(array('max' => $app['config']['stext_len'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_company_name'], array(
+            new Assert\Length(array('max' => $app['config']['stext_len'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_tel01'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_tel01'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_tel02'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_tel02'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_tel03'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_tel03'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('max' => $app['config']['tel_len'], 'min' => $app['config']['tel_len_min'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_zip01'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                new Assert\Length(array('min' => $app['config']['zip01_len'], 'max' => $app['config']['zip01_len'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_zip01'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('min' => $app['config']['zip01_len'], 'max' => $app['config']['zip01_len'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_zip02'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
-                new Assert\Length(array('min' => $app['config']['zip02_len'], 'max' => $app['config']['zip02_len'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_zip02'], array(
+            new Assert\NotBlank(),
+            new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')),
+            new Assert\Length(array('min' => $app['config']['zip02_len'], 'max' => $app['config']['zip02_len'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_addr01'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Length(array('max' => $app['config']['address1_len'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_addr01'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['address1_len'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_addr02'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Length(array('max' => $app['config']['address2_len'])),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_addr02'], array(
+            new Assert\NotBlank(),
+            new Assert\Length(array('max' => $app['config']['address2_len'])),
+        ));
 
-        $errors[] = $app['validator']->validateValue(
-            $data['customer_email'],
-            array(
-                new Assert\NotBlank(),
-                new Assert\Email(),
-            )
-        );
+        $errors[] = $app['validator']->validateValue($data['customer_email'], array(
+            new Assert\NotBlank(),
+            new Assert\Email(),
+        ));
 
         return $errors;
     }
