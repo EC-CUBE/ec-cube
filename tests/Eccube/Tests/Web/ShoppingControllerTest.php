@@ -304,7 +304,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
         // お届け先指定画面
-        $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
+        $shipping_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
         $crawler = $this->scenarioComplete($client, $shipping_url);
         $shipping_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_url);
 
