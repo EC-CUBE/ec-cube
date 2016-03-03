@@ -17,10 +17,12 @@ class Version20160303223925 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $app = \Eccube\Application::getInstance();
-        $PageLayout = $app['eccube.repository.page_layout']->findOneBy(array(
-            'url' => 'contact',
-            'name' => 'お問い合わせ(入力ページ)',
-        ));
+        $PageLayout = $app['eccube.repository.page_layout']->findOneBy(
+            array(
+                'url' => 'contact',
+                'name' => 'お問い合わせ(入力ページ)',
+            )
+        );
         if ($PageLayout) {
             $PageLayout->setName('お問い合わせ(確認ページ)');
             $app['orm.em']->flush($PageLayout);
