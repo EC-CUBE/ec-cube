@@ -732,7 +732,7 @@ class ShoppingController extends AbstractController
             // 会員の場合、お届け先情報を新規登録
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
-            if ($Customer instanceof Customer) {
+            if ($Customer instanceof \Eccube\Entity\Customer) {
                 $app['orm.em']->persist($CustomerAddress);
             }
 

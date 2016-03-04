@@ -36,5 +36,3 @@ class Version20160303223925 extends AbstractMigration
 
     }
 }
-
-# migrationファイルが一つもないとこけるのでダミーファイル
