@@ -297,23 +297,28 @@ class ShoppingControllerTest extends AbstractWebTestCase
     public function testShippingEdit()
     {
         $faker = $this->getFaker();
+        $client = $this->createClient();
         $Customer = $this->logIn();
-        $client = $this->client;
-        // カート画面
-        $this->scenarioCartIn($client);
-        // 確認画面
-        $crawler = $this->scenarioConfirm($client);
-        // お届け先指定画面
-        $shipping_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        $crawler = $this->scenarioComplete($client, $shipping_url);
-        $shipping_url = str_replace('shipping_edit_change', 'shipping_edit', $shipping_url);
 
-        // お届け先一覧
+        $this->scenarioCartIn($client);
+        $crawler = $this->scenarioConfirm($client);
+        // お届け先設定画面への遷移前チェック
+        //get shopping url
+        $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
+        //gets shopping html code
+        $crawler = $this->scenarioComplete($client, $shipping_url);
+        $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
+        //get shipping edit html code
         $crawler = $client->request(
             'GET',
             $shipping_url
         );
+        //get shipping edit url
+        $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
+        // お届け先設定画面へ遷移
+        $crawler = $client->request('GET', $shipping_edit_change_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
+
         $this->expected = 'お届け先の追加';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
@@ -501,11 +506,13 @@ class ShoppingControllerTest extends AbstractWebTestCase
         return $crawler;
     }
 
+
     protected function scenarioConfirm($client)
     {
         $crawler = $client->request('GET', $this->app->path('shopping'));
         return $crawler;
     }
+
 
     protected function scenarioComplete($client, $confirm_url)
     {
