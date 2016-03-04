@@ -297,7 +297,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     public function testShippingEdit()
     {
         $faker = $this->getFaker();
-        $client = $this->createClient();
+        $client = $this->client;
         $Customer = $this->logIn();
 
         $this->scenarioCartIn($client);
@@ -306,7 +306,6 @@ class ShoppingControllerTest extends AbstractWebTestCase
         //get shopping url
         $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
         //gets shopping html code
-        $crawler = $this->scenarioComplete($client, $shipping_url);
         $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
         //get shipping edit html code
         $crawler = $client->request(
