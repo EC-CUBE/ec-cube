@@ -294,6 +294,9 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
+    /**
+     * 購入確認画面→お届け先の設定→お届け先の追加
+     */
     public function testShippingEdit()
     {
         $faker = $this->getFaker();

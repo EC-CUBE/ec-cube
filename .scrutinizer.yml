@@ -49,9 +49,9 @@ tools:
             browser: true
             globals: { _: false, Backbone: false, jQuery: false, eccube: false }
 
-    external_code_coverage:
-        runs: 1
-        timeout: 36000 #The timeout must be in the interval [60,36000].
+    #external_code_coverage:
+    #    runs: 1
+    #   timeout: 36000 #The timeout must be in the interval [60,36000].
 
     #php_code_sniffer:
     #    enabled: true
