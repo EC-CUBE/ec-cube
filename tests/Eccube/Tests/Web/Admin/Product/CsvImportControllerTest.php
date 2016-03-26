@@ -96,8 +96,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         // 規格1のみの商品
         $csvClass1Only = $this->createCsvAsArray(false);
-        $csvClass1Only[0][13] = null; // 規格分類2(ID)
-        $csvClass1Only[0][15] = 'class1-only'; // 商品コード
+        $csvClass1Only[0][14] = null; // 規格分類2(ID)
+        $csvClass1Only[0][16] = 'class1-only'; // 商品コード
         $csv = array_merge($csv, $csvClass1Only);
 
         $this->filepath = $this->createCsvFromArray($csv);
@@ -188,7 +188,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 商品生成
         $csv = $this->createCsvAsArray();
         $csv[1][0] = 2;                        // 商品ID = 2 に規格を追加する
-        $csv[1][15] = 'add-class';             // 商品コード
+        $csv[1][16] = 'add-class';             // 商品コード
 
         $this->filepath = $this->createCsvFromArray($csv);
 
