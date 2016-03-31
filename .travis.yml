@@ -40,7 +40,9 @@ env:
   - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
   - DB=sqlite
 
-install: gem install mailcatcher
+install:
+  - gem install mime-types -v 2.99.1
+  - gem install mailcatcher
 
 before_script:
   - composer self-update || true
