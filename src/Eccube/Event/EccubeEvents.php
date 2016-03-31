@@ -588,4 +588,9 @@ final class EccubeEvents
     const MAIL_PASSWORD_RESET = 'mail.password.reset';
     const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
 
+    /**
+     * ShoppingService
+     */
+    const SERVICE_SHOPPING_ORDER_STATUS = 'service.shopping.order.status';
+
 }

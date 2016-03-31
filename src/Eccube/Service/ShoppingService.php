@@ -28,13 +28,17 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\MailHistory;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
+use Eccube\Exception\ShoppingException;
 use Eccube\Util\Str;
 
 
@@ -267,7 +271,7 @@ class ShoppingService
             ->setFax03($Customer->getFax03())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+            ->setZipCode($Customer->getZip01().$Customer->getZip02())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02())
@@ -406,7 +410,7 @@ class ShoppingService
                 ->setFax03($CustomerAddress->getFax03())
                 ->setZip01($CustomerAddress->getZip01())
                 ->setZip02($CustomerAddress->getZip02())
-                ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+                ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
                 ->setPref($CustomerAddress->getPref())
                 ->setAddr01($CustomerAddress->getAddr01())
                 ->setAddr02($CustomerAddress->getAddr02());
@@ -425,7 +429,7 @@ class ShoppingService
                 ->setFax03($Customer->getFax03())
                 ->setZip01($Customer->getZip01())
                 ->setZip02($Customer->getZip02())
-                ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+                ->setZipCode($Customer->getZip01().$Customer->getZip02())
                 ->setPref($Customer->getPref())
                 ->setAddr01($Customer->getAddr01())
                 ->setAddr02($Customer->getAddr02());
@@ -760,7 +764,9 @@ class ShoppingService
     {
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime());
-        $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
+        // $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $this->setOrderStatus($Order, $OrderStatus);
         $Order->setMessage($data['message']);
 
         // お届け先情報を更新
@@ -915,9 +921,9 @@ class ShoppingService
         // 配送日数が設定されている
         if ($deliveryDateFlag) {
             $period = new \DatePeriod (
-                new \DateTime($minDate . ' day'),
+                new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'] . ' day')
+                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {
@@ -1023,5 +1029,136 @@ class ShoppingService
         return $builder;
 
     }
+
+
+    /**
+     * 購入処理を行う
+     *
+     * @param Order $Order
+     * @param array $data
+     * @throws ShoppingException
+     */
+    public function processPurchase(Order $Order, array $data)
+    {
+
+        $em = $this->app['orm.em'];
+
+        // 合計金額の再計算
+        $this->calculatePrice($Order);
+
+        // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
+        $check = $this->isOrderProduct($em, $Order);
+        if (!$check) {
+            throw new ShoppingException('front.shopping.stock.error');
+        }
+
+        // 受注情報、配送情報を更新
+        $this->setOrderUpdate($Order, $data);
+        // 在庫情報を更新
+        $this->setStockUpdate($em, $Order);
+
+        if ($this->app->isGranted('ROLE_USER')) {
+            // 会員の場合、購入金額を更新
+            $this->setCustomerUpdate($Order, $this->app->user());
+        }
+
+    }
+
+
+    /**
+     * 値引き金額をセット
+     *
+     * @param Order $Order
+     * @param $discount
+     * @return Order
+     */
+    public function setDiscount(Order $Order, $discount)
+    {
+
+        $Order->setDiscount($Order->getDiscount() + $discount);
+
+        return $Order;
+
+    }
+
+
+    /**
+     * 合計金額を計算
+     *
+     * @param Order $Order
+     * @return Order
+     */
+    public function calculatePrice(Order $Order)
+    {
+
+        $total = $Order->getSubtotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
+
+        $Order->setTotal($total);
+        $Order->setPaymentTotal($total);
+
+        return $Order;
+
+    }
+
+    /**
+     * 受注ステータスをセット
+     *
+     * @param Order $Order
+     * @param $status
+     * @return Order
+     */
+    public function setOrderStatus(Order $Order, $status)
+    {
+
+        $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($status));
+
+        $event = new EventArgs(
+            array(
+                'Order' => $Order,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS, $event);
+
+        return $Order;
+
+    }
+
+    /**
+     * 受注メール送信を行う
+     *
+     * @param Order $Order
+     * @return MailHistory
+     */
+    public function sendOrderMail(Order $Order)
+    {
+
+        // メール送信
+        $this->app['eccube.service.mail']->sendOrderMail($Order);
+
+        // 送信履歴を保存.
+        $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
+
+        $body = $this->app->renderView($MailTemplate->getFileName(), array(
+            'header' => $MailTemplate->getHeader(),
+            'footer' => $MailTemplate->getFooter(),
+            'Order' => $Order,
+        ));
+
+        $MailHistory = new MailHistory();
+        $MailHistory
+            ->setSubject('['.$this->app['eccube.repository.base_info']->get()->getShopName().'] '.$MailTemplate->getSubject())
+            ->setMailBody($body)
+            ->setMailTemplate($MailTemplate)
+            ->setSendDate(new \DateTime())
+            ->setOrder($Order);
+
+        $this->app['orm.em']->persist($MailHistory);
+        $this->app['orm.em']->flush($MailHistory);
+
+        return $MailHistory;
+
+    }
+
 
 }

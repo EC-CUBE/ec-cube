@@ -34,6 +34,7 @@ use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
+use Eccube\Exception\ShoppingException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -195,28 +196,20 @@ class ShoppingController extends AbstractController
             $em = $app['orm.em'];
             $em->getConnection()->beginTransaction();
             try {
-                // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
-                $check = $app['eccube.service.shopping']->isOrderProduct($em, $Order);
-                if (!$check) {
-                    $em->getConnection()->rollback();
 
-                    $app->addError('front.shopping.stock.error');
-                    return $app->redirect($app->url('shopping_error'));
-                }
-
-                // 受注情報、配送情報を更新
-                $app['eccube.service.shopping']->setOrderUpdate($Order, $data);
-                // 在庫情報を更新
-                $app['eccube.service.shopping']->setStockUpdate($em, $Order);
-
-                if ($app->isGranted('ROLE_USER')) {
-                    // 会員の場合、購入金額を更新
-                    $app['eccube.service.shopping']->setCustomerUpdate($Order, $app->user());
-                }
+                // 購入処理
+                $app['eccube.service.shopping']->processPurchase($Order, $data);
 
                 $em->flush();
                 $em->getConnection()->commit();
 
+            } catch (ShoppingException $e) {
+                $em->getConnection()->rollback();
+
+                $app->log($e);
+                $app->addError($e->getMessage());
+
+                return $app->redirect($app->url('shopping_error'));
             } catch (\Exception $e) {
                 $em->getConnection()->rollback();
 
@@ -242,30 +235,11 @@ class ShoppingController extends AbstractController
                 return $event->getResponse();
             }
 
-            // メール送信
-            $app['eccube.service.mail']->sendOrderMail($Order);
-
             // 受注IDをセッションにセット
             $app['session']->set($this->sessionOrderKey, $Order->getId());
 
-            // 送信履歴を保存.
-            $MailTemplate = $app['eccube.repository.mail_template']->find(1);
-
-            $body = $app->renderView($MailTemplate->getFileName(), array(
-                'header' => $MailTemplate->getHeader(),
-                'footer' => $MailTemplate->getFooter(),
-                'Order' => $Order,
-            ));
-
-            $MailHistory = new MailHistory();
-            $MailHistory
-                ->setSubject('[' . $app['eccube.repository.base_info']->get()->getShopName() . '] ' . $MailTemplate->getSubject())
-                ->setMailBody($body)
-                ->setMailTemplate($MailTemplate)
-                ->setSendDate(new \DateTime())
-                ->setOrder($Order);
-            $app['orm.em']->persist($MailHistory);
-            $app['orm.em']->flush($MailHistory);
+            // メール送信
+            $MailHistory = $app['eccube.service.shopping']->sendOrderMail($Order);
 
             $event = new EventArgs(
                 array(
@@ -795,7 +769,7 @@ class ShoppingController extends AbstractController
                     ->setTel03($data['customer_tel03'])
                     ->setZip01($data['customer_zip01'])
                     ->setZip02($data['customer_zip02'])
-                    ->setZipCode($data['customer_zip01'] . $data['customer_zip02'])
+                    ->setZipCode($data['customer_zip01'].$data['customer_zip02'])
                     ->setPref($pref)
                     ->setAddr01($data['customer_addr01'])
                     ->setAddr02($data['customer_addr02'])
@@ -921,7 +895,7 @@ class ShoppingController extends AbstractController
                 ->setTel03($data['tel03'])
                 ->setZip01($data['zip01'])
                 ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'] . $data['zip02'])
+                ->setZipCode($data['zip01'].$data['zip02'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02']);
@@ -940,7 +914,7 @@ class ShoppingController extends AbstractController
                 ->setTel03($data['tel03'])
                 ->setZip01($data['zip01'])
                 ->setZip02($data['zip02'])
-                ->setZipCode($data['zip01'] . $data['zip02'])
+                ->setZipCode($data['zip01'].$data['zip02'])
                 ->setPref($data['pref'])
                 ->setAddr01($data['addr01'])
                 ->setAddr02($data['addr02'])
@@ -1336,7 +1310,7 @@ class ShoppingController extends AbstractController
 
         $errors[] = $app['validator']->validateValue($data['customer_name02'], array(
             new Assert\NotBlank(),
-            new Assert\Length(array('max' => $app['config']['name_len'], )),
+            new Assert\Length(array('max' => $app['config']['name_len'],)),
             new Assert\Regex(array('pattern' => '/^[^\s ]+$/u', 'message' => 'form.type.name.firstname.nothasspace'))
         ));
 
