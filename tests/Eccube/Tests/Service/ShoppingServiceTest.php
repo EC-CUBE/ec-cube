@@ -345,7 +345,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
 
         // $this->app['eccube.service.shopping']->setOrderUpdate($Order, $data);
         $this->app['eccube.service.shopping']->setFormData($Order, $data);
-        $this->app['eccube.service.shopping']->setOrderUpdate($Order);
+        $this->app['eccube.service.shopping']->setOrderUpdateData($Order);
 
         $this->expected = $this->app['config']['order_new'];
         $this->actual = $Order->getOrderStatus()->getId();

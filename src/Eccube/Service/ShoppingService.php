@@ -752,11 +752,53 @@ class ShoppingService
     }
 
     /**
+     * 受注情報、お届け先情報の更新
+     *
+     * @param Order $Order 受注情報
+     * @param $data フォームデータ
+     *
+     * @deprecated since 3.0.5, to be removed in 3.1
+     */
+    public function setOrderUpdate(Order $Order, $data)
+    {
+        // 受注情報を更新
+        $Order->setOrderDate(new \DateTime());
+        $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
+        $Order->setMessage($data['message']);
+        // お届け先情報を更新
+        $shippings = $data['shippings'];
+        foreach ($shippings as $Shipping) {
+            $Delivery = $Shipping->getDelivery();
+            $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array(
+                'Delivery' => $Delivery,
+                'Pref' => $Shipping->getPref()
+            ));
+            $deliveryTime = $Shipping->getDeliveryTime();
+            if (!empty($deliveryTime)) {
+                $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
+            }
+            $Shipping->setDeliveryFee($deliveryFee);
+            // 商品ごとの配送料合計
+            $productDeliveryFeeTotal = 0;
+            if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
+                $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
+            }
+            $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
+            $Shipping->setShippingDeliveryName($Delivery->getName());
+        }
+        // 配送料無料条件(合計金額)
+        $this->setDeliveryFreeAmount($Order);
+        // 配送料無料条件(合計数量)
+        $this->setDeliveryFreeQuantity($Order);
+    }
+
+
+    /**
      * 受注情報の更新
      *
      * @param Order $Order 受注情報
      */
-    public function setOrderUpdate(Order $Order)
+    public function setOrderUpdateData(Order $Order)
     {
         // 受注情報を更新
         $Order->setOrderDate(new \DateTime());
@@ -1063,7 +1105,7 @@ class ShoppingService
 
         // 受注情報、配送情報を更新
         $Order = $this->calculateDeliveryFee($Order);
-        $this->setOrderUpdate($Order);
+        $this->setOrderUpdateData($Order);
         // 在庫情報を更新
         $this->setStockUpdate($em, $Order);
 

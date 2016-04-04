@@ -165,7 +165,7 @@ class OrderService
      */
     public function setOrderUpdate($em, Order $Order, $formData)
     {
-        $this->app['eccube.service.shopping']->setOrderUpdate($Order);
+        $this->app['eccube.service.shopping']->setOrderUpdate($Order, $formData);
     }
 
     /**

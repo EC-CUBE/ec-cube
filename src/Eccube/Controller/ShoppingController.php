@@ -113,9 +113,6 @@ class ShoppingController extends AbstractController
             // セッション情報を削除
             $app['session']->remove($this->sessionOrderKey);
             $app['session']->remove($this->sessionMultipleKey);
-        } else {
-            // 計算処理
-            $Order = $app['eccube.service.shopping']->getAmount($Order);
         }
 
         // 受注関連情報を最新状態に更新
