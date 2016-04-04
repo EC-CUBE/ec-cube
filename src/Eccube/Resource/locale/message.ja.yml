@@ -22,6 +22,7 @@ Sex: 性別
 Birth: 生年月日
 Company name : 会社名
 Contents: お問い合わせ内容
+Tag: タグ
 form.empty_value: 選択してください
 form.pref.empty_value: 都道府県を選択
 form.job.empty_value: 選択してください

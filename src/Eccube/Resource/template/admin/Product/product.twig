@@ -310,6 +310,19 @@ function fnClass(action) {
                                 </div>
                             </div>
 
+                            <div id="detail_tag_box" class="form-group">
+                                {{ form_label(form.Tag) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    <div class="accordion marT05">
+                                        <a id="detail_tags_box__toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>{{ 'Tag'|trans }}を選択</a>
+                                        <div id="detail_tags_box__list" class="accpanel padT08">
+                                            {{ form_widget(form.Tag) }}
+                                            {{ form_errors(form.Tag) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="extra-form">
                                 {% for f in form.getIterator %}
                                     {% if f.vars.name matches '[^plg*]' %}
