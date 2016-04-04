@@ -38,6 +38,12 @@ class EditController extends AbstractController
 {
     public function index(Application $app, Request $request, $id = null)
     {
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass',
+        ));
+
         $TargetOrder = null;
         $OriginOrder = null;
 
@@ -303,7 +309,6 @@ class EditController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
-            $searchData = $event->getArgument('data');
 
             $Customers = $qb->getQuery()->getResult();
 
@@ -432,7 +437,6 @@ class EditController extends AbstractController
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
-            $searchData = $event->getArgument('searchData');
 
             /** @var $Products \Eccube\Entity\Product[] */
             $Products = $qb->getQuery()->getResult();

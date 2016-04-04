@@ -444,6 +444,9 @@ class OrderDetail extends \Eccube\Entity\AbstractEntity
      */
     public function getProductClass()
     {
+        if (EntityUtil::isEmpty($this->ProductClass)) {
+            return null;
+        }
         return $this->ProductClass;
     }
     /**

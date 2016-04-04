@@ -117,6 +117,16 @@ $(function(){
                 <!--★商品名★-->
                 <h3 id="detail_description_box__name" class="item_name">{{ Product.name }}</h3>
                 <div id="detail_description_box__body" class="item_detail">
+                    <!--▼商品タグ-->
+                    <div id="product_tag_box" class="product_tag">
+                        <ul id="product_tag_box">
+                            {% for ProductTag in Product.ProductTag %}
+                            <li><a id="product_tag_box__product_tag--{{ ProductTag.Tag.id }}" class="tag">{{ ProductTag.Tag }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!--▲商品タグ-->
+
                     <!--★通常価格★-->
                     {% if Product.hasProductClass -%}
                         {% if Product.getPrice01Min is not null and Product.getPrice01Min == Product.getPrice01Max %}

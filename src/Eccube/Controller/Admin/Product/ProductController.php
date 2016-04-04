@@ -199,7 +199,6 @@ class ProductController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE, $event);
-        $images = $event->getArgument('images');
         $files = $event->getArgument('files');
 
         return $app->json(array('files' => $files), 200);
@@ -280,6 +279,13 @@ class ProductController extends AbstractController
             $categories[] = $ProductCategory->getCategory();
         }
         $form['Category']->setData($categories);
+
+        $Tags = array();
+        $ProductTags = $Product->getProductTag();
+        foreach ($ProductTags as $ProductTag) {
+            $Tags[] = $ProductTag->getTag();
+        }
+        $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -397,6 +403,28 @@ class ProductController extends AbstractController
                         $ProductImage->setRank($rank_val);
                         $app['orm.em']->persist($ProductImage);
                     }
+                }
+                $app['orm.em']->flush();
+
+                // 商品タグの登録
+                // 商品タグを一度クリア
+                foreach ($ProductTags as $ProductTag) {
+                    $Product->removeProductTag($ProductTag);
+                    $app['orm.em']->remove($ProductTag);
+                }
+                $app['orm.em']->persist($Product);
+
+                // 商品タグの登録
+                $Tags = $form->get('Tag')->getData();
+                foreach ($Tags as $Tag) {
+                    $ProductTag = new \Eccube\Entity\ProductTag();
+                    $ProductTag
+                        ->setProduct($Product)
+                        ->setTag($Tag)
+                        ->setCreator($app->user());
+
+                    $Product->addProductTag($ProductTag);
+                    $app['orm.em']->persist($ProductTag);
                 }
                 $app['orm.em']->flush();
 
