@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of EC-CUBE
  *
@@ -21,27 +20,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+namespace Eccube\Form\Type\Master;
 
-require __DIR__.'/../autoload.php';
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-ini_set('display_errors', 'Off');
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
+class TagType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'class' => 'Eccube\Entity\Master\Tag',
+        ));
+    }
 
-// see http://silex.sensiolabs.org/doc/web_servers.html#php-5-4
-$filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
-if (php_sapi_name() === 'cli-server' && is_file($filename)) {
-    return false;
-}
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'master';
+    }
 
-$app = \Eccube\Application::getInstance();
-
-// インストールされてなければインストーラにリダイレクト
-if ($app['config']['eccube_install']) {
-    $app->initialize();
-    $app->initializePlugin();
-    $app->run();
-} else {
-    $location = str_replace('index.php', 'install.php', $_SERVER['SCRIPT_NAME']);
-    header('Location:'.$location);
-    exit;
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'tag';
+    }
 }

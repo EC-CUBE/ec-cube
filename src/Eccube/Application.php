@@ -664,7 +664,7 @@ class Application extends ApplicationTrait
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
 
-            if (strpos('admin', $route) === 0) {
+            if (strpos($route, 'admin') === 0) {
                 // 管理画面
                 $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.request', $event);
             } else {
@@ -696,7 +696,7 @@ class Application extends ApplicationTrait
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.controller', $event);
 
-            if (strpos('admin', $route) === 0) {
+            if (strpos($route, 'admin') === 0) {
                 // 管理画面
                 $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.controller', $event);
             } else {
@@ -726,7 +726,7 @@ class Application extends ApplicationTrait
             // ルーティング単位
             $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.response", $event);
 
-            if (strpos('admin', $route) === 0) {
+            if (strpos($route, 'admin') === 0) {
                 // 管理画面
                 $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.response', $event);
             } else {
@@ -756,7 +756,7 @@ class Application extends ApplicationTrait
             // ルーティング単位
             $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.exception", $event);
 
-            if (strpos('admin', $route) === 0) {
+            if (strpos($route, 'admin') === 0) {
                 // 管理画面
                 $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.exception', $event);
             } else {
@@ -782,7 +782,7 @@ class Application extends ApplicationTrait
             // ルーティング単位
             $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.terminate", $event);
 
-            if (strpos('admin', $route) === 0) {
+            if (strpos($route, 'admin') === 0) {
                 // 管理画面
                 $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.terminate', $event);
             } else {
