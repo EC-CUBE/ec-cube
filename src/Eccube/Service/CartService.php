@@ -98,6 +98,7 @@ class CartService
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
         $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
+        $excludes = $softDeleteFilter->getExcludes();
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\ProductClass',
         ));
@@ -106,7 +107,7 @@ class CartService
             $this->loadProductClassFromCartItem($CartItem);
         }
 
-        $softDeleteFilter->setExcludes(array());
+        $softDeleteFilter->setExcludes($excludes);
     }
 
     /**
