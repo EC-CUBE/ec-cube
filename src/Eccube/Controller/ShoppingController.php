@@ -28,7 +28,6 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
-use Eccube\Entity\MailHistory;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -197,8 +196,9 @@ class ShoppingController extends AbstractController
             $em->getConnection()->beginTransaction();
             try {
 
+                $app['eccube.service.shopping']->setFormData($Order, $data);
                 // 購入処理
-                $app['eccube.service.shopping']->processPurchase($Order, $data);
+                $app['eccube.service.shopping']->processPurchase($Order);
 
                 $em->flush();
                 $em->getConnection()->commit();
