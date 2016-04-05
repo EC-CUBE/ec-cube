@@ -30,28 +30,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block main %}
     <div class="row">
         <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+            <div id="log_box" class="box">
+                <div id="log_box__header" class="box-header">
                     <h3 class="box-title">EC-CUBE ログ表示</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="lead">
+
+                <div id="log_box__body" class="box-body">
+                    <div id="log_conditions_box">
                         <form name="form1" id="form1" method="post">
                             {{ form_widget(form._token) }}
-                            <div class="form-inline">
-                                <div class="form-group">
+                            <div id="log_conditions_box__body" class="form-inline form-group">
+                                <div  id="log_conditions_box__files" class="form-group">
                                     {{ form_widget(form.files, {'attr': {'class': 'form-control'}}) }}
                                 </div>
-                                <div class="form-group">
+                                <div id="log_conditions_box__line_max" class="form-group">
                                     直近の{{ form_widget(form.line_max, {'id': 'line-max', 'attr': {'class': 'form-control'}}) }}行を
                                 </div>
-                                <div class="form-group">
+                                <div id="log_conditions_box__confirm_button" class="form-group">
                                     <button type="submit" class="btn btn-default">読み込む</button>
                                 </div>
                             </div>
+                            <div class="extra-form clearfix">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        <div class="form-group">
+                                            {{ form_label(f) }}
+                                            {{ form_widget(f) }}
+                                            {{ form_errors(f) }}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </form>
                     </div>
-                    <div>
+                    <div id="log_view">
 <textarea id="log" class="form-control" rows="20"  wrap="off" readonly>
 {% for line in log %}
 {{ line }}

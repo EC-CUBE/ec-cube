@@ -28,19 +28,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% block sub_title %}システム情報{% endblock %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+    <div id="server_wrap" class="row">
+        <div id="server_info_box" class="col-md-12">
+            <div id="server_info_box__body" class="box">
+                <div id="server_info_box__header" class="box-header">
                     <h3 class="box-title">システム情報</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div id="server_info_box__body_inner" class="box-body">
                     <dl class="dl-horizontal">
                        {% for key, item in arrSystemInfo %}
-                            <dt>
+                            <dt id="server_info_box__title--{{ loop.index }}">
                                {{item.title}}
                             </dt>
-                            <dd>
+                            <dd id="server_info_box__value--{{ loop.index }}">
                                {{item.value}}
                             </dd>
                         {% endfor %}
@@ -49,13 +49,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box -->
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+    <div id="php_wrap" class="row">
+        <div id="php_info_box" class="col-md-12">
+            <div id="php_info_box__body" class="box">
+                <div id="php_info_box__header" class="box-header">
                     <h3 class="box-title">PHP情報</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body no-padding">
+                <div id="php_info_box__frame" class="box-body no-padding">
                     <iframe src="?mode=info" height="500" frameborder="0" style="width: 100%;"></iframe>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->

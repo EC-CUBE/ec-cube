@@ -27,16 +27,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 <h1 class="page-heading">マイページ/退会手続き</h1>
-<div class="container-fluid">
-    <div class="unsubscribe_box">
-        <div class="row no-padding">
-            <div class="col-sm-6 col-sm-offset-3">
+<div id="complete_wrap" class="container-fluid">
+    <div id="complete_box" class="unsubscribe_box">
+        <div id="complete_box__body" class="row no-padding">
+            <div id="complete_box__message" class="col-sm-6 col-sm-offset-3">
                     <h3>退会が完了いたしました</h3>
                     <p>ご利用いただき誠にありがとうございました。<br>
                     またのご来店をお待ちしております。</p>
             </div>
         </div>
-        <div class="row">
+        <div id="complete_box__top_button" class="row">
             <div class="btn_group col-sm-offset-4 col-sm-4">
                 <p><a href="{{ url('homepage') }}" class="btn btn-info btn-block">トップページへ</a></p>
             </div>

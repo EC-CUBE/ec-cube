@@ -206,16 +206,16 @@ function fnClass(action) {
             <form role="form" name="form1" id="form1" method="post" action="" novalidate enctype="multipart/form-data">
             {{ form_widget(form._token) }}
             <div class="row" id="aside_wrap">
-                <div class="col-md-9">
-                    <div class="box form-horizontal">
-                        <div class="box-header">
+                <div id="detail_wrap" class="col-md-9">
+                    <div id="detail_box" class="box form-horizontal">
+                        <div id="detail_box__header" class="box-header">
                             <h3 class="box-title">基本情報</h3>
                         </div><!-- /.box-header -->
-                        <div class="box-body">
+                        <div id="detail_box__body" class="box-body">
 
                             {# 商品ID #}
                             {% if Product.id %}
-                                <div class="form-group">
+                                <div id="detail_box__id" class="form-group">
                                     <label class="col-sm-3 col-lg-2 control-label">商品ID</label>
                                     <div class="col-sm-9 col-lg-10 padT07">{{ Product.id }}</div>
                                 </div>
@@ -227,12 +227,12 @@ function fnClass(action) {
                                 {{ form_row(form.class.product_type, { attr : { class : 'form-inline  padT07' } } ) }}
                             {% endif %}
 
-                            <div class="form-group">
+                            <div id="detail_box__image" class="form-group">
                                 <label class="col-sm-2 control-label" for="admin_product_product_image">
                                     {{ form.product_image.vars.label }}<br>
                                     <span class="small">620px以上推奨</span>
                                 </label>
-                                <div class="col-sm-9 col-lg-10">
+                                <div id="detail_files_box" class="col-sm-9 col-lg-10">
                                     <div class="photo_files" id="drag-drop-area">
                                         <svg id="icon_no_image" class="cb cb-photo no-image"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-photo"></use></svg>
                                         <ul id="thumb" class="clearfix"></ul>
@@ -240,7 +240,7 @@ function fnClass(action) {
                                 </div>
                             </div>
                             <div class="form-group marB30">
-                                <div class="col-sm-offset-2 col-sm-9 col-lg-10 ">
+                                <div id="detail_box__file_upload" class="col-sm-offset-2 col-sm-9 col-lg-10 ">
 
                                     <div id="progress" class="progress progress-striped active" style="display:none;">
                                         <div class="progress-bar progress-bar-info"></div>
@@ -254,11 +254,11 @@ function fnClass(action) {
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div id="detail_description_box" class="form-group">
                                 {{ form_label(form.description_detail) }}
-                                <div class="col-sm-9 col-lg-10">
+                                <div id="detail_description_box__detail" class="col-sm-9 col-lg-10">
                                     {{ form_widget(form.description_detail) }}
-                                    <div class="accordion marT15 marB20"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
+                                    <div id="detail_description_box__list" class="accordion marT15 marB20"><a id="detail_description_box__list_toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
                                         <div class="accpanel padT08">
                                             {{ form_widget(form.description_list) }}
                                         </div>
@@ -267,12 +267,12 @@ function fnClass(action) {
                             </div>
 
                             {% if has_class == false %}
-                            <div class="form-group">
+                            <div id="detail_box__price" class="form-group">
                                 {{ form_label(form.class.price02) }}
-                                <div class="col-sm-3 col-lg-3">
+                                <div id="detail_box__price02" class="col-sm-3 col-lg-3">
                                     {{ form_widget(form.class.price02) }}
                                     {{ form_errors(form.class.price02) }}
-                                    <div class="accordion marT15 marB20"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
+                                    <div id="detail_box__price01" class="accordion marT15 marB20"><a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>通常価格を追加</a>
                                         <div class="accpanel padT08">
                                             {{ form_widget(form.class.price01) }}
                                             {{ form_errors(form.class.price01) }}
@@ -281,11 +281,11 @@ function fnClass(action) {
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div id="detail_box__stock" class="form-group">
                                 {{ form_label(form.class.stock) }}
                                 <div class="col-sm-9 col-lg-10">
                                     <div class="row">
-                                        <div class="col-xs-12 form-inline">
+                                        <div id="detail_box__unlimited" class="col-xs-12 form-inline">
                                             {{ form_widget(form.class.stock) }}
                                             {{ form_errors(form.class.stock) }}
                                             {{ form_widget(form.class.stock_unlimited) }}
@@ -297,12 +297,12 @@ function fnClass(action) {
                             </div>
                             {% endif %}
 
-                            <div class="form-group">
+                            <div id="detail_category_box" class="form-group">
                                 {{ form_label(form.Category) }}
                                 <div class="col-sm-9 col-lg-10">
                                     <div class="accordion marT05">
-                                        <a class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>カテゴリを選択</a>
-                                        <div class="accpanel padT08{% if form.Category.vars.valid == false %} has-error{% endif %}">
+                                        <a id="detail_category_box__toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>カテゴリを選択</a>
+                                        <div id="detail_category_box__list" class="accpanel padT08{% if form.Category.vars.valid == false %} has-error{% endif %}">
                                             {{ form_widget(form.Category) }}
                                             {{ form_errors(form.Category) }}
                                         </div>
@@ -310,14 +310,35 @@ function fnClass(action) {
                                 </div>
                             </div>
 
+                            <div id="detail_tag_box" class="form-group">
+                                {{ form_label(form.Tag) }}
+                                <div class="col-sm-9 col-lg-10">
+                                    <div class="accordion marT05">
+                                        <a id="detail_tags_box__toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>{{ 'Tag'|trans }}を選択</a>
+                                        <div id="detail_tags_box__list" class="accpanel padT08">
+                                            {{ form_widget(form.Tag) }}
+                                            {{ form_errors(form.Tag) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="extra-form">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_row(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
 
-                    <div class="box accordion form-horizontal">
-                        <div class="box-header toggle">
+                    <div id="sub_detail_box" class="box accordion form-horizontal">
+                        <div  id="sub_detail_box__toggle" class="box-header toggle">
                             <h3 class="box-title">詳細な設定<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                         </div><!-- /.box-header -->
-                        <div class="box-body accpanel">
+                        <div id="sub_detail_box__body" class="box-body accpanel">
 
                             {% if has_class == false %}
                                 {{ form_row(form.class.code) }}
@@ -328,7 +349,7 @@ function fnClass(action) {
                             {% if has_class == false %}
                                 {{ form_row(form.class.delivery_date) }}
                                 {% if BaseInfo.option_product_delivery_fee %}
-                                <div class="form-group">
+                                <div id="sub_detail_box__delivery_fee" class="form-group">
                                     {{ form_label(form.class.delivery_fee) }}
                                     <div class="col-sm-3 col-lg-3">
                                         {{ form_widget(form.class.delivery_fee) }}
@@ -336,7 +357,7 @@ function fnClass(action) {
                                 </div>
                                 {% endif %}
                                 {% if BaseInfo.option_product_tax_rule %}
-                                <div class="form-group">
+                                <div id="sub_detail_box__tax_rate" class="form-group">
                                     {{ form_label(form.class.tax_rate) }}
                                     <div class="col-sm-3 col-lg-3">
                                         {{ form_widget(form.class.tax_rate) }}
@@ -348,16 +369,16 @@ function fnClass(action) {
                         </div>
                     </div>
 
-                    <div class="box accordion">
-                        <div class="box-header toggle">
+                    <div id="free_box" class="box accordion">
+                        <div id="free_box__body_toggle" class="box-header toggle">
                             <h3 class="box-title">フリーエリア<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                         </div><!-- /.box-header -->
-                        <div class="box-body accpanel">
+                        <div id="free_box__body" class="box-body accpanel">
                             {{ form_widget(form.free_area, { attr : { id : 'wysiwyg-area' } } ) }}
                         </div>
                     </div>
 
-                    <div class="row hidden-xs hidden-sm">
+                    <div id="detail_box__footer" class="row hidden-xs hidden-sm">
                         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                             <p><a href="{{ url('admin_product') }}">検索画面に戻る</a></p>
                         </div>
@@ -365,11 +386,11 @@ function fnClass(action) {
 
                 </div><!-- /.col -->
 
-                <div class="col-md-3">
+                <div id="common_box" class="col-md-3">
                     <div class="col_inner" id="aside_column">
-                        <div class="box no-header">
-                            <div class="box-body">
-                                <div class="row">
+                        <div id="common_button_box" class="box no-header">
+                            <div id="common_button_box__body" class="box-body">
+                                <div id="common_button_box__status" class="row">
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             {{ form_widget(form.Status) }}
@@ -377,12 +398,12 @@ function fnClass(action) {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row text-center">
+                                <div id="common_button_box__insert_button" class="row text-center">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                         <button type="submit" class="btn btn-primary btn-block btn-lg prevention-btn prevention-mask" >商品を登録</button>
                                     </div>
                                 </div>
-                                <div class="row text-center with-border">
+                                <div id="common_button_box__class_set_button" class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                         {% if id is null %}
                                             <button class="btn btn-default btn-block btn-sm" disabled>
@@ -395,7 +416,7 @@ function fnClass(action) {
                                         {% endif %}
                                     </div>
                                 </div>
-                                <div class="row text-center with-border">
+                                <div id="common_button_box__operation_button" class="row text-center with-border">
                                     <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                         <ul class="col-3">
                                             {% if id is null %}
@@ -437,18 +458,18 @@ function fnClass(action) {
                             </div><!-- /.box-body -->
                         </div><!-- /.box -->
 
-                        <div class="box no-header">
-                            <div class="box-body update-area">
+                        <div id="common_date_info_box" class="box no-header">
+                            <div id="common_date_info_box__body" class="box-body update-area">
                                 <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>登録日：{{ Product.create_date|date_format }}</p>
                                 <p><svg class="cb cb-clock"> <use xlink:href="#cb-clock" /></svg>更新日：{{ Product.update_date|date_format }}</p>
                             </div>
                         </div><!-- /.box -->
 
-                        <div class="box">
-                            <div class="box-header">
+                        <div id="common_shop_note_box" class="box">
+                            <div id="common_shop_note_box__header" class="box-header">
                                 <h3 class="box-title">ショップ用メモ欄</h3>
                             </div><!-- /.box-header -->
-                            <div class="box-body">
+                            <div id="common_shop_note_box__body" class="box-body">
                                 {{ form_widget(form.note) }}
                             </div>
                         </div>

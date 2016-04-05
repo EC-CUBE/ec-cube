@@ -25,7 +25,6 @@
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Tests\Web\AbstractWebTestCase;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ChangeControllerTest extends AbstractWebTestCase
 {

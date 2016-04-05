@@ -38,7 +38,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -61,7 +61,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -84,7 +84,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get Product
      *
-     * @return \Eccube\Entity\Product 
+     * @return \Eccube\Entity\Product
      */
     public function getProduct()
     {
@@ -107,7 +107,7 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get Tag
      *
-     * @return \Eccube\Entity\Master\Tag 
+     * @return \Eccube\Entity\Master\Tag
      */
     public function getTag()
     {
@@ -130,10 +130,24 @@ class ProductTag extends \Eccube\Entity\AbstractEntity
     /**
      * Get Creator
      *
-     * @return \Eccube\Entity\Member 
+     * @return \Eccube\Entity\Member
      */
     public function getCreator()
     {
         return $this->Creator;
+    }
+
+    /**
+     * Get tag_id
+     * use csv export
+     *
+     * @return integer
+     */
+    public function getTagId()
+    {
+        if (empty($this->Tag)){
+            return null;
+        }
+        return $this->Tag->getId();
     }
 }

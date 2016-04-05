@@ -222,6 +222,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_up')->bind('admin_store_plugin_handler_up');
         $c->match('/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_down')->bind('admin_store_plugin_handler_down');
         $c->match('/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Store\PluginController::authenticationSetting')->bind('admin_store_authentication_setting');
+        $c->put('/store/plugin/authentication_setting_download', '\Eccube\Controller\Admin\Store\PluginController::download')->bind('admin_setting_system_authority_download');
 
         return $c;
     }

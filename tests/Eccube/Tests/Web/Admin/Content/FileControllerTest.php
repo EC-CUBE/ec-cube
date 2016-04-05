@@ -3,8 +3,8 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileControllerTest extends AbstractAdminWebTestCase

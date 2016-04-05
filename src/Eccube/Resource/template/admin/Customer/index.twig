@@ -119,74 +119,74 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <form name="search_form" id="search_form" method="post" action="">
   {{ form_widget(searchForm._token) }}
   <!--検索条件設定テーブルここから-->
-  <div class="search-box">
-    <div class="row">
-      <div class="col-md-12 accordion">
+  <div id="search_wrap" class="search-box">
+    <div id="search_box" class="row">
+      <div id="search_box_main" class="col-md-12 accordion">
 
         {{ form_widget(searchForm.multi, { attr: { placeholder: '会員ID・メールアドレス・お名前', class : 'input_search' } } ) }}
 
-        <a href="#" class="toggle{% if active %} active{% endif %}"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
-        <div class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
+        <a id="search_box_main__toggle" href="#" class="toggle{% if active %} active{% endif %}"><svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg> <svg class="cb cb-minus"> <use xlink:href="#cb-minus"/></svg></a>
+        <div id="search_box_main__body" class="search-box-inner accpanel" {% if active %} style="display: block;"{% endif %}>
           <div class="row">
-            <div class="col-sm-12 col-lg-10 col-lg-offset-1 search">
+            <div id="search_box_main__body_inner" class="col-sm-12 col-lg-10 col-lg-offset-1 search">
 
               <div class="col-xs-6 col-md-4">
-                <div class="form-group">
+                <div id="search_box_main__customer_status" class="form-group">
                   <label>会員種別</label>
                   {{ form_widget(searchForm.customer_status) }}
                 </div>
               </div>
               <div class="col-xs-6 col-md-4">
-                <div class="form-group">
+                <div id="search_box_main__sex" class="form-group">
                   <label>性別</label>
                   {{ form_widget(searchForm.sex) }}
                 </div>
               </div>
               <div class="col-xs-12 col-md-4">
-                <div class="form-group">
+                <div id="search_box_main__birth_month" class="form-group">
                   <label>誕生月</label>
                   {{ form_widget(searchForm.birth_month) }}
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div id="search_box_main__birth" class="col-xs-12 col-sm-12 col-md-6">
                 <label>誕生日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.birth_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.birth_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
               <div class="col-xs-6">
-                <div class="form-group">
+                <div id="search_box_main__pref" class="form-group">
                   <label>都道府県</label>
                   {{ form_widget(searchForm.pref) }}
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6">
-                <div class="form-group">
+                <div id="search_box_main__tel" class="form-group">
                   <label>電話番号</label>
                   {{ form_widget(searchForm.tel) }}
                   {{ form_errors(searchForm.tel) }}
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-6">
+              <div id="search_box_main__crate_date" class="col-xs-12 col-sm-6">
                 <label>登録日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.create_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.create_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-6">
+              <div id="search_box_main__update_date" class="col-xs-12 col-sm-6">
                 <label>更新日</label>
                 <div class="form-group range">
                   {{ form_widget(searchForm.update_date_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.update_date_end, {'attr': {'class': 'input_cal'}}) }}
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
-                <div class="form-group range">
+                <div id="search_box_main__buy_total" class="form-group range">
                   <label>購入金額</label>
                   {{ form_widget(searchForm.buy_total_start) }} ～ {{ form_widget(searchForm.buy_total_end) }}
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
-                <div class="form-group range">
+                <div id="search_box_main__buy_times" class="form-group range">
                   <label>購入回数</label>
                   {{ form_widget(searchForm.buy_times_start) }} ～ {{ form_widget(searchForm.buy_times_end) }}
                 </div>
@@ -201,18 +201,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div>
             #}
             <div class="col-xs-12 col-sm-12 col-md-6">
-              <div class="form-group">
+              <div id="search_box_main__buy_product_code" class="form-group">
                 <label>購入商品名・コード</label>
                 {{ form_widget(searchForm.buy_product_code) }}
               </div>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
+            <div id="search_box_main__last_buy" class="col-xs-12 col-sm-12 col-md-6">
               <label>最終購入日</label>
               <div class="form-group range">
                 {{ form_widget(searchForm.last_buy_start, {'attr': {'class': 'input_cal'}}) }} ～ {{ form_widget(searchForm.last_buy_end, {'attr': {'class': 'input_cal'}}) }}
               </div>
             </div>
-            <div class="col-xs-12 col-sm-12">
+                <div class="extra-form col-xs-12 col-sm-12">
+                    {% for f in searchForm.getIterator %}
+                        {% if f.vars.name matches '[^plg*]' %}
+                            <div class="form-group">
+                            {{ form_label(f) }}
+                            {{ form_widget(f) }}
+                            {{ form_errors(f) }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            <div id="search_box_main__clear" class="col-xs-12 col-sm-12">
               <p class="text-center"><a href="#" class="search-clear">検索条件をクリア</a></p>
             </div>
           </div>
@@ -221,8 +232,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </div>
     <!-- /.col -->
   </div>
-  <div class="row btn_area">
-    <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+  <div id="search_box_footer" class="row btn_area">
+    <div id="search_box_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
       <button class="btn btn-primary btn-block btn-lg" onclick="fnChangeActionSubmit('{{ url('admin_customer') }}'); return false;">
         検索する <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
       </button>
@@ -232,18 +243,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 </div>
 <!--検索条件設定テーブルここまで-->
 {% if pagination %}
-<div class="row">
+<div id="result_list" class="row">
   <div class="col-md-12">
-    <div class="box">
+    <div id="result_list_main" class="box">
       {% if pagination and pagination.totalItemCount > 0 %}
-      <div class="box-header with-arrow">
+      <div id="result_list_main__header" class="box-header with-arrow">
         <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 件</strong> が該当しました</span></h3>
       </div><!-- /.box-header -->
-      <div class="box-body">
-        <div class="row">
+      <div id="result_list_main__body" class="box-body">
+        <div id="result_list_main__menu" class="row">
           <div class="col-md-12">
             <ul class="sort-dd">
-              <li class="dropdown">
+              <li id="result_list_main__pagemax_menu" class="dropdown">
                 {% for pageMax in pageMaxis if pageMax.name == page_count %}
                   <a class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
                   <ul class="dropdown-menu">
@@ -253,7 +264,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                   {% endfor %}
                   </ul>
               </li>
-              <li class="dropdown">
+              <li id="result_list_main__csv_menu" class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
               <ul class="dropdown-menu">
                 <li><a href="{{ url('admin_customer_export') }}">CSVダウンロード</a></li>
@@ -264,29 +275,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
           </div>
         </div>
         {% for Customer in pagination %}
-            <div class="table_list">
+            <div id="result_list_main__list" class="table_list">
                 <div class="table-responsive with-border">
                     <table class="table table-striped">
                         <thead>
-                        <tr>
-                            <th>会員ID</th>
-                            <th>会員名</th>
-                            <th>電話番号</th>
-                            <th>メールアドレス</th>
-                            <th>&nbsp;</th>
+                        <tr id="result_list_main__header">
+                            <th id="result_list_main__header_id">会員ID</th>
+                            <th id="result_list_main__header_name">会員名</th>
+                            <th id="result_list_main__header_tel">電話番号</th>
+                            <th id="result_list_main__header_mail">メールアドレス</th>
+                            <th id="result_list_main__header_menu_box">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for Customer in pagination %}
-                        <tr>
-                            <td class="member_id">{{ Customer.id }}</td>
-                            <td class="member_name"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
-                            <td class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
-                            <td class="member_mail">{{ Customer.email }}</td>
-                            <td class="icon_edit">
-                                <div class="dropdown">
+                        <tr id="result_list_main__item--{{ Customer.id }}">
+                            <td id="result_list_main__id--{{ Customer.id }}" class="member_id">{{ Customer.id }}</td>
+                            <td id="result_list_main__name--{{ Customer.id }}" class="member_name"><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">{{ Customer.name01 }}&nbsp;{{ Customer.name02 }}</a></td>
+                            <td id="result_list_main__tel--{{ Customer.id }}" class="member_tel">{{ Customer.tel01 }}-{{ Customer.tel02 }}-{{ Customer.tel03 }}</td>
+                            <td id="result_list_main__mail--{{ Customer.id }}" class="member_mail">{{ Customer.email }}</td>
+                            <td id="result_list_main__menu_box--{{ Customer.id }}" class="icon_edit">
+                                <div id="result_list_main__menu_box_toggle--{{ Customer.id }}" class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                    <ul class="dropdown-menu dropdown-menu-right">
+                                    <ul id="result_list_main__menu--{{ Customer.id }}" class="dropdown-menu dropdown-menu-right">
                                         <li><a href="{{ url('admin_customer_edit', { 'id': Customer.id}) }}">編集</a></li>
                                         <li><a href="{{ url('admin_customer_delete', { 'id': Customer.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この会員情報を削除してもよろしいですか？">削除</a></li>
                                         {% if Customer.Status.id == 1 %}
@@ -307,7 +318,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_page' } %}
       {% endif %}
       {% else %}
-      <div class="box-header with-arrow">
+      <div id="result_list_main__header" class="box-header with-arrow">
         <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
       </div><!-- /.box-header -->
       {% endif %}
