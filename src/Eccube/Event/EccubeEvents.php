@@ -592,5 +592,6 @@ final class EccubeEvents
      * ShoppingService
      */
     const SERVICE_SHOPPING_ORDER_STATUS = 'service.shopping.order.status';
+    const SERVICE_SHOPPING_NOTIFY_COMPLETE = 'service.shopping.notify.complete';
 
 }

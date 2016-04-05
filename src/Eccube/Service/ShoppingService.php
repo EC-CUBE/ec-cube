@@ -1212,4 +1212,23 @@ class ShoppingService
     }
 
 
+    /**
+     * 受注処理完了通知
+     *
+     * @param Order $Order
+     */
+    public function notifyComplete(Order $Order)
+    {
+
+        $event = new EventArgs(
+            array(
+                'Order' => $Order,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::SERVICE_SHOPPING_NOTIFY_COMPLETE, $event);
+
+    }
+
+
 }
