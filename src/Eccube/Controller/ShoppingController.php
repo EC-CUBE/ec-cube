@@ -193,6 +193,7 @@ class ShoppingController extends AbstractController
             $em->getConnection()->beginTransaction();
             try {
 
+                // お問い合わせ、配送時間などのフォーム項目をセット
                 $app['eccube.service.shopping']->setFormData($Order, $data);
                 // 購入処理
                 $app['eccube.service.shopping']->processPurchase($Order);
@@ -367,10 +368,8 @@ class ShoppingController extends AbstractController
 
             $Order->setDeliveryFeeTotal($app['eccube.service.shopping']->getShippingDeliveryFeeTotal($shippings));
 
-            $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
-
-            $Order->setTotal($total);
-            $Order->setPaymentTotal($total);
+            // 合計金額の再計算
+            $Order = $app['eccube.service.shopping']->getAmount($Order);
 
             // 受注関連情報を最新状態に更新
             $app['orm.em']->flush();
@@ -433,10 +432,8 @@ class ShoppingController extends AbstractController
             $Order->setMessage($message);
             $Order->setCharge($payment->getCharge());
 
-            $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
-
-            $Order->setTotal($total);
-            $Order->setPaymentTotal($total);
+            // 合計金額の再計算
+            $Order = $app['eccube.service.shopping']->getAmount($Order);
 
             // 受注関連情報を最新状態に更新
             $app['orm.em']->flush();
@@ -559,6 +556,9 @@ class ShoppingController extends AbstractController
 
             // 配送料金の設定
             $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
+
+            // 合計金額の再計算
+            $Order = $app['eccube.service.shopping']->getAmount($Order);
 
             // 配送先を更新
             $app['orm.em']->flush();
@@ -701,6 +701,9 @@ class ShoppingController extends AbstractController
 
             // 配送料金の設定
             $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
+
+            // 合計金額の再計算
+            $app['eccube.service.shopping']->getAmount($Order);
 
             // 配送先を更新 
             $app['orm.em']->flush();
@@ -1030,6 +1033,8 @@ class ShoppingController extends AbstractController
             // カートが存在しない時はエラー
             return $app->redirect($app->url('cart'));
         }
+
+        /** @var \Eccube\Entity\Order $Order */
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
             $app->addError('front.shopping.order.error');
@@ -1189,9 +1194,15 @@ class ShoppingController extends AbstractController
 
                         // 配送料金の設定
                         $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
+
+                        $Order->addShipping($Shipping);
                     }
                 }
             }
+
+            // 合計金額の再計算
+            $Order = $app['eccube.service.shopping']->getAmount($Order);
+
             // 配送先を更新
             $app['orm.em']->flush();
 
@@ -1292,9 +1303,12 @@ class ShoppingController extends AbstractController
 
     /**
      * 非会員でのお客様情報変更時の入力チェック
-     * @param $data リクエストパラメータ
+     *
+     * @param Application $app
+     * @param array       $data リクエストパラメータ
+     * @return array
      */
-    private function customerValidation($app, $data)
+    private function customerValidation(Application $app, array $data)
     {
         // 入力チェック
         $errors = array();

@@ -626,8 +626,6 @@ class ShoppingService
         // 合計金額の計算
         $this->calculatePrice($Order);
 
-        $this->app['orm.em']->flush();
-
         return $Order;
 
     }
@@ -1162,6 +1160,7 @@ class ShoppingService
     public function setOrderStatus(Order $Order, $status)
     {
 
+        $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($status));
 
         $event = new EventArgs(
