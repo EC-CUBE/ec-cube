@@ -10,6 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Tag extends \Eccube\Entity\AbstractEntity
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
      * @var integer
      */
     private $id;
@@ -40,7 +48,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -63,7 +71,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -86,7 +94,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     /**
      * Get rank
      *
-     * @return integer 
+     * @return integer
      */
     public function getRank()
     {
@@ -119,7 +127,7 @@ class Tag extends \Eccube\Entity\AbstractEntity
     /**
      * Get ProductTag
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getProductTag()
     {

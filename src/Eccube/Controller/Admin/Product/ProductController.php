@@ -280,6 +280,13 @@ class ProductController extends AbstractController
         }
         $form['Category']->setData($categories);
 
+        $Tags = array();
+        $ProductTags = $Product->getProductTag();
+        foreach ($ProductTags as $ProductTag) {
+            $Tags[] = $ProductTag->getTag();
+        }
+        $form['Tag']->setData($Tags);
+
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -396,6 +403,28 @@ class ProductController extends AbstractController
                         $ProductImage->setRank($rank_val);
                         $app['orm.em']->persist($ProductImage);
                     }
+                }
+                $app['orm.em']->flush();
+
+                // 商品タグの登録
+                // 商品タグを一度クリア
+                foreach ($ProductTags as $ProductTag) {
+                    $Product->removeProductTag($ProductTag);
+                    $app['orm.em']->remove($ProductTag);
+                }
+                $app['orm.em']->persist($Product);
+
+                // 商品タグの登録
+                $Tags = $form->get('Tag')->getData();
+                foreach ($Tags as $Tag) {
+                    $ProductTag = new \Eccube\Entity\ProductTag();
+                    $ProductTag
+                        ->setProduct($Product)
+                        ->setTag($Tag)
+                        ->setCreator($app->user());
+
+                    $Product->addProductTag($ProductTag);
+                    $app['orm.em']->persist($ProductTag);
                 }
                 $app['orm.em']->flush();
 

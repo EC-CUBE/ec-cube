@@ -86,6 +86,12 @@ class MypageController extends AbstractController
     {
         $Customer = $app['user'];
 
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass',
+        ));
+
         // 購入処理中/決済処理中ステータスの受注を非表示にする.
         $app['orm.em']
             ->getFilters()
@@ -189,7 +195,8 @@ class MypageController extends AbstractController
 
         foreach ($Order->getOrderDetails() as $OrderDetail) {
             try {
-                if ($OrderDetail->getProduct()) {
+                if ($OrderDetail->getProduct() &&
+                    $OrderDetail->getProductClass()) {
                     $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
                 } else {
                     $app->addRequestError('cart.product.delete');
