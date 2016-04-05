@@ -64,28 +64,28 @@ $(function() {
 {% endblock javascript %}
 
 {% block main %}
-<div class="row">
-    <div class="col-md-12">
+<div id="upload_wrap" class="row">
+    <div id="upload_file_box" class="col-md-12">
         <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_csv_import') }}" {{ form_enctype(form) }}>
             {{ form_widget(form._token) }}
-            <div class="box">
-                <div class="box-header">
+            <div id="upload_file_box__body" class="box">
+                <div id="upload_file_box__header" class="box-header">
                     <h3 class="box-title">商品登録CSV</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="form-group">
+                <div id="upload_file_box__body_inner" class="box-body">
+                    <div id="upload_file_box__upload_box" class="form-group">
                         <label class="col-sm-5 control-label">CSVファイル選択</label>
-                        <div class="col-sm-7">
+                        <div id="upload_file_box__import_file" class="col-sm-7">
                             {{ form_widget(form.import_file, {'attr': {'accept': 'text/csv,text/tsv'}}) }}
                             {{ form_errors(form.import_file) }}
                         </div>
                         {% for error in errors %}
-                            <div class="text-danger">{{ error.message }}</div>
+                            <div id="upload_file_box__upload_error" class="text-danger">{{ error.message }}</div>
                         {% endfor %}
                     </div>
                     <div id="spinner"></div>
                 </div><!-- /.box-body -->
-                <div class="box-footer text-center">
+                <div id="button_box__upload_button" class="box-footer text-center">
                     <button id="upload-button" type="submit" class="btn btn-primary btn-sm">CSVファイルのアップロード</button>
                 </div><!-- /.box-footer -->
             </div><!-- /.box -->
@@ -93,49 +93,50 @@ $(function() {
     </div><!-- /.col -->
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="box">
-            <div class="box-header">
+<div id="file_format" class="row">
+    <div id="file_format_box" class="col-md-12">
+        <div id="file_format_box__body" class="box">
+            <div id="file_format_box__head" class="box-header">
                 <a href="{{ url('admin_product_csv_template', {'type': 'product'}) }}" id="download-button" class="btn btn-default pull-right btn-xs">雛形ファイルダウンロード</a>
                 <h3 class="box-title">商品登録CSVファイルフォーマット</h3>
             </div><!-- /.box-header -->
-            <div class="box-body no-padding">
-                <div class="table_list">
-                    <div class="table-responsive no-border table-menu table-responsive-overflow">
+            <div id="file_format_box__body_inner" class="box-body no-padding">
+                <div id="file_format_box__list_box" class="table_list">
+                    <div id="file_format_box__list_box_body" class="table-responsive no-border table-menu table-responsive-overflow">
                         <table class="table table-striped">
                             <thead>
-                                <tr class="text-nowrap">
+                                <tr id="file_format_box__header" class="text-nowrap">
                                     {% for header in headers|keys %}
-                                        <th>{{ header }}</th>
+                                        <th id="file_format_box__header--{{ loop.index }}">{{ header }}</th>
                                     {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="text-nowrap">
-                                    <td>新規登録時は未設定<br>既存商品の更新は商品IDを設定</td>
-                                    <td>必須</td>
-                                    <td>必須</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>設定されていない場合<br>0を登録</td>
-                                    <td>複数画像の場合<br>画像ファイル名をカンマ区切りで<br>「"」で囲んで設定</td>
-                                    <td>複数カテゴリの場合<br>商品カテゴリIDをカンマ区切りで<br>「"」で囲んで設定</td>
-                                    <td>必須</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>在庫数無制限フラグが0の場合<br>0以上の数値を設定</td>
-                                    <td>必須</td>
-                                    <td>0以上の数値を設定</td>
-                                    <td>0以上の数値を設定</td>
-                                    <td>必須<br>0以上の数値を設定</td>
-                                    <td>商品ごとの送料設定が有効の場合<br>0以上の数値を設定</td>
-                                    <td>設定されていない場合<br>0を登録</td>
+                                <tr id="file_format_box__list" class="text-nowrap">
+                                    <td id="file_format_box__id">新規登録時は未設定<br>既存商品の更新は商品IDを設定</td>
+                                    <td id="file_format_box__status">必須</td>
+                                    <td id="file_format_box__name">必須</td>
+                                    <td id="file_format_box__shop_memo"></td>
+                                    <td id="file_format_box__info"></td>
+                                    <td id="file_format_box__detail"></td>
+                                    <td id="file_format_box__search_word"></td>
+                                    <td id="file_format_box__free"></td>
+                                    <td id="file_format_box__delete_flg">設定されていない場合<br>0を登録</td>
+                                    <td id="file_format_box__image">複数画像の場合<br>画像ファイル名をカンマ区切りで<br>「"」で囲んで設定</td>
+                                    <td id="file_format_box__category">複数カテゴリの場合<br>商品カテゴリIDをカンマ区切りで<br>「"」で囲んで設定</td>
+                                    <td id="file_format_box__tag">複数タグの場合<br>タグIDをカンマ区切りで<br>「"」で囲んで設定</td>
+                                    <td id="file_format_box__type_id">必須</td>
+                                    <td id="file_format_box__class_1"></td>
+                                    <td id="file_format_box__class_2"></td>
+                                    <td id="file_format_box__date"></td>
+                                    <td id="file_format_box__code"></td>
+                                    <td id="file_format_box__stock">在庫数無制限フラグが0の場合<br>0以上の数値を設定</td>
+                                    <td id="file_format_box__stock_nolimit_flg">必須</td>
+                                    <td id="file_format_box__limit">0以上の数値を設定</td>
+                                    <td id="file_format_box__price_2">0以上の数値を設定</td>
+                                    <td id="file_format_box__price_1">必須<br>0以上の数値を設定</td>
+                                    <td id="file_format_box__delivery_fee">商品ごとの送料設定が有効の場合<br>0以上の数値を設定</td>
+                                    <td id="file_format_box__category_delete_flg">設定されていない場合<br>0を登録</td>
                                 </tr>
                             </tbody>
                         </table>

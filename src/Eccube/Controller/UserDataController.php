@@ -27,11 +27,14 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserDataController
 {
-    public function index(Application $app, $route)
+    public function index(Application $app, Request $request, $route)
     {
         $DeviceType = $app['orm.em']
             ->getRepository('Eccube\Entity\Master\DeviceType')
@@ -54,6 +57,16 @@ class UserDataController
 
         $file = $PageLayout->getFileName() . '.twig';
 
-        return $app['twig']->render($file);
+        $event = new EventArgs(
+            array(
+                'DeviceType' => $DeviceType,
+                'PageLayout' => $PageLayout,
+                'file' => $file,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_USER_DATA_INDEX_INITIALIZE, $event);
+
+        return $app->render($file);
     }
 }

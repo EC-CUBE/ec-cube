@@ -23,6 +23,11 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $Property = $objReflect->getProperty('fp');
         $Property->setAccessible(true);
         $Property->setValue($this->app['eccube.service.csv.export'], fopen($this->url, 'w'));
+
+        $Csv = $this->app['eccube.repository.csv']->find(1);
+        $Csv->setRank(1);
+        $Csv->setEnableFlg(Constant::DISABLED);
+        $this->app['orm.em']->flush();
     }
 
     public function testExportHeader()

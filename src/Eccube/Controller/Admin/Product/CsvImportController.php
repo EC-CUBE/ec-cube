@@ -32,6 +32,7 @@ use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
+use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\Str;
@@ -39,7 +40,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 
 class CsvImportController
 {
@@ -198,6 +198,8 @@ class CsvImportController
                         // 商品カテゴリ登録
                         $this->createProductCategory($row, $Product, $app, $data);
 
+                        //タグ登録
+                        $this->createProductTag($row, $Product, $app, $data);
 
                         // 商品規格が存在しなければ新規登録
                         $ProductClasses = $Product->getProductClasses();
@@ -390,7 +392,6 @@ class CsvImportController
 
                     $this->em->flush();
                     $this->em->getConnection()->commit();
-                    $this->em->close();
 
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
@@ -457,7 +458,6 @@ class CsvImportController
 
                         if ($row['カテゴリID'] == '') {
                             $Category = new Category();
-                            $this->em->persist($Category);
                         } else {
                             if (!is_numeric($row['カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
@@ -527,7 +527,6 @@ class CsvImportController
 
                     $this->em->flush();
                     $this->em->getConnection()->commit();
-                    $this->em->close();
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
@@ -590,7 +589,6 @@ class CsvImportController
         if ($this->hasErrors()) {
             if ($this->em) {
                 $this->em->getConnection()->rollback();
-                $this->em->close();
             }
         }
 
@@ -724,6 +722,53 @@ class CsvImportController
 
 
     /**
+     * タグの登録
+     *
+     * @param array $row
+     * @param Product $Product
+     * @param Application $app
+     * @param CsvImportService $data
+     */
+    protected function createProductTag($row, Product $Product, $app, $data)
+    {
+        // タグの削除
+        $ProductTags = $Product->getProductTag();
+        foreach ($ProductTags as $ProductTags) {
+            $Product->removeProductTag($ProductTags);
+            $this->em->remove($ProductTags);
+        }
+
+        if ($row['タグ(ID)'] == '') {
+            return;
+        }
+
+        // タグの登録
+        $tags = explode(',', $row['タグ(ID)']);
+        foreach ($tags as $tag_id) {
+            $Tag = null;
+            if (is_numeric($tag_id)) {
+                $Tag = $app['eccube.repository.master.tag']->find($tag_id);
+                if ($Tag) {
+                    $exsistData = true;
+
+                    $ProductTags = new ProductTag();
+                    $ProductTags
+                        ->setProduct($Product)
+                        ->setTag($Tag);
+
+                    $Product->addProductTag($ProductTags);
+
+                    $this->em->persist($ProductTags);
+                }
+            }
+            if (!$Tag) {
+                $this->addErrors(($data->key() + 1) . '行目のタグ(ID)「' . $tag_id . '」が存在しません。');
+            }
+        }
+    }
+
+
+    /**
      * 商品規格分類1、商品規格分類2がnullとなる商品規格情報を作成
      */
     protected function createProductClass($row, Product $Product, $app, $data, $ClassCategory1 = null, $ClassCategory2 = null)
@@ -774,7 +819,7 @@ class CsvImportController
         if ($row['在庫数無制限フラグ'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
-            if ($row['在庫数無制限フラグ'] == (string)Constant::DISABLED) {
+            if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(Constant::DISABLED);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
@@ -788,7 +833,7 @@ class CsvImportController
                     }
                 }
 
-            } else if ($row['在庫数無制限フラグ'] == (string)Constant::ENABLED) {
+            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {
@@ -837,7 +882,7 @@ class CsvImportController
         if ($row['商品規格削除フラグ'] == '') {
             $ProductClass->setDelFlg(Constant::DISABLED);
         } else {
-            if ($row['商品規格削除フラグ'] == (string)Constant::DISABLED || $row['商品規格削除フラグ'] == (string)Constant::ENABLED) {
+            if ($row['商品規格削除フラグ'] == (string) Constant::DISABLED || $row['商品規格削除フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setDelFlg($row['商品規格削除フラグ']);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');
@@ -936,7 +981,7 @@ class CsvImportController
         if ($row['在庫数無制限フラグ'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の在庫数無制限フラグが設定されていません。');
         } else {
-            if ($row['在庫数無制限フラグ'] == (string)Constant::DISABLED) {
+            if ($row['在庫数無制限フラグ'] == (string) Constant::DISABLED) {
                 $ProductClass->setStockUnlimited(Constant::DISABLED);
                 // 在庫数が設定されていなければエラー
                 if ($row['在庫数'] == '') {
@@ -950,7 +995,7 @@ class CsvImportController
                     }
                 }
 
-            } else if ($row['在庫数無制限フラグ'] == (string)Constant::ENABLED) {
+            } else if ($row['在庫数無制限フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setStockUnlimited(Constant::ENABLED);
                 $ProductClass->setStock(null);
             } else {
@@ -990,7 +1035,7 @@ class CsvImportController
         if ($row['商品規格削除フラグ'] == '') {
             $ProductClass->setDelFlg(Constant::DISABLED);
         } else {
-            if ($row['商品規格削除フラグ'] == (string)Constant::DISABLED || $row['商品規格削除フラグ'] == (string)Constant::ENABLED) {
+            if ($row['商品規格削除フラグ'] == (string) Constant::DISABLED || $row['商品規格削除フラグ'] == (string) Constant::ENABLED) {
                 $ProductClass->setDelFlg($row['商品規格削除フラグ']);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の商品規格削除フラグが設定されていません。');
@@ -1053,6 +1098,7 @@ class CsvImportController
             '商品削除フラグ' => 'product_del_flg',
             '商品画像' => 'product_image',
             '商品カテゴリ(ID)' => 'product_category',
+            'タグ(ID)' => 'product_tag',
             '商品種別(ID)' => 'product_type',
             '規格分類1(ID)' => 'class_category1',
             '規格分類2(ID)' => 'class_category2',

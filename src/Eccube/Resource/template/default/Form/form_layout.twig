@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {%- if form.vars.freeze_display_text -%}
     {% set attr = attr|merge({class: attr.class|default('')}) %}
     <dl>
-        <dt>{{ form_label(form) }}{% if required %} <span class="required">必須</span>{% endif %}</dt>
+        <dt>{{ form_label(form) }}</dt>
         <dd class="form-group{% if not valid %} has-error{% endif %}{% if 'middle' in attr.class %} input_name{% endif %}{% if 'short' in attr.class %} input_tel{% endif %}{% if 'zip' in attr.class %} input_zip{% endif %}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
@@ -259,3 +259,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% endfor -%}
     {%- endif -%}
 {%- endblock address_widget -%}
+
+{%- block form_label -%}
+    {{- parent() -}}
+    {%- if not freeze -%}
+        {%- if required -%}<span class="required">必須</span>{%- endif -%}
+    {%- endif -%}
+{%- endblock -%}

@@ -31,28 +31,28 @@
 {% block main %}
 <form name="content_page_form" action="" method="post">
 </form>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+<div id="page_wrap" class="container-fluid">
+    <div id="page_list" class="row">
+        <div id="page_list_box" class="col-md-12">
+            <div id="page_list__body" class="box">
+                <div id="page_list_box__header" class="box-header">
                     <div class="box-title">
                         ページ一覧
                     </div>
                 </div>
-                <div class="box-body no-padding no-border">
-                    <div class="sortable_list">
+                <div id="sortable_list_box" class="box-body no-padding no-border">
+                    <div id="sortable_list_box__list" class="sortable_list">
                         <div class="tableish">
 
                             {% for PageLayout in PageLayouts %}
-                                <div class="item_box tr">
-                                    <div class="item_pattern td">
+                                <div id="sortable_list_box__item--{{ PageLayout.id }}" class="item_box tr">
+                                    <div id="sortable_list_box__name--{{ PageLayout.id }}" class="item_pattern td">
                                         {{ PageLayout.name }}
                                     </div>
-                                    <div class="icon_edit td">
-                                        <div class="dropdown">
+                                    <div id="sortable_list_box__menu_box--{{ PageLayout.id }}" class="icon_edit td">
+                                        <div id="sortable_list_box__menu_box_toggle--{{ PageLayout.id }}" class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
+                                            <ul id="sortable_list_box__menu--{{ PageLayout.id }}" class="dropdown-menu dropdown-menu-right">
                                                 <li>
                                                     <a href="{{ url('admin_content_layout_edit', { id : PageLayout.id } ) }}" >レイアウト編集</a>
                                                 </li>
@@ -83,8 +83,8 @@
             <!-- ▲ データがある時 ▲ -->
         </div><!-- /.col -->
 
-        <div class="row btn_area2">
-            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
+        <div id="page_list__footer" class="row btn_area2">
+            <div id="page_list__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center">
                 <a class="btn btn-primary btn-block btn-lg" href="{{ url('admin_content_page_new')}}">新規入力</a>
             </div>
         </div>

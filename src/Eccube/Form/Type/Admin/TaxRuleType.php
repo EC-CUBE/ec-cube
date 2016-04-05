@@ -77,6 +77,9 @@ class TaxRuleType extends AbstractType
                     'hours' => '--',
                     'minutes' => '--'
                 ),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                ),
             ))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }

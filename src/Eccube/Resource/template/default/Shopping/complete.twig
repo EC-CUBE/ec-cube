@@ -25,15 +25,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <h1 class="page-heading">ご注文完了</h1>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
+    <div id="complete_wrap" class="container-fluid">
+        <div id="complete_flow_box" class="row">
+            <div id="complete_flow_box__body" class="col-md-12">
                 {% if is_granted('ROLE_USER') %}
-                <div class="flowline step3">
+                <div id="complete_flow_box__flow_state" class="flowline step3">
                 {% else %}
-                <div class="flowline step4">
+                <div id="complete_flow_box__flow_state" class="flowline step4">
                 {% endif %}
-                    <ul class="clearfix">
+                    <ul id="complete_flow_box__flow_state_list" class="clearfix">
                         <li><span class="flow_number">1</span><br>カートの商品</li>
                     {% if is_granted('ROLE_USER') %}
                         <li><span class="flow_number">2</span><br>ご注文内容確認</li>
@@ -50,14 +50,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
         <div id="deliveradd_input" class="row">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div class="complete_message">
+            <div id="deliveradd_input_box" class="col-sm-10 col-sm-offset-1">
+                <div id="deliveradd_input_box__message" class="complete_message">
                     <h2 class="heading01">ご注文ありがとうございました</h2>
                     <p>ただいま、ご注文の確認メールをお送りさせていただきました。<br />
                         万一、ご確認メールが届かない場合は、トラブルの可能性もありますので大変お手数ではございますがもう一度お問い合わせいただくか、お電話にてお問い合わせくださいませ。<br />
                         今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
                 </div>
-                <div class="row no-padding">
+                <div id="deliveradd_input_box__top_button" class="row no-padding">
                     <div class="btn_group col-sm-offset-4 col-sm-4">
                         <p>
                             <a href="{{ url('homepage') }}" class="btn btn-info btn-block">トップページへ</a>

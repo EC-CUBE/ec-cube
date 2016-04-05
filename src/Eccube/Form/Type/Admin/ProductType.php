@@ -79,9 +79,10 @@ class ProductType extends AbstractType
             ))
 
             // 詳細な説明
-            ->add('tag', 'text', array(
-                'label' => 'タグ',
+            ->add('Tag', 'tag', array(
                 'required' => false,
+                'multiple' => true,
+                'expanded' => true,
                 'mapped' => false,
             ))
             ->add('search_word', 'textarea', array(

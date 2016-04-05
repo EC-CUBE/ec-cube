@@ -25,9 +25,10 @@
 namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Eccube\Common\Constant;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Customer
@@ -36,46 +37,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName01() . ' ' . $this->getName02();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoles()
-    {
-        return array('ROLE_USER');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials()
-    {
-    }
-
-    // TODO: できればFormTypeで行いたい
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addConstraint(new UniqueEntity(array(
-            'fields'  => 'email',
-            'message' => '既に利用されているメールアドレスです'
-        )));
-    }
-
     /**
      * @var integer
      */
@@ -284,6 +245,50 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
         $this->CustomerFavoriteProducts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->CustomerAddresses = new \Doctrine\Common\Collections\ArrayCollection();
         $this->Orders = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->setBuyTimes(0);
+        $this->setBuyTotal(0);
+        $this->setDelFlg(Constant::DISABLED);
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName01() . ' ' . $this->getName02();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    // TODO: できればFormTypeで行いたい
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addConstraint(new UniqueEntity(array(
+            'fields'  => 'email',
+            'message' => '既に利用されているメールアドレスです'
+        )));
     }
 
     /**

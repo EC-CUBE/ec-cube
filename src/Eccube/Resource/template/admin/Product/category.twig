@@ -91,11 +91,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-9">
-            <div class="box">
-                <div class="box-header">
-                    <div class="box-title box-title-category">
+    <div id="category_wrap" class="row">
+        <div id="list_box" class="col-md-9">
+            <div id="list_box__body" class="box">
+                <div id="bread_crumb_box" class="box-header">
+                    <div id="bread_crumb_box__body" class="box-title box-title-category">
                         <a href="{{ url('admin_product_category') }}">全カテゴリー</a>
                         {% for ParentCategory in TargetCategory.path %}
                             {% if ParentCategory.id is not null %}
@@ -104,21 +104,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         {% endfor %}
                     </div>
                 </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="form-inline col-md-9">
-                            {% if TargetCategory.level < app.config.category_nest_level %}
+                <div id="edit_box" class="box-body">
+                    <div id="edit_box__body" class="row">
+                        <div id="edit_box__body_inner" class="col-md-9">
                             <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetCategory.id %}{{ path('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}" enctype="multipart/form-data">
-                                {{ form_widget(form._token) }}
-                                {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
-                                {{ form_errors(form.name) }}
-                                <button class="btn btn-default btn-sm" type="submit">カテゴリ作成</button>
+                                <div class="form-group">
+                                    {% if TargetCategory.level < app.config.category_nest_level %}
+                                        <div class="col-md-12 form-inline">
+                                            {{ form_widget(form._token) }}
+                                            {{ form_widget(form.name, {attr: {placeholder: 'カテゴリ名を入力'}}) }}
+                                            {{ form_errors(form.name) }}
+                                            <button class="btn btn-default btn-sm" type="submit">カテゴリ作成</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="extra-form">
+                                    {% for f in form.getIterator %}
+                                        {% if f.vars.name matches '[^plg*]' %}
+                                            <div class="col-md-12 form-group">
+                                                {{ form_label(f) }}
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             </form>
-                            {% endif %}
                         </div>
-                        <div class="dl_dropdown col-md-3">
-                            <div class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"/></svg></a>
-                                <ul class="dropdown-menu dropdown-menu-right">
+                        <div id="csv_menu_box" class="dl_dropdown col-md-3">
+                            <div id="csv_menu_box__toggle" class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">CSVダウンロード<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"/></svg></a>
+                                <ul id="csv_menu" class="dropdown-menu dropdown-menu-right">
                                     <li><a href="{{ url('admin_product_category_export') }}">CSVダウンロード</a></li>
                                     <li><a href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_CATEGORY') }) }}">出力項目設定</a></li>
                                 </ul>
@@ -127,23 +142,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div><!-- /.box-header -->
                 {% if Categories|length > 0 %}
-                    <div class="box-body no-padding no-border">
-                        <div class="sortable_list">
-                            <div class="tableish">
+                    <div id="sortable_list" class="box-body no-padding no-border">
+                        <div id="sortable_list_box" class="sortable_list">
+                            <div id="sortable_list_box__list" class="tableish">
 
                                 {% for Category in Categories %}
 
-                                <div class="item_box tr" data-rank="{{ Category.rank }}" data-category-id="{{ Category.id }}">
+                                <div id="sortable_list__item--{{ Category.id }}" class="item_box tr" data-rank="{{ Category.rank }}" data-category-id="{{ Category.id }}">
                                     <div class="icon_sortable td">
                                         <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
                                     </div>
-                                    <div class="item_pattern td">
+                                    <div id="sortable_list__item_body--{{ Category.id }}" class="item_pattern td">
                                         <a href="{{ url('admin_product_category_show',  { parent_id : Category.id }) }}">{{ Category.name }}</a>
                                     </div>
-                                    <div class="icon_edit td">
-                                        <div class="dropdown">
+                                    <div id="sortable_list__item_menu_box--{{ Category.id }}" class="icon_edit td">
+                                        <div id="sortable_list__item_menu_toggle--{{ Category.id }}" class="dropdown">
                                             <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                            <ul class="dropdown-menu dropdown-menu-right">
+                                            <ul id="sortable_list__menu--{{ Category.id }}" class="dropdown-menu dropdown-menu-right">
                                                 {% if Category.id != TargetCategory.id %}
                                                     <li><a href="{{ url('admin_product_category_edit', {id: Category.id}) }}">編集</a></li>
                                                 {% else %}
@@ -170,8 +185,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div><!-- /.box-body -->
             {% else %}
-                <div class="box-body no-padding">
-                    <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
+                <div id="list_box" class="box-body no-padding">
+                    <div id="list_box__not_find_category" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
                 </div><!-- /.box-body -->
             {% endif %}
             <!-- ▲ データがある時 ▲ -->
@@ -180,14 +195,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
         {% macro tree(Category, TargetId, level) %}
             {% set level = level + 1 %}
-            <li class="level{{ level }} {% if Category.id == TargetId %}active{% endif %}">
+            <li id="tree_item--{{ Category.id }}" class="level{{ level }} {% if Category.id == TargetId %}active{% endif %}">
                 <svg class="cb cb-plus-square"> <use xlink:href="{% if Category.children|length > 0 %}#cb-plus-square{% else %}#cb-minus-square{% endif %}" /></svg>
                 <a href="{{ url('admin_product_category_show', { parent_id : Category.id }) }}">
                     {{ Category.name }} ({{ Category.children|length }})
                 </a>
                 {% if Category.children|length > 0 %}
                     {% for ChildCategory in Category.children %}
-                        <ul>
+                        <ul id="tree_item_child--{{ ChildCategory.id }}">
                             {{ _self.tree(ChildCategory, TargetId, level) }}
                         </ul>
                     {% endfor %}
@@ -196,12 +211,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {% endmacro %}
 
         <div class="col-md-3" id="aside_column">
-            <div class="col_inner">
+            <div id="tree_box" class="col_inner">
 
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="tree">
-                            <p class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
+                <div id="tree_box__body" class="box no-header">
+                    <div id="tree_box__body_inner" class="box-body">
+                        <div id="tree_box__tree" class="tree">
+                            <p id="tree_box__header" class="{% if Parent is null %}active{% endif %}"><a href="{{ url('admin_product_category') }}">全カテゴリー</a></p>
                             <ul id="category_tree">
                                 {% for TopCategory in TopCategories %}
                                     {{ _self.tree(TopCategory, TargetCategory.Parent.id | default(null), 0)}}

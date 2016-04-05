@@ -24,20 +24,13 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Common\Constant;
+
 /**
  * CustomerAddress
  */
 class CustomerAddress extends \Eccube\Entity\AbstractEntity
 {
-
-    /**
-     * @return string
-     */
-    public function getShippingMultipleDefaultName()
-    {
-        return $this->getName01() . ' ' . $this->getAddr02() . ' ' . $this->getPref()->getName() . $this->getAddr01();
-    }
-
     /**
      * @var integer
      */
@@ -152,6 +145,82 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
      * @var \Eccube\Entity\Master\Pref
      */
     private $Pref;
+
+    public function __construct()
+    {
+        $this->setDelFlg(Constant::DISABLED);
+    }
+
+    /**
+     * getShippingMultipleDefaultName
+     * 
+     * @return string
+     */
+    public function getShippingMultipleDefaultName()
+    {
+        return $this->getName01() . ' ' . $this->getAddr02() . ' ' . $this->getPref()->getName() . $this->getAddr01();
+    }
+    
+    /**
+     * Set from customer.
+     * 
+     * @param \Eccube\Entity\Customer $Customer
+     * @return \Eccube\Entity\CustomerAddress
+     */
+    public function setFromCustomer(Customer $Customer)
+    {
+        $this
+            ->setCustomer($Customer)
+            ->setName01($Customer->getName01())
+            ->setName02($Customer->getName02())
+            ->setKana01($Customer->getKana01())
+            ->setKana02($Customer->getKana02())
+            ->setCompanyName($Customer->getCompanyName())
+            ->setTel01($Customer->getTel01())
+            ->setTel02($Customer->getTel02())
+            ->setTel03($Customer->getTel03())
+            ->setFax01($Customer->getFax01())
+            ->setFax02($Customer->getFax02())
+            ->setFax03($Customer->getFax03())
+            ->setZip01($Customer->getZip01())
+            ->setZip02($Customer->getZip02())
+            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+            ->setPref($Customer->getPref())
+            ->setAddr01($Customer->getAddr01())
+            ->setAddr02($Customer->getAddr02());
+
+        return $this;
+    }
+    
+    /**
+     * Set from Shipping.
+     * 
+     * @param \Eccube\Entity\Shipping $Shipping
+     * @return \Eccube\Entity\CustomerAddress
+     */
+    public function setFromShipping(Shipping $Shipping)
+    {
+        $this
+            ->setName01($Shipping->getName01())
+            ->setName02($Shipping->getName02())
+            ->setKana01($Shipping->getKana01())
+            ->setKana02($Shipping->getKana02())
+            ->setCompanyName($Shipping->getCompanyName())
+            ->setTel01($Shipping->getTel01())
+            ->setTel02($Shipping->getTel02())
+            ->setTel03($Shipping->getTel03())
+            ->setFax01($Shipping->getFax01())
+            ->setFax02($Shipping->getFax02())
+            ->setFax03($Shipping->getFax03())
+            ->setZip01($Shipping->getZip01())
+            ->setZip02($Shipping->getZip02())
+            ->setZipCode($Shipping->getZip01() . $Shipping->getZip02())
+            ->setPref($Shipping->getPref())
+            ->setAddr01($Shipping->getAddr01())
+            ->setAddr02($Shipping->getAddr02());
+
+        return $this;
+    }
 
     /**
      * Get id

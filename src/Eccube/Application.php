@@ -25,23 +25,46 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
-use Monolog\Handler\FingersCrossedHandler;
-use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
 {
+    protected static $instance;
+
+    protected $initialized = false;
+    protected $initializedPlugin = false;
+
+    public static function getInstance(array $values = array())
+    {
+        if (!is_object(self::$instance)) {
+            self::$instance = new Application($values);
+        }
+
+        return self::$instance;
+    }
+
+    public static function clearInstance()
+    {
+        self::$instance = null;
+    }
+
+    final public function __clone()
+    {
+        throw new \Exception('Clone is not allowed against '.get_class($this));
+    }
+
     public function __construct(array $values = array())
     {
         parent::__construct($values);
+
+        if (is_null(self::$instance)) {
+            self::$instance = $this;
+        }
 
         // load config
         $this->initConfig();
@@ -143,6 +166,10 @@ class Application extends ApplicationTrait
 
     public function initialize()
     {
+        if ($this->initialized) {
+            return;
+        }
+
         // init locale
         $this->initLocale();
 
@@ -180,7 +207,7 @@ class Application extends ApplicationTrait
                     break;
             }
 
-            return $app['twig']->render('error.twig', array(
+            return $app->render('error.twig', array(
                 'error_title' => $title,
                 'error_message' => $message,
             ));
@@ -191,6 +218,9 @@ class Application extends ApplicationTrait
 
         // init doctrine orm
         $this->initDoctrine();
+
+        // Set up the DBAL connection now to check for a proper connection to the database.
+        $this->checkDatabaseConnection();
 
         // init security
         $this->initSecurity();
@@ -206,6 +236,8 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
+
+        $this->initialized = true;
     }
 
     public function initLocale()
@@ -245,6 +277,7 @@ class Application extends ApplicationTrait
     public function initSession()
     {
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
+            'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => 'eccube',
                 'cookie_path' => $this['config']['root_urlpath'] ?: '/',
@@ -255,17 +288,6 @@ class Application extends ApplicationTrait
                 // http://blog.tokumaru.org/2011/10/cookiedomain.html
             ),
         ));
-        $this['session.db_options'] = array(
-            'db_table'      => 'dtb_session',
-        );
-
-        $app = $this;
-        $this['session.storage.handler'] = function() use ($app) {
-            return new PdoSessionHandler(
-                $app['dbs']['session']->getWrappedConnection(),
-                $app['session.db_options']
-            );
-        };
     }
 
     public function initRendering()
@@ -287,6 +309,9 @@ class Application extends ApplicationTrait
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
 
+                $app['admin'] = false;
+                $app['front'] = false;
+
                 if (isset($app['profiler'])) {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
                 } else {
@@ -299,6 +324,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.'admin';
+                    $app['admin'] = true;
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
@@ -306,6 +332,7 @@ class Application extends ApplicationTrait
                     $paths[] = $app['config']['template_default_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.$app['config']['template_code'];
+                    $app['front'] = true;
                 }
                 $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
@@ -346,7 +373,7 @@ class Application extends ApplicationTrait
                     $roles = array();
                     foreach ($AuthorityRoles as $AuthorityRole) {
                         // 管理画面でメニュー制御するため相対パス全てをセット
-                        $roles[] = $app['request']->getBaseUrl() . '/' . $app['config']['admin_route'] . $AuthorityRole->getDenyUrl();
+                        $roles[] = $app['request']->getBaseUrl().'/'.$app['config']['admin_route'].$AuthorityRole->getDenyUrl();
                     }
 
                     $app['twig']->addGlobal('AuthorityRoles', $roles);
@@ -414,8 +441,7 @@ class Application extends ApplicationTrait
     {
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'dbs.options' => array(
-                'default' => $this['config']['database'],
-                'session' => $this['config']['database'],
+                'default' => $this['config']['database']
         )));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
@@ -437,7 +463,16 @@ class Application extends ApplicationTrait
         );
 
         foreach ($finder as $dir) {
-            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
+
+            $file = $dir->getRealPath().'/config.yml';
+
+            if (file_exists($file)) {
+                $config = Yaml::parse(file_get_contents($file));
+            } else {
+                $code = $dir->getBaseName();
+                $this['monolog']->warning("skip {$code} orm.path loading. config.yml not found.", array('path' => $file));
+                continue;
+            }
 
             // Doctrine Extend
             if (isset($config['orm.path']) && is_array($config['orm.path'])) {
@@ -535,11 +570,11 @@ class Application extends ApplicationTrait
         $this['eccube.event_listner.security'] = $this->share(function($app) {
             return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         });
-        $this['user'] = $this->share(function($app) {
+        $this['user'] = function($app) {
             $token = $app['security']->getToken();
 
             return ($token !== null) ? $token->getUser() : null;
-        });
+        };
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
@@ -579,11 +614,17 @@ class Application extends ApplicationTrait
 
     public function initializePlugin()
     {
+        if ($this->initializedPlugin) {
+            return;
+        }
+
         // setup event dispatcher
         $this->initPluginEventDispatcher();
 
         // load plugin
         $this->loadPlugin();
+
+        $this->initializedPlugin = true;
     }
 
     public function initPluginEventDispatcher()
@@ -622,6 +663,154 @@ class Application extends ApplicationTrait
             $route = $event->getRequest()->attributes->get('_route');
             $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
         });
+
+        // Request Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function(\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::REQUEST '.$route);
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
+
+            if (strpos($route, 'admin') === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.request', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.request', $event);
+            }
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.request", $event);
+
+        }, 30); // Routing(32)が解決しし, 認証判定(8)が実行される前のタイミング.
+
+        // Controller Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function(\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::CONTROLLER '.$route);
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.controller', $event);
+
+            if (strpos($route, 'admin') === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.controller', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.controller', $event);
+            }
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.controller", $event);
+        });
+
+        // Response Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::RESPONSE '.$route);
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.response", $event);
+
+            if (strpos($route, 'admin') === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.response', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.response', $event);
+            }
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.response', $event);
+        });
+
+        // Exception Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function(\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) use ($app) {
+
+            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+                return;
+            }
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::EXCEPTION '.$route);
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.exception", $event);
+
+            if (strpos($route, 'admin') === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.exception', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.exception', $event);
+            }
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.exception', $event);
+        });
+
+        // Terminate Event
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function(\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) use ($app) {
+
+            $route = $event->getRequest()->attributes->get('_route');
+
+            if (is_null($route)) {
+                return;
+            }
+
+            $app['monolog']->debug('KernelEvents::TERMINATE '.$route);
+
+            // ルーティング単位
+            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.terminate", $event);
+
+            if (strpos($route, 'admin') === 0) {
+                // 管理画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.terminate', $event);
+            } else {
+                // フロント画面
+                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.terminate', $event);
+            }
+
+            // 全体
+            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
+        });
     }
 
     public function loadPlugin()
@@ -642,6 +831,7 @@ class Application extends ApplicationTrait
             ->getHandlers();
         foreach ($handlers as $handler) {
             if ($handler->getPlugin()->getEnable() && !$handler->getPlugin()->getDelFlg()) {
+
                 $priority = $handler->getPriority();
             } else {
                 // Pluginがdisable、削除済みの場合、EventHandlerのPriorityを全て0とみなす
@@ -654,10 +844,18 @@ class Application extends ApplicationTrait
         // config.yml/event.ymlの定義に沿ってインスタンスの生成を行い, イベント設定を行う.
         foreach ($finder as $dir) {
             //config.ymlのないディレクトリは無視する
-            if (!file_exists($dir->getRealPath().'/config.yml')) {
+            $path = $dir->getRealPath();
+            $code = $dir->getBaseName();
+            try {
+                $this['eccube.service.plugin']->checkPluginArchiveContent($path);
+            } catch (\Eccube\Exception\PluginException $e) {
+                $this['monolog']->warning("skip {$code} config loading. config.yml not foud or invalid.", array(
+                    'path' =>  $path,
+                    'original-message' => $e->getMessage()
+                ));
                 continue;
             }
-            $config = Yaml::parse(file_get_contents($dir->getRealPath().'/config.yml'));
+            $config = $this['eccube.service.plugin']->readYml($dir->getRealPath().'/config.yml');
 
             $plugin = $this['orm.em']
                 ->getRepository('Eccube\Entity\Plugin')
@@ -682,9 +880,19 @@ class Application extends ApplicationTrait
             // Type: Event
             if (isset($config['event'])) {
                 $class = '\\Plugin\\'.$config['code'].'\\'.$config['event'];
-                $subscriber = new $class($this);
+                $eventExists = true;
 
-                if (file_exists($dir->getRealPath().'/event.yml')) {
+                if (!class_exists($class)) {
+                    $this['monolog']->warning("skip {$code} loading. event class not foud.", array(
+                        'class' =>  $class,
+                    ));
+                    $eventExists = false;
+                }
+
+                if ($eventExists && file_exists($dir->getRealPath().'/event.yml')) {
+
+                    $subscriber = new $class($this);
+
                     foreach (Yaml::parse(file_get_contents($dir->getRealPath().'/event.yml')) as $event => $handlers) {
                         foreach ($handlers as $handler) {
                             if (!isset($priorities[$config['event']][$event][$handler[0]])) { // ハンドラテーブルに登録されていない（ソースにしか記述されていない)ハンドラは一番後ろにする
@@ -704,9 +912,48 @@ class Application extends ApplicationTrait
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
+                    if (!class_exists($class)) {
+                        $this['monolog']->warning("skip {$code} loading. service provider class not foud.", array(
+                            'class' =>  $class,
+                        ));
+                        continue;
+                    }
                     $this->register(new $class($this));
                 }
             }
         }
+    }
+
+    /**
+     *
+     * データベースの接続を確認
+     * 成功 : trueを返却
+     *　失敗 : \Doctrine\DBAL\DBALExceptionエラーが発生( 接続に失敗した場合 )、エラー画面を表示しdie()
+     * 備考 : app['debug']がtrueの際は処理を行わない
+     * @return boolean true
+     *
+     */
+    protected function checkDatabaseConnection()
+    {
+        if ($this['debug']) {
+            return;
+        }
+        try {
+            $this['db']->connect();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this['monolog']->error($e->getMessage());
+            $this['twig.path'] = array(__DIR__.'/Resource/template/exception');
+            $html = $this['twig']->render('error.twig', array(
+                'error_title' => 'データーベース接続エラー',
+                'error_message' => 'データーベースを確認してください',
+            ));
+            $response = new Response();
+            $response->setContent($html);
+            $response->setStatusCode('500');
+            $response->headers->set('Content-Type', 'text/html');
+            $response->send();
+            die();
+        }
+        return true;
     }
 }

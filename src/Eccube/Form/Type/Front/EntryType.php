@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Front;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryType extends AbstractType
@@ -90,6 +91,16 @@ class EntryType extends AbstractType
             ))
             ->add('save', 'submit', array('label' => 'この内容で登録する'))
             ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Eccube\Entity\Customer',
+        ));
     }
 
     /**

@@ -108,9 +108,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/mail_complete', '\Eccube\Controller\Admin\Order\MailController::complete')->bind('admin_order_mail_complete');
         $c->match('/order/mail/view', '\Eccube\Controller\Admin\Order\MailController::view')->bind('admin_order_mail_view');
 
-        $c->match('/order/status', '\Eccube\Controller\Admin\Order\StatusController::index')->bind('admin_order_status_default');
-        $c->match('/order/status/{statusId}', '\Eccube\Controller\Admin\Order\StatusController::index')->bind('admin_order_status');
-
         // content
         // deprecated /content/ 3.1 delete. use /content/news
         $c->match('/content', '\Eccube\Controller\Admin\Content\ContentsController::index')->bind('admin_content');
@@ -131,8 +128,6 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/content/file_view', '\Eccube\Controller\Admin\Content\FileController::view')->bind('admin_content_file_view');
         $c->match('/content/file_download', '\Eccube\Controller\Admin\Content\FileController::download')->bind('admin_content_file_download');
         $c->delete('/content/file_delete', '\Eccube\Controller\Admin\Content\FileController::delete')->bind('admin_content_file_delete');
-        $c->match('/content/css', '\Eccube\Controller\Admin\Content\CssController::index')->bind('admin_content_css');
-        $c->match('/content/css/delete', '\Eccube\Controller\Admin\Content\CssController::delete')->bind('admin_content_css_delete');
 
         $c->match('/content/layout', '\Eccube\Controller\Admin\Content\LayoutController::index')->bind('admin_content_layout');
         $c->match('/content/layout/{id}/edit', '\Eccube\Controller\Admin\Content\LayoutController::index')->assert('id', '\d+')->bind('admin_content_layout_edit');
@@ -227,6 +222,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_up')->bind('admin_store_plugin_handler_up');
         $c->match('/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_down')->bind('admin_store_plugin_handler_down');
         $c->match('/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Store\PluginController::authenticationSetting')->bind('admin_store_authentication_setting');
+        $c->put('/store/plugin/authentication_setting_download', '\Eccube\Controller\Admin\Store\PluginController::download')->bind('admin_setting_system_authority_download');
 
         return $c;
     }
