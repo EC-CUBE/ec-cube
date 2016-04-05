@@ -27,15 +27,15 @@
 
 {% block main %}
     <h1 class="page-heading">マイページ/会員情報編集(完了)</h1>
-    <div class="container-fluid">
+    <div id="complete_wrap" class="container-fluid">
     {% include 'Mypage/navi.twig' %}
         <div id="deliveradd_input" class="row">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div class="complete_message">
+            <div id="complete_box__body" class="col-sm-10 col-sm-offset-1">
+                <div id="complete_box__message"class="complete_message">
                     <h2 class="heading01">会員登録内容の変更が完了いたしました</h2>
                     <p>今後ともご愛顧賜りますようよろしくお願い申し上げます。</p>
                 </div>
-                <div class="row no-padding">
+                <div id="complete_box__top_button" class="row no-padding">
                     <div class="btn_group col-sm-offset-4 col-sm-4">
                         <p>
                             <a href="{{ url('index') }}" class="btn btn-info btn-block">トップページへ</a>

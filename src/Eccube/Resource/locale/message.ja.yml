@@ -22,6 +22,7 @@ Sex: 性別
 Birth: 生年月日
 Company name : 会社名
 Contents: お問い合わせ内容
+Tag: タグ
 form.empty_value: 選択してください
 form.pref.empty_value: 都道府県を選択
 form.job.empty_value: 選択してください
@@ -183,6 +184,8 @@ admin.plugin.update.complete: 更新が完了しました。
 plugin already installed.: プラグインは既にインストールされています。
 admin.plugin.authentication.setting.complete: 認証キーを設定しました。
 admin.plugin.install.complete: プラグインをインストールしました。
+admin.plugin.download.pem.complete: 証明書ファイルを設定しました。
+admin.plugin.download.pem.error: 証明書ファイルの設定ができませんでした。
 
 admin.preview.register.complete: プレビューを登録しました
 

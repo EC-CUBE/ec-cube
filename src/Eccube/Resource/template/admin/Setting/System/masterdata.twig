@@ -31,20 +31,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
     {{ form_widget(form._token) }}
     <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+        <div id="master_edit" class="col-md-12">
+            <div id="master_edit_box" class="box">
+                <div id="master_edit_box__header" class="box-header">
                     <h3 class="box-title">マスターデータ管理</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="form-inline">
-                        <div class="form-group">
+                <div id="master_edit_box__body" class="box-body">
+                    <div id="master_edit_box__body_inner" class="form-inline form-group">
+                        <div id="master_edit_box__masterdata" class="form-group">
                             {{ form_widget(form.masterdata, {'attr': {'class': 'form-control'}}) }}
                             {{ form_errors(form.masterdata) }}
                         </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">選択</button>
+                        <div id="master_edit_box__confirm_button" class="form-group">
+                            <button class="btn btn-primary btn-block" onclick="document.form1.submit();">選択</button>
                         </div>
+                    </div>
+                    <div class="extra-form clearfix">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                <div class="form-group">
+                                    {{ form_label(f) }}
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
@@ -57,9 +68,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {{ form_widget(form2.masterdata_name) }}
     {{ form_widget(form2._token) }}
     <div class="row" id="aside_wrap">
-        <div class="col-md-9">
-            <div class="box">
-                <div class="box-header">
+        <div id="result_list_box" class="col-md-9">
+            <div id="result_list_box__body" class="box">
+                <div id="result_list_box__header" class="box-header">
                     <div class="read">
                         マスターデータの値を設定できます。<br />
                         重複したIDを登録することはできません。<br />
@@ -68,23 +79,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
+                <div id="result_list__body_inner" class="table-responsive">
+                    <table id="result_list__list" class="table table-bordered table-striped">
+                        <tr id="result_list__list_header">
+                            <th id="result_list__header_id">ID</th>
+                            <th id="result_list__header_name">Name</th>
                             {#<th>Rank</th>#}
                         </tr>
                         {% for data in form2.data %}
-                        <tr>
-                            <td>
+                        <tr id="result_list__item--{{ data.vars.name }}">
+                            <td id="result_list__id--{{ data.vars.name }}">
                                 {{form_widget(data.id)}}
                             </td>
-                            <td>
+                            <td id="result_list__name--{{ data.vars.name }}">
                                 {{form_widget(data.name)}}
                             </td>
                             {#
-                            <td>
+                            <td id="result_list__rank">
                                 {{form_widget(data.rank)}}
                             </td>
                             #}
@@ -94,11 +105,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div><!-- /.box-body -->
         </div>
-        <div class="col-md-3">
+
+        <div id="common_box" class="col-md-3">
             <div class="col_inner" id="aside_column">
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="row text-center">
+                <div id="common_button_box" class="box no-header">
+                    <div id="common_button_box__body" class="box-body">
+                        <div id="common_button_box__insert_button"  class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                 <button class="btn btn-primary btn-block btn-lg" onclick="document.form2.submit();">登録</button>
                             </div>

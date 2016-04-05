@@ -25,44 +25,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <h1 class="page-heading">新規会員登録確認</h1>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <p>下記の内容で送信してもよろしいでしょうか？<br/>よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
+    <div id="confirm_wrap" class="container-fluid">
+        <div id="confirm_box" class="row">
+            <div id="confirm_box__body" class="col-md-10 col-md-offset-1">
+                <p id="confirm_box__message">下記の内容で送信してもよろしいでしょうか？<br/>よろしければ、一番下の「会員登録をする」ボタンをクリックしてください。</p>
 
                 <form method="post" action="{{ url('entry') }}">
                     {{ form_widget(form._token) }}
-                    <div class="dl_table">
-                        <dl>
+                    <div id="confirm_box__body_inner" class="dl_table">
+                        <dl id="confirm_box__name">
                             <dt>{{ form_label(form.name) }}</dt>
                             <dd class="form-group input_name">
                                 {{ form_widget(form.name.name01, { attr : { placeholder: '姓' }}) }}
                                 {{ form_widget(form.name.name02, { attr : { placeholder: '名' }}) }}
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__kana">
                             <dt>{{ form_label(form.kana) }}</dt>
                             <dd class="form-group input_name">
                                 {{ form_widget(form.kana.kana01, { attr : { placeholder: 'セイ' }}) }}
                                 {{ form_widget(form.kana.kana02, { attr : { placeholder: 'メイ' }}) }}
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__company_name">
                             <dt>{{ form_label(form.company_name) }}</dt>
                             <dd class="form-group input_name">
                                 {{ form_widget(form.company_name) }}
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__address_detail">
                             <dt>{{ form_label(form.address) }}</dt>
                             <dd>
-                                <div class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
-                                <div class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
+                                <div id="confirm_box__zip" class="form-group form-inline input_zip {% if form.zip.zip01.vars.errors is not empty or form.zip.zip02.vars.errors is not empty %}has-error{% endif %}">{{ form_widget(form.zip) }}</div>
+                                <div id="confirm_box__address" class="{% if form.address.pref.vars.errors is not empty or form.address.addr01.vars.errors is not empty or form.address.addr02.vars.errors is not empty %}has-error{% endif %}">
                                     {{ form_widget(form.address) }}
                                 </div>
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__tel">
                             <dt>{{ form_label(form.tel) }}</dt>
                             <dd>
                                 <div class="form-inline form-group input_tel">
@@ -70,7 +70,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__fax">
                             <dt>{{ form_label(form.fax) }}</dt>
                             <dd>
                                 <div class="form-inline form-group input_tel">
@@ -78,7 +78,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__email">
                             <dt>{{ form_label(form.email) }}</dt>
                             <dd>
                                 <div class="form-group">
@@ -87,7 +87,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__password">
                             <dt>{{ form_label(form.password) }}</dt>
                             <dd>
                                 <div class="form-group">
@@ -99,7 +99,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                     </div>
                     <div class="dl_table not_required">
-                        <dl>
+                        <dl id="confirm_box__birth">
                             <dt>{{ form_label(form.birth) }}</dt>
                             <dd>
                                 <div class="form-group form-inline">
@@ -107,7 +107,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__sex">
                             <dt>{{ form_label(form.sex) }}</dt>
                             <dd>
                                 <div class="form-group form-inline">
@@ -115,7 +115,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 </div>
                             </dd>
                         </dl>
-                        <dl>
+                        <dl id="confirm_box__job">
                             <dt>{{ form_label(form.job) }}</dt>
                             <dd>
                                 <div class="form-group form-inline">
@@ -125,14 +125,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </dl>
                     </div>
 
-                    <div class="row no-padding">
-                        <div class="btn_group col-sm-offset-4 col-sm-4">
-                            <p>
+                    <div id="confirm_box__footer" class="row no-padding">
+                        <div id="confirm_box__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                            <p id="confirm_box__insert_button">
                                 <button type="submit" class="btn btn-primary btn-block" name="mode" value="complete">
                                     会員登録をする
                                 </button>
                             </p>
-                            <p>
+                            <p id="confirm_box__back_button">
                                 <button type="submit" class="btn btn-info btn-block" name="mode" value="back">戻る
                                 </button>
                             </p>

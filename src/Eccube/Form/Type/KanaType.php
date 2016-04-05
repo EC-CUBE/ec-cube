@@ -25,21 +25,9 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * KanaType
- *
- * @uses AbstractType
- * @package
- * @version $id$
- * @copyright
- * @author Nobuhiko Kimoto <info@nob-log.info>
- * @license
- */
 class KanaType extends AbstractType
 {
     public function __construct($config = array('kana_len' => 50))

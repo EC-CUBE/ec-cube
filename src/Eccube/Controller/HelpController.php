@@ -33,31 +33,31 @@ class HelpController extends AbstractController
     {
         $Help = $app['eccube.repository.help']->get();
 
-        return $app->renderView('Help/tradelaw.twig', array(
+        return $app->render('Help/tradelaw.twig', array(
             'help' => $Help,
         ));
     }
 
     public function guide(Application $app)
     {
-        return $app->renderView('Help/guide.twig');
+        return $app->render('Help/guide.twig');
     }
 
     public function about(Application $app)
     {
-        return $app->renderView('Help/about.twig');
+        return $app->render('Help/about.twig');
     }
 
     public function privacy(Application $app)
     {
-        return $app->renderView('Help/privacy.twig');
+        return $app->render('Help/privacy.twig');
     }
 
     public function agreement(Application $app)
     {
         $Help = $app['eccube.repository.help']->get();
 
-        return $app->renderView('Help/agreement.twig', array(
+        return $app->render('Help/agreement.twig', array(
             'help' => $Help,
         ));
     }

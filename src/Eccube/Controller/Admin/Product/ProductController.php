@@ -28,6 +28,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,9 +43,18 @@ class ProductController extends AbstractController
 
         $session = $app['session'];
 
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_product')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_product');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_INITIALIZE, $event);
+
+        $searchForm = $builder->getForm();
 
         $pagination = array();
 
@@ -63,6 +74,17 @@ class ProductController extends AbstractController
                 // paginator
                 $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
                 $page_no = 1;
+
+                $event = new EventArgs(
+                    array(
+                        'qb' => $qb,
+                        'searchData' => $searchData,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+                $searchData = $event->getArgument('searchData');
+
                 $pagination = $app['paginator']()->paginate(
                     $qb,
                     $page_no,
@@ -103,6 +125,17 @@ class ProductController extends AbstractController
                     $page_count = empty($pcount) ? $page_count : $pcount;
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                    $event = new EventArgs(
+                        array(
+                            'qb' => $qb,
+                            'searchData' => $searchData,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH, $event);
+                    $searchData = $event->getArgument('searchData');
+
                     $pagination = $app['paginator']()->paginate(
                         $qb,
                         $page_no,
@@ -130,7 +163,7 @@ class ProductController extends AbstractController
             }
         }
 
-        return $app->renderView('Product/index.twig', array(
+        return $app->render('Product/index.twig', array(
             'searchForm' => $searchForm->createView(),
             'pagination' => $pagination,
             'disps' => $disps,
@@ -157,6 +190,16 @@ class ProductController extends AbstractController
                 }
             }
         }
+
+        $event = new EventArgs(
+            array(
+                'images' => $images,
+                'files' => $files,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_ADD_IMAGE_COMPLETE, $event);
+        $files = $event->getArgument('files');
 
         return $app->json(array('files' => $files), 200);
     }
@@ -205,9 +248,19 @@ class ProductController extends AbstractController
             $builder->remove('class');
         }
 
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_INITIALIZE, $event);
+
         $form = $builder->getForm();
+
         if (!$has_class) {
-            $ProductClass->setStockUnlimited((boolean) $ProductClass->getStockUnlimited());
+            $ProductClass->setStockUnlimited((boolean)$ProductClass->getStockUnlimited());
             $form['class']->setData($ProductClass);
         }
 
@@ -226,6 +279,13 @@ class ProductController extends AbstractController
             $categories[] = $ProductCategory->getCategory();
         }
         $form['Category']->setData($categories);
+
+        $Tags = array();
+        $ProductTags = $Product->getProductTag();
+        foreach ($ProductTags as $ProductTag) {
+            $Tags[] = $ProductTag->getTag();
+        }
+        $form['Tag']->setData($Tags);
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -346,6 +406,37 @@ class ProductController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
+                // 商品タグの登録
+                // 商品タグを一度クリア
+                foreach ($ProductTags as $ProductTag) {
+                    $Product->removeProductTag($ProductTag);
+                    $app['orm.em']->remove($ProductTag);
+                }
+                $app['orm.em']->persist($Product);
+
+                // 商品タグの登録
+                $Tags = $form->get('Tag')->getData();
+                foreach ($Tags as $Tag) {
+                    $ProductTag = new \Eccube\Entity\ProductTag();
+                    $ProductTag
+                        ->setProduct($Product)
+                        ->setTag($Tag)
+                        ->setCreator($app->user());
+
+                    $Product->addProductTag($ProductTag);
+                    $app['orm.em']->persist($ProductTag);
+                }
+                $app['orm.em']->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                        'Product' => $Product,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_COMPLETE, $event);
+
                 $app->addSuccess('admin.register.complete', 'admin');
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
@@ -355,9 +446,20 @@ class ProductController extends AbstractController
         }
 
         // 検索結果の保持
-        $searchForm = $app['form.factory']
-            ->createBuilder('admin_search_product')
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_search_product');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Product' => $Product,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_EDIT_SEARCH, $event);
+
+        $searchForm = $builder->getForm();
+
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
         }
@@ -417,8 +519,19 @@ class ProductController extends AbstractController
                 }
 
                 $app['orm.em']->persist($Product);
+
                 $app['orm.em']->flush();
 
+                $event = new EventArgs(
+                    array(
+                        'Product' => $Product,
+                        'ProductClass' => $ProductClasses,
+                        'deleteImages' => $deleteImages,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE, $event);
+                $deleteImages = $event->getArgument('deleteImages');
 
                 // 画像ファイルの削除(commit後に削除させる)
                 foreach ($deleteImages as $deleteImage) {
@@ -505,7 +618,21 @@ class ProductController extends AbstractController
                 }
 
                 $app['orm.em']->persist($CopyProduct);
+
                 $app['orm.em']->flush();
+
+                $event = new EventArgs(
+                    array(
+                        'Product' => $Product,
+                        'CopyProduct' => $CopyProduct,
+                        'CopyProductCategories' => $CopyProductCategories,
+                        'CopyProductClasses' => $CopyProductClasses,
+                        'images' => $Images,
+                        'Tags' => $Tags,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE, $event);
 
                 $app->addSuccess('admin.product.copy.complete', 'admin');
 
@@ -522,6 +649,12 @@ class ProductController extends AbstractController
 
     public function display(Application $app, Request $request, $id = null)
     {
+        $event = new EventArgs(
+            array(),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_DISPLAY_COMPLETE, $event);
+
         if (!is_null($id)) {
             return $app->redirect($app->url('product_detail', array('id' => $id, 'admin' => '1')));
         }

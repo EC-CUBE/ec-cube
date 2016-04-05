@@ -33,31 +33,41 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% endfor %}
             {% endif %}
             <div id="login_box" class="row">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <div class="column">
-                        <div class="column_inner clearfix">
+                <div id="mypage_login_wrap" class="col-sm-8 col-sm-offset-2">
+                    <div id="mypage_login_box" class="column">
+
+                        <div id="mypage_login_box__body" class="column_inner clearfix">
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle" /></svg></div>
-                            <div class="form-group">
+                            <div id="mypage_login_box__login_email" class="form-group">
                                 {{ form_widget(form.login_email, {'attr': {'style' : 'ime-mode: disabled;', 'placeholder' : 'メールアドレス' }}) }}
                             </div>
-                            <div class="form-group">
+                            <div id="mypage_login_box__login_pass" class="form-group">
                                 {{ form_widget(form.login_pass,  {'attr': {'placeholder' : 'パスワード' }}) }}
                                 {% if BaseInfo.option_remember_me %}
                                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                        <input type="hidden" name="login_memory" value="1">
+                                        <input id="mypage_login_box__login_memory" type="hidden" name="login_memory" value="1">
                                     {% else %}
                                         {{ form_widget(form.login_memory) }}
                                     {% endif %}
                                 {% endif %}
                             </div>
+                            <div class="extra-form form-group">
+                                {% for f in form.getIterator %}
+                                    {% if f.vars.name matches '[^plg*]' %}
+                                        {{ form_label(f) }}
+                                        {{ form_widget(f) }}
+                                        {{ form_errors(f) }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             {% if error %}
-                            <div class="form-group">
+                            <div id="mypage_login_box__error_message" class="form-group">
                                 <span class="text-danger">{{ error|trans|raw }}</span>
                             </div>
                             {% endif %}
-                            <div class="btn_area">
+                            <div id="mypage_login__login_button" class="btn_area">
                                 <p><button type="submit" class="btn btn-info btn-block btn-lg">ログイン</button></p>
-                                <ul>
+                                <ul id="mypage_login__login_menu" >
                                     <li><a href="{{ url('forgot') }}">ログイン情報をお忘れですか？</a></li>
                                     <li><a href="{{ url('entry') }}">新規会員登録</a></li>
                                 </ul>

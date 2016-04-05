@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     </form>
     <!-- ▼topicpath▼ -->
     <div id="topicpath" class="row">
-        <ol>
+        <ol id="list_header_menu">
             <li><a href="{{ url('product_list') }}">全商品</a></li>
             {% if Category is not null %}
                 {% for Path in Category.path %}
@@ -64,21 +64,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </ol>
     </div>
     <!-- ▲topicpath▲ -->
-    <div class="row">
+    <div id="result_info_box" class="row">
         <form name="page_navi_top" id="page_navi_top" action="?">
-            <p class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
+            <p id="result_info_box__item_count" class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
             </p>
 
-            <div class="col-sm-6 no-padding">
-                <ul class="pagenumberarea clearfix">
-                    <li>
+            <div id="result_info_box__menu_box" class="col-sm-6 no-padding">
+                <ul id="result_info_box__menu" class="pagenumberarea clearfix">
+                    <li id="result_info_box__disp_menu">
                         {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
                     </li>
-                    <li>
+                    <li id="result_info_box__order_menu">
                         {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
                     </li>
                 </ul>
             </div>
+
+            {% for f in disp_number_form.getIterator %}
+                {% if f.vars.name matches '[^plg*]' %}
+                    {{ form_label(f) }}
+                    {{ form_widget(f) }}
+                    {{ form_errors(f) }}
+                {% endif %}
+            {% endfor %}
+
+            {% for f in order_by_form.getIterator %}
+                {% if f.vars.name matches '[^plg*]' %}
+                    {{ form_label(f) }}
+                    {{ form_widget(f) }}
+                    {{ form_errors(f) }}
+                {% endif %}
+            {% endfor %}
+
+
         </form>
     </div>
 
@@ -86,29 +104,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <div id="item_list">
         <div class="row no-padding">
             {% for Product in pagination %}
-                <div class="col-sm-3 col-xs-6">
-                    <div class="product_item">
+                <div id="result_list_box--{{ Product.id }}" class="col-sm-3 col-xs-6">
+                    <div id="result_list__item--{{ Product.id }}" class="product_item">
                         <a href="{{ url('product_detail', {'id': Product.id}) }}">
-                            <div class="item_photo">
+                            <div id="result_list__image--{{ Product.id }}" class="item_photo">
                                 <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">
                             </div>
-                            <dl>
-                                <dt class="item_name">{{ Product.name }}</dt>
+                            <dl id="result_list__detail--{{ Product.id }}">
+                                <dt id="result_list__name--{{ Product.id }}" class="item_name">{{ Product.name }}</dt>
                                 {% if Product.description_list %}
-                                    <dd class="item_comment">{{ Product.description_list|raw|nl2br }}</dd>
+                                    <dd id="result_list__description_list--{{ Product.id }}" class="item_comment">{{ Product.description_list|raw|nl2br }}</dd>
                                 {% endif %}
                                 {% if Product.hasProductClass %}
                                     {% if Product.getPrice02Min == Product.getPrice02Max %}
-                                    <dd class="item_price">
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">
                                         {{ Product.getPrice02IncTaxMin|price }}
                                     </dd>
                                     {% else %}
-                                    <dd class="item_price">
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">
                                         {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
                                     </dd>
                                     {% endif %}
                                 {% else %}
-                                    <dd class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>
                                 {% endif %}
                             </dl>
                         </a>

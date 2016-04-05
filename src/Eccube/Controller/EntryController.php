@@ -26,16 +26,18 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EntryController extends AbstractController
 {
 
     /**
-     * Index
+     * 会員登録画面.
      *
      * @param  Application $app
      * @param  Request $request
@@ -48,8 +50,19 @@ class EntryController extends AbstractController
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createBuilder('entry', $Customer);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Customer' => $Customer,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE, $event);
+
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -59,7 +72,7 @@ class EntryController extends AbstractController
                     $form = $builder->getForm();
                     $form->handleRequest($request);
 
-                    return $app['twig']->render('Entry/confirm.twig', array(
+                    return $app->render('Entry/confirm.twig', array(
                         'form' => $form->createView(),
                     ));
 
@@ -83,6 +96,16 @@ class EntryController extends AbstractController
                     $app['orm.em']->persist($CustomerAddress);
                     $app['orm.em']->flush();
 
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Customer' => $Customer,
+                            'CustomerAddress' => $CustomerAddress,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_INDEX_COMPLETE, $event);
+
                     $activateUrl = $app->url('entry_activate', array('secret_key' => $Customer->getSecretKey()));
 
                     /** @var $BaseInfo \Eccube\Entity\BaseInfo */
@@ -94,6 +117,10 @@ class EntryController extends AbstractController
                         // メール送信
                         $app['eccube.service.mail']->sendCustomerConfirmMail($Customer, $activateUrl);
 
+                        if ($event->hasResponse()) {
+                            return $event->getResponse();
+                        }
+
                         return $app->redirect($app->url('entry_complete'));
                     // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
                     } else {
@@ -102,29 +129,29 @@ class EntryController extends AbstractController
             }
         }
 
-        return $app['view']->render('Entry/index.twig', array(
+        return $app->render('Entry/index.twig', array(
             'form' => $form->createView(),
         ));
     }
 
     /**
-     * Complete
+     * 会員登録完了画面.
      *
-     * @param  Application $app
-     * @return mixed
+     * @param Application $app
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function complete(Application $app)
     {
-        return $app['view']->render('Entry/complete.twig', array());
+        return $app->render('Entry/complete.twig', array());
     }
 
     /**
-     * 会員のアクティベート（本会員化）を行う
+     * 会員のアクティベート（本会員化）を行う.
      *
-     * @param  Application $app
-     * @param  Request $request
-     * @param  string $secret_key
-     * @return mixed
+     * @param Application $app
+     * @param Request $request
+     * @param $secret_key
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function activate(Application $app, Request $request, $secret_key)
     {
@@ -149,6 +176,14 @@ class EntryController extends AbstractController
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
 
+            $event = new EventArgs(
+                array(
+                    'Customer' => $Customer,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_ENTRY_ACTIVATE_COMPLETE, $event);
+
             // メール送信
             $app['eccube.service.mail']->sendCustomerCompleteMail($Customer);
 
@@ -156,7 +191,7 @@ class EntryController extends AbstractController
             $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
             $this->getSecurity($app)->setToken($token);
 
-            return $app['view']->render('Entry/activate.twig');
+            return $app->render('Entry/activate.twig');
         } else {
             throw new HttpException\AccessDeniedHttpException('不正なアクセスです。');
         }

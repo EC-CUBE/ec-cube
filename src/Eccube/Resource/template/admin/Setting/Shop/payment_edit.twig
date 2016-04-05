@@ -137,12 +137,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         {{ form_widget(form.charge_flg) }}
         {{ form_widget(form.fix_flg) }}
         <div class="row" id="aside_wrap">
-            <div class="col-md-9">
-                <div class="box">
-                    <div class="box-header">
+            <div id="detail_wrap" class="col-md-9">
+                <div id="detail_box" class="box">
+                    <div id="detail_box__header" class="box-header">
                         <h3 class="box-title">支払方法登録・編集</h3>
                     </div><!-- /.box-header -->
-                    <div class="box-body">
+                    <div id="detail_box__body" class="box-body">
 
                         {{ form_row(form.method) }}
 
@@ -150,7 +150,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {{ form_row(form.charge) }}
                         {% endif %}
 
-                        <div class="form-group">
+                        <div id="detail_box__rule" class="form-group">
                             <label class="col-sm-2 control-label">
                                 利用条件
                             </label>
@@ -162,13 +162,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.rule_max) }}
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div id="detail_box__image" class="form-group">
                             <label class="col-sm-2 control-label" for="admin_product_product_image">
                                 {{ form.payment_image_file.vars.label }}
                                 <br>
                                 <span class="small">620px以上推奨</span>
                             </label>
-                            <div class="col-sm-9 col-lg-10">
+                            <div id="detail_box__files" class="col-sm-9 col-lg-10">
                                 <div class="photo_files" id="drag-drop-area">
                                     <svg id="icon_no_image" class="cb cb-photo no-image"> <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-photo"></use></svg>
                                     <ul id="thumb" class="clearfix"></ul>
@@ -176,8 +176,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-9 col-lg-10 ">
+                        <div id="detail_list__payment_image" class="form-group">
+                            <div id="detail_list__payment_image_body" class="col-sm-offset-2 col-sm-9 col-lg-10 ">
                                 <div id="progress" class="progress progress-striped active" style="display:none;">
                                     <div class="progress-bar progress-bar-info"></div>
                                 </div>
@@ -189,10 +189,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                 {{ form_errors(form.payment_image_file) }}
                             </div>
                         </div>
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
-
-                <div class="row">
+                <div id="detail_list__back_button" class="row">
                     <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                         <p><a href="{{ url('admin_setting_shop_payment') }}">一覧に戻る</a></p>
                     </div>
@@ -200,11 +206,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
             </div><!-- /.col -->
             
-            <div class="col-md-3">
+            <div id="detail_list_footer" class="col-md-3">
                 <div class="col_inner" id="aside_column">
-                    <div class="box no-header">
-                        <div class="box-body">
-                            <div class="row text-center">
+                    <div id="detail_list_footer__body" class="box no-header">
+                        <div id="detail_list_footer__body_inner" class="box-body">
+                            <div id="detail_list_footer__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                     <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
                                 </div>

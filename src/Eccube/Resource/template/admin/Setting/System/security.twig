@@ -32,22 +32,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <form method="post" action="{{ url('admin_setting_system_security') }}">
     {{ form_widget(form._token) }}
     <div class="row" id="aside_wrap">
-        <div class="col-md-9">
-            <div class="box">
-                <div class="box-header">
+        <div  id="security_wrap" class="col-md-9">
+            <div id="security_box" class="box">
+                <div id="security_box__header" class="box-header">
                     <h3 class="box-title">セキュリティ機能設定</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body form-horizontal">
-                        <div class="form-group">
+                <div id="security_box__body" class="box-body form-horizontal">
+                        <div id="security_dir_box" class="form-group">
                             <label class="col-sm-3 col-lg-2 control-label">ディレクトリ名</label>
-                            <div class="col-sm-3 col-lg-3">
+                            <div id="security_box__route_dir" class="col-sm-3 col-lg-3">
                                 {{ form_widget(form.admin_route_dir) }}
                                 {{ form_errors(form.admin_route_dir) }}
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div id="security_ip_box" class="form-group">
                             <label class="col-sm-3 col-lg-2 control-label">IP制限</label>
-                            <div class="col-sm-9 col-lg-10">
+                            <div id="security_box__allow_host" class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.admin_allow_host, {'attr': {'rows': '7', 'aria-describedby': 'helpBlock'}}) }}
                                 {{ form_errors(form.admin_allow_host) }}
                                 <span id="helpBlock" class="help-block">※管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
@@ -56,12 +56,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                 </div><!-- /.box-body --> 
             </div><!-- /.box -->
-            <div class="box">
-                <div class="box-header">
+            <div id="site_security_box" class="box">
+                <div id="site_security_box__header" class="box-header">
                     <h3 class="box-title">サイトセキュリティ設定</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body form-horizontal">
-                    <div class="form-group">
+                <div id="site_security_box__body" class="box-body form-horizontal">
+                    <div id="site_security_box__force_ssl" class="form-group">
                         <label class="col-sm-3 col-lg-2 form-inline">SSL制限</label>
                         <div class="col-sm-9 col-lg-10">
                             {% if app.request.secure %}
@@ -76,12 +76,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
         </div><!-- /.col -->
-
+        <div class="extra-form">
+            {% for f in form.getIterator %}
+                {% if f.vars.name matches '[^plg*]' %}
+                    {{ form_label(f) }}
+                    {{ form_widget(f) }}
+                    {{ form_errors(f) }}
+                {% endif %}
+            {% endfor %}
+        </div>
         <div class="col-md-3" id="aside_column">
-            <div class="col_inner">
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="row text-center">
+            <div id="common_box" class="col_inner">
+                <div id="common_button_box" class="box no-header">
+                    <div id="common_button_box__body" class="box-body">
+                        <div id="common_button_box__edit_button" class="row text-center">
                             <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                 <button class="btn btn-primary btn-block btn-lg" type="submit">設定</button>
                             </div>

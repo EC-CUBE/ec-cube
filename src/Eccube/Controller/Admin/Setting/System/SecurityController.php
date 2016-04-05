@@ -26,11 +26,9 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
-use Eccube\Util\Str;
 use Eccube\Controller\AbstractController;
-
+use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 
 

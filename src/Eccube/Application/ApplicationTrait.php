@@ -2,6 +2,7 @@
 
 namespace Eccube\Application;
 
+use Eccube\Event\TemplateEvent;
 use Monolog\Logger;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,10 +58,24 @@ class ApplicationTrait extends \Silex\Application
         $this->clearMessage();
         $this->addWarning('admin.delete.warning', 'admin');
     }
-    
-    public function setLoginTargetPath($targetPath)
+
+    public function setLoginTargetPath($targetPath, $namespace = null)
     {
-        $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+        if (is_null($namespace)) {
+            $this['session']->getFlashBag()->set('eccube.login.target.path', $targetPath);
+        } else {
+            $this['session']->getFlashBag()->set('eccube.' . $namespace . '.login.target.path', $targetPath);
+        }
+    }
+
+    public function isAdminRequest()
+    {
+        return $this['admin'];
+    }
+
+    public function isFrontRequest()
+    {
+        return $this['front'];
     }
 
     /*
@@ -209,6 +224,22 @@ class ApplicationTrait extends \Silex\Application
     {
         $twig = $this['twig'];
 
+        // twigファイルのソースコードを読み込み, 文字列化.
+        $source = $twig->getLoader()->getSource($view);
+
+        // イベントの実行.
+        // プラグインにはテンプレートファイル名、文字列化されたtwigファイル、パラメータを渡す
+        $event = new TemplateEvent($view, $source, $parameters, $response);
+
+        $eventName = $view;
+        if ($this->isAdminRequest()) {
+            // 管理画面の場合、event名に「Admin/」を付ける
+            $eventName = 'Admin/' . $view;
+        }
+        $this['monolog']->debug('Template Event Name : ' . $eventName);
+
+        $this['eccube.event.dispatcher']->dispatch($eventName, $event);
+
         if ($response instanceof StreamedResponse) {
             $response->setCallback(function () use ($twig, $view, $parameters) {
                 $twig->display($view, $parameters);
@@ -217,7 +248,13 @@ class ApplicationTrait extends \Silex\Application
             if (null === $response) {
                 $response = new Response();
             }
-            $response->setContent($twig->render($view, $parameters));
+
+            // プラグインで変更された文字列から, テンプレートオブジェクトを生成
+            $template = $twig->createTemplate($event->getSource());
+
+            // レンダリング実行.
+            $content = $template->render($event->getParameters());
+            $response->setContent($content);
         }
 
         return $response;
@@ -229,7 +266,7 @@ class ApplicationTrait extends \Silex\Application
      * @param string $view The view name
      * @param array $parameters An array of parameters to pass to the view
      *
-     * @return Response A Response instance
+     * @return string The rendered view
      */
     public function renderView($view, array $parameters = array())
     {

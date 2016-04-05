@@ -26,16 +26,18 @@ namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 
 class ChangeController extends AbstractController
 {
     /**
-     * Index
-     * 
+     * 会員情報編集画面.
+     *
      * @param Application $app
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
@@ -49,11 +51,21 @@ class ChangeController extends AbstractController
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
         $builder = $app['form.factory']->createBuilder('entry', $Customer);
 
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'Customer' => $Customer,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE, $event);
+
         /* @var $form \Symfony\Component\Form\FormInterface */
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             if ($Customer->getPassword() === $app['config']['default_password']) {
                 $Customer->setPassword($previous_password);
             } else {
@@ -63,18 +75,27 @@ class ChangeController extends AbstractController
             }
             $app['orm.em']->flush();
 
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'Customer' => $Customer,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE, $event);
+
             return $app->redirect($app->url('mypage_change_complete'));
         }
 
         $app['security']->getToken()->setUser($LoginCustomer);
 
-        return $app->renderView('Mypage/change.twig', array(
+        return $app->render('Mypage/change.twig', array(
             'form' => $form->createView(),
         ));
     }
 
     /**
-     * Complete
+     * 会員情報編集完了画面.
      *
      * @param Application $app
      * @param Request $request
@@ -82,6 +103,6 @@ class ChangeController extends AbstractController
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->renderView('Mypage/change_complete.twig');
+        return $app->render('Mypage/change_complete.twig');
     }
 }
