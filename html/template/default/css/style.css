@@ -1707,6 +1707,23 @@ dl.quantity dd {
     white-space: nowrap;
 }
 
+/* product_tag */
+
+.product_tag ul {
+    list-style: none;
+    margin: 8px 0;
+}
+.product_tag li {
+    display: inline-block;
+    padding: 0;
+    margin: 0 15px 0 0;
+}
+.product_tag .tag {
+    padding: 3px 1em;
+    display: block;
+    border: solid 1px #ccc;
+    border-radius: 15px 0 0 15px;
+}
 
 /* Cart Page
 ------------------------------------------- */

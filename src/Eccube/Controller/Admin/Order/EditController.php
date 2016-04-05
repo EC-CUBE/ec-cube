@@ -38,6 +38,12 @@ class EditController extends AbstractController
 {
     public function index(Application $app, Request $request, $id = null)
     {
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\ProductClass',
+        ));
+
         $TargetOrder = null;
         $OriginOrder = null;
 
