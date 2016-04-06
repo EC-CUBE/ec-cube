@@ -74,7 +74,6 @@ class ProductType extends AbstractType
             ->add('Category', 'category', array(
                'label' => '商品カテゴリ',
                'multiple' => true,
-               'expanded' => true,
                'mapped' => false,
             ))
 

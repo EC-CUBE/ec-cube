@@ -142,6 +142,9 @@ class ForgotController extends AbstractController
             $Customer->setPassword($pass);
 
             // 発行したパスワードの暗号化
+            if ($Customer->getSalt() === null) {
+                $Customer->setSalt($app['eccube.repository.customer']->createSalt(5));
+            }
             $encPass = $app['eccube.repository.customer']->encryptPassword($app, $Customer);
             $Customer->setPassword($encPass);
 
