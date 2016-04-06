@@ -1037,7 +1037,8 @@ class ShoppingService
      * @param Order $Order
      * @param array $data
      */
-    public function setFormData(Order $Order, array $data) {
+    public function setFormData(Order $Order, array $data)
+    {
 
         // お問い合わせ
         $Order->setMessage($data['message']);
@@ -1061,7 +1062,8 @@ class ShoppingService
      * @param Order $Order
      * @return Order
      */
-    public function calculateDeliveryFee(Order $Order) {
+    public function calculateDeliveryFee(Order $Order)
+    {
 
         // 配送業者を取得
         $shippings = $Order->getShippings();
@@ -1078,7 +1080,6 @@ class ShoppingService
         return $Order;
 
     }
-
 
 
     /**
@@ -1116,18 +1117,33 @@ class ShoppingService
 
 
     /**
+     * 値引き可能かチェック
+     *
+     * @param Order $Order
+     * @param       $discount
+     * @return bool
+     */
+    public function isDiscount(Order $Order, $discount)
+    {
+
+        if ($Order->getTotal() < $discount) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * 値引き金額をセット
      *
      * @param Order $Order
      * @param $discount
-     * @return Order
      */
     public function setDiscount(Order $Order, $discount)
     {
 
         $Order->setDiscount($Order->getDiscount() + $discount);
-
-        return $Order;
 
     }
 
@@ -1141,7 +1157,12 @@ class ShoppingService
     public function calculatePrice(Order $Order)
     {
 
-        $total = $Order->getSubtotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
+        $total = $Order->getTotalPrice();
+
+        if ($total < 0) {
+            // 合計金額がマイナスの場合、0を設定し、discountは値引きされた額のみセット
+            $total = 0;
+        }
 
         $Order->setTotal($total);
         $Order->setPaymentTotal($total);
