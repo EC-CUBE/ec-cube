@@ -281,6 +281,37 @@ $(function() {
                         <div id="result_list__header" class="box-header with-arrow">
                             <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
                         </div><!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="link-with-bar">
+                                        <li>
+                                            {% if page_status is null %}
+                                                <a>すべて</a>
+                                            {% else %}
+                                                <a href="{{ path('admin_product_page', {'page_no': page_no} ) }}">すべて</a>
+                                            {% endif %}
+                                        </li>
+                                        {% for disp in disps %}
+                                            <li>
+                                                {% if page_status == disp.id %}
+                                                    <a>{{ disp.name|e }}</a>
+                                                {% else %}
+                                                    <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                        <li>
+                                            {% if page_status == app.config.admin_product_stock_status %}
+                                                <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                            {% else %}
+                                                <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
                         {% endif %}
                     </div><!-- /.box -->
                 </div><!-- /.col -->
