@@ -259,7 +259,10 @@ class CsvExportService
         $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
         $entityName = str_replace('\\\\', '\\', get_class($entity));
         if ($csvEntityName !== $entityName) {
-            return null;
+            $entityName = str_replace('DoctrineProxy\\__CG__\\', '', $entityName);
+            if ($csvEntityName !== $entityName) {
+                return null;
+            }
         }
 
         // カラム名がエンティティに存在するかどうかをチェック.
