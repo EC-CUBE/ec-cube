@@ -16,7 +16,6 @@ class Version20160216215635 extends AbstractMigration
     public function up(Schema $schema)
     {
         $app = \Eccube\Application::getInstance();
-        $app->initialize();
 
         $PageLayout = $app['eccube.repository.page_layout']->findOneBy(array(
             'url' => 'forgot_reset',
