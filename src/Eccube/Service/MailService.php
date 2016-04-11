@@ -246,7 +246,7 @@ class MailService
 
         $this->app->mail($message);
 
-        return $body;
+        return $message;
 
     }
 

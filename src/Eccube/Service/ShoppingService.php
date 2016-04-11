@@ -1206,15 +1206,15 @@ class ShoppingService
     {
 
         // メール送信
-        $body = $this->app['eccube.service.mail']->sendOrderMail($Order);
+        $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
 
         // 送信履歴を保存.
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
 
         $MailHistory = new MailHistory();
         $MailHistory
-            ->setSubject('['.$this->app['eccube.repository.base_info']->get()->getShopName().'] '.$MailTemplate->getSubject())
-            ->setMailBody($body)
+            ->setSubject($message->getSubject())
+            ->setMailBody($message->getBody())
             ->setMailTemplate($MailTemplate)
             ->setSendDate(new \DateTime())
             ->setOrder($Order);
