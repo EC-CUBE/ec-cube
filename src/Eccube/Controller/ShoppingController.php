@@ -132,6 +132,14 @@ class ShoppingController extends AbstractController
 
         $form = $builder->getForm();
 
+        if ($Order->getTotalPrice() < 0) {
+            // 合計金額がマイナスの場合、エラー
+            $message = $app->trans('shopping.total.price', array('totalPrice' => number_format($Order->getTotalPrice())));
+            $app->addError($message);
+
+            return $app->redirect($app->url('shopping_error'));
+        }
+
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$app['session']->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {

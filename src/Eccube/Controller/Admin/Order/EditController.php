@@ -84,6 +84,17 @@ class EditController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
+            $event = new EventArgs(
+                array(
+                    'builder' => $builder,
+                    'OriginOrder' => $OriginOrder,
+                    'TargetOrder' => $TargetOrder,
+                    'OriginOrderDetails' => $OriginalOrderDetails,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
+
             // 入力情報にもとづいて再計算.
             $this->calculate($app, $TargetOrder);
 

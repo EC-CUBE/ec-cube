@@ -134,6 +134,7 @@ final class EccubeEvents
      */
     // index
     const ADMIN_ORDER_EDIT_INDEX_INITIALIZE = 'admin.order.edit.index.initialize';
+    const ADMIN_ORDER_EDIT_INDEX_PROGRESS = 'admin.order.edit.index.progress';
     const ADMIN_ORDER_EDIT_INDEX_COMPLETE = 'admin.order.edit.index.complete';
 
     // searchCustomer
