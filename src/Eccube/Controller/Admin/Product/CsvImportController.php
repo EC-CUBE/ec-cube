@@ -683,41 +683,44 @@ class CsvImportController
      */
     protected function createProductCategory($row, Product $Product, $app, $data)
     {
-        if ($row['商品カテゴリ(ID)'] != '') {
-            // カテゴリの削除
-            $ProductCategories = $Product->getProductCategories();
-            foreach ($ProductCategories as $ProductCategory) {
-                $Product->removeProductCategory($ProductCategory);
-                $this->em->remove($ProductCategory);
-                $this->em->flush($ProductCategory);
-            }
-
-            // カテゴリの登録
-            $categories = explode(',', $row['商品カテゴリ(ID)']);
-            $rank = 1;
-            foreach ($categories as $category) {
-
-                if (is_numeric($category)) {
-                    $Category = $app['eccube.repository.category']->find($category);
-                    if (!$Category) {
-                        $this->addErrors(($data->key() + 1) . '行目の商品カテゴリ(ID)「' . $category . '」が存在しません。');
-                    } else {
-                        $ProductCategory = new ProductCategory();
-                        $ProductCategory->setProductId($Product->getId());
-                        $ProductCategory->setCategoryId($Category->getId());
-                        $ProductCategory->setProduct($Product);
-                        $ProductCategory->setCategory($Category);
-                        $ProductCategory->setRank($rank);
-                        $Product->addProductCategory($ProductCategory);
-                        $rank++;
-                        $this->em->persist($ProductCategory);
-                    }
-                } else {
-                    $this->addErrors(($data->key() + 1) . '行目の商品カテゴリ(ID)「' . $category . '」が存在しません。');
-                }
-            }
-
+        // カテゴリの削除
+        $ProductCategories = $Product->getProductCategories();
+        foreach ($ProductCategories as $ProductCategory) {
+            $Product->removeProductCategory($ProductCategory);
+            $this->em->remove($ProductCategory);
+            $this->em->flush($ProductCategory);
         }
+
+        if ($row['商品カテゴリ(ID)'] == '') {
+            // 入力されていなければ削除のみ
+            return;
+        }
+
+        // カテゴリの登録
+        $categories = explode(',', $row['商品カテゴリ(ID)']);
+        $rank = 1;
+        foreach ($categories as $category) {
+
+            if (is_numeric($category)) {
+                $Category = $app['eccube.repository.category']->find($category);
+                if (!$Category) {
+                    $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
+                } else {
+                    $ProductCategory = new ProductCategory();
+                    $ProductCategory->setProductId($Product->getId());
+                    $ProductCategory->setCategoryId($Category->getId());
+                    $ProductCategory->setProduct($Product);
+                    $ProductCategory->setCategory($Category);
+                    $ProductCategory->setRank($rank);
+                    $Product->addProductCategory($ProductCategory);
+                    $rank++;
+                    $this->em->persist($ProductCategory);
+                }
+            } else {
+                $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
+            }
+        }
+
     }
 
 
@@ -749,8 +752,6 @@ class CsvImportController
             if (is_numeric($tag_id)) {
                 $Tag = $app['eccube.repository.master.tag']->find($tag_id);
                 if ($Tag) {
-                    $exsistData = true;
-
                     $ProductTags = new ProductTag();
                     $ProductTags
                         ->setProduct($Product)
