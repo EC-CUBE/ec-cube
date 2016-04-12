@@ -61,7 +61,7 @@
                             {{ form_label(form.url) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
                                 {% if editable %}
-                                    {{ url('top') }}{{ app.config.user_data_route }}/{{ form_widget(form.url) }}
+                                    {{ url('homepage') }}{{ form_widget(form.url) }}
                                 {% else %}
                                     {{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ app.routes.get(form.url.vars.value).path }}
                                     {{ form_widget(form.url, { type : 'hidden' } ) }}
@@ -112,6 +112,12 @@
                         {{ form_row(form.description) }}
                         {{ form_row(form.keyword) }}
                         {{ form_row(form.meta_robots) }}
+                    </div>
+                </div>
+
+                <div id="detail_box__footer" class="row hidden-xs hidden-sm">
+                    <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                        <p><a href="{{ url('admin_content_page') }}">戻る</a></p>
                     </div>
                 </div>
             </div>

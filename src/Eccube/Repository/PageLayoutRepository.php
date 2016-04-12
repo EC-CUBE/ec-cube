@@ -247,6 +247,7 @@ class PageLayoutRepository extends EntityRepository
     {
         if ($isUser) {
             $readPaths = array(
+                $this->app['config']['template_realdir'],
                 $this->app['config']['user_data_realdir'],
             );
         } else {
