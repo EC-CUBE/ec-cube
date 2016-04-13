@@ -50,7 +50,7 @@ class UserDataControllerTest extends AbstractWebTestCase
         $client = $this->createClient();
         $crawler = $client->request(
             'GET',
-            '/'.$this->fileName
+            '/user_data/'.$this->fileName
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
 
