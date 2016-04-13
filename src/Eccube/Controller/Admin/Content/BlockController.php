@@ -119,7 +119,7 @@ class BlockController extends AbstractController
                 $fs->dumpFile($filePath, $form->get('block_html')->getData());
                 // 更新でファイル名を変更した場合、以前のファイルを削除
                 if ($Block->getFileName() != $previous_filename && !is_null($previous_filename)) {
-                    $oldFilePath = $tplDir . $previous_filename;
+                    $oldFilePath = $tplDir . '/' . $previous_filename . '.twig';
                     if ($fs->exists($oldFilePath)) {
                         $fs->remove($oldFilePath);
                     }
