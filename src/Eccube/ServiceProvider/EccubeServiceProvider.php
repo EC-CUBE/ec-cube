@@ -319,6 +319,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
             // admin
             $types[] = new \Eccube\Form\Type\Admin\LoginType($app['session']);
+            $types[] = new \Eccube\Form\Type\Admin\ChangePasswordType($app);
             $types[] = new \Eccube\Form\Type\Admin\ProductType($app);
             $types[] = new \Eccube\Form\Type\Admin\ProductClassType($app);
             $types[] = new \Eccube\Form\Type\Admin\SearchProductType($app);
