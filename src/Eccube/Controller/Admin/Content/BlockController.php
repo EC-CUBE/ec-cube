@@ -29,6 +29,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,7 +117,9 @@ class BlockController extends AbstractController
                 $filePath = $tplDir . '/' . $Block->getFileName() . '.twig';
 
                 $fs = new Filesystem();
-                $fs->dumpFile($filePath, $form->get('block_html')->getData());
+                $blockData = $form->get('block_html')->getData();
+                $blockData = Str::convertLineFeed($blockData);
+                $fs->dumpFile($filePath, $blockData);
                 // 更新でファイル名を変更した場合、以前のファイルを削除
                 if ($Block->getFileName() != $previous_filename && !is_null($previous_filename)) {
                     $oldFilePath = $tplDir . '/' . $previous_filename . '.twig';
