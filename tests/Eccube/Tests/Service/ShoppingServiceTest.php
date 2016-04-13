@@ -5,8 +5,6 @@ namespace Eccube\Tests\Service;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Shipping;
-use Eccube\Service\ShoppingService;
-use Eccube\Util\Str;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
@@ -345,7 +343,9 @@ class ShoppingServiceTest extends AbstractServiceTestCase
             'message' => 'testtest'
         );
 
-        $this->app['eccube.service.shopping']->setOrderUpdate($Order, $data);
+        // $this->app['eccube.service.shopping']->setOrderUpdate($Order, $data);
+        $this->app['eccube.service.shopping']->setFormData($Order, $data);
+        $this->app['eccube.service.shopping']->setOrderUpdateData($Order);
 
         $this->expected = $this->app['config']['order_new'];
         $this->actual = $Order->getOrderStatus()->getId();

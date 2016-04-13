@@ -28,13 +28,17 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\MailHistory;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
+use Eccube\Exception\ShoppingException;
 use Eccube\Util\Str;
 
 
@@ -200,10 +204,8 @@ class ShoppingService
 
         $Order->setTax($tax);
 
-        $total = $subTotal + $Order->getCharge() + $Order->getDeliveryFeeTotal();
-
-        $Order->setTotal($total);
-        $Order->setPaymentTotal($total);
+        // 合計金額の計算
+        $this->calculatePrice($Order);
 
         $this->em->flush();
 
@@ -267,7 +269,7 @@ class ShoppingService
             ->setFax03($Customer->getFax03())
             ->setZip01($Customer->getZip01())
             ->setZip02($Customer->getZip02())
-            ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+            ->setZipCode($Customer->getZip01().$Customer->getZip02())
             ->setPref($Customer->getPref())
             ->setAddr01($Customer->getAddr01())
             ->setAddr02($Customer->getAddr02())
@@ -406,7 +408,7 @@ class ShoppingService
                 ->setFax03($CustomerAddress->getFax03())
                 ->setZip01($CustomerAddress->getZip01())
                 ->setZip02($CustomerAddress->getZip02())
-                ->setZipCode($CustomerAddress->getZip01() . $CustomerAddress->getZip02())
+                ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
                 ->setPref($CustomerAddress->getPref())
                 ->setAddr01($CustomerAddress->getAddr01())
                 ->setAddr02($CustomerAddress->getAddr02());
@@ -425,7 +427,7 @@ class ShoppingService
                 ->setFax03($Customer->getFax03())
                 ->setZip01($Customer->getZip01())
                 ->setZip02($Customer->getZip02())
-                ->setZipCode($Customer->getZip01() . $Customer->getZip02())
+                ->setZipCode($Customer->getZip01().$Customer->getZip02())
                 ->setPref($Customer->getPref())
                 ->setAddr01($Customer->getAddr01())
                 ->setAddr02($Customer->getAddr02());
@@ -621,11 +623,8 @@ class ShoppingService
         // 配送料無料条件(合計数量)
         $this->setDeliveryFreeQuantity($Order);
 
-        $total = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal();
-
-        $Order->setTotal($total);
-        $Order->setPaymentTotal($total);
-        $this->app['orm.em']->flush();
+        // 合計金額の計算
+        $this->calculatePrice($Order);
 
         return $Order;
 
@@ -755,6 +754,8 @@ class ShoppingService
      *
      * @param Order $Order 受注情報
      * @param $data フォームデータ
+     *
+     * @deprecated since 3.0.5, to be removed in 3.1
      */
     public function setOrderUpdate(Order $Order, $data)
     {
@@ -762,40 +763,45 @@ class ShoppingService
         $Order->setOrderDate(new \DateTime());
         $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
         $Order->setMessage($data['message']);
-
         // お届け先情報を更新
         $shippings = $data['shippings'];
         foreach ($shippings as $Shipping) {
-
             $Delivery = $Shipping->getDelivery();
-
             $deliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(array(
                 'Delivery' => $Delivery,
                 'Pref' => $Shipping->getPref()
             ));
-
             $deliveryTime = $Shipping->getDeliveryTime();
             if (!empty($deliveryTime)) {
                 $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
             }
-
             $Shipping->setDeliveryFee($deliveryFee);
-
             // 商品ごとの配送料合計
             $productDeliveryFeeTotal = 0;
             if (!is_null($this->BaseInfo->getOptionProductDeliveryFee())) {
                 $productDeliveryFeeTotal += $this->getProductDeliveryFee($Shipping);
             }
-
             $Shipping->setShippingDeliveryFee($deliveryFee->getFee() + $productDeliveryFeeTotal);
             $Shipping->setShippingDeliveryName($Delivery->getName());
         }
-
         // 配送料無料条件(合計金額)
         $this->setDeliveryFreeAmount($Order);
-
         // 配送料無料条件(合計数量)
         $this->setDeliveryFreeQuantity($Order);
+    }
+
+
+    /**
+     * 受注情報の更新
+     *
+     * @param Order $Order 受注情報
+     */
+    public function setOrderUpdateData(Order $Order)
+    {
+        // 受注情報を更新
+        $Order->setOrderDate(new \DateTime());
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $this->setOrderStatus($Order, $OrderStatus);
 
     }
 
@@ -915,9 +921,9 @@ class ShoppingService
         // 配送日数が設定されている
         if ($deliveryDateFlag) {
             $period = new \DatePeriod (
-                new \DateTime($minDate . ' day'),
+                new \DateTime($minDate.' day'),
                 new \DateInterval('P1D'),
-                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'] . ' day')
+                new \DateTime($minDate + $this->app['config']['deliv_date_end_max'].' day')
             );
 
             foreach ($period as $day) {
@@ -1023,5 +1029,221 @@ class ShoppingService
         return $builder;
 
     }
+
+
+    /**
+     * フォームデータを更新
+     *
+     * @param Order $Order
+     * @param array $data
+     */
+    public function setFormData(Order $Order, array $data)
+    {
+
+        // お問い合わせ
+        $Order->setMessage($data['message']);
+
+        // お届け先情報を更新
+        $shippings = $data['shippings'];
+        foreach ($shippings as $Shipping) {
+
+            $deliveryTime = $Shipping->getDeliveryTime();
+            if (!empty($deliveryTime)) {
+                $Shipping->setShippingDeliveryTime($deliveryTime->getDeliveryTime());
+            }
+
+        }
+
+    }
+
+    /**
+     * 配送料の合計金額を計算
+     *
+     * @param Order $Order
+     * @return Order
+     */
+    public function calculateDeliveryFee(Order $Order)
+    {
+
+        // 配送業者を取得
+        $shippings = $Order->getShippings();
+
+        // 配送料合計金額
+        $Order->setDeliveryFeeTotal($this->getShippingDeliveryFeeTotal($shippings));
+
+        // 配送料無料条件(合計金額)
+        $this->setDeliveryFreeAmount($Order);
+
+        // 配送料無料条件(合計数量)
+        $this->setDeliveryFreeQuantity($Order);
+
+        return $Order;
+
+    }
+
+
+    /**
+     * 購入処理を行う
+     *
+     * @param Order $Order
+     * @throws ShoppingException
+     */
+    public function processPurchase(Order $Order)
+    {
+
+        $em = $this->app['orm.em'];
+
+        // 合計金額の再計算
+        $this->calculatePrice($Order);
+
+        // 商品公開ステータスチェック、商品制限数チェック、在庫チェック
+        $check = $this->isOrderProduct($em, $Order);
+        if (!$check) {
+            throw new ShoppingException('front.shopping.stock.error');
+        }
+
+        // 受注情報、配送情報を更新
+        $Order = $this->calculateDeliveryFee($Order);
+        $this->setOrderUpdateData($Order);
+        // 在庫情報を更新
+        $this->setStockUpdate($em, $Order);
+
+        if ($this->app->isGranted('ROLE_USER')) {
+            // 会員の場合、購入金額を更新
+            $this->setCustomerUpdate($Order, $this->app->user());
+        }
+
+    }
+
+
+    /**
+     * 値引き可能かチェック
+     *
+     * @param Order $Order
+     * @param       $discount
+     * @return bool
+     */
+    public function isDiscount(Order $Order, $discount)
+    {
+
+        if ($Order->getTotal() < $discount) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * 値引き金額をセット
+     *
+     * @param Order $Order
+     * @param $discount
+     */
+    public function setDiscount(Order $Order, $discount)
+    {
+
+        $Order->setDiscount($Order->getDiscount() + $discount);
+
+    }
+
+
+    /**
+     * 合計金額を計算
+     *
+     * @param Order $Order
+     * @return Order
+     */
+    public function calculatePrice(Order $Order)
+    {
+
+        $total = $Order->getTotalPrice();
+
+        if ($total < 0) {
+            // 合計金額がマイナスの場合、0を設定し、discountは値引きされた額のみセット
+            $total = 0;
+        }
+
+        $Order->setTotal($total);
+        $Order->setPaymentTotal($total);
+
+        return $Order;
+
+    }
+
+    /**
+     * 受注ステータスをセット
+     *
+     * @param Order $Order
+     * @param $status
+     * @return Order
+     */
+    public function setOrderStatus(Order $Order, $status)
+    {
+
+        $Order->setOrderDate(new \DateTime());
+        $Order->setOrderStatus($this->app['eccube.repository.order_status']->find($status));
+
+        $event = new EventArgs(
+            array(
+                'Order' => $Order,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS, $event);
+
+        return $Order;
+
+    }
+
+    /**
+     * 受注メール送信を行う
+     *
+     * @param Order $Order
+     * @return MailHistory
+     */
+    public function sendOrderMail(Order $Order)
+    {
+
+        // メール送信
+        $message = $this->app['eccube.service.mail']->sendOrderMail($Order);
+
+        // 送信履歴を保存.
+        $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
+
+        $MailHistory = new MailHistory();
+        $MailHistory
+            ->setSubject($message->getSubject())
+            ->setMailBody($message->getBody())
+            ->setMailTemplate($MailTemplate)
+            ->setSendDate(new \DateTime())
+            ->setOrder($Order);
+
+        $this->app['orm.em']->persist($MailHistory);
+        $this->app['orm.em']->flush($MailHistory);
+
+        return $MailHistory;
+
+    }
+
+
+    /**
+     * 受注処理完了通知
+     *
+     * @param Order $Order
+     */
+    public function notifyComplete(Order $Order)
+    {
+
+        $event = new EventArgs(
+            array(
+                'Order' => $Order,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::SERVICE_SHOPPING_NOTIFY_COMPLETE, $event);
+
+    }
+
 
 }

@@ -210,7 +210,8 @@ class MailService
     /**
      * Send order mail.
      *
-     * @param $Order 受注情報
+     * @param \Eccube\Entity\Order $Order 受注情報
+     * @return string
      */
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
@@ -244,6 +245,8 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ORDER, $event);
 
         $this->app->mail($message);
+
+        return $message;
 
     }
 

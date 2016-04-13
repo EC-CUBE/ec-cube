@@ -169,6 +169,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
 
         $expected = array(
             EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS,
             EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE,
         );
 
@@ -208,6 +209,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
 
         $expected = array(
             EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE,
+            EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS,
             EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE,
         );
 
