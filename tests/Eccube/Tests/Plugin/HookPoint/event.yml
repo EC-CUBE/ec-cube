@@ -125,6 +125,8 @@ admin.order.edit.index.initialize:
   - [onAdminOrderEdit1, NORMAL]
 admin.order.edit.index.complete:
   - [onAdminOrderEdit2, NORMAL]
+admin.order.edit.index.progress:
+  - [onAdminOrderEditIndex1, NORMAL]
 
 # searchCustomer
 admin.order.edit.search.customer.initialize:
@@ -668,12 +670,16 @@ front.shopping.payment.complete:
   - [onShopping9, NORMAL]
 
 # shippingChange
+front.shopping.shipping.change.initialize:
+  - [onShoppingShippingChange1, NORMAL]
 
 # shipping
 front.shopping.shipping.complete:
   - [onShopping10, NORMAL]
 
 # shippingEditChange
+front.shopping.shipping.edit.change.initialize:
+  - [onShoppingShippingEdit1, NORMAL]
 
 # shippingEdit
 front.shopping.shipping.edit.initialize:
@@ -696,6 +702,8 @@ front.shopping.nonmember.complete:
   - [onShopping16, NORMAL]
 
 # shippingMultipleChange
+front.shopping.shipping.multiple.change.initialize:
+  - [onShoppingShippingMultiple1, NORMAL]
 
 # shippingMultiple
 front.shopping.shipping.multiple.initialize:
@@ -741,3 +749,12 @@ mail.password.reset:
   - [onMail8, NORMAL]
 mail.password.reset.complete:
   - [onMail9, NORMAL]
+
+
+# ShoppingService
+service.shopping.order.status:
+  - [onShoppingService1, NORMAL]
+
+service.shopping.notify.complete:
+  - [onShoppingService2, NORMAL]
+

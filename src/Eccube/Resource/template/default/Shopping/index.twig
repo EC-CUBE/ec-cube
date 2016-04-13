@@ -318,6 +318,12 @@ $(function() {
                             <dt>送料</dt>
                             <dd>{{ Order.deliveryFeeTotal|price }}</dd>
                         </dl>
+                        {% if Order.discount > 0 %}
+                        <dl id="summary_box__discount_price">
+                            <dt>値引き</dt>
+                            <dd>{{ (0 - Order.discount)|price}}</dd>
+                        </dl>
+                        {% endif %}
                         <div id="summary_box__result" class="total_amount">
                             <p id="summary_box__total_amount" class="total_price">合計 <strong class="text-primary">{{ Order.total|price }}<span class="small">税込</span></strong></p>
                             <p id="summary_box__confirm_button"><button id="order-button" type="submit" class="btn btn-primary btn-block prevention-btn prevention-mask">注文する</button></p>

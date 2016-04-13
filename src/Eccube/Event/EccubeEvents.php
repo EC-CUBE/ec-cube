@@ -134,6 +134,7 @@ final class EccubeEvents
      */
     // index
     const ADMIN_ORDER_EDIT_INDEX_INITIALIZE = 'admin.order.edit.index.initialize';
+    const ADMIN_ORDER_EDIT_INDEX_PROGRESS = 'admin.order.edit.index.progress';
     const ADMIN_ORDER_EDIT_INDEX_COMPLETE = 'admin.order.edit.index.complete';
 
     // searchCustomer
@@ -534,11 +535,13 @@ final class EccubeEvents
     const FRONT_SHOPPING_PAYMENT_COMPLETE = 'front.shopping.payment.complete';
 
     // shippingChange
+    const FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE = 'front.shopping.shipping.change.initialize';
 
     // shipping
     const FRONT_SHOPPING_SHIPPING_COMPLETE = 'front.shopping.shipping.complete';
 
     // shippingEditChange
+    const FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE = 'front.shopping.shipping.edit.change.initialize';
 
     // shippingEdit
     const FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE = 'front.shopping.shipping.edit.initialize';
@@ -555,6 +558,7 @@ final class EccubeEvents
     const FRONT_SHOPPING_NONMEMBER_COMPLETE = 'front.shopping.nonmember.complete';
 
     // shippingMultipleChange
+    const FRONT_SHOPPING_SHIPPING_MULTIPLE_CHANGE_INITIALIZE = 'front.shopping.shipping.multiple.change.initialize';
 
     // shippingMultiple
     const FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE = 'front.shopping.shipping.multiple.initialize';
@@ -587,5 +591,11 @@ final class EccubeEvents
     const MAIL_ADMIN_ORDER = 'mail.admin.order';
     const MAIL_PASSWORD_RESET = 'mail.password.reset';
     const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
+
+    /**
+     * ShoppingService
+     */
+    const SERVICE_SHOPPING_ORDER_STATUS = 'service.shopping.order.status';
+    const SERVICE_SHOPPING_NOTIFY_COMPLETE = 'service.shopping.notify.complete';
 
 }

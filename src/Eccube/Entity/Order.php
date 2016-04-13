@@ -137,6 +137,19 @@ class Order extends \Eccube\Entity\AbstractEntity
         return array_unique($productTypes);
     }
 
+
+    /**
+     * 合計金額を計算
+     *
+     * @return string
+     */
+    public function getTotalPrice() {
+
+        return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
+
+    }
+
+
     /**
      * @var integer
      */

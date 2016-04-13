@@ -130,14 +130,12 @@ class PluginController extends AbstractController
                                     $plugin->setNewVersion($item['version']);
                                     $plugin->setLastUpdateDate($item['last_update_date']);
                                     $plugin->setProductUrl($item['product_url']);
+                                    $plugin->setEccubeVersion($item['eccube_version']);
 
                                     if ($plugin->getVersion() != $item['version']) {
                                         // バージョンが異なる
-                                        if (in_array(Constant::VERSION, $item['eccube_version'])) {
-                                            // 対象バージョン
-                                            $plugin->setUpdateStatus(3);
-                                            break;
-                                        }
+                                        $plugin->setUpdateStatus(3);
+                                        break;
                                     }
                                 }
                             }
