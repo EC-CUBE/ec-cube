@@ -116,7 +116,7 @@ class PageController extends AbstractController
                 $app['orm.em']->flush();
 
                 // ファイル生成・更新
-                $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath(false);
+                $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
                 $filePath = $templatePath.'/'.$PageLayout->getFileName().'.twig';
 
                 $fs = new Filesystem();
@@ -153,8 +153,7 @@ class PageController extends AbstractController
             }
         }
 
-        $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath(false);
-
+        $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
 
         return $app->render('Content/page_edit.twig', array(
             'form' => $form->createView(),
@@ -184,7 +183,7 @@ class PageController extends AbstractController
 
         // ユーザーが作ったページのみ削除する
         if ($PageLayout->getEditFlg() == PageLayout::EDIT_FLG_USER) {
-            $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath(false);
+            $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath(true);
             $file = $templatePath.'/'.$PageLayout->getFileName().'.twig';
             $fs = new Filesystem();
             if ($fs->exists($file)) {

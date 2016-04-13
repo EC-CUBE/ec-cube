@@ -38,7 +38,8 @@ class FrontControllerProvider implements ControllerProviderInterface
             $c->requireHttps();
         }
 
-
+        // user定義
+        $c->match('/'.$app['config']['user_data_route'].'/{route}', '\Eccube\Controller\UserDataController::index')->assert('route', '[0-9a-zA-Z_]+')->bind('user_data');
 
         // root
         $c->match('/', '\Eccube\Controller\TopController::index')->bind('homepage');
@@ -122,9 +123,6 @@ class FrontControllerProvider implements ControllerProviderInterface
         $c->match('/shopping/shipping_multiple_change', '\Eccube\Controller\ShoppingController::shippingMultipleChange')->bind('shopping_shipping_multiple_change');
         $c->match('/shopping/shipping_multiple', '\Eccube\Controller\ShoppingController::shippingMultiple')->bind('shopping_shipping_multiple');
         $c->match('/shopping/shipping_multiple_edit', '\Eccube\Controller\ShoppingController::shippingMultipleEdit')->bind('shopping_shipping_multiple_edit');
-
-        // user定義
-        $c->match('/{route}', '\Eccube\Controller\UserDataController::index')->assert('route', '[0-9a-zA-Z_]+')->bind('user_data');
 
         return $c;
     }

@@ -61,7 +61,7 @@
                             {{ form_label(form.url) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
                                 {% if editable %}
-                                    {{ url('homepage') }}{{ form_widget(form.url) }}
+                                    {{ url('top') }}{{ app.config.user_data_route }}/{{ form_widget(form.url) }}
                                 {% else %}
                                     {{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ app.routes.get(form.url.vars.value).path }}
                                     {{ form_widget(form.url, { type : 'hidden' } ) }}
