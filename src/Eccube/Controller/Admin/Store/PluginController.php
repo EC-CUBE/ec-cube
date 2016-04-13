@@ -134,11 +134,8 @@ class PluginController extends AbstractController
 
                                     if ($plugin->getVersion() != $item['version']) {
                                         // バージョンが異なる
-                                        if (in_array(Constant::VERSION, $item['eccube_version'])) {
-                                            // 対象バージョン
-                                            $plugin->setUpdateStatus(3);
-                                            break;
-                                        }
+                                        $plugin->setUpdateStatus(3);
+                                        break;
                                     }
                                 }
                             }
