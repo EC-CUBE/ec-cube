@@ -117,15 +117,17 @@ $(function(){
                 <!--★商品名★-->
                 <h3 id="detail_description_box__name" class="item_name">{{ Product.name }}</h3>
                 <div id="detail_description_box__body" class="item_detail">
-                    <!--▼商品タグ-->
-                    <div id="product_tag_box" class="product_tag">
-                        <ul id="product_tag_box">
+
+                    {% if Product.ProductTag is not empty %}
+                        <!--▼商品タグ-->
+                        <div id="product_tag_box" class="product_tag">
                             {% for ProductTag in Product.ProductTag %}
-                            <li><a id="product_tag_box__product_tag--{{ ProductTag.Tag.id }}" class="tag">{{ ProductTag.Tag }}</a></li>
+                                <span id="product_tag_box__product_tag--{{ ProductTag.Tag.id }}" class="product_tag_list">{{ ProductTag.Tag }}</span>
                             {% endfor %}
-                        </ul>
-                    </div>
-                    <!--▲商品タグ-->
+                        </div>
+                        <hr>
+                        <!--▲商品タグ-->
+                    {% endif %}
 
                     <!--★通常価格★-->
                     {% if Product.hasProductClass -%}

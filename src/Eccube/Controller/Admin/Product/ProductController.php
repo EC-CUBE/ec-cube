@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
@@ -408,21 +409,19 @@ class ProductController extends AbstractController
 
                 // 商品タグの登録
                 // 商品タグを一度クリア
+                $ProductTags = $Product->getProductTag();
                 foreach ($ProductTags as $ProductTag) {
                     $Product->removeProductTag($ProductTag);
                     $app['orm.em']->remove($ProductTag);
                 }
-                $app['orm.em']->persist($Product);
 
                 // 商品タグの登録
                 $Tags = $form->get('Tag')->getData();
                 foreach ($Tags as $Tag) {
-                    $ProductTag = new \Eccube\Entity\ProductTag();
+                    $ProductTag = new ProductTag();
                     $ProductTag
                         ->setProduct($Product)
-                        ->setTag($Tag)
-                        ->setCreator($app->user());
-
+                        ->setTag($Tag);
                     $Product->addProductTag($ProductTag);
                     $app['orm.em']->persist($ProductTag);
                 }

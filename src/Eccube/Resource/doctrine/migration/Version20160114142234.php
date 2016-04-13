@@ -1,14 +1,14 @@
 <?php
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\ORM\EntityManager;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\Tag;
-use Doctrine\DBAL\Migrations\AbstractMigration;
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -26,6 +26,11 @@ class Version20160114142234 extends AbstractMigration
             'name' => 'おすすめ商品',
             'rank' => 2,
         ),
+        array(
+            'id' => 3,
+            'name' => '限定品',
+            'rank' => 3,
+        ),
     );
 
     private $csv_datas = array(
@@ -33,13 +38,13 @@ class Version20160114142234 extends AbstractMigration
             'entity_name' => 'Eccube\\\\Entity\\\\Product',
             'field_name' => 'ProductTag',
             'reference_field_name' => 'tag_id',
-            'disp_name' => '商品タグ(ID)',
+            'disp_name' => 'タグ(ID)',
         ),
         array(
             'entity_name' => 'Eccube\\\\Entity\\\\Product',
             'field_name' => 'ProductTag',
             'reference_field_name' => 'Tag',
-            'disp_name' => '商品タグ(名称)',
+            'disp_name' => 'タグ(名称)',
         ),
     );
 
