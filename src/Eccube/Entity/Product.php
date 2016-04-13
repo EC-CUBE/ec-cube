@@ -688,7 +688,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getFreeArea()
     {
-        return $this->free_area;
+        return htmlentities($this->free_area);
     }
 
 
