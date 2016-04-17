@@ -26,13 +26,10 @@ image_temp_realdir: ${ROOT_DIR}/html/upload/temp_image
 user_data_realdir: ${ROOT_DIR}/html/user_data
 
 # realdir::block
-block_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default/Block
 block_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}/Block
 
 # realdir::template
-template_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default
 template_default_html_realdir: ${ROOT_DIR}/html/template/default
-template_admin_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/admin
 template_admin_html_realdir: ${ROOT_DIR}/html/template/admin
 template_realdir: ${ROOT_DIR}/app/template/${TEMPLATE_CODE}
 template_html_realdir: ${ROOT_DIR}/html/template/${TEMPLATE_CODE}

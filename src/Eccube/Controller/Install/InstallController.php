@@ -29,6 +29,7 @@ use Doctrine\DBAL\Migrations\Migration;
 use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
@@ -43,61 +44,52 @@ class InstallController
     private $app;
 
     private $PDO;
-
-    private $config_path;
-
-    private $dist_path;
-
-    private $cache_path;
-
     private $session_data;
 
     private $required_modules = array('pdo', 'phar', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
-
     private $recommended_module = array('hash', 'mcrypt');
+
+    // path
+    private $config_path;
+    private $dist_path;
+    private $cache_path;
 
     const SESSION_KEY = 'eccube.session.install';
 
-    public function __construct()
+    public function setup(InstallApplication $app)
     {
-        $this->config_path = __DIR__ . '/../../../../app/config/eccube';
+        $this->app = $app;
+
+        $this->config_path = $this->app->rootDir . '/app/config/eccube';
         $this->dist_path = __DIR__ . '/../../Resource/config';
-        $this->cache_path = __DIR__ . '/../../../../app/cache';
+        $this->cache_path = $this->app->rootDir . '/app/cache';
     }
 
-    private function isValid(Request $request, Form $form)
-    {
-        $session = $request->getSession();
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $sessionData = $session->get(self::SESSION_KEY) ?: array();
-                $formData = array_replace_recursive($sessionData, $form->getData());
-                $session->set(self::SESSION_KEY, $formData);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function getSessionData(Request $request)
-    {
-        return $this->session_data = $request->getSession()->get(self::SESSION_KEY);
-    }
-
-    // 最初からやり直す場合、SESSION情報をクリア
+    /**
+     * 最初からやり直す場合、SESSION情報をクリア
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     */
     public function index(InstallApplication $app, Request $request)
     {
+        $this->setup($app);
+
         $request->getSession()->remove(self::SESSION_KEY);
 
         return $app->redirect($app->url('install_step1'));
     }
 
-    // ようこそ
+    /**
+     * ようこそ
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     */
     public function step1(InstallApplication $app, Request $request)
     {
+        $this->setup($app);
+
         $form = $app['form.factory']
             ->createBuilder('install_step1')
             ->getForm();
@@ -108,16 +100,23 @@ class InstallController
             return $app->redirect($app->url('install_step2'));
         }
 
-        $this->checkModules($app);
+        $this->checkModules();
 
         return $app['twig']->render('step1.twig', array(
             'form' => $form->createView(),
         ));
     }
 
-    // 権限チェック
+    /**
+     * 権限チェック
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     */
     public function step2(InstallApplication $app, Request $request)
     {
+        $this->setup($app);
+
         $this->getSessionData($request);
 
         $protectedDirs = $this->getProtectedDirs();
@@ -137,9 +136,16 @@ class InstallController
         ));
     }
 
-    //    サイトの設定
+    /**
+     * サイトの設定
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     */
     public function step3(InstallApplication $app, Request $request)
     {
+        $this->setup($app);
+
         $form = $app['form.factory']
             ->createBuilder('install_step3')
             ->getForm();
@@ -201,9 +207,16 @@ class InstallController
         ));
     }
 
-    //    データベースの設定
+    /**
+     * データベースの設定
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     */
     public function step4(InstallApplication $app, Request $request)
     {
+        $this->setup($app);
+
         $form = $app['form.factory']
             ->createBuilder('install_step4')
             ->getForm();
@@ -244,11 +257,17 @@ class InstallController
         ));
     }
 
-    //    データベースの初期化
+    /**
+     * データベースの初期化
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     */
     public function step5(InstallApplication $app, Request $request)
     {
+        $this->setup($app);
+
         set_time_limit(0);
-        $this->app = $app;
         $form = $app['form.factory']
             ->createBuilder('install_step5')
             ->getForm();
@@ -279,9 +298,7 @@ class InstallController
                 $this
                     ->setPDO()
                     ->update();
-
             }
-
 
             if (isset($sessionData['agree']) && $sessionData['agree'] == '1') {
                 $host = $request->getSchemeAndHttpHost();
@@ -305,9 +322,16 @@ class InstallController
         ));
     }
 
-    //    インストール完了
+    /**
+     * インストール完了
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     */
     public function complete(InstallApplication $app, Request $request)
     {
+        $this->setup($app);
+
         $config_file = $this->config_path . '/path.yml';
         $config = Yaml::parse(file_get_contents($config_file));
 
@@ -321,6 +345,91 @@ class InstallController
         ));
     }
 
+    /**
+     * マイグレーション画面を表示する.
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function migration(InstallApplication $app, Request $request)
+    {
+        return $app['twig']->render('migration.twig');
+    }
+
+    /**
+     * インストール済プラグインの一覧を表示する.
+     * プラグインがインストールされていない場合は, マイグレーション実行画面へリダイレクトする.
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function migration_plugin(InstallApplication $app, Request $request)
+    {
+        $eccube = \Eccube\Application::getInstance();
+        $eccube->initialize();
+        $eccube->boot();
+
+        $pluginRepository = $eccube['orm.em']->getRepository('Eccube\Entity\Plugin');
+        $Plugins = $pluginRepository->findBy(array('del_flg' => Constant::DISABLED));
+
+        if (empty($Plugins)) {
+            // インストール済プラグインがない場合はマイグレーション実行画面へリダイレクト.
+            return $app->redirect($app->url('migration_end'));
+        } else {
+            return $app['twig']->render('migration_plugin.twig', array(
+                'Plugins' => $Plugins,
+                'version' => Constant::VERSION));
+        }
+    }
+
+    /**
+     * マイグレーションを実行し, 完了画面を表示させる
+     *
+     * @param InstallApplication $app
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function migration_end(InstallApplication $app, Request $request)
+    {
+        $this->doMigrate();
+
+        $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
+        $config_app->initialize();
+        $config_app->boot();
+        \Eccube\Util\Cache::clear($config_app, true);
+
+        return $app['twig']->render('migration_end.twig');
+    }
+
+    private function isValid(Request $request, Form $form)
+    {
+        $session = $request->getSession();
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $sessionData = $session->get(self::SESSION_KEY) ?: array();
+                $formData = array_replace_recursive($sessionData, $form->getData());
+                $session->set(self::SESSION_KEY, $formData);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getSessionData(Request $request)
+    {
+        $this->session_data = $request->getSession()->get(self::SESSION_KEY);
+
+        return $this->session_data;
+    }
+
     private function resetNatTimer()
     {
         // NATの無通信タイマ対策（仮）
@@ -330,39 +439,39 @@ class InstallController
     }
 
 
-    private function checkModules($app)
+    private function checkModules()
     {
         foreach ($this->required_modules as $module) {
             if (!extension_loaded($module)) {
-                $app->addDanger('[必須] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+                $this->app->addDanger('[必須] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if (!extension_loaded('pdo_mysql') && !extension_loaded('pdo_pgsql')) {
-            $app->addDanger('[必須] ' . 'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
+            $this->app->addDanger('[必須] ' . 'pdo_pgsql又はpdo_mysql 拡張モジュールを有効にしてください。', 'install');
         }
 
         foreach ($this->recommended_module as $module) {
             if (!extension_loaded($module)) {
-                $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+                $this->app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
             if (!extension_loaded('wincache')) {
-                $app->addWarning('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
+                $this->app->addWarning('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
             }
         } else {
             if (!extension_loaded('apc')) {
-                $app->addWarning('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
+                $this->app->addWarning('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
             if (!function_exists('apache_get_modules')) {
-                $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+                $this->app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
-                $app->addDanger('[必須] ' . 'mod_rewriteを有効にしてください。', 'install');
+                $this->app->addDanger('[必須] ' . 'mod_rewriteを有効にしてください。', 'install');
             }
         } elseif (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Microsoft-IIS', $_SERVER['SERVER_SOFTWARE']) !== false) {
             // iis
@@ -416,7 +525,7 @@ class InstallController
         ));
 
         $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
+            'orm.proxies_dir' => $this->app->rootDir . '/app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => array(
                     array(
@@ -523,7 +632,6 @@ class InstallController
         $this->PDO->beginTransaction();
 
         try {
-
             $config = array(
                 'auth_type' => '',
                 'auth_magic' => $config['config']['auth_magic'],
@@ -574,11 +682,11 @@ class InstallController
 
     private function getMigration()
     {
-        $app = \Eccube\Application::getInstance();
-        $app->initialize();
-        $app->boot();
+        $eccube = \Eccube\Application::getInstance();
+        $eccube->initialize();
+        $eccube->boot();
 
-        $config = new Configuration($app['db']);
+        $config = new Configuration($eccube['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
         $migrationDir = __DIR__ . '/../../Resource/doctrine/migration';
@@ -612,7 +720,7 @@ class InstallController
     private function getProtectedDirs()
     {
         $protectedDirs = array();
-        $base = __DIR__ . '/../../../..';
+        $base = $this->app->rootDir;
         $dirs = array(
             '/html',
             '/app',
@@ -783,7 +891,7 @@ class InstallController
         $ADMIN_ROUTE = $data['admin_dir'];
         $TEMPLATE_CODE = 'default';
         $USER_DATA_ROUTE = 'user_data';
-        $ROOT_DIR = realpath(__DIR__ . '/../../../../');
+        $ROOT_DIR = realpath($this->app->rootDir);
         $ROOT_URLPATH = $request->getBasePath();
 
         $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}');
@@ -846,67 +954,5 @@ class InstallController
         file_get_contents('http://www.ec-cube.net/mall/use_site.php', false, $context);
 
         return $this;
-    }
-
-
-    /**
-     * マイグレーション画面を表示する.
-     *
-     * @param InstallApplication $app
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function migration(InstallApplication $app, Request $request)
-    {
-        return $app['twig']->render('migration.twig');
-    }
-
-    /**
-     * インストール済プラグインの一覧を表示する.
-     * プラグインがインストールされていない場合は, マイグレーション実行画面へリダイレクトする.
-     *
-     * @param InstallApplication $app
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function migration_plugin(InstallApplication $app, Request $request)
-    {
-        $eccube = \Eccube\Application::getInstance();
-        $eccube->initialize();
-        $eccube->boot();
-
-        $pluginRepository = $eccube['orm.em']->getRepository('Eccube\Entity\Plugin');
-        $Plugins = $pluginRepository->findBy(array('del_flg' => Constant::DISABLED));
-
-        if (empty($Plugins)) {
-            // インストール済プラグインがない場合はマイグレーション実行画面へリダイレクト.
-            return $app->redirect($app->url('migration_end'));
-        } else {
-            return $app['twig']->render('migration_plugin.twig', array(
-                'Plugins' => $Plugins,
-                'version' => Constant::VERSION));
-        }
-    }
-
-    /**
-     * マイグレーションを実行し, 完了画面を表示させる
-     *
-     * @param InstallApplication $app
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function migration_end(InstallApplication $app, Request $request)
-    {
-        $this->doMigrate();
-
-        $config_app = new \Eccube\Application(); // install用のappだとconfigが取れないので
-        $config_app->initialize();
-        $config_app->boot();
-        \Eccube\Util\Cache::clear($config_app, true);
-
-        return $app['twig']->render('migration_end.twig');
     }
 }

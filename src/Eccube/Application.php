@@ -39,6 +39,9 @@ class Application extends ApplicationTrait
     protected $initialized = false;
     protected $initializedPlugin = false;
 
+    public $package;
+    public $rootDir;
+
     public static function getInstance(array $values = array())
     {
         if (!is_object(self::$instance)) {
@@ -60,6 +63,20 @@ class Application extends ApplicationTrait
 
     public function __construct(array $values = array())
     {
+        if (\Phar::running(false)) {
+            // phar
+            $this->package = 'phar';
+            $this->rootDir = dirname(\Phar::running(false));
+        } elseif (file_exists(__DIR__.'/../../../../../vendor/ec-cube/ec-cube')) {
+            // composer
+            $this->package = 'composer';
+            $this->rootDir = __DIR__.'/../../../../..';
+        } else {
+            // other
+            $this->package = 'general';
+            $this->rootDir = __DIR__.'/../..';
+        }
+
         parent::__construct($values);
 
         if (is_null(self::$instance)) {
@@ -76,9 +93,10 @@ class Application extends ApplicationTrait
     public function initConfig()
     {
         // load config
-        $this['config'] = $this->share(function() {
-            $ymlPath = __DIR__.'/../../app/config/eccube';
-            $distPath = __DIR__.'/../../src/Eccube/Resource/config';
+        $app = $this;
+        $this['config'] = $this->share(function() use ($app) {
+            $ymlPath =  $app->rootDir.'/app/config/eccube';
+            $distPath =  __DIR__.'/Resource/config';
 
             $config = array();
             $config_yml = $ymlPath.'/config.yml';
@@ -96,6 +114,9 @@ class Application extends ApplicationTrait
             $path_yml = $ymlPath.'/path.yml';
             if (file_exists($path_yml)) {
                 $config_path = Yaml::parse(file_get_contents($path_yml));
+                $config_path['block_default_realdir'] = __DIR__.'/Resource/template/default/Block';
+                $config_path['template_default_realdir'] = __DIR__.'/Resource/template/default';
+                $config_path['template_admin_realdir'] = __DIR__.'/Resource/template/admin';
             }
 
             $config_constant = array();
@@ -158,9 +179,8 @@ class Application extends ApplicationTrait
 
     public function initLogger()
     {
-        $app = $this;
         $this->register(new ServiceProvider\EccubeMonologServiceProvider($app));
-        $this['monolog.logfile'] = __DIR__.'/../../app/log/site.log';
+        $this['monolog.logfile'] = $this->rootDir.'/app/log/site.log';
         $this['monolog.name'] = 'eccube';
     }
 
@@ -239,7 +259,6 @@ class Application extends ApplicationTrait
 
     public function initLocale()
     {
-
         // timezone
         if (!empty($this['config']['timezone'])) {
             date_default_timezone_set($this['config']['timezone']);
@@ -274,7 +293,7 @@ class Application extends ApplicationTrait
     public function initSession()
     {
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
-            'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
+            'session.storage.save_path' => $this->rootDir.'/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => 'eccube',
                 'cookie_path' => $this['config']['root_urlpath'] ?: '/',
@@ -310,16 +329,16 @@ class Application extends ApplicationTrait
                 $app['front'] = false;
 
                 if (isset($app['profiler'])) {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
+                    $cacheBaseDir = $app->rootDir.'/app/cache/twig/profiler/';
                 } else {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                    $cacheBaseDir = $app->rootDir.'/app/cache/twig/production/';
                 }
                 if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
-                    if (file_exists(__DIR__.'/../../app/template/admin')) {
-                        $paths[] = __DIR__.'/../../app/template/admin';
+                    if (file_exists($app->rootDir.'/app/template/admin')) {
+                        $paths[] = $app->rootDir.'/app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $paths[] = $app->rootDir.'/app/Plugin';
                     $cache = $cacheBaseDir.'admin';
                     $app['admin'] = true;
                 } else {
@@ -327,7 +346,7 @@ class Application extends ApplicationTrait
                         $paths[] = $app['config']['template_realdir'];
                     }
                     $paths[] = $app['config']['template_default_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $paths[] = $app->rootDir.'/app/Plugin';
                     $cache = $cacheBaseDir.$app['config']['template_code'];
                     $app['front'] = true;
                 }
@@ -443,7 +462,7 @@ class Application extends ApplicationTrait
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
-        $pluginBasePath = __DIR__.'/../../app/Plugin';
+        $pluginBasePath = $this->rootDir.'/app/Plugin';
         $finder = Finder::create()
             ->in($pluginBasePath)
             ->directories()
@@ -486,7 +505,7 @@ class Application extends ApplicationTrait
         }
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
+            'orm.proxies_dir' => $this->rootDir.'/app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => $ormMappings,
             ),
@@ -798,7 +817,7 @@ class Application extends ApplicationTrait
     public function loadPlugin()
     {
         // プラグインディレクトリを探索.
-        $basePath = __DIR__.'/../../app/Plugin';
+        $basePath = $this->rootDir.'/app/Plugin';
         $finder = Finder::create()
             ->in($basePath)
             ->directories()

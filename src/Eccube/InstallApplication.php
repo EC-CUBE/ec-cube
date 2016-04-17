@@ -28,19 +28,36 @@ use Symfony\Component\Yaml\Yaml;
 
 class InstallApplication extends ApplicationTrait
 {
+    public $package;
+    public $rootDir;
+
     public function __construct(array $values = array())
     {
+        if (\Phar::running(false)) {
+            // phar
+            $this->package = 'phar';
+            $this->rootDir = dirname(\Phar::running(false));
+        } elseif (file_exists(__DIR__.'/../../../../../vendor/ec-cube/ec-cube')) {
+            // composer
+            $this->package = 'composer';
+            $this->rootDir = __DIR__.'/../../../../..';
+        } else {
+            // other
+            $this->package = 'general';
+            $this->rootDir = __DIR__.'/../..';
+        }
+
         $app = $this;
 
         parent::__construct($values);
 
         $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__.'/../../app/log/install.log',
+            'monolog.logfile' => $this->rootDir.'/app/log/install.log',
         ));
 
         // load config
         $app['config'] = $app->share(function() {
-            $distPath = __DIR__.'/../../src/Eccube/Resource/config';
+            $distPath = __DIR__.'/Resource/config';
 
             $configConstant = array();
             $constantYamlPath = $distPath.'/constant.yml.dist';
@@ -59,7 +76,7 @@ class InstallApplication extends ApplicationTrait
             return $config;
         });
 
-        $distPath = __DIR__.'/../../src/Eccube/Resource/config';
+        $distPath = __DIR__.'/Resource/config';
         $config_dist = Yaml::parse(file_get_contents($distPath.'/config.yml.dist'));
         if (!empty($config_dist['timezone'])) {
             date_default_timezone_set($config_dist['timezone']);

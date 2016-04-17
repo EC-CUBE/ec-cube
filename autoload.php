@@ -12,13 +12,14 @@ if (extension_loaded('wincache')) {
     ini_set('wincache.fcenabled', 1);
 }
 
-$autoload = __DIR__.'/vendor/autoload.php';
-
-if (file_exists($autoload) && is_readable($autoload)) {
-    $loader = require $autoload;
+if (file_exists(__DIR__.'/vendor.phar')) {
+    $loader = require  __DIR__.'/vendor.phar';
+} elseif (file_exists(__DIR__.'/vendor/autoload.php')) {
+    $loader = require __DIR__.'/vendor/autoload.php';
 } else {
     die('Composer is not installed.');
 }
+$loader->addPsr4('Plugin\\', __DIR__ . '/app/Plugin');
 
 // autoloader cache
 if (extension_loaded('apc') && ini_get('apc.enabled')) {
