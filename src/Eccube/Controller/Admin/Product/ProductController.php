@@ -35,7 +35,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 class ProductController extends AbstractController
 {
@@ -178,12 +180,22 @@ class ProductController extends AbstractController
 
     public function addImage(Application $app, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         $images = $request->files->get('admin_product');
 
         $files = array();
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
+                    //ファイルフォーマット検証
+                    $mimeType = $image->getMimeType();
+                    if (0 !== strpos($mimeType, 'image')) {
+                        throw new UnsupportedMediaTypeHttpException();
+                    }
+
                     $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
@@ -555,6 +567,8 @@ class ProductController extends AbstractController
 
     public function copy(Application $app, Request $request, $id = null)
     {
+        $this->isTokenValid($app);
+
         if (!is_null($id)) {
             $Product = $app['eccube.repository.product']->find($id);
             if ($Product instanceof \Eccube\Entity\Product) {

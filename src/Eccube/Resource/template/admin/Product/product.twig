@@ -442,9 +442,9 @@ function fnClass(action) {
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <button class="btn btn-default btn-block btn-sm" onclick="fnCopy('{{ url('admin_product_product_copy', {'id' : id}) }}');return false;">
+                                                    <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}"  {{ csrf_token_for_anchor() }} data-method="post" data-message="この商品情報を複製してもよろしいですか？">
                                                         複製
-                                                    </button>
+                                                    </a>
                                                 </li>
                                                 <li>
                                                      <a class="btn btn-default btn-block btn-sm" href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この商品情報を削除してもよろしいですか？">
