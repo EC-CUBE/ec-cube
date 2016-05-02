@@ -9,6 +9,8 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\Work;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Payment;
@@ -22,9 +24,9 @@ use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Tests\Mock\CsrfTokenMock;
+use Faker\Factory as Faker;
 use Guzzle\Http\Client;
 use Silex\WebTestCase;
-use Faker\Factory as Faker;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -237,6 +239,50 @@ abstract class EccubeTestCase extends WebTestCase
         $customerAddresses[] = $CustomerAddress;
         $this->app['session']->set($sessionCustomerAddressKey, serialize($customerAddresses));
         return $Customer;
+    }
+
+    /**
+     * Member オブジェクトを生成して返す.
+     *
+     * @param string $login ログインID. null の場合は, ランダムなユーザー名が生成される.
+     * @return \Eccube\Entity\Member
+     */
+    public function createMember($login = null)
+    {
+        $em = $this->app['orm.em'];
+        $filter = $em->getFilters()->getFilter('soft_delete');
+        $filter->setExcludes(array(
+            'Eccube\Entity\Member'
+        ));
+
+        $faker = $this->getFaker();
+        $Member = new Member();
+        if (is_null($login)) {
+            $login = $faker->userName;
+        }
+        $Creator = $em->getRepository('Eccube\Entity\Member')->find(1);
+        $Work = $em->getRepository('Eccube\Entity\Master\Work')->find(Work::WORK_ACTIVE_ID);
+        $Authority = $em->getRepository('Eccube\Entity\Master\Authority')->find(0);
+        $Member
+            ->setWork($Work)
+            ->setAuthority($Authority)
+            ->setCreator($Creator)
+            ->setName($faker->name)
+            ->setDepartment($faker->word)
+            ->setLoginId($login)
+            ->setPassword('password')
+            ->setSalt('salt')
+            ->setRank(0)
+            ->setDelFlg(Constant::DISABLED);
+
+        $Member->setPassword($this->app['eccube.repository.member']->encryptPassword($Member));
+
+        $em->persist($Member);
+        $em->flush();
+
+        $filter->setExcludes(array());
+
+        return $Member;
     }
 
     /**
