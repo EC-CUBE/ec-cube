@@ -26,12 +26,12 @@ namespace Eccube\Service;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Util\Mail;
 
 class MailService
 {
     /** @var \Eccube\Application */
     public $app;
-
 
     /** @var \Eccube\Entity\BaseInfo */
     public $BaseInfo;
@@ -51,7 +51,6 @@ class MailService
      */
     public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
-
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
@@ -66,6 +65,8 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        Mail::setParameterForCharaset($this->app, $message);
 
         $event = new EventArgs(
             array(
@@ -88,7 +89,6 @@ class MailService
      */
     public function sendCustomerCompleteMail(\Eccube\Entity\Customer $Customer)
     {
-
         $body = $this->app->renderView('Mail/entry_complete.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
@@ -103,6 +103,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -114,7 +116,6 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
 
         $this->app->mail($message);
-
     }
 
 
@@ -126,7 +127,6 @@ class MailService
      */
     public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, $email)
     {
-
         $body = $this->app->renderView('Mail/customer_withdraw_mail.twig', array(
             'Customer' => $Customer,
             'BaseInfo' => $this->BaseInfo,
@@ -141,6 +141,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -153,7 +155,6 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
 
         $this->app->mail($message);
-
     }
 
 
@@ -164,7 +165,6 @@ class MailService
      */
     public function sendContactMail($formData)
     {
-
         $body = $this->app->renderView('Mail/contact_mail.twig', array(
             'data' => $formData,
             'BaseInfo' => $this->BaseInfo,
@@ -180,6 +180,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -191,7 +193,6 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CONTACT, $event);
 
         $this->app->mail($message);
-
     }
 
     /**
@@ -215,7 +216,6 @@ class MailService
      */
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
-
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
 
         $body = $this->app->renderView($MailTemplate->getFileName(), array(
@@ -233,6 +233,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -247,7 +249,6 @@ class MailService
         $this->app->mail($message);
 
         return $message;
-
     }
 
 
@@ -259,7 +260,6 @@ class MailService
      */
     public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
-
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
             'activateUrl' => $activateUrl,
@@ -274,6 +274,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -286,7 +288,6 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
 
         $this->app->mail($message);
-
     }
 
 
@@ -314,6 +315,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -326,7 +329,6 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
 
         $this->app->mail($message);
-
     }
 
     /**
@@ -350,6 +352,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -362,7 +366,6 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
 
         $this->app->mail($message);
-
     }
 
     /**
@@ -386,6 +389,8 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        Mail::setParameterForCharaset($this->app, $message);
+
         $event = new EventArgs(
             array(
                 'message' => $message,
@@ -398,7 +403,5 @@ class MailService
         $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
 
         $this->app->mail($message);
-
     }
-
 }
