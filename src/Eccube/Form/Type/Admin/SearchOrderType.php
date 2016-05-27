@@ -56,6 +56,11 @@ class SearchOrderType extends AbstractType
             ->add('status', 'order_status', array(
                 'label' => '対応状況',
             ))
+            ->add('multi_status', 'order_status', array(
+                'label' => '対応状況',
+                'expanded' => true,
+                'multiple' => true,
+            ))
             ->add('name', 'text', array(
                 'required' => false,
             ))

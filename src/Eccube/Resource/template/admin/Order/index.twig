@@ -127,20 +127,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <div id="search_box_main__body_inner" class="col-sm-12 col-lg-10 col-lg-offset-1 search">
 
               <div class="row">
-                <div class="col-md-6">
-                  <div id="search_box_main__status" class="form-group">
+                <div class="col-sm-12">
+                  <div id="search_box_main__multi_status" class="form-group">
                     <label>対応状況</label>
-                    {{ form_widget(searchForm.status) }}
+                    <div>
+                      {{ form_widget(searchForm.multi_status) }}
+                    </div>
                   </div>
                 </div>
+              </div><!-- /.row -->
+              <div class="row">
                 <div class="col-md-6">
                   <div id="search_box_main__name" class="form-group">
                     <label>お名前</label>
                     {{ form_widget(searchForm.name) }}
                   </div>
                 </div>
-              </div><!-- /.row -->
-              <div class="row">
                 <div class="col-md-6">
                   <div id="search_box_main__kana" class="form-group">
                     <label>お名前(フリガナ)</label>
@@ -148,7 +150,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ form_errors(searchForm.kana) }}
                   </div>
                 </div>
-                <div id="search_box_main__email" class="col-md-6">
+              </div><!-- /.row -->
+              <div class="row">
+                <div class="col-sm-6">
+                  <div id="search_box_main__tel" class="form-group">
+                    <label>電話番号</label>
+                    {{ form_widget(searchForm.tel) }}
+                    {{ form_errors(searchForm.tel) }}
+                  </div>
+                </div>
+                <div id="search_box_main__email" class="col-sm-6">
                   <label>メールアドレス</label>
                   <div class="form-group">
                     {{ form_widget(searchForm.email) }}
@@ -158,14 +169,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
               </div><!-- /.row -->
 
               <div class="row">
-                <div class="col-sm-6">
-                  <div id="search_box_main__tel" class="form-group">
-                    <label>電話番号</label>
-                    {{ form_widget(searchForm.tel) }}
-                    {{ form_errors(searchForm.tel) }}
-                  </div>
-                </div>
-                <div class="col-xs-6">
+                <div class="col-xs-12">
                   <div id="search_box_main__sex" class="form-group">
                     <label>性別</label>
                     {{ form_widget(searchForm.sex) }}
