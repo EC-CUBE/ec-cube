@@ -42,6 +42,7 @@ class EditController extends AbstractController
         $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\ProductClass',
+            'Eccube\Entity\Product',
         ));
 
         $TargetOrder = null;
