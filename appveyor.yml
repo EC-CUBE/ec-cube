@@ -4,6 +4,8 @@
 # Set build version format here instead of in the admin panel.
 version: 3.0.x-{build}
 
+clone_folder: c:\projects\ec-cube
+
 cache:
   - '%LOCALAPPDATA%\Composer\files'
   
@@ -31,11 +33,12 @@ services:
 install:
   # Set MySQL.
   - cp tests/my.cnf c:\
-  - SET PATH=C:\Program Files\MySql\MySQL Server 5.6\bin\;%PATH%
+  - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin\;%PATH%
   #- cinst mysql
   #- SET PATH=C:\tools\mysql\current\bin\;%PATH%
   # Set PHP.
-  - cinst php
+  #- cinst php php7になってしまうので
+  - cinst php -version 5.6.17
   - SET PATH=C:\tools\php\;%PATH%
   - copy C:\tools\php\php.ini-production C:\tools\php\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php\php.ini
@@ -43,12 +46,11 @@ install:
   - echo extension=php_openssl.dll >> C:\tools\php\php.ini
   - echo extension=php_gd2.dll >> C:\tools\php\php.ini
   - echo extension=php_mbstring.dll >> C:\tools\php\php.ini
-  - echo extension=php_mysql.dll >> C:\tools\php\php.ini
   - echo extension=php_pgsql.dll >> C:\tools\php\php.ini
-  #- echo extension=php_pdo.dll >> C:\tools\php\php.ini
   - echo extension=php_pdo_mysql.dll >> C:\tools\php\php.ini
   - echo extension=php_pdo_pgsql.dll >> C:\tools\php\php.ini
   - echo extension=php_curl.dll >> C:\tools\php\php.ini
+  - echo extension=php_fileinfo.dll >> C:\tools\php\php.ini
   - echo output_buffering = Off >> C:\tools\php\php.ini
   - echo default_charset = UTF-8 >> C:\tools\php\php.ini
   - echo mbstring.language = Japanese >> C:\tools\php\php.ini

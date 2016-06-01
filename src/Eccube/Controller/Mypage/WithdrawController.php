@@ -25,72 +25,89 @@
 namespace Eccube\Controller\Mypage;
 
 use Eccube\Application;
-use Eccube\Controller\AbstractController;
-use Eccube\Util\Str;
 use Eccube\Common\Constant;
+use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
+use Eccube\Util\Str;
 use Symfony\Component\HttpFoundation\Request;
 
 class WithdrawController extends AbstractController
 {
-
     /**
-     * Index
+     * 退会画面.
      *
-     * @param  Application $app
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function index(Application $app, Request $request)
     {
+        $builder = $app->form();
 
-        /* @var $form \Symfony\Component\Form\FormInterface */
-        $form = $app->form()->getForm();
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_INITIALIZE, $event);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $form = $builder->getForm();
 
-            if ($form->isValid()) {
-                switch ($request->get('mode')) {
-                    case 'confirm':
-                        return $app->renderView('Mypage/withdraw_confirm.twig', array(
-                            'form' => $form->createView(),
-                        ));
-                    case 'complete':
+        $form->handleRequest($request);
 
-                        /* @var $Customer \Eccube\Entity\Customer */
-                        $Customer = $app->user();
+        if ($form->isSubmitted() && $form->isValid()) {
+            switch ($request->get('mode')) {
+                case 'confirm':
+                    return $app->render('Mypage/withdraw_confirm.twig', array(
+                        'form' => $form->createView(),
+                    ));
 
-                        // 会員削除
-                        $email = $Customer->getEmail();
-                        // メールアドレスにダミーをセット
-                        $Customer->setEmail(Str::random(60) . '@dummy.dummy');
-                        $Customer->setDelFlg(Constant::ENABLED);
+                case 'complete':
+                    /* @var $Customer \Eccube\Entity\Customer */
+                    $Customer = $app->user();
 
-                        $app['orm.em']->flush();
+                    // 会員削除
+                    $email = $Customer->getEmail();
+                    // メールアドレスにダミーをセット
+                    $Customer->setEmail(Str::random(60) . '@dummy.dummy');
+                    $Customer->setDelFlg(Constant::ENABLED);
 
-                        // メール送信
-                        $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);
+                    $app['orm.em']->flush();
 
-                        // ログアウト
-                        $this->getSecurity($app)->setToken(null);
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'Customer' => $Customer,
+                        ), $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_WITHDRAW_INDEX_COMPLETE, $event);
 
-                        return $app->redirect($app->url('mypage_withdraw_complete'));
-                }
+                    // メール送信
+                    $app['eccube.service.mail']->sendCustomerWithdrawMail($Customer, $email);
+
+                    // ログアウト
+                    $this->getSecurity($app)->setToken(null);
+
+                    return $app->redirect($app->url('mypage_withdraw_complete'));
             }
         }
 
-        return $app->renderView('Mypage/withdraw.twig', array(
+        return $app->render('Mypage/withdraw.twig', array(
             'form' => $form->createView(),
         ));
     }
 
     /**
-     * Complete
+     * 退会完了画面.
      *
-     * @param  Application $app
-     * @return mixed
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function complete(Application $app, Request $request)
     {
-        return $app->renderView('Mypage/withdraw_complete.twig');
+        return $app->render('Mypage/withdraw_complete.twig');
     }
 }

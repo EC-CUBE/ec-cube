@@ -26,10 +26,9 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
-use Eccube\Form\Type\Admin\MasterdataDataType;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class MasterdataController extends AbstractController
 {
@@ -38,6 +37,15 @@ class MasterdataController extends AbstractController
         $data = array();
 
         $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_INITIALIZE, $event);
+
         $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -48,24 +56,40 @@ class MasterdataController extends AbstractController
                 if ($data['masterdata']) {
                     $masterdata = $app['orm.em']->getRepository($data['masterdata'])->findBy(array(), array('rank' => 'ASC'));
 
-                    $line = 0;
                     foreach ($masterdata as $value) {
-                        $data['data'][$line]['id'] = $value['id'];
-                        $data['data'][$line]['name'] = $value['name'];
-                        $line++;
+                        $data['data'][$value['rank']]['id'] = $value['id'];
+                        $data['data'][$value['rank']]['name'] = $value['name'];
                     }
 
                     // 新規登録様に空のデータを追加する。
-                    $data['data'][$line]['id'] = '';
-                    $data['data'][$line]['name'] = '';
+                    $data['data'][]['id'] = '';
+                    $data['data'][]['name'] = '';
 
                     // hidden値
                     $data['masterdata_name'] = $data['masterdata'];
                 }
+
+                $event = new EventArgs(
+                    array(
+                        'form' => $form,
+                    ),
+                    $request
+                );
+                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_COMPLETE, $event);
+
             }
         }
 
         $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit', $data);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder2,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_INDEX_FORM2_INITIALIZE, $event);
+
         $form2 = $builder2->getForm();
 
         return $app->render('Setting/System/masterdata.twig', array(
@@ -77,6 +101,15 @@ class MasterdataController extends AbstractController
     public function edit(Application $app, Request $request)
     {
         $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder2,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_INITIALIZE, $event);
+
         $form2 = $builder2->getForm();
 
         if ('POST' === $request->getMethod()) {
@@ -86,14 +119,12 @@ class MasterdataController extends AbstractController
                 $data = $form2->getData();
 
                 $entity = new $data['masterdata_name']();
-                $rank = 0;
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
-                        $entity->setRank($rank);
+                        $entity->setRank($key);
                         $app['orm.em']->merge($entity);
-                        $rank++;
                     } else {
                         // remove
                         $delKey = $app['orm.em']->getRepository($data['masterdata_name'])->findOneBy(array('rank' => $key));
@@ -105,6 +136,15 @@ class MasterdataController extends AbstractController
 
                 try {
                     $app['orm.em']->flush();
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form2,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_COMPLETE, $event);
+
                     $app->addSuccess('admin.register.complete', 'admin');
                 } catch (\Exception $e) {
                     // 外部キー制約などで削除できない場合に例外エラーになる
@@ -116,6 +156,15 @@ class MasterdataController extends AbstractController
         }
 
         $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_MASTERDATA_EDIT_FORM_INITIALIZE, $event);
+
         $form = $builder->getForm();
 
         return $app->render('Setting/System/masterdata.twig', array(

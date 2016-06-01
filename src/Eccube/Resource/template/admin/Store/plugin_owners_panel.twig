@@ -26,16 +26,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <span class="glyphicon glyphicon-star"></span> <strong>おすすめ追加機能</strong> <span class="glyphicon glyphicon-star"></span>
         </p>
     {% endif %}
-    {% if version_check == 0 %}
-        <p class="text-danger">こちらのプラグインは使用できません。<br>EC-CUBE対応バージョンを確認してください。</p>
-    {% endif %}
     <div class="plugin-logo">
         <a href="{{ item.product_url }}" target="_blank"><img class="img-rounded" src="{{ item.product_image_url }}"></a>
     </div>
     <div class="plugin-content-top">
         <div class="plugin-title">
-            {% if version_check == 1 %}
-                <span class="pull-right">
+            <span class="pull-right">
                 {% if item.update_status == 2 %}
                     <h4><span class="label label-success">インストール済</span></h4>
                 {% elseif item.update_status == 3 %}
@@ -45,9 +41,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {% else %}
                     <a class="btn btn-warning btn-xs" href="{{ url('admin_store_plugin_upgrade', {'action': 'install', 'id': item.product_id, 'version': item.version}) }}">今すぐインストール</a>
                 {% endif %}
-                </span>
-            {% endif %}
-            <a class="plugin-name" href="{{ item.product_url }}" target="_blank">{{ item.name }}</a>
+            </span>
+              <a class="plugin-name" href="{{ item.product_url }}" target="_blank">{{ item.name }}</a>
         </div>
         <div class="plugin-description">
         {% if item.promotion == 1 %}
@@ -65,8 +60,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <dt class="plugin-eccubeversion">EC-CUBE対応バージョン</dt><dd>{% for version in item.eccube_version %}{{ version }} {%- if loop.last == false%}, {% endif -%}{% endfor %}</dd>
             <dt class="plugin-size">ファイルサイズ</dt><dd>約 {{ (item.file_size / 1024)|round(0, 'ceil')|number_format }} KB</dd>
         </dl>
+        {% if version_check == 0 %}
+            <p class="text-danger">このプラグインはEC-CUBE {{ constant('Eccube\\Common\\Constant::VERSION') }}をサポートしていないため、正常に動作しない可能性があります。</p>
+        {% endif %}
         <p class="plugin-developer">
-            <strong>提供元</strong> : <a href="{{ item.developer_url }}" target="_blank">{{ item.developer }}</a>
+            <strong>提供元</strong> : {% if item.developer_url is not null %}<a href="{{ item.developer_url }}" target="_blank">{{ item.developer }}</a>{% else %}{{ item.developer }}{% endif %}
         </p>
     </div>
 </div>

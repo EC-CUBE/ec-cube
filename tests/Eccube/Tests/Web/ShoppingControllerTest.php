@@ -41,7 +41,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
     public function testRoutingShoppingLogin()
     {
-        $client = $this->createClient();
+        $client = $this->client;
         $crawler = $client->request('GET', '/shopping/login');
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
     }
@@ -81,7 +81,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
         // カート画面
         $this->scenarioCartIn($client);
 
@@ -127,7 +127,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
         // カート画面
         $this->scenarioCartIn($client);
 
@@ -150,7 +150,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
 
         // カート画面
         $this->scenarioCartIn($client);
@@ -162,19 +162,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_delivery'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -188,7 +187,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
         // カート画面
         $this->scenarioCartIn($client);
 
@@ -199,19 +198,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_delivery'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 5, // delivery=5 は無効な値
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 5, // delivery=5 は無効な値
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -228,7 +226,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
 
         // カート画面
         $this->scenarioCartIn($client);
@@ -240,19 +238,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_payment'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 1,
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 1,
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -266,7 +263,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
 
         // カート画面
         $this->scenarioCartIn($client);
@@ -276,19 +273,18 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $crawler = $client->request(
             'POST',
             $this->app->path('shopping_payment'),
-            array('shopping' =>
-                  array(
-                      'shippings' =>
-                      array(0 =>
-                            array(
-                                'delivery' => 1,
-                                'deliveryTime' => 1
-                            ),
-                      ),
-                      'payment' => 100, // payment=100 は無効な値
-                      'message' => $faker->text(),
-                      '_token' => 'dummy'
-                  )
+            array(
+                'shopping' => array(
+                    'shippings' => array(
+                        0 => array(
+                            'delivery' => 1,
+                            'deliveryTime' => 1
+                        ),
+                    ),
+                    'payment' => 100, // payment=100 は無効な値
+                    'message' => $faker->text(),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -305,7 +301,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
         // カート画面
         $this->scenarioCartIn($client);
         // 確認画面
@@ -327,7 +323,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
         // カート画面
         $this->scenarioCartIn($client);
         // 確認画面
@@ -353,12 +349,14 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
     /**
      * 購入確認画面→お届け先の設定→お届け先追加→購入完了
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1305
      */
     public function testShippingShippingPost()
     {
         $faker = $this->getFaker();
         $Customer = $this->logIn();
-        $client = $this->createClient();
+        $client = $this->client;
 
         // カート画面
         $this->scenarioCartIn($client);
@@ -419,8 +417,8 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $Messages = $this->getMailCatcherMessages();
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
-        // FIXME https://github.com/EC-CUBE/ec-cube/issues/1305
-        // $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+        // https://github.com/EC-CUBE/ec-cube/issues/1305
+        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
         $this->assertRegexp('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
     }
 

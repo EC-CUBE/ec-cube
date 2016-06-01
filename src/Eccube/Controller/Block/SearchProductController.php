@@ -25,23 +25,34 @@
 namespace Eccube\Controller\Block;
 
 use Eccube\Application;
-
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
+use Symfony\Component\HttpFoundation\Request;
 
 class SearchProductController
 {
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         /** @var $form \Symfony\Component\Form\Form */
-        $form = $app['form.factory']
+        $builder = $app['form.factory']
             ->createNamedBuilder('', 'search_product')
-            ->setMethod('GET')
-            ->getForm();
+            ->setMethod('GET');
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
 
         /** @var $request \Symfony\Component\HttpFoundation\Request */
         $request = $app['request_stack']->getMasterRequest();
+
+        $form = $builder->getForm();
         $form->handleRequest($request);
 
-        return $app['view']->render('Block/search_product.twig', array(
+        return $app->render('Block/search_product.twig', array(
             'form' => $form->createView(),
         ));
     }

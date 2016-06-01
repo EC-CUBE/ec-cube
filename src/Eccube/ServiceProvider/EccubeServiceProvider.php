@@ -64,6 +64,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
+            $csvService->setEntityManager($app['orm.em']);
             $csvService->setConfig($app['config']);
             $csvService->setCsvRepository($app['eccube.repository.csv']);
             $csvService->setCsvTypeRepository($app['eccube.repository.master.csv_type']);
@@ -293,6 +294,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Master\PaymentType();
             $types[] = new \Eccube\Form\Type\Master\MailTemplateType();
             $types[] = new \Eccube\Form\Type\Master\CategoryType();
+            $types[] = new \Eccube\Form\Type\Master\TagType();
 
             $types[] = new \Eccube\Form\Type\CustomerType($app); // 削除予定
 

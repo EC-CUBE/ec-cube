@@ -38,35 +38,35 @@ function changeAction(action) {
 {% endblock javascript %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+    <div id="news_wrap" class="row">
+        <div id="news_list_box" class="col-md-12">
+            <div id="news_list_box__body" class="box">
+                <div id="news_list_box__header" class="box-header">
                     <h3 class="box-title">新着情報管理</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div id="news_list_box__body_inner" class="box-body">
                     <form name="form1" id="form1" method="post" action="">
-                        <div class="table_list">
-                            <div class="table-responsive with-border">
+                        <div id="news_list_box__list_box" class="table_list">
+                            <div id="news_list_box__list" class="table-responsive with-border">
                                 <table class="table table-striped">
                                     <thead>
-                                        <tr>
-                                            <th>順位</th>
-                                            <th>日付</th>
-                                            <th>タイトル</th>
-                                            <th>&nbsp;</th>
+                                       <tr id="news_list_box__list_header">
+                                            <th id="news_list_box__header_rank">順位</th>
+                                            <th id="news_list_box__header_date">日付</th>
+                                            <th id="news_list_box__header_title">タイトル</th>
+                                            <th id="news_list_box__header_menu_box">&nbsp;</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     {% for News in NewsList %}
-                                        <tr>
-                                            <td>{{ loop.index }}</td>
-                                            <td>{{ News.date|date("Y/m/d") }}</td>
-                                            <td>{{ News.title }}</td>
-                                            <td class="icon_edit">
-                                                <div class="dropdown">
+                                        <tr id="news_list_box__item--{{ News.id }}">
+                                            <td id="news_list_box__rank--{{ News.id }}">{{ loop.index }}</td>
+                                            <td id="news_list_box__date--{{ News.id }}">{{ News.date|date("Y/m/d") }}</td>
+                                            <td id="news_list_box__title--{{ News.id }}">{{ News.title }}</td>
+                                            <td id="news_list_box__menu_box--{{ News.id }}" class="icon_edit">
+                                                <div id="news_list_box__menu_box_toggle--{{ News.id }}" class="dropdown">
                                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                    <ul id="news_list_box__menu--{{ News.id }}" class="dropdown-menu dropdown-menu-right">
                                                         <li><a href="{{ url('admin_content_news_edit', {id: News.id}) }}" >編集</a></li>
                                                         <li><a href="{{ url('admin_content_news_delete', {id: News.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この新着情報を削除してもよろしいですか？">削除</a></li>
                                                         {% if loop.first == false %}
@@ -92,8 +92,8 @@ function changeAction(action) {
                     </form>
                 </div>
             </div><!-- /.box -->
-            <div class="row">
-                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+            <div id="news_list_box__footer" class="row">
+                <div id="news_list_box__insert_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     <a href="{{ url('admin_content_news_new') }}" class="btn btn-primary btn-block btn-lg">新規登録</a>
                 </div>
             </div>

@@ -24,6 +24,8 @@
 namespace Eccube\Service;
 
 use Eccube\Application;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 
 class MailService
 {
@@ -65,6 +67,17 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+                'activateUrl' => $activateUrl,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_CONFIRM, $event);
+
         $this->app->mail($message);
     }
 
@@ -90,10 +103,19 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_COMPLETE, $event);
+
         $this->app->mail($message);
 
     }
-
 
 
     /**
@@ -118,6 +140,17 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+                'email' => $email,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CUSTOMER_WITHDRAW, $event);
 
         $this->app->mail($message);
 
@@ -147,6 +180,16 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'formData' => $formData,
+                'BaseInfo' => $this->BaseInfo,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_CONTACT, $event);
+
         $this->app->mail($message);
 
     }
@@ -167,7 +210,8 @@ class MailService
     /**
      * Send order mail.
      *
-     * @param $Order 受注情報
+     * @param \Eccube\Entity\Order $Order 受注情報
+     * @return string
      */
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
@@ -189,7 +233,20 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Order' => $Order,
+                'MailTemplate' => $MailTemplate,
+                'BaseInfo' => $this->BaseInfo,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ORDER, $event);
+
         $this->app->mail($message);
+
+        return $message;
 
     }
 
@@ -216,6 +273,17 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+                'activateUrl' => $activateUrl,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM, $event);
 
         $this->app->mail($message);
 
@@ -246,6 +314,17 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Order' => $Order,
+                'formData' => $formData,
+                'BaseInfo' => $this->BaseInfo,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_ADMIN_ORDER, $event);
+
         $this->app->mail($message);
 
     }
@@ -271,6 +350,17 @@ class MailService
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
 
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+                'resetUrl' => $reset_url,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET, $event);
+
         $this->app->mail($message);
 
     }
@@ -295,6 +385,17 @@ class MailService
             ->setReplyTo($this->BaseInfo->getEmail03())
             ->setReturnPath($this->BaseInfo->getEmail04())
             ->setBody($body);
+
+        $event = new EventArgs(
+            array(
+                'message' => $message,
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+                'password' => $password,
+            ),
+            null
+        );
+        $this->app['eccube.event.dispatcher']->dispatch(EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE, $event);
 
         $this->app->mail($message);
 

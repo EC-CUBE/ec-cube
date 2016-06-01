@@ -27,6 +27,7 @@ namespace Eccube\Twig\Extension;
 use Eccube\Common\Constant;
 use Eccube\Util\Str;
 use Silex\Application;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class EccubeExtension extends \Twig_Extension
 {
@@ -44,10 +45,17 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
+        $RoutingExtension = $this->app['twig']->getExtension('routing');
+
         return array(
             new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
             new \Twig_SimpleFunction('active_menus', array($this, 'getActiveMenus')),
             new \Twig_SimpleFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
+
+            // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::url
+            new \Twig_SimpleFunction('url', array($this, 'getUrl'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
+            // Override: \Symfony\Bridge\Twig\Extension\RoutingExtension::path
+            new \Twig_SimpleFunction('path', array($this, 'getPath'), array('is_safe_callback' => array($RoutingExtension, 'isUrlGenerationSafe'))),
         );
     }
 
@@ -169,5 +177,51 @@ class EccubeExtension extends \Twig_Extension
     public function getTimeAgo($date)
     {
         return Str::timeAgo($date);
+    }
+
+    /**
+     * bind から URL へ変換します。
+     * \Symfony\Bridge\Twig\Extension\RoutingExtension::getPath の処理を拡張し、
+     * RouteNotFoundException 発生時に E_USER_WARNING を発生させ、
+     * 文字列 "/404?bind={bind}" を返します。
+     *
+     * @param string $name
+     * @param array $parameters
+     * @param boolean $relative
+     * @return string URL
+     */
+    public function getPath($name, $parameters = array(), $relative = false)
+    {
+        $RoutingExtension = $this->app['twig']->getExtension('routing');
+        try {
+            return $RoutingExtension->getPath($name, $parameters, $relative);
+        } catch (RouteNotFoundException $e) {
+            trigger_error($e->getMessage(), E_USER_WARNING);
+        }
+
+        return $RoutingExtension->getPath('homepage').'404?bind='.$name;
+    }
+
+    /**
+     * bind から URL へ変換します。
+     * \Symfony\Bridge\Twig\Extension\RoutingExtension::getUrl の処理を拡張し、
+     * RouteNotFoundException 発生時に E_USER_WARNING を発生させ、
+     * 文字列 "/404?bind={bind}" を返します。
+     *
+     * @param string $name
+     * @param array $parameters
+     * @param boolean $schemeRelative
+     * @return string URL
+     */
+    public function getUrl($name, $parameters = array(), $schemeRelative = false)
+    {
+        $RoutingExtension = $this->app['twig']->getExtension('routing');
+        try {
+            return $RoutingExtension->getUrl($name, $parameters, $schemeRelative);
+        } catch (RouteNotFoundException $e) {
+            trigger_error($e->getMessage(), E_USER_WARNING);
+        }
+
+        return $RoutingExtension->getUrl('homepage').'404?bind='.$name;
     }
 }

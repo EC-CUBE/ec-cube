@@ -27,7 +27,13 @@ require __DIR__.'/../autoload.php';
 ini_set('display_errors', 'Off');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
 
-$app = new Eccube\Application();
+// see http://silex.sensiolabs.org/doc/web_servers.html#php-5-4
+$filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
+if (php_sapi_name() === 'cli-server' && is_file($filename)) {
+    return false;
+}
+
+$app = \Eccube\Application::getInstance();
 
 // インストールされてなければインストーラにリダイレクト
 if ($app['config']['eccube_install']) {

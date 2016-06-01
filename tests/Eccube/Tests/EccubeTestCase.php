@@ -46,9 +46,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function setUp()
     {
         parent::setUp();
-        // in the case of sqlite in-memory database only.
-        if (array_key_exists('memory', $this->app['config']['database'])
-            && $this->app['config']['database']['memory']) {
+        if ($this->isSqliteInMemory()) {
             $this->initializeDatabase();
         }
         if (isset($this->app['orm.em'])) {
@@ -62,9 +60,13 @@ abstract class EccubeTestCase extends WebTestCase
     public function tearDown()
     {
         parent::tearDown();
-        $this->app['orm.em']->getConnection()->rollback();
-        $this->app['orm.em']->getConnection()->close();
+        if (!$this->isSqliteInMemory()) {
+            $this->app['orm.em']->getConnection()->rollback();
+            $this->app['orm.em']->getConnection()->close();
+        }
+
         $this->cleanUpProperties();
+        $this->app = null;
     }
 
     /**
@@ -84,7 +86,9 @@ abstract class EccubeTestCase extends WebTestCase
         $pdo = $entityManager->getConnection()->getWrappedConnection();
 
         // Clear Doctrine to be safe
+        $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
         $entityManager->clear();
+        gc_collect_cycles();
 
         // Schema Tool to process our entities
         $tool = new \Doctrine\ORM\Tools\SchemaTool($entityManager);
@@ -96,21 +100,40 @@ abstract class EccubeTestCase extends WebTestCase
         $config = new Configuration($this->app['db']);
         $config->setMigrationsNamespace('DoctrineMigrations');
 
-        $migrationDir = __DIR__ . '/../../../src/Eccube/Resource/doctrine/migration';
+        $migrationDir = __DIR__.'/../../../src/Eccube/Resource/doctrine/migration';
         $config->setMigrationsDirectory($migrationDir);
         $config->registerMigrationsFromDirectory($migrationDir);
 
         $migration = new Migration($config);
-        $migration->migrate(null, false);
+        // initialize migrations.sql from bootstrap
+        if (!file_exists(sys_get_temp_dir().'/migrations.sql')) {
+            $sql = $migration->migrate(null, false);
+            file_put_contents(sys_get_temp_dir().'/migrations.sql', json_encode($sql));
+        } else {
+            $migrations = json_decode(file_get_contents(sys_get_temp_dir().'/migrations.sql'), true);
+            foreach ($migrations as $migration_sql) {
+                foreach ($migration_sql as $sql) {
+                    if ($this->isSqliteInMemory()) {
+                        // XXX #1199 の問題を無理矢理回避...
+                        $sql = preg_replace('/CURRENT_TIMESTAMP/i', "datetime('now','-9 hours')", $sql);
+                    }
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                }
+            }
+        }
 
         // 通常は eccube_install.sh で追加されるデータを追加する
         $sql = "INSERT INTO dtb_member (member_id, login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (2, 'admin', 'test', 'test', 1, 0, 0, 1, 1, current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP')";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+        $stmt->closeCursor();
 
         $sql = "INSERT INTO dtb_base_info (id, shop_name, email01, email02, email03, email04, update_date, option_product_tax_rule) VALUES (1, 'SHOP_NAME', 'admin@example.com', 'admin@example.com', 'admin@example.com', 'admin@example.com', current_timestamp, 0)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
+        $stmt->closeCursor();
     }
 
     /**
@@ -422,10 +445,11 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function createApplication()
     {
-        $app = new Application();
+        $app = Application::getInstance();
         $app['debug'] = true;
         $app->initialize();
         $app->initPluginEventDispatcher();
+        $app->initializePlugin();
         $app['session.test'] = true;
         $app['exception_handler']->disable();
 
@@ -454,6 +478,7 @@ abstract class EccubeTestCase extends WebTestCase
                 $prop->setValue($this, null);
             }
         }
+        \Eccube\Application::clearInstance();
     }
 
     /**
@@ -555,5 +580,17 @@ abstract class EccubeTestCase extends WebTestCase
     protected function parseMailCatcherSource($Message)
     {
         return quoted_printable_decode($Message->source);
+    }
+
+    /**
+     * in the case of sqlite in-memory database.
+     */
+    protected function isSqliteInMemory()
+    {
+        if (array_key_exists('memory', $this->app['config']['database'])
+            && $this->app['config']['database']['memory']) {
+            return true;
+        }
+        return false;
     }
 }

@@ -78,39 +78,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {% endblock %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
-                    <div class="form-inline">
-                        <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_product_class_name_edit', {id: TargetClassName.id}) }}{% else %}{{ url('admin_product_class_name') }}{% endif %}">
-                            {{ form_widget(form._token) }}
-                            {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
-                            {{ form_errors(form.name) }}
-                            <button class="btn btn-default btn-sm" type="submit">規格作成</button>
-                        </form>
-                    </div>
+    <div id="edit_wrap" class="row">
+        <div id="edit_list_box" class="col-md-12">
+            <div id="edit_list_box__body" class="box">
+                <div id="edit_box" class="box-header">
+                    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="{% if TargetClassName.id %}{{ path('admin_product_class_name_edit', {id: TargetClassName.id}) }}{% else %}{{ url('admin_product_class_name') }}{% endif %}">
+                        <div id="edit_box__body" class="form-group">
+                            <div class="col-md-12 form-inline">
+                                {{ form_widget(form._token) }}
+                                {{ form_widget(form.name, {attr: {placeholder: '規格名を入力'}}) }}
+                                {{ form_errors(form.name) }}
+                                <button class="btn btn-default btn-sm" type="submit">規格作成</button>
+                            </div>
+                        </div>
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_label(f) }}
+                                    {{ form_widget(f) }}
+                                    {{ form_errors(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </form>
                 </div><!-- /.box-header -->
                 {% if ClassNames|length > 0 %}
-                    <div class="box-body no-padding no-border">
-                        <div class="sortable_list">
-                            <div class="tableish">
+                    <div id="sortable_list_box" class="box-body no-padding no-border">
+                        <div id="list_box" class="sortable_list">
+                            <div id="sortable_list_box__body" class="tableish">
 
                                 {% for ClassName in ClassNames %}
 
-                                    <div class="item_box tr" data-class-name-id="{{ ClassName.id }}" data-rank="{{ ClassName.rank }}">
+                                    <div id="sortable_list_box__item--{{ ClassName.id }}" class="item_box tr" data-class-name-id="{{ ClassName.id }}" data-rank="{{ ClassName.rank }}">
                                         <div class="icon_sortable td">
                                             <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
                                         </div>
-                                        <div class="item_pattern td">
+                                        <div id="sortable_list_box__name--{{ ClassName.id }}" class="item_pattern td">
                                             <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">
                                                 {{ ClassName.name }} ({{ ClassName.ClassCategories|length }})
                                             </a>
                                         </div>
-                                        <div class="icon_edit td">
-                                            <div class="dropdown">
+                                        <div id="sortable_list_box__menu_box--{{ ClassName.id }}" class="icon_edit td">
+                                            <div id="sortable_list_box__menu_box_toggle--{{ ClassName.id }}" class="dropdown">
                                                 <a class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                <ul id="sortable_list_box__menu--{{ ClassName.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li>
                                                         <a href="{{ url('admin_product_class_category', {class_name_id : ClassName.id }) }}">
                                                             分類登録
@@ -141,8 +152,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div><!-- /.box-body -->
                 {% else %}
-                    <div class="box-body no-padding">
-                        <div class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
+                    <div id="sortable_list_box" class="box-body no-padding">
+                        <div id="sortable_list_box__not_find_message" class="data-empty"><svg class="cb cb-inbox"> <use xlink:href="#cb-inbox" /></svg><p>データはありません</p></div>
                     </div><!-- /.box-body -->
                 {% endif %}
                 <!-- ▲ データがある時 ▲ -->

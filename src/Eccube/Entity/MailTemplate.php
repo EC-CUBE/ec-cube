@@ -36,7 +36,7 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
      */
     public function __toString()
     {
-        return $this->getSubject();
+        return $this->getSubject() ? $this->getSubject() : '';
     }
 
     /**

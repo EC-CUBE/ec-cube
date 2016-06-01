@@ -26,6 +26,8 @@ namespace Eccube\Controller\Admin\Content;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -40,11 +42,22 @@ class NewsController extends AbstractController
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
         $NewsList = $app['eccube.repository.news']->findBy(array(), array('rank' => 'DESC'));
 
-        $form = $app->form()->getForm();
+        $builder = $app->form();
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'NewsList' => $NewsList,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         return $app->render('Content/news.twig', array(
             'form' => $form->createView(),
@@ -73,9 +86,19 @@ class NewsController extends AbstractController
             $News = new \Eccube\Entity\News();
         }
 
-        $form = $app['form.factory']
-            ->createBuilder('admin_news', $News)
-            ->getForm();
+        $builder = $app['form.factory']
+            ->createBuilder('admin_news', $News);
+
+        $event = new EventArgs(
+            array(
+                'builder' => $builder,
+                'News' => $News,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_INITIALIZE, $event);
+
+        $form = $builder->getForm();
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -88,6 +111,16 @@ class NewsController extends AbstractController
                 $status = $app['eccube.repository.news']->save($News);
 
                 if ($status) {
+
+                    $event = new EventArgs(
+                        array(
+                            'form' => $form,
+                            'News' => $News,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_EDIT_COMPLETE, $event);
+
                     $app->addSuccess('admin.news.save.complete', 'admin');
 
                     return $app->redirect($app->url('admin_content_news'));
@@ -179,6 +212,16 @@ class NewsController extends AbstractController
         }
 
         $status = $app['eccube.repository.news']->delete($TargetNews);
+
+        $event = new EventArgs(
+            array(
+                'TargetNews' => $TargetNews,
+                'status' => $status,
+            ),
+            $request
+        );
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_NEWS_DELETE_COMPLETE, $event);
+        $status = $event->getArgument('status');
 
         if ($status) {
             $app->addSuccess('admin.news.delete.complete', 'admin');

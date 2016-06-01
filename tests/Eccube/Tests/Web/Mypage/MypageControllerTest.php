@@ -22,7 +22,10 @@
  */
 
 
-namespace Eccube\Tests\Web;
+namespace Eccube\Tests\Web\Mypage;
+
+use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MypageControllerTest extends AbstractWebTestCase
 {
@@ -73,6 +76,75 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isRedirection());
     }
 
+    public function testLogin()
+    {
+        $this->logIn();
+        $client = $this->client;
+        $crawler = $client->request(
+            'GET',
+            $this->app->path('mypage_login')
+        );
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage')));
+    }
+
+    public function testLoginWithFailure()
+    {
+        $client = $this->client;
+        $crawler = $client->request(
+            'GET',
+            $this->app->path('mypage_login')
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    public function testIndex()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->logIn($Customer);
+        $client = $this->client;
+
+        $crawler = $client->request(
+            'GET',
+            $this->app->path('mypage')
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    public function testHistory()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->logIn($Customer);
+        $client = $this->client;
+
+        $crawler = $client->request(
+            'GET',
+            $this->app->path('mypage_history', array('id' => $Order->getId()))
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+    }
+
+    public function testHistoryWithNotfound()
+    {
+        $Customer = $this->createCustomer();
+
+        $this->logIn($Customer);
+        $client = $this->client;
+
+        try {
+            $crawler = $client->request(
+                'GET',
+                $this->app->path('mypage_history', array('id' => 999999999))
+            );
+            $this->fail();
+        } catch (NotFoundHttpException $e) {
+            $this->actual = $e->getMessage();
+            $this->expected = '';
+        }
+        $this->verify();
+    }
 
     private function newTestFavorite()
     {

@@ -1,0 +1,760 @@
+
+# Admin/AdminContoller
+
+# login
+admin.admin.login.initialize:
+  - [onAdminLogin1, NORMAL]
+
+# index
+admin.admin.index.initialize:
+  - [onAdminIndex1, NORMAL]
+admin.admin.index.order:
+  - [onAdminIndex2, NORMAL]
+admin.admin.index.sales:
+  - [onAdminIndex3, NORMAL]
+admin.admin.index.complete:
+  - [onAdminIndex4, NORMAL]
+
+# searchNonStockProducts
+
+# Admin/Content/BlockController
+
+# index
+admin.content.block.index.complete:
+  - [onAdminContentBlock1, NORMAL]
+
+# edit
+admin.content.block.edit.initialize:
+  - [onAdminContentBlock2, NORMAL]
+admin.content.block.edit.complete:
+  - [onAdminContentBlock3, NORMAL]
+
+# delete
+admin.content.block.delete.complete:
+  - [onAdminContentBlock4, NORMAL]
+
+
+# Admin/Content/FileController
+
+# index
+
+# create
+
+# delete
+
+# download
+
+# upload
+
+
+
+# Admin/Content/LayoutController
+
+# index
+admin.content.layout.index.initialize:
+  - [onAdminContentLayout1, NORMAL]
+admin.content.layout.index.complete:
+  - [onAdminContentLayout2, NORMAL]
+
+# Admin/Content/NewsController
+
+# index
+admin.content.news.index.initialize:
+  - [onAdminContentNews1, NORMAL]
+
+# edit
+admin.content.news.edit.initialize:
+  - [onAdminContentNews3, NORMAL]
+admin.content.news.edit.complete:
+  - [onAdminContentNews4, NORMAL]
+
+# delete
+admin.content.news.delete.complete:
+  - [onAdminContentNews5, NORMAL]
+
+# Admin/Content/PageController
+
+# index
+admin.content.page.index.initialize:
+  - [onAdminContentPage1, NORMAL]
+
+# edit
+admin.content.page.edit.initialize:
+  - [onAdminContentPage2, NORMAL]
+admin.content.page.edit.complete:
+  - [onAdminContentPage3, NORMAL]
+
+# delete
+admin.content.page.delete.complete:
+  - [onAdminContentPage4, NORMAL]
+
+# Admin/Customer/CustomerController
+
+# index
+admin.customer.index.initialize:
+  - [onAdminCustomer1, NORMAL]
+admin.customer.index.search:
+  - [onAdminCustomer2, NORMAL]
+
+# resend
+admin.customer.resend.complete:
+  - [onAdminCustomer3, NORMAL]
+
+# delete
+admin.customer.delete.complete:
+  - [onAdminCustomer4, NORMAL]
+
+# export
+
+
+
+# Admin/Customer/CustomerEditController
+
+# index
+admin.customer.edit.index.initialize:
+  - [onAdminCustomerEdit1, NORMAL]
+admin.customer.edit.index.complete:
+  - [onAdminCustomerEdit2, NORMAL]
+
+
+
+# Admin/Order/EditController
+
+# index
+admin.order.edit.index.initialize:
+  - [onAdminOrderEdit1, NORMAL]
+admin.order.edit.index.complete:
+  - [onAdminOrderEdit2, NORMAL]
+admin.order.edit.index.progress:
+  - [onAdminOrderEditIndex1, NORMAL]
+
+# searchCustomer
+admin.order.edit.search.customer.initialize:
+  - [onAdminOrderEdit3, NORMAL]
+admin.order.edit.search.customer.search:
+  - [onAdminOrderEdit4, NORMAL]
+admin.order.edit.search.customer.complete:
+  - [onAdminOrderEdit5, NORMAL]
+
+# searchCustomerById
+admin.order.edit.search.customer.by.id.initialize:
+  - [onAdminOrderEdit6, NORMAL]
+admin.order.edit.search.customer.by.id.complete:
+  - [onAdminOrderEdit7, NORMAL]
+
+# searchProduct
+admin.order.edit.search.product.initialize:
+  - [onAdminOrderEdit8, NORMAL]
+admin.order.edit.search.product.search:
+  - [onAdminOrderEdit9, NORMAL]
+admin.order.edit.search.product.complete:
+  - [onAdminOrderEdit10, NORMAL]
+
+
+
+# Admin/Order/MailController
+
+# index
+admin.order.mail.index.initialize:
+  - [onAdminMail1, NORMAL]
+admin.order.mail.index.change:
+  - [onAdminMail2, NORMAL]
+admin.order.mail.index.confirm:
+  - [onAdminMail3, NORMAL]
+admin.order.mail.index.complete:
+  - [onAdminMail4, NORMAL]
+
+# view
+admin.order.mail.view.complete:
+  - [onAdminMail5, NORMAL]
+
+# mailAll
+admin.order.mail.mail.all.initialize:
+  - [onAdminMail6, NORMAL]
+admin.order.mail.mail.all.change:
+  - [onAdminMail7, NORMAL]
+admin.order.mail.mail.all.confirm:
+  - [onAdminMail8, NORMAL]
+admin.order.mail.mail.all.complete:
+  - [onAdminMail9, NORMAL]
+
+
+
+# Admin/Order/OrderController
+
+# index
+admin.order.index.initialize:
+  - [onAdminOrder1, NORMAL]
+admin.order.index.search:
+  - [onAdminOrder2, NORMAL]
+
+# delete
+admin.order.delete.complete:
+  - [onAdminOrder3, NORMAL]
+
+# exportOrder
+
+# exportShipping
+
+
+
+# Admin/Product/CategoryController
+
+# index
+admin.product.category.index.initialize:
+  - [onAdminCategory1, NORMAL]
+admin.product.category.index.complete:
+  - [onAdminCategory2, NORMAL]
+
+# delete
+admin.product.category.delete.complete:
+  - [onAdminCategory3, NORMAL]
+
+# export
+
+
+
+# Admin/Product/ClassCategoryController
+
+# index
+admin.product.class.category.index.initialize:
+  - [onAdminClassCategory1, NORMAL]
+admin.product.class.category.index.complete:
+  - [onAdminClassCategory2, NORMAL]
+
+# delete
+admin.product.class.category.delete.complete:
+  - [onAdminClassCategory3, NORMAL]
+
+
+
+# Admin/Product/ClassNameController
+
+# index
+admin.product.class.name.index.initialize:
+  - [onAdminClassName1, NORMAL]
+admin.product.class.name.index.complete:
+  - [onAdminClassName2, NORMAL]
+
+# delete
+admin.product.class.name.delete.complete:
+  - [onAdminClassName3, NORMAL]
+
+
+
+# Admin/Product/CsvImportController
+
+# csvProduct
+
+# csvCatgory
+
+# csvTemplate
+
+
+
+# Admin/Product/ProductClassController
+
+# index
+admin.product.product.class.index.initialize:
+  - [onAdminProductClass1, NORMAL]
+admin.product.product.class.index.classes:
+  - [onAdminProductClass2, NORMAL]
+
+# edit
+admin.product.product.class.edit.initialize:
+  - [onAdminProductClass3, NORMAL]
+admin.product.product.class.edit.complete:
+  - [onAdminProductClass4, NORMAL]
+admin.product.product.class.edit.update:
+  - [onAdminProductClass5, NORMAL]
+admin.product.product.class.edit.delete:
+  - [onAdminProductClass6, NORMAL]
+
+
+
+# Admin/Product/ProductController
+
+# index
+admin.product.index.initialize:
+  - [onAdminProduct1, NORMAL]
+admin.product.index.search:
+  - [onAdminProduct2, NORMAL]
+
+# addImage
+admin.product.add.image.complete:
+  - [onAdminProduct3, NORMAL]
+
+# edit
+admin.product.edit.initialize:
+  - [onAdminProduct4, NORMAL]
+admin.product.edit.search:
+  - [onAdminProduct5, NORMAL]
+admin.product.edit.complete:
+  - [onAdminProduct6, NORMAL]
+
+# delete
+admin.product.delete.complete:
+  - [onAdminProduct7, NORMAL]
+
+# copy
+admin.product.copy.complete:
+  - [onAdminProduct8, NORMAL]
+
+# display
+admin.product.display.complete:
+  - [onAdminProduct9, NORMAL]
+
+# export
+
+
+
+# Admin/Setting/Shop/CsvController
+
+# index
+admin.setting.shop.csv.index.initialize:
+  - [onAdminCsv1, NORMAL]
+admin.setting.shop.csv.index.complete:
+  - [onAdminCsv2, NORMAL]
+
+
+# Admin/Setting/Shop/CustomerAgreementController
+
+# index
+admin.setting.shop.customer.agreement.index.initialize:
+  - [onAdminAgree1, NORMAL]
+admin.setting.shop.customer.agreement.index.complete:
+  - [onAdminAgree2, NORMAL]
+
+
+# Admin/Setting/Shop/DeliveryController
+
+# index
+admin.setting.shop.delivery.index.complete:
+  - [onAdminDelivery2, NORMAL]
+
+# edit
+admin.setting.shop.delivery.edit.initialize:
+  - [onAdminDelivery3, NORMAL]
+admin.setting.shop.delivery.edit.complete:
+  - [onAdminDelivery4, NORMAL]
+
+# delete
+admin.setting.shop.delivery.delete.complete:
+  - [onAdminDelivery6, NORMAL]
+
+
+# Admin/Setting/Shop/MailController
+
+# index
+admin.setting.shop.mail.index.initialize:
+  - [onAdminShop1, NORMAL]
+admin.setting.shop.mail.index.complete:
+  - [onAdminShop2, NORMAL]
+
+
+# Admin/Setting/Shop/PaymentController
+
+# index
+admin.setting.shop.payment.index.complete:
+  - [onAdminPayment2, NORMAL]
+# edit
+admin.setting.shop.payment.edit.initialize:
+  - [onAdminPayment3, NORMAL]
+admin.setting.shop.payment.edit.complete:
+  - [onAdminPayment4, NORMAL]
+# imageAdd
+admin.setting.shop.payment.image.add.complete:
+  - [onAdminPayment6, NORMAL]
+# delete
+admin.setting.shop.payment.delete.complete:
+  - [onAdminPayment8, NORMAL]
+
+
+# Admin/Setting/Shop/ShopController
+
+# index
+admin.setting.shop.shop.index.initialize:
+  - [onAdminShop1, NORMAL]
+admin.setting.shop.shop.index.complete:
+  - [onAdminShop2, NORMAL]
+
+
+# Admin/Setting/Shop/TaxRuleController
+
+# index
+admin.setting.shop.tax.rule.index.initialize:
+  - [onAdminTax1, NORMAL]
+admin.setting.shop.tax.rule.index.complete:
+  - [onAdminTax2, NORMAL]
+
+# delete
+admin.setting.shop.tax.rule.delete.complete:
+  - [onAdminTax4, NORMAL]
+
+# editParameter
+admin.setting.shop.tax.rule.edit.parameter.initialize:
+  - [onAdminTax5, NORMAL]
+admin.setting.shop.tax.rule.edit.parameter.complete:
+  - [onAdminTax6, NORMAL]
+
+
+# Admin/Setting/Shop/TradelawController
+
+# index
+admin.setting.shop.trade.law.index.initialize:
+  - [onAdminTrade1, NORMAL]
+admin.setting.shop.trade.law.index.complete:
+  - [onAdminTrade2, NORMAL]
+
+
+# Admin/Setting/System/AuthorityController
+
+# index
+admin.setting.system.authority.index.initialize:
+  - [onAdminAuthority1, NORMAL]
+admin.setting.system.authority.index.complete:
+  - [onAdminAuthority2, NORMAL]
+
+
+
+# Admin/Setting/System/LogController
+
+# index
+admin.setting.system.log.index.initialize:
+  - [onAdminLog1, NORMAL]
+admin.setting.system.log.index.complete:
+  - [onAdminLog2, NORMAL]
+
+
+
+# Admin/Setting/System/MasterdataController
+
+# index
+admin.setting.system.log.index.initialize:
+  - [onAdminMasterdata1, NORMAL]
+admin.setting.system.log.index.form2.initialize:
+  - [onAdminMasterdata2, NORMAL]
+admin.setting.system.log.index.complete:
+  - [onAdminMasterdata3, NORMAL]
+
+# edit
+admin.setting.system.masterdata.edit.initialize:
+  - [onAdminMasterdata4, NORMAL]
+admin.setting.system.masterdata.edit.form.initialize:
+  - [onAdminMasterdata5, NORMAL]
+admin.setting.system.masterdata.edit.complete:
+  - [onAdminMasterdata6, NORMAL]
+
+
+
+# Admin/Setting/System/MemberController
+
+# index
+admin.setting.system.member.index.initialize:
+  - [onAdminMember1, NORMAL]
+
+# edit
+admin.setting.system.member.edit.initialize:
+  - [onAdminMember2, NORMAL]
+admin.setting.system.member.edit.complete:
+  - [onAdminMember3, NORMAL]
+
+# delete
+admin.setting.system.member.delete.initialize:
+  - [onAdminMember4, NORMAL]
+admin.setting.system.member.delete.complete:
+  - [onAdminMember5, NORMAL]
+
+
+
+# Block/SearchProductController
+
+# index
+front.block.search.product.index.initialize:
+  - [onBlock1, NORMAL]
+
+
+# Mypage/ChangeController
+
+# index
+front.mypage.change.index.initialize:
+  - [onMypageChange1, NORMAL]
+front.mypage.change.index.complete:
+  - [onMypageChange2, NORMAL]
+
+
+# Mypage/DeliveryController
+
+# edit
+front.mypage.delivery.edit.initialize:
+  - [onMypageDelivery1, NORMAL]
+front.mypage.delivery.edit.complete:
+  - [onMypageDelivery2, NORMAL]
+
+# delete
+front.mypage.delete.complete:
+  - [onMypageDelivery4, NORMAL]
+
+
+# Mypage/MypageController
+
+# login
+front.mypage.mypage.login.initialize:
+  - [onMypage1, NORMAL]
+
+# index
+front.mypage.mypage.index.search:
+  - [onMypage2, NORMAL]
+
+# history
+front.mypage.mypage.history.initialize:
+  - [onMypage3, NORMAL]
+
+# order
+front.mypage.mypage.order.initialize:
+  - [onMypage4, NORMAL]
+front.mypage.mypage.order.complete:
+  - [onMypage5, NORMAL]
+
+# favorite
+front.mypage.mypage.favorite.search:
+  - [onMypage6, NORMAL]
+
+# delete
+front.mypage.mypage.delete.initialize:
+  - [onMypage7, NORMAL]
+front.mypage.mypage.delete.complete:
+  - [onMypage8, NORMAL]
+
+
+# Mypage/WithdrawController
+
+# index
+front.mypage.withdraw.index.initialize:
+  - [onWithdraw1, NORMAL]
+front.mypage.withdraw.index.complete:
+  - [onWithdraw2, NORMAL]
+
+
+# CartController
+
+# index
+front.cart.index.initialize:
+  - [onCart1, NORMAL]
+front.cart.index.complete:
+  - [onCart2, NORMAL]
+
+# add
+front.cart.add.initialize:
+  - [onCart3, NORMAL]
+front.cart.add.complete:
+  - [onCart4, NORMAL]
+front.cart.add.exception:
+  - [onCart5, NORMAL]
+
+# up
+front.cart.up.initialize:
+  - [onCart6, NORMAL]
+front.cart.up.complete:
+  - [onCart7, NORMAL]
+front.cart.up.exception:
+  - [onCart8, NORMAL]
+
+# down
+front.cart.down.initialize:
+  - [onCart9, NORMAL]
+front.cart.down.complete:
+  - [onCart10, NORMAL]
+front.cart.down.exception:
+  - [onCart11, NORMAL]
+
+# remove
+front.cart.remove.initialize:
+  - [onCart12, NORMAL]
+front.cart.remove.complete:
+  - [onCart13, NORMAL]
+
+# buystep
+front.cart.buystep.initialize:
+  - [onCart14, NORMAL]
+front.cart.buystep.complete:
+  - [onCart15, NORMAL]
+
+# ContactController
+
+# index
+front.contact.index.initialize:
+  - [onContact1, NORMAL]
+front.contact.index.complete:
+  - [onContact2, NORMAL]
+
+
+# EntryController
+
+# index
+front.entry.index.initialize:
+  - [onEntry1, NORMAL]
+front.entry.index.complete:
+  - [onEntry2, NORMAL]
+
+# activate
+front.entry.activate.complete:
+  - [onEntry4, NORMAL]
+
+
+# ForgotController
+
+# index
+front.forgot.index.initialize:
+  - [onForgot1, NORMAL]
+front.forgot.index.complete:
+  - [onForgot2, NORMAL]
+
+# reset
+front.reset.index.complete:
+  - [onForgot4, NORMAL]
+
+
+# ProductController
+
+# index
+front.product.index.initialize:
+  - [onProduct1, NORMAL]
+front.product.index.search:
+  - [onProduct2, NORMAL]
+front.product.index.complete:
+  - [onProduct3, NORMAL]
+front.product.index.disp:
+  - [onProduct4, NORMAL]
+front.product.index.order:
+  - [onProduct5, NORMAL]
+
+# detail
+front.product.detail.initialize:
+  - [onProduct6, NORMAL]
+front.product.detail.favorite:
+  - [onProduct7, NORMAL]
+front.product.detail.complete:
+  - [onProduct8, NORMAL]
+
+
+
+# ShoppingController
+
+# index
+front.shopping.index.initialize:
+  - [onShopping1, NORMAL]
+
+# confirm
+front.shopping.confirm.initialize:
+  - [onShopping2, NORMAL]
+front.shopping.confirm.processing:
+  - [onShopping3, NORMAL]
+front.shopping.confirm.complete:
+  - [onShopping4, NORMAL]
+
+# complete
+front.shopping.complete.initialize:
+  - [onShopping5, NORMAL]
+
+# delivery
+front.shopping.delivery.initialize:
+  - [onShopping6, NORMAL]
+front.shopping.delivery.complete:
+  - [onShopping7, NORMAL]
+
+# payment
+front.shopping.payment.initialize:
+  - [onShopping8, NORMAL]
+front.shopping.payment.complete:
+  - [onShopping9, NORMAL]
+
+# shippingChange
+front.shopping.shipping.change.initialize:
+  - [onShoppingShippingChange1, NORMAL]
+
+# shipping
+front.shopping.shipping.complete:
+  - [onShopping10, NORMAL]
+
+# shippingEditChange
+front.shopping.shipping.edit.change.initialize:
+  - [onShoppingShippingEdit1, NORMAL]
+
+# shippingEdit
+front.shopping.shipping.edit.initialize:
+  - [onShopping11, NORMAL]
+front.shopping.shipping.edit.complete:
+  - [onShopping12, NORMAL]
+
+# customer
+front.shopping.customer.initialize:
+  - [onShopping13, NORMAL]
+
+# login
+front.shopping.login.initialize:
+  - [onShopping14, NORMAL]
+
+# nonmember
+front.shopping.nonmember.initialize:
+  - [onShopping15, NORMAL]
+front.shopping.nonmember.complete:
+  - [onShopping16, NORMAL]
+
+# shippingMultipleChange
+front.shopping.shipping.multiple.change.initialize:
+  - [onShoppingShippingMultiple1, NORMAL]
+
+# shippingMultiple
+front.shopping.shipping.multiple.initialize:
+  - [onShopping17, NORMAL]
+front.shopping.shipping.multiple.complete:
+  - [onShopping18, NORMAL]
+
+# shippingMultipleEdit
+front.shopping.shipping.multiple.edit.initialize:
+  - [onShopping19, NORMAL]
+front.shopping.shipping.multiple.edit.complete:
+  - [onShopping20, NORMAL]
+
+# shippingError
+front.shopping.shipping.error.complete:
+  - [onShopping21, NORMAL]
+
+
+
+# UserDataController
+
+# index
+front.user.data.index.initialize:
+  - [onUserData1, NORMAL]
+
+
+# MailService
+mail.customer.confirm:
+  - [onMail1, NORMAL]
+mail.customer.complete:
+  - [onMail2, NORMAL]
+mail.customer.withdraw:
+  - [onMail3, NORMAL]
+mail.contact:
+  - [onMail4, NORMAL]
+mail.order:
+  - [onMail5, NORMAL]
+mail.admin.customer.confirm:
+  - [onMail6, NORMAL]
+mail.admin.order:
+  - [onMail7, NORMAL]
+mail.password.reset:
+  - [onMail8, NORMAL]
+mail.password.reset.complete:
+  - [onMail9, NORMAL]
+
+
+# ShoppingService
+service.shopping.order.status:
+  - [onShoppingService1, NORMAL]
+
+service.shopping.notify.complete:
+  - [onShoppingService2, NORMAL]
+

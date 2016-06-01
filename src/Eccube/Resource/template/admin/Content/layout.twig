@@ -69,14 +69,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <form name="form1" id="form1" method="post" action="{{ url('admin_content_layout_edit', {id: TargetPageLayout.id}) }}">
         {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
-            <div class="col-md-9">
+            <div id="detail_wrap" class="col-md-9">
                 {# ▼レイアウトここから #}
-                <div class="box">
-                    <div class="box-header">
+                <div id="detail_box" class="box">
+                    <div id="detail_box__menu" class="box-header">
                         {{ form_widget(list_form.layout) }}
                     </div>
-                    <div class="box-body no-border row">
-                        <div class="col-md-8">
+                    <div id="detail_box__body" class="box-body no-border row">
+                        <div id="detail_box__layout_box--left_column" class="col-md-8">
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center design-layout">
                                     <tbody>
@@ -85,7 +85,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEAD') }}" class="ui-sortable" colspan="3">
                                             {% set loop_index = 0 %}
                                             {% for BlockPosition in TargetPageLayout.HeadPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -103,7 +103,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_HEADER') }}" class="ui-sortable" colspan="3">
                                             {% for BlockPosition in TargetPageLayout.HeaderPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -121,7 +121,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_TOP') }}" class="ui-sortable" colspan="3">
                                             {% for BlockPosition in TargetPageLayout.ContentsTopPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_LEFT') }}" class="ui-sortable" rowspan="3">
                                             {% for BlockPosition in TargetPageLayout.SideLeftPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -154,7 +154,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </td>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_TOP') }}" class="ui-sortable">
                                             {% for BlockPosition in TargetPageLayout.MainTopPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -169,7 +169,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </td>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_SIDE_RIGHT') }}" class="ui-sortable" rowspan="3">
                                             {% for BlockPosition in TargetPageLayout.SideRightPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -184,7 +184,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                         </td>
                                     </tr>
 
-                                    <tr>
+                                    <tr id="detail_box__layout_item_main_text">
                                         <td>
                                             Main
                                         </td>
@@ -193,7 +193,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_MAIN_BOTTOM') }}" class="ui-sortable">
                                             {% for BlockPosition in TargetPageLayout.MainBottomPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -211,7 +211,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_CONTENTS_BOTTOM') }}" class="ui-sortable" colspan="3">
                                             {% for BlockPosition in TargetPageLayout.ContentsBottomPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -229,7 +229,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                     <tr>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_FOOTER') }}" class="ui-sortable" colspan="3">
                                             {% for BlockPosition in TargetPageLayout.FooterPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -249,14 +249,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                             {# ▲レイアウトここまで #}
                         </div>
-                        <div class="col-md-4">
+                        <div id="detail_box__layout_box--right_column" class="col-md-4">
                             <div class="">
                                 <table class="table table-bordered text-center design-layout">
                                     <tbody>
                                     <tr>
                                         <td id="position_{{ constant('Eccube\\Entity\\PageLayout::TARGET_ID_UNUSED') }}" class="ui-sortable">
                                             {% for BlockPosition in TargetPageLayout.UnusedPosition %}
-                                                <div class="sort{% if loop.first %} first{% endif %}">
+                                                <div id="detail_box__layout_item--{{ BlockPosition.Block.id }}" class="sort{% if loop.first %} first{% endif %}">
                                                     <input type="hidden" class="name" name="name_{{ loop_index }}" value="{{ BlockPosition.Block.name}}" />
                                                     <input type="hidden" class="id" name="id_{{ loop_index }}" value="{{ BlockPosition.Block.id }}" />
                                                     <input type="hidden" class="target-id" name="target_id_{{ loop_index }}" value="{{ BlockPosition.target_id }}" />
@@ -275,26 +275,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             </div>
                         </div><!-- /.col -->
                     </div>
-                    <div class="row">
-                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area2">
+                    <div id="detail_box__footer" class="row">
+                        <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area2">
                             <p><a href="{{ url('admin_content_page') }}">戻る</a></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div id="common_box" class="col-md-3">
                 <div class="col_inner">
-                    <div class="box no-header">
-                        <div class="box-body">
-                            <div class="row text-center">
+                    <div id="common_button_box" class="box no-header">
+                        <div id="common_button_box__body" class="box-body">
+                            <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                     <button class="btn btn-primary btn-block btn-lg" onclick="doRegister();">登録</button>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
-                    <div class="box">
-                        <div class="box-header">
+                    <div id="preview_box" class="box">
+                        <div id="preview_box__preview_button" class="box-header">
                             {% set disabled = true %}
                             {%  if TargetPageLayout.url != 'entry_activate' and 
                                    TargetPageLayout.url != 'shopping' and
@@ -310,7 +310,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             %}
                             {% set disabled = false %}
                             {% endif %}
-                            <button class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') or disabled %}disabled{% endif %} onclick="doPreview();">
+                            <button  class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') or disabled %}disabled{% endif %} onclick="doPreview();">
                                 プレビュー
                             </button>
                         </div><!-- /.box-header -->

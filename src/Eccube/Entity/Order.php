@@ -33,13 +33,20 @@ use Eccube\Util\EntityUtil;
 class Order extends \Eccube\Entity\AbstractEntity
 {
     /**
-     * @return bool
+     * isMultiple
+     * 
+     * @return boolean
      */
     public function isMultiple()
     {
         return count($this->getShippings()) > 1 ? true : false;
     }
 
+    /**
+     * isPriceChange
+     * 
+     * @return boolean
+     */
     public function isPriceChange()
     {
         foreach ($this->getOrderDetails() as $OrderDetail) {
@@ -53,17 +60,19 @@ class Order extends \Eccube\Entity\AbstractEntity
 
     /**
      * 対象となるお届け先情報を取得
-     * @param $shippingId
-     * @return mixed
+     * 
+     * @param integer $shippingId
+     * @return \Eccube\Entity\Shipping|null
      */
-    public function findShipping($shippingId) {
-
+    public function findShipping($shippingId)
+    {
         foreach ($this->getShippings() as $Shipping) {
             if ($Shipping->getId() == $shippingId) {
                 return $Shipping;
             }
         }
 
+        return null;
     }
 
     /**
@@ -77,6 +86,7 @@ class Order extends \Eccube\Entity\AbstractEntity
         foreach ($this->getOrderDetails() as $OrderDetail) {
             $totalQuantity += $OrderDetail->getQuantity();
         }
+
         return $totalQuantity;
     }
 
@@ -91,6 +101,7 @@ class Order extends \Eccube\Entity\AbstractEntity
         foreach ($this->getOrderDetails() as $OrderDetail) {
             $subTotal += $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
         }
+
         return $subTotal;
     }
 
@@ -105,13 +116,14 @@ class Order extends \Eccube\Entity\AbstractEntity
         foreach ($this->getOrderDetails() as $OrderDetail) {
             $tax += ($OrderDetail->getPriceIncTax() - $OrderDetail->getPrice()) * $OrderDetail->getQuantity();
         }
+
         return $tax;
     }
 
     /**
      * この注文の保持する商品種別を取得します.
      *
-     * @return array 一意な商品種別の配列
+     * @return \Eccube\Entity\Master\ProductType[] 一意な商品種別の配列
      */
     public function getProductTypes()
     {
@@ -121,8 +133,22 @@ class Order extends \Eccube\Entity\AbstractEntity
             $ProductClass = $OrderDetail->getProductClass();
             $productTypes[] = $ProductClass->getProductType();
         }
+
         return array_unique($productTypes);
     }
+
+
+    /**
+     * 合計金額を計算
+     *
+     * @return string
+     */
+    public function getTotalPrice() {
+
+        return $this->getSubtotal() + $this->getCharge() + $this->getDeliveryFeeTotal() - $this->getDiscount();
+
+    }
+
 
     /**
      * @var integer

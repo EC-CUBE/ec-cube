@@ -45,19 +45,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <form name="tradelaw_form" role="form" id="tradelaw_form" method="post" action="{{ url('admin_setting_shop_tradelaw') }}">
     {{ form_widget(form._token) }}
     <div class="row" id="aside_wrap">
-        <div class="col-md-9">
-            <div class="box form-horizontal">
-                <div class="box-header">
+        <div id="detail_wrap" class="col-md-9">
+            <div id="detail_box" class="box form-horizontal">
+                <div id="detail_box__header" class="box-header">
                     <h3 class="box-title">特定商取引法</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div id="detail_box__body" class="box-body">
                     {{ form_row(form.law_company) }}
                     {{ form_row(form.law_manager) }}
 
                     {# 住所：郵便番号 #}
-                    <div class="form-group">
+                    <div id="detail_box__law_address" class="form-group">
                         {{ form_label(form.law_address) }}
-                        <div class="col-sm-9 col-lg-10 input_zip form-inline">
+                        <div id="detail_box__zip" class="col-sm-9 col-lg-10 input_zip form-inline">
                             〒{{ form_widget(form.law_zip.law_zip01) }}-{{ form_widget(form.law_zip.law_zip02) }}
                             {{ form_errors(form.law_zip.law_zip01) }}
                             {{ form_errors(form.law_zip.law_zip02) }}
@@ -67,28 +67,28 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
                     {# 住所：都道府県 #}
                     <div class="form-group {% if form.law_address.law_pref.vars.errors is not empty %}has-error{% endif %}">
-                        <div class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
+                        <div id="detail_box__law_pref" class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
                             {{ form_widget(form.law_address.law_pref) }}
                             {{ form_errors(form.law_address.law_pref) }}
                         </div>
                     </div>
                     {# 住所：住所1 #}
                     <div class="form-group {% if form.law_address.law_addr02.vars.errors is not empty  %}has-error{% endif %}">
-                        <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                        <div id="detail_box__law_addr01" class="col-sm-offset-2 col-sm-9 col-lg-10">
                             {{ form_widget(form.law_address.law_addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                             {{ form_errors(form.law_address.law_addr01) }}
                         </div>
                     </div>
                     {# 住所：住所2 #}
                     <div class="form-group {% if form.law_address.law_addr02.vars.errors is not empty  %}has-error{% endif %}">
-                        <div class="col-sm-offset-2 col-sm-9 col-lg-10">
+                        <div id="detail_box__law_addr02" class="col-sm-offset-2 col-sm-9 col-lg-10">
                             {{ form_widget(form.law_address.law_addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                             {{ form_errors(form.law_address.law_addr02) }}
                         </div>
                     </div>
 
                     {# 電話番号 #}
-                    <div class="form-group">
+                    <div id="detail_box__law_tel" class="form-group">
                         {{ form_label(form.law_tel) }}
                         <div class="col-sm-9 col-lg-10 input_tel form-inline">
                             {{ form_widget(form.law_tel.law_tel01) }}-{{ form_widget(form.law_tel.law_tel02) }}-{{ form_widget(form.law_tel.law_tel03) }}
@@ -98,7 +98,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         </div>
                     </div>
                     {# FAX番号 #}
-                    <div class="form-group">
+                    <div id="detail_box__law_fax" class="form-group">
                         {{ form_label(form.law_fax) }}
                         <div class="col-sm-9 col-lg-10 input_tel form-inline">
                             {{ form_widget(form.law_fax.law_fax01) }}-{{ form_widget(form.law_fax.law_fax02) }}-{{ form_widget(form.law_fax.law_fax03) }}
@@ -116,18 +116,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     {{ form_row(form.law_term04) }}
                     {{ form_row(form.law_term05) }}
                     {{ form_row(form.law_term06) }}
+                    <div class="extra-form">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                {{ form_row(f) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div>
-
-        <div class="col-md-3">
+        <div id="common_box" class="col-md-3">
             <div class="col_inner" id="aside_column">
-                <div class="box no-header">
-                    <div class="box-body">
-                        <div class="row">
+                <div id="common_button_box" class="box no-header">
+                    <div id="common_button_box__body" class="box-body">
+                        <div  class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">
-                                    <div class="row text-center">
+                                    <div id="common_button_box__insert_button" class="row text-center">
                                         <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                             <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();">登録</button>
                                         </div>

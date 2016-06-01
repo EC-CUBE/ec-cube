@@ -84,31 +84,31 @@ $(function() {
     <form id="csv-form" method="post" action="{{ url('admin_setting_shop_csv', {'id': id}) }}">
         {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
-            <div class="col-md-9">
-                <div class="box">
-                    <div class="box-header">
+            <div id="csv_edit_box" class="col-md-9">
+                <div id="csv_edit_box__body" class="box">
+                    <div id="csv_edit_box__header" class="box-header">
                         {{ form_widget(form.csv_type, {'id': 'csv-type'}) }}
                     </div>
-                    <div class="box-body no-border row">
-                        <div class="col-md-4 col-xs-4">
+                    <div id="csv_edit_box__body_inner" class="box-body no-border row">
+                        <div id="csv_edit_box__csv_not_output" class="col-md-4 col-xs-4">
                             <p>CSV出力しない項目</p>
                             {{ form_widget(form.csv_not_output, {'id': 'csv-not-output', 'attr': {'size': '30'}}) }}
                         </div><!-- /.col -->
-                        <div class="col-md-2 col-xs-2">
-                            <div class="text-center" style="padding-top: 230px;">
+                        <div id="csv_edit_box__button_menu" class="col-md-2 col-xs-2">
+                            <div id="csv_edit_box__button_area" class="text-center" style="padding-top: 230px;">
                                 <p><button type="button" id="add" class="btn btn-default"><span class="glyphicon glyphicon-step-forward"></span></button></p>
                                 <p><button type="button" id="add-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-forward"></span></button></p>
                                 <p><button type="button" id="remove" class="btn btn-default"><span class="glyphicon glyphicon-step-backward"></span></button></p>
                                 <p><button type="button" id="remove-all" class="btn btn-default"><span class="glyphicon glyphicon-fast-backward"></span></button></p>
                             </div>
                         </div><!-- /.col -->
-                        <div class="col-md-4 col-xs-4">
+                        <div id="csv_edit_output_box" class="col-md-4 col-xs-4">
                             <p>CSV出力する項目</p>
                             {{ form_widget(form.csv_output, {'id': 'csv-output', 'attr': {'size': '30'}}) }}
                         </div><!-- /.col -->
-                        <div class="col-md-2 col-xs-2">
+                        <div id="csv_edit_output_box__button_menu" class="col-md-2 col-xs-2">
                             <div style="padding-top: 200px;">
-                                <div class="well well-sm text-center">
+                                <div id="csv_edit_output_box__button_area" class="well well-sm text-center">
                                     <p>項目順序</p>
                                     <p><button type="button" class="btn btn-default move" value="up">一つ上</button></p>
                                     <p><button type="button" class="btn btn-default move" value="down">一つ下</button></p>
@@ -118,12 +118,21 @@ $(function() {
                             </div>
                         </div><!-- /.col -->
                     </div>
+                    <div class="extra-form row">
+                        {% for f in form.getIterator %}
+                            {% if f.vars.name matches '[^plg*]' %}
+                                <div class="col-md-12 form-group">
+                                    {{ form_row(f) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3" id="aside_column">
-                <div class="col_inner">
-                    <div class="box no-header">
-                        <div class="box-body">
+            <div id="common_box" class="col-md-3" id="aside_column">
+                <div id="common_button_box" class="col_inner">
+                    <div id="common_button_box__body" class="box no-header">
+                        <div id="common_button_box__confirm_button" class="box-body">
                             <div class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                     <button class="btn btn-primary btn-block btn-lg" type="submit">設定</button>

@@ -37,15 +37,15 @@
         {{ form_widget(form.id) }}
         {{ form_widget(form.DeviceType, { attr : { style : 'display: none;' } } ) }}
         <div class="row" id="aside_wrap">
-            <div class="col-md-9">
-                <div class="box form-horizontal">
-                    <div class="box-header">
+            <div id="detail" class="col-md-9">
+                <div id="detail_box" class="box form-horizontal">
+                    <div id="detail_box__header" class="box-header">
                         <h3 class="box-title">ページ詳細編集</h3>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
+                    <div id="detail_box__body" class="box-body">
 
-                        <div class="form-group">
+                        <div id="detail_box__name" class="form-group">
                             {{ form_label(form.name) }}
                             <div class="col-sm-9 col-lg-10">
                                 {% if editable %}
@@ -57,7 +57,7 @@
                                 {{ form_errors(form.name) }}
                             </div>
                         </div>
-                        <div class="form-group word-break">
+                        <div id="detail_box__url" class="form-group word-break">
                             {{ form_label(form.url) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
                                 {% if editable %}
@@ -69,7 +69,7 @@
                                 {{ form_errors(form.url) }}
                             </div>
                         </div>
-                        <div class="form-group word-break">
+                        <div id="detail_box__file_name" class="form-group word-break">
                             {{ form_label(form.file_name) }}
                             <div class="col-sm-9 col-lg-10 form-inline">
                                 {% if editable %}
@@ -82,37 +82,51 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div id="detail_box__tpl_data" class="form-group">
                             {{ form_label(form.tpl_data) }}
                             <div class="col-sm-9 col-lg-10">
                                 {{ form_widget(form.tpl_data, { attr : { 'rows' : 15, style : 'font-size:12px' } }) }}
                                 {{ form_errors(form.tpl_data) }}
                             </div>
                         </div>
+
+                        <div class="extra-form">
+                            {% for f in form.getIterator %}
+                                {% if f.vars.name matches '[^plg*]' %}
+                                    {{ form_row(f) }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-                <div class="box form-horizontal">
-                    <div class="box-header">
+                <div id="detail_meta_box" class="box form-horizontal">
+                    <div id="detail_meta_box__header" class="box-header">
                         <h3 class="box-title">
                             meta設定
                         </h3>
                     </div>
                     <!-- /.box-header -->
 
-                    <div class="box-body">
+                    <div id="detail_meta_box__body" class="box-body">
                         {{ form_row(form.author) }}
                         {{ form_row(form.description) }}
                         {{ form_row(form.keyword) }}
                         {{ form_row(form.meta_robots) }}
                     </div>
                 </div>
+
+                <div id="detail_box__footer" class="row hidden-xs hidden-sm">
+                    <div id="detail_box__back_button" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                        <p><a href="{{ url('admin_content_page') }}">戻る</a></p>
+                    </div>
+                </div>
             </div>
             <!-- /.col -->
-            <div class="col-md-3">
+            <div id="common_box" class="col-md-3">
                 <div class="col_inner" id="aside_column">
-                    <div class="box no-header">
-                        <div class="box-body">
-                            <div class="row text-center">
+                    <div id="common_button_box" class="box no-header">
+                        <div id="common_button_box__body" class="box-body">
+                            <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
                                     <button class="btn btn-primary btn-block btn-lg"
                                             onclick="document.content_page_form.submit();">登録

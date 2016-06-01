@@ -36,7 +36,7 @@ class NewsController
                 array('rank' => 'DESC')
             );
 
-        return $app['view']->render('Block/news.twig', array(
+        return $app->render('Block/news.twig', array(
             'NewsList' => $NewsList,
         ));
     }

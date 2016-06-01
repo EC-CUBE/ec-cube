@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\PageLayout;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class PageControllerTest extends AbstractAdminWebTestCase
@@ -61,6 +63,31 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertTrue($actual);
+    }
+
+    public function test_routing_AdminContentPage_delete_flg_user()
+    {
+
+        $redirectUrl = $this->app->url('admin_content_page');
+
+        $DeviceType = $this->app['eccube.repository.master.device_type']
+            ->find(DeviceType::DEVICE_TYPE_PC);
+
+        $PageLayout = new PageLayout();
+        $PageLayout->setDeviceType($DeviceType);
+        $PageLayout->setEditFlg(PageLayout::EDIT_FLG_USER);
+        $PageLayout->setUrl('hogehoge');
+        $this->app['orm.em']->persist($PageLayout);
+        $this->app['orm.em']->flush();
+
+        $this->client->request('DELETE',
+            $this->app->url(
+                'admin_content_page_delete',
+                array('id' => $PageLayout->getId())
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
     }
 
 }
