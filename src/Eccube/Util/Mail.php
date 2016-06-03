@@ -55,7 +55,8 @@ class Mail
         if (Mail::isISO2022JP($app)) {
             $message
                 ->setCharset('iso-2022-jp')
-                ->setEncoder(new \Swift_Mime_ContentEncoder_PlainContentEncoder('7bit'));
+                ->setEncoder(new \Swift_Mime_ContentEncoder_PlainContentEncoder('7bit'))
+                ->setMaxLineLength(0);
         }
     }
 }
