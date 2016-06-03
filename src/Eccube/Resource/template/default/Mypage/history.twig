@@ -139,7 +139,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                 {% endif %}
                                             </div>
                                             <dl id="shipping_list__shipment_detail--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_detail">
-                                                <dt id="shipping_list__shipment_product_name--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_name text-default">{{ shipmentItem.productName }}</dt>
+                                                <dt id="shipping_list__shipment_product_name--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_name text-default">{{ shipmentItem.productName }} ×{{ shipmentItem.quantity }}</dt>
                                                 <dd id="shipping_list__shipment_class_category--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_pattern small">
                                                     {% if shipmentItem.productClass.classCategory1 %}
                                                         {{ shipmentItem.productClass.classCategory1.className }}：{{ shipmentItem.productClass.classCategory1 }}
@@ -148,8 +148,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                         <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
                                                     {% endif %}
                                                 </dd>
-                                                <dd id="shipping_list__shipment_price_inc_tax--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_price">{{ shipmentItem.priceIncTax|price }} ×{{ shipmentItem.quantity }}</dd>
-                                                <dd id="shipping_list__shipment_total_price--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_subtotal">小計：{{ shipmentItem.totalPrice|price }}</dd>
                                             </dl>
                                         </div>
                                     </div><!--/item_box-->
