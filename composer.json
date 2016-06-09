@@ -31,7 +31,7 @@
         "symfony/serializer": ">=2.7,<2.8",
         "dflydev/doctrine-orm-service-provider": "*",
         "saxulum/saxulum-doctrine-orm-manager-registry-provider": "*",
-        "saxulum/saxulum-webprofiler-provider": "1.1.*",
+        "saxulum/saxulum-webprofiler-provider": "1.1.*|~1.3",
         "swiftmailer/swiftmailer": "5.*",
         "knplabs/knp-components": "*",
         "doctrine/migrations": "v1.0.0-alpha3@dev",
