@@ -36,6 +36,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\FormError;
 
 class PluginController extends AbstractController
 {
@@ -382,6 +383,10 @@ class PluginController extends AbstractController
                         'original-message' => $e->getMessage()
                     ));
                     $errors[] = $e;
+                }
+            }else{
+                if(count($form->getErrors(true))>1){
+                    $errors[] = new FormError('アップロードされたファイルが大きすぎます。');
                 }
             }
         }
