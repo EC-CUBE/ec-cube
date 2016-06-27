@@ -46,6 +46,9 @@ class ProductType extends AbstractType
     {
         $app = $this->app;
 
+        // Category list
+        $Categories = $app['eccube.repository.category']->getList();
+
         $builder
             // 商品規格情報
             ->add('class', 'admin_product_class', array(
@@ -75,6 +78,8 @@ class ProductType extends AbstractType
                'label' => '商品カテゴリ',
                'multiple' => true,
                'mapped' => false,
+                // Choices list (overdrive mapped)
+               'choices' => $this->getCategoryChoice($Categories)
             ))
 
             // 詳細な説明
@@ -145,6 +150,26 @@ class ProductType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+    }
+
+    /**
+     * Overdrive choice Category method
+     * @param $Categories
+     * @return array
+     */
+    private function getCategoryChoice($Categories)
+    {
+        $TmpCategories = array();
+
+        foreach ($Categories as $Category) {
+            $TmpCategories[] = $Category;
+            if (count($Category->getChildren()) > 0) {
+                $TmpCate = $this->getCategoryChoice($Category->getChildren());
+                $TmpCategories = array_merge($TmpCategories, $TmpCate);
+            }
+        }
+
+        return $TmpCategories;
     }
 
     /**
