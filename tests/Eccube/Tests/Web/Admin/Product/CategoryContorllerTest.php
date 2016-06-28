@@ -298,4 +298,44 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         return $TestCategory;
     }
+
+    public function testMoveRankAndShow()
+    {
+        // Give
+        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親1'));
+        $Category2 = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
+        $newRanks = array(
+            $Category->getId() => $Category2->getRank(),
+            $Category2->getId() => $Category->getRank()
+        );
+
+        // When
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_product_category_rank_move'),
+            $newRanks,
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        // Then
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = $newRanks[$Category->getId()];
+        $this->actual = $Category->getRank();
+        $this->verify();
+
+        $crawler = $this->client->request('GET',
+            $this->app->url('admin_product_product_new')
+        );
+
+        $categoryNameLastElement = $crawler->filter('#detail_wrap select#admin_product_Category option')->last()->text();
+
+        $this->expected = $Category2->getName();
+        $this->actual = $categoryNameLastElement;
+        $this->verify();
+    }
 }
