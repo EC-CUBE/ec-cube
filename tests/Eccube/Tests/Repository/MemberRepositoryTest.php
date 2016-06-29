@@ -64,6 +64,19 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
+    /**
+     * loadUserByUsername内のgetNullOrSingleResultが正しい値を返却するかを確認する
+     * ※getNullOrSingleResultは「NonUniqueResultException」をスローするが >
+     * > 同一IDのデーターを投入→取得した際にエラーがでないか確認を行う
+     * 投入データーは、同一レコード2件
+     * 2件のデータを投入しょうとしているが、本ケースでは、LoginIdがプライマリーキーのために >
+     * > 重複データーは作成されない
+     * 重複データーが作成されなければ、getNullOrSingleResultは「NonUniqueResultException」を >
+     * > スローしないため、重複データーが登録されない事、同一プライマリーをflushしてもエラーが >
+     * > 発生しない事を確認
+     * 結果としては、一件のレコードをかえされる事を期待
+     *
+     */
     public function testLoadUserByUsernameSetSameRecord()
     {
         $this->Member = $this->app['eccube.repository.member']->find(2);
