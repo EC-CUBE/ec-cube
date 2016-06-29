@@ -116,7 +116,7 @@ class AddCartType extends AbstractType
             $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
                 $data = $event->getData();
                 $form = $event->getForm();
-                if (is_null($Product->getClassName2())) {
+                if (!is_null($Product->getClassName2())) {
                     if ($data['classcategory_id1']) {
                         $form->add('classcategory_id2', 'choice', array(
                             'label' => $Product->getClassName2(),
