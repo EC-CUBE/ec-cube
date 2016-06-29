@@ -64,7 +64,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testLoadUserByUsernameRefIsNull()
+    public function testLoadUserByUsernameSetSameRecord()
     {
         $this->Member = $this->app['eccube.repository.member']->find(2);
         $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')

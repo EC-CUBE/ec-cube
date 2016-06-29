@@ -61,7 +61,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testLoadUserByUsernameRefIsNull()
+    public function testLoadUserByUsernameSetSameRecord()
     {
         $email1 = 'same@example.com';
         $email2 = 'same@example.com';
@@ -69,7 +69,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $Customer2 = $this->createCustomer($email2);
         $GetCustomer1 = $this->app['eccube.repository.customer']->loadUserByUsername($email1);
         $this->expected = $GetCustomer1->getEmail();
-        $this->actual = $email1;
+        $this->actual = $Customer1->getEmail();
         $this->verify();
     }
 
