@@ -90,6 +90,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
         }
     }
 
+
     public function testGetByUrl()
     {
         $PageLayout = $this->app['eccube.repository.page_layout']
@@ -103,6 +104,58 @@ class PageLayoutRepositoryTest extends EccubeTestCase
             $this->assertNotNull($BlockPosition->getBlock()->getId());
         }
     }
+
+    /**
+     * fixed bug #1405
+     */
+    protected function addBlock2target($id, $pageId, $blockId, $rowId, $targetId, $TargetPageLayout, $anywhere)
+    {
+        $TargetPageLayout = $this->app['eccube.repository.page_layout']->get($this->DeviceType, $pageId);
+
+        $BlockPosition = new \Eccube\Entity\BlockPosition();
+        $Block = $this->app['orm.em']->getRepository('Eccube\Entity\Block')
+            ->findOneBy(array(
+                'id' => $id,
+                'DeviceType' => $this->DeviceType,
+            ));
+        $BlockPosition
+            ->setPageId($pageId)
+            ->setBlockId($blockId)
+            ->setBlockRow($rowId)
+            ->setTargetId($targetId)
+            ->setBlock($Block)
+            ->setPageLayout($TargetPageLayout)
+            ->setAnywhere($anywhere);
+        if ($id == 0) {
+            $BlockPosition->setAnywhere(0);
+        }
+        $TargetPageLayout->addBlockPosition($BlockPosition);
+        $this->app['orm.em']->persist($BlockPosition);
+    }
+    public function testGetByUrlDuplication()
+    {
+        // add block A into ITEM page in target 6
+        $this->addBlock2target(10,2,10,1,6,2,0);
+        // add block A into TOP page  in target 6 with check  "All pages"
+        $this->addBlock2target(10,1,10,2,6,2,1);
+
+        $PageLayout = $this->app['eccube.repository.page_layout']
+            ->getByUrl($this->DeviceType, 'product_list');
+
+        //check block A not show twice
+        $showNo = 0;
+        foreach ($PageLayout->getBlockPositions() as $BlockPosition) {
+            if( ( 6 == $BlockPosition->getTargetId()) && ( 10 == $BlockPosition->getBlockId() )  ){
+                $showNo++;
+            }
+        }
+        $this->expected = 1;
+        $this->actual = $showNo;
+        $this->verify();
+    }
+
+
+
 
     public function testGetPageList()
     {
