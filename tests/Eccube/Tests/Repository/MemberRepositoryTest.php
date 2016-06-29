@@ -64,6 +64,32 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
+    public function testLoadUserByUsernameReferIsSingleResult()
+    {
+        $this->Member = $this->app['eccube.repository.member']->find(2);
+        $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')
+            ->find(\Eccube\Entity\Master\Work::WORK_ACTIVE_ID);
+
+        for ($i = 0; $i < 3; $i++) {
+            $Member = new Member();
+            $Member
+                ->setLoginId('member-1')
+                ->setPassword('password')
+                ->setSalt($this->app['eccube.repository.member']->createSalt(5))
+                ->setRank($i)
+                ->setWork($Work)
+                ->setDelFlg(Constant::DISABLED);
+            $Member->setPassword($this->app['eccube.repository.member']->encryptPassword($Member));
+            $this->app['orm.em']->persist($Member);
+        }
+        $this->app['orm.em']->flush();
+
+        $this->actual = 1;
+
+        $this->expected = count($this->app['eccube.repository.member']->loadUserByUsername('admin'));
+        $this->verify();
+    }
+
     public function testRefreshUser()
     {
         $this->expected = $this->Member;
