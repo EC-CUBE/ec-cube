@@ -61,6 +61,18 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
+    public function testLoadUserByUsernameRefIsNull()
+    {
+        $email1 = 'same@example.com';
+        $email2 = 'same@example.com';
+        $Customer1 = $this->createCustomer($email1);
+        $Customer2 = $this->createCustomer($email2);
+        $GetCustomer1 = $this->app['eccube.repository.customer']->loadUserByUsername($email1);
+        $this->expected = $GetCustomer1->getEmail();
+        $this->actual = $email1;
+        $this->verify();
+    }
+
     public function testRefreshUser()
     {
         $this->expected = $this->Customer;
