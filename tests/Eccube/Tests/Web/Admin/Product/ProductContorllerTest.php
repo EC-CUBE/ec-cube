@@ -24,6 +24,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
@@ -48,7 +49,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'description_detail' => $faker->text,
             'description_list' => $faker->paragraph,
             'Category' => null,
-            'Tag' => 1,
+            'Tag' => '',
             'search_word' => $faker->word,
             'free_area' => $faker->text,
             'Status' => 1,
@@ -197,5 +198,31 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         return $TestProductStock;
     }
 
+    public function testEditWithPostTaxRate()
+    {
+        // Give
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $Product = $this->createProduct();
+        $formData = $this->createFormData();
+        $formData['class']['tax_rate'] = "0";
 
+        // When
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
+            array('admin_product' => $formData)
+        );
+
+        // Then
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+        $this->expected = $formData['class']['tax_rate'];
+        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+        $this->actual = $Taxrule->getTaxRate();
+        $this->assertTrue($this->actual === $this->expected);
+
+        $this->actual = $Taxrule->getDelFlg();
+        $this->expected = Constant::DISABLED;
+        $this->verify();
+    }
 }
