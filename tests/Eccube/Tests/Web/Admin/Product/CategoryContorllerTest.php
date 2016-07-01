@@ -79,6 +79,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             $Category->setUpdateDate(new \DateTime());
             $this->app['orm.em']->persist($Category);
             $this->app['orm.em']->flush();
+
             if (!array_key_exists('child', $category_array)) {
                 continue;
             }
@@ -91,6 +92,9 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 $Child->setUpdateDate(new \DateTime());
                 $this->app['orm.em']->persist($Child);
                 $this->app['orm.em']->flush();
+                // add child category
+                $Category->addChild($Child);
+
                 if (!array_key_exists('child', $child_array)) {
                     continue;
                 }
@@ -103,6 +107,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                     $Grandson->setUpdateDate(new \DateTime());
                     $this->app['orm.em']->persist($Grandson);
                     $this->app['orm.em']->flush();
+                    // add child category
+                    $Child->addChild($Grandson);
                 }
             }
         }
@@ -332,9 +338,10 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_product_product_new')
         );
 
+        $CategoryLast = $this->app['eccube.repository.category']->findOneBy(array('name' => '子2-2'));
         $categoryNameLastElement = $crawler->filter('#detail_wrap select#admin_product_Category option')->last()->text();
 
-        $this->expected = $Category2->getName();
+        $this->expected = $CategoryLast->getNameWithLevel();
         $this->actual = $categoryNameLastElement;
         $this->verify();
     }

@@ -56,6 +56,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
             $Category->setUpdateDate(new \DateTime());
             $this->app['orm.em']->persist($Category);
             $this->app['orm.em']->flush();
+
             if (!array_key_exists('child', $category_array)) {
                 continue;
             }
@@ -68,6 +69,9 @@ class SearchProductControllerTest extends AbstractWebTestCase
                 $Child->setUpdateDate(new \DateTime());
                 $this->app['orm.em']->persist($Child);
                 $this->app['orm.em']->flush();
+
+                $Category->addChild($Child);
+
                 if (!array_key_exists('child', $child_array)) {
                     continue;
                 }
@@ -80,6 +84,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
                     $Grandson->setUpdateDate(new \DateTime());
                     $this->app['orm.em']->persist($Grandson);
                     $this->app['orm.em']->flush();
+                    $Child->addChild($Grandson);
                 }
             }
         }
@@ -105,10 +110,10 @@ class SearchProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testMoveRankAndShow()
+    public function testCategory()
     {
         // Give
-        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親1'));
+        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '孫1'));
 
         // When
         $crawler = $this->client->request('GET',
@@ -120,7 +125,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
 
         $categoryNameLastElement = $crawler->filter('.search select#category_id option')->last()->text();
 
-        $this->expected = $Category->getName();
+        $this->expected = $Category->getNameWithLevel();
         $this->actual = $categoryNameLastElement;
         $this->verify();
     }
