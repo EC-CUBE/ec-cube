@@ -31,26 +31,31 @@ use Doctrine\ORM\EntityRepository;
 
 class SearchProductType extends AbstractType
 {
+    public $app;
+
+    public function __construct(\Silex\Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // Category list
+        $Categories = $this->app['eccube.repository.category']->getList();
+        
         $builder->add('mode', 'hidden', array(
             'data' => 'search',
         ));
-        $builder->add('category_id', 'entity', array(
-            'class' => 'Eccube\Entity\Category',
-            'property' => 'NameWithLevel',
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('c')
-                    ->orderBy('c.rank', 'DESC');
-            },
+        $builder->add('category_id', 'category', array(
             'empty_value' => '全ての商品',
             'empty_data' => null,
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
+            // Choices list (overdrive mapped)
+            'choices' => $this->getCategoryChoice($Categories)
         ));
         $builder->add('name', 'search', array(
             'required' => false,
@@ -80,6 +85,26 @@ class SearchProductType extends AbstractType
             'csrf_protection' => false,
             'allow_extra_fields' => true,
         ));
+    }
+
+    /**
+     * Overdrive choice Category method
+     * @param $Categories
+     * @return array
+     */
+    private function getCategoryChoice($Categories)
+    {
+        $TmpCategories = array();
+
+        foreach ($Categories as $Category) {
+            $TmpCategories[] = $Category;
+            if (count($Category->getChildren()) > 0) {
+                $TmpCate = $this->getCategoryChoice($Category->getChildren());
+                $TmpCategories = array_merge($TmpCategories, $TmpCate);
+            }
+        }
+
+        return $TmpCategories;
     }
 
     /**

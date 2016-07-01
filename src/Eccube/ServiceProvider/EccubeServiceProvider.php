@@ -301,7 +301,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
                 $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
             }
-            $types[] = new \Eccube\Form\Type\SearchProductType();
+            $types[] = new \Eccube\Form\Type\SearchProductType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\ShippingItemType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleType($app);
