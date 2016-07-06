@@ -384,8 +384,8 @@ class PluginController extends AbstractController
                     ));
                     $errors[] = $e;
                 }
-            }else{
-                if(count($form->getErrors(true))>1){
+            } else {
+                if (count($form->getErrors(true)) > 1) {
                     $errors[] = new FormError('アップロードされたファイルが大きすぎます。');
                 }
             }
