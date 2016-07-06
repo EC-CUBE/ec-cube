@@ -27,7 +27,6 @@ namespace Eccube\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
 
 class SearchProductType extends AbstractType
 {
@@ -43,9 +42,6 @@ class SearchProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Category list
-        $Categories = $this->app['eccube.repository.category']->getList();
-        
         $builder->add('mode', 'hidden', array(
             'data' => 'search',
         ));
@@ -55,7 +51,7 @@ class SearchProductType extends AbstractType
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
             // Choices list (overdrive mapped)
-            'choices' => $this->getCategoryChoice($Categories)
+            'choices' => $this->getCategoryChoice($this->app)
         ));
         $builder->add('name', 'search', array(
             'required' => false,
@@ -89,22 +85,18 @@ class SearchProductType extends AbstractType
 
     /**
      * Overdrive choice Category method
-     * @param $Categories
+     * @param \Silex\Application $app
      * @return array
      */
-    private function getCategoryChoice($Categories)
+    private function getCategoryChoice(\Silex\Application $app)
     {
-        $TmpCategories = array();
-
-        foreach ($Categories as $Category) {
-            $TmpCategories[] = $Category;
-            if (count($Category->getChildren()) > 0) {
-                $TmpCate = $this->getCategoryChoice($Category->getChildren());
-                $TmpCategories = array_merge($TmpCategories, $TmpCate);
-            }
+        $RootCategories = $app['eccube.repository.category']->getList();
+        $CategoriesForChoice = array();
+        foreach ($RootCategories as $Root) {
+            $CategoriesForChoice = array_merge($CategoriesForChoice, $Root->getSelfAndDescendants());
         }
 
-        return $TmpCategories;
+        return $CategoriesForChoice;
     }
 
     /**

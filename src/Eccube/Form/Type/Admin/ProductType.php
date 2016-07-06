@@ -44,11 +44,6 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
-        // Category list
-        $Categories = $app['eccube.repository.category']->getList();
-
         $builder
             // 商品規格情報
             ->add('class', 'admin_product_class', array(
@@ -79,7 +74,7 @@ class ProductType extends AbstractType
                'multiple' => true,
                'mapped' => false,
                 // Choices list (overdrive mapped)
-               'choices' => $this->getCategoryChoice($Categories)
+               'choices' => $this->getCategoryChoice($this->app)
             ))
 
             // 詳細な説明
@@ -154,22 +149,18 @@ class ProductType extends AbstractType
 
     /**
      * Overdrive choice Category method
-     * @param $Categories
+     * @param \Silex\Application $app
      * @return array
      */
-    private function getCategoryChoice($Categories)
+    private function getCategoryChoice(\Silex\Application $app)
     {
-        $TmpCategories = array();
-
-        foreach ($Categories as $Category) {
-            $TmpCategories[] = $Category;
-            if (count($Category->getChildren()) > 0) {
-                $TmpCate = $this->getCategoryChoice($Category->getChildren());
-                $TmpCategories = array_merge($TmpCategories, $TmpCate);
-            }
+        $RootCategories = $app['eccube.repository.category']->getList();
+        $CategoriesForChoice = array();
+        foreach ($RootCategories as $Root) {
+            $CategoriesForChoice = array_merge($CategoriesForChoice, $Root->getSelfAndDescendants());
         }
 
-        return $TmpCategories;
+        return $CategoriesForChoice;
     }
 
     /**
