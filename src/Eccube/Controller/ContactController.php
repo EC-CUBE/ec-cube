@@ -78,6 +78,7 @@ class ContactController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
+                    $app['twig']->addGlobal('title', "お問い合わせ(確認ページ)");
                     $builder->setAttribute('freeze', true);
                     $form = $builder->getForm();
                     $form->handleRequest($request);
