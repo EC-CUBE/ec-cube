@@ -43,6 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-process.js"></script>
 <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-validate.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/tinymce/tinymce.min.js"></script>
 <script>
 $(function() {
     $("#thumb").sortable({
@@ -198,6 +199,19 @@ function fnClass(action) {
     document.form1.action = action;
     document.form1.submit();
 }
+
+tinymce.init({
+    selector: 'textarea',
+    language: 'ja',
+    height: 300,
+    // forced_root_block : '',
+    plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table contextmenu paste code'
+    ],
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+});
 
 </script>
 {% endblock javascript %}
