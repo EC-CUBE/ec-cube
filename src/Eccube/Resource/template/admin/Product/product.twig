@@ -204,13 +204,15 @@ tinymce.init({
     selector: 'textarea',
     language: 'ja',
     height: 300,
-    // forced_root_block : '',
+    forced_root_block : false,
+    paste_data_images: true,
+    image_advtab: true,
     plugins: [
         'advlist autolink lists link image charmap print preview anchor',
         'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table contextmenu paste code'
+        'insertdatetime media table contextmenu paste code imagetools'
     ],
-    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image paste'
 });
 
 </script>
