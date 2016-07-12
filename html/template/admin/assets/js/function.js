@@ -183,6 +183,23 @@ jQuery(document).ready(function ($) {
             }
         };
     };
+
+    tinymce.init({
+        selector: '.wysiwyg',
+        language: 'ja',
+        height: 300,
+        // 改行時にpタグを使いたくない場合、forced_root_blockのコメントアウトを外すこと
+        // forced_root_block : false,
+        paste_as_text: true,
+        paste_data_images: true,
+        image_advtab: true,
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste code imagetools'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image paste'
+    });
 });
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす

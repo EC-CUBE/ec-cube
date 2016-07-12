@@ -43,7 +43,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-process.js"></script>
 <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/fileupload/jquery.fileupload-validate.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/tinymce/tinymce.min.js"></script>
 <script>
 $(function() {
     $("#thumb").sortable({
@@ -200,21 +199,6 @@ function fnClass(action) {
     document.form1.submit();
 }
 
-tinymce.init({
-    selector: 'textarea',
-    language: 'ja',
-    height: 300,
-    forced_root_block : false,
-    paste_data_images: true,
-    image_advtab: true,
-    plugins: [
-        'advlist autolink lists link image charmap print preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table contextmenu paste code imagetools'
-    ],
-    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image paste'
-});
-
 </script>
 {% endblock javascript %}
 
@@ -273,10 +257,10 @@ tinymce.init({
                             <div id="detail_description_box" class="form-group">
                                 {{ form_label(form.description_detail) }}
                                 <div id="detail_description_box__detail" class="col-sm-9 col-lg-10">
-                                    {{ form_widget(form.description_detail) }}
+                                    {{ form_widget(form.description_detail, {'attr': {'class': 'wysiwyg'}}) }}
                                     <div id="detail_description_box__list" class="accordion marT15 marB20"><a id="detail_description_box__list_toggle" class="toggle with-icon"><svg class="cb cb-plus icon_plus"> <use xlink:href="#cb-plus" /></svg>一覧コメントを追加</a>
                                         <div class="accpanel padT08">
-                                            {{ form_widget(form.description_list) }}
+                                            {{ form_widget(form.description_list, {'attr': {'class': 'wysiwyg'}}) }}
                                         </div>
                                     </div>
                                 </div>
@@ -390,7 +374,7 @@ tinymce.init({
                             <h3 class="box-title">フリーエリア<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                         </div><!-- /.box-header -->
                         <div id="free_box__body" class="box-body accpanel">
-                            {{ form_widget(form.free_area, {id: 'wysiwyg-area'}) }}
+                            {{ form_widget(form.free_area, {id: 'wysiwyg-area', 'attr': {'class': 'wysiwyg'}}) }}
                         </div>
                     </div>
 
