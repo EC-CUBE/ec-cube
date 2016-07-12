@@ -101,7 +101,7 @@ $(function(){
                                                 / {{ OrderDetail.classcategory_name2 }}
                                             {% endif %}
                                         </dd>
-                                        <dd id="detail_list__price_inc_tax--{{ OrderDetail.id }}"class="item_price">
+                                        <dd id="detail_list__price_inc_tax--{{ OrderDetail.id }}" class="item_price">
                                             {{ OrderDetail.price_inc_tax|price }} × {{ OrderDetail.quantity|number_format }}
                                         </dd>
                                         <dd id="detail_list__total_price--{{ OrderDetail.id }}" class="item_subtotal">
