@@ -193,12 +193,19 @@ jQuery(document).ready(function ($) {
         paste_as_text: true,
         paste_data_images: true,
         image_advtab: true,
+        relative_urls: false,
+        setup: function(editor) {
+            editor.on('init', function(e) {
+                this.getDoc().body.style.fontSize = '16px';
+                this.getDoc().body.style.lineHeight = '10px';
+            });
+        },
         plugins: [
             'advlist autolink lists link image charmap print preview anchor',
             'searchreplace visualblocks code fullscreen',
-            'insertdatetime media table contextmenu paste code imagetools'
+            'insertdatetime media table contextmenu paste imagetools'
         ],
-        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image paste'
+        toolbar: 'insertfile undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image paste code'
     });
 });
 
