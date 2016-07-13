@@ -146,6 +146,52 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
+    /**
+     * Paginator を経由したお気に入りの取得
+     *
+     * 主に正しくソートされているかチェックする.
+     */
+    public function testFavoriteWithPaginator()
+    {
+        $Customer = $this->createCustomer();
+        $expectedIds = array();
+        for ($i = 0; $i < 30; $i++) {
+            $Product = $this->createProduct();
+            $expectedIds[] = $Product->getId();
+            $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
+            $CustomerFavoriteProduct->setCustomer($Customer);
+            $CustomerFavoriteProduct->setProduct($Product);
+            $CustomerFavoriteProduct->setDelFlg(0);
+            $this->app['orm.em']->persist($CustomerFavoriteProduct);
+            $this->app['orm.em']->flush($CustomerFavoriteProduct);
+
+            // id とは 逆順に create_date を設定する.
+            // 画面表示は create_date 降順なので, id 昇順にソートされるはず
+            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-'.$i.' days'));
+            $this->app['orm.em']->flush($CustomerFavoriteProduct);
+        }
+
+        $client = $this->loginTo($Customer);
+        $crawler = $client->request(
+            'GET',
+            $this->app->path('mypage_favorite')
+        );
+        // 最初の画面で表示されているお気に入りの ID を取得する
+        $actualIds = array();
+        $nodes = $crawler->filterXPath('//div[@class="product_item"]/a[1]');
+        foreach ($nodes as $node) {
+            $href = $node->getAttribute('href');
+            if (preg_match('/detail\/([0-9]+)/', $href, $matched)) {
+                $actualIds[] = $matched[1];
+            }
+        }
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $this->expected = array_slice($expectedIds, 0, count($actualIds));
+        $this->actual = $actualIds;
+        $this->verify('画面表示は create_date 降順なので, id 昇順にソートされるはず');
+    }
+
     private function newTestFavorite()
     {
         $CustomerFavoriteProduct = new \Eccube\Entity\CustomerFavoriteProduct();
