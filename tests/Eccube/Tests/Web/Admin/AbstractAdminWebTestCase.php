@@ -42,10 +42,7 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
     public function logIn($user = null)
     {
         if (!is_object($user)) {
-            $user = $this->app['eccube.repository.member']
-                ->findOneBy(array(
-                    'login_id' => 'admin',
-                ));
+            $user = $this->createMember();
         }
 
         $this->loginTo($user);
