@@ -188,8 +188,8 @@ jQuery(document).ready(function ($) {
         selector: '.wysiwyg',
         language: 'ja',
         height: 300,
-        // 改行時にpタグを使いたくない場合、forced_root_blockのコメントアウトを外すこと
-        // forced_root_block : false,
+        // 改行時にbrタグを適用させたくない場合、forced_root_blockをコメントアウトすること
+        forced_root_block : false,
         paste_as_text: true,
         paste_data_images: true,
         image_advtab: true,
@@ -197,7 +197,7 @@ jQuery(document).ready(function ($) {
         setup: function(editor) {
             editor.on('init', function(e) {
                 this.getDoc().body.style.fontSize = '16px';
-                this.getDoc().body.style.lineHeight = '10px';
+                this.getDoc().body.style.lineHeight = '1.2';
             });
         },
         plugins: [
