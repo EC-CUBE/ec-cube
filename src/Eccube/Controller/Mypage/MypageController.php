@@ -237,7 +237,7 @@ class MypageController extends AbstractController
             $Customer = $app->user();
 
             // paginator
-            $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
+            $qb = $app['eccube.repository.customer_favorite_product']->getQueryBuilderByCustomer($Customer);
 
             $event = new EventArgs(
                 array(

@@ -115,7 +115,7 @@ class CustomerFavoriteProductRepository extends EntityRepository
         $qb = $this->createQueryBuilder('cfp')
             ->select('cfp, p')
             ->innerJoin('cfp.Product', 'p')
-            ->where('cfp.Customer = :Customer AND p.status = 1')
+            ->where('cfp.Customer = :Customer AND p.Status = 1')
             ->setParameter('Customer', $Customer);
 
         // Order By
