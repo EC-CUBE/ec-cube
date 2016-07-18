@@ -20,6 +20,7 @@ use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\Shipping;
 use Eccube\Entity\ShipmentItem;
+use Eccube\Entity\Member;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Tests\Mock\CsrfTokenMock;
 use Guzzle\Http\Client;
@@ -157,6 +158,38 @@ abstract class EccubeTestCase extends WebTestCase
     public function verify($message = '')
     {
         $this->assertEquals($this->expected, $this->actual, $message);
+    }
+
+    /**
+     * Member オブジェクトを生成して返す.
+     *
+     * @param string $username. null の場合は, ランダムなユーザーIDが生成される.
+     * @return \Eccube\Entity\Member
+     */
+    public function createMember($username = null)
+    {
+        $faker = $this->getFaker();
+        $Member = new Member();
+        if (is_null($username)) {
+            $username = $faker->word;
+        }
+        $Work = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Work')->find(1);
+        $Authority = $this->app['eccube.repository.master.authority']->find(0);
+        $Creator = $this->app['eccube.repository.member']->find(2);
+        $salt = $this->app['eccube.repository.member']->createSalt(5);
+
+        $Member
+            ->setPassword('password')
+            ->setLoginId($username)
+            ->setName($username)
+            ->setSalt($salt)
+            ->setWork($Work)
+            ->setAuthority($Authority)
+            ->setCreator($Creator);
+        $password = $this->app['eccube.repository.member']->encryptPassword($Member);
+        $Member->setPassword($password);
+        $this->app['eccube.repository.member']->save($Member);
+        return $Member;
     }
 
     /**

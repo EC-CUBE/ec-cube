@@ -237,7 +237,7 @@ class MypageController extends AbstractController
             $Customer = $app->user();
 
             // paginator
-            $qb = $app['eccube.repository.product']->getFavoriteProductQueryBuilderByCustomer($Customer);
+            $qb = $app['eccube.repository.customer_favorite_product']->getQueryBuilderByCustomer($Customer);
 
             $event = new EventArgs(
                 array(
@@ -251,7 +251,8 @@ class MypageController extends AbstractController
             $pagination = $app['paginator']()->paginate(
                 $qb,
                 $request->get('pageno', 1),
-                $app['config']['search_pmax']
+                $app['config']['search_pmax'],
+                array('wrap-queries' => true)
             );
 
             return $app->render('Mypage/favorite.twig', array(
