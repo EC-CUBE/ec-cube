@@ -316,7 +316,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url('admin_order_search_customer'),
             array(
-            'search_word' => $this->Customer->getId()
+                'search_word' => $this->Customer->getId()
             ),
             array(),
             array(
