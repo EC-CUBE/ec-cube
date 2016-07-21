@@ -272,8 +272,8 @@ class EditControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url('admin_order_new'),
             array(
-            'order' => $this->createFormData($this->Customer, $this->Product),
-            'mode' => 'register'
+                'order' => $this->createFormData($this->Customer, $this->Product),
+                'mode' => 'register'
             )
         );
 
@@ -298,8 +298,8 @@ class EditControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url('admin_order_edit', array('id' => $Order->getId())),
             array(
-            'order' => $formData,
-            'mode' => 'register'
+                'order' => $formData,
+                'mode' => 'register'
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
@@ -320,8 +320,8 @@ class EditControllerTest extends AbstractAdminWebTestCase
             ),
             array(),
             array(
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             )
         );
         $Result = json_decode($this->client->getResponse()->getContent(), true);
@@ -337,12 +337,12 @@ class EditControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url('admin_order_search_customer_by_id'),
             array(
-            'id' => $this->Customer->getId()
+                'id' => $this->Customer->getId()
             ),
             array(),
             array(
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             )
         );
         $Result = json_decode($this->client->getResponse()->getContent(), true);
@@ -358,12 +358,12 @@ class EditControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url('admin_order_search_product'),
             array(
-            'id' => $this->Product->getId()
+                'id' => $this->Product->getId()
             ),
             array(),
             array(
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            'CONTENT_TYPE' => 'application/json',
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
             )
         );
 
@@ -386,8 +386,8 @@ class EditControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url('admin_order_edit', array('id' => $Order->getId())),
             array(
-            'order' => $formData,
-            'mode' => 'register'
+                'order' => $formData,
+                'mode' => 'register'
             )
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));

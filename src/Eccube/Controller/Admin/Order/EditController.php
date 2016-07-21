@@ -70,10 +70,10 @@ class EditController extends AbstractController
 
         $event = new EventArgs(
             array(
-            'builder' => $builder,
-            'OriginOrder' => $OriginOrder,
-            'TargetOrder' => $TargetOrder,
-            'OriginOrderDetails' => $OriginalOrderDetails,
+                'builder' => $builder,
+                'OriginOrder' => $OriginOrder,
+                'TargetOrder' => $TargetOrder,
+                'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -86,10 +86,10 @@ class EditController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                'builder' => $builder,
-                'OriginOrder' => $OriginOrder,
-                'TargetOrder' => $TargetOrder,
-                'OriginOrderDetails' => $OriginalOrderDetails,
+                    'builder' => $builder,
+                    'OriginOrder' => $OriginOrder,
+                    'TargetOrder' => $TargetOrder,
+                    'OriginOrderDetails' => $OriginalOrderDetails,
                 ),
                 $request
             );
@@ -202,11 +202,11 @@ class EditController extends AbstractController
 
                         $event = new EventArgs(
                             array(
-                            'form' => $form,
-                            'OriginOrder' => $OriginOrder,
-                            'TargetOrder' => $TargetOrder,
-                            'OriginOrderDetails' => $OriginalOrderDetails,
-                            'Customer' => $Customer,
+                                'form' => $form,
+                                'OriginOrder' => $OriginOrder,
+                                'TargetOrder' => $TargetOrder,
+                                'OriginOrderDetails' => $OriginalOrderDetails,
+                                'Customer' => $Customer,
                             ),
                             $request
                         );
@@ -246,10 +246,10 @@ class EditController extends AbstractController
 
         $event = new EventArgs(
             array(
-            'builder' => $builder,
-            'OriginOrder' => $OriginOrder,
-            'TargetOrder' => $TargetOrder,
-            'OriginOrderDetails' => $OriginalOrderDetails,
+                'builder' => $builder,
+                'OriginOrder' => $OriginOrder,
+                'TargetOrder' => $TargetOrder,
+                'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -263,10 +263,10 @@ class EditController extends AbstractController
 
         $event = new EventArgs(
             array(
-            'builder' => $builder,
-            'OriginOrder' => $OriginOrder,
-            'TargetOrder' => $TargetOrder,
-            'OriginOrderDetails' => $OriginalOrderDetails,
+                'builder' => $builder,
+                'OriginOrder' => $OriginOrder,
+                'TargetOrder' => $TargetOrder,
+                'OriginOrderDetails' => $OriginalOrderDetails,
             ),
             $request
         );
@@ -285,12 +285,12 @@ class EditController extends AbstractController
         }
 
         return $app->render('Order/edit.twig', array(
-                'form' => $form->createView(),
-                'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
-                'searchProductModalForm' => $searchProductModalForm->createView(),
-                'Order' => $TargetOrder,
-                'id' => $id,
-                'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
+            'form' => $form->createView(),
+            'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
+            'searchProductModalForm' => $searchProductModalForm->createView(),
+            'Order' => $TargetOrder,
+            'id' => $id,
+            'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
         ));
     }
 
@@ -314,8 +314,8 @@ class EditController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                'qb' => $qb,
-                'data' => $searchData,
+                    'qb' => $qb,
+                    'data' => $searchData,
                 ),
                 $request
             );
@@ -343,8 +343,8 @@ class EditController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                'data' => $data,
-                'Customers' => $Customers,
+                    'data' => $data,
+                    'Customers' => $Customers,
                 ),
                 $request
             );
@@ -373,7 +373,7 @@ class EditController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                'Customer' => $Customer,
+                    'Customer' => $Customer,
                 ),
                 $request
             );
@@ -410,8 +410,8 @@ class EditController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                'data' => $data,
-                'Customer' => $Customer,
+                    'data' => $data,
+                    'Customer' => $Customer,
                 ),
                 $request
             );
@@ -442,8 +442,8 @@ class EditController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                'qb' => $qb,
-                'searchData' => $searchData,
+                    'qb' => $qb,
+                    'searchData' => $searchData,
                 ),
                 $request
             );
@@ -468,16 +468,16 @@ class EditController extends AbstractController
 
             $event = new EventArgs(
                 array(
-                'forms' => $forms,
-                'Products' => $Products,
+                    'forms' => $forms,
+                    'Products' => $Products,
                 ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_COMPLETE, $event);
 
             return $app->render('Order/search_product.twig', array(
-                    'forms' => $forms,
-                    'Products' => $Products,
+                'forms' => $forms,
+                'Products' => $Products,
             ));
         }
     }
