@@ -506,7 +506,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
         );
         $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
 
-        //確認する「トーケン税金」
+        //確認する「トータル税金」
         $this->expected = $totalTax;
         $this->actual = $EditedOrderafterEdit->getTax();
         $this->verify();
