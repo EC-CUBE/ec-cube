@@ -465,7 +465,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * 管理画面から購入処理中で受注登録し,管理画面受注編集後税金確認
+     * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
      *
      * @link https://github.com/EC-CUBE/ec-cube/issues/1606
      */
@@ -475,7 +475,6 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormData($Customer, $this->Product);
-        $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
             'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
@@ -507,7 +506,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
         );
         $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
 
-        //確認する「トータル税金」
+        //確認する「トーケン税金」
         $this->expected = $totalTax;
         $this->actual = $EditedOrderafterEdit->getTax();
         $this->verify();
