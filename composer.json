@@ -74,5 +74,10 @@
         "psr-4": {
             "Eccube\\Tests\\" : "tests/Eccube/Tests"
         }
+    },
+    "config": {
+        "platform": {
+            "php": "5.3.9"
+        }
     }
 }
