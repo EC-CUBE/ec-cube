@@ -61,8 +61,12 @@ class TransactionListener implements EventSubscriberInterface
         }
 
         $app = $this->app;
-        $app['orm.em']->getConnection()->setAutoCommit(false);
-        $app['orm.em']->beginTransaction();
+        if (!$app->isTestMode()) {
+            $app['orm.em']->getConnection()->setAutoCommit(false);
+            $app['orm.em']->beginTransaction();
+        } else {
+            $this->app->log('TestCase to onKernelRequest of beginTransaction');
+        }
     }
 
     /**
@@ -77,8 +81,12 @@ class TransactionListener implements EventSubscriberInterface
         }
 
         $app = $this->app;
-        if ($app['orm.em']->getConnection()->isTransactionActive()) {
-            $app['orm.em']->rollback();
+        if (!$app->isTestMode()) {
+            if ($app['orm.em']->getConnection()->isTransactionActive()) {
+                $app['orm.em']->rollback();
+            }
+        } else {
+            $this->app->log('TestCase to onKernelException of rollback');
         }
     }
 
@@ -91,12 +99,16 @@ class TransactionListener implements EventSubscriberInterface
     {
         $app = $this->app;
 
-        if ($app['orm.em']->getConnection()->isTransactionActive()) {
-            if ($app['orm.em']->getConnection()->isRollbackOnly()) {
-                $app['orm.em']->rollback();
-            } else {
-                $app['orm.em']->commit();
+        if (!$app->isTestMode()) {
+            if ($app['orm.em']->getConnection()->isTransactionActive()) {
+                if ($app['orm.em']->getConnection()->isRollbackOnly()) {
+                    $app['orm.em']->rollback();
+                } else {
+                    $app['orm.em']->commit();
+                }
             }
+        } else {
+            $this->app->log('TestCase to onKernelTerminate of commit.');
         }
     }
 

@@ -39,6 +39,7 @@ class Application extends ApplicationTrait
 
     protected $initialized = false;
     protected $initializedPlugin = false;
+    protected $testMode = false;
 
     public static function getInstance(array $values = array())
     {
@@ -911,6 +912,25 @@ class Application extends ApplicationTrait
                 }
             }
         }
+    }
+
+    /**
+     * PHPUnit を実行中かどうかを設定する.
+     *
+     * @param boolean $testMode PHPUnit を実行中の場合 true
+     */
+    public function setTestMode($testMode) {
+        $this->testMode = $testMode;
+    }
+
+    /**
+     * PHPUnit を実行中かどうか.
+     *
+     * @return boolean PHPUnit を実行中の場合 true
+     */
+    public function isTestMode()
+    {
+        return $this->testMode;
     }
 
     /**

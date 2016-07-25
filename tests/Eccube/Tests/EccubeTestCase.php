@@ -47,6 +47,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function setUp()
     {
         parent::setUp();
+        $this->app->setTestMode(true);
         if ($this->isSqliteInMemory()) {
             $this->initializeDatabase();
         }
