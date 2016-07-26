@@ -6,12 +6,23 @@ use Eccube\Application;
 use Eccube\Tests\Mock\CsrfTokenMock;
 use Silex\WebTestCase;
 
+/**
+ * TransactinoListener のテストケース.
+ *
+ * このテストケースは、トランザクションの COMMIT/ROLLBACK をテストするため、
+ * EccubeTestCase を継承しない.
+ *
+ * TODO BaseInfo::companyName が更新されてしまうため、復元できるようにしたい.
+ * tearDown で復元しようとするとテストケースでトランザクションブロックが形成される
+ * ため、テストに失敗してしまう.
+ *
+ * @author Kentaro Ohkouchi
+ */
 class TransactionListenerTest extends WebTestCase
 {
     public function setUp()
     {
         parent::setUp();
-        $this->app->initDoctrine();
         $c = $this->app['controllers_factory'];
         $c->match('/tran1', '\Eccube\Tests\Transaction\TransactionControllerMock::tran1')->bind('tran1');
         $c->match('/tran2', '\Eccube\Tests\Transaction\TransactionControllerMock::tran2')->bind('tran2');
@@ -23,9 +34,6 @@ class TransactionListenerTest extends WebTestCase
         $c->match('/tran8', '\Eccube\Tests\Transaction\TransactionControllerMock::tran8')->bind('tran8');
         $c->match('/tran9', '\Eccube\Tests\Transaction\TransactionControllerMock::tran9')->bind('tran9');
         $this->app->mount('', $c);
-
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->defaultCompanyName = $BaseInfo->getCompanyName();
     }
 
     public function tearDown()
@@ -36,6 +44,9 @@ class TransactionListenerTest extends WebTestCase
         $this->app = null;
     }
 
+    /**
+     * 正常系のテストケース. tran1 が保存される.
+     */
     public function testTran1()
     {
         $client = $this->createClient();
@@ -44,6 +55,10 @@ class TransactionListenerTest extends WebTestCase
         $this->verify('tran1');
     }
 
+    /**
+     * 異常系のテストケース.
+     * すべてロールバックされ初期値が設定される
+     */
     public function testTran2()
     {
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -54,6 +69,10 @@ class TransactionListenerTest extends WebTestCase
         $this->verify($companyName);
     }
 
+    /**
+     * 入れ子のトランザクションブロック.
+     * 正常系. tran3 が設定される.
+     */
     public function testTran3()
     {
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
@@ -67,6 +86,18 @@ class TransactionListenerTest extends WebTestCase
         $this->verify('tran3');
     }
 
+    /**
+     * 入れ子のトランザクションブロック.
+     * 異常系.
+     * <pre>
+     * BEGIN
+     *   BEGIN
+     *       UPDATE to tran4
+     *   COMMIT
+     * ROLLBACK
+     * </pre>
+     * 初期値が設定される.
+     */
     public function testTran4()
     {
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -78,6 +109,21 @@ class TransactionListenerTest extends WebTestCase
         $this->verify($companyName);
     }
 
+    /**
+     * 入れ子のトランザクションブロック.
+     * 異常系.
+     * <pre>
+     * BEGIN
+     *   BEGIN
+     *       UPDATE to tran5-1
+     *   COMMIT
+     *   BEGIN
+     *       UPDATE to tran5-2
+     *   COMMIT
+     * ROLLBACK
+     * </pre>
+     * 初期値が設定される.
+     */
     public function testTran5()
     {
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -88,6 +134,20 @@ class TransactionListenerTest extends WebTestCase
         $this->verify($companyName);
     }
 
+    /**
+     * 入れ子のトランザクションブロック.
+     * 異常系.
+     * <pre>
+     * BEGIN
+     *   BEGIN
+     *       UPDATE to tran6-1
+     *   COMMIT
+     *   UPDATE to tran6-2
+     *   UPDATE to tran6-3
+     * ROLLBACK
+     * </pre>
+     * 初期値が設定される.
+     */
     public function testTran6()
     {
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -98,6 +158,20 @@ class TransactionListenerTest extends WebTestCase
         $this->verify($companyName);
     }
 
+    /**
+     * 入れ子のトランザクションブロック.
+     * 処理中に例外が発生するが、後続処理は正常終了するパターン.
+     * <pre>
+     * BEGIN
+     *   BEGIN
+     *       UPDATE to tran7-1
+     *   ROLLBACK
+     *   UPDATE to tran7-2
+     *   UPDATE to tran7-3
+     * COMMIT
+     * </pre>
+     * tran7-3 が設定される.
+     */
     public function testTran7()
     {
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
@@ -111,6 +185,20 @@ class TransactionListenerTest extends WebTestCase
         $this->verify('tran7-3');
     }
 
+    /**
+     * 入れ子のトランザクションブロック.
+     * 異常系.
+     * <pre>
+     * BEGIN
+     *   BEGIN
+     *       UPDATE to tran8-1
+     *   ROLLBACK
+     *   UPDATE to tran8-2
+     *   UPDATE to tran8-3
+     * ROLLBACK
+     * </pre>
+     * 初期値が設定される.
+     */
     public function testTran8()
     {
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
@@ -125,6 +213,21 @@ class TransactionListenerTest extends WebTestCase
 
         $this->verify($companyName);
     }
+
+    /**
+     * 入れ子のトランザクションブロック.
+     * 異常系.
+     * <pre>
+     * BEGIN
+     *   UPDATE to tran9-1
+     *   BEGIN
+     *       UPDATE to tran9-2
+     *   ROLLBACK
+     *   UPDATE to tran9-3
+     * COMMIT
+     * </pre>
+     * 初期値が設定される.
+     */
 
     public function testTran9()
     {
@@ -156,7 +259,7 @@ class TransactionListenerTest extends WebTestCase
         $app->initPluginEventDispatcher();
         $app->initializePlugin();
         $app['session.test'] = true;
-        // exception.handle
+        // exception_handler は有効に
         // $app['exception_handler']->disable();
 
         $app['form.csrf_provider'] = $app->share(function () {
