@@ -36,6 +36,7 @@ use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -651,7 +652,7 @@ class ShoppingController extends AbstractController
             $addressCurrNum = count($app->user()->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException();
+                throw new NotAcceptableHttpException();
             }
         }
 

@@ -29,7 +29,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class DeliveryController extends AbstractController
 {
@@ -66,7 +66,7 @@ class DeliveryController extends AbstractController
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
-                throw new NotFoundHttpException();
+                throw new NotAcceptableHttpException();
             }
         }
 
