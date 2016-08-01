@@ -150,6 +150,11 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var \DateTime
      */
+    private $secret_key_expire;
+
+    /**
+     * @var \DateTime
+     */
     private $first_buy_date;
 
     /**
@@ -280,15 +285,6 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
      */
     public function eraseCredentials()
     {
-    }
-
-    // TODO: できればFormTypeで行いたい
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->addConstraint(new UniqueEntity(array(
-            'fields'  => 'email',
-            'message' => '既に利用されているメールアドレスです'
-        )));
     }
 
     /**
@@ -773,6 +769,29 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getSecretKey()
     {
         return $this->secret_key;
+    }
+
+    /**
+     * Set secret_key_expire
+     *
+     * @param  \DateTime   $secretKeyExpire
+     * @return Customer
+     */
+    public function setSecretKeyExpire($secretKeyExpire)
+    {
+        $this->secret_key_expire = $secretKeyExpire;
+
+        return $this;
+    }
+
+    /**
+     * Get secret_key_expire
+     *
+     * @return \DateTime
+     */
+    public function getSecretKeyExpire()
+    {
+        return $this->secret_key_expire;
     }
 
     /**
