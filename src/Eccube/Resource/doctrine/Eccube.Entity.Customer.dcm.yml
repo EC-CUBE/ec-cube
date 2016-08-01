@@ -80,6 +80,9 @@ Eccube\Entity\Customer:
             type: string
             length: 200
             nullable: false
+        secret_key_expire:
+            type: datetime
+            nullable: true
         first_buy_date:
             type: datetime
             nullable: true

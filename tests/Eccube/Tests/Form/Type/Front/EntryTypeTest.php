@@ -23,6 +23,7 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -81,6 +82,11 @@ class EntryTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
+
+        $Customer = $this->app['eccube.repository.customer']->newCustomer();
+
+        $token = new UsernamePasswordToken($Customer, null, 'customer');
+        $this->app['security.token_storage']->setToken($token);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']

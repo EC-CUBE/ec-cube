@@ -106,9 +106,12 @@ class CustomerRepositoryTest extends EccubeTestCase
 
     public function testGetNonActiveCustomerBySecretKey()
     {
+        $expire = '+'.$this->app['config']['customer_secret_key_expire'].' min';
         $this->expected = $this->Customer->getSecretKey();
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
-        $this->Customer->setStatus($Status);
+        $this->Customer
+            ->setStatus($Status)
+            ->setSecretKeyExpire(new \DateTime($expire));
         $this->app['orm.em']->flush();
 
         $Customer = $this->app['eccube.repository.customer']->getNonActiveCustomerBySecretKey($this->expected);

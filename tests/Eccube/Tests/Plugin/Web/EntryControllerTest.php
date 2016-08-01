@@ -163,7 +163,10 @@ class EntryControllerTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
-        $Customer->setStatus($Status);
+        $expire = '+'.$this->app['config']['customer_secret_key_expire'].' min';
+        $Customer
+            ->setStatus($Status)
+            ->setSecretKeyExpire(new \DateTime($expire));
         $this->app['orm.em']->flush();
 
         $client = $this->createClient();

@@ -379,11 +379,12 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     public function getNonActiveCustomerBySecretKey($secret_key)
     {
         $qb = $this->createQueryBuilder('c')
-            ->where('c.del_flg = 0 AND c.secret_key = :secret_key')
+            ->where('c.del_flg = 0 AND c.secret_key = :secret_key AND c.secret_key_expire >= :secret_key_expire')
             ->leftJoin('c.Status', 's')
             ->andWhere('s.id = :status')
             ->setParameter('secret_key', $secret_key)
-            ->setParameter('status', CustomerStatus::NONACTIVE);
+            ->setParameter('status', CustomerStatus::NONACTIVE)
+            ->setParameter('secret_key_expire', new \DateTime());
         $query = $qb->getQuery();
 
         return $query->getSingleResult();
