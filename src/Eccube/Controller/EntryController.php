@@ -45,6 +45,10 @@ class EntryController extends AbstractController
      */
     public function index(Application $app, Request $request)
     {
+        if ($app->isGranted('ROLE_USER')) {
+            return $app->redirect($app->url('mypage'));
+        }
+
         /** @var $Customer \Eccube\Entity\Customer */
         $Customer = $app['eccube.repository.customer']->newCustomer();
 
