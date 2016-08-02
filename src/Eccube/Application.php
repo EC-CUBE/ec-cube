@@ -315,7 +315,7 @@ class Application extends ApplicationTrait
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
                 $pathinfo = rawurldecode($app['request']->getPathInfo());
-                if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
                     if (file_exists(__DIR__.'/../../app/template/admin')) {
                         $paths[] = __DIR__.'/../../app/template/admin';
                     }
@@ -340,7 +340,7 @@ class Application extends ApplicationTrait
 
             // 管理画面のIP制限チェック.
             $pathinfo = rawurldecode($app['request']->getPathInfo());
-            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/')) === 0) {
+            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
                 // IP制限チェック
                 $allowHost = $app['config']['admin_allow_host'];
                 if (count($allowHost) > 0) {
@@ -359,7 +359,7 @@ class Application extends ApplicationTrait
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
             $pathinfo = rawurldecode($app['request']->getPathInfo());
-            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/')) === 0) {
+            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
                 // 管理画面
                 // 管理画面メニュー
                 $menus = array('', '', '');
@@ -503,7 +503,7 @@ class Application extends ApplicationTrait
 
         $this['security.firewalls'] = array(
             'admin' => array(
-                'pattern' => "^/{$this['config']['admin_route']}",
+                'pattern' => "^/{$this['config']['admin_route']}/",
                 'form' => array(
                     'login_path' => "/{$this['config']['admin_route']}/login",
                     'check_path' => "/{$this['config']['admin_route']}/login_check",
@@ -551,7 +551,7 @@ class Application extends ApplicationTrait
 
         $this['security.access_rules'] = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
+            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),

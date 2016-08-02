@@ -182,7 +182,7 @@ class CategoryController extends AbstractController
 
 
     /**
-     * 商品CSVの出力.
+     * カテゴリCSVの出力.
      *
      * @param Application $app
      * @param Request $request
