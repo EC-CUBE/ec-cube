@@ -183,8 +183,6 @@ class CommonHookPointTest extends EccubeTestCase
 
     public function testAppBeforeRedirect()
     {
-        $this->markTestSkipped();
-
         $hookpoint = 'eccube.event.app.before';
         $listener = array($this->event, 'onAppBeforeRedirect');
         $this->app['eccube.event.dispatcher']->addListener($hookpoint, $listener);
@@ -197,8 +195,6 @@ class CommonHookPointTest extends EccubeTestCase
 
     public function testControllerHomepageBeforeRedirect()
     {
-        $this->markTestSkipped();
-
         $hookpoint = 'eccube.event.controller.homepage.before';
         $listener = array($this->event, 'onControllerHomepageBeforeRedirect');
         $this->app['eccube.event.dispatcher']->addListener($hookpoint, $listener);
