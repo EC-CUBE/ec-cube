@@ -235,6 +235,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.plugin_event_handler'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
         });
+        $app['eccube.repository.plugin_option'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\PluginOption');
+        });
         // em
         if (isset($app['orm.em'])) {
             $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {

@@ -68,6 +68,7 @@
         "psr-4": {
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin",
+            "Ext\\": "app/Ext",
             "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
         }
     },
