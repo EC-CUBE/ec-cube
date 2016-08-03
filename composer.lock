@@ -1238,39 +1238,39 @@
         },
         {
             "name": "saxulum/saxulum-doctrine-orm-manager-registry-provider",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/saxulum/saxulum-doctrine-orm-manager-registry-provider.git",
-                "reference": "7e3c62bab2739aee044b254908c9edbfc3032f60"
+                "reference": "52cccf731aca0a58a8d9dc2e98e1b265e4e9c546"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/saxulum/saxulum-doctrine-orm-manager-registry-provider/zipball/7e3c62bab2739aee044b254908c9edbfc3032f60",
-                "reference": "7e3c62bab2739aee044b254908c9edbfc3032f60",
+                "url": "https://api.github.com/repos/saxulum/saxulum-doctrine-orm-manager-registry-provider/zipball/52cccf731aca0a58a8d9dc2e98e1b265e4e9c546",
+                "reference": "52cccf731aca0a58a8d9dc2e98e1b265e4e9c546",
                 "shasum": ""
             },
             "require": {
                 "dflydev/doctrine-orm-service-provider": "~1.0.4",
-                "php": ">=5.3.3",
+                "php": ">=5.3.3,<8.0",
                 "pimple/pimple": "~1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "3.7.*",
-                "saxulum/saxulum-console": "~2.0",
+                "saxulum/saxulum-console": "~2.2",
                 "saxulum/saxulum-doctrine-orm-commands": "~1.2",
                 "silex/silex": "~1.2",
-                "symfony/doctrine-bridge": "~2.2",
-                "symfony/form": "~2.2",
-                "symfony/validator": "~2.2"
+                "symfony/doctrine-bridge": "~2.2|~3.0",
+                "symfony/form": "~2.2|~3.0",
+                "symfony/validator": "~2.2|~3.0"
             },
             "suggest": {
-                "saxulum/saxulum-console": "~2.0",
+                "saxulum/saxulum-console": "~2.2",
                 "saxulum/saxulum-doctrine-orm-commands": "~1.2",
                 "silex/silex": "~1.2",
-                "symfony/doctrine-bridge": "~2.2",
-                "symfony/form": "~2.2",
-                "symfony/validator": "~2.2"
+                "symfony/doctrine-bridge": "~2.2|~3.0",
+                "symfony/form": "~2.2|~3.0",
+                "symfony/validator": "~2.2|~3.0"
             },
             "type": "library",
             "autoload": {
@@ -1297,7 +1297,7 @@
                 "registrymanager",
                 "silex"
             ],
-            "time": "2015-09-12 13:34:41"
+            "time": "2015-12-01 11:55:24"
         },
         {
             "name": "saxulum/saxulum-webprofiler-provider",
