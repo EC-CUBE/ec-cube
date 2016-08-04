@@ -25,6 +25,7 @@
 namespace Ext;
 
 use Eccube\Application;
+use Eccube\Entity\PluginEventHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
@@ -50,7 +51,7 @@ class Event implements EventSubscriberInterface
     {
         return array(
             // フックポイントの定義サンプル.
-            //'eccube.event.app.controller' => array('example', PluginEventHandler::EVENT_PRIORITY_NORMAL_START)
+            //'eccube.event.front.controller' => array('example', PluginEventHandler::EVENT_PRIORITY_NORMAL_START)
         );
     }
 
@@ -61,6 +62,6 @@ class Event implements EventSubscriberInterface
      */
     public function example(FilterControllerEvent $event)
     {
-        dump($event->getName());
+        echo($event->getName());
     }
 }
