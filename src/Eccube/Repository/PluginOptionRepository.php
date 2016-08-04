@@ -23,7 +23,9 @@
 
 
 namespace Eccube\Repository;
+
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\PluginOption;
 
 /**
  * PluginOptionRepository
@@ -33,4 +35,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class PluginOptionRepository extends EntityRepository
 {
+    /**
+     * @param PluginOption $PluginOption
+     */
+    public function save(PluginOption $PluginOption)
+    {
+        $em = $this->getEntityManager();
+        $em->persist($PluginOption);
+        $em->flush($PluginOption);
+    }
+
+    /**
+     * @param $pluginCode
+     * @param $optionKey
+     * @return \Eccube\Entity\PluginOption|null The entity instance or NULL if the entity can not be found
+     */
+    public function getOneByCodeAndKey($pluginCode, $optionKey)
+    {
+        return $this->findOneBy(array('plugin_code' => $pluginCode, 'option_key' => $optionKey));
+    }
 }
