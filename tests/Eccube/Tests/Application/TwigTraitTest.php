@@ -42,6 +42,9 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderForStream()
     {
+        if (php_sapi_name() == 'phpdbg') {
+            $this->markTestSkipped('Can not support of ob_*()');
+        }
         $app = $this->createApplication();
 
         $response = $app->render('error.twig', array(), new StreamedResponse());
