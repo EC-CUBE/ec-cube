@@ -4,9 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ebcdc1be130c209632e9b266e86d83b",
-    "content-hash": "23fbf2f6d6df97390fb42949f84dddae",
+    "hash": "7e4a710dfad670a6b9dbe972d253ffc8",
+    "content-hash": "af0fed65716b85c3cae6f455bef74eda",
     "packages": [
+        {
+            "name": "composer/ca-bundle",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/ca-bundle.git",
+                "reference": "5df9ed0ed0c9506ea6404a23450854e5df15cc12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/5df9ed0ed0c9506ea6404a23450854e5df15cc12",
+                "reference": "5df9ed0ed0c9506ea6404a23450854e5df15cc12",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "ext-pcre": "*",
+                "php": "^5.3.2 || ^7.0"
+            },
+            "require-dev": {
+                "symfony/process": "^2.5 || ^3.0"
+            },
+            "suggest": {
+                "symfony/process": "This is necessary to reliably check whether openssl_x509_parse is vulnerable on older php versions, but can be ignored on PHP 5.5.6+"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\CaBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
+            "keywords": [
+                "cabundle",
+                "cacert",
+                "certificate",
+                "ssl",
+                "tls"
+            ],
+            "time": "2016-07-18 23:07:53"
+        },
         {
             "name": "dflydev/doctrine-orm-service-provider",
             "version": "v1.0.7",
@@ -815,6 +872,7 @@
                 "rest",
                 "web service"
             ],
+            "abandoned": "guzzlehttp/guzzle",
             "time": "2015-03-18 18:23:50"
         },
         {
@@ -897,7 +955,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -1579,12 +1637,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "fbd0083cd9dac06556bd1096deaa0295c18a7584"
+                "reference": "9b4d2c0ba53d3226f455d5cc7d3655f6a5371b37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/fbd0083cd9dac06556bd1096deaa0295c18a7584",
-                "reference": "fbd0083cd9dac06556bd1096deaa0295c18a7584",
+                "url": "https://api.github.com/repos/symfony/config/zipball/9b4d2c0ba53d3226f455d5cc7d3655f6a5371b37",
+                "reference": "9b4d2c0ba53d3226f455d5cc7d3655f6a5371b37",
                 "shasum": ""
             },
             "require": {
@@ -2143,12 +2201,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "a4cd139433c8952c868d1c7ea6746d1149228ea7"
+                "reference": "c680723a6989e2ed4e2b763d01cbe9d745757c90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/a4cd139433c8952c868d1c7ea6746d1149228ea7",
-                "reference": "a4cd139433c8952c868d1c7ea6746d1149228ea7",
+                "url": "https://api.github.com/repos/symfony/form/zipball/c680723a6989e2ed4e2b763d01cbe9d745757c90",
+                "reference": "c680723a6989e2ed4e2b763d01cbe9d745757c90",
                 "shasum": ""
             },
             "require": {
@@ -3463,6 +3521,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
+            "abandoned": "friendsofphp/php-cs-fixer",
             "time": "2015-10-21 19:19:43"
         },
         {
