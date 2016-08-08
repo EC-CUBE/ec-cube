@@ -494,7 +494,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductClasses = new ArrayCollection();
         $this->ProductStatuses = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
-        $this->ProductImage = new ArrayCollection();
+        $this->ProductImages = new ArrayCollection();
         $this->ProductTag = new ArrayCollection();
     }
 
@@ -525,7 +525,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         }
 
         $Images = $this->getProductImage();
-        $this->ProductImage = new ArrayCollection();
+        $this->ProductImages = new ArrayCollection();
         foreach ($Images as $Image) {
             $CloneImage = clone $Image;
             $this->addProductImage($CloneImage);
@@ -920,7 +920,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductImage;
+    private $ProductImages;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -936,7 +936,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function addProductImage(\Eccube\Entity\ProductImage $productImage)
     {
-        $this->ProductImage[] = $productImage;
+        $this->ProductImages[] = $productImage;
 
         return $this;
     }
@@ -948,7 +948,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function removeProductImage(\Eccube\Entity\ProductImage $productImage)
     {
-        $this->ProductImage->removeElement($productImage);
+        $this->ProductImages->removeElement($productImage);
     }
 
     /**
@@ -958,13 +958,13 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getProductImage()
     {
-        return $this->ProductImage;
+        return $this->ProductImages;
     }
 
     public function getMainFileName()
     {
-        if (count($this->ProductImage) > 0) {
-            return $this->ProductImage[0];
+        if (count($this->ProductImages) > 0) {
+            return $this->ProductImages[0];
         } else {
             return null;
         }
