@@ -495,7 +495,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductStatuses = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
         $this->ProductImages = new ArrayCollection();
-        $this->ProductTag = new ArrayCollection();
+        $this->ProductTags = new ArrayCollection();
     }
 
     public function __clone()
@@ -533,7 +533,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         }
 
         $Tags = $this->getProductTag();
-        $this->ProductTag = new ArrayCollection();
+        $this->ProductTags = new ArrayCollection();
         foreach ($Tags as $Tag) {
             $CloneTag = clone $Tag;
             $this->addProductTag($CloneTag);
@@ -925,7 +925,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductTag;
+    private $ProductTags;
 
 
     /**
@@ -978,7 +978,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function addProductTag(\Eccube\Entity\ProductTag $productTag)
     {
-        $this->ProductTag[] = $productTag;
+        $this->ProductTags[] = $productTag;
 
         return $this;
     }
@@ -990,7 +990,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function removeProductTag(\Eccube\Entity\ProductTag $productTag)
     {
-        $this->ProductTag->removeElement($productTag);
+        $this->ProductTags->removeElement($productTag);
     }
 
     /**
@@ -1000,7 +1000,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function getProductTag()
     {
-        return $this->ProductTag;
+        return $this->ProductTags;
     }
 
 
