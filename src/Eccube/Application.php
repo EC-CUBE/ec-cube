@@ -152,6 +152,19 @@ class Application extends ApplicationTrait
 
             $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
 
+            $config_cache = array();
+            $yml = $ymlPath.'/cache.yml';
+            if (file_exists($yml)) {
+                $config_cache = Yaml::parse(file_get_contents($yml));
+            }
+            $config_cache_dist = array();
+            $cache_yml_dist = $distPath.'/cache.yml.dist';
+            if (file_exists($cache_yml_dist)) {
+                $config_cache_dist = Yaml::parse(file_get_contents($cache_yml_dist));
+            }
+
+            $configAll = array_replace_recursive($configAll, $config_cache_dist, $config_cache);
+
             return $configAll;
         });
     }
@@ -488,11 +501,31 @@ class Application extends ApplicationTrait
             }
         }
 
+        $cacheDrivers = array();
+        if (array_key_exists('cache', $this['config'])) {
+            $cacheDrivers = $this['config']['cache'];
+        }
+
+        $options = array(
+            'mappings' => $ormMappings
+        );
+
+        if (array_key_exists('metadata_cache', $cacheDrivers)) {
+            $options['metadata_cache'] = $cacheDrivers['metadata_cache'];
+        }
+        if (array_key_exists('query_cache', $cacheDrivers)) {
+            $options['query_cache'] = $cacheDrivers['query_cache'];
+        }
+        if (array_key_exists('result_cache', $cacheDrivers)) {
+            $options['result_cache'] = $cacheDrivers['result_cache'];
+        }
+        if (array_key_exists('hydration_cache', $cacheDrivers)) {
+            $options['hydration_cache'] = $cacheDrivers['hydration_cache'];
+        }
+
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => $ormMappings,
-            ),
+            'orm.em.options' => $options
         ));
     }
 
