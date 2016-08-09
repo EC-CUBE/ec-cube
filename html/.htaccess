@@ -2,6 +2,7 @@ order deny,allow
 allow from all
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpg|css|ico|js)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
