@@ -535,7 +535,7 @@ class EditController extends AbstractController
                 ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
             $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
 
-            $taxtotal += $tax;
+            $taxtotal += $tax * $OrderDetail->getQuantity();
 
             // 小計
             $subtotal += $OrderDetail->getTotalPrice();

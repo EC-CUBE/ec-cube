@@ -24,6 +24,7 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Entity\Order;
 
 class EditControllerTest extends AbstractAdminWebTestCase
 {
@@ -56,7 +57,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
                 'name02' => $faker->firstName,
             ),
             'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
             ),
             'company_name' => $faker->company,
@@ -102,7 +103,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
                         'name02' => $faker->firstName,
                     ),
                     'kana' => array(
-                        'kana01' => $faker->lastKanaName ,
+                        'kana01' => $faker->lastKanaName,
                         'kana02' => $faker->firstKanaName,
                     ),
                     'company_name' => $faker->company,
@@ -134,6 +135,127 @@ class EditControllerTest extends AbstractAdminWebTestCase
                     )
                 )
             )
+        );
+        return $order;
+    }
+
+    /**
+     * 受注編集用フォーム作成
+     * @param Order $Order
+     * @return array
+     */
+    public function createFormDataForEdit(Order $Order)
+    {
+        //受注アイテム
+        $orderDetail = array();
+        $OrderDetailColl = $Order->getOrderDetails();
+        foreach ($OrderDetailColl as $OrderDetail) {
+            $orderDetail[] = array(
+                'Product' => $OrderDetail->getProduct()->getId(),
+                'ProductClass' => $OrderDetail->getProductClass()->getId(),
+                'price' => $OrderDetail->getPrice(),
+                'quantity' => $OrderDetail->getQuantity(),
+                'tax_rate' => $OrderDetail->getTaxRate(),
+                'tax_rule' => $OrderDetail->getTaxRule(),
+            );
+        }
+        //受注お届け
+        $shippings = array();
+        $ShippingsColl = $Order->getShippings();
+        foreach ($ShippingsColl as $Shippings) {
+            $shippings[] = array(
+                'name' =>
+                array(
+                    'name01' => $Shippings->getName01(),
+                    'name02' => $Shippings->getName02(),
+                ),
+                'kana' =>
+                array(
+                    'kana01' => $Shippings->getKana01(),
+                    'kana02' => $Shippings->getKana02(),
+                ),
+                'company_name' => $Shippings->getCompanyName(),
+                'zip' =>
+                array(
+                    'zip01' => $Shippings->getZip01(),
+                    'zip02' => $Shippings->getZip02(),
+                ),
+                'address' =>
+                array(
+                    'pref' => $Shippings->getPref()->getId(),
+                    'addr01' => $Shippings->getAddr01(),
+                    'addr02' => $Shippings->getAddr02(),
+                ),
+                'tel' =>
+                array(
+                    'tel01' => $Shippings->getTel01(),
+                    'tel02' => $Shippings->getTel02(),
+                    'tel03' => $Shippings->getTel03(),
+                ),
+                'fax' =>
+                array(
+                    'fax01' => $Shippings->getFax01(),
+                    'fax02' => $Shippings->getFax02(),
+                    'fax03' => $Shippings->getFax03(),
+                ),
+                'Delivery' => $Shippings->getDelivery()->getId(),
+                'DeliveryTime' => $Shippings->getDeliveryTime()->getId(),
+                'shipping_delivery_date' =>
+                array(
+                    'year' => $Shippings->getShippingDeliveryDate()->format('Y'),
+                    'month' => $Shippings->getShippingDeliveryDate()->format('m'),
+                    'day' => $Shippings->getShippingDeliveryDate()->format('d'),
+                ),
+            );
+        }
+        //受注フォーム
+        $order = array(
+            '_token' => 'dummy',
+            'OrderStatus' => (string) $Order->getOrderStatus(),
+            'Customer' => (string) $Order->getCustomer()->getId(),
+            'name' =>
+            array(
+                'name01' => $Order->getName01(),
+                'name02' => $Order->getName02(),
+            ),
+            'kana' =>
+            array(
+                'kana01' => $Order->getKana01(),
+                'kana02' => $Order->getKana02(),
+            ),
+            'zip' =>
+            array(
+                'zip01' => $Order->getZip01(),
+                'zip02' => $Order->getZip02(),
+            ),
+            'address' =>
+            array(
+                'pref' => $Order->getPref()->getId(),
+                'addr01' => $Order->getAddr01(),
+                'addr02' => $Order->getAddr02(),
+            ),
+            'email' => $Order->getEmail(),
+            'tel' =>
+            array(
+                'tel01' => $Order->getTel01(),
+                'tel02' => $Order->getTel02(),
+                'tel03' => $Order->getTel03(),
+            ),
+            'fax' =>
+            array(
+                'fax01' => $Order->getFax01(),
+                'fax02' => $Order->getFax02(),
+                'fax03' => $Order->getFax03(),
+            ),
+            'company_name' => $Order->getCompanyName(),
+            'message' => $Order->getMessage(),
+            'OrderDetails' => $orderDetail,
+            'discount' => $Order->getDiscount(),
+            'delivery_fee_total' => $Order->getDeliveryFeeTotal(),
+            'charge' => $Order->getCharge(),
+            'Payment' => $Order->getPayment()->getId(),
+            'Shippings' => $shippings,
+            'note' => $Order->getNote(),
         );
         return $order;
     }
@@ -290,7 +412,7 @@ class EditControllerTest extends AbstractAdminWebTestCase
                 'name02' => $faker->firstName,
             ),
             'kana' => array(
-                'kana01' => $faker->lastKanaName ,
+                'kana01' => $faker->lastKanaName,
                 'kana02' => $faker->firstKanaName,
             ),
             'company_name' => $faker->company,
@@ -342,4 +464,51 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $this->verify('カートに投入した商品が表示される');
     }
 
+    /**
+     * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1606
+     */
+    public function testOrderProcessingWithTax()
+    {
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormData($Customer, $this->Product);
+        // 管理画面から受注登録
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formData,
+            'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+
+        $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
+
+        //税金計算
+        $totalTax = 0;
+        foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
+            //商品数変更3個追加
+            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
+            $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
+            $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+        }
+
+        // 管理画面で受注編集する
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formDataForEdit,
+            'mode' => 'register'
+            )
+        );
+        $EditedOrderafterEdit = $this->app['eccube.repository.order']->find($Order->getId());
+
+        //確認する「トータル税金」
+        $this->expected = $totalTax;
+        $this->actual = $EditedOrderafterEdit->getTax();
+        $this->verify();
+    }
 }
