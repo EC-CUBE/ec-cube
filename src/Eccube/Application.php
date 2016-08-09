@@ -25,11 +25,16 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Eccube\EventListener\TransactionListener;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
@@ -38,6 +43,7 @@ class Application extends ApplicationTrait
 
     protected $initialized = false;
     protected $initializedPlugin = false;
+    protected $testMode = false;
 
     public static function getInstance(array $values = array())
     {
@@ -233,6 +239,9 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
+
+        // add transaction listener
+        $this['dispatcher']->addSubscriber(new TransactionListener($this));
 
         $this->initialized = true;
     }
@@ -619,31 +628,49 @@ class Application extends ApplicationTrait
             return new EventDispatcher();
         });
 
+        $app = $this;
+
         // hook point
-        $this->before(function(Request $request, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $hookpoint = 'eccube.event.app.before';
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         }, self::EARLY_EVENT);
 
-        $this->before(function(Request $request, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.before';
-            $app['eccube.event.dispatcher']->dispatch($event);
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $route = $event->getRequest()->attributes->get('_route');
+            $hookpoint = "eccube.event.controller.$route.before";
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.after';
-            $app['eccube.event.dispatcher']->dispatch($event);
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $route = $event->getRequest()->attributes->get('_route');
+            $hookpoint = "eccube.event.controller.$route.after";
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $hookpoint = 'eccube.event.app.after';
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         }, self::LATE_EVENT);
 
-        $this->finish(function(Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.finish';
-            $app['eccube.event.dispatcher']->dispatch($event);
+        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($app) {
+            $route = $event->getRequest()->attributes->get('_route');
+            $hookpoint = "eccube.event.controller.$route.finish";
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $app = $this;
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
             $route = $event->getRequest()->attributes->get('_route');
             $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
@@ -907,6 +934,25 @@ class Application extends ApplicationTrait
                 }
             }
         }
+    }
+
+    /**
+     * PHPUnit を実行中かどうかを設定する.
+     *
+     * @param boolean $testMode PHPUnit を実行中の場合 true
+     */
+    public function setTestMode($testMode) {
+        $this->testMode = $testMode;
+    }
+
+    /**
+     * PHPUnit を実行中かどうか.
+     *
+     * @return boolean PHPUnit を実行中の場合 true
+     */
+    public function isTestMode()
+    {
+        return $this->testMode;
     }
 
     /**

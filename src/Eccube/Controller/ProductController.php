@@ -265,7 +265,7 @@ class ProductController
                         $app['session']->getFlashBag()->set('eccube.add.favorite', true);
                         return $app->redirect($app->url('mypage_login'));
                     }
-                } else {
+                } elseif ($addCartData['mode'] === 'add_cart') {
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
                     } catch (CartException $e) {
