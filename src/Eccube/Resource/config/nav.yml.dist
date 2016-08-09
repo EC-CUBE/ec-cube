@@ -80,7 +80,7 @@
               name: 特定商取引法
               url: admin_setting_shop_tradelaw
             - id: customer_agreement
-              name: 会員規約設定
+              name: 利用規約設定
               url: admin_setting_shop_customer_agreement
             - id: shop_payment
               name: 支払方法設定
