@@ -152,18 +152,18 @@ class Application extends ApplicationTrait
 
             $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
 
-            $config_cache = array();
-            $yml = $ymlPath.'/cache.yml';
+            $config_doctrine_cache = array();
+            $yml = $ymlPath.'/doctrine_cache.yml';
             if (file_exists($yml)) {
-                $config_cache = Yaml::parse(file_get_contents($yml));
+                $config_doctrine_cache = Yaml::parse(file_get_contents($yml));
             }
-            $config_cache_dist = array();
-            $cache_yml_dist = $distPath.'/cache.yml.dist';
-            if (file_exists($cache_yml_dist)) {
-                $config_cache_dist = Yaml::parse(file_get_contents($cache_yml_dist));
+            $config_doctrine_cache_dist = array();
+            $doctrine_cache_yml_dist = $distPath.'/doctrine_cache.yml.dist';
+            if (file_exists($doctrine_cache_yml_dist)) {
+                $config_doctrine_cache_dist = Yaml::parse(file_get_contents($doctrine_cache_yml_dist));
             }
 
-            $configAll = array_replace_recursive($configAll, $config_cache_dist, $config_cache);
+            $configAll = array_replace_recursive($configAll, $config_doctrine_cache_dist, $config_doctrine_cache);
 
             return $configAll;
         });
@@ -502,8 +502,8 @@ class Application extends ApplicationTrait
         }
 
         $cacheDrivers = array();
-        if (array_key_exists('cache', $this['config'])) {
-            $cacheDrivers = $this['config']['cache'];
+        if (array_key_exists('doctrine_cache', $this['config'])) {
+            $cacheDrivers = $this['config']['doctrine_cache'];
         }
 
         $options = array(
@@ -524,7 +524,7 @@ class Application extends ApplicationTrait
         }
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
+            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
             'orm.em.options' => $options
         ));
     }
