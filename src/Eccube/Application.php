@@ -501,26 +501,28 @@ class Application extends ApplicationTrait
             }
         }
 
-        $cacheDrivers = array();
-        if (array_key_exists('doctrine_cache', $this['config'])) {
-            $cacheDrivers = $this['config']['doctrine_cache'];
-        }
-
         $options = array(
             'mappings' => $ormMappings
         );
 
-        if (array_key_exists('metadata_cache', $cacheDrivers)) {
-            $options['metadata_cache'] = $cacheDrivers['metadata_cache'];
-        }
-        if (array_key_exists('query_cache', $cacheDrivers)) {
-            $options['query_cache'] = $cacheDrivers['query_cache'];
-        }
-        if (array_key_exists('result_cache', $cacheDrivers)) {
-            $options['result_cache'] = $cacheDrivers['result_cache'];
-        }
-        if (array_key_exists('hydration_cache', $cacheDrivers)) {
-            $options['hydration_cache'] = $cacheDrivers['hydration_cache'];
+        if (!$this['debug']) {
+            $cacheDrivers = array();
+            if (array_key_exists('doctrine_cache', $this['config'])) {
+                $cacheDrivers = $this['config']['doctrine_cache'];
+            }
+
+            if (array_key_exists('metadata_cache', $cacheDrivers)) {
+                $options['metadata_cache'] = $cacheDrivers['metadata_cache'];
+            }
+            if (array_key_exists('query_cache', $cacheDrivers)) {
+                $options['query_cache'] = $cacheDrivers['query_cache'];
+            }
+            if (array_key_exists('result_cache', $cacheDrivers)) {
+                $options['result_cache'] = $cacheDrivers['result_cache'];
+            }
+            if (array_key_exists('hydration_cache', $cacheDrivers)) {
+                $options['hydration_cache'] = $cacheDrivers['hydration_cache'];
+            }
         }
 
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
