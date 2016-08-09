@@ -27,7 +27,6 @@ use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
-use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -93,7 +92,9 @@ class Application extends ApplicationTrait
                 ->parseConfig('mail', $configAll)
                 ->parseConfig('log', $configAll)
                 ->parseConfig('nav', $configAll, true)
-                ->parseConfig('doctrine_cache', $configAll);
+                ->parseConfig('doctrine_cache', $configAll)
+                ->parseConfig('httpcache', $configAll);
+
             return $configAll;
         });
     }
@@ -124,6 +125,9 @@ class Application extends ApplicationTrait
         $this->initRendering();
 
         // init provider
+        $this->register(new \Silex\Provider\HttpCacheServiceProvider(), array(
+            'http_cache.cache_dir' => __DIR__.'/../../app/cache/http/',
+        ));
         $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
@@ -131,7 +135,7 @@ class Application extends ApplicationTrait
         $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
 
         $app = $this;
-        $this->error(function(\Exception $e, $code) use ($app) {
+        $this->error(function (\Exception $e, $code) use ($app) {
             if ($app['debug']) {
                 return;
             }
@@ -195,7 +199,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
         ));
-        $this['translator'] = $this->share($this->extend('translator', function($translator, \Silex\Application $app) {
+        $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
@@ -239,16 +243,16 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
-        $this['twig'] = $this->share($this->extend('twig', function(\Twig_Environment $twig, \Silex\Application $app) {
+        $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
             return $twig;
         }));
 
-        $this->before(function(Request $request, \Silex\Application $app) {
+        $this->before(function (Request $request, \Silex\Application $app) {
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            $app['twig'] = $app->share($app->extend('twig', function(\Twig_Environment $twig, \Silex\Application $app) {
+            $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
@@ -300,7 +304,7 @@ class Application extends ApplicationTrait
 
         // twigのグローバル変数を定義.
         $app = $this;
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function(\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
             // ショップ基本情報
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
@@ -360,7 +364,7 @@ class Application extends ApplicationTrait
         // メール送信時の文字エンコード指定(デフォルトはUTF-8)
         if (isset($this['config']['mail']['charset_iso_2022_jp']) && is_bool($this['config']['mail']['charset_iso_2022_jp'])) {
             if ($this['config']['mail']['charset_iso_2022_jp'] === true) {
-                \Swift::init(function() {
+                \Swift::init(function () {
                     \Swift_DependencyContainer::getInstance()
                         ->register('mime.qpheaderencoder')
                         ->asAliasOf('mime.base64headerencoder');
@@ -389,7 +393,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'dbs.options' => array(
                 'default' => $this['config']['database']
-        )));
+            )));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
@@ -543,19 +547,19 @@ class Application extends ApplicationTrait
             array('^/mypage', 'ROLE_USER'),
         );
 
-        $this['eccube.password_encoder'] = $this->share(function($app) {
+        $this['eccube.password_encoder'] = $this->share(function ($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
         });
-        $this['security.encoder_factory'] = $this->share(function($app) {
+        $this['security.encoder_factory'] = $this->share(function ($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
                 'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
                 'Eccube\Entity\Member' => $app['eccube.password_encoder'],
             ));
         });
-        $this['eccube.event_listner.security'] = $this->share(function($app) {
+        $this['eccube.event_listner.security'] = $this->share(function ($app) {
             return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         });
-        $this['user'] = function($app) {
+        $this['user'] = function ($app) {
             $token = $app['security']->getToken();
 
             return ($token !== null) ? $token->getUser() : null;
@@ -566,17 +570,17 @@ class Application extends ApplicationTrait
 
         // Voterの設定
         $app = $this;
-        $this['authority_voter'] = $this->share(function($app) {
+        $this['authority_voter'] = $this->share(function ($app) {
             return new \Eccube\Security\Voter\AuthorityVoter($app);
         });
 
-        $app['security.voters'] = $app->extend('security.voters', function($voters) use ($app) {
+        $app['security.voters'] = $app->extend('security.voters', function ($voters) use ($app) {
             $voters[] = $app['authority_voter'];
 
             return $voters;
         });
 
-        $this['security.access_manager'] = $this->share(function($app) {
+        $this['security.access_manager'] = $this->share(function ($app) {
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
         });
 
@@ -600,7 +604,7 @@ class Application extends ApplicationTrait
     public function initPluginEventDispatcher()
     {
         // EventDispatcher
-        $this['eccube.event.dispatcher'] = $this->share(function() {
+        $this['eccube.event.dispatcher'] = $this->share(function () {
             return new EventDispatcher();
         });
 
@@ -647,13 +651,13 @@ class Application extends ApplicationTrait
             $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
             $route = $event->getRequest()->attributes->get('_route');
             $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
         });
 
         // Request Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function(\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function (\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) use ($app) {
 
             if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
@@ -684,7 +688,7 @@ class Application extends ApplicationTrait
         }, 30); // Routing(32)が解決しし, 認証判定(8)が実行される前のタイミング.
 
         // Controller Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function(\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
 
             if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
@@ -715,7 +719,7 @@ class Application extends ApplicationTrait
         });
 
         // Response Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
 
             if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
@@ -745,7 +749,7 @@ class Application extends ApplicationTrait
         });
 
         // Exception Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function(\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function (\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) use ($app) {
 
             if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
                 return;
@@ -775,7 +779,7 @@ class Application extends ApplicationTrait
         });
 
         // Terminate Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function(\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function (\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) use ($app) {
 
             $route = $event->getRequest()->attributes->get('_route');
 
@@ -799,6 +803,9 @@ class Application extends ApplicationTrait
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
         });
+
+        $this->cacheRequest();
+
     }
 
     public function loadPlugin()
@@ -838,7 +845,7 @@ class Application extends ApplicationTrait
                 $this['eccube.service.plugin']->checkPluginArchiveContent($path);
             } catch (\Eccube\Exception\PluginException $e) {
                 $this['monolog']->warning("skip {$code} config loading. config.yml not foud or invalid.", array(
-                    'path' =>  $path,
+                    'path' => $path,
                     'original-message' => $e->getMessage()
                 ));
                 continue;
@@ -851,7 +858,7 @@ class Application extends ApplicationTrait
 
             // const
             if (isset($config['const'])) {
-                $this['config'] = $this->share($this->extend('config', function($eccubeConfig) use ($config) {
+                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
                     $eccubeConfig[$config['code']] = array(
                         'const' => $config['const'],
                     );
@@ -872,7 +879,7 @@ class Application extends ApplicationTrait
 
                 if (!class_exists($class)) {
                     $this['monolog']->warning("skip {$code} loading. event class not foud.", array(
-                        'class' =>  $class,
+                        'class' => $class,
                     ));
                     $eventExists = false;
                 }
@@ -902,7 +909,7 @@ class Application extends ApplicationTrait
                     $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
                     if (!class_exists($class)) {
                         $this['monolog']->warning("skip {$code} loading. service provider class not foud.", array(
-                            'class' =>  $class,
+                            'class' => $class,
                         ));
                         continue;
                     }
@@ -917,7 +924,8 @@ class Application extends ApplicationTrait
      *
      * @param boolean $testMode PHPUnit を実行中の場合 true
      */
-    public function setTestMode($testMode) {
+    public function setTestMode($testMode)
+    {
         $this->testMode = $testMode;
     }
 
@@ -935,8 +943,9 @@ class Application extends ApplicationTrait
      *
      * データベースの接続を確認
      * 成功 : trueを返却
-     *　失敗 : \Doctrine\DBAL\DBALExceptionエラーが発生( 接続に失敗した場合 )、エラー画面を表示しdie()
+     * 失敗 : \Doctrine\DBAL\DBALExceptionエラーが発生( 接続に失敗した場合 )、エラー画面を表示しdie()
      * 備考 : app['debug']がtrueの際は処理を行わない
+     *
      * @return boolean true
      *
      */
@@ -961,9 +970,10 @@ class Application extends ApplicationTrait
             $response->send();
             die();
         }
+
         return true;
     }
-
+    
     /**
      * Config ファイルをパースし、連想配列を返します.
      *
@@ -1036,5 +1046,67 @@ class Application extends ApplicationTrait
         }
 
         return false;
+    }
+
+    /**
+     * Http Cache対応
+     */
+    protected function cacheRequest()
+    {
+        $app = $this;
+
+        // Response Event(http cache対応、event実行は一番遅く設定)
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+
+            if ($app['config']['http_cache']['enabled']) {
+                // httpキャッシュが有効の場合
+
+                $request = $event->getRequest();
+                $response = $event->getResponse();
+
+                $route = $request->attributes->get('_route');
+
+                $etag = md5($response->getContent());
+
+                if (strpos($route, 'admin') === 0) {
+                    // 管理画面
+
+                    // 管理画面ではコンテンツの中身が変更された時点でキャッシュを更新し、キャッシュの適用範囲はprivateに設定
+                    $response->setCache(array(
+                        'etag' => $etag,
+                        'private' => true,
+                    ));
+
+                    if ($response->isNotModified($request)) {
+                        return $response;
+                    }
+
+                } else {
+                    // フロント画面
+                    $cacheRoute = $app['config']['http_cache']['route'];
+
+                    if (in_array($route, $cacheRoute) === true) {
+                        // キャッシュ対象となる画面lが含まれていた場合、キャッシュ化
+                        // max-ageを設定しているためExpiresは不要
+                        // Last-Modifiedだと比較する項目がないためETagで対応
+                        // max-ageを設定していた場合、contentの中身が変更されても変更されない
+
+                        $age = $app['config']['http_cache']['age'];
+
+                        $response->setCache(array(
+                            'etag' => $etag,
+                            'max_age' => $age,
+                            's_maxage' => $age,
+                            'public' => true,
+                        ));
+
+                        if ($response->isNotModified($request)) {
+                            return $response;
+                        }
+                    }
+                }
+            }
+
+        }, -1024);
     }
 }

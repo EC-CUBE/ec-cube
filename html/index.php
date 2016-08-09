@@ -42,7 +42,11 @@ $app = \Eccube\Application::getInstance(array('output_config_php' => false));
 if ($app['config']['eccube_install']) {
     $app->initialize();
     $app->initializePlugin();
-    $app->run();
+    if ($app['config']['http_cache']['enabled']) {
+        $app['http_cache']->run();
+    } else {
+        $app->run();
+    }
 } else {
     $location = str_replace('index.php', 'install.php', $_SERVER['SCRIPT_NAME']);
     header('Location:'.$location);

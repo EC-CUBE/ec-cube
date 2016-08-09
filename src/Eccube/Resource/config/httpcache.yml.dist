@@ -1,0 +1,6 @@
+http_cache:
+    enabled: false
+    age: 10
+    route:
+        - homepage
+        - block_category
