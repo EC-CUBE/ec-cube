@@ -279,7 +279,7 @@ class ProductController extends AbstractController
 
         // ファイルの登録
         $images = array();
-        $ProductImages = $Product->getProductImage();
+        $ProductImages = $Product->getProductImages();
         foreach ($ProductImages as $ProductImage) {
             $images[] = $ProductImage->getFileName();
         }
@@ -514,7 +514,7 @@ class ProductController extends AbstractController
                         $app['orm.em']->remove($ProductStock);
                     }
 
-                    $ProductImages = $Product->getProductImage();
+                    $ProductImages = $Product->getProductImages();
                     foreach ($ProductImages as $ProductImage) {
                         $Product->removeProductImage($ProductImage);
                         $deleteImages[] = $ProductImage->getFileName();
@@ -609,7 +609,7 @@ class ProductController extends AbstractController
 
                     $app['orm.em']->persist($Class);
                 }
-                $Images = $CopyProduct->getProductImage();
+                $Images = $CopyProduct->getProductImages();
                 foreach ($Images as $Image) {
 
                     // 画像ファイルを新規作成

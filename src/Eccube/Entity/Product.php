@@ -406,7 +406,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     public function getMainListImage() {
-        $ProductImages = $this->getProductImage();
+        $ProductImages = $this->getProductImages();
         return empty($ProductImages) ? null : $ProductImages[0];
     }
 
@@ -494,7 +494,7 @@ class Product extends \Eccube\Entity\AbstractEntity
         $this->ProductClasses = new ArrayCollection();
         $this->ProductStatuses = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
-        $this->ProductImage = new ArrayCollection();
+        $this->ProductImages = new ArrayCollection();
         $this->ProductTag = new ArrayCollection();
     }
 
@@ -524,8 +524,8 @@ class Product extends \Eccube\Entity\AbstractEntity
             $CopyClass->setProduct($this);
         }
 
-        $Images = $this->getProductImage();
-        $this->ProductImage = new ArrayCollection();
+        $Images = $this->getProductImages();
+        $this->ProductImages = new ArrayCollection();
         foreach ($Images as $Image) {
             $CloneImage = clone $Image;
             $this->addProductImage($CloneImage);
@@ -920,11 +920,6 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductImage;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
     private $ProductTag;
 
 
@@ -936,7 +931,7 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function addProductImage(\Eccube\Entity\ProductImage $productImage)
     {
-        $this->ProductImage[] = $productImage;
+        $this->ProductImages[] = $productImage;
 
         return $this;
     }
@@ -948,23 +943,13 @@ class Product extends \Eccube\Entity\AbstractEntity
      */
     public function removeProductImage(\Eccube\Entity\ProductImage $productImage)
     {
-        $this->ProductImage->removeElement($productImage);
-    }
-
-    /**
-     * Get ProductImage
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProductImage()
-    {
-        return $this->ProductImage;
+        $this->ProductImages->removeElement($productImage);
     }
 
     public function getMainFileName()
     {
-        if (count($this->ProductImage) > 0) {
-            return $this->ProductImage[0];
+        if (count($this->ProductImages) > 0) {
+            return $this->ProductImages[0];
         } else {
             return null;
         }
@@ -1004,4 +989,19 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $ProductImages;
+
+
+    /**
+     * Get ProductImages
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductImages()
+    {
+        return $this->ProductImages;
+    }
 }
