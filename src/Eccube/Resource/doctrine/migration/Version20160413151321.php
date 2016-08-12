@@ -24,13 +24,17 @@ class Version20160413151321 extends AbstractMigration
         $file = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
         $config = Yaml::parse(file_get_contents($file));
 
-        $config['public_path'] = '/html';
-        $config['public_path_realdir'] = $config['root_dir'] . $config['public_path'];
-        $config['plugin_html_realdir'] = $config['root_dir'] . $config['public_path'] . '/plugin';
-        $config['plugin_urlpath'] = $config['root_urlpath'] . '/plugin';
+        if (!array_key_exists('public_path', $config)) {
+            // public_pathが未定義なら作成
 
-        file_put_contents($file, Yaml::dump($config));
+            $config['public_path'] = '/html';
+            $config['public_path_realdir'] = $config['root_dir'].$config['public_path'];
+            $config['plugin_html_realdir'] = $config['root_dir'].$config['public_path'].'/plugin';
+            $config['plugin_urlpath'] = $config['root_urlpath'].'/plugin';
 
+            file_put_contents($file, Yaml::dump($config));
+
+        }
     }
 
     /**

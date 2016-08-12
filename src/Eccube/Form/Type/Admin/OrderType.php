@@ -142,7 +142,7 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('message', 'textarea', array(
-                'label' => '備考',
+                'label' => 'お問い合わせ',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(

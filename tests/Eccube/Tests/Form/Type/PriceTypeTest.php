@@ -127,6 +127,9 @@ class PriceTypeTest extends \PHPUnit_Framework_TestCase
         $app = new \Silex\Application();
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
+            return new \Eccube\Service\PluginService($app);
+        });
 
         $self = $this;
         $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
