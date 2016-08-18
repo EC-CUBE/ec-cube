@@ -45,6 +45,7 @@ install:
   - gem install mailcatcher
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - composer self-update || true
   - composer install --dev --no-interaction -o
   - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
