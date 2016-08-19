@@ -911,11 +911,10 @@ class Application extends ApplicationTrait
      * @param string $distPath config yaml dist を格納したディレクトリ
      * @return Application
      */
-    protected function parseConfig($config_name, array &$configAll,
-                                   $wrap_key = false,
-                                   $ymlPath = __DIR__.'/../../app/config/eccube',
-                                   $distPath = __DIR__.'/../../src/Eccube/Resource/config')
+    protected function parseConfig($config_name, array &$configAll, $wrap_key = false, $ymlPath = null, $distPath = null)
     {
+        $ymlPath = $ymlPath ? $ymlPath : __DIR__.'/../../app/config/eccube';
+        $distPath = $distPath ? $distPath : __DIR__.'/../../src/Eccube/Resource/config';
         $config = array();
         $config_php = $ymlPath.'/'.$config_name.'.php';
         if (!file_exists($config_php)) {
