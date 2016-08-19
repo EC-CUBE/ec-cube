@@ -59,9 +59,6 @@ before_script:
   - if [[ $PHP_SAPI = 'phpdbg' ]]; then echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini ; fi
   - composer self-update || true
   - composer install --dev --no-interaction -o
-  ## apply YamlDriver.php.patch
-  ## see also. https://github.com/doctrine/doctrine2/pull/1205
-  - curl -Ss https://gist.githubusercontent.com/nanasess/d72c796969d8c2eb5082a0567d54a92d/raw/5ba00fb3110b8fe9be65ba53df1f210f26ed1f52/YamlDrive.php.patch | patch -p0 -N || true
   - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
   - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql none; fi"
   - sh -c "if [ '$DB' = 'sqlite' ]; then sh ./eccube_install.sh sqlite3 none; fi"
