@@ -23,6 +23,11 @@ class TransactionListenerTest extends WebTestCase
     public function setUp()
     {
         parent::setUp();
+        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+            // Connection が別物になってしまうため
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+
         $c = $this->app['controllers_factory'];
         $c->match('/tran1', '\Eccube\Tests\Transaction\TransactionControllerMock::tran1')->bind('tran1');
         $c->match('/tran2', '\Eccube\Tests\Transaction\TransactionControllerMock::tran2')->bind('tran2');
