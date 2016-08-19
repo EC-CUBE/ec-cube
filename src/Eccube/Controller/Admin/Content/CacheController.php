@@ -46,13 +46,13 @@ class CacheController extends AbstractController
 
             $data = $form->get('cache')->getData();
 
-            // 指定されたキャッシュクリア
             $cacheDir = $app['config']['root_dir'].'/app/cache';
 
             $filesystem = new Filesystem();
 
             foreach ($data as $dir) {
                 if (is_dir($cacheDir.'/'.$dir)) {
+                    // 指定されたキャッシュディレクトリを削除
                     $finder = Finder::create()->in($cacheDir.'/'.$dir);
                     $filesystem->remove($finder);
                 }
