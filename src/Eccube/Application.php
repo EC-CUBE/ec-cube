@@ -76,9 +76,10 @@ class Application extends ApplicationTrait
     public function initConfig()
     {
         // load config
-        $this['config'] = $this->share(function() {
+        $app = $this;
+        $this['config'] = $this->share(function() use ($app) {
             $configAll = array();
-            $this->parseConfig('constant', $configAll)
+            $app->parseConfig('constant', $configAll)
                 ->parseConfig('path', $configAll)
                 ->parseConfig('config', $configAll)
                 ->parseConfig('database', $configAll)
@@ -911,7 +912,7 @@ class Application extends ApplicationTrait
      * @param string $distPath config yaml dist を格納したディレクトリ
      * @return Application
      */
-    protected function parseConfig($config_name, array &$configAll, $wrap_key = false, $ymlPath = null, $distPath = null)
+    public function parseConfig($config_name, array &$configAll, $wrap_key = false, $ymlPath = null, $distPath = null)
     {
         $ymlPath = $ymlPath ? $ymlPath : __DIR__.'/../../app/config/eccube';
         $distPath = $distPath ? $distPath : __DIR__.'/../../src/Eccube/Resource/config';
