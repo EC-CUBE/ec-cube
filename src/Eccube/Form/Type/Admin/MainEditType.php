@@ -26,8 +26,8 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -160,8 +160,7 @@ class MainEditType extends AbstractType
                 if (count($PageLayout) > 0) {
                     $form['url']->addError(new FormError('※ 同じURLのデータが存在しています。別のURLを入力してください。'));
                 }
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
     }
 
     /**

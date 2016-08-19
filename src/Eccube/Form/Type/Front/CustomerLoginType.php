@@ -26,8 +26,8 @@ namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerLoginType extends AbstractType
@@ -65,7 +65,6 @@ class CustomerLoginType extends AbstractType
                 new Assert\NotBlank(),
             ),
         ));
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

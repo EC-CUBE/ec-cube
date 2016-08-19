@@ -218,8 +218,7 @@ class ShippingType extends AbstractType
                         $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
                     }
                 }
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
     }
 
     /**

@@ -121,7 +121,6 @@ class OrderDetailType extends AbstractType
             }
         });
 
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

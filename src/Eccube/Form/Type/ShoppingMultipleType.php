@@ -61,8 +61,7 @@ class ShoppingMultipleType extends AbstractType
                 'required' => false,
                 'empty_value' => '指定なし',
                 'empty_data' => null,
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
 
     }
 

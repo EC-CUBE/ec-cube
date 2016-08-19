@@ -282,7 +282,6 @@ class OrderType extends AbstractType
                 $form['charge']->addError(new FormError('商品が追加されていません。'));
             }
         });
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
