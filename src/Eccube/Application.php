@@ -901,6 +901,9 @@ class Application extends ApplicationTrait
     /**
      * Config ファイルをパースし、連想配列を返します.
      *
+     * $config_name.yml ファイルをパースし、連想配列を返します.
+     * $config_name.php が存在する場合は、 PHP ファイルに記述された連想配列を使用します。
+     *
      * @param string $config_name Config 名称
      * @param array $configAll Config の連想配列
      * @param boolean $wrap_key Config の連想配列に config_name のキーを生成する場合 true, デフォルト false
@@ -914,16 +917,32 @@ class Application extends ApplicationTrait
                                    $distPath = __DIR__.'/../../src/Eccube/Resource/config')
     {
         $config = array();
-        $config_yml = $ymlPath.'/'.$config_name.'.yml';
-        if (file_exists($config_yml)) {
-            $config = Yaml::parse(file_get_contents($config_yml));
-            $config = empty($config) ? array() : $config;
+        $config_php = $ymlPath.'/'.$config_name.'.php';
+        if (!file_exists($config_php)) {
+            $config_yml = $ymlPath.'/'.$config_name.'.yml';
+            if (file_exists($config_yml)) {
+                $config = Yaml::parse(file_get_contents($config_yml));
+                $config = empty($config) ? array() : $config;
+                if (isset($this['output_config_php']) && $this['output_config_php']) {
+                    file_put_contents($config_php, sprintf('<?php return %s', var_export($config, true)).';');
+                }
+            }
+        } else {
+            $config = require $config_php;
         }
 
         $config_dist = array();
-        $config_yml_dist = $distPath.'/'.$config_name.'.yml.dist';
-        if (file_exists($config_yml_dist)) {
-            $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
+        $config_php_dist = $distPath.'/'.$config_name.'.dist.php';
+        if (!file_exists($config_php_dist)) {
+            $config_yml_dist = $distPath.'/'.$config_name.'.yml.dist';
+            if (file_exists($config_yml_dist)) {
+                $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
+                if (isset($this['output_config_php']) && $this['output_config_php']) {
+                    file_put_contents($config_php_dist, sprintf('<?php return %s', var_export($config_dist, true)).';');
+                }
+            }
+        } else {
+            $config_dist = require $config_php_dist;
         }
 
         if ($wrap_key) {
