@@ -69,8 +69,9 @@ class MasterdataController extends AbstractController
         } elseif (!is_null($entity)) {
             $form->submit(array('masterdata' => $entity));
             if ($form['masterdata']->isValid()) {
+                $entityName = str_replace('-', '\\', $entity);
                 try {
-                    $masterdata = $app['orm.em']->getRepository($entity)->findBy(array(), array('rank' => 'ASC'));
+                    $masterdata = $app['orm.em']->getRepository($entityName)->findBy(array(), array('rank' => 'ASC'));
                     $data['data'] = array();
                     $data['masterdata_name'] = $entity;
                     foreach ($masterdata as $value) {
@@ -124,7 +125,8 @@ class MasterdataController extends AbstractController
             if ($form2->isValid()) {
                 $data = $form2->getData();
 
-                $entity = new $data['masterdata_name']();
+                $entityName = str_replace('-', '\\', $data['masterdata_name']);
+                $entity = new $entityName();
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
@@ -133,7 +135,7 @@ class MasterdataController extends AbstractController
                         $app['orm.em']->merge($entity);
                     } else {
                         // remove
-                        $delKey = $app['orm.em']->getRepository($data['masterdata_name'])->findOneBy(array('rank' => $key));
+                        $delKey = $app['orm.em']->getRepository($entityName)->findOneBy(array('rank' => $key));
                         if ($delKey) {
                             $app['orm.em']->remove($delKey);
                         }
