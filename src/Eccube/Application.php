@@ -180,7 +180,9 @@ class Application extends ApplicationTrait
         $this->initLocale();
 
         // init session
-        $this->initSession();
+        if (!$this->isSessionStarted()) {
+            $this->initSession();
+        }
 
         // init twig
         $this->initRendering();
@@ -986,5 +988,23 @@ class Application extends ApplicationTrait
             die();
         }
         return true;
+    }
+
+    /**
+     * セッションが開始されているかどうか.
+     *
+     * @return boolean セッションが開始済みの場合 true
+     * @link http://php.net/manual/ja/function.session-status.php#113468
+     */
+    protected function isSessionStarted()
+    {
+        if (php_sapi_name() !== 'cli') {
+            if (version_compare(phpversion(), '5.4.0', '>=')) {
+                return session_status() === PHP_SESSION_ACTIVE ? true : false;
+            } else {
+                return session_id() === '' ? false : true;
+            }
+        }
+        return false;
     }
 }
