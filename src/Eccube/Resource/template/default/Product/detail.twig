@@ -158,10 +158,16 @@ $(function(){
                     {% endif -%}
 
                     <!--▼商品コード-->
-                    <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">
-                        {{ Product.code_min }}
-                        {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
-                        </span> </p>
+                    {% if Product.hasProductClass -%}
+                        {% if Product.code_min == Product.code_max %}
+                            <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">{{ Product.code_min }}}</span></p>
+                        {% elseif Product.code_min != Product.code_max %}
+                            <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">{{ Product.code_min }} ～ {{ Product.code_max }}</span></p>
+                            <p id="detail_description_box__item_dynamic_range_code" class="item_code">商品コード： <span id="item_code_dynamic"></span></p>
+                        {% endif %}
+                    {% else -%}
+                        <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">{{ Product.code_min }}</span></p>
+                    {% endif -%}
                     <!--▲商品コード-->
 
                     <!-- ▼関連カテゴリ▼ -->

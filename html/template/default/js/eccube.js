@@ -469,12 +469,12 @@
         }
 
         // 商品コード 実際はフォーム内要素ではない
-        var $product_code_default = $form.find('[id^=item_code_default]');
-        var $product_code_dynamic = $form.find('[id^=item_code_dynamic]');
+        var $product_code_default = $('#detail_description_box__item_range_code');
+        var $product_code_dynamic = $('#detail_description_box__item_dynamic_range_code');
         if (classcat2 && typeof classcat2.product_code !== 'undefined') {
             $product_code_default.hide();
             $product_code_dynamic.show();
-            $product_code_dynamic.text(classcat2.product_code);
+            $product_code_dynamic.children('#item_code_dynamic').text(classcat2.product_code);
         } else {
             $product_code_default.show();
             $product_code_dynamic.hide();
