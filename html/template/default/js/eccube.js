@@ -445,9 +445,8 @@
                         $sele2.append(option);
                     }
                 }
-                eccube.checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2',
-                $sele2.val() ? $sele2.val() : '');
             }
+            eccube.checkStock($form, product_id, $sele1.val() ? $sele1.val() : '__unselected2', $sele2.val() ? $sele2.val() : '');
         }
     };
 
@@ -497,10 +496,15 @@
         var $price01_default = $('#detail_description_box__class_normal_range_price');
         var $price01_dynamic = $('#detail_description_box__class_dynamic_range_price');
 
-        if (classcat2 && typeof classcat2.price01 !== 'undefined' && String(classcat2.price01).length >= 1) {
-            $price01_dynamic.children('.price01_dynamic').text(classcat2.price01);
-            $price01_dynamic.show();
-            $price01_default.hide();
+        if (classcat2 && typeof classcat2.price01 !== 'undefined') {
+            if (String(classcat2.price01).length >= 1) {
+                $price01_dynamic.children('.price01_dynamic').text(classcat2.price01);
+                $price01_dynamic.show();
+                $price01_default.hide();
+            } else {
+                $price01_dynamic.hide();
+                $price01_default.hide();
+            }
         } else {
             $price01_dynamic.hide();
             $price01_default.show();
