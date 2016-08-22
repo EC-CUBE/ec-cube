@@ -122,7 +122,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_product_product_delete', array('id' => $Product->getId()))
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_page', array('page_no' => 1)).'?resume=1'));
 
         $DeletedProduct = $this->app['eccube.repository.product']->find($Product->getId());
         $this->expected = 1;

@@ -97,14 +97,21 @@ class ProductController extends AbstractController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
+                $session->set('eccube.admin.product.search.page_no', $page_no);
             }
         } else {
-            if (is_null($page_no)) {
+            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
                 $session->remove('eccube.admin.product.search');
+                $session->remove('eccube.admin.product.search.page_no');
             } else {
                 // pagingなどの処理
                 $searchData = $session->get('eccube.admin.product.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.product.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.product.search.page_no', $page_no);
+                }
                 if (!is_null($searchData)) {
 
                     // 公開ステータス
@@ -487,13 +494,16 @@ class ProductController extends AbstractController
     public function delete(Application $app, Request $request, $id = null)
     {
         $this->isTokenValid($app);
+        $session = $request->getSession();
+        $page_no = intval($session->get('eccube.admin.product.search.page_no'));
+        $page_no = $page_no ? $page_no : Constant::ENABLED;
 
         if (!is_null($id)) {
             /* @var $Product \Eccube\Entity\Product */
             $Product = $app['eccube.repository.product']->find($id);
             if (!$Product) {
                 $app->deleteMessage();
-                return $app->redirect($app->url('admin_product'));
+                return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
@@ -562,7 +572,7 @@ class ProductController extends AbstractController
             $app->addError('admin.delete.failed', 'admin');
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
     public function copy(Application $app, Request $request, $id = null)

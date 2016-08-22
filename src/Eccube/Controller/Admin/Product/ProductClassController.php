@@ -342,6 +342,8 @@ class ProductClassController
 
                     $defaultProductClass->setDelFlg(Constant::ENABLED);
 
+                    $app['orm.em']->flush();
+
                     $event = new EventArgs(
                         array(
                             'form' => $form,
@@ -351,8 +353,6 @@ class ProductClassController
                         $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_COMPLETE, $event);
-
-                    $app['orm.em']->flush();
 
                     $app->addSuccess('admin.product.product_class.save.complete', 'admin');
 
@@ -441,17 +441,18 @@ class ProductClassController
                     // 選択された商品規格を登録
                     $this->insertProductClass($app, $Product, $addProductClasses);
 
+                    $app['orm.em']->flush();
+
                     $event = new EventArgs(
                         array(
                             'form' => $form,
                             'Product' => $Product,
                             'updateProductClasses' => $updateProductClasses,
+                            'addProductClasses' => $addProductClasses,
                         ),
                         $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_UPDATE, $event);
-
-                    $app['orm.em']->flush();
 
                     $app->addSuccess('admin.product.product_class.update.complete', 'admin');
 
@@ -481,6 +482,8 @@ class ProductClassController
 
                     $defaultProductClass->setDelFlg(Constant::DISABLED);
 
+                    $app['orm.em']->flush();
+
                     $event = new EventArgs(
                         array(
                             'form' => $form,
@@ -490,8 +493,6 @@ class ProductClassController
                         $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_PRODUCT_CLASS_EDIT_DELETE, $event);
-
-                    $app['orm.em']->flush();
 
                     $app->addSuccess('admin.product.product_class.delete.complete', 'admin');
 

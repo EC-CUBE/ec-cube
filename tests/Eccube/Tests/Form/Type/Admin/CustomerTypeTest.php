@@ -248,7 +248,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidPassword_MinLength()
     {
-        $this->formData['password'] = str_repeat('a', $this->app['config']['password_min_len']);
+        $this->formData['password']['first'] = str_repeat('a', $this->app['config']['password_min_len']);
+        $this->formData['password']['second'] = str_repeat('a', $this->app['config']['password_min_len']);
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());

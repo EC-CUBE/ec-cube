@@ -36,9 +36,7 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminProductProductClassEdit()
     {
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
+        $TestCreator = $this->createMember();
         $TestProduct = $this->newTestProduct($TestCreator);
         $this->app['orm.em']->persist($TestProduct);
         $this->app['orm.em']->flush();
@@ -104,9 +102,7 @@ class ProductClassControllerTest extends AbstractAdminWebTestCase
 
     private function newTestClassName($TestCreator)
     {
-        $Creator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
+        $Creator = $this->createMember();
         $TestClassName = new \Eccube\Entity\ClassName();
         $TestClassName->setName('形状')
             ->setRank(100)

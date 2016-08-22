@@ -114,7 +114,7 @@ class CsvImportController
                             $Product = new Product();
                             $this->em->persist($Product);
                         } else {
-                            if (is_numeric($row['商品ID'])) {
+                            if (preg_match('/^\d+$/', $row['商品ID'])) {
                                 $Product = $app['eccube.repository.product']->find($row['商品ID']);
                                 if (!$Product) {
                                     $this->addErrors(($data->key() + 1) . '行目の商品IDが存在しません。');
@@ -130,7 +130,7 @@ class CsvImportController
                         if ($row['公開ステータス(ID)'] == '') {
                             $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が設定されていません。');
                         } else {
-                            if (is_numeric($row['公開ステータス(ID)'])) {
+                            if (preg_match('/^\d+$/', $row['公開ステータス(ID)'])) {
                                 $Disp = $app['eccube.repository.master.disp']->find($row['公開ステータス(ID)']);
                                 if (!$Disp) {
                                     $this->addErrors(($data->key() + 1) . '行目の公開ステータス(ID)が存在しません。');
@@ -209,7 +209,7 @@ class CsvImportController
                             if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                 if ($row['送料'] != '') {
                                     $deliveryFee = str_replace(',', '', $row['送料']);
-                                    if (is_numeric($deliveryFee) && $deliveryFee >= 0) {
+                                    if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                         $ProductClassOrg->setDeliveryFee($deliveryFee);
                                     } else {
                                         $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
@@ -232,7 +232,7 @@ class CsvImportController
 
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
-                                    if (is_numeric($row['規格分類1(ID)'])) {
+                                    if (preg_match('/^\d+$/', $row['規格分類1(ID)'])) {
                                         $ClassCategory1 = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
                                         if (!$ClassCategory1) {
                                             $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
@@ -244,7 +244,7 @@ class CsvImportController
                                     }
 
                                     if ($row['規格分類2(ID)'] != '') {
-                                        if (is_numeric($row['規格分類2(ID)'])) {
+                                        if (preg_match('/^\d+$/', $row['規格分類2(ID)'])) {
                                             $ClassCategory2 = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
                                             if (!$ClassCategory2) {
                                                 $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
@@ -295,7 +295,7 @@ class CsvImportController
                                     if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
-                                            if (is_numeric($deliveryFee) && $deliveryFee >= 0) {
+                                            if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                                 $pc->setDeliveryFee($deliveryFee);
                                             } else {
                                                 $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
@@ -326,7 +326,7 @@ class CsvImportController
                                     // 必ず規格分類1がセットされている
                                     // 規格分類1、2をそれぞれセットし作成
                                     $ClassCategory1 = null;
-                                    if (is_numeric($classCategoryId1)) {
+                                    if (preg_match('/^\d+$/', $classCategoryId1)) {
                                         $ClassCategory1 = $app['eccube.repository.class_category']->find($classCategoryId1);
                                         if (!$ClassCategory1) {
                                             $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
@@ -340,7 +340,7 @@ class CsvImportController
                                         if ($pc->getClassCategory1() != null && $pc->getClassCategory2() == null) {
                                             $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)は設定できません。');
                                         } else {
-                                            if (is_numeric($classCategoryId2)) {
+                                            if (preg_match('/^\d+$/', $classCategoryId2)) {
                                                 $ClassCategory2 = $app['eccube.repository.class_category']->find($classCategoryId2);
                                                 if (!$ClassCategory2) {
                                                     $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
@@ -366,7 +366,7 @@ class CsvImportController
                                     if ($BaseInfo->getOptionProductDeliveryFee() == Constant::ENABLED) {
                                         if ($row['送料'] != '') {
                                             $deliveryFee = str_replace(',', '', $row['送料']);
-                                            if (is_numeric($deliveryFee) && $deliveryFee >= 0) {
+                                            if (preg_match('/^\d+$/', $deliveryFee) && $deliveryFee >= 0) {
                                                 $ProductClass->setDeliveryFee($deliveryFee);
                                             } else {
                                                 $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
@@ -459,7 +459,7 @@ class CsvImportController
                         if ($row['カテゴリID'] == '') {
                             $Category = new Category();
                         } else {
-                            if (!is_numeric($row['カテゴリID'])) {
+                            if (!preg_match('/^\d+$/', $row['カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目のカテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
@@ -484,7 +484,7 @@ class CsvImportController
 
                         if ($row['親カテゴリID'] != '') {
 
-                            if (!is_numeric($row['親カテゴリID'])) {
+                            if (!preg_match('/^\d+$/', $row['親カテゴリID'])) {
                                 $this->addErrors(($data->key() + 1) . '行目の親カテゴリIDが存在しません。');
                                 return $this->render($app, $form, $headers, $this->categoryTwig);
                             }
@@ -701,7 +701,7 @@ class CsvImportController
         $rank = 1;
         foreach ($categories as $category) {
 
-            if (is_numeric($category)) {
+            if (preg_match('/^\d+$/', $category)) {
                 $Category = $app['eccube.repository.category']->find($category);
                 if (!$Category) {
                     $this->addErrors(($data->key() + 1).'行目の商品カテゴリ(ID)「'.$category.'」が存在しません。');
@@ -749,7 +749,7 @@ class CsvImportController
         $tags = explode(',', $row['タグ(ID)']);
         foreach ($tags as $tag_id) {
             $Tag = null;
-            if (is_numeric($tag_id)) {
+            if (preg_match('/^\d+$/', $tag_id)) {
                 $Tag = $app['eccube.repository.master.tag']->find($tag_id);
                 if ($Tag) {
                     $ProductTags = new ProductTag();
@@ -783,7 +783,7 @@ class CsvImportController
         if ($row['商品種別(ID)'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
-            if (is_numeric($row['商品種別(ID)'])) {
+            if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
                 $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
                 if (!$ProductType) {
                     $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
@@ -799,7 +799,7 @@ class CsvImportController
         $ProductClass->setClassCategory2($ClassCategory2);
 
         if ($row['発送日目安(ID)'] != '') {
-            if (is_numeric($row['発送日目安(ID)'])) {
+            if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
                 $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
                 if (!$DeliveryDate) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
@@ -827,7 +827,7 @@ class CsvImportController
                     $this->addErrors(($data->key() + 1) . '行目の在庫数が設定されていません。');
                 } else {
                     $stock = str_replace(',', '', $row['在庫数']);
-                    if (is_numeric($stock) && $stock >= 0) {
+                    if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                         $ProductClass->setStock($stock);
                     } else {
                         $this->addErrors(($data->key() + 1) . '行目の在庫数は0以上の数値を設定してください。');
@@ -844,7 +844,7 @@ class CsvImportController
 
         if ($row['販売制限数'] != '') {
             $saleLimit = str_replace(',', '', $row['販売制限数']);
-            if (is_numeric($saleLimit) && $saleLimit >= 0) {
+            if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の販売制限数は0以上の数値を設定してください。');
@@ -853,7 +853,7 @@ class CsvImportController
 
         if ($row['通常価格'] != '') {
             $price01 = str_replace(',', '', $row['通常価格']);
-            if (is_numeric($price01) && $price01 >= 0) {
+            if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
                 $ProductClass->setPrice01($price01);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の通常価格は0以上の数値を設定してください。');
@@ -864,7 +864,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の販売価格が設定されていません。');
         } else {
             $price02 = str_replace(',', '', $row['販売価格']);
-            if (is_numeric($price02) && $price02 >= 0) {
+            if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
                 $ProductClass->setPrice02($price02);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の販売価格は0以上の数値を設定してください。');
@@ -873,7 +873,7 @@ class CsvImportController
 
         if ($row['送料'] != '') {
             $delivery_fee = str_replace(',', '', $row['送料']);
-            if (is_numeric($delivery_fee) && $delivery_fee >= 0) {
+            if (preg_match('/^\d+$/', $delivery_fee) && $delivery_fee >= 0) {
                 $ProductClass->setDeliveryFee($delivery_fee);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の送料は0以上の数値を設定してください。');
@@ -921,7 +921,7 @@ class CsvImportController
         if ($row['商品種別(ID)'] == '') {
             $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が設定されていません。');
         } else {
-            if (is_numeric($row['商品種別(ID)'])) {
+            if (preg_match('/^\d+$/', $row['商品種別(ID)'])) {
                 $ProductType = $app['eccube.repository.master.product_type']->find($row['商品種別(ID)']);
                 if (!$ProductType) {
                     $this->addErrors(($data->key() + 1) . '行目の商品種別(ID)が存在しません。');
@@ -935,7 +935,7 @@ class CsvImportController
 
         // 規格分類1、2をそれぞれセットし作成
         if ($row['規格分類1(ID)'] != '') {
-            if (is_numeric($row['規格分類1(ID)'])) {
+            if (preg_match('/^\d+$/', $row['規格分類1(ID)'])) {
                 $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類1(ID)']);
                 if (!$ClassCategory) {
                     $this->addErrors(($data->key() + 1) . '行目の規格分類1(ID)が存在しません。');
@@ -948,7 +948,7 @@ class CsvImportController
         }
 
         if ($row['規格分類2(ID)'] != '') {
-            if (is_numeric($row['規格分類2(ID)'])) {
+            if (preg_match('/^\d+$/', $row['規格分類2(ID)'])) {
                 $ClassCategory = $app['eccube.repository.class_category']->find($row['規格分類2(ID)']);
                 if (!$ClassCategory) {
                     $this->addErrors(($data->key() + 1) . '行目の規格分類2(ID)が存在しません。');
@@ -961,7 +961,7 @@ class CsvImportController
         }
 
         if ($row['発送日目安(ID)'] != '') {
-            if (is_numeric($row['発送日目安(ID)'])) {
+            if (preg_match('/^\d+$/', $row['発送日目安(ID)'])) {
                 $DeliveryDate = $app['eccube.repository.delivery_date']->find($row['発送日目安(ID)']);
                 if (!$DeliveryDate) {
                     $this->addErrors(($data->key() + 1) . '行目の発送日目安(ID)が存在しません。');
@@ -989,7 +989,7 @@ class CsvImportController
                     $this->addErrors(($data->key() + 1) . '行目の在庫数が設定されていません。');
                 } else {
                     $stock = str_replace(',', '', $row['在庫数']);
-                    if (is_numeric($stock) && $stock >= 0) {
+                    if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
                         $ProductClass->setStock($row['在庫数']);
                     } else {
                         $this->addErrors(($data->key() + 1) . '行目の在庫数は0以上の数値を設定してください。');
@@ -1006,7 +1006,7 @@ class CsvImportController
 
         if ($row['販売制限数'] != '') {
             $saleLimit = str_replace(',', '', $row['販売制限数']);
-            if (is_numeric($saleLimit) && $saleLimit >= 0) {
+            if (preg_match('/^\d+$/', $saleLimit) && $saleLimit >= 0) {
                 $ProductClass->setSaleLimit($saleLimit);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の販売制限数は0以上の数値を設定してください。');
@@ -1015,7 +1015,7 @@ class CsvImportController
 
         if ($row['通常価格'] != '') {
             $price01 = str_replace(',', '', $row['通常価格']);
-            if (is_numeric($price01) && $price01 >= 0) {
+            if (preg_match('/^\d+$/', $price01) && $price01 >= 0) {
                 $ProductClass->setPrice01($price01);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の通常価格は0以上の数値を設定してください。');
@@ -1026,7 +1026,7 @@ class CsvImportController
             $this->addErrors(($data->key() + 1) . '行目の販売価格が設定されていません。');
         } else {
             $price02 = str_replace(',', '', $row['販売価格']);
-            if (is_numeric($price02) && $price02 >= 0) {
+            if (preg_match('/^\d+$/', $price02) && $price02 >= 0) {
                 $ProductClass->setPrice02($price02);
             } else {
                 $this->addErrors(($data->key() + 1) . '行目の販売価格は0以上の数値を設定してください。');
