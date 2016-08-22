@@ -19,7 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
-{% if is_granted('ROLE_USER') %}
+{% if app.security.token is null %}
+    {# tokenが取得できない場合は判断できないので何もレンダリングしない #}
+{% elseif is_granted('ROLE_USER') %}
     <div id="member" class="member drawer_block pc">
         <ul class="member_link">
             <li>
