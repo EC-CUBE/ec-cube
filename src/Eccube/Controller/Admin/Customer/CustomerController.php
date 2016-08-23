@@ -87,14 +87,21 @@ class CustomerController extends AbstractController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.customer.search', $searchData);
+                $session->set('eccube.admin.customer.search.page_no', $page_no);
             }
         } else {
-            if (is_null($page_no)) {
+            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
                 $session->remove('eccube.admin.customer.search');
+                $session->remove('eccube.admin.customer.search.page_no');
             } else {
                 // pagingなどの処理
                 $searchData = $session->get('eccube.admin.customer.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.customer.search.page_no', $page_no);
+                }
                 if (!is_null($searchData)) {
                     // 表示件数
                     $pcount = $request->get('page_count');
@@ -178,13 +185,17 @@ class CustomerController extends AbstractController
     {
         $this->isTokenValid($app);
 
+        $session = $request->getSession();
+        $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
+        $page_no = $page_no ? $page_no : Constant::ENABLED;
+
         $Customer = $app['orm.em']
             ->getRepository('Eccube\Entity\Customer')
             ->find($id);
 
         if (!$Customer) {
             $app->deleteMessage();
-            return $app->redirect($app->url('admin_customer'));
+            return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
         $Customer->setDelFlg(Constant::ENABLED);
@@ -201,7 +212,7 @@ class CustomerController extends AbstractController
 
         $app->addSuccess('admin.customer.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_customer'));
+        return $app->redirect($app->url('admin_customer_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
     /**

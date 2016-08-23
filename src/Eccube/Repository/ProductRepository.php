@@ -250,6 +250,8 @@ class ProductRepository extends EntityRepository
      *
      * @param $Customer
      * @return \Doctrine\ORM\QueryBuilder
+     * @see CustomerFavoriteProductRepository::getQueryBuilderByCustomer()
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function getFavoriteProductQueryBuilderByCustomer($Customer)
     {
@@ -259,6 +261,7 @@ class ProductRepository extends EntityRepository
             ->setParameter('Customer', $Customer);
 
         // Order By
+        // XXX Paginater を使用した場合に PostgreSQL で正しくソートできない
         $qb->addOrderBy('cfp.create_date', 'DESC');
 
         return $qb;

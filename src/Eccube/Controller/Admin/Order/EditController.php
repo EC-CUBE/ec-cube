@@ -42,6 +42,7 @@ class EditController extends AbstractController
         $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
         $softDeleteFilter->setExcludes(array(
             'Eccube\Entity\ProductClass',
+            'Eccube\Entity\Product',
         ));
 
         $TargetOrder = null;
@@ -83,6 +84,17 @@ class EditController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
+
+            $event = new EventArgs(
+                array(
+                    'builder' => $builder,
+                    'OriginOrder' => $OriginOrder,
+                    'TargetOrder' => $TargetOrder,
+                    'OriginOrderDetails' => $OriginalOrderDetails,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
             // 入力情報にもとづいて再計算.
             $this->calculate($app, $TargetOrder);
@@ -523,7 +535,7 @@ class EditController extends AbstractController
                 ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
             $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
 
-            $taxtotal += $tax;
+            $taxtotal += $tax * $OrderDetail->getQuantity();
 
             // 小計
             $subtotal += $OrderDetail->getTotalPrice();

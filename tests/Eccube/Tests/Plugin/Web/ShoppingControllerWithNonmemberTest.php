@@ -115,6 +115,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
+                EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
                 EccubeEvents::MAIL_ORDER,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE,

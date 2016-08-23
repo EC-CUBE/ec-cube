@@ -28,13 +28,16 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 class ProductController extends AbstractController
 {
@@ -94,14 +97,21 @@ class ProductController extends AbstractController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.product.search', $searchData);
+                $session->set('eccube.admin.product.search.page_no', $page_no);
             }
         } else {
-            if (is_null($page_no)) {
+            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
                 $session->remove('eccube.admin.product.search');
+                $session->remove('eccube.admin.product.search.page_no');
             } else {
                 // pagingなどの処理
                 $searchData = $session->get('eccube.admin.product.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.product.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.product.search.page_no', $page_no);
+                }
                 if (!is_null($searchData)) {
 
                     // 公開ステータス
@@ -177,12 +187,22 @@ class ProductController extends AbstractController
 
     public function addImage(Application $app, Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         $images = $request->files->get('admin_product');
 
         $files = array();
         if (count($images) > 0) {
             foreach ($images as $img) {
                 foreach ($img as $image) {
+                    //ファイルフォーマット検証
+                    $mimeType = $image->getMimeType();
+                    if (0 !== strpos($mimeType, 'image')) {
+                        throw new UnsupportedMediaTypeHttpException();
+                    }
+
                     $extension = $image->getClientOriginalExtension();
                     $filename = date('mdHis') . uniqid('_') . '.' . $extension;
                     $image->move($app['config']['image_temp_realdir'], $filename);
@@ -408,21 +428,19 @@ class ProductController extends AbstractController
 
                 // 商品タグの登録
                 // 商品タグを一度クリア
+                $ProductTags = $Product->getProductTag();
                 foreach ($ProductTags as $ProductTag) {
                     $Product->removeProductTag($ProductTag);
                     $app['orm.em']->remove($ProductTag);
                 }
-                $app['orm.em']->persist($Product);
 
                 // 商品タグの登録
                 $Tags = $form->get('Tag')->getData();
                 foreach ($Tags as $Tag) {
-                    $ProductTag = new \Eccube\Entity\ProductTag();
+                    $ProductTag = new ProductTag();
                     $ProductTag
                         ->setProduct($Product)
-                        ->setTag($Tag)
-                        ->setCreator($app->user());
-
+                        ->setTag($Tag);
                     $Product->addProductTag($ProductTag);
                     $app['orm.em']->persist($ProductTag);
                 }
@@ -476,13 +494,16 @@ class ProductController extends AbstractController
     public function delete(Application $app, Request $request, $id = null)
     {
         $this->isTokenValid($app);
+        $session = $request->getSession();
+        $page_no = intval($session->get('eccube.admin.product.search.page_no'));
+        $page_no = $page_no ? $page_no : Constant::ENABLED;
 
         if (!is_null($id)) {
             /* @var $Product \Eccube\Entity\Product */
             $Product = $app['eccube.repository.product']->find($id);
             if (!$Product) {
                 $app->deleteMessage();
-                return $app->redirect($app->url('admin_product'));
+                return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
@@ -551,11 +572,13 @@ class ProductController extends AbstractController
             $app->addError('admin.delete.failed', 'admin');
         }
 
-        return $app->redirect($app->url('admin_product'));
+        return $app->redirect($app->url('admin_product_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
     public function copy(Application $app, Request $request, $id = null)
     {
+        $this->isTokenValid($app);
+
         if (!is_null($id)) {
             $Product = $app['eccube.repository.product']->find($id);
             if ($Product instanceof \Eccube\Entity\Product) {

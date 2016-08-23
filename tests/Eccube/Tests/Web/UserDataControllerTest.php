@@ -4,8 +4,8 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use org\bovigo\vfs\vfsStream;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserDataControllerTest extends AbstractWebTestCase
 {

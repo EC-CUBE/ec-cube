@@ -264,7 +264,7 @@ $(function() {
                                                     <ul id="result_list__item_menu--{{ Product.id }}" class="dropdown-menu dropdown-menu-right">
                                                     <li><a href="{{ url('admin_product_product_class', { id : Product.id }) }}">規格</a></li>
                                                     <li><a href="{{ url('admin_product_product_display', {'id' : Product.id}) }}" target="_blank">確認</a></li>
-                                                    <li><a href="#" onclick="fnCopy('{{ url('admin_product_product_copy', {'id' : Product.id}) }}');return false;">複製</a></li>
+                                                    <li><a href="{{ url('admin_product_product_copy', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }} data-method="post" data-message="商品情報を複製してもよろしいですか？">複製</a></li>
                                                     <li><a href="{{ url('admin_product_product_delete', {'id' : Product.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="商品情報を削除してもよろしいですか？">削除</a></li>
                                                     </ul>
                                                 </div>
@@ -281,6 +281,37 @@ $(function() {
                         <div id="result_list__header" class="box-header with-arrow">
                             <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
                         </div><!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="link-with-bar">
+                                        <li>
+                                            {% if page_status is null %}
+                                                <a>すべて</a>
+                                            {% else %}
+                                                <a href="{{ path('admin_product_page', {'page_no': page_no} ) }}">すべて</a>
+                                            {% endif %}
+                                        </li>
+                                        {% for disp in disps %}
+                                            <li>
+                                                {% if page_status == disp.id %}
+                                                    <a>{{ disp.name|e }}</a>
+                                                {% else %}
+                                                    <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': disp.id} ) }}">{{ disp.name|e }}</a>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                        <li>
+                                            {% if page_status == app.config.admin_product_stock_status %}
+                                                <a>{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                            {% else %}
+                                                <a href="{{ path('admin_product_page', {'page_no': page_no, 'status': app.config.admin_product_stock_status} ) }}">{{ app.translator.trans('admin.product.search.stock') }}</a>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
                         {% endif %}
                     </div><!-- /.box -->
                 </div><!-- /.col -->

@@ -309,7 +309,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <input id="mode" type="hidden" name="mode">
         <button type="submit" class="btn btn-primary btn-lg btn-block" name="mode" value="update">更新</button>
 {% endif %}
-        <p><a href="{{ url('admin_product') }}">前のページに戻る</a></p>
+        <p><a href="{{ url('admin_product_page', { page_no : app.session.get('eccube.admin.product.search.page_no')|default('1') } ) }}?resume=1">前のページに戻る</a></p>
     </div>
 </div>
 </form>
