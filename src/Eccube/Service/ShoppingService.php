@@ -900,9 +900,10 @@ class ShoppingService
      * お届け日を取得
      *
      * @param Order $Order
+     * @param Shipping $Shipping
      * @return array
      */
-    public function getFormDeliveryDates(Order $Order)
+    public function getFormDeliveryDates(Order $Order, Shipping $Shipping)
     {
 
         // お届け日の設定
@@ -910,7 +911,7 @@ class ShoppingService
         $deliveryDateFlag = false;
 
         // 配送時に最大となる商品日数を取得
-        foreach ($Order->getOrderDetails() as $detail) {
+        foreach ($Shipping->getShipmentItems() as $detail) {
             $deliveryDate = $detail->getProductClass()->getDeliveryDate();
             if (!is_null($deliveryDate)) {
                 if ($minDate < $deliveryDate->getValue()) {
