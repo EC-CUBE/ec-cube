@@ -15,11 +15,13 @@
 # 使い方
 # Configurationの内容を自分の環境に併せて修正
 # PostgreSQLの場合は、DBユーザーを予め作成しておいて
-# > ./ec_cube_install.sh pgsql
+# > ./eccube_install.sh pgsql
 # MySQLはMYSQLのRoot以外のユーザーで実行する場合は、128行目をコメントアウトして
-# > ./ec_cube_install.sh mysql
+# > ./eccube_install.sh mysql
+# SQLiteの場合は、以下を実行
+# > ./eccube_install.sh sqlite3
 # composerを実行しない場合は, 第2引数に"none"を指定するとスキップできる
-# > ./ec_cube_install.sh mysql none
+# > ./eccube_install.sh mysql none
 #
 # 開発コミュニティの関連スレッド
 # http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4918&forum=14&post_id=23090#forumpost23090
