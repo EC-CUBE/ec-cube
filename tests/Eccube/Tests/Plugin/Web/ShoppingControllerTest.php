@@ -131,6 +131,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
+                EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
                 EccubeEvents::MAIL_ORDER,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE,
@@ -403,7 +404,6 @@ class ShoppingControllerTest extends AbstractWebTestCase
      */
     public function testShippingChangeWithPost()
     {
-        $this->markTestSkipped();
 
         $faker = $this->getFaker();
         $Customer = $this->logIn();
@@ -422,6 +422,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE,
             )
         );
 
@@ -441,7 +442,6 @@ class ShoppingControllerTest extends AbstractWebTestCase
      */
     public function testShippingShipping()
     {
-        $this->markTestSkipped();
 
         $faker = $this->getFaker();
         $Customer = $this->logIn();
@@ -460,6 +460,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE,
             )
         );
 
@@ -489,7 +490,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
      */
     public function testShippingShippingPost()
     {
-        $this->markTestSkipped();
+ //       $this->markTestSkipped();
 
         $faker = $this->getFaker();
         $Customer = $this->logIn();
@@ -509,6 +510,9 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_INDEX_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE,
+                EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE,
+
             )
         );
 
@@ -564,7 +568,6 @@ class ShoppingControllerTest extends AbstractWebTestCase
 
         $hookpoins = array_merge($hookpoins,
             array(
-                EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE,
                 EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE,
             )
         );
@@ -575,6 +578,7 @@ class ShoppingControllerTest extends AbstractWebTestCase
         $hookpoins = array_merge($hookpoins,
             array(
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE,
+                EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING,
                 EccubeEvents::MAIL_ORDER,
                 EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE,

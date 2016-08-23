@@ -69,6 +69,9 @@ class ChangeController extends AbstractController
             if ($Customer->getPassword() === $app['config']['default_password']) {
                 $Customer->setPassword($previous_password);
             } else {
+                if ($Customer->getSalt() === null) {
+                    $Customer->setSalt($app['eccube.repository.customer']->createSalt(5));
+                }
                 $Customer->setPassword(
                     $app['eccube.repository.customer']->encryptPassword($app, $Customer)
                 );

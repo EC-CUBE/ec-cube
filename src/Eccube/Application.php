@@ -25,11 +25,16 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Eccube\EventListener\TransactionListener;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
 
 class Application extends ApplicationTrait
@@ -38,6 +43,7 @@ class Application extends ApplicationTrait
 
     protected $initialized = false;
     protected $initializedPlugin = false;
+    protected $testMode = false;
 
     public static function getInstance(array $values = array())
     {
@@ -152,6 +158,19 @@ class Application extends ApplicationTrait
 
             $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
 
+            $config_doctrine_cache = array();
+            $yml = $ymlPath.'/doctrine_cache.yml';
+            if (file_exists($yml)) {
+                $config_doctrine_cache = Yaml::parse(file_get_contents($yml));
+            }
+            $config_doctrine_cache_dist = array();
+            $doctrine_cache_yml_dist = $distPath.'/doctrine_cache.yml.dist';
+            if (file_exists($doctrine_cache_yml_dist)) {
+                $config_doctrine_cache_dist = Yaml::parse(file_get_contents($doctrine_cache_yml_dist));
+            }
+
+            $configAll = array_replace_recursive($configAll, $config_doctrine_cache_dist, $config_doctrine_cache);
+
             return $configAll;
         });
     }
@@ -174,7 +193,9 @@ class Application extends ApplicationTrait
         $this->initLocale();
 
         // init session
-        $this->initSession();
+        if (!$this->isSessionStarted()) {
+            $this->initSession();
+        }
 
         // init twig
         $this->initRendering();
@@ -233,6 +254,9 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
+
+        // add transaction listener
+        $this['dispatcher']->addSubscriber(new TransactionListener($this));
 
         $this->initialized = true;
     }
@@ -314,7 +338,8 @@ class Application extends ApplicationTrait
                 } else {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
-                if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+                $pathinfo = rawurldecode($app['request']->getPathInfo());
+                if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
                     if (file_exists(__DIR__.'/../../app/template/admin')) {
                         $paths[] = __DIR__.'/../../app/template/admin';
                     }
@@ -338,7 +363,8 @@ class Application extends ApplicationTrait
             }));
 
             // 管理画面のIP制限チェック.
-            if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+            $pathinfo = rawurldecode($app['request']->getPathInfo());
+            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
                 // IP制限チェック
                 $allowHost = $app['config']['admin_allow_host'];
                 if (count($allowHost) > 0) {
@@ -356,7 +382,8 @@ class Application extends ApplicationTrait
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
-            if (strpos($app['request']->getPathInfo(), '/'.trim($app['config']['admin_route'], '/')) === 0) {
+            $pathinfo = rawurldecode($app['request']->getPathInfo());
+            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
                 // 管理画面
                 // 管理画面メニュー
                 $menus = array('', '', '');
@@ -485,11 +512,32 @@ class Application extends ApplicationTrait
             }
         }
 
+        $options = array(
+            'mappings' => $ormMappings
+        );
+
+        if (!$this['debug']) {
+            $cacheDrivers = array();
+            if (array_key_exists('doctrine_cache', $this['config'])) {
+                $cacheDrivers = $this['config']['doctrine_cache'];
+            }
+            if (array_key_exists('metadata_cache', $cacheDrivers)) {
+                $options['metadata_cache'] = $cacheDrivers['metadata_cache'];
+            }
+            if (array_key_exists('query_cache', $cacheDrivers)) {
+                $options['query_cache'] = $cacheDrivers['query_cache'];
+            }
+            if (array_key_exists('result_cache', $cacheDrivers)) {
+                $options['result_cache'] = $cacheDrivers['result_cache'];
+            }
+            if (array_key_exists('hydration_cache', $cacheDrivers)) {
+                $options['hydration_cache'] = $cacheDrivers['hydration_cache'];
+            }
+        }
+
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => $ormMappings,
-            ),
+            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
+            'orm.em.options' => $options
         ));
     }
 
@@ -500,7 +548,7 @@ class Application extends ApplicationTrait
 
         $this['security.firewalls'] = array(
             'admin' => array(
-                'pattern' => "^/{$this['config']['admin_route']}",
+                'pattern' => "^/{$this['config']['admin_route']}/",
                 'form' => array(
                     'login_path' => "/{$this['config']['admin_route']}/login",
                     'check_path' => "/{$this['config']['admin_route']}/login_check",
@@ -548,7 +596,7 @@ class Application extends ApplicationTrait
 
         $this['security.access_rules'] = array(
             array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}", 'ROLE_ADMIN'),
+            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN'),
             array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
@@ -616,31 +664,49 @@ class Application extends ApplicationTrait
             return new EventDispatcher();
         });
 
+        $app = $this;
+
         // hook point
-        $this->before(function(Request $request, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.before');
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $hookpoint = 'eccube.event.app.before';
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         }, self::EARLY_EVENT);
 
-        $this->before(function(Request $request, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.before';
-            $app['eccube.event.dispatcher']->dispatch($event);
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $route = $event->getRequest()->attributes->get('_route');
+            $hookpoint = "eccube.event.controller.$route.before";
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.after';
-            $app['eccube.event.dispatcher']->dispatch($event);
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $route = $event->getRequest()->attributes->get('_route');
+            $hookpoint = "eccube.event.controller.$route.after";
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->after(function(Request $request, Response $response, \Silex\Application $app) {
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.after');
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
+            $hookpoint = 'eccube.event.app.after';
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         }, self::LATE_EVENT);
 
-        $this->finish(function(Request $request, Response $response, \Silex\Application $app) {
-            $event = 'eccube.event.controller.'.$request->attributes->get('_route').'.finish';
-            $app['eccube.event.dispatcher']->dispatch($event);
+        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($app) {
+            $route = $event->getRequest()->attributes->get('_route');
+            $hookpoint = "eccube.event.controller.$route.finish";
+            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $app = $this;
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function(\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
             $route = $event->getRequest()->attributes->get('_route');
             $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
@@ -907,6 +973,25 @@ class Application extends ApplicationTrait
     }
 
     /**
+     * PHPUnit を実行中かどうかを設定する.
+     *
+     * @param boolean $testMode PHPUnit を実行中の場合 true
+     */
+    public function setTestMode($testMode) {
+        $this->testMode = $testMode;
+    }
+
+    /**
+     * PHPUnit を実行中かどうか.
+     *
+     * @return boolean PHPUnit を実行中の場合 true
+     */
+    public function isTestMode()
+    {
+        return $this->testMode;
+    }
+
+    /**
      *
      * データベースの接続を確認
      * 成功 : trueを返却
@@ -937,5 +1022,23 @@ class Application extends ApplicationTrait
             die();
         }
         return true;
+    }
+
+    /**
+     * セッションが開始されているかどうか.
+     *
+     * @return boolean セッションが開始済みの場合 true
+     * @link http://php.net/manual/ja/function.session-status.php#113468
+     */
+    protected function isSessionStarted()
+    {
+        if (php_sapi_name() !== 'cli') {
+            if (version_compare(phpversion(), '5.4.0', '>=')) {
+                return session_status() === PHP_SESSION_ACTIVE ? true : false;
+            } else {
+                return session_id() === '' ? false : true;
+            }
+        }
+        return false;
     }
 }

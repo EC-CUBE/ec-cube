@@ -46,9 +46,9 @@ class ContentsController extends NewsController
      * @param Application $app
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Application $app)
+    public function index(Application $app, Request $request = null)
     {
-        return parent::index($app);
+        return parent::index($app, $request);
     }
 
     /**

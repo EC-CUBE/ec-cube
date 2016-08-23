@@ -1708,21 +1708,15 @@ dl.quantity dd {
 }
 
 /* product_tag */
-
-.product_tag ul {
-    list-style: none;
-    margin: 8px 0;
-}
-.product_tag li {
+.product_tag_list {
     display: inline-block;
-    padding: 0;
-    margin: 0 15px 0 0;
-}
-.product_tag .tag {
-    padding: 3px 1em;
-    display: block;
-    border: solid 1px #ccc;
-    border-radius: 15px 0 0 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 80%;
+    color: #525263;
+    border: solid 1px #D7DADD;
+    border-radius: 3px;
+    background-color: #F5F7F8;
 }
 
 /* Cart Page

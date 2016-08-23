@@ -234,6 +234,11 @@ class HookPointEvent
         echo EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE;
     }
 
+    public function onAdminOrderEditIndex1(EventArgs $event)
+    {
+        echo EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS;
+    }
+
 // searchCustomer
     public function onAdminOrderEdit3(EventArgs $event)
     {
@@ -1095,6 +1100,10 @@ class HookPointEvent
     }
 
 // shippingChange
+    public function onShoppingShippingChange1(EventArgs $event)
+    {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE;
+    }
 
 // shipping
     public function onShopping10(EventArgs $event)
@@ -1103,6 +1112,10 @@ class HookPointEvent
     }
 
 // shippingEditChange
+    public function onShoppingShippingEdit1(EventArgs $event)
+    {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE;
+    }
 
 // shippingEdit
     public function onShopping11(EventArgs $event)
@@ -1139,6 +1152,10 @@ class HookPointEvent
     }
 
 // shippingMultipleChange
+    public function onShoppingShippingMultiple1(EventArgs $event)
+    {
+        echo EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_CHANGE_INITIALIZE;
+    }
 
 // shippingMultiple
     public function onShopping17(EventArgs $event)
@@ -1177,6 +1194,10 @@ class HookPointEvent
     {
     }
 
+
+    /**
+     * MilService
+     */
 
     function onMail1(EventArgs $event)
     {
@@ -1222,4 +1243,20 @@ class HookPointEvent
     {
         echo EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE;
     }
+
+
+    /**
+     * ShoppingService
+     */
+    function onShoppingService1(EventArgs $event)
+    {
+        echo EccubeEvents::SERVICE_SHOPPING_ORDER_STATUS;
+    }
+
+    function onShoppingService2(EventArgs $event)
+    {
+        echo EccubeEvents::SERVICE_SHOPPING_NOTIFY_COMPLETE;
+    }
+
+
 }

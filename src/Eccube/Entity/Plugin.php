@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Plugin
  */
-class Plugin
+class Plugin extends AbstractEntity
 {
     /**
      * @var integer
@@ -100,6 +100,10 @@ class Plugin
      */
     private $product_url;
 
+    /**
+     * @var array
+     */
+    private $eccube_version;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -116,7 +120,7 @@ class Plugin
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -139,7 +143,7 @@ class Plugin
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -162,7 +166,7 @@ class Plugin
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -185,7 +189,7 @@ class Plugin
     /**
      * Get class_name
      *
-     * @return string 
+     * @return string
      */
     public function getClassName()
     {
@@ -208,7 +212,7 @@ class Plugin
     /**
      * Get enable
      *
-     * @return integer 
+     * @return integer
      */
     public function getEnable()
     {
@@ -231,7 +235,7 @@ class Plugin
     /**
      * Get version
      *
-     * @return string 
+     * @return string
      */
     public function getVersion()
     {
@@ -254,7 +258,7 @@ class Plugin
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -277,7 +281,7 @@ class Plugin
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {
@@ -420,6 +424,34 @@ class Plugin
     public function getProductUrl()
     {
         return $this->product_url;
+    }
+
+    /**
+     * Set eccube_version
+     *
+     * @param array $eccube_version
+     * @return Plugin
+     */
+    public function setEccubeVersion($eccube_version)
+    {
+        $this->eccube_version = $eccube_version;
+
+        return $this;
+    }
+
+    /**
+     * Get eccube_version
+     *
+     * @return array
+     */
+    public function getEccubeVersion()
+    {
+        return $this->eccube_version;
+    }
+
+    public function getEccubeVersionAsString()
+    {
+        return implode(', ', $this->getEccubeVersion());
     }
 
     public function getPluginEventHandlers()

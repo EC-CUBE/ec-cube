@@ -28,6 +28,7 @@ use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Mock\CsrfTokenMock;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpKernel\Client;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
@@ -48,16 +49,32 @@ abstract class AbstractWebTestCase extends EccubeTestCase
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated AbstractWebTestCase::loginTo() を使用してください.
      */
     public function logIn($user = null)
     {
-        $firewall = 'customer';
-
         if (!is_object($user)) {
             $user = $this->createCustomer();
         }
-        $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
+        $this->loginTo($user);
+        return $user;
+    }
+
+    /**
+     * User をログインさせてHttpKernel\Client を返す.
+     *
+     * @param UserInterface $User ログインさせる User
+     * @return Symfony\Component\HttpKernel\Client
+     */
+    public function loginTo(UserInterface $User)
+    {
+        $firewall = 'admin';
+        $role = array('ROLE_ADMIN');
+        if ($User instanceof \Eccube\Entity\Customer) {
+            $firewall = 'customer';
+            $role = array('ROLE_USER');
+        }
+        $token = new UsernamePasswordToken($User, null, $firewall, $role);
 
         $this->app['security.token_storage']->setToken($token);
         $this->app['session']->set('_security_' . $firewall, serialize($token));
@@ -65,6 +82,6 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
         $cookie = new Cookie($this->app['session']->getName(), $this->app['session']->getId());
         $this->client->getCookieJar()->set($cookie);
-        return $user;
+        return $this->client;
     }
 }

@@ -14,6 +14,10 @@ template_code: ${TEMPLATE_CODE}
 admin_route: ${ADMIN_ROUTE}
 user_data_route: ${USER_DATA_ROUTE}
 
+# public directory
+public_path: /html
+public_path_realdir: ${ROOT_DIR}/html
+
 # realdir::image
 image_save_realdir: ${ROOT_DIR}/html/upload/save_image
 image_temp_realdir: ${ROOT_DIR}/html/upload/temp_image
@@ -40,6 +44,7 @@ csv_temp_realdir: ${ROOT_DIR}/app/cache/eccube/csv
 # realdir:plugin
 plugin_realdir: ${ROOT_DIR}/app/Plugin
 plugin_temp_realdir: ${ROOT_DIR}/app/cache/plugin
+plugin_html_realdir: ${ROOT_DIR}/html/plugin
 
 # urlpath
 admin_urlpath: ${ROOT_URLPATH}/template/admin
@@ -47,3 +52,4 @@ front_urlpath: ${ROOT_URLPATH}/template/${TEMPLATE_CODE}
 image_save_urlpath: ${ROOT_URLPATH}/upload/save_image
 image_temp_urlpath: ${ROOT_URLPATH}/upload/temp_image
 user_data_urlpath: ${ROOT_URLPATH}/${USER_DATA_ROUTE}
+plugin_urlpath: ${ROOT_URLPATH}/plugin
