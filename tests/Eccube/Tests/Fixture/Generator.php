@@ -88,6 +88,7 @@ class Generator {
             ->setEmail($email)
             ->setPref($Pref)
             ->setPassword('password')
+            ->setSalt($this->app['eccube.repository.customer']->createSalt(5))
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
             ->setStatus($Status)
             ->setDelFlg(Constant::DISABLED);

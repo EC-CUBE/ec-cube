@@ -158,6 +158,19 @@ class Application extends ApplicationTrait
 
             $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
 
+            $config_doctrine_cache = array();
+            $yml = $ymlPath.'/doctrine_cache.yml';
+            if (file_exists($yml)) {
+                $config_doctrine_cache = Yaml::parse(file_get_contents($yml));
+            }
+            $config_doctrine_cache_dist = array();
+            $doctrine_cache_yml_dist = $distPath.'/doctrine_cache.yml.dist';
+            if (file_exists($doctrine_cache_yml_dist)) {
+                $config_doctrine_cache_dist = Yaml::parse(file_get_contents($doctrine_cache_yml_dist));
+            }
+
+            $configAll = array_replace_recursive($configAll, $config_doctrine_cache_dist, $config_doctrine_cache);
+
             return $configAll;
         });
     }
@@ -180,7 +193,9 @@ class Application extends ApplicationTrait
         $this->initLocale();
 
         // init session
-        $this->initSession();
+        if (!$this->isSessionStarted()) {
+            $this->initSession();
+        }
 
         // init twig
         $this->initRendering();
@@ -497,11 +512,32 @@ class Application extends ApplicationTrait
             }
         }
 
+        $options = array(
+            'mappings' => $ormMappings
+        );
+
+        if (!$this['debug']) {
+            $cacheDrivers = array();
+            if (array_key_exists('doctrine_cache', $this['config'])) {
+                $cacheDrivers = $this['config']['doctrine_cache'];
+            }
+            if (array_key_exists('metadata_cache', $cacheDrivers)) {
+                $options['metadata_cache'] = $cacheDrivers['metadata_cache'];
+            }
+            if (array_key_exists('query_cache', $cacheDrivers)) {
+                $options['query_cache'] = $cacheDrivers['query_cache'];
+            }
+            if (array_key_exists('result_cache', $cacheDrivers)) {
+                $options['result_cache'] = $cacheDrivers['result_cache'];
+            }
+            if (array_key_exists('hydration_cache', $cacheDrivers)) {
+                $options['hydration_cache'] = $cacheDrivers['hydration_cache'];
+            }
+        }
+
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => $ormMappings,
-            ),
+            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
+            'orm.em.options' => $options
         ));
     }
 
@@ -986,5 +1022,23 @@ class Application extends ApplicationTrait
             die();
         }
         return true;
+    }
+
+    /**
+     * セッションが開始されているかどうか.
+     *
+     * @return boolean セッションが開始済みの場合 true
+     * @link http://php.net/manual/ja/function.session-status.php#113468
+     */
+    protected function isSessionStarted()
+    {
+        if (php_sapi_name() !== 'cli') {
+            if (version_compare(phpversion(), '5.4.0', '>=')) {
+                return session_status() === PHP_SESSION_ACTIVE ? true : false;
+            } else {
+                return session_id() === '' ? false : true;
+            }
+        }
+        return false;
     }
 }

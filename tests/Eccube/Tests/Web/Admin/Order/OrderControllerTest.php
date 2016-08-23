@@ -107,7 +107,11 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'DELETE',
             $this->app->path('admin_order_delete', array('id' => $Order->getId()))
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order')));
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->app->url(
+                'admin_order_page', array('page_no' => 1)
+            ).'?resume=1'
+        ));
 
         $DeletedOrder = $this->app['eccube.repository.order']->find($Order->getId());
 
