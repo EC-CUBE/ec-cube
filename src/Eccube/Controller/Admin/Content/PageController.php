@@ -96,9 +96,9 @@ class PageController extends AbstractController
                 ->getReadTemplateFile($PageLayout->getFileName(), $editable);
 
             $form->get('tpl_data')->setData($file['tpl_data']);
-        } else {
-            $fileName = $PageLayout->getFileName();
 
+            $fileName = $PageLayout->getFileName();
+        } else {
             $file = file_get_contents($app['config']['template_admin_realdir'].'/Content/page_contents_template.twig');
             $form->get('tpl_data')->setData($file);
         }
