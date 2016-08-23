@@ -444,6 +444,8 @@ class ProductController extends AbstractController
                     $Product->addProductTag($ProductTag);
                     $app['orm.em']->persist($ProductTag);
                 }
+
+                $Product->setUpdateDate(new \DateTime());
                 $app['orm.em']->flush();
 
                 $event = new EventArgs(
