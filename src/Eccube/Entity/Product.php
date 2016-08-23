@@ -135,7 +135,7 @@ class Product extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Get ClassName1
+     * Get ClassName2
      *
      * @return bool
      */

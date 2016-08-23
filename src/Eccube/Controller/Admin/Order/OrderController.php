@@ -90,14 +90,22 @@ class OrderController extends AbstractController
 
                 // sessionのデータ保持
                 $session->set('eccube.admin.order.search', $searchData);
+                $session->set('eccube.admin.order.search.page_no', $page_no);
             }
         } else {
-            if (is_null($page_no)) {
+            if (is_null($page_no) && $request->get('resume') != Constant::ENABLED) {
                 // sessionを削除
                 $session->remove('eccube.admin.order.search');
+                $session->remove('eccube.admin.order.search.page_no');
             } else {
                 // pagingなどの処理
                 $searchData = $session->get('eccube.admin.order.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.order.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.order.search.page_no', $page_no);
+                }
+
                 if (!is_null($searchData)) {
 
                     // 公開ステータス
@@ -172,13 +180,16 @@ class OrderController extends AbstractController
     public function delete(Application $app, Request $request, $id)
     {
         $this->isTokenValid($app);
+        $session = $request->getSession();
+        $page_no = intval($session->get('eccube.admin.order.search.page_no'));
+        $page_no = $page_no ? $page_no : Constant::ENABLED;
 
         $Order = $app['orm.em']->getRepository('Eccube\Entity\Order')
             ->find($id);
 
         if (!$Order) {
             $app->deleteMessage();
-            return $app->redirect($app->url('admin_order'));
+            return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
         $Order->setDelFlg(Constant::ENABLED);
@@ -203,7 +214,7 @@ class OrderController extends AbstractController
 
         $app->addSuccess('admin.order.delete.complete', 'admin');
 
-        return $app->redirect($app->url('admin_order'));
+        return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
 
 
