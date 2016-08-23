@@ -8,10 +8,7 @@ use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Master\Work;
-use Eccube\Entity\Member;
 use Eccube\Tests\Mock\CsrfTokenMock;
-use Faker\Factory as Faker;
 use Guzzle\Http\Client;
 use Silex\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -180,50 +177,6 @@ abstract class EccubeTestCase extends WebTestCase
     public function createNonMember($email = null)
     {
         return $this->app['eccube.fixture.generator']->createNonMember($email);
-    }
-
-    /**
-     * Member オブジェクトを生成して返す.
-     *
-     * @param string $login ログインID. null の場合は, ランダムなユーザー名が生成される.
-     * @return \Eccube\Entity\Member
-     */
-    public function createMember($login = null)
-    {
-        $em = $this->app['orm.em'];
-        $filter = $em->getFilters()->getFilter('soft_delete');
-        $filter->setExcludes(array(
-            'Eccube\Entity\Member'
-        ));
-
-        $faker = $this->getFaker();
-        $Member = new Member();
-        if (is_null($login)) {
-            $login = $faker->userName;
-        }
-        $Creator = $em->getRepository('Eccube\Entity\Member')->find(1);
-        $Work = $em->getRepository('Eccube\Entity\Master\Work')->find(Work::WORK_ACTIVE_ID);
-        $Authority = $em->getRepository('Eccube\Entity\Master\Authority')->find(0);
-        $Member
-            ->setWork($Work)
-            ->setAuthority($Authority)
-            ->setCreator($Creator)
-            ->setName($faker->name)
-            ->setDepartment($faker->word)
-            ->setLoginId($login)
-            ->setPassword('password')
-            ->setSalt('salt')
-            ->setRank(0)
-            ->setDelFlg(Constant::DISABLED);
-
-        $Member->setPassword($this->app['eccube.repository.member']->encryptPassword($Member));
-
-        $em->persist($Member);
-        $em->flush();
-
-        $filter->setExcludes(array());
-
-        return $Member;
     }
 
     /**
