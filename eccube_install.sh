@@ -209,13 +209,13 @@ case "${DBTYPE}" in
     ${PSQL} -U ${PGUSER} -c "create database ${DBNAME} owner ${DBUSER}"
 
     echo "create table..."
-    ./vendor/bin/doctrine orm:schema-tool:create
+    ./vendor/bin/doctrine orm:schema-tool:create || exit 1
 
     echo "migration..."
-    php app/console migrations:migrate  --no-interaction
+    php app/console migrations:migrate --no-interaction || exit 1
 
     echo "execute optional SQL..."
-    get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME}
+    get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME} || exit 1
 ;;
 "mysql" )
     DBPASS=`echo $DBPASS | tr -d " "`
@@ -235,26 +235,26 @@ case "${DBTYPE}" in
     ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
 
     echo "create table..."
-    ./vendor/bin/doctrine orm:schema-tool:create
+    ./vendor/bin/doctrine orm:schema-tool:create || exit 1
 
     echo "migration..."
-    php app/console migrations:migrate  --no-interaction
+    php app/console migrations:migrate  --no-interaction || exit 1
 
     echo "execute optional SQL..."
-    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} || exit 1
 ;;
 "sqlite3" )
     # sqlite3
     echo "removedb..."
     rm -v ${DBPATH}
     echo "create table..."
-   ./vendor/bin/doctrine orm:schema-tool:create
+   ./vendor/bin/doctrine orm:schema-tool:create || exit 1
 
     echo "migration..."
-   php app/console migrations:migrate  --no-interaction
+    php app/console migrations:migrate --no-interaction || exit 1
 
     echo "execute optional SQL..."
-    get_optional_sql | ${SQLITE3} ${DBPATH}
+    get_optional_sql | ${SQLITE3} ${DBPATH} || exit 1
 ;;
 esac
 
