@@ -40,7 +40,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <p class="text-danger">本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。</p>
                         <p>キャッシュ削除するディレクトリを選択してください。</p>
                     </div>
-                    {{ form_row(form.cache) }}
+                    {{ form_widget(form.cache) }}
+                    {{ form_errors(form.cache) }}
                 </div>
                 <div id="cache_box__clear_button" class="box-body">
                     <button type="submit" class="btn btn-primary">キャッシュ削除</button>
