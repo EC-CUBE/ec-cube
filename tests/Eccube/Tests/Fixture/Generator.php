@@ -78,15 +78,35 @@ class Generator {
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->email;
+            $email = $faker->safeEmail;
         }
+        $tel = explode('-', $faker->phoneNumber);
+        $fax = explode('-', $faker->phoneNumber);
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::ACTIVE);
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
+        $Sex = $this->app['eccube.repository.master.sex']->find($faker->numberBetween(1, 2));
+        $Job = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Job')->find($faker->numberBetween(1, 18));
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
+            ->setKana01($faker->lastKanaName)
+            ->setKana02($faker->firstKanaName)
+            ->setCompanyName($faker->company)
             ->setEmail($email)
+            ->setZip01($faker->postcode1())
+            ->setZip02($faker->postcode2())
             ->setPref($Pref)
+            ->setAddr01($faker->city)
+            ->setAddr02($faker->streetAddress)
+            ->setTel01($tel[0])
+            ->setTel02($tel[1])
+            ->setTel03($tel[2])
+            ->setFax01($fax[0])
+            ->setFax02($fax[1])
+            ->setFax03($fax[2])
+            ->setBirth($faker->dateTimeThisDecade())
+            ->setSex($Sex)
+            ->setJob($Job)
             ->setPassword('password')
             ->setSalt($this->app['eccube.repository.customer']->createSalt(5))
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
@@ -108,6 +128,57 @@ class Generator {
     }
 
     /**
+     * CustomerAddress を生成して返す.
+     *
+     * @param Customer $Customer 対象の Customer インスタンス
+     * @param boolean $is_nonmember 非会員の場合 true
+     * @return CustomerAddress
+     */
+    public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
+    {
+        $faker = $this->getFaker();
+        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
+        $tel = explode('-', $faker->phoneNumber);
+        $fax = explode('-', $faker->phoneNumber);
+        $CustomerAddress = new CustomerAddress();
+        $CustomerAddress
+            ->setCustomer($Customer)
+            ->setDelFlg(Constant::DISABLED)
+            ->setName01($faker->lastName)
+            ->setName02($faker->firstName)
+            ->setKana01($faker->lastKanaName)
+            ->setKana02($faker->firstKanaName)
+            ->setCompanyName($faker->company)
+            ->setZip01($faker->postcode1())
+            ->setZip02($faker->postcode2())
+            ->setPref($Pref)
+            ->setAddr01($faker->city)
+            ->setAddr02($faker->streetAddress)
+            ->setTel01($tel[0])
+            ->setTel02($tel[1])
+            ->setTel03($tel[2])
+            ->setFax01($fax[0])
+            ->setFax02($fax[1])
+            ->setFax03($fax[2]);
+        if ($is_nonmember) {
+            $Customer->addCustomerAddress($CustomerAddress);
+            // TODO 外部でやった方がいい？
+            $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
+            $customerAddresses = unserialize($this->app['session']->get($sessionCustomerAddressKey));
+            if (!is_array($customerAddresses)) {
+                $customerAddresses = array();
+            }
+            $customerAddresses[] = $CustomerAddress;
+            $this->app['session']->set($sessionCustomerAddressKey, serialize($customerAddresses));
+        } else {
+            $this->app['orm.em']->persist($CustomerAddress);
+            $this->app['orm.em']->flush($CustomerAddress);
+        }
+
+        return $CustomerAddress;
+    }
+
+    /**
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
@@ -120,14 +191,29 @@ class Generator {
         $faker = $this->getFaker();
         $Customer = new Customer();
         if (is_null($email)) {
-            $email = $faker->email;
+            $email = $faker->safeEmail;
         }
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
+        $tel = explode('-', $faker->phoneNumber);
+        $fax = explode('-', $faker->phoneNumber);
         $Customer
             ->setName01($faker->lastName)
             ->setName02($faker->firstName)
+            ->setKana01($faker->lastKanaName)
+            ->setKana02($faker->firstKanaName)
+            ->setCompanyName($faker->company)
             ->setEmail($email)
+            ->setZip01($faker->postcode1())
+            ->setZip02($faker->postcode2())
             ->setPref($Pref)
+            ->setAddr01($faker->city)
+            ->setAddr02($faker->streetAddress)
+            ->setTel01($tel[0])
+            ->setTel02($tel[1])
+            ->setTel03($tel[2])
+            ->setFax01($fax[0])
+            ->setFax02($fax[1])
+            ->setFax03($fax[2])
             ->setDelFlg(Constant::DISABLED);
 
         $CustomerAddress = new CustomerAddress();
