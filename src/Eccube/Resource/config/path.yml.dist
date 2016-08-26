@@ -1,8 +1,8 @@
 # duplicated
 root: ${ROOT_URLPATH}/ # root_urlpath
 admin_dir: ${ADMIN_ROUTE}/ # admin_route
-tpl: ${ROOT_URLPATH}/${USER_DATA_ROUTE}/packages/default/ # front_urlpath
-admin_tpl: ${ROOT_URLPATH}/${USER_DATA_ROUTE}/packages/admin/ # admin_urlpath
+tpl: ${ROOT_URLPATH}/user_data/packages/default/ # front_urlpath
+admin_tpl: ${ROOT_URLPATH}/user_data/packages/admin/ # admin_urlpath
 image_path: ${ROOT_URLPATH}/upload/save_image/ # image_save_urlpath
 
 # base valiables
@@ -23,7 +23,7 @@ image_save_realdir: ${ROOT_DIR}/html/upload/save_image
 image_temp_realdir: ${ROOT_DIR}/html/upload/temp_image
 
 # realdir::user_data
-user_data_realdir: ${ROOT_DIR}/html/${USER_DATA_ROUTE}
+user_data_realdir: ${ROOT_DIR}/html/user_data
 
 # realdir::block
 block_default_realdir: ${ROOT_DIR}/src/Eccube/Resource/template/default/Block
@@ -51,5 +51,5 @@ admin_urlpath: ${ROOT_URLPATH}/template/admin
 front_urlpath: ${ROOT_URLPATH}/template/${TEMPLATE_CODE}
 image_save_urlpath: ${ROOT_URLPATH}/upload/save_image
 image_temp_urlpath: ${ROOT_URLPATH}/upload/temp_image
-user_data_urlpath: ${ROOT_URLPATH}/${USER_DATA_ROUTE}
+user_data_urlpath: ${ROOT_URLPATH}/user_data
 plugin_urlpath: ${ROOT_URLPATH}/plugin
