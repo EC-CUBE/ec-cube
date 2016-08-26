@@ -191,6 +191,9 @@ admin.plugin.download.pem.error: 証明書ファイルの設定ができませ�
 
 admin.preview.register.complete: プレビューを登録しました
 
+admin.change_password.save.complete: パスワードを変更しました。
+admin.change_password.save.error: パスワードを変更できませんでした。
+
 admin_title: 'EC-CUBE 管理機能' # 未使用
 normal_price_title: 通常価格    # 未使用
 sale_price_title: 販売価格

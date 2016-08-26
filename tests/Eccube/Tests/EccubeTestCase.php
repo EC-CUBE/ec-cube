@@ -9,9 +9,9 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Mock\CsrfTokenMock;
+use Faker\Factory as Faker;
 use Guzzle\Http\Client;
 use Silex\WebTestCase;
-use Faker\Factory as Faker;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
