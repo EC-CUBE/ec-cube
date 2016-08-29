@@ -25,6 +25,7 @@ namespace Eccube;
 
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
+use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -539,6 +540,22 @@ class Application extends ApplicationTrait
             'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
             'orm.em.options' => $options
         ));
+
+        /**
+         * YamlDriverのPHP7対応. Doctrine2.4で修正されれば不要.
+         * @see https://github.com/EC-CUBE/ec-cube/issues/1338
+         */
+        $config = $this['orm.em']->getConfiguration();
+        /** @var $driver \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain */
+        $chain = $config->getMetadataDriverImpl();
+        // $ormMappingsの1要素ごとにDriverが生成されている.
+        $drivers = $chain->getDrivers();
+        foreach ($drivers as $namespace => $oldDriver) {
+            /** @var $newDriver \Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver */
+            $newDriver = new YamlDriver($oldDriver->getLocator());
+            // 修正したDriverに差し替える. メソッド名はaddだけど実際はsetしてる.
+            $chain->addDriver($newDriver, $namespace);
+        }
     }
 
     public function initSecurity()
