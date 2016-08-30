@@ -5,7 +5,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
-use Eccube\Application;
 use Eccube\Entity\PageLayout;
 
 class Version20160823172700 extends AbstractMigration
@@ -15,7 +14,7 @@ class Version20160823172700 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $app = Application::getInstance();
+        $app = \Eccube\Application::getInstance();
         /** @var EntityManager $em */
         $em = $app["orm.em"];
 
