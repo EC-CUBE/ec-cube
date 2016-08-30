@@ -62,8 +62,10 @@ class MasterdataController extends AbstractController
                     }
 
                     // 新規登録様に空のデータを追加する。
-                    $data['data'][]['id'] = '';
-                    $data['data'][]['name'] = '';
+                    $data['data'][] = array(
+                        'id' => '',
+                        'name' => '',
+                    );
 
                     // hidden値
                     $data['masterdata_name'] = $data['masterdata'];
