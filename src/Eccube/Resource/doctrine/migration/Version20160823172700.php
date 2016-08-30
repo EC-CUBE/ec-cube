@@ -4,6 +4,8 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\ORM\EntityManager;
+use Eccube\Application;
 
 class Version20160823172700 extends AbstractMigration
 {
@@ -12,8 +14,8 @@ class Version20160823172700 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $app = \Eccube\Application::getInstance();
-        /** @var \Doctrine\ORM\EntityManager $em */
+        $app = Application::getInstance();
+        /** @var EntityManager $em */
         $em = $app["orm.em"];
 
         $DeviceType = $app['eccube.repository.master.device_type']->find(10);
@@ -21,7 +23,7 @@ class Version20160823172700 extends AbstractMigration
         $PageLayout = new \Eccube\Entity\PageLayout();
         $PageLayout
             ->setDeviceType($DeviceType)
-            ->setName( 'MYページ/お届け先編集')
+            ->setName('MYページ/お届け先編集')
             ->setUrl('mypage_delivery_edit')
             ->setFileName('Mypage/delivery_edit')
             ->setEditFlg(2)
