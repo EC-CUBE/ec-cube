@@ -6,6 +6,7 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Eccube\Application;
+use Eccube\Entity\PageLayout;
 
 class Version20160823172700 extends AbstractMigration
 {
@@ -20,7 +21,7 @@ class Version20160823172700 extends AbstractMigration
 
         $DeviceType = $app['eccube.repository.master.device_type']->find(10);
 
-        $PageLayout = new \Eccube\Entity\PageLayout();
+        $PageLayout = new PageLayout();
         $PageLayout
             ->setDeviceType($DeviceType)
             ->setName('MYページ/お届け先編集')
