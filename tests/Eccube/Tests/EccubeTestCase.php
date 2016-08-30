@@ -170,6 +170,18 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
+     * CustomerAddress を生成して返す.
+     *
+     * @param Customer $Customer 対象の Customer インスタンス
+     * @param boolean $is_nonmember 非会員の場合 true
+     * @return \Eccube\Entity\CustomerAddress
+     */
+    public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
+    {
+        return $this->app['eccube.fixture.generator']->createCustomerAddress($Customer, $is_nonmember);
+    }
+
+    /**
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.

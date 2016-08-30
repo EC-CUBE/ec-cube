@@ -257,6 +257,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $pref_id = 26;
         $Pref = $this->app['eccube.repository.master.pref']->find($pref_id);
         $this->Customer->setPref($Pref);
+        $Pref2 = $this->app['eccube.repository.master.pref']->find(1);
+        $this->Customer1->setPref($Pref2);
+        $this->Customer2->setPref($Pref2);
+        $this->Customer3->setPref($Pref2);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -278,6 +282,8 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $Female = $this->app['eccube.repository.master.sex']->find(2);
         $this->Customer->setSex($Male);
         $this->Customer1->setSex($Female);
+        $this->Customer2->setSex(null);
+        $this->Customer3->setSex(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -308,6 +314,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     {
         $birth = '2006-09-01';
         $this->Customer->setBirth(new \DateTime($birth));
+        $this->Customer1->setBirth(null);
+        $this->Customer2->setBirth(null);
+        $this->Customer3->setBirth(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -325,6 +334,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     {
         $birth = '2006-09-01';
         $this->Customer->setBirth(new \DateTime($birth));
+        $this->Customer1->setBirth(null);
+        $this->Customer2->setBirth(null);
+        $this->Customer3->setBirth(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -342,6 +354,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     {
         $birth = '2006-09-01';
         $this->Customer->setBirth(new \DateTime($birth));
+        $this->Customer1->setBirth(null);
+        $this->Customer2->setBirth(null);
+        $this->Customer3->setBirth(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -359,6 +374,9 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     {
         $birth = '2006-09-01';
         $this->Customer->setBirth(new \DateTime($birth));
+        $this->Customer1->setBirth(null);
+        $this->Customer2->setBirth(null);
+        $this->Customer3->setBirth(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -377,6 +395,18 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->Customer
             ->setTel01('090')
             ->setTel02('999')
+            ->setTel03('000');
+        $this->Customer1
+            ->setTel01('090')
+            ->setTel02('111')
+            ->setTel03('000');
+        $this->Customer2
+            ->setTel01('090')
+            ->setTel02('222')
+            ->setTel03('000');
+        $this->Customer3
+            ->setTel01('090')
+            ->setTel02('333')
             ->setTel03('000');
         $this->app['orm.em']->flush();
 
