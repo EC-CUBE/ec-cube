@@ -83,95 +83,17 @@ class Application extends ApplicationTrait
     public function initConfig()
     {
         // load config
-        $this['config'] = $this->share(function() {
-            $ymlPath = __DIR__.'/../../app/config/eccube';
-            $distPath = __DIR__.'/../../src/Eccube/Resource/config';
-
-            $config = array();
-            $config_yml = $ymlPath.'/config.yml';
-            if (file_exists($config_yml)) {
-                $config = Yaml::parse(file_get_contents($config_yml));
-            }
-
-            $config_dist = array();
-            $config_yml_dist = $distPath.'/config.yml.dist';
-            if (file_exists($config_yml_dist)) {
-                $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
-            }
-
-            $config_path = array();
-            $path_yml = $ymlPath.'/path.yml';
-            if (file_exists($path_yml)) {
-                $config_path = Yaml::parse(file_get_contents($path_yml));
-            }
-
-            $config_constant = array();
-            $constant_yml = $ymlPath.'/constant.yml';
-            if (file_exists($constant_yml)) {
-                $config_constant = Yaml::parse(file_get_contents($constant_yml));
-                $config_constant = empty($config_constant) ? array() : $config_constant;
-            }
-
-            $config_constant_dist = array();
-            $constant_yml_dist = $distPath.'/constant.yml.dist';
-            if (file_exists($constant_yml_dist)) {
-                $config_constant_dist = Yaml::parse(file_get_contents($constant_yml_dist));
-            }
-
-            $configAll = array_replace_recursive($config_constant_dist, $config_dist, $config_constant, $config_path, $config);
-
-            $database = array();
-            $yml = $ymlPath.'/database.yml';
-            if (file_exists($yml)) {
-                $database = Yaml::parse(file_get_contents($yml));
-            }
-
-            $mail = array();
-            $yml = $ymlPath.'/mail.yml';
-            if (file_exists($yml)) {
-                $mail = Yaml::parse(file_get_contents($yml));
-            }
-            $configAll = array_replace_recursive($configAll, $database, $mail);
-
-            $config_log = array();
-            $yml = $ymlPath.'/log.yml';
-            if (file_exists($yml)) {
-                $config_log = Yaml::parse(file_get_contents($yml));
-            }
-            $config_log_dist = array();
-            $log_yml_dist = $distPath.'/log.yml.dist';
-            if (file_exists($log_yml_dist)) {
-                $config_log_dist = Yaml::parse(file_get_contents($log_yml_dist));
-            }
-
-            $configAll = array_replace_recursive($configAll, $config_log_dist, $config_log);
-
-            $config_nav = array();
-            $yml = $ymlPath.'/nav.yml';
-            if (file_exists($yml)) {
-                $config_nav = array('nav' => Yaml::parse(file_get_contents($yml)));
-            }
-            $config_nav_dist = array();
-            $nav_yml_dist = $distPath.'/nav.yml.dist';
-            if (file_exists($nav_yml_dist)) {
-                $config_nav_dist = array('nav' => Yaml::parse(file_get_contents($nav_yml_dist)));
-            }
-
-            $configAll = array_replace_recursive($configAll, $config_nav_dist, $config_nav);
-
-            $config_doctrine_cache = array();
-            $yml = $ymlPath.'/doctrine_cache.yml';
-            if (file_exists($yml)) {
-                $config_doctrine_cache = Yaml::parse(file_get_contents($yml));
-            }
-            $config_doctrine_cache_dist = array();
-            $doctrine_cache_yml_dist = $distPath.'/doctrine_cache.yml.dist';
-            if (file_exists($doctrine_cache_yml_dist)) {
-                $config_doctrine_cache_dist = Yaml::parse(file_get_contents($doctrine_cache_yml_dist));
-            }
-
-            $configAll = array_replace_recursive($configAll, $config_doctrine_cache_dist, $config_doctrine_cache);
-
+        $app = $this;
+        $this['config'] = $this->share(function() use ($app) {
+            $configAll = array();
+            $app->parseConfig('constant', $configAll)
+                ->parseConfig('path', $configAll)
+                ->parseConfig('config', $configAll)
+                ->parseConfig('database', $configAll)
+                ->parseConfig('mail', $configAll)
+                ->parseConfig('log', $configAll)
+                ->parseConfig('nav', $configAll, true)
+                ->parseConfig('doctrine_cache', $configAll);
             return $configAll;
         });
     }
@@ -522,6 +444,7 @@ class Application extends ApplicationTrait
             if (array_key_exists('doctrine_cache', $this['config'])) {
                 $cacheDrivers = $this['config']['doctrine_cache'];
             }
+
             if (array_key_exists('metadata_cache', $cacheDrivers)) {
                 $options['metadata_cache'] = $cacheDrivers['metadata_cache'];
             }
@@ -1042,6 +965,61 @@ class Application extends ApplicationTrait
     }
 
     /**
+     * Config ファイルをパースし、連想配列を返します.
+     *
+     * $config_name.yml ファイルをパースし、連想配列を返します.
+     * $config_name.php が存在する場合は、 PHP ファイルに記述された連想配列を使用します。
+     *
+     * @param string $config_name Config 名称
+     * @param array $configAll Config の連想配列
+     * @param boolean $wrap_key Config の連想配列に config_name のキーを生成する場合 true, デフォルト false
+     * @param string $ymlPath config yaml を格納したディレクトリ
+     * @param string $distPath config yaml dist を格納したディレクトリ
+     * @return Application
+     */
+    public function parseConfig($config_name, array &$configAll, $wrap_key = false, $ymlPath = null, $distPath = null)
+    {
+        $ymlPath = $ymlPath ? $ymlPath : __DIR__.'/../../app/config/eccube';
+        $distPath = $distPath ? $distPath : __DIR__.'/../../src/Eccube/Resource/config';
+        $config = array();
+        $config_php = $ymlPath.'/'.$config_name.'.php';
+        if (!file_exists($config_php)) {
+            $config_yml = $ymlPath.'/'.$config_name.'.yml';
+            if (file_exists($config_yml)) {
+                $config = Yaml::parse(file_get_contents($config_yml));
+                $config = empty($config) ? array() : $config;
+                if (isset($this['output_config_php']) && $this['output_config_php']) {
+                    file_put_contents($config_php, sprintf('<?php return %s', var_export($config, true)).';');
+                }
+            }
+        } else {
+            $config = require $config_php;
+        }
+
+        $config_dist = array();
+        $config_php_dist = $distPath.'/'.$config_name.'.dist.php';
+        if (!file_exists($config_php_dist)) {
+            $config_yml_dist = $distPath.'/'.$config_name.'.yml.dist';
+            if (file_exists($config_yml_dist)) {
+                $config_dist = Yaml::parse(file_get_contents($config_yml_dist));
+                if (isset($this['output_config_php']) && $this['output_config_php']) {
+                    file_put_contents($config_php_dist, sprintf('<?php return %s', var_export($config_dist, true)).';');
+                }
+            }
+        } else {
+            $config_dist = require $config_php_dist;
+        }
+
+        if ($wrap_key) {
+            $configAll = array_replace_recursive($configAll, array($config_name => $config_dist), array($config_name => $config));
+        } else {
+            $configAll = array_replace_recursive($configAll, $config_dist, $config);
+        }
+
+        return $this;
+    }
+
+    /**
      * セッションが開始されているかどうか.
      *
      * @return boolean セッションが開始済みの場合 true
@@ -1056,6 +1034,7 @@ class Application extends ApplicationTrait
                 return session_id() === '' ? false : true;
             }
         }
+
         return false;
     }
 }

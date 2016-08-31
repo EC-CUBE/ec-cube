@@ -1,4 +1,4 @@
-doctrine_cache:
+cache:
   metadata_cache:
     driver: array
     path:
