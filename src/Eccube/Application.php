@@ -93,7 +93,7 @@ class Application extends ApplicationTrait
                 ->parseConfig('log', $configAll)
                 ->parseConfig('nav', $configAll, true)
                 ->parseConfig('doctrine_cache', $configAll)
-                ->parseConfig('httpcache', $configAll);
+                ->parseConfig('http_cache', $configAll);
 
             return $configAll;
         });
