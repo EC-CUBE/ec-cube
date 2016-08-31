@@ -93,7 +93,8 @@ class Application extends ApplicationTrait
                 ->parseConfig('log', $configAll)
                 ->parseConfig('nav', $configAll, true)
                 ->parseConfig('doctrine_cache', $configAll)
-                ->parseConfig('http_cache', $configAll);
+                ->parseConfig('http_cache', $configAll)
+                ->parseConfig('session_handler', $configAll);
 
             return $configAll;
         });
@@ -239,6 +240,15 @@ class Application extends ApplicationTrait
                 // http://blog.tokumaru.org/2011/10/cookiedomain.html
             ),
         ));
+
+        $options = $this['config']['session_handler'];
+
+        if ($options['enabled']) {
+            // @see http://silex.sensiolabs.org/doc/providers/session.html#custom-session-configurations
+            $this['session.storage.handler'] = null;
+            ini_set('session.save_handler', $options['save_handler']);
+            ini_set('session.save_path', $options['save_path']);
+        }
     }
 
     public function initRendering()
