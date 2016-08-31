@@ -168,7 +168,6 @@ class SearchOrderType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

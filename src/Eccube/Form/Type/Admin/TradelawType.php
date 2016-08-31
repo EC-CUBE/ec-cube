@@ -134,8 +134,7 @@ class TradelawType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     public function getName()

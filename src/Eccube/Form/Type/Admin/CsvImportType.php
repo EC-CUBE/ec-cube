@@ -57,8 +57,7 @@ class CsvImportType extends AbstractType
                         'maxSizeMessage' => 'CSVファイルは' . $app['config']['csv_size'] . 'M以下でアップロードしてください。',
                     )),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

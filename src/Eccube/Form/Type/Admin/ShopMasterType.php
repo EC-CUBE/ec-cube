@@ -289,7 +289,6 @@ class ShopMasterType extends AbstractType
                 ),
             ))
 
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 
