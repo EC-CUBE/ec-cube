@@ -1,6 +1,7 @@
 <?php
 
 namespace Eccube\Tests\Web;
+use Eccube\Common\Constant;
 
 /**
  * 複数配送指定のテストケース.
@@ -124,6 +125,78 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         $this->expected = $Customer->getName01();
         $this->actual = $Order->getName01();
+        $this->verify();
+    }
+
+    /**
+     * Test add multi shipping
+     */
+    public function testShippingShippingMultiAdd()
+    {
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
+
+        $User = $this->logIn();
+        $client = $this->client;
+
+        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
+        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
+
+        $this->scenarioCartIn($client);
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+        // お届け先指定画面
+        $shippingUrl = $crawler->filter('a.btn-shipping')->attr('href');
+        $this->scenarioComplete($client, $shippingUrl);
+
+        $CustomerAddress =  $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+
+        $arrCustomerAddress = $User->getCustomerAddresses();
+
+        $multiForm = array(
+            '_token' => 'dummy',
+            'shipping_multiple' => array(
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $client->request(
+            'POST',
+            $this->app->url('shopping_shipping_multiple'),
+            array("form" => $multiForm)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        $Order = $this->app['eccube.repository.order']->findOneBy(array('Customer' => $User));
+        $Shipping = $Order->getShippings();
+        $this->actual = count($Shipping);
+        $this->expected = count($arrCustomerAddress);
         $this->verify();
     }
 }

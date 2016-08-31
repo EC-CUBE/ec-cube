@@ -1098,6 +1098,8 @@ class ShoppingController extends AbstractController
         $form->handleRequest($request);
 
         $errors = array();
+        // array customer address temp
+        $arrCusAddTmp = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form['shipping_multiple'];
 
@@ -1109,7 +1111,22 @@ class ShoppingController extends AbstractController
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
                         $quantity = $item['quantity']->getData();
+
+                        // get customer address
+                        $customerAddresses = $item['customer_address']->getData();
+                        $cusAddId = $customerAddresses;
+                        if ($customerAddresses instanceof CustomerAddress) {
+                            // customer address id for user role
+                            $cusAddId = $customerAddresses->getId();
+                        }
                         $itemId = $multipleItem->getProductClass()->getId();
+                        // Save customer address id to temporary array
+                        if (isset($arrCusAddTmp[$cusAddId]) && array_key_exists($itemId, array_values($arrCusAddTmp[$cusAddId]))) {
+                            $arrCusAddTmp[$cusAddId][$itemId] = $arrCusAddTmp[$cusAddId][$itemId] + $quantity;
+                        } else {
+                            $arrCusAddTmp[$cusAddId][$itemId] = $quantity;
+                        }
+
                         if (array_key_exists($itemId, $itemQuantities)) {
                             $itemQuantities[$itemId] = $itemQuantities[$itemId] + $quantity;
                         } else {
@@ -1141,7 +1158,8 @@ class ShoppingController extends AbstractController
                 $Order->removeShipping($Shipping);
                 $app['orm.em']->remove($Shipping);
             }
-
+            // Shipping temp
+            $arrShippingTmp = array();
             foreach ($data as $mulitples) {
                 /** @var \Eccube\Entity\ShipmentItem $multipleItem */
                 $multipleItem = $mulitples->getData();
@@ -1153,25 +1171,43 @@ class ShoppingController extends AbstractController
 
                         // 選択された情報を取得
                         $data = $item['customer_address']->getData();
+                        $CustomerAddress = null;
+                        $cusAddId = null;
                         if ($data instanceof CustomerAddress) {
-                            // 会員の場合、CustomerAddressオブジェクトを取得
-                            $CustomerAddress = $data;
+                            // Has been shipping check
+                            if (array_key_exists($cusAddId = $data->getId(), $arrCusAddTmp)) {
+                                // 会員の場合、CustomerAddressオブジェクトを取得
+                                $CustomerAddress = $data;
+                            }
                         } else {
-                            // 非会員の場合、選択されたindexが取得される
-                            $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
-                            $customerAddresses = unserialize($customerAddresses);
-                            $CustomerAddress = $customerAddresses[$data];
-                            $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
-                            $CustomerAddress->setPref($pref);
+                            // Has been shipping check
+                            if (array_key_exists($cusAddId = $data, $arrCusAddTmp)) {
+                                // 非会員の場合、選択されたindexが取得される
+                                $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
+                                $customerAddresses = unserialize($customerAddresses);
+                                $CustomerAddress = $customerAddresses[$data];
+                                $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
+                                $CustomerAddress->setPref($pref);
+                            }
                         }
 
-                        $Shipping = new Shipping();
-                        $Shipping
-                            ->setFromCustomerAddress($CustomerAddress)
-                            ->setDelivery($Delivery)
-                            ->setDelFlg(Constant::DISABLED)
-                            ->setOrder($Order);
-                        $app['orm.em']->persist($Shipping);
+                        // Has been customer address check
+                        if (!is_null($CustomerAddress)) {
+                            $Shipping = new Shipping();
+                            $Shipping
+                                ->setFromCustomerAddress($CustomerAddress)
+                                ->setDelivery($Delivery)
+                                ->setDelFlg(Constant::DISABLED)
+                                ->setOrder($Order);
+                            $app['orm.em']->persist($Shipping);
+                            // Store shipping
+                            $arrShippingTmp[$cusAddId] = $Shipping;
+                            // Mark shipping has been exist
+                            unset($arrCusAddTmp[$cusAddId]);
+                        } else {
+                            // Shipping has been existed
+                            $Shipping = $arrShippingTmp[$cusAddId];
+                        }
 
                         $ProductClass = $multipleItem->getProductClass();
                         $Product = $multipleItem->getProduct();
@@ -1200,12 +1236,18 @@ class ShoppingController extends AbstractController
                         $Shipping->addShipmentItem($ShipmentItem);
                         $app['orm.em']->persist($ShipmentItem);
 
-                        // 配送料金の設定
-                        $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
-
-                        $Order->addShipping($Shipping);
+                        // Update shipping again
+                        $arrShippingTmp[$cusAddId] = $Shipping;
                     }
                 }
+            }
+
+            // calculator shipping free
+            foreach ($arrShippingTmp as $Shipping) {
+                // 配送料金の設定
+                $app['eccube.service.shopping']->setShippingDeliveryFee($Shipping);
+
+                $Order->addShipping($Shipping);
             }
 
             // 合計金額の再計算

@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 abstract class EccubeTestCase extends WebTestCase
 {
     /** MailCatcher の URL. */
-    const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
+    const MAILCATCHER_URL = 'http://192.168.103.244:1080/';
 
     protected $actual;
     protected $expected;
@@ -306,7 +306,7 @@ abstract class EccubeTestCase extends WebTestCase
         $this->checkMailCatcherStatus();
         $config = $this->app['config'];
         $config['mail']['transport'] = 'smtp';
-        $config['mail']['host'] = '127.0.0.1';
+        $config['mail']['host'] = '192.168.103.244';
         $config['mail']['port'] = 1025;
         $config['mail']['username'] = null;
         $config['mail']['password'] = null;
