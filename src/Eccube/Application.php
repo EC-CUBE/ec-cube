@@ -185,6 +185,9 @@ class Application extends ApplicationTrait
         // add transaction listener
         $this['dispatcher']->addSubscriber(new TransactionListener($this));
 
+        // init http cache
+        $this->initCacheRequest();
+
         $this->initialized = true;
     }
 
@@ -803,9 +806,6 @@ class Application extends ApplicationTrait
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
         });
-
-        $this->cacheRequest();
-
     }
 
     public function loadPlugin()
@@ -973,7 +973,7 @@ class Application extends ApplicationTrait
 
         return true;
     }
-    
+
     /**
      * Config ファイルをパースし、連想配列を返します.
      *
@@ -1051,58 +1051,59 @@ class Application extends ApplicationTrait
     /**
      * Http Cache対応
      */
-    protected function cacheRequest()
+    protected function initCacheRequest()
     {
+        // httpキャッシュが無効の場合はイベント設定を行わない.
+        if (!$this['config']['http_cache']['enabled']) {
+            return;
+        }
+
         $app = $this;
 
         // Response Event(http cache対応、event実行は一番遅く設定)
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
 
-            if ($app['config']['http_cache']['enabled']) {
-                // httpキャッシュが有効の場合
+            $request = $event->getRequest();
+            $response = $event->getResponse();
 
-                $request = $event->getRequest();
-                $response = $event->getResponse();
+            $route = $request->attributes->get('_route');
 
-                $route = $request->attributes->get('_route');
+            $etag = md5($response->getContent());
 
-                $etag = md5($response->getContent());
+            if (strpos($route, 'admin') === 0) {
+                // 管理画面
 
-                if (strpos($route, 'admin') === 0) {
-                    // 管理画面
+                // 管理画面ではコンテンツの中身が変更された時点でキャッシュを更新し、キャッシュの適用範囲はprivateに設定
+                $response->setCache(array(
+                    'etag' => $etag,
+                    'private' => true,
+                ));
 
-                    // 管理画面ではコンテンツの中身が変更された時点でキャッシュを更新し、キャッシュの適用範囲はprivateに設定
+                if ($response->isNotModified($request)) {
+                    return $response;
+                }
+
+            } else {
+                // フロント画面
+                $cacheRoute = $app['config']['http_cache']['route'];
+
+                if (in_array($route, $cacheRoute) === true) {
+                    // キャッシュ対象となる画面lが含まれていた場合、キャッシュ化
+                    // max-ageを設定しているためExpiresは不要
+                    // Last-Modifiedだと比較する項目がないためETagで対応
+                    // max-ageを設定していた場合、contentの中身が変更されても変更されない
+
+                    $age = $app['config']['http_cache']['age'];
+
                     $response->setCache(array(
                         'etag' => $etag,
-                        'private' => true,
+                        'max_age' => $age,
+                        's_maxage' => $age,
+                        'public' => true,
                     ));
 
                     if ($response->isNotModified($request)) {
                         return $response;
-                    }
-
-                } else {
-                    // フロント画面
-                    $cacheRoute = $app['config']['http_cache']['route'];
-
-                    if (in_array($route, $cacheRoute) === true) {
-                        // キャッシュ対象となる画面lが含まれていた場合、キャッシュ化
-                        // max-ageを設定しているためExpiresは不要
-                        // Last-Modifiedだと比較する項目がないためETagで対応
-                        // max-ageを設定していた場合、contentの中身が変更されても変更されない
-
-                        $age = $app['config']['http_cache']['age'];
-
-                        $response->setCache(array(
-                            'etag' => $etag,
-                            'max_age' => $age,
-                            's_maxage' => $age,
-                            'public' => true,
-                        ));
-
-                        if ($response->isNotModified($request)) {
-                            return $response;
-                        }
                     }
                 }
             }
