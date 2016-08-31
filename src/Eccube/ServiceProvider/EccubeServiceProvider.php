@@ -352,6 +352,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\DeliveryFeeType();
             $types[] = new \Eccube\Form\Type\Admin\DeliveryTimeType($app['config']);
             $types[] = new \Eccube\Form\Type\Admin\LogType($app['config']);
+            $types[] = new \Eccube\Form\Type\Admin\CacheType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\MasterdataType($app);
             $types[] = new \Eccube\Form\Type\Admin\MasterdataEditType($app);

@@ -26,7 +26,8 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
-use Eccube\Util\Cache;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 
 class CacheController extends AbstractController
@@ -35,24 +36,29 @@ class CacheController extends AbstractController
     public function index(Application $app, Request $request)
     {
 
-        $form = $app->form()->getForm();
+        $builder = $app['form.factory']->createBuilder('admin_cache');
 
-        if ('POST' === $request->getMethod()) {
+        $form = $builder->getForm();
 
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                switch ($request->get('mode')) {
-                    case 'twig':
-                        // Twigキャッシュクリア
-                        Cache::clear($app, false, true);
-                        $app->addSuccess('admin.content.twig.cache.save.complete', 'admin');
-                        break;
-                    default:
-                        break;
+            $data = $form->get('cache')->getData();
+
+            $cacheDir = $app['config']['root_dir'].'/app/cache';
+
+            $filesystem = new Filesystem();
+
+            foreach ($data as $dir) {
+                if (is_dir($cacheDir.'/'.$dir)) {
+                    // 指定されたキャッシュディレクトリを削除
+                    $finder = Finder::create()->in($cacheDir.'/'.$dir);
+                    $filesystem->remove($finder);
                 }
             }
+
+            $app->addSuccess('admin.content.cache.save.complete', 'admin');
         }
 
         return $app->render('Content/cache.twig', array(
