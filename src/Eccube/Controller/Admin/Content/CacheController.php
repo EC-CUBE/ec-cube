@@ -56,6 +56,14 @@ class CacheController extends AbstractController
                     $finder = Finder::create()->in($cacheDir.'/'.$dir);
                     $filesystem->remove($finder);
                 }
+                if ($dir == 'doctrine') {
+                    // doctrineが指定された場合は, cache driver経由で削除.
+                    $config =  $app['orm.em']->getConfiguration();
+                    $this->deleteDoctrineCache($config->getMetadataCacheImpl());
+                    $this->deleteDoctrineCache($config->getQueryCacheImpl());
+                    $this->deleteDoctrineCache($config->getResultCacheImpl());
+                    $this->deleteDoctrineCache($config->getHydrationCacheImpl());
+                }
             }
 
             $app->addSuccess('admin.content.cache.save.complete', 'admin');
@@ -64,5 +72,11 @@ class CacheController extends AbstractController
         return $app->render('Content/cache.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    protected function deleteDoctrineCache(\Doctrine\Common\Cache\Cache $cacheDriver)
+    {
+        $cacheDriver->deleteAll();
+        $cacheDriver->flushAll();
     }
 }
