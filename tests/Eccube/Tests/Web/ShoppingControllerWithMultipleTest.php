@@ -87,16 +87,16 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             'POST',
             $this->app->path('shopping_shipping_multiple'),
             array('form' =>
-                  array(
-                      'shipping_multiple' =>
-                      array(0 =>
+                array(
+                    'shipping_multiple' =>
+                        array(0 =>
                             array(
                                 // 配送先1, 配送先2 の 情報を渡す
                                 'shipping' => $shippings
                             )
-                      ),
-                      '_token' => 'dummy'
-                  )
+                        ),
+                    '_token' => 'dummy'
+                )
             )
         );
 
@@ -168,7 +168,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -227,7 +227,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -293,7 +293,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -369,11 +369,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -445,11 +445,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -522,7 +522,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -604,11 +604,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -689,15 +689,15 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 3
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -800,15 +800,15 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 3
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -884,17 +884,16 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $shippingUrl = $crawler->filter('a.btn-shipping')->attr('href');
         $this->scenarioComplete($client, $shippingUrl);
 
-
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 3
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -971,15 +970,15 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 3
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
@@ -1055,15 +1054,15 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioComplete($client, $shippingUrl);
 
         // Address 1
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 2
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         // Address 3
-        $CustomerAddress =  $this->createCustomerAddress($User);
+        $CustomerAddress = $this->createCustomerAddress($User);
         $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
