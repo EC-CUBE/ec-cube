@@ -67,7 +67,13 @@ class AdminController extends AbstractController
         if (isset($app['config']['eccube_install']) && $app['config']['eccube_install'] == 1) {
             $file = $app['config']['root_dir'] . '/html/install.php';
             if (file_exists($file)) {
-                $app->addWarning('admin.install.warning', 'admin');
+                $message = $app->trans('admin.install.warning', array('installphpPath' => 'html/install.php'));
+                $app->addWarning($message, 'admin');
+            }
+            $fileOnRoot = $app['config']['root_dir'] . '/install.php';
+            if (file_exists($fileOnRoot)) {
+                $message = $app->trans('admin.install.warning', array('installphpPath' => 'install.php'));
+                $app->addWarning($message, 'admin');
             }
         }
 
