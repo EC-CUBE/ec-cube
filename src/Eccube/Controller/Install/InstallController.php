@@ -895,7 +895,9 @@ class InstallController
         } else {
             return $app['twig']->render('migration_plugin.twig', array(
                 'Plugins' => $Plugins,
-                'version' => Constant::VERSION));
+                'version' => Constant::VERSION,
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+            ));
         }
     }
 
@@ -916,6 +918,8 @@ class InstallController
         $config_app->boot();
         \Eccube\Util\Cache::clear($config_app, true);
 
-        return $app['twig']->render('migration_end.twig');
+        return $app['twig']->render('migration_end.twig', array(
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+        ));
     }
 }
