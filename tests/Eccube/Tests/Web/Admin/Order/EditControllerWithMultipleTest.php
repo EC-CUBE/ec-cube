@@ -24,8 +24,10 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Order;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Product;
 
-class EditControllerTest extends AbstractEditControllerTestCase
+class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
     protected $Order;
@@ -36,9 +38,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
+
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        // 複数配送を無効に
-        $BaseInfo->setOptionMultipleShipping(0);
+        // 複数配送を有効に
+        $BaseInfo->setOptionMultipleShipping(1);
         $this->app['orm.em']->flush($BaseInfo);
     }
 
@@ -50,11 +53,14 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNewPost()
     {
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $crawler = $this->client->request(
             'POST',
             $this->app->url('admin_order_new'),
             array(
-                'order' => $this->createFormData($this->Customer, $this->Product),
+                'order' => $this->createFormData($this->Customer, $this->Product, $Shippings),
                 'mode' => 'register'
             )
         );
@@ -68,14 +74,18 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $crawler = $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
+
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminOrderEditPost()
     {
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product);
+        $formData = $this->createFormData($Customer, $this->Product, $Shippings);
         $this->client->request(
             'POST',
             $this->app->url('admin_order_edit', array('id' => $Order->getId())),
@@ -127,6 +137,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
                 'CONTENT_TYPE' => 'application/json',
             )
         );
+
         $Result = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->expected = $this->Customer->getName01();
@@ -292,5 +303,90 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->expected = $totalTax;
         $this->actual = $EditedOrderafterEdit->getTax();
         $this->verify();
+    }
+
+    /**
+     * 複数配送用受注編集用フォーム作成.
+     *
+     * FIXME Order と Shippings の整合性を合わせる必要がある
+     *
+     * @param Customer $Customer
+     * @param Product $Product
+     * @param array $Shippings お届け先情報の配列
+     * @return array
+     */
+    public function createFormData(Customer $Customer, Product $Product, array $Shippings = array())
+    {
+        $formData = parent::createFormData($Customer, $Product);
+        $formData['Shippings'] = $Shippings;
+        return $formData;
+    }
+
+    /**
+     * 複数配送用受注編集用フォーム作成.
+     *
+     * 引数に渡した商品規格のお届け商品明細が生成される.
+     *
+     * @param array $ProductClasses 商品規格の配列.
+     * @return array
+     */
+    public function createShipping(array $ProductClasses)
+    {
+        $faker = $this->getFaker();
+        $tel = explode('-', $faker->phoneNumber);
+        $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
+
+        $ShippingItems = array();
+        foreach ($ProductClasses as $ProductClass) {
+            $ShippingItems[] = array(
+                'Product' => $ProductClass->getProduct()->getId(),
+                'ProductClass' => $ProductClass->getId(),
+                'price' => $ProductClass->getPrice02(),
+                'quantity' => $faker->randomNumber(2),
+                'itemidx' => ''
+            );
+        }
+        $Shipping =
+            array (
+                'ShipmentItems' => $ShippingItems,
+                'name' => array(
+                    'name01' => $faker->lastName,
+                    'name02' => $faker->firstName,
+                ),
+                'kana' => array(
+                    'kana01' => $faker->lastKanaName ,
+                    'kana02' => $faker->firstKanaName,
+                ),
+                'company_name' => $faker->company,
+                'zip' => array(
+                    'zip01' => $faker->postcode1(),
+                    'zip02' => $faker->postcode2(),
+                ),
+                'address' => array(
+                    'pref' => $faker->numberBetween(1, 47),
+                    'addr01' => $faker->city,
+                    'addr02' => $faker->streetAddress,
+                ),
+                'tel' => array(
+                    'tel01' => $tel[0],
+                    'tel02' => $tel[1],
+                    'tel03' => $tel[2],
+                ),
+                'fax' =>
+                array (
+                    'fax01' => $tel[0],
+                    'fax02' => $tel[1],
+                    'fax03' => $tel[2],
+                ),
+                'Delivery' => '1',
+                'DeliveryTime' => '1',
+                'shipping_delivery_date' =>
+                array (
+                    'year' => $delivery_date->format('Y'),
+                    'month' => $delivery_date->format('n'),
+                    'day' => $delivery_date->format('j')
+                ),
+            );
+        return $Shipping;
     }
 }

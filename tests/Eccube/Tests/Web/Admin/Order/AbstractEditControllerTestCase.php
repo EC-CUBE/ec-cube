@@ -96,7 +96,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                         'zip02' => $faker->postcode2(),
                     ),
                     'address' => array(
-                        'pref' => '5',
+                        'pref' => $faker->numberBetween(1, 47),
                         'addr01' => $faker->city,
                         'addr02' => $faker->streetAddress,
                     ),
@@ -148,6 +148,21 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         $shippings = array();
         $ShippingsColl = $Order->getShippings();
         foreach ($ShippingsColl as $Shippings) {
+            $deliveryTime = '';
+            if (is_object($Shippings->getDeliveryTime())) {
+                $deliveryTime = $Shippings->getDeliveryTime()->getId();
+            }
+            $shippingDeliveryDate = array(
+                'year' => null,
+                'month' => null,
+                'day' => null
+            );
+
+            if ($Shippings->getShippingDeliveryDate() instanceof \DateTime) {
+                $shippingDeliveryDate['year'] = $Shippings->getShippingDeliveryDate()->format('Y');
+                $shippingDeliveryDate['month'] = $Shippings->getShippingDeliveryDate()->format('m');
+                $shippingDeliveryDate['day'] = $Shippings->getShippingDeliveryDate()->format('d');
+            }
             $shippings[] = array(
                 'name' =>
                 array(
@@ -184,20 +199,20 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                     'fax03' => $Shippings->getFax03(),
                 ),
                 'Delivery' => $Shippings->getDelivery()->getId(),
-                'DeliveryTime' => $Shippings->getDeliveryTime()->getId(),
-                'shipping_delivery_date' =>
-                array(
-                    'year' => $Shippings->getShippingDeliveryDate()->format('Y'),
-                    'month' => $Shippings->getShippingDeliveryDate()->format('m'),
-                    'day' => $Shippings->getShippingDeliveryDate()->format('d'),
-                ),
+                'DeliveryTime' => $deliveryTime,
+                'shipping_delivery_date' => $shippingDeliveryDate,
             );
+        }
+        $Customer = $Order->getCustomer();
+        $customer_id = null;
+        if (is_object($Customer)) {
+            $customer_id = $Customer->getId();
         }
         //受注フォーム
         $order = array(
             '_token' => 'dummy',
             'OrderStatus' => (string) $Order->getOrderStatus(),
-            'Customer' => (string) $Order->getCustomer()->getId(),
+            'Customer' => (string) $customer_id,
             'name' =>
             array(
                 'name01' => $Order->getName01(),
