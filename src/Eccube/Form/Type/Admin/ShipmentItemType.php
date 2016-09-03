@@ -72,10 +72,6 @@ class ShipmentItemType extends AbstractType
                     )),
                 ),
             ))
-            ->add('itemidx', 'hidden', array(
-                'required' => false,
-                'mapped' => false,
-            ))
         ;
 
         $builder

@@ -543,9 +543,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              {% endfilter %}">
 
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}
-                            {{ form_widget(shipmentItemForm.Product) }}
-                            {{ form_widget(shipmentItemForm.ProductClass) }}
                             <div id="shipment_item__id--{{ shippingIndex }}" class="item_box shipment_item_idx{{ shippingIndex }}">
+                                {{ form_widget(shipmentItemForm.Product) }}
+                                {{ form_widget(shipmentItemForm.ProductClass) }}
                                 <div id="shipment_item__detail--{{ shippingIndex }}" class="item_detail">
                                     <div id="shipment_item__name_detail--{{ shippingIndex }}" class="item_name_area">
                                         <strong id="shipment_item__product_name--{{ shippingIndex }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
@@ -577,7 +577,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     </div>
                                 </div>
                             </div><!-- /.item_box -->
-                            {{ form_widget(shipmentItemForm.itemidx) }}
                         {% endfor %}
                             </div>
                         {% endif %}
