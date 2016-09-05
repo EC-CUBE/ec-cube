@@ -27,6 +27,11 @@ use Eccube\Entity\Order;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Product;
 
+/**
+ * 複数配送設定用 EditController のテストケース.
+ *
+ * @author Kentaro Ohkouchi
+ */
 class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
@@ -60,7 +65,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
             'POST',
             $this->app->url('admin_order_new'),
             array(
-                'order' => $this->createFormData($this->Customer, $this->Product, $Shippings),
+                'order' => $this->createFormDataForMultiple($this->Customer, $Shippings),
                 'mode' => 'register'
             )
         );
@@ -85,7 +90,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product, $Shippings);
+        $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         $this->client->request(
             'POST',
             $this->app->url('admin_order_edit', array('id' => $Order->getId())),
@@ -172,7 +177,12 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product);
+
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+
+        $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         $formData['OrderStatus'] = 8; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
@@ -265,9 +275,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function testOrderProcessingWithTax()
     {
 
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $formData = $this->createFormData($Customer, $this->Product);
+        $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         // 管理画面から受注登録
         $this->client->request(
             'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
@@ -308,17 +322,34 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     /**
      * 複数配送用受注編集用フォーム作成.
      *
-     * FIXME Order と Shippings の整合性を合わせる必要がある
+     * createFormData() との違いは、 $Shipping[N]['ShipmentItems'] がフォームに追加されている.
+     * OrderDetails は、 $Shippings[N]['ShipmentItems] から生成される.
      *
      * @param Customer $Customer
-     * @param Product $Product
      * @param array $Shippings お届け先情報の配列
      * @return array
      */
-    public function createFormData(Customer $Customer, Product $Product, array $Shippings = array())
+    public function createFormDataForMultiple(Customer $Customer, array $Shippings)
     {
-        $formData = parent::createFormData($Customer, $Product);
+        $formData = parent::createFormData($Customer, null);
         $formData['Shippings'] = $Shippings;
+        $OrderDetails = array();
+        foreach ($Shippings as $Shipping) {
+            foreach ($Shipping['ShipmentItems'] as $Item) {
+                if (empty($OrderDetails[$Item['ProductClass']])) {
+                    $OrderDetails[$Item['ProductClass']] = array(
+                        'Product' => $Item['Product'],
+                        'ProductClass' => $Item['ProductClass'],
+                        'price' => $Item['price'],
+                        'quantity' => $Item['quantity'],
+                        'tax_rate' => 8 // XXX ハードコーディング
+                    );
+                } else {
+                    $OrderDetails[$Item['ProductClass']]['quantity'] += $Item['quantity'];
+                }
+            }
+        }
+        $formData['OrderDetails'] = array_values($OrderDetails);
         return $formData;
     }
 

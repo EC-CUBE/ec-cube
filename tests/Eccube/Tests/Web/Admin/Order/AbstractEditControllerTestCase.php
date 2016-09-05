@@ -23,14 +23,65 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
      * @param Product $Product
      * @return array
      */
-    public function createFormData(Customer $Customer, Product $Product)
+    public function createFormData(Customer $Customer, Product $Product = null)
     {
-        $ProductClasses = $Product->getProductClasses();
         $faker = $this->getFaker();
         $tel = explode('-', $faker->phoneNumber);
 
         $email = $faker->safeEmail;
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
+
+        $OrderDetails = array();
+        if (is_object($Product)) {
+            $ProductClasses = $Product->getProductClasses();
+            $OrderDetails[] = array(
+                'Product' => $Product->getId(),
+                'ProductClass' => $ProductClasses[0]->getId(),
+                'price' => $ProductClasses[0]->getPrice02(),
+                'quantity' => $faker->randomNumber(2),
+                'tax_rate' => 8 // XXX ハードコーディング
+            );
+        }
+
+        $Shippings = array(
+            array(
+                'name' => array(
+                    'name01' => $faker->lastName,
+                    'name02' => $faker->firstName,
+                ),
+                'kana' => array(
+                    'kana01' => $faker->lastKanaName,
+                    'kana02' => $faker->firstKanaName,
+                ),
+                'company_name' => $faker->company,
+                'zip' => array(
+                    'zip01' => $faker->postcode1(),
+                    'zip02' => $faker->postcode2(),
+                ),
+                'address' => array(
+                    'pref' => $faker->numberBetween(1, 47),
+                    'addr01' => $faker->city,
+                    'addr02' => $faker->streetAddress,
+                ),
+                'tel' => array(
+                    'tel01' => $tel[0],
+                    'tel02' => $tel[1],
+                    'tel03' => $tel[2],
+                ),
+                'fax' => array(
+                    'fax01' => $tel[0],
+                    'fax02' => $tel[1],
+                    'fax03' => $tel[2],
+                ),
+                'Delivery' => 1, // XXX ハードコーディング
+                'DeliveryTime' => 1, // XXX ハードコーディング
+                'shipping_delivery_date' => array(
+                    'year' => $delivery_date->format('Y'),
+                    'month' => $delivery_date->format('n'),
+                    'day' => $delivery_date->format('j')
+                )
+            )
+        );
 
         $order = array(
             '_token' => 'dummy',
@@ -71,54 +122,8 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'delivery_fee_total' => 0,
             'charge' => 0,
             'note' => $faker->text,
-            'OrderDetails' => array(
-                array(
-                    'Product' => $Product->getId(),
-                    'ProductClass' => $ProductClasses[0]->getId(),
-                    'price' => $ProductClasses[0]->getPrice02(),
-                    'quantity' => 1,
-                    'tax_rate' => 8 // XXX ハードコーディング
-                )
-            ),
-            'Shippings' => array(
-                array(
-                    'name' => array(
-                        'name01' => $faker->lastName,
-                        'name02' => $faker->firstName,
-                    ),
-                    'kana' => array(
-                        'kana01' => $faker->lastKanaName,
-                        'kana02' => $faker->firstKanaName,
-                    ),
-                    'company_name' => $faker->company,
-                    'zip' => array(
-                        'zip01' => $faker->postcode1(),
-                        'zip02' => $faker->postcode2(),
-                    ),
-                    'address' => array(
-                        'pref' => $faker->numberBetween(1, 47),
-                        'addr01' => $faker->city,
-                        'addr02' => $faker->streetAddress,
-                    ),
-                    'tel' => array(
-                        'tel01' => $tel[0],
-                        'tel02' => $tel[1],
-                        'tel03' => $tel[2],
-                    ),
-                    'fax' => array(
-                        'fax01' => $tel[0],
-                        'fax02' => $tel[1],
-                        'fax03' => $tel[2],
-                    ),
-                    'Delivery' => 1, // XXX ハードコーディング
-                    'DeliveryTime' => 1, // XXX ハードコーディング
-                    'shipping_delivery_date' => array(
-                        'year' => $delivery_date->format('Y'),
-                        'month' => $delivery_date->format('n'),
-                        'day' => $delivery_date->format('j')
-                    )
-                )
-            )
+            'OrderDetails' => $OrderDetails,
+            'Shippings' => $Shippings
         );
         return $order;
     }
