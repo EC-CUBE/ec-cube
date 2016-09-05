@@ -1167,71 +1167,43 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     }
 
     /**
+     * Max address need to test
      * Test add multi shipping
      */
-    public function testAddMultiShippingThreeAddressesThreeItemsOnScreen()
+    public function testAddMultiShippingExceedNAddress()
     {
+        // Max address need to test
+        $maxAddress = 25;
+
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
-
+        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => $maxAddress));
         $this->scenarioCartIn($client);
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($client);
+        $this->scenarioConfirm($client);
 
-        // Address 1
-        $CustomerAddress = $this->createCustomerAddress($User);
-        $User->addCustomerAddress($CustomerAddress);
+        for ($i = 0; $i < $maxAddress; $i++) {
+            $CustomerAddress = $this->createCustomerAddress($User);
+            $User->addCustomerAddress($CustomerAddress);
+        }
 
-        // Address 2
-        $CustomerAddress = $this->createCustomerAddress($User);
-        $User->addCustomerAddress($CustomerAddress);
+        $crawler = $client->request('GET', $this->app->path('shopping_shipping_multiple'));
 
-        // Address 3
-        $CustomerAddress = $this->createCustomerAddress($User);
-        $User->addCustomerAddress($CustomerAddress);
-
-        $arrCustomerAddress = $User->getCustomerAddresses();
-        $secondCustomerAddress = $arrCustomerAddress->next();
-
+        $shipping = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
+            function ($node, $i) {
+                return array(
+                    'customer_address' => $node->attr('value'),
+                    'quantity' => 1
+                );
+            }
+        );
         $multiForm = array(
             '_token' => 'dummy',
             'shipping_multiple' => array(
                 array(
-                    'shipping' => array(
-                        array(
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ),
-                        array(
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
-                        ),
-                    ),
-                ),
-                array(
-                    'shipping' => array(
-                        array(
-                            'customer_address' => $arrCustomerAddress->last()->getId(),
-                            'quantity' => 1,
-                        ),
-                        array(
-                            'customer_address' => $arrCustomerAddress->first()->getId(),
-                            'quantity' => 1,
-                        ),
-                    ),
-                ),
-                array(
-                    'shipping' => array(
-                        array(
-                            'customer_address' => $secondCustomerAddress->getId(),
-                            'quantity' => 1,
-                        ),
-                    ),
+                    'shipping' => $shipping
                 ),
             ),
         );
@@ -1247,9 +1219,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Order = $this->app['eccube.repository.order']->findOneBy(array('Customer' => $User));
         $Shipping = $Order->getShippings();
 
-        // Three shipping
         $this->actual = count($Shipping);
-        $this->expected = count($arrCustomerAddress);
+        $this->expected = $maxAddress + 1;
         $this->verify();
 
         // 確認画面
@@ -1259,4 +1230,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $lastShipping = $crawler->filter('.is-edit h3')->last()->text();
         $this->assertContains((string)$this->expected, $lastShipping);
     }
+
+
 }
