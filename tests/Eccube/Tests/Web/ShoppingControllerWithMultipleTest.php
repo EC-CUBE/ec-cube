@@ -684,6 +684,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
+
         // お届け先指定画面
         $shippingUrl = $crawler->filter('a.btn-shipping')->attr('href');
         $this->scenarioComplete($client, $shippingUrl);
@@ -1163,5 +1164,99 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->actual = count($Shipping);
         $this->expected = count($arrCustomerAddress);
         $this->verify();
+    }
+
+    /**
+     * Test add multi shipping
+     */
+    public function testAddMultiShippingThreeAddressesThreeItemsOnScreen()
+    {
+        $User = $this->logIn();
+        $client = $this->client;
+
+        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
+        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
+        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
+
+        $this->scenarioCartIn($client);
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        // Address 1
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+
+        // Address 2
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+
+        // Address 3
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+
+        $arrCustomerAddress = $User->getCustomerAddresses();
+        $secondCustomerAddress = $arrCustomerAddress->next();
+
+        $multiForm = array(
+            '_token' => 'dummy',
+            'shipping_multiple' => array(
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $secondCustomerAddress->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $client->request(
+            'POST',
+            $this->app->url('shopping_shipping_multiple'),
+            array("form" => $multiForm)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        $Order = $this->app['eccube.repository.order']->findOneBy(array('Customer' => $User));
+        $Shipping = $Order->getShippings();
+
+        // Three shipping
+        $this->actual = count($Shipping);
+        $this->expected = count($arrCustomerAddress);
+        $this->verify();
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        // shipping number on the screen
+        $lastShipping = $crawler->filter('.is-edit h3')->last()->text();
+        $this->assertContains((string)$this->expected, $lastShipping);
     }
 }
