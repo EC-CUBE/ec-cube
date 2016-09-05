@@ -92,7 +92,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
             'DELETE',
             $this->app->path('admin_customer_delete', array('id' => $Customer->getId()))
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_customer')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_customer_page', array('page_no' => 1)).'?resume=1'));
 
         $expected = array(
             EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE,

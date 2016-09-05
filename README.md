@@ -4,6 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/lg3uh1539cwln2g6?svg=true)](https://ci.appveyor.com/project/ECCUBE/ec-cube)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/EC-CUBE/ec-cube/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/EC-CUBE/ec-cube/badge.svg?branch=master)](https://coveralls.io/github/EC-CUBE/ec-cube?branch=master)
   
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/EC-CUBE/ec-cube?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 

@@ -50,8 +50,13 @@ class SecurityController extends AbstractController
                 // 現在のセキュリティ情報を更新
                 $adminRoot = $app['config']['admin_route'];
 
-                $configFile = $app['config']['root_dir'] . '/app/config/eccube/config.yml';
-                $config = Yaml::parse(file_get_contents($configFile));
+                $configFile = $app['config']['root_dir'].'/app/config/eccube/config';
+                if (file_exists($configFile.'.php')) {
+                    $config = require $configFile.'.php';
+                } elseif (file_exists($configFile.'.yml')) {
+                    $config = Yaml::parse(file_get_contents($configFile.'.yml'));
+                }
+
                 // trim処理
                 $allowHost = Str::convertLineFeed($data['admin_allow_host']);
                 if (empty($allowHost)) {
@@ -76,15 +81,31 @@ class SecurityController extends AbstractController
                 $form = $builder->getForm();
                 $form->setData($data);
 
-                file_put_contents($configFile, Yaml::dump($config));
+                if (file_exists($configFile.'.php')) {
+                    file_put_contents($configFile.'.php', sprintf('<?php return %s', var_export($config, true)).';');
+                }
+                if (file_exists($configFile.'.yml')) {
+                    file_put_contents($configFile.'.yml', Yaml::dump($config));
+                }
 
                 if ($adminRoot != $data['admin_route_dir']) {
-                    // admin_routeが変更されればpath.ymlを更新
-                    $pathFile = $app['config']['root_dir'] . '/app/config/eccube/path.yml';
-                    $config = Yaml::parse(file_get_contents($pathFile));
+                    // admin_routeが変更されればpath.(yml|php)を更新
+                    $pathFile = $app['config']['root_dir'].'/app/config/eccube/path';
+
+                    if (file_exists($pathFile.'.php')) {
+                        $config = require $pathFile.'.php';
+                    } elseif (file_exists($pathFile.'.yml')) {
+                        $config = Yaml::parse(file_get_contents($pathFile.'.yml'));
+                    }
+
                     $config['admin_route'] = $data['admin_route_dir'];
 
-                    file_put_contents($pathFile, Yaml::dump($config));
+                    if (file_exists($pathFile.'.php')) {
+                        file_put_contents($pathFile.'.php', sprintf('<?php return %s', var_export($config, true)).';');
+                    }
+                    if (file_exists($pathFile.'.yml')) {
+                        file_put_contents($pathFile.'.yml', Yaml::dump($config));
+                    }
 
                     $app->addSuccess('admin.system.security.route.dir.complete', 'admin');
 
@@ -92,7 +113,7 @@ class SecurityController extends AbstractController
                     $this->getSecurity($app)->setToken(null);
 
                     // 管理者画面へ再ログイン
-                    return $app->redirect($request->getBaseUrl() . '/' . $config['admin_route']);
+                    return $app->redirect($request->getBaseUrl().'/'.$config['admin_route']);
                 }
 
                 $app->addSuccess('admin.system.security.save.complete', 'admin');

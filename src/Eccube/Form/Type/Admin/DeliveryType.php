@@ -115,7 +115,6 @@ class DeliveryType extends AbstractType
                     $form['payments']->addError(new FormError('支払方法を選択してください。'));
                 }
             })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

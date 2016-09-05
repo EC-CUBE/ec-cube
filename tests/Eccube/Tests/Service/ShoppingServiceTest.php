@@ -126,7 +126,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->actual = $Customer->getEmail();
         $this->verify('セッションのメールアドレスが一致するか');
 
-        $this->expected = 1;
+        $this->expected = $NonMember->getPref()->getId();
         $this->actual = $Customer->getPref()->getId();
         $this->verify('都道府県IDが一致するか');
     }

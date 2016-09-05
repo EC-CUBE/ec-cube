@@ -70,7 +70,7 @@ class AuthorityiControllerTest extends AbstractAdminWebTestCase
 
     private function newTestAuthorityRole()
     {
-        $TestCreator = $this->app['eccube.repository.member']->find(1);
+        $TestCreator = $this->createMember();
         $AuthorityRole = new \Eccube\Entity\AuthorityRole();
         $Authority = $this->app['eccube.repository.master.authority']->find(0);
         $AuthorityRole->setAuthority($Authority);

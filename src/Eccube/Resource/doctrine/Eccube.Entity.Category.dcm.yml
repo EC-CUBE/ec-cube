@@ -57,11 +57,4 @@ Eccube\Entity\Category:
             mappedBy: Parent
             orderBy:
                 rank: DESC
-    oneToOne:
-        CategoryCount:
-            targetEntity: CategoryCount
-            mappedBy: Category
-        CategoryTotalCount:
-            targetEntity: CategoryTotalCount
-            mappedBy: Category
     lifecycleCallbacks: {  }
