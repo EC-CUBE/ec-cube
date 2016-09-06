@@ -129,8 +129,7 @@ class ShippingItemType extends AbstractType
                 } else {
                     $data->setShippingDeliveryDate(null);
                 }
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver)

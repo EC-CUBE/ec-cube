@@ -57,13 +57,15 @@ class MasterdataController extends AbstractController
                     $masterdata = $app['orm.em']->getRepository($data['masterdata'])->findBy(array(), array('rank' => 'ASC'));
 
                     foreach ($masterdata as $value) {
-                        $data['data'][$value['rank']]['id'] = $value['id'];
-                        $data['data'][$value['rank']]['name'] = $value['name'];
+                        $data['data'][$value['id']]['id'] = $value['id'];
+                        $data['data'][$value['id']]['name'] = $value['name'];
                     }
 
                     // 新規登録様に空のデータを追加する。
-                    $data['data'][]['id'] = '';
-                    $data['data'][]['name'] = '';
+                    $data['data'][] = array(
+                        'id' => '',
+                        'name' => '',
+                    );
 
                     // hidden値
                     $data['masterdata_name'] = $data['masterdata'];
@@ -119,15 +121,16 @@ class MasterdataController extends AbstractController
                 $data = $form2->getData();
 
                 $entity = new $data['masterdata_name']();
+                $rank = 0;
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
-                        $entity->setRank($key);
+                        $entity->setRank($rank++);
                         $app['orm.em']->merge($entity);
                     } else {
                         // remove
-                        $delKey = $app['orm.em']->getRepository($data['masterdata_name'])->findOneBy(array('rank' => $key));
+                        $delKey = $app['orm.em']->getRepository($data['masterdata_name'])->find($key);
                         if ($delKey) {
                             $app['orm.em']->remove($delKey);
                         }

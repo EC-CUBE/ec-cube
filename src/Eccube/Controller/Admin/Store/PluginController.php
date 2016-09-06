@@ -36,6 +36,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\FormError;
+use Monolog\Logger;
 
 class PluginController extends AbstractController
 {
@@ -383,6 +385,10 @@ class PluginController extends AbstractController
                     ));
                     $errors[] = $e;
                 }
+            } else {
+                foreach ($form->getErrors(true) as $error) {
+                    $errors[] = $error;
+                }
             }
         }
 
@@ -677,19 +683,34 @@ class PluginController extends AbstractController
         $curl = curl_init($url);
         $fileName = $app['config']['root_dir'].'/app/config/eccube/'.$this->certFileName;
         $fp = fopen($fileName, 'w');
+        if ($fp === false) {
+            $app->addError('admin.plugin.download.pem.error', 'admin');
+            $app->log('Cannot fopen to '.$fileName, array(), Logger::ERROR);
+            return $app->redirect($app->url('admin_store_authentication_setting'));
+        }
 
         curl_setopt($curl, CURLOPT_FILE, $fp);
         curl_setopt($curl, CURLOPT_HEADER, 0);
 
-        curl_exec($curl);
+        $results = curl_exec($curl);
+        $error = curl_error($curl);
         curl_close($curl);
+
+        // curl で取得できない場合は file_get_contents で取得を試みる
+        if ($results === false) {
+            $file = file_get_contents($url);
+            if ($file !== false) {
+                fwrite($fp, $file);
+            }
+        }
         fclose($fp);
 
         $f = new Filesystem();
-        if ($f->exists($fileName)) {
+        if ($f->exists($fileName) && filesize($fileName) > 0) {
             $app->addSuccess('admin.plugin.download.pem.complete', 'admin');
         } else {
             $app->addError('admin.plugin.download.pem.error', 'admin');
+            $app->log('curl_error: '.$error, array(), Logger::ERROR);
         }
 
         return $app->redirect($app->url('admin_store_authentication_setting'));

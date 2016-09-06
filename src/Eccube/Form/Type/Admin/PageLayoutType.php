@@ -24,10 +24,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\EntityRepository;
 
 class PageLayoutType extends AbstractType
 {
@@ -47,8 +47,7 @@ class PageLayoutType extends AbstractType
                         ->where('l.id <> 0')
                         ->orderBy('l.id', 'ASC');
                 },
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**
