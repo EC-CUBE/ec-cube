@@ -331,7 +331,7 @@ class Generator {
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
-        $Pref = $this->app['eccube.repository.master.pref']->find(1);
+        $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
         $Order = new Order($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']));
         $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
@@ -341,12 +341,23 @@ class Generator {
         if (!is_object($Delivery)) {
             $Delivery = $this->createDelivery();
         }
-
+        $DeliveryFee = $this->app['eccube.repository.delivery_fee']->findOneBy(
+            array(
+                'Delivery' => $Delivery, 'Pref' => $Pref
+            )
+        );
+        $fee = 0;
+        if (is_object($DeliveryFee)) {
+            $fee = $DeliveryFee->getFee();
+        }
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
             ->setPref($Pref)
-            ->setDelivery($Delivery);
+            ->setDelivery($Delivery)
+            ->setDeliveryFee($DeliveryFee)
+            ->setShippingDeliveryFee($fee)
+            ->setShippingDeliveryName($Delivery->getName());
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
         $this->app['orm.em']->persist($Shipping);
