@@ -7,6 +7,8 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
+use Eccube\Entity\DeliveryTime;
+use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Payment;
@@ -325,7 +327,7 @@ class Generator {
      * @param array $ProductClasses 明細行となる ProductClass の配列
      * @return \Eccube\Entity\Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = array())
+    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
@@ -336,8 +338,10 @@ class Generator {
         $Order->setPref($Pref);
         $this->app['orm.em']->persist($Order);
         $this->app['orm.em']->flush($Order);
+        if (!is_object($Delivery)) {
+            $Delivery = $this->createDelivery();
+        }
 
-        $Delivery = $this->app['eccube.repository.delivery']->find(1);
         $Shipping = new Shipping();
         $Shipping->copyProperties($Customer);
         $Shipping
@@ -353,7 +357,6 @@ class Generator {
             $ProductClasses = $Product->getProductClasses();
         }
 
-        $subTotal = 0;
         foreach ($ProductClasses as $ProductClass) {
             $Product = $ProductClass->getProduct();
             $OrderDetail = new OrderDetail();
@@ -383,13 +386,19 @@ class Generator {
             $Shipping->addShipmentItem($ShipmentItem);
             $this->app['orm.em']->persist($ShipmentItem);
             $this->app['orm.em']->flush($ShipmentItem);
-            $subTotal += $OrderDetail->getPriceIncTax() * $OrderDetail->getQuantity();
         }
 
-        // TODO 送料, 手数料の加算
+        $subTotal = $Order->calculateSubTotal();
+        // TODO 送料無料条件は考慮していない. 必要であれば Order から再集計すること.
+        $Order->setDeliveryFeeTotal($Shipping->getShippingDeliveryFee());
         $Order->setSubTotal($subTotal);
-        $Order->setTotal($subTotal);
-        $Order->setPaymentTotal($subTotal);
+
+        $total = $Order->getTotalPrice();
+        $Order->setTotal($total);
+        $Order->setPaymentTotal($total);
+
+        $tax = $Order->calculateTotalTax();
+        $Order->setTax($tax);
 
         $this->app['orm.em']->flush($Order);
         return $Order;
@@ -429,7 +438,61 @@ class Generator {
 
         $this->app['orm.em']->persist($PaymentOption);
         $this->app['orm.em']->flush($PaymentOption);
+
+        $Delivery->addPaymentOption($PaymentOption);
+        $this->app['orm.em']->flush($Delivery);
         return $Payment;
+    }
+
+    /**
+     * 配送方法を生成する.
+     *
+     * @param integer $delivery_time_max_pattern 配送時間の最大パターン数
+     * @return Delivery
+     */
+    public function createDelivery($delivery_time_max_pattern = 5)
+    {
+        $Member = $this->app['eccube.repository.member']->find(2);
+        $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
+        $faker = $this->getFaker();
+        $Delivery = new Delivery();
+        $Delivery
+            ->setServiceName($faker->word)
+            ->setName($faker->word)
+            ->setDescription($faker->paragraph())
+            ->setConfirmUrl($faker->url)
+            ->setRank($faker->randomNumber(2))
+            ->setCreator($Member)
+            ->setProductType($ProductType)
+            ->setDelFlg(Constant::DISABLED);
+        $this->app['orm.em']->persist($Delivery);
+        $this->app['orm.em']->flush($Delivery);
+
+        $delivery_time_patten = $faker->numberBetween(0, $delivery_time_max_pattern);
+        for ($i = 0; $i < $delivery_time_patten; $i++) {
+            $DeliveryTime = new DeliveryTime();
+            $DeliveryTime
+                ->setDelivery($Delivery)
+                ->setDeliveryTime($faker->word);
+            $this->app['orm.em']->persist($DeliveryTime);
+            $this->app['orm.em']->flush($DeliveryTime);
+            $Delivery->addDeliveryTime($DeliveryTime);
+        }
+
+        $Prefs = $this->app['eccube.repository.master.pref']->findAll();
+        foreach ($Prefs as $Pref) {
+            $DeliveryFee = new DeliveryFee();
+            $DeliveryFee
+                ->setFee($faker->randomNumber(4))
+                ->setPref($Pref)
+                ->setDelivery($Delivery);
+            $this->app['orm.em']->persist($DeliveryFee);
+            $this->app['orm.em']->flush($DeliveryFee);
+            $Delivery->addDeliveryFee($DeliveryFee);
+        }
+
+        $this->app['orm.em']->flush($Delivery);
+        return $Delivery;
     }
 
     /**
