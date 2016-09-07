@@ -325,9 +325,12 @@ class Generator {
      *
      * @param \Eccube\Entity\Customer $Customer Customer インスタンス
      * @param array $ProductClasses 明細行となる ProductClass の配列
+     * @param \Eccube\Entity\Delivery $Delivery Delivery インスタンス
+     * @param integer $add_charge Order に加算される手数料
+     * @param integer $add_discount Order に加算される値引き額
      * @return \Eccube\Entity\Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null)
+    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
@@ -403,6 +406,9 @@ class Generator {
         // TODO 送料無料条件は考慮していない. 必要であれば Order から再集計すること.
         $Order->setDeliveryFeeTotal($Shipping->getShippingDeliveryFee());
         $Order->setSubTotal($subTotal);
+
+        $Order->setCharge($Order->getCharge() + $add_charge);
+        $Order->setDiscount($Order->getDiscount() + $add_discount);
 
         $total = $Order->getTotalPrice();
         $Order->setTotal($total);
