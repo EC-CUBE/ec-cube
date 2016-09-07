@@ -160,16 +160,6 @@ class Category extends \Eccube\Entity\AbstractEntity
     private $del_flg;
 
     /**
-     * @var \Eccube\Entity\CategoryCount
-     */
-    private $CategoryCount;
-
-    /**
-     * @var \Eccube\Entity\CategoryTotalCount
-     */
-    private $CategoryTotalCount;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $ProductCategories;
@@ -344,52 +334,6 @@ class Category extends \Eccube\Entity\AbstractEntity
     public function getDelFlg()
     {
         return $this->del_flg;
-    }
-
-    /**
-     * Set CategoryCount
-     *
-     * @param  \Eccube\Entity\CategoryCount $categoryCount
-     * @return Category
-     */
-    public function setCategoryCount(\Eccube\Entity\CategoryCount $categoryCount = null)
-    {
-        $this->CategoryCount = $categoryCount;
-
-        return $this;
-    }
-
-    /**
-     * Get CategoryCount
-     *
-     * @return \Eccube\Entity\CategoryCount
-     */
-    public function getCategoryCount()
-    {
-        return $this->CategoryCount;
-    }
-
-    /**
-     * Set CategoryTotalCount
-     *
-     * @param  \Eccube\Entity\CategoryTotalCount $categoryTotalCount
-     * @return Category
-     */
-    public function setCategoryTotalCount(\Eccube\Entity\CategoryTotalCount $categoryTotalCount = null)
-    {
-        $this->CategoryTotalCount = $categoryTotalCount;
-
-        return $this;
-    }
-
-    /**
-     * Get CategoryTotalCount
-     *
-     * @return \Eccube\Entity\CategoryTotalCount
-     */
-    public function getCategoryTotalCount()
-    {
-        return $this->CategoryTotalCount;
     }
 
     /**

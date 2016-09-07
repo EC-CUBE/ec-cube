@@ -26,8 +26,8 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class LoginType extends AbstractType
@@ -60,8 +60,7 @@ class LoginType extends AbstractType
             'constraints' => array(
                 new Assert\NotBlank(),
             ),
-        ))
-        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        ));
     }
 
     /**

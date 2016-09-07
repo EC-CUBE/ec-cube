@@ -126,8 +126,7 @@ class CustomerType extends AbstractType
             ->add('note', 'textarea', array(
                 'required' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ->add('save', 'submit', array('label' => 'この内容で登録する'));
     }
 
     /**

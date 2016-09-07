@@ -44,8 +44,7 @@ class ForgotType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\Email(array('strict' => true)),
             ),
-        ))
-        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        ));
     }
 
     /**

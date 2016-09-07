@@ -65,7 +65,6 @@ class CustomerLoginType extends AbstractType
                 new Assert\NotBlank(),
             ),
         ));
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
