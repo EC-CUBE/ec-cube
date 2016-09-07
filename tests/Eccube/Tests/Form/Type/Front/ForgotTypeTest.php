@@ -52,7 +52,17 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             ),
             array(
                 'data' => array(
-                    'login_email' => 'a@a' // strict mode にしたら変わる
+                    'login_email' => 'a..a@aa'
+                ),
+            ),
+            array(
+                'data' => array(
+                    'login_email' => 'aa.@aa'
+                ),
+            ),
+            array(
+                'data' => array(
+                    'login_email' => 'aa@adf@a.com'
                 ),
             ),
         );
