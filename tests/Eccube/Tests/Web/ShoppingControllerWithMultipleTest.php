@@ -209,9 +209,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      */
     public function testAddMultiShippingOneAddressOneItemTwoQuantities()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
-
         $User = $this->logIn();
         $client = $this->client;
 
@@ -273,9 +270,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      */
     public function testAddMultiShippingOneAddressTwoItems()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
-
         $User = $this->logIn();
         $client = $this->client;
 
@@ -350,9 +344,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      */
     public function testAddMultiShippingTwoAddressesTwoItemsOneAndTwoQuantities()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
-
         $User = $this->logIn();
         $client = $this->client;
 
@@ -426,9 +417,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
      */
     public function testAddMultiShippingTwoAddressesTwoItemsEachTwoQuantities()
     {
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionMultipleShipping(Constant::ENABLED);
-
         $User = $this->logIn();
         $client = $this->client;
 

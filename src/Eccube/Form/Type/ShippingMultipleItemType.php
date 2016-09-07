@@ -115,18 +115,13 @@ class ShippingMultipleItemType extends AbstractType
                 }
 
                 $quantity = 0;
-                $Order = $data->getOrder();
-                $shippings = $Order->getShippings();
-                if (count($shippings) > 1) {
-                    // お届け先を複数に分割していた場合、登録されている個数を設定
-                    foreach ($data->getShipmentItems() as $ShipmentItem) {
-                        // check item distinct for each quantity
-                        if ($data->getProductClass()->getId() == $ShipmentItem->getProductClass()->getId()) {
-                            $quantity += $ShipmentItem->getQuantity();
-                        }
+                // Check all shipment items
+                foreach ($data->getShipmentItems() as $ShipmentItem) {
+                    // Check item distinct for each quantity
+                    if ($data->getProductClassOfTemp()->getId() == $ShipmentItem->getProductClass()->getId()) {
+                        $quantity += $ShipmentItem->getQuantity();
                     }
                 }
-
                 $form['quantity']->setData($quantity);
 
             });

@@ -199,7 +199,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Eccube\Entity\ProductClass
      */
-    private $ProductClass;
+    private $ProductClassOfTemp;
 
     /**
      * Constructor
@@ -1039,19 +1039,19 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      * Product class of shipment item (temp)
      * @return \Eccube\Entity\ProductClass
      */
-    public function getProductClass()
+    public function getProductClassOfTemp()
     {
-        return $this->ProductClass;
+        return $this->ProductClassOfTemp;
     }
 
     /**
      * Product class of shipment item (temp)
-     * @param \Eccube\Entity\ProductClass $ProductClass
+     * @param \Eccube\Entity\ProductClass $ProductClassOfTemp
      * @return $this
      */
-    public function setProductClass(\Eccube\Entity\ProductClass $ProductClass)
+    public function setProductClassOfTemp(\Eccube\Entity\ProductClass $ProductClassOfTemp)
     {
-        $this->ProductClass = $ProductClass;
+        $this->ProductClassOfTemp = $ProductClassOfTemp;
 
         return $this;
     }

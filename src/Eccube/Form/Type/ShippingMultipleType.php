@@ -61,7 +61,7 @@ class ShippingMultipleType extends AbstractType
 
                 // Add product class for each shipping on view
                 foreach ($shippings as $key => $shipping) {
-                    $shippingTmp = clone $shipping->setProductClass($data->getProductClass());
+                    $shippingTmp = clone $shipping->setProductClassOfTemp($data->getProductClass());
                     $shippings[$key] = $shippingTmp;
                 }
                 $form

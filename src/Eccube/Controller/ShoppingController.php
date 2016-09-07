@@ -1182,7 +1182,7 @@ class ShoppingController extends AbstractController
                         } else {
                             // Has been shipping check
                             if (array_key_exists($cusAddId = $data, $arrCusAddTmp)) {
-                                // 非会員の場合、選択されたindexが取得される
+                                // 非会員の場合、data には選択した index が入ってくる
                                 $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
                                 $customerAddresses = unserialize($customerAddresses);
                                 $CustomerAddress = $customerAddresses[$data];
