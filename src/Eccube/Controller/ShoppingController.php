@@ -1185,7 +1185,7 @@ class ShoppingController extends AbstractController
                                 // 非会員の場合、data には選択した index が入ってくる
                                 $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
                                 $customerAddresses = unserialize($customerAddresses);
-                                $CustomerAddress = $customerAddresses[$data];
+                                $CustomerAddress = $customerAddresses[$cusAddId];
                                 $pref = $app['eccube.repository.master.pref']->find($CustomerAddress->getPref()->getId());
                                 $CustomerAddress->setPref($pref);
                             }
