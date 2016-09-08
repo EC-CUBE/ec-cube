@@ -41,4 +41,28 @@ class LogControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    public function testSystemLogSubmit()
+    {
+        $formData = array(
+            '_token' => 'dummy',
+            'files' => 'test.log',
+            'line_max' => '50',
+        );
+        $logFile = $this->app['config']['root_dir'].'/app/log/'.$formData['files'];
+
+        if (!file_exists($logFile)) {
+            $files = fopen($logFile, "w");
+            fclose($files);
+        }
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_system_log'),
+            array('admin_system_log' => $formData)
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        unlink($logFile);
+    }
 }

@@ -41,4 +41,14 @@ class SystemControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    public function testInfoAdminSettingSystemSystem()
+    {
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_system_system', array('mode' => 'info'))
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }

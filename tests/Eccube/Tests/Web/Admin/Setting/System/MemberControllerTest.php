@@ -87,7 +87,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         // main
         $redirectUrl = $this->app->url('admin_setting_system_member');
         $this->client->request('DELETE',
-            $this->app->url('admin_setting_system_member_delete',array('id' => $test_member_id))
+            $this->app->url('admin_setting_system_member_delete', array('id' => $test_member_id))
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
@@ -144,7 +144,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         // $this->app['orm.em']->flush();
     }
 
-    private function newTestMember()
+    private function newTestMember($loginId = 'takahashi')
     {
         $Authority = $this->app['orm.em']
             ->getRepository('\Eccube\Entity\Master\Authority')
@@ -152,17 +152,262 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $Work = $this->app['orm.em']
             ->getRepository('\Eccube\Entity\Master\Work')
             ->find(1);
+        // Get rank
+        $MemberMax = $this->app['eccube.repository.member']->findOneBy(array(), array('rank' => 'DESC'));
+        $rank = 2;
+        if ($MemberMax) {
+            $rank = $MemberMax->getRank() + 1;
+        }
+
         $TestMember = new \Eccube\Entity\Member();
         $TestMember->setName('takahashi')
             ->setDepartment('EC-CUBE事業部')
-            ->setLoginId('takahashi')
+            ->setLoginId($loginId)
             ->setPassword('password')
-            ->setRank(100)
+            ->setRank($rank)
             ->setDelFlg(false)
             ->setSalt('abcdefg')
             ->setAuthority($Authority)
             ->setWork($Work);
 
         return $TestMember;
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function testMemberEditFail()
+    {
+        // before
+        $test_member_id = 99999;
+
+        // main
+        $this->client->request('GET',
+            $this->app->url('admin_setting_system_member_edit', array('id' => $test_member_id))
+        );
+        $this->fail();
+    }
+
+    public function testMemberNewSubmit()
+    {
+        // before
+        $formData = $this->createFormData();
+
+        // main
+        $this->client->request('POST',
+            $this->app->url('admin_setting_system_member_new'),
+            array(
+                'admin_member' => $formData
+            )
+        );
+
+        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $Member = $this->app['eccube.repository.member']->findOneBy(array('login_id' => $formData['login_id']));
+        $this->actual = $Member->getLoginId();
+        $this->expected = $formData['login_id'];
+        $this->verify();
+    }
+
+    public function testMemberNewSubmitFail()
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['login_id'] = '';
+        // main
+        $this->client->request('POST',
+            $this->app->url('admin_setting_system_member_new'),
+            array(
+                'admin_member' => $formData
+            )
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testMemberEditSubmit()
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['password'] = array(
+            'first' => '**********',
+            'second' => '**********',
+        );
+        $Member = $this->newTestMember();
+        $Member->setPassword('**********');
+        $this->app['orm.em']->persist($Member);
+        $this->app['orm.em']->flush();
+        $mid = $Member->getId();
+
+        // main
+        $this->client->request('POST',
+            $this->app->url('admin_setting_system_member_edit', array('id' => $mid)),
+            array(
+                'admin_member' => $formData
+            )
+        );
+
+        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $this->actual = $Member->getLoginId();
+        $this->expected = $formData['login_id'];
+        $this->verify();
+    }
+
+    public function testMemberEditSubmitFail()
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['login_id'] = '';
+        $Member = $this->newTestMember();
+        $Member->setPassword('**********');
+        $this->app['orm.em']->persist($Member);
+        $this->app['orm.em']->flush();
+        $mid = $Member->getId();
+
+        // main
+        $this->client->request('POST',
+            $this->app->url('admin_setting_system_member_edit', array('id' => $mid)),
+            array(
+                'admin_member' => $formData
+            )
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function testMemberUpNotFoundMember()
+    {
+        // before
+        $mid = 9999;
+
+        // main
+        $this->client->request('PUT',
+            $this->app->url('admin_setting_system_member_up', array('id' => $mid))
+        );
+        $this->fail();
+    }
+
+    public function testMemberUpSuccess()
+    {
+        // before
+        $MemberOne = $this->newTestMember('test1');
+        $this->app['orm.em']->persist($MemberOne);
+        $this->app['orm.em']->flush();
+        $MemberTwo = $this->newTestMember('test2');
+        $this->app['orm.em']->persist($MemberTwo);
+        $this->app['orm.em']->flush();
+
+        $oldRank = $MemberOne->getRank();
+        $newRank = $MemberTwo->getRank();
+        $mid = $MemberOne->getId();
+        // main
+        $this->client->request('PUT',
+            $this->app->url('admin_setting_system_member_up', array('id' => $mid))
+        );
+
+        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $this->actual = array($MemberOne->getRank(), $MemberTwo->getRank());
+        $this->expected = array($newRank, $oldRank);
+        $this->verify();
+    }
+
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function testMemberDownNotFoundMember()
+    {
+        // before
+        $mid = 9999;
+
+        // main
+        $this->client->request('PUT',
+            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+        );
+        $this->fail();
+    }
+
+    public function testMemberDownFail()
+    {
+        // before
+        $Member = $this->app['eccube.repository.member']->findOneBy(array('rank' => 1));
+        $mid = $Member->getId();
+        $oldRank = $Member->getRank();
+        // main
+        $this->client->request('PUT',
+            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+        );
+
+        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $this->actual = $Member->getRank();
+        $this->expected = $oldRank;
+        $this->verify();
+    }
+
+    public function testMemberDownSuccess()
+    {
+        // before
+        $MemberOne = $this->newTestMember('test1');
+        $this->app['orm.em']->persist($MemberOne);
+        $this->app['orm.em']->flush();
+        $MemberTwo = $this->newTestMember('test2');
+        $this->app['orm.em']->persist($MemberTwo);
+        $this->app['orm.em']->flush();
+
+        $oldRank = $MemberOne->getRank();
+        $newRank = $MemberTwo->getRank();
+        $mid = $MemberTwo->getId();
+        // main
+        $this->client->request('PUT',
+            $this->app->url('admin_setting_system_member_down', array('id' => $mid))
+        );
+
+        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $this->actual = array($MemberOne->getRank(), $MemberTwo->getRank());
+        $this->expected = array($newRank, $oldRank);
+        $this->verify();
+    }
+
+    public function testMemberDeleteIdNotFound()
+    {
+        // before
+        $mid = 99999;
+        // main
+        $this->client->request('DELETE',
+            $this->app->url('admin_setting_system_member_delete', array('id' => $mid))
+        );
+
+        $redirectUrl = $this->app->url('admin_setting_system_member');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+    }
+
+    protected function createFormData()
+    {
+        $faker = $this->getFaker();
+        $formData = array(
+            '_token' => 'dummy',
+            'name' => $faker->word,
+            'department' => $faker->word,
+            'login_id' => 'logintest',
+            'password' => array(
+                'first' => 'password',
+                'second' => 'password',
+            ),
+            'Authority' => rand(0, 1),
+            'Work' => rand(0, 1),
+        );
+
+        return $formData;
     }
 }
