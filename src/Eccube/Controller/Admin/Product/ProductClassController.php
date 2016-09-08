@@ -268,6 +268,12 @@ class ProductClassController
     public function edit(Application $app, Request $request, $id)
     {
 
+        /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
+        $softDeleteFilter = $app['orm.em']->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\TaxRule'
+        ));
+
         /** @var $Product \Eccube\Entity\Product */
         $Product = $app['eccube.repository.product']->find($id);
 
@@ -663,10 +669,11 @@ class ProductClassController
         // 個別消費税
         $BaseInfo = $app['eccube.repository.base_info']->get();
         if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
-            if($productClassOrig->getTaxRate()) {
+            if ($productClassOrig->getTaxRate() !== false && $productClassOrig->getTaxRate() !== null) {
                 $productClassDest->setTaxRate($productClassOrig->getTaxRate());
-                if ($productClassDest->getTaxRule() && !$productClassDest->getTaxRule()->getDelFlg()) {
+                if ($productClassDest->getTaxRule()) {
                     $productClassDest->getTaxRule()->setTaxRate($productClassOrig->getTaxRate());
+                    $productClassDest->getTaxRule()->setDelFlg(Constant::DISABLED);
                 } else {
                     $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();
                     $taxrule->setTaxRate($productClassOrig->getTaxRate());
@@ -721,7 +728,7 @@ class ProductClassController
             // 初期税率設定の計算方法を設定する
             $CalcRule = $TaxRule->getCalcRule();
             foreach ($ProductClasses as $ProductClass) {
-                if ($ProductClass->getTaxRate()) {
+                if ($ProductClass->getTaxRate() !== false && $ProductClass !== null) {
                     $TaxRule = new \Eccube\Entity\TaxRule();
                     $TaxRule->setProduct($Product);
                     $TaxRule->setProductClass($ProductClass);
