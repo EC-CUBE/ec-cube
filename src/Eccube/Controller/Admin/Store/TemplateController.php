@@ -69,7 +69,7 @@ class TemplateController extends AbstractController
                 if (file_exists($file.'.php')) {
                     $config = require $file.'.php';
                 } elseif (file_exists($file.'.yml')) {
-                    $config = Yaml::parse(file_get_contents($file));
+                    $config = Yaml::parse(file_get_contents($file.'.yml'));
                 }
 
                 $templateCode = $Template->getCode();
