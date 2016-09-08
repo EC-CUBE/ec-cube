@@ -239,7 +239,7 @@ class Generator {
     /**
      * Product オブジェクトを生成して返す.
      *
-     * $product_class_num = 0 としても、商品規格の無い商品を生成できない. 単に ProductClass が生成されないだけなので注意すること.
+     * $product_class_num = 0 とすると商品規格の無い商品を生成する.
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
@@ -292,6 +292,7 @@ class Generator {
         if (is_object($ClassName2)) {
             $ClassCategories2 = $this->app['eccube.repository.class_category']->findBy(array('ClassName' => $ClassName2));
         }
+
         for ($i = 0; $i < $product_class_num; $i++) {
             $ProductStock = new ProductStock();
             $ProductStock
@@ -323,6 +324,34 @@ class Generator {
             $this->app['orm.em']->flush($ProductClass);
             $Product->addProductClass($ProductClass);
         }
+
+        // デフォルトの商品規格生成
+        $ProductStock = new ProductStock();
+        $ProductStock
+            ->setCreator($Member)
+            ->setStock($faker->randomNumber(3));
+        $this->app['orm.em']->persist($ProductStock);
+        $this->app['orm.em']->flush($ProductStock);
+        $ProductClass = new ProductClass();
+        if ($product_class_num > 0) {
+            $ProductClass->setDelFlg(Constant::ENABLED);
+        } else {
+            $ProductClass->setDelFlg(Constant::DISABLED);
+        }
+        $ProductClass
+            ->setCode($faker->word)
+            ->setCreator($Member)
+            ->setStock($ProductStock->getStock())
+            ->setProductStock($ProductStock)
+            ->setProduct($Product)
+            ->setProductType($ProductType)
+            ->setPrice02($faker->randomNumber(5))
+            ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
+            ->setStockUnlimited(false)
+            ->setProduct($Product);
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->flush($ProductClass);
+        $Product->addProductClass($ProductClass);
 
         $Categories = $this->app['eccube.repository.category']->findAll();
         $i = 0;

@@ -98,7 +98,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testEditWithPost()
     {
-        $Product = $this->createProduct();
+        $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
