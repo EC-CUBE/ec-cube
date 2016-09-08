@@ -101,5 +101,25 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    public function testNew()
+    {
+        $this->client->request(
+            'GET',
+            $this->app->path('admin_customer_new')
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 
+    public function testNewWithPost()
+    {
+        $form = $this->createFormData();
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->path('admin_customer_new'),
+            array('admin_customer' => $form)
+        );
+
+        $NewCustomer = $this->app['eccube.repository.customer']->findOneBy(array('email' => $form['email']));
+        $this->assertTrue($form['email'] == $NewCustomer->getEmail());
+    }
 }

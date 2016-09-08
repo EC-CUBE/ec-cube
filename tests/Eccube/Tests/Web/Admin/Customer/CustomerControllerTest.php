@@ -12,7 +12,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $this->initializeMailCatcher();
         for ($i = 0; $i < 10; $i++) {
-            $this->createCustomer('user-'.$i.'@example.com');
+            $this->createCustomer('user-' . $i . '@example.com');
         }
         // sqlite では CsvType が生成されないので、ここで作る
         $CsvType = $this->app['eccube.repository.master.csv_type']->find(2);
@@ -41,6 +41,18 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testIndexPaging()
+    {
+        for ($i = 20; $i < 70; $i++)
+            $this->createCustomer('user-' . $i . '@example.com');
+
+        $this->client->request(
+            'GET',
+            $this->app->path('admin_customer_page',array('page_no'=>2))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
@@ -59,10 +71,27 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    public function testIndexWithPostSex()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->path('admin_customer'),
+            array(
+                'admin_search_customer' => array(
+                    '_token' => 'dummy',
+                    'sex' => 2
+                )
+            )
+        );
+        $this->expected = '検索';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->assertContains($this->expected, $this->actual);
+    }
+
     public function testResend()
     {
         $Customer = $this->createCustomer();
-        $crawler = $this->client->request(
+        $this->client->request(
             'PUT',
             $this->app->path('admin_customer_resend', array('id' => $Customer->getId()))
         );
@@ -80,7 +109,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testDelete()
     {
         $Customer = $this->createCustomer();
-        $crawler = $this->client->request(
+        $this->client->request(
             'DELETE',
             $this->app->path('admin_customer_delete', array('id' => $Customer->getId()))
         );
