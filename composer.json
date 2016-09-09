@@ -35,7 +35,7 @@
         "swiftmailer/swiftmailer": "5.*",
         "knplabs/knp-components": "*",
         "doctrine/migrations": "v1.0.0-alpha3@dev",
-        "knplabs/console-service-provider": "@dev",
+        "knplabs/console-service-provider": "v1.0",
         "nesbot/carbon": "~1.20",
         "guzzle/guzzle": "~3.9",
         "egulias/email-validator": "^1.2",
