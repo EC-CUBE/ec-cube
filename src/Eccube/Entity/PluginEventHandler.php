@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PluginEventHandler
  */
-class PluginEventHandler
+class PluginEventHandler extends AbstractEntity
 {
 
     const EVENT_PRIORITY_LATEST = -500; // ハンドラテーブルに登録されていない場合の優先度
@@ -95,7 +95,7 @@ class PluginEventHandler
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -118,7 +118,7 @@ class PluginEventHandler
     /**
      * Get event
      *
-     * @return string 
+     * @return string
      */
     public function getEvent()
     {
@@ -141,7 +141,7 @@ class PluginEventHandler
     /**
      * Get priority
      *
-     * @return \int 
+     * @return \int
      */
     public function getPriority()
     {
@@ -164,7 +164,7 @@ class PluginEventHandler
     /**
      * Get plugin_id
      *
-     * @return \int 
+     * @return \int
      */
     public function getPluginId()
     {
@@ -187,7 +187,7 @@ class PluginEventHandler
     /**
      * Get del_flg
      *
-     * @return integer 
+     * @return integer
      */
     public function getDelFlg()
     {
@@ -210,7 +210,7 @@ class PluginEventHandler
     /**
      * Get handler
      *
-     * @return string 
+     * @return string
      */
     public function getHandler()
     {
@@ -233,7 +233,7 @@ class PluginEventHandler
     /**
      * Get create_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateDate()
     {
@@ -268,7 +268,7 @@ class PluginEventHandler
     /**
      * Get update_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdateDate()
     {

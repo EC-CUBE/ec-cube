@@ -46,6 +46,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         // login
         $c->match('/login', '\Eccube\Controller\Admin\AdminController::login')->bind('admin_login');
 
+        // change password
+        $c->match('/change_password', '\Eccube\Controller\Admin\AdminController::changePassword')->bind('admin_change_password');
 
         // product
         $c->match('/product', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');

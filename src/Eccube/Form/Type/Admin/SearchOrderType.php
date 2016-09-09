@@ -45,9 +45,9 @@ class SearchOrderType extends AbstractType
     {
         $config = $this->config;
         $builder
-            // 受注ID・購入者名・購入者（フリガナ）・購入者会社名
+            // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
             ->add('multi', 'text', array(
-                'label' => '受注ID・購入者名・購入者（フリガナ）・購入者会社名',
+                'label' => '受注ID・注文者名・注文者（フリガナ）・注文者会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
@@ -168,7 +168,6 @@ class SearchOrderType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

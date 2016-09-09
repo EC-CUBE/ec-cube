@@ -1379,7 +1379,7 @@ class ShoppingController extends AbstractController
 
         $errors[] = $app['validator']->validateValue($data['customer_email'], array(
             new Assert\NotBlank(),
-            new Assert\Email(),
+            new Assert\Email(array('strict' => true)),
         ));
 
         return $errors;

@@ -99,7 +99,6 @@ class PaymentRegisterType extends AbstractType
                     $form['rule_min']->addError(new FormError('利用条件(下限)は'.$ruleMax.'円以下にしてください。'));
                 }
             })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

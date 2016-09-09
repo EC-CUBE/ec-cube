@@ -46,7 +46,6 @@ class DeliveryTimeType extends AbstractType
             ->add('delivery_time', 'text', array(
                 'label' => false,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

@@ -4,29 +4,35 @@ git:
   submodules: false
 
 language: php
-sudo: false
+
 cache:
   directories:
     - vendor
     - $HOME/.composer/cache
 php:
-  - 5.3.3
   - 5.3
   - 5.4
   - 5.5
   - 5.6
-  - hhvm
   - 7.0
 
 matrix:
   fast_finish: true
+  include:
+    - php: 7.0 # for coverrage
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+      sudo: required
+      dist: trusty
   exclude:
-    - php: hhvm
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres # driver currently unsupported by HHVM
-  allow_failures:
-    - php: hhvm
+    - php: 5.3
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+    - php: 5.4
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+    - php: 5.5
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - php: 7.0
-    - php: 5.3.3
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+  allow_failures:
     - PHP: 5.3
       env: DB=sqlite
     - PHP: 5.4
@@ -35,9 +41,15 @@ matrix:
       env: DB=sqlite
     - PHP: 5.6
       env: DB=sqlite
+    - php: 5.6 # for coverrage (travis で phpdbg が動かなくなったため, phpdbg が動くようになるまでの暫定)
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+    - php: 7.0 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+
 env:
   - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
   - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+  - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
   - DB=sqlite
 
 install:
@@ -45,6 +57,9 @@ install:
   - gem install mailcatcher
 
 before_script:
+  - CODENAME=$(lsb_release -c -s)
+  - if [[ $PHP_SAPI != 'phpdbg' ]] || [[ $CODENAME = 'trusty' ]]; then phpenv config-rm xdebug.ini ; fi
+  - if [[ $PHP_SAPI = 'phpdbg' ]]; then echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini ; fi
   - composer self-update || true
   - composer install --dev --no-interaction -o
   - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
@@ -52,13 +67,17 @@ before_script:
   - sh -c "if [ '$DB' = 'sqlite' ]; then sh ./eccube_install.sh sqlite3 none; fi"
   - mailcatcher
 
-script:
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then phpunit --coverage-clover=coverage.clover ; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^[57] ]]; then phpunit ; fi
+script: # PHP7 + precise のテストは実行されない
+  - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'trusty' ]]; then phpdbg -qrr ./vendor/bin/phpunit --coverage-clover=coverage.clover ; fi
+  - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'precise' ]] && [[ $TRAVIS_PHP_VERSION =~ ^[5] ]]; then phpunit --coverage-clover=coverage.clover ; fi # (travis で phpdbg が動かなくなったため, phpdbg が動くようになるまでの暫定)
+  - if [[ $PHP_SAPI != 'phpdbg' ]]; then phpunit ; fi
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
-  - if [[ $TRAVIS_PHP_VERSION =~ ^hhvm ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover ; fi
+  - if [[ $PHP_SAPI = 'phpdbg' ]]; then wget https://scrutinizer-ci.com/ocular.phar ; fi
+  - if [[ $PHP_SAPI = 'phpdbg' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover ; fi
 
-# after_failure:
+after_success:
+  - if [[ $PHP_SAPI = 'phpdbg' ]]; then php vendor/bin/coveralls -v -x coverage.clover ; fi
+
+  # after_failure:
 #   - 'cat app/log/site_`date +"%Y-%m-%d"`.log'

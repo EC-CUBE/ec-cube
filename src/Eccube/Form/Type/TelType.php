@@ -25,10 +25,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+
 class TelType extends AbstractType
 {
     /**
@@ -93,7 +94,6 @@ class TelType extends AbstractType
                 $form[$builder->getName().'01']->addError(new FormError('全て入力してください。'));
             }
         });
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
     /**
      * {@inheritdoc}

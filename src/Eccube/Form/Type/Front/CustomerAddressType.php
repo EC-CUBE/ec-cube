@@ -70,8 +70,7 @@ class CustomerAddressType extends AbstractType
             ))
             ->add('fax', 'tel', array(
                 'required' => false,
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

@@ -157,4 +157,19 @@ class OrderTest extends EccubeTestCase
         $this->actual = $this->Order->getProductTypes();
         $this->verify();
     }
+
+    public function testGetTotalPrice()
+    {
+        $faker = $this->getFaker();
+        $Order = $this->app['eccube.fixture.generator']->createOrder(
+            $this->Customer,
+            array(),
+            null,
+            $faker->randomNumber(5),
+            $faker->randomNumber(5)
+        );
+        $this->expected = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
+        $this->actual = $Order->getTotalPrice();
+        $this->verify();
+    }
 }

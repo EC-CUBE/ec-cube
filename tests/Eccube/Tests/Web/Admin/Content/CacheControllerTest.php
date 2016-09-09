@@ -49,10 +49,10 @@ class CacheControllerTest extends AbstractAdminWebTestCase
 
         // makes the POST request
         $crawler = $client->request('POST', $url, array(
-            'form' => array(
-                '_token' => 'dummy',
+                'admin_cache' => array(
+                    '_token' => 'dummy',
+                    'cache' => array('twig'),
             ),
-            'mode' => 'twig',
         ));
 
         $this->assertFalse(file_exists($cacheDir.'/twig/sample'), 'sampleは削除済');

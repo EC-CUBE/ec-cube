@@ -26,6 +26,8 @@ namespace Eccube\Entity;
 
 /**
  * CategoryTotalCount
+ *
+ * @deprecated since 3.0.0, to be removed in 3.1
  */
 class CategoryTotalCount extends \Eccube\Entity\AbstractEntity
 {
@@ -43,11 +45,6 @@ class CategoryTotalCount extends \Eccube\Entity\AbstractEntity
      * @var \DateTime
      */
     private $create_date;
-
-    /**
-     * @var \Eccube\Entity\Category
-     */
-    private $Category;
 
     /**
      * Get category_id
@@ -103,28 +100,5 @@ class CategoryTotalCount extends \Eccube\Entity\AbstractEntity
     public function getCreateDate()
     {
         return $this->create_date;
-    }
-
-    /**
-     * Set Category
-     *
-     * @param  \Eccube\Entity\Category $category
-     * @return CategoryTotalCount
-     */
-    public function setCategory(\Eccube\Entity\Category $category = null)
-    {
-        $this->Category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get Category
-     *
-     * @return \Eccube\Entity\Category
-     */
-    public function getCategory()
-    {
-        return $this->Category;
     }
 }

@@ -25,11 +25,11 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContext;
@@ -78,8 +78,7 @@ class AddCartType extends AbstractType
                 'constraints' => array(
                     new Assert\Regex(array('pattern' => '/^\d+$/')),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
 
         if ($Product->getStockFind()) {
             $builder
@@ -99,13 +98,13 @@ class AddCartType extends AbstractType
                 ))
             ;
             if ($Product && $Product->getProductClasses()) {
-                if ($Product->getClassName1()) {
+                if (!is_null($Product->getClassName1())) {
                     $builder->add('classcategory_id1', 'choice', array(
                         'label' => $Product->getClassName1(),
                         'choices'   => array('__unselected' => '選択してください') + $Product->getClassCategories1(),
                     ));
                 }
-                if ($Product->getClassName2()) {
+                if (!is_null($Product->getClassName2())) {
                     $builder->add('classcategory_id2', 'choice', array(
                         'label' => $Product->getClassName2(),
                         'choices' => array('__unselected' => '選択してください'),
@@ -116,7 +115,7 @@ class AddCartType extends AbstractType
             $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
                 $data = $event->getData();
                 $form = $event->getForm();
-                if ($Product->getClassName2()) {
+                if (!is_null($Product->getClassName2())) {
                     if ($data['classcategory_id1']) {
                         $form->add('classcategory_id2', 'choice', array(
                             'label' => $Product->getClassName2(),

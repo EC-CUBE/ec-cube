@@ -72,7 +72,6 @@ class AddressType extends AbstractType
             ->add($options['pref_name'], 'pref', array_merge_recursive($options['options'], $options['pref_options']))
             ->add($options['addr01_name'], 'text', array_merge_recursive($options['options'], $options['addr01_options']))
             ->add($options['addr02_name'], 'text', array_merge_recursive($options['options'], $options['addr02_options']))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
 
         $builder->setAttribute('pref_name', $options['pref_name']);

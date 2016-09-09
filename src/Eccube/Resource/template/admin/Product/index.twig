@@ -70,11 +70,11 @@ $(function() {
         var c = f();
         if (c.formState()) {
             if ($ac.css("display") == "none") {
-                $ac.parent('li').addClass("active");
+                $ac.siblings('.toggle').addClass("active");
                 $ac.slideDown(0);
             }
         } else {
-            $ac.parent('li').removeClass("active");
+            $ac.siblings('.toggle').removeClass("active");
             $ac.slideUp(0);
         }
     })($, formPropStateSubscriber);
@@ -166,7 +166,7 @@ $(function() {
                     </div>
                     <div id="search_box__footer" class="row btn_area">
                         <div id="search_box__search_button" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
-                            <button class="btn btn-primary btn-block btn-lg" onclick="eccube.fnFormModeSubmit('search_form', 'search', '', ''); return false;">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">
                                 検索する <svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right"></svg>
                             </button>
                         </div>

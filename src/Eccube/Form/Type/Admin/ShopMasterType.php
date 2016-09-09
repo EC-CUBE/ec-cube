@@ -123,35 +123,35 @@ class ShopMasterType extends AbstractType
                 )
             ))
             ->add('email01', 'email', array(
-                'label' => '商品注文受付メールアドレス',
+                'label' => '送信元メールアドレス(From)',
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email02', 'email', array(
-                'label' => '問い合わせ受付メールアドレス',
+                'label' => '問い合わせ受付メールアドレス(From, ReplyTo)',
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email03', 'email', array(
-                'label' => 'メール送信元メールアドレス',
+                'label' => '返信受付メールアドレス(ReplyTo)',
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email04', 'email', array(
-                'label' => '送信エラー受付メールアドレス',
+                'label' => '送信エラー受付メールアドレス(ReturnPath)',
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('good_traded', 'textarea', array(
@@ -289,7 +289,6 @@ class ShopMasterType extends AbstractType
                 ),
             ))
 
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 
