@@ -87,7 +87,15 @@ class OrderDetailType extends AbstractType
                         'message' => 'form.type.float.invalid'
                     )),
                 )
-            ));
+            ))
+            ->add('product_name', 'hidden')
+            ->add('product_code', 'hidden')
+            ->add('class_name1', 'hidden')
+            ->add('class_name2', 'hidden')
+            ->add('class_category_name1', 'hidden')
+            ->add('class_category_name2', 'hidden')
+            ->add('tax_rule', 'hidden')
+        ;
 
         $builder
             ->add($builder->create('Product', 'hidden')
@@ -108,11 +116,29 @@ class OrderDetailType extends AbstractType
                 $data = $event->getData();
                 // 新規明細行の場合にセット.
                 if (isset($data['new'])) {
+                    /** @var \Eccube\Entity\ProductClass $ProductClass */
                     $ProductClass = $app['eccube.repository.product_class']
                         ->find($data['ProductClass']);
+                    /** @var \Eccube\Entity\Product $Product */
                     $Product = $ProductClass->getProduct();
+                    /** @var \Eccube\Entity\TaxRule $TaxRule */
                     $TaxRule = $app['eccube.repository.tax_rule']->getByRule($Product, $ProductClass);
 
+                    $data['product_name'] = $Product->getName();
+                    $data['product_code'] = $ProductClass->getCode();
+                    $data['class_name1'] = $ProductClass->hasClassCategory1() ?
+                        $ProductClass->getClassCategory1()->getClassName() :
+                        null;
+                    $data['class_name2'] = $ProductClass->hasClassCategory2() ?
+                        $ProductClass->getClassCategory2()->getClassName() :
+                        null;
+                    $data['class_category_name1'] = $ProductClass->hasClassCategory1() ?
+                        $ProductClass->getClassCategory1()->getName() :
+                        null;
+                    $data['class_category_name2'] = $ProductClass->hasClassCategory2() ?
+                        $ProductClass->getClassCategory2()->getName() :
+                        null;
+                    $data['tax_rule'] = $TaxRule->getCalcRule()->getId();
                     $data['price'] = $ProductClass->getPrice02();
                     $data['quantity'] = empty($data['quantity']) ? 1 : $data['quantity'];
                     $data['tax_rate'] = $TaxRule->getTaxRate();

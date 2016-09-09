@@ -509,27 +509,6 @@ class EditController extends AbstractController
         /** @var $OrderDetails \Eccube\Entity\OrderDetail[] */
         $OrderDetails = $Order->getOrderDetails();
         foreach ($OrderDetails as $OrderDetail) {
-            // 新規登録の場合は, 入力されたproduct_id/produc_class_idから明細にセットする.
-            if (!$OrderDetail->getId()) {
-                $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
-                    $OrderDetail->getProductClass());
-                $OrderDetail->setTaxRule($TaxRule->getCalcRule()->getId());
-                $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
-                $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
-                $OrderDetail->setClassName1($OrderDetail->getProductClass()->hasClassCategory1()
-                    ? $OrderDetail->getProductClass()->getClassCategory1()->getClassName()->getName()
-                    : null);
-                $OrderDetail->setClassName2($OrderDetail->getProductClass()->hasClassCategory2()
-                    ? $OrderDetail->getProductClass()->getClassCategory2()->getClassName()->getName()
-                    : null);
-                $OrderDetail->setClassCategoryName1($OrderDetail->getProductClass()->hasClassCategory1()
-                    ? $OrderDetail->getProductClass()->getClassCategory1()->getName()
-                    : null);
-                $OrderDetail->setClassCategoryName2($OrderDetail->getProductClass()->hasClassCategory2()
-                    ? $OrderDetail->getProductClass()->getClassCategory2()->getName()
-                    : null);
-            }
-
             // 税
             $tax = $app['eccube.service.tax_rule']
                 ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
@@ -544,25 +523,7 @@ class EditController extends AbstractController
         $shippings = $Order->getShippings();
         /** @var \Eccube\Entity\Shipping $Shipping */
         foreach ($shippings as $Shipping) {
-            $shipmentItems = $Shipping->getShipmentItems();
             $Shipping->setDelFlg(Constant::DISABLED);
-            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-            foreach ($shipmentItems as $ShipmentItem) {
-                $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
-                $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
-                $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
-                    : null);
-                $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
-                    : null);
-                $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
-                    : null);
-                $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
-                    : null);
-            }
         }
 
         // 受注データの税・小計・合計を再計算
