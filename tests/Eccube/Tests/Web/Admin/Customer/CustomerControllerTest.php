@@ -5,14 +5,21 @@ namespace Eccube\Tests\Web\Admin\Customer;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Entity\Master\CsvType;
 
+/**
+ * Class CustomerControllerTest
+ * @package Eccube\Tests\Web\Admin\Customer
+ */
 class CustomerControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * Setup
+     */
     public function setUp()
     {
         parent::setUp();
         $this->initializeMailCatcher();
         for ($i = 0; $i < 10; $i++) {
-            $this->createCustomer('user-' . $i . '@example.com');
+            $this->createCustomer('user-'.$i.'@example.com');
         }
         // sqlite では CsvType が生成されないので、ここで作る
         $CsvType = $this->app['eccube.repository.master.csv_type']->find(2);
@@ -26,12 +33,18 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         }
     }
 
+    /**
+     * tearDown
+     */
     public function tearDown()
     {
         $this->cleanUpMailCatcherMessages();
         parent::tearDown();
     }
 
+    /**
+     * testIndex
+     */
     public function testIndex()
     {
         $this->client->request(
@@ -41,28 +54,31 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * testIndexPaging
+     */
     public function testIndexPaging()
     {
-        for ($i = 20; $i < 70; $i++)
-            $this->createCustomer('user-' . $i . '@example.com');
+        for ($i = 20; $i < 70; $i++) {
+            $this->createCustomer('user-'.$i.'@example.com');
+        }
 
         $this->client->request(
             'GET',
-            $this->app->path('admin_customer_page',array('page_no'=>2))
+            $this->app->path('admin_customer_page', array('page_no' => 2))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * testIndezWithPost
+     */
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
             'POST',
             $this->app->path('admin_customer'),
-            array(
-                'admin_search_customer' => array(
-                    '_token' => 'dummy'
-                )
-            )
+            array('admin_search_customer' => array('_token' => 'dummy'))
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -71,23 +87,24 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * testIndexWithPostSex
+     */
     public function testIndexWithPostSex()
     {
         $crawler = $this->client->request(
             'POST',
             $this->app->path('admin_customer'),
-            array(
-                'admin_search_customer' => array(
-                    '_token' => 'dummy',
-                    'sex' => 2
-                )
-            )
+            array('admin_search_customer' => array('_token' => 'dummy', 'sex' => 2))
         );
         $this->expected = '検索';
         $this->actual = $crawler->filter('h3.box-title')->text();
         $this->assertContains($this->expected, $this->actual);
     }
 
+    /**
+     * testResend
+     */
     public function testResend()
     {
         $Customer = $this->createCustomer();
@@ -101,11 +118,14 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName() . '] 会員登録のご確認';
+        $this->expected = '[' . $BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->subject;
         $this->verify();
     }
 
+    /**
+     * testDelete
+     */
     public function testDelete()
     {
         $Customer = $this->createCustomer();
@@ -122,6 +142,9 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * testExport
+     */
     public function testExport()
     {
         $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
@@ -129,11 +152,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->client->request(
             'POST',
             $this->app->path('admin_customer_export'),
-            array(
-                'admin_search_customer' => array(
-                    '_token' => 'dummy'
-                )
-            )
+            array('admin_search_customer' => array('_token' => 'dummy'))
         );
     }
 }
