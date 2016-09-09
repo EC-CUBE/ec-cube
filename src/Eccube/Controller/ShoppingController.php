@@ -1122,7 +1122,7 @@ class ShoppingController extends AbstractController
             foreach ($compItemQuantities as $key => $value) {
                 if (array_key_exists($key, $itemQuantities)) {
                     if ($itemQuantities[$key] != $value) {
-                        $errors[] = array('message' => '数量の数が異なっています。');
+                        $errors[] = array('message' => $app->trans('shopping.multiple.quantity.diff'));
 
                         // 対象がなければエラー
                         return $app->render('Shopping/shipping_multiple.twig', array(
