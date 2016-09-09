@@ -52,7 +52,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemMemberEdit()
     {
         // before
-        $TestMember = $this->newTestMember();
+        $TestMember = $this->createMember();
         $this->app['orm.em']->persist($TestMember);
         $this->app['orm.em']->flush();
         $test_member_id = $this->app['eccube.repository.member']
@@ -75,7 +75,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemMemberDelete()
     {
         // before
-        $TestMember = $this->newTestMember();
+        $TestMember = $this->createMember();
         $this->app['orm.em']->persist($TestMember);
         $this->app['orm.em']->flush();
         $test_member_id = $this->app['eccube.repository.member']
@@ -99,7 +99,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemMemberUp()
     {
         // before
-        $TestMember = $this->newTestMember();
+        $TestMember = $this->createMember();
         $this->app['orm.em']->persist($TestMember);
         $this->app['orm.em']->flush();
         $test_member_id = $this->app['eccube.repository.member']
@@ -123,7 +123,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemMemberDown()
     {
         // before
-        $TestMember = $this->newTestMember();
+        $TestMember = $this->createMember();
         $this->app['orm.em']->persist($TestMember);
         $this->app['orm.em']->flush();
         $test_member_id = $this->app['eccube.repository.member']
@@ -142,35 +142,6 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         // after
         // $this->app['orm.em']->remove($TestMember);
         // $this->app['orm.em']->flush();
-    }
-
-    private function newTestMember($loginId = 'takahashi')
-    {
-        $Authority = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\Authority')
-            ->find(0);
-        $Work = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Master\Work')
-            ->find(1);
-        // Get rank
-        $MemberMax = $this->app['eccube.repository.member']->findOneBy(array(), array('rank' => 'DESC'));
-        $rank = 2;
-        if ($MemberMax) {
-            $rank = $MemberMax->getRank() + 1;
-        }
-
-        $TestMember = new \Eccube\Entity\Member();
-        $TestMember->setName('takahashi')
-            ->setDepartment('EC-CUBE事業部')
-            ->setLoginId($loginId)
-            ->setPassword('password')
-            ->setRank($rank)
-            ->setDelFlg(false)
-            ->setSalt('abcdefg')
-            ->setAuthority($Authority)
-            ->setWork($Work);
-
-        return $TestMember;
     }
 
     /**
@@ -234,7 +205,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             'first' => '**********',
             'second' => '**********',
         );
-        $Member = $this->newTestMember();
+        $Member = $this->createMember();
         $Member->setPassword('**********');
         $this->app['orm.em']->persist($Member);
         $this->app['orm.em']->flush();
@@ -261,7 +232,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         // before
         $formData = $this->createFormData();
         $formData['login_id'] = '';
-        $Member = $this->newTestMember();
+        $Member = $this->createMember();
         $Member->setPassword('**********');
         $this->app['orm.em']->persist($Member);
         $this->app['orm.em']->flush();
@@ -296,10 +267,10 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     public function testMemberUpSuccess()
     {
         // before
-        $MemberOne = $this->newTestMember('test1');
+        $MemberOne = $this->createMember('test1');
         $this->app['orm.em']->persist($MemberOne);
         $this->app['orm.em']->flush();
-        $MemberTwo = $this->newTestMember('test2');
+        $MemberTwo = $this->createMember('test2');
         $this->app['orm.em']->persist($MemberTwo);
         $this->app['orm.em']->flush();
 
@@ -356,10 +327,10 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     public function testMemberDownSuccess()
     {
         // before
-        $MemberOne = $this->newTestMember('test1');
+        $MemberOne = $this->createMember('test1');
         $this->app['orm.em']->persist($MemberOne);
         $this->app['orm.em']->flush();
-        $MemberTwo = $this->newTestMember('test2');
+        $MemberTwo = $this->createMember('test2');
         $this->app['orm.em']->persist($MemberTwo);
         $this->app['orm.em']->flush();
 

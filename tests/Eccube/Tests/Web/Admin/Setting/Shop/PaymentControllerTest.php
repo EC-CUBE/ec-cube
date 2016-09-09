@@ -31,13 +31,13 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 {
     public function testRouting()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_payment'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_payment'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_payment_new'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_payment_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -114,14 +114,17 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testDeleteFail()
     {
         $pid = 9999;
-        $this->client->request('DELETE',
+        $this->client->request(
+            'DELETE',
             $this->app->url('admin_setting_shop_payment_delete', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $Payment = $this->app['eccube.repository.payment']->find($pid);
-        $this->assertNull($Payment);
+        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.warning');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.delete.warning';
+        $this->verify();
     }
 
     public function testUp()

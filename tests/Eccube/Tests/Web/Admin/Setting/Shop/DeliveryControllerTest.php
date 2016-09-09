@@ -28,8 +28,15 @@ use Eccube\Common\Constant;
 use Eccube\Entity\PaymentOption;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * Class DeliveryControllerTest
+ * @package Eccube\Tests\Web\Admin\Setting\Shop
+ */
 class DeliveryControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @return mixed
+     */
     public function createDelivery()
     {
         $faker = $this->getFaker();
@@ -40,8 +47,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->persist($Delivery);
         $this->app['orm.em']->flush();
 
-        $Prefs = $this->app['eccube.repository.master.pref']
-            ->findAll();
+        $Prefs = $this->app['eccube.repository.master.pref']->findAll();
 
         foreach ($Prefs as $Pref) {
             $DeliveryFee = $this->app['eccube.repository.delivery_fee']
@@ -75,9 +81,12 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         return $Delivery;
     }
 
+    /**
+     * test routing delivery
+     */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_delivery'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_delivery'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -86,7 +95,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      */
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_delivery_new'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_delivery_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -103,10 +112,11 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             $formData['name'] = '';
         }
 
-        $this->client->request('POST',
+        $this->client->request(
+            'POST',
             $this->app->url('admin_setting_shop_delivery_new'),
             array(
-                'delivery' => $formData
+                'delivery' => $formData,
             )
         );
 
@@ -115,6 +125,9 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * test routing edit
+     */
     public function testRoutingEdit()
     {
         $Delivery = $this->createDelivery();
@@ -149,11 +162,15 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * test delete
+     */
     public function testDeleteSuccess()
     {
         $Delivery = $this->createDelivery();
         $pid = $Delivery->getId();
-        $this->client->request('DELETE',
+        $this->client->request(
+            'DELETE',
             $this->app->url('admin_setting_shop_delivery_delete', array('id' => $pid))
         );
 
@@ -164,17 +181,23 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * test delete fail
+     */
     public function testDeleteFail()
     {
         $pid = 9999;
-        $this->client->request('DELETE',
+        $this->client->request(
+            'DELETE',
             $this->app->url('admin_setting_shop_delivery_delete', array('id' => $pid))
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
-        $Delivery = $this->app['eccube.repository.delivery']->find($pid);
-        $this->assertNull($Delivery);
+        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.warning');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.delete.warning';
+        $this->verify();
     }
 
     public function testMoveRank()

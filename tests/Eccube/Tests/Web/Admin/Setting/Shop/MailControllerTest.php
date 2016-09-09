@@ -27,8 +27,15 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Common\Constant;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * Class MailControllerTest
+ * @package Eccube\Tests\Web\Admin\Setting\Shop
+ */
 class MailControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * @return mixed
+     */
     public function createMail()
     {
         $faker = $this->getFaker();
@@ -46,12 +53,18 @@ class MailControllerTest extends AbstractAdminWebTestCase
         return $Mail;
     }
 
+    /**
+     * Routing
+     */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_mail'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_mail'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * Edit
+     */
     public function testRoutingEdit()
     {
         $MailTemplate = $this->createMail();
@@ -62,6 +75,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * Edit
+     */
     public function testEdit()
     {
         $MailTemplate = $this->createMail();
@@ -72,7 +88,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'header' => 'Test Header',
             'footer' => 'Test Footer',
         );
-        $this->client->request('POST',
+        $this->client->request(
+            'POST',
             $this->app->url('admin_setting_shop_mail_edit', array('id' => $MailTemplate->getId())),
             array('mail' => $form)
         );
@@ -98,7 +115,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'header' => 'Test Header',
             'footer' => 'Test Footer',
         );
-        $this->client->request('POST',
+        $this->client->request(
+            'POST',
             $this->app->url('admin_setting_shop_mail_edit', array('id' => $mid)),
             array('mail' => $form)
         );
@@ -107,6 +125,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
 
+    /**
+     * Create
+     */
     public function testCreateFail()
     {
         $form = array(
@@ -116,7 +137,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
             'header' => null,
             'footer' => null,
         );
-        $this->client->request('POST',
+        $this->client->request(
+            'POST',
             $this->app->url('admin_setting_shop_mail'),
             array('mail' => $form)
         );
@@ -124,6 +146,4 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->app->url('admin_setting_shop_mail');
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
     }
-
-    //    TO DO : implement
 }

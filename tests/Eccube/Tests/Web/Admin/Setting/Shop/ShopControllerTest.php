@@ -26,18 +26,24 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * Class ShopControllerTest
+ * @package Eccube\Tests\Web\Admin\Setting\Shop
+ */
 class ShopControllerTest extends AbstractAdminWebTestCase
 {
-
+    /**
+     * Routing
+     */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
-     * @param $isSuccess
-     * @param $expected
+     * @param bool $isSuccess
+     * @param bool $expected
      * @dataProvider dataSubmitProvider
      */
     public function testSubmit($isSuccess, $expected)
@@ -46,7 +52,8 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         if (!$isSuccess) {
             $formData['shop_name'] = '';
         }
-        $this->client->request('POST',
+        $this->client->request(
+            'POST',
             $this->app->url('admin_setting_shop'),
             array('shop_master' => $formData)
         );

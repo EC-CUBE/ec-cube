@@ -85,7 +85,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
             // 何故か CsvType が EntityNotFoundException: Entity was not found. になる
             $this->markTestSkipped('Can not support for sqlite3');
         }
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_csv', array('id' => 9999)));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_csv', array('id' => 9999)));
         $this->fail();
     }
 
@@ -104,15 +104,16 @@ class CsvControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'csv_type' => $csvType,
             'csv_not_output' => array(
-                $CsvOut->getId()
+                $CsvOut->getId(),
             ),
             'csv_output' => array(
-                $CsvNotOut->getId()
-            )
+                $CsvNotOut->getId(),
+            ),
         );
 
-        $this->client->request('POST',
-            $this->app['url_generator']->generate('admin_setting_shop_csv', array('id' => $csvType)),
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_shop_csv', array('id' => $csvType)),
             array('form' => $form)
         );
 

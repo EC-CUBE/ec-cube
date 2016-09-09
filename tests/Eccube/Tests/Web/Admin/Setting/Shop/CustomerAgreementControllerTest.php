@@ -26,22 +26,31 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * Class CustomerAgreementControllerTest
+ * @package Eccube\Tests\Web\Admin\Setting\Shop
+ */
 class CustomerAgreementControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * Test routing admin customer agreement
+     */
     public function testRoutingAdminSettingCustomerAgreement()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop_customer_agreement'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_customer_agreement'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
-     * @param $content
-     * @param $expected
+     * Change customer agreement
+     * @param mixed $content
+     * @param bool  $expected
      * @dataProvider dataSubmitProvider
      */
     public function testSubmit($content, $expected)
     {
-        $this->client->request('POST',
+        $this->client->request(
+            'POST',
             $this->app->url('admin_setting_shop_customer_agreement'),
             array('customer_agreement' => $this->createFormData($content))
         );
@@ -50,6 +59,10 @@ class CustomerAgreementControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * @param string $content
+     * @return array
+     */
     public function createFormData($content = '')
     {
         $form = array(
@@ -60,6 +73,9 @@ class CustomerAgreementControllerTest extends AbstractAdminWebTestCase
         return $form;
     }
 
+    /**
+     * @return array
+     */
     public function dataSubmitProvider()
     {
         $faker = $this->getFaker();

@@ -26,13 +26,15 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * Class MasterdataControllerTest
+ * @package Eccube\Tests\Web\Admin\Setting\System
+ */
 class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * routing test
+     */
     public function testRouting()
     {
         $this->client->request(
@@ -42,6 +44,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * Change test
+     */
     public function testSelect()
     {
         $entity = 'Eccube\Entity\Master\Sex';
@@ -51,7 +56,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->app->url('admin_setting_system_masterdata'),
             array(
-                'admin_system_masterdata' => $formData
+                'admin_system_masterdata' => $formData,
             )
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -61,6 +66,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertContains($this->expected, $this->actual);
     }
 
+    /**
+     * Edit test
+     */
     public function testRoutingEdit()
     {
         $this->client->request(
@@ -70,6 +78,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * Edit test
+     */
     public function testEdit()
     {
         $entity = 'Eccube\Entity\Master\Sex';
@@ -82,7 +93,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_setting_system_masterdata_edit'),
             array(
                 'admin_system_masterdata' => $formData,
-                'admin_system_masterdata_edit' => $editForm
+                'admin_system_masterdata_edit' => $editForm,
             )
         );
 
@@ -93,6 +104,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * Edit remove test
+     */
     public function testEditRemove()
     {
         $entity = 'Eccube\Entity\Master\Sex';
@@ -106,7 +120,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_setting_system_masterdata_edit'),
             array(
                 'admin_system_masterdata' => $formData,
-                'admin_system_masterdata_edit' => $editForm
+                'admin_system_masterdata_edit' => $editForm,
             )
         );
 
@@ -117,23 +131,31 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * @param string $entity
+     * @return array
+     */
     public function createFormData($entity = 'Eccube\Entity\Master\Sex')
     {
         $formData = array(
             '_token' => 'dummy',
-            'masterdata' => $entity
+            'masterdata' => $entity,
         );
 
         return $formData;
     }
 
+    /**
+     * @param string $entity
+     * @return array
+     */
     public function createFormDataEdit($entity = 'Eccube\Entity\Master\Sex')
     {
-        $MasterData = $this->app['orm.em']->getRepository($entity)->findBy(array(), array('rank' => 'ASC'));
+        $masterData = $this->app['orm.em']->getRepository($entity)->findBy(array(), array('rank' => 'ASC'));
         $data = array();
         $rank = 1;
         $id = 1;
-        foreach ($MasterData as $value) {
+        foreach ($masterData as $value) {
             $data[$value['rank']]['id'] = $value['id'];
             $data[$value['rank']]['name'] = $value['name'];
             $rank = $value['rank'] + 1;
@@ -151,6 +173,4 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
         return $editForm;
     }
-
-
 }
