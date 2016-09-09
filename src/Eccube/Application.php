@@ -349,7 +349,7 @@ class Application extends ApplicationTrait
                 $route = $request->attributes->get('_route');
 
                 // ユーザ作成画面
-                if ($route === trim($app['config']['user_data_route'])) {
+                if ($route === 'user_data') {
                     $params = $request->attributes->get('_route_params');
                     $route = $params['route'];
                     // プレビュー画面
