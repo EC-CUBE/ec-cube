@@ -25,22 +25,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block javascript %}
 <script>
-    eccube.classCategories = {{ Product.class_categories|json_encode|raw }};
+$(function(){
+    eccube.classCategories = {{ Product.class_categories|json_encode|raw }}
 
-    // 規格2に選択肢を割り当てる。
-    function fnSetClassCategories(form, classcat_id2_selected) {
-        var $form = $(form);
-        var product_id = $form.find('input[name=product_id]').val();
-        var $sele1 = $form.find('select[name=classcategory_id1]');
-        var $sele2 = $form.find('select[name=classcategory_id2]');
-        eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
-    }
-
+    var classcat_id2_selected = '';
     {% if form.classcategory_id2 is defined %}
-    fnSetClassCategories(
-            document.form1, {{ form.classcategory_id2.vars.value|json_encode|raw }}
-    );
+    classcat_id2_selected = {{ form.classcategory_id2.vars.value|json_encode|raw }};
     {% endif %}
+
+    var $form = $(document.form1);
+    var product_id = $form.find('input[name=product_id]').val();
+    var $sele1 = $form.find('select[name=classcategory_id1]');
+    var $sele2 = $form.find('select[name=classcategory_id2]');
+    eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
+
+});
 </script>
 
 <script>
@@ -135,32 +134,40 @@ $(function(){
                     <!--★通常価格★-->
                     {% if Product.hasProductClass -%}
                         {% if Product.getPrice01Min is not null and Product.getPrice01Min == Product.getPrice01Max %}
-                        <p id="detail_description_box__class_normal_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                            <p id="detail_description_box__class_normal_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
                         {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
-                        <p id="detail_description_box__class_normal_range_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> ～ <span class="price01_default">{{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                            <p id="detail_description_box__class_normal_range_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> ～ <span class="price01_default">{{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                            <p id="detail_description_box__class_dynamic_range_price" class="dynamic_price"> 通常価格：<span class="price01_dynamic"></span> <span class="small">税込</span></p>
                         {% endif %}
                     {% else -%}
                         {% if Product.getPrice01Max is not null %}
-                        <p id="detail_description_box__normal_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                            <p id="detail_description_box__normal_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
                         {% endif %}
                     {% endif -%}
 
                     <!--★販売価格★-->
                     {% if Product.hasProductClass -%}
                         {% if Product.getPrice02Min == Product.getPrice02Max %}
-                        <p id="detail_description_box__class_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                            <p id="detail_description_box__class_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span></p>
                         {% else %}
-                        <p id="detail_description_box__class_range_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> ～ <span class="price02_default">{{ Product.getPrice02IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                            <p id="detail_description_box__class_range_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> ～ <span class="price02_default">{{ Product.getPrice02IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                            <p id="detail_description_box__class_range_dynamic_sale_price" class="sale_price text-primary"> <span class="price02_dynamic"></span><span class="small">税込</span></p>
                         {% endif %}
                     {% else -%}
                         <p id="detail_description_box__sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span></p>
                     {% endif -%}
 
                     <!--▼商品コード-->
-                    <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">
-                        {{ Product.code_min }}
-                        {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
-                        </span> </p>
+                    {% if Product.hasProductClass -%}
+                        {% if Product.code_min == Product.code_max %}
+                            <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">{{ Product.code_min }}}</span></p>
+                        {% elseif Product.code_min != Product.code_max %}
+                            <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">{{ Product.code_min }} ～ {{ Product.code_max }}</span></p>
+                            <p id="detail_description_box__item_dynamic_range_code" class="item_code">商品コード： <span id="item_code_dynamic"></span></p>
+                        {% endif %}
+                    {% else -%}
+                        <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">{{ Product.code_min }}</span></p>
+                    {% endif -%}
                     <!--▲商品コード-->
 
                     <!-- ▼関連カテゴリ▼ -->
