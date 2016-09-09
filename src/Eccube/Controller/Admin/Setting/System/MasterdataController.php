@@ -128,13 +128,14 @@ class MasterdataController extends AbstractController
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $entity = new $entityName();
                 $rank = 0;
+                $ids = array_map(function ($v) {return $v['id'];}, $data['data']);
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
                         $entity->setRank($rank++);
                         $app['orm.em']->merge($entity);
-                    } else {
+                    } elseif (!in_array($key, $ids)) {
                         // remove
                         $delKey = $app['orm.em']->getRepository($entityName)->find($key);
                         if ($delKey) {
