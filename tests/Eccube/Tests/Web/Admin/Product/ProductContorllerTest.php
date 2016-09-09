@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
+use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
@@ -197,5 +199,113 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         return $TestProductStock;
     }
 
+    /**
+     * @param $taxRate
+     * @param $expected
+     * @dataProvider dataNewProductProvider
+     */
+    public function testNewWithPostTaxRate($taxRate, $expected)
+    {
+        // Give
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $formData = $this->createFormData();
 
+        $formData['class']['tax_rate'] = $taxRate;
+        // When
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_new'),
+            array('admin_product' => $formData)
+        );
+
+        // Then
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
+        $productId = $arrTmp[count($arrTmp)-2];
+        $Product = $this->app['eccube.repository.product']->find($productId);
+
+        $this->expected = $expected;
+        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+        $taxRate = is_null($taxRate) ? null : $Taxrule->getTaxRate();
+        $this->actual = $taxRate;
+        $this->assertTrue($this->actual === $this->expected);
+    }
+
+    public function dataNewProductProvider()
+    {
+        return array(
+            array(null, null),
+            array("0", "0"),
+            array("1", "1"),
+        );
+    }
+
+    /**
+     * @param $taxRate
+     * @param $expected
+     * @dataProvider dataEditProductProvider
+     */
+    public function testEditWithPostTaxRate($taxRate, $hasTaxRule, $expected)
+    {
+        // Give
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $Product = $this->createProduct();
+        $formData = $this->createFormData();
+        $formData['class']['tax_rate'] = $taxRate;
+        if ($hasTaxRule) {
+            $ProductClasses = $Product->getProductClasses();
+            $TaxRule = $this->app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
+            $CalcRule = $TaxRule->getCalcRule();
+            $fake = $this->getFaker();
+            foreach ($ProductClasses as $ProductClass) {
+                $Taxrule = new TaxRule();
+                $Taxrule->setProductClass($ProductClass)
+                    ->setCreator($Product->getCreator())
+                    ->setProduct($Product)
+                    ->setCalcRule($CalcRule)
+                    ->setTaxRate($fake->randomNumber(2))
+                    ->setTaxAdjust(0)
+                    ->setApplyDate(new \DateTime())
+                    ->setDelFlg(Constant::ENABLED);
+                $ProductClass->setTaxRule($Taxrule);
+                $this->app['orm.em']->persist($Taxrule);
+                $this->app['orm.em']->flush();
+            }
+        }
+
+        // When
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
+            array('admin_product' => $formData)
+        );
+
+        // Then
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+
+        $this->expected = $expected;
+        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+
+        if (is_null($taxRate)) {
+            $this->actual = null;
+        } else {
+            $this->actual = $Taxrule->getTaxRate();
+        }
+
+        $this->assertTrue($this->actual === $this->expected);
+    }
+
+    public function dataEditProductProvider()
+    {
+        return array(
+            array(null, true, null),
+            array("0", true, "0"),
+            array("10", true, "10"),
+            array("0", false, "0"),
+            array("10", false, "10"),
+        );
+    }
 }
