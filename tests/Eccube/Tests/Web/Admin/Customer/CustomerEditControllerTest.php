@@ -63,6 +63,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'GET',
             $this->app->path('admin_customer_edit', array('id' => $this->Customer->getId()))
         );
+
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -83,8 +84,8 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
                 array('id' => $this->Customer->getId())
             )
         ));
-
         $EditedCustomer = $this->app['eccube.repository.customer']->find($this->Customer->getId());
+
         $this->expected = $form['email'];
         $this->actual = $EditedCustomer->getEmail();
         $this->verify();
@@ -99,6 +100,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
             'GET',
             $this->app->path('admin_customer_new')
         );
+
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -108,7 +110,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     public function testNewWithPost()
     {
         $form = $this->createFormData();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->app->path('admin_customer_new'),
             array('admin_customer' => $form)
