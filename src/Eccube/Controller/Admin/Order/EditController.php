@@ -216,6 +216,10 @@ class EditController extends AbstractController
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
                         return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
+                    } else {
+                        foreach ($form->getErrors(true) as $key => $error) {
+                            echo sprintf("%s: %s, %s\n", $key, $error->getMessage(), $error->getCause());
+                        }
                     }
 
                     break;

@@ -93,7 +93,10 @@ class EditControllerTest extends AbstractAdminWebTestCase
                     'ProductClass' => $ProductClasses[0]->getId(),
                     'price' => $ProductClasses[0]->getPrice02(),
                     'quantity' => 1,
-                    'tax_rate' => 8
+                    'tax_rate' => 8,
+                    'tax_rule' => 1,
+                    'product_name' => $Product->getName(),
+                    'product_code' => $ProductClasses[0]->getCode(),
                 )
             ),
             'Shippings' => array(

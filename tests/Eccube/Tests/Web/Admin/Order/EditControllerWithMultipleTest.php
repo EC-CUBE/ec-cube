@@ -342,7 +342,10 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                         'ProductClass' => $Item['ProductClass'],
                         'price' => $Item['price'],
                         'quantity' => $Item['quantity'],
-                        'tax_rate' => 8 // XXX ハードコーディング
+                        'tax_rate' => 8, // XXX ハードコーディング
+                        'tax_rule' => 1,
+                        'product_name' => $Item['product_name'],
+                        'product_code' => $Item['product_code'],
                     );
                 } else {
                     $OrderDetails[$Item['ProductClass']]['quantity'] += $Item['quantity'];
@@ -374,7 +377,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                 'ProductClass' => $ProductClass->getId(),
                 'price' => $ProductClass->getPrice02(),
                 'quantity' => $faker->randomNumber(2),
-                'itemidx' => ''
+                'product_name' => $ProductClass->getProduct()->getName(),
+                'product_code' => $ProductClass->getCode(),
             );
         }
         $Shipping =
