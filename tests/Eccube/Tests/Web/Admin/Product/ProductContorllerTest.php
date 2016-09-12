@@ -247,33 +247,34 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      * @param $expected
      * @dataProvider dataEditProductProvider
      */
-    public function testEditWithPostTaxRate($taxRate, $hasTaxRule, $expected)
+    public function testEditWithPostTaxRate($before, $after, $expected)
     {
         // Give
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
-        $Product = $this->createProduct();
+        $Product = $this->createProduct(null, 0);
+        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
         $formData = $this->createFormData();
-        $formData['class']['tax_rate'] = $taxRate;
-        if ($hasTaxRule) {
-            $ProductClasses = $Product->getProductClasses();
-            $TaxRule = $this->app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
-            $CalcRule = $TaxRule->getCalcRule();
-            $fake = $this->getFaker();
-            foreach ($ProductClasses as $ProductClass) {
-                $Taxrule = new TaxRule();
-                $Taxrule->setProductClass($ProductClass)
-                    ->setCreator($Product->getCreator())
-                    ->setProduct($Product)
-                    ->setCalcRule($CalcRule)
-                    ->setTaxRate($fake->randomNumber(2))
-                    ->setTaxAdjust(0)
-                    ->setApplyDate(new \DateTime())
-                    ->setDelFlg(Constant::ENABLED);
-                $ProductClass->setTaxRule($Taxrule);
-                $this->app['orm.em']->persist($Taxrule);
-                $this->app['orm.em']->flush();
-            }
+
+        if (!is_null($after)) {
+            $formData['class']['tax_rate'] = $after;
+        }
+        if (!is_null($before)) {
+            $DefaultTaxRule = $this->app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
+
+            $TaxRule = new TaxRule();
+            $TaxRule->setProductClass($ProductClass)
+                ->setCreator($Product->getCreator())
+                ->setProduct($Product)
+                ->setCalcRule($DefaultTaxRule->getCalcRule())
+                ->setTaxRate($before)
+                ->setTaxAdjust(0)
+                ->setApplyDate(new \DateTime())
+                ->setDelFlg(Constant::DISABLED);
+            $ProductClass->setTaxRule($TaxRule);
+            $this->app['orm.em']->persist($TaxRule);
+            $this->app['orm.em']->flush();
         }
 
         // When
@@ -287,12 +288,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
 
         $this->expected = $expected;
-        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+        $TaxRule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product, 'ProductClass' => $ProductClass));
 
-        if (is_null($taxRate)) {
+        if (is_null($TaxRule)) {
             $this->actual = null;
         } else {
-            $this->actual = $Taxrule->getTaxRate();
+            $this->actual = $TaxRule->getTaxRate();
         }
 
         $this->assertTrue($this->actual === $this->expected);
@@ -301,11 +302,15 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function dataEditProductProvider()
     {
         return array(
-            array(null, true, null),
-            array("0", true, "0"),
-            array("10", true, "10"),
-            array("0", false, "0"),
-            array("10", false, "10"),
+            array('0', '0', '0'),
+            array('0', '1', '1'),
+            array('0', null, null),
+            array('1', '0', '0'),
+            array('1', '1', '1'),
+            array('1', null, null),
+            array(null, '0', '0'),
+            array(null, '1', '1'),
+            array(null, null, null),
         );
     }
 }
