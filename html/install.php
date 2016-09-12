@@ -26,7 +26,9 @@ if (function_exists('apc_clear_cache')) {
     apc_clear_cache();
 }
 
+//[INFO]index.php,install.phpをEC-CUBEルート直下に移動させる場合は、コメントアウトしている行に置き換える
 require __DIR__ . '/../autoload.php';
+//require __DIR__ . '/autoload.php';
 
 $app = new Eccube\InstallApplication();
 $app['debug'] = true;

@@ -76,7 +76,7 @@ class TemplateController extends AbstractController
                 $config['template_code'] = $templateCode;
                 $config['template_realdir'] = $config['root_dir'].'/app/template/'.$templateCode;
                 $config['template_html_realdir'] = $config['public_path_realdir'].'/template/'.$templateCode;
-                $config['front_urlpath'] = $config['root_urlpath'].'/template/'.$templateCode;
+                $config['front_urlpath'] = $config['root_urlpath'].RELATIVE_PUBLIC_DIR_PATH.'/template/'.$templateCode;
                 $config['block_realdir'] =$config['template_realdir'].'/Block';
 
                 if (file_exists($file.'.php')) {
