@@ -470,51 +470,53 @@
         }
 
         // 商品コード
-        var $product_code_default = $form.find('[id^=product_code_default]');
-        var $product_code_dynamic = $form.find('[id^=product_code_dynamic]');
+        var  $product_code = $('#item_code_default');
+        if (typeof this.product_code_origin === 'undefined') {
+            // 初期値を保持しておく
+            this.product_code_origin =  $product_code.text();
+        }
         if (classcat2 && typeof classcat2.product_code !== 'undefined') {
-            $product_code_default.hide();
-            $product_code_dynamic.show();
-            $product_code_dynamic.text(classcat2.product_code);
+            $product_code.text(classcat2.product_code);
         } else {
-            $product_code_default.show();
-            $product_code_dynamic.hide();
+            $product_code.text(this.product_code_origin);
         }
 
         // 在庫(品切れ)
-        var $cartbtn_default = $form.find('[id^=cartbtn_default]');
-        var $cartbtn_dynamic = $form.find('[id^=cartbtn_dynamic]');
+        var $cartbtn = $('#add-cart');
         if (classcat2 && classcat2.stock_find === false) {
-
-            $cartbtn_dynamic.text('申し訳ございませんが、只今品切れ中です。').show();
-            $cartbtn_default.hide();
+            $cartbtn.prop('disabled', true);
+            $cartbtn.text('ただいま品切れ中です');
         } else {
-            $cartbtn_dynamic.hide();
-            $cartbtn_default.show();
+            $cartbtn.prop('disabled', false);
+            $cartbtn.text('カートに入れる');
         }
 
         // 通常価格
-        var $price01_default = $form.find('[id^=price01_default]');
-        var $price01_dynamic = $form.find('[id^=price01_dynamic]');
+        var $price01 = $('#detail_description_box__class_normal_range_price')
+            .find('.price01_default')
+            .first();
+        if (typeof this.proce01_origin === 'undefined') {
+            // 初期値を保持しておく
+            this.proce01_origin = $price01.text();
+        }
         if (classcat2 && typeof classcat2.price01 !== 'undefined' && String(classcat2.price01).length >= 1) {
-
-            $price01_dynamic.text(classcat2.price01).show();
-            $price01_default.hide();
+            $price01.text('¥ ' + classcat2.price01);
         } else {
-            $price01_dynamic.hide();
-            $price01_default.show();
+            $price01.text(this.proce01_origin);
         }
 
         // 販売価格
-        var $price02_default = $form.find('[id^=price02_default]');
-        var $price02_dynamic = $form.find('[id^=price02_dynamic]');
+        var $price02 = $('#detail_description_box__class_range_sale_price')
+            .find('.price02_default')
+            .first();
+        if (typeof this.proce02_origin === 'undefined') {
+            // 初期値を保持しておく
+            this.proce02_origin = $price02.text();
+        }
         if (classcat2 && typeof classcat2.price02 !== 'undefined' && String(classcat2.price02).length >= 1) {
-
-            $price02_dynamic.text(classcat2.price02).show();
-            $price02_default.hide();
+            $price02.text('¥ ' + classcat2.price02);
         } else {
-            $price02_dynamic.hide();
-            $price02_default.show();
+            $price02.text(this.proce02_origin);
         }
 
         // ポイント
