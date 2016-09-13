@@ -67,6 +67,7 @@ cart.product.not.producttype: |-
   恐れ入りますがお問い合わせページよりお問い合わせください。
 
 shopping.multiple.delivery: 配送方法が異なる商品が含まれているため、お届け先は複数となります。
+shopping.multiple.quantity.diff: 数量の合計が、カゴの中の数量と異なっています。
 shopping.delivery.not.producttype: |-
   配送の準備ができていない商品が含まれております。
   恐れ入りますがお問い合わせページよりお問い合わせください。
@@ -76,7 +77,7 @@ front.shopping.order.error: 購入処理でエラーが発生しました。
 front.shopping.stock.error: 選択された商品の在庫が不足しております。該当商品をカートから削除しました。
 front.shopping.system.error: 購入処理でシステムエラーが発生しました。大変お手数ですが、サイト管理者までご連絡ください。
 
-admin.install.warning: html/install.php は、インストール完了後にファイルを削除してください
+admin.install.warning: installphpPath は、インストール完了後にファイルを削除してください
 
 admin.register.complete: 登録が完了しました。
 admin.register.failed: 登録できませんでした。

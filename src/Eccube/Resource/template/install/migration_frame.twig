@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../favicon.ico">
+    <link rel="icon" href="{{ publicPath }}template/install/img/common/favicon.ico">
     <title>ようこそ | EC-CUBEマイグレーション</title>
-    <link href="../template/install/dist/css/bootstrap.min.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}" rel="stylesheet">
-    <link href="../template/install/assets/css/dashboard.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}" rel="stylesheet">
-    <script src="../template/install/assets/js/ie10-viewport-bug-workaround.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
+    <link href="{{ publicPath }}template/install/dist/css/bootstrap.min.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}" rel="stylesheet">
+    <link href="{{ publicPath }}template/install/assets/css/dashboard.css?v={{ constant('Eccube\\Common\\Constant::VERSION') }}" rel="stylesheet">
+    <script src="{{ publicPath }}template/install/assets/js/ie10-viewport-bug-workaround.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -69,8 +69,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="../template/install/dist/js/bootstrap.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
-<script src="../template/install/assets/js/function.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
+<script src="{{ publicPath }}template/install/dist/js/bootstrap.min.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
+<script src="{{ publicPath }}template/install/assets/js/function.js?v={{ constant('Eccube\\Common\\Constant::VERSION') }}"></script>
 <script>
 $(function() {
     /*
@@ -78,7 +78,7 @@ $(function() {
      */
     $.ajax({
         type: 'GET',
-        url: '../template/install/assets/img/svg.html',
+        url: '{{ publicPath }}template/install/assets/img/svg.html',
         dataType: 'html',
         success: function(data){
             $('body').prepend(data);
