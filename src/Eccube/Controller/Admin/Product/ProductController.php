@@ -318,8 +318,12 @@ class ProductController extends AbstractController
                     // 個別消費税
                     $BaseInfo = $app['eccube.repository.base_info']->get();
                     if ($BaseInfo->getOptionProductTaxRule() == Constant::ENABLED) {
-                        if ($ProductClass->getTaxRate()) {
-                            if ($ProductClass->getTaxRule() && !$ProductClass->getTaxRule()->getDelFlg()) {
+                        if ($ProductClass->getTaxRate() !== null) {
+                            if ($ProductClass->getTaxRule()) {
+                                if ($ProductClass->getTaxRule()->getDelFlg() == Constant::ENABLED) {
+                                    $ProductClass->getTaxRule()->setDelFlg(Constant::DISABLED);
+                                }
+
                                 $ProductClass->getTaxRule()->setTaxRate($ProductClass->getTaxRate());
                             } else {
                                 $taxrule = $app['eccube.repository.tax_rule']->newTaxRule();

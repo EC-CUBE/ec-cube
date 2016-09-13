@@ -22,7 +22,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+//[INFO]index.php,install.phpをEC-CUBEルート直下に移動させる場合は、コメントアウトしている行に置き換える
 require __DIR__.'/../autoload.php';
+//require __DIR__.'/autoload.php';
 
 ini_set('display_errors', 'Off');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);

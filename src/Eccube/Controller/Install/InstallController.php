@@ -112,6 +112,7 @@ class InstallController
 
         return $app['twig']->render('step1.twig', array(
             'form' => $form->createView(),
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -134,6 +135,7 @@ class InstallController
 
         return $app['twig']->render('step2.twig', array(
             'protectedDirs' => $protectedDirs,
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -198,6 +200,7 @@ class InstallController
 
         return $app['twig']->render('step3.twig', array(
             'form' => $form->createView(),
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -241,6 +244,7 @@ class InstallController
 
         return $app['twig']->render('step4.twig', array(
             'form' => $form->createView(),
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -302,6 +306,7 @@ class InstallController
 
         return $app['twig']->render('step5.twig', array(
             'form' => $form->createView(),
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -318,6 +323,7 @@ class InstallController
 
         return $app['twig']->render('complete.twig', array(
             'admin_url' => $adminUrl,
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -785,9 +791,10 @@ class InstallController
         $USER_DATA_ROUTE = 'user_data';
         $ROOT_DIR = realpath(__DIR__ . '/../../../../');
         $ROOT_URLPATH = $request->getBasePath();
+        $ROOT_PUBLIC_URLPATH = $ROOT_URLPATH . RELATIVE_PUBLIC_DIR_PATH;
 
-        $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}');
-        $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH);
+        $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}', '${ROOT_PUBLIC_URLPATH}');
+        $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH, $ROOT_PUBLIC_URLPATH);
 
         $fs = new Filesystem();
         $content = str_replace(
@@ -859,7 +866,9 @@ class InstallController
      */
     public function migration(InstallApplication $app, Request $request)
     {
-        return $app['twig']->render('migration.twig');
+        return $app['twig']->render('migration.twig', array(
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+        ));
     }
 
     /**
@@ -886,7 +895,9 @@ class InstallController
         } else {
             return $app['twig']->render('migration_plugin.twig', array(
                 'Plugins' => $Plugins,
-                'version' => Constant::VERSION));
+                'version' => Constant::VERSION,
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+            ));
         }
     }
 
@@ -907,6 +918,8 @@ class InstallController
         $config_app->boot();
         \Eccube\Util\Cache::clear($config_app, true);
 
-        return $app['twig']->render('migration_end.twig');
+        return $app['twig']->render('migration_end.twig', array(
+            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+        ));
     }
 }
