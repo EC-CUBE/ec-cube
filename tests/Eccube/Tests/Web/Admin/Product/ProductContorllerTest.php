@@ -243,8 +243,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param $taxRate
-     * @param $expected
+     * 個別税率設定のテストケース
+     * 個別税率設定を有効にし、商品編集時に更新されることを確認する
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1547
+     * @param $before 更新前の税率
+     * @param $after POST値
+     * @param $expected 期待値
+     *
      * @dataProvider dataEditProductProvider
      */
     public function testEditWithPostTaxRate($before, $after, $expected)
@@ -299,6 +305,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->actual === $this->expected);
     }
 
+    /**
+     * 個別税率編集時のテストデータ
+     * 更新前の税率 / POST値 / 期待値の配列を返す
+     *
+     * @return array
+     */
     public function dataEditProductProvider()
     {
         return array(
