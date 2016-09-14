@@ -1219,5 +1219,139 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertContains((string)$this->expected, $lastShipping);
     }
 
+    /**
+     * Test add multi shipping
+     */
+    public function testAddMultiShippingWithProductTypeOfOneShippingAreNotSame()
+    {
+        $User = $this->logIn();
+        $client = $this->client;
+        // Address 1
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
 
+        // Product with other type (2)
+        $Product = $this->createProduct();
+        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setProductType($ProductType)->setStock(111);
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->flush();
+
+        // product type 1
+        $this->scenarioCartIn($client);
+        // product type 2
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $arrCustomerAddress = $User->getCustomerAddresses();
+
+        // Before multi shipping
+        // Only shipped to one address
+        $multiForm = array(
+            '_token' => 'dummy',
+            'shipping_multiple' => array(
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $client->request(
+            'POST',
+            $this->app->url('shopping_shipping_multiple'),
+            array("form" => $multiForm)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        $Order = $this->app['eccube.repository.order']->findOneBy(array('Customer' => $User));
+        $Shipping = $Order->getShippings();
+
+        $this->actual = count($Shipping);
+        $this->expected = 2;
+        $this->verify();
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        // shipping number on the screen
+        $lastShipping = $crawler->filter('.is-edit h3')->last()->text();
+        $this->assertContains((string)$this->expected, $lastShipping);
+
+        $deliver = $crawler->filter('#shopping_shippings_0_delivery > option')->each(
+            function ($node, $i) {
+                return $node->text();
+            }
+        );
+
+        // Testcase from https://github.com/EC-CUBE/ec-cube/pull/1745#issuecomment-245550676
+        $this->expected = 'サンプル業者';
+        $this->actual = $deliver;
+        $this->assertTrue(in_array($this->expected, $this->actual));
+
+        // 完了画面
+        $this->scenarioComplete(
+            $client,
+            $this->app->path('shopping_confirm'),
+            array(
+                // 配送先1
+                array(
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
+                ),
+                // 配送先2
+                array(
+                    'delivery' => 2,
+                )
+            )
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
+
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $Messages = $this->getMailCatcherMessages();
+        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->actual = $Message->subject;
+        $this->verify();
+
+        $body = $this->parseMailCatcherSource($Message);
+        $this->assertRegexp('/◎お届け先2/', $body, '複数配送のため, お届け先2が存在する');
+
+        // 生成された受注のチェック
+        $Order = $this->app['eccube.repository.order']->findOneBy(
+            array(
+                'Customer' => $User
+            )
+        );
+
+        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $this->expected = $OrderNew;
+        $this->actual = $Order->getOrderStatus();
+        $this->verify();
+
+        $this->expected = $User->getName01();
+        $this->actual = $Order->getName01();
+        $this->verify();
+    }
 }
