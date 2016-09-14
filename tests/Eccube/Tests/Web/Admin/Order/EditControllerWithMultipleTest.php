@@ -297,11 +297,18 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         //税金計算
         $totalTax = 0;
+        $addQuantity = 2;
         foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
-            //商品数変更3個追加
-            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
+            //商品数追加
+            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + $addQuantity * count($Shippings);
             $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+        }
+
+        foreach ($formDataForEdit['Shippings'] as &$shipping) {
+            foreach ($shipping['ShipmentItems'] as &$shipmentItem) {
+                $shipmentItem['quantity'] += $addQuantity;
+            }
         }
 
         // 管理画面で受注編集する

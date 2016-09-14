@@ -173,6 +173,19 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 $shippingDeliveryDate['month'] = $Shippings->getShippingDeliveryDate()->format('n');
                 $shippingDeliveryDate['day'] = $Shippings->getShippingDeliveryDate()->format('d');
             }
+            $shipmentItems = array();
+            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
+            foreach ($Shippings->getShipmentItems() as $ShipmentItem) {
+                $shipmentItems[] = array(
+                    'Product' => $ShipmentItem->getProduct()->getId(),
+                    'ProductClass' => $ShipmentItem->getProductClass()->getId(),
+                    'price' => $ShipmentItem->getPrice(),
+                    'quantity' => $ShipmentItem->getQuantity(),
+                    'product_name' => $ShipmentItem->getProduct()->getName(),
+                    'product_code' => $ShipmentItem->getProductClass()->getCode(),
+                );
+            }
+
             $shippings[] = array(
                 'name' =>
                 array(
@@ -211,6 +224,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'Delivery' => $Shippings->getDelivery()->getId(),
                 'DeliveryTime' => $deliveryTime,
                 'shipping_delivery_date' => $shippingDeliveryDate,
+                'ShipmentItems' => $shipmentItems,
             );
         }
         $Customer = $Order->getCustomer();
@@ -221,7 +235,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         //受注フォーム
         $order = array(
             '_token' => 'dummy',
-            'OrderStatus' => (string) $Order->getOrderStatus(),
+            'OrderStatus' => (string) $Order->getOrderStatus()->getId(),
             'Customer' => (string) $customer_id,
             'name' =>
             array(
