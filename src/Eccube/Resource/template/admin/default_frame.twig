@@ -71,7 +71,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <dd class="dropdown-menu">
                             最終ログイン<br>
                             {{ app.user.login_date.format('Y/m/d H:i')|default('') }}
-                            <a class="btn btn-primary btn-xs" href="{{ url(app.config.admin_route ~ '_change_password') }}">パスワード変更</a>
+                            <a class="btn btn-primary btn-xs" href="{{ url('admin_change_password') }}">パスワード変更</a>
                             <a class="btn btn-primary btn-xs" href="{{ url(app.config.admin_route ~ '_logout') }}">ログアウト</a>
                         </dd>
                     {% endif %}
