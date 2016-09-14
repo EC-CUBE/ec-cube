@@ -127,7 +127,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email02', 'email', array(
@@ -135,7 +135,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email03', 'email', array(
@@ -143,7 +143,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('email04', 'email', array(
@@ -151,7 +151,7 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('good_traded', 'textarea', array(

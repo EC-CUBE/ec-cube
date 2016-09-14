@@ -117,7 +117,7 @@ class OrderType extends AbstractType
                 'label' => 'メールアドレス',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('tel', 'tel', array(

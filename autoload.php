@@ -31,4 +31,8 @@ if (extension_loaded('apc') && ini_get('apc.enabled')) {
     $loader->unregister();
 }
 
+//[INFO]index.php,install.phpをEC-CUBEルート直下に移動させる場合は、コメントアウトしている行に置き換える
+define("RELATIVE_PUBLIC_DIR_PATH", '');
+//define("RELATIVE_PUBLIC_DIR_PATH", '/html');
+
 return $loader;
