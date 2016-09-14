@@ -27,17 +27,17 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
- * Class ShopControllerTest
+ * Class TradelawControllerTest
  * @package Eccube\Tests\Web\Admin\Setting\Shop
  */
-class ShopControllerTest extends AbstractAdminWebTestCase
+class TradelawControllerTest extends AbstractAdminWebTestCase
 {
     /**
-     * Routing
+     * Roting
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->app->url('admin_setting_shop'));
+        $this->client->request('GET', $this->app->url('admin_setting_shop_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -50,12 +50,12 @@ class ShopControllerTest extends AbstractAdminWebTestCase
     {
         $formData = $this->createFormData();
         if (!$isSuccess) {
-            $formData['shop_name'] = '';
+            $formData['law_company'] = '';
         }
         $this->client->request(
             'POST',
-            $this->app->url('admin_setting_shop'),
-            array('shop_master' => $formData)
+            $this->app->url('admin_setting_shop_tradelaw'),
+            array('tradelaw' => $formData)
         );
 
         $this->expected = $expected;
@@ -63,57 +63,53 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
+    /**
+     * @return array
+     */
     public function createFormData()
     {
+        $faker = $this->getFaker();
+        $tel = explode('-', $faker->phoneNumber);
+
         $form = array(
             '_token' => 'dummy',
-            'company_name' => '会社名',
-            'company_kana' => 'カナ',
-            'shop_name' => '店舗名',
-            'shop_kana' => 'カナ',
-            'shop_name_eng' => 'shopname',
-            'zip' => array(
-                'zip01' => '530',
-                'zip02' => '0001',
+            'law_company' => $faker->word,
+            'law_manager' => $faker->word,
+            'law_zip' => array(
+                'law_zip01' => $faker->postcode1(),
+                'law_zip02' => $faker->postcode2(),
             ),
-            'address' => array(
-                'pref' => '5',
-                'addr01' => '北区',
-                'addr02' => '梅田',
+            'law_address' => array(
+                'law_pref' => '5',
+                'law_addr01' => $faker->city,
+                'law_addr02' => $faker->streetAddress,
             ),
-            'tel' => array(
-                'tel01' => '031',
-                'tel02' => '111',
-                'tel03' => '1111',
+            'law_tel' => array(
+                'law_tel01' => $tel[0],
+                'law_tel02' => $tel[1],
+                'law_tel03' => $tel[2],
             ),
-            'fax' => array(
-                'fax01' => '031',
-                'fax02' => '111',
-                'fax03' => '4444',
+            'law_fax' => array(
+                'law_fax01' => $tel[0],
+                'law_fax02' => $tel[1],
+                'law_fax03' => $tel[2],
             ),
-            'business_hour' => '店舗営業時間',
-            'email01' => 'eccube@example.com',
-            'email02' => 'eccube@example.com',
-            'email03' => 'eccube@example.com',
-            'email04' => 'eccube@example.com',
-            'delivery_free_amount' => '1000',
-            'delivery_free_quantity' => '1000',
-            'good_traded' => '取り扱い商品',
-            'message' => 'メッセージ',
-            'option_product_delivery_fee' => '0',
-            'option_multiple_shipping' => '0',
-            'option_customer_activate' => '0',
-            'option_mypage_order_status_display' => '0',
-            'option_favorite_product' => 0,
-            'option_remember_me' => '0',
-            'nostock_hidden' => '0',
-            'latitude' => '',
-            'longitude' => '',
+            'law_email' => $faker->email,
+            'law_url' => $faker->url,
+            'law_term01' => $faker->word,
+            'law_term02' => $faker->word,
+            'law_term03' => $faker->word,
+            'law_term04' => $faker->word,
+            'law_term05' => $faker->word,
+            'law_term06' => $faker->word,
         );
 
         return $form;
     }
 
+    /**
+     * @return array
+     */
     public function dataSubmitProvider()
     {
         return array(
