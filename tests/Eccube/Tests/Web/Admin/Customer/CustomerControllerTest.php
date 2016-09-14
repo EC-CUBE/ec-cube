@@ -118,7 +118,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailCatcherMessage($Messages[0]->id);
 
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->expected = '[' . $BaseInfo->getShopName().'] 会員登録のご確認';
+        $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->subject;
         $this->verify();
     }
