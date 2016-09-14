@@ -50,9 +50,12 @@ class CsvExportServiceTest extends AbstractServiceTestCase
     public function testExportData()
     {
         $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setMessage("aaaa".PHP_EOL."bbbb");
+        $Order->setNote("bbb".PHP_EOL."bbb");
         $this->createOrder($Customer);
         $this->createOrder($Customer);
-        $this->createOrder($Customer);
+        $this->app['orm.em']->flush();
 
         $qb = $this->app['eccube.repository.order']->createQueryBuilder('o')
             // FIXME https://github.com/EC-CUBE/ec-cube/issues/1236
@@ -80,9 +83,15 @@ class CsvExportServiceTest extends AbstractServiceTestCase
             $csvService->fputcsv($row);
         });
 
-
         $Result = $qb->getQuery()->getResult();
-        $File = array_map('str_getcsv', file($this->url));
+        $fp = fopen($this->url, 'r');
+        $File = array();
+        if ($fp !== false) {
+            while (($data = fgetcsv($fp)) !== false) {
+                $File[] = $data;
+            }
+            fclose($fp);
+        }
         // Vfs に出力すると日本語が化けてしまうようなので, カウントのみ比較
         $this->expected = count($Result);
         $this->actual = count($File);

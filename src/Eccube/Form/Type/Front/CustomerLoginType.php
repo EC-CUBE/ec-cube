@@ -50,7 +50,7 @@ class CustomerLoginType extends AbstractType
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
-                new Assert\Email(),
+                new Assert\Email(array('strict' => true)),
             ),
             'data' => $this->session->get('_security.last_username'),
         ));
