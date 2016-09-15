@@ -1098,13 +1098,34 @@ class ShoppingController extends AbstractController
 
             // 数量が超えていないか、同一でないとエラー
             $itemQuantities = array();
+            // array customer address temp
+            $arrShipmentItemTemp = array();
             foreach ($data as $mulitples) {
                 /** @var \Eccube\Entity\ShipmentItem $multipleItem */
                 $multipleItem = $mulitples->getData();
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
+
+                        // quantity of product class from user input
                         $quantity = $item['quantity']->getData();
+
+                        // get customer address
+                        $customerAddresses = $item['customer_address']->getData();
+                        $cusAddId = $customerAddresses;
+                        if ($customerAddresses instanceof CustomerAddress) {
+                            // customer address id for user role
+                            $cusAddId = $customerAddresses->getId();
+                        }
+
+                        // product class id
                         $itemId = $multipleItem->getProductClass()->getId();
+
+                        // Save customer address id to temporary array
+                        if (isset($arrShipmentItemTemp[$cusAddId]) && array_key_exists($itemId, $arrShipmentItemTemp[$cusAddId])) {
+                            $arrShipmentItemTemp[$cusAddId][$itemId] = $arrShipmentItemTemp[$cusAddId][$itemId] + $quantity;
+                        } else {
+                            $arrShipmentItemTemp[$cusAddId][$itemId] = $quantity;
+                        }
 
                         if (array_key_exists($itemId, $itemQuantities)) {
                             $itemQuantities[$itemId] = $itemQuantities[$itemId] + $quantity;
@@ -1147,11 +1168,11 @@ class ShoppingController extends AbstractController
                     foreach ($items as $item) {
                         // 追加された配送先情報を作成
                         $Delivery = $multipleItem->getShipping()->getDelivery();
-
                         $ProductClass = $multipleItem->getProductClass();
                         $Product = $multipleItem->getProduct();
                         $quantity = $item['quantity']->getData();
                         $productType = $ProductClass->getProductType()->getId();
+                        $productClassId = $ProductClass->getId();
 
                         // 選択された情報を取得
                         $data = $item['customer_address']->getData();
@@ -1186,6 +1207,15 @@ class ShoppingController extends AbstractController
                             $app['orm.em']->persist($Shipping);
                             // Store shipping
                             $arrShippingTmp[$cusAddId][$productType] = $Shipping;
+                        }
+
+                        // quantity check and merge
+                        if (isset($arrShipmentItemTemp[$cusAddId]) && array_key_exists($productClassId, $arrShipmentItemTemp[$cusAddId])) {
+                            $quantity = $arrShipmentItemTemp[$cusAddId][$productClassId];
+                            unset($arrShipmentItemTemp[$cusAddId][$productClassId]);
+                        } else {
+                            // Skip if shipment is exist
+                            continue;
                         }
 
                         $ShipmentItem = new ShipmentItem();
@@ -1226,6 +1256,7 @@ class ShoppingController extends AbstractController
                     $Order->addShipping($Shipping);
                 }
             }
+
             // 合計金額の再計算
             $Order = $app['eccube.service.shopping']->getAmount($Order);
 

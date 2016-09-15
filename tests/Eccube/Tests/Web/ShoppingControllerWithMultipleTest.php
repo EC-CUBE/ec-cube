@@ -1019,7 +1019,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $this->assertContains('数量の数が異なっています', $crawler->filter('div#multiple_list_box__body')->html());
+        $this->assertContains('数量の合計が、カゴの中の数量と異なっています', $crawler->filter('div#multiple_list_box__body')->html());
     }
 
     /**
@@ -1220,7 +1220,26 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     }
 
     /**
-     * Test add multi shipping
+     * Test add multi shipping when there are two types of products.
+     *
+     * Give:
+     * - Product type A x 1
+     * - Product type B x 1
+     * - Address x 1
+     *
+     * When:
+     * - Shipment item:
+     *  + Product type A x1
+     *  + Product type B x1
+     * - Delivery: 1 (for product type A)
+     * - Delivery: 2 (for product type B)
+     *
+     * Then:
+     * - Number of Shipping: 2
+     *  + Product type A x 1 - address 1
+     *  + Product type B x 1 - address 1
+     * - Delivery 1: サンプル業者
+     * - Mail content: ◎お届け先2
      */
     public function testAddMultiShippingWithProductTypeOfOneShippingAreNotSame()
     {
@@ -1337,6 +1356,361 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         $body = $this->parseMailCatcherSource($Message);
         $this->assertRegexp('/◎お届け先2/', $body, '複数配送のため, お届け先2が存在する');
+
+        // 生成された受注のチェック
+        $Order = $this->app['eccube.repository.order']->findOneBy(
+            array(
+                'Customer' => $User
+            )
+        );
+
+        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $this->expected = $OrderNew;
+        $this->actual = $Order->getOrderStatus();
+        $this->verify();
+
+        $this->expected = $User->getName01();
+        $this->actual = $Order->getName01();
+        $this->verify();
+    }
+
+    /**
+     * Test add multi shipping item merge
+     *
+     * Give:
+     * - Product A x 3
+     * - Address x 1
+     *
+     * When:
+     * - Shipment item:
+     *  + Product A x1
+     *  + Product A x1
+     *  + Product A x1
+     * - Delivery: 1 (for product type 1)
+     *
+     * Then:
+     * - Number of Shipping: 1
+     * - Shipment item: Product A x 3
+     * - Delivery 1: サンプル業者
+     * - Mail content: ◎お届け先
+     */
+    public function testAddMultiShippingThreeItemsOfOneProduct()
+    {
+        $User = $this->logIn();
+        $client = $this->client;
+
+        // Address 1
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+
+        // Product
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->flush();
+
+        // three items of one product
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $arrCustomerAddress = $User->getCustomerAddresses();
+        $addressId = $arrCustomerAddress->first()->getId();
+        // Before multi shipping
+        // Only shipped to one address
+        $multiForm = array(
+            '_token' => 'dummy',
+            'shipping_multiple' => array(
+                array(
+                    'shipping' => array(
+                        // number 3
+                        array(
+                            'customer_address' => $addressId,
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $addressId,
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $addressId,
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $client->request(
+            'POST',
+            $this->app->url('shopping_shipping_multiple'),
+            array("form" => $multiForm)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        $Order = $this->app['eccube.repository.order']->findOneBy(array('Customer' => $User));
+        $Shipping = $Order->getShippings();
+
+        // still only one shipping
+        $this->actual = count($Shipping);
+        $this->expected = 1;
+        $this->verify();
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        // item number on the screen
+        $shipping = $crawler->filter('.is-edit .cart_item')->text();
+        $this->assertContains('× 3', $shipping);
+
+        $deliver = $crawler->filter('#shopping_shippings_0_delivery > option')->each(
+            function ($node, $i) {
+                return $node->text();
+            }
+        );
+
+        $this->expected = 'サンプル業者';
+        $this->actual = $deliver;
+        $this->assertTrue(in_array($this->expected, $this->actual));
+
+        // 完了画面
+        $this->scenarioComplete(
+            $client,
+            $this->app->path('shopping_confirm'),
+            array(
+                array(
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
+                ),
+            )
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
+
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $Messages = $this->getMailCatcherMessages();
+        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->actual = $Message->subject;
+        $this->verify();
+
+        $body = $this->parseMailCatcherSource($Message);
+        $this->assertRegexp('/◎お届け先/', $body, '複数配送のため, お届け先1が存在する');
+
+        // 生成された受注のチェック
+        $Order = $this->app['eccube.repository.order']->findOneBy(
+            array(
+                'Customer' => $User
+            )
+        );
+
+        $OrderNew = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
+        $this->expected = $OrderNew;
+        $this->actual = $Order->getOrderStatus();
+        $this->verify();
+
+        $this->expected = $User->getName01();
+        $this->actual = $Order->getName01();
+        $this->verify();
+    }
+
+    /**
+     * Test add multi shipping
+     *
+     * Give:
+     * - Product type A x 3
+     * - Product type B x 3
+     * - Address x 2
+     *
+     * When:
+     * - Shipment item:
+     *  + Product type A x1 - address 1
+     *  + Product type A x1 - address 2
+     *  + Product type A x1 - address 1
+     *  + Product type B x1 - address 1
+     *  + Product type B x1 - address 2
+     *  + Product type B x1 - address 1
+     * - Delivery: 1 - product type A - address 1
+     * - Delivery: 1 - product type A - address 2
+     * - Delivery: 2 - product type B - address 1
+     * - Delivery: 2 - product type B - address 2
+     *
+     * Then:
+     * - Number of Shipping: 4
+     *  + Shipping 1: Product type A x2 - address 1
+     *  + Shipping 2: Product type A x1 - address 2
+     *  + Shipping 3: Product type B x2 - address 1
+     *  + Shipping 4: Product type B x1 - address 2
+     * - Delivery 3: サンプル宅配
+     * - Mail content: ◎お届け先4
+     */
+    public function testAddMultiShippingThreeItemsOfTwoProductHasTwoTypeWithTwoAddress()
+    {
+        $User = $this->logIn();
+        $client = $this->client;
+        // Two address
+        // Address 1
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+        // Address 2
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2 with type 2
+        $Product2 = $this->createProduct();
+        $ProductType = $this->app['eccube.repository.master.product_type']->find(2);
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setProductType($ProductType)->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->flush();
+
+        // Three item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Three item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        $arrCustomerAddress = $User->getCustomerAddresses();
+
+        // Before multi shipping
+        // Shipped to two address
+        $multiForm = array(
+            '_token' => 'dummy',
+            'shipping_multiple' => array(
+                // product type 1
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+                // product type 2
+                array(
+                    'shipping' => array(
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->last()->getId(),
+                            'quantity' => 1,
+                        ),
+                        array(
+                            'customer_address' => $arrCustomerAddress->first()->getId(),
+                            'quantity' => 1,
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $client->request(
+            'POST',
+            $this->app->url('shopping_shipping_multiple'),
+            array("form" => $multiForm)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+
+        $Order = $this->app['eccube.repository.order']->findOneBy(array('Customer' => $User));
+        $Shipping = $Order->getShippings();
+
+        // four shipping
+        $this->actual = count($Shipping);
+        $this->expected = 4;
+        $this->verify();
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+
+        // item number on the screen
+        $shipping = $crawler->filter('.is-edit .cart_item')->first()->text();
+        $this->assertContains('× 2', $shipping);
+
+        // check delivery of last shipping
+        $deliver = $crawler->filter('#shopping_shippings_3_delivery > option')->each(
+            function ($node, $i) {
+                return $node->text();
+            }
+        );
+        $this->expected = 'サンプル宅配';
+        $this->actual = $deliver;
+        $this->assertTrue(in_array($this->expected, $this->actual));
+
+        // 完了画面
+        $this->scenarioComplete(
+            $client,
+            $this->app->path('shopping_confirm'),
+            array(
+                // Product type 1 with address 1 (two item)
+                array(
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
+                ),
+                // Product type 1 with address 2 (one item)
+                array(
+                    'delivery' => 1,
+                    'deliveryTime' => 1,
+                ),
+                // Product type 2 with address 1 (two item)
+                array(
+                    'delivery' => 2,
+                ),
+                // Product type 2 with address 2 (one item)
+                array(
+                    'delivery' => 2,
+                ),
+            )
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping_complete')));
+
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $Messages = $this->getMailCatcherMessages();
+        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->actual = $Message->subject;
+        $this->verify();
+
+        $body = $this->parseMailCatcherSource($Message);
+        $this->assertRegexp('/◎お届け先4/', $body, '複数配送のため, お届け先4が存在する');
 
         // 生成された受注のチェック
         $Order = $this->app['eccube.repository.order']->findOneBy(
