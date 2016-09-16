@@ -1855,7 +1855,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // 完了画面
         $this->scenarioComplete(
             $client,
-            $this->app->path('shopping_confirm'),
+            $this->app->url('shopping_confirm'),
             array(
                 // Product type 1 with address 1 (two item)
                 array(

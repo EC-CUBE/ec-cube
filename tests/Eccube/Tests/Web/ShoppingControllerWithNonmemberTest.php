@@ -24,8 +24,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Common\Constant;
-
 /**
  * Class ShoppingControllerWithNonmemberTest
  * @package Eccube\Tests\Web
