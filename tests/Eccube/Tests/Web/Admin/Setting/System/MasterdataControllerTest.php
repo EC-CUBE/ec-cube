@@ -32,6 +32,8 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
  */
 class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
+    protected $entityTest = 'Eccube-Entity-Master-Sex';
+
     /**
      * routing test
      */
@@ -49,20 +51,24 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      */
     public function testSelect()
     {
-        $entity = 'Eccube\Entity\Master\Sex';
-        $formData = $this->createFormData($entity);
+        $formData = $this->createFormData($this->entityTest);
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->app->url('admin_setting_system_masterdata'),
             array(
                 'admin_system_masterdata' => $formData,
             )
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
 
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))
+        );
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->actual = $crawler->filter('div#result_list__body_inner')->html();
-        $this->expected = $this->app['orm.em']->getRepository($formData['masterdata'])->find(1)->getName();
+        $this->expected = $this->app['orm.em']->getRepository($entityName)->find(1)->getName();
         $this->assertContains($this->expected, $this->actual);
     }
 
@@ -83,10 +89,8 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      */
     public function testEdit()
     {
-        $entity = 'Eccube\Entity\Master\Sex';
-        $formData = $this->createFormData($entity);
-
-        $editForm = $this->createFormDataEdit($entity);
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
 
         $this->client->request(
             'POST',
@@ -96,11 +100,19 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
                 'admin_system_masterdata_edit' => $editForm,
             )
         );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_setting_system_masterdata')));
         $data = end($editForm['data']);
         $this->expected = $data['name'];
-        $this->actual = $this->app['orm.em']->getRepository($formData['masterdata'])->find($data['id'])->getName();
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $this->actual = $this->app['orm.em']->getRepository($entityName)->find($data['id'])->getName();
+        $this->verify();
+
+        // message check
+        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 
@@ -109,10 +121,8 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      */
     public function testEditRemove()
     {
-        $entity = 'Eccube\Entity\Master\Sex';
-        $formData = $this->createFormData($entity);
-
-        $editForm = $this->createFormDataEdit($entity);
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
         $editForm['data'][1]['id'] = null;
 
         $this->client->request(
@@ -123,11 +133,19 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
                 'admin_system_masterdata_edit' => $editForm,
             )
         );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_setting_system_masterdata')));
         $data = end($editForm['data']);
         $this->expected = $data['name'];
-        $this->actual = $this->app['orm.em']->getRepository($formData['masterdata'])->find($data['id'])->getName();
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $this->actual = $this->app['orm.em']->getRepository($entityName)->find($data['id'])->getName();
+        $this->verify();
+
+        // message check
+        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.register.complete';
         $this->verify();
     }
 
@@ -135,7 +153,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      * @param string $entity
      * @return array
      */
-    public function createFormData($entity = 'Eccube\Entity\Master\Sex')
+    public function createFormData($entity = 'Eccube-Entity-Master-Sex')
     {
         $formData = array(
             '_token' => 'dummy',
@@ -149,9 +167,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      * @param string $entity
      * @return array
      */
-    public function createFormDataEdit($entity = 'Eccube\Entity\Master\Sex')
+    public function createFormDataEdit($entity = 'Eccube-Entity-Master-Sex')
     {
-        $masterData = $this->app['orm.em']->getRepository($entity)->findBy(array(), array('rank' => 'ASC'));
+        $entityName = str_replace('-', '\\', $entity);
+        $masterData = $this->app['orm.em']->getRepository($entityName)->findBy(array(), array('rank' => 'ASC'));
         $data = array();
         $rank = 1;
         $id = 1;
