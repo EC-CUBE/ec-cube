@@ -437,7 +437,7 @@ class Generator {
         $this->app['orm.em']->persist($Shipping);
         $this->app['orm.em']->flush($Shipping);
 
-        if (empty($ProductClassess)) {
+        if (empty($ProductClasses)) {
             $Product = $this->createProduct();
             $ProductClasses = $Product->getProductClasses();
         }
