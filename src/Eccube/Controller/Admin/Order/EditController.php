@@ -423,21 +423,37 @@ class EditController extends AbstractController
         }
     }
 
-    public function searchProduct(Application $app, Request $request)
+    public function searchProduct(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
             $app['monolog']->addDebug('search product start.');
+            $page_count = $app['config']['default_page_count'];
+            $session = $app['session'];
 
-            $searchData = array(
-                'name' => $request->get('id'),
-            );
+            if ('POST' === $request->getMethod()) {
 
-            if ($categoryId = $request->get('category_id')) {
-                $Category = $app['eccube.repository.category']->find($categoryId);
-                $searchData['category_id'] = $Category;
+                $page_no = 1;
+
+                $searchData = array(
+                    'name' => $request->get('id'),
+                );
+
+                if ($categoryId = $request->get('category_id')) {
+                    $Category = $app['eccube.repository.category']->find($categoryId);
+                    $searchData['category_id'] = $Category;
+                }
+
+                $session->set('eccube.admin.order.product.search', $searchData);
+                $session->set('eccube.admin.order.product.search.page_no', $page_no);
+            } else {
+                $searchData = (array)$session->get('eccube.admin.order.product.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.order.product.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.order.product.search.page_no', $page_no);
+                }
             }
 
-            /** @var $Products \Eccube\Entity\Product[] */
             $qb = $app['eccube.repository.product']
                 ->getQueryBuilderBySearchData($searchData);
 
@@ -450,8 +466,16 @@ class EditController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
 
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                array('wrap-queries' => true)
+            );
+
             /** @var $Products \Eccube\Entity\Product[] */
-            $Products = $qb->getQuery()->getResult();
+            $Products = $pagination->getItems();
 
             if (empty($Products)) {
                 $app['monolog']->addDebug('search product not found.');
@@ -471,6 +495,7 @@ class EditController extends AbstractController
                 array(
                     'forms' => $forms,
                     'Products' => $Products,
+                    'pagination' => $pagination,
                 ),
                 $request
             );
@@ -479,6 +504,7 @@ class EditController extends AbstractController
             return $app->render('Order/search_product.twig', array(
                 'forms' => $forms,
                 'Products' => $Products,
+                'pagination' => $pagination,
             ));
         }
     }

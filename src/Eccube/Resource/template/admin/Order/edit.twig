@@ -134,8 +134,8 @@ $(function() {
 
     // 商品検索
     $('#searchProductModalButton').on('click', function() {
-        var tbody = $('#searchProductModalList tbody');
-        tbody.children().remove();
+        var list = $('#searchProductModalList');
+        list.children().remove();
 
         var data = $(this).data();
         shipment_idx = data.idx;
