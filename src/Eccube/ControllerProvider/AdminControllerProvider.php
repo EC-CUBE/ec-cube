@@ -204,6 +204,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // system/masterdata
         $c->match('/setting/system/masterdata', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata');
+        $c->match('/setting/system/masterdata/{entity}/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata_view');
         $c->match('/setting/system/masterdata/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::edit')->bind('admin_setting_system_masterdata_edit');
 
         // store
