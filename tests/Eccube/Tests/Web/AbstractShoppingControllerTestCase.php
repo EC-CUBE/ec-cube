@@ -101,7 +101,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             array('shopping' =>
                   array(
                       'shippings' => $shippings,
-                      'payment' => 1,
+                      'payment' => 3,
                       'message' => $faker->text(),
                       '_token' => 'dummy'
                   )

@@ -24,9 +24,12 @@
 
 namespace Eccube\Tests\Web;
 
+/**
+ * Class ShoppingControllerWithNonmemberTest
+ * @package Eccube\Tests\Web
+ */
 class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
-
     public function testRoutingShoppingLogin()
     {
         $client = $this->createClient();
@@ -108,7 +111,8 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $client = $this->createClient();
         $crawler = $client->request('GET', $this->app->path('shopping_nonmember'));
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));  }
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('cart')));
+    }
 
     public function testNonmemberWithCustomerLogin()
     {

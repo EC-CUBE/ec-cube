@@ -59,6 +59,11 @@ class ShippingMultipleType extends AbstractType
 
                 $shippings = $app['eccube.repository.shipping']->findShippingsProduct($data->getOrder(), $data->getProductClass());
 
+                // Add product class for each shipping on view
+                foreach ($shippings as $key => $shipping) {
+                    $shippingTmp = clone $shipping->setProductClassOfTemp($data->getProductClass());
+                    $shippings[$key] = $shippingTmp;
+                }
                 $form
                     ->add('shipping', 'collection', array(
                         'type' => 'shipping_multiple_item',
