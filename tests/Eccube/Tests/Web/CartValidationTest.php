@@ -29,10 +29,26 @@ use Eccube\Entity\Master\Disp;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Symfony\Component\HttpKernel\Client;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartValidationTest extends AbstractWebTestCase
 {
+    /**
+     * setup mail
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->initializeMailCatcher();
+    }
+
+    /**
+     * tear down
+     */
+    public function tearDown()
+    {
+        $this->cleanUpMailCatcherMessages();
+        parent::tearDown();
+    }
 
     // 商品詳細画面からカート画面のvalidation
 
