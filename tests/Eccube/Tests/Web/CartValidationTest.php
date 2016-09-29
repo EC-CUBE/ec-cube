@@ -84,7 +84,7 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartDeleted()
     {
-        $this->setExpectedException(NotFoundHttpException::class);
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
@@ -127,7 +127,7 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartIsPrivate()
     {
-        $this->setExpectedException(NotFoundHttpException::class);
+        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
@@ -2035,7 +2035,6 @@ class CartValidationTest extends AbstractWebTestCase
         $this->expected = $saleLimit;
         $this->verify('Cart item sale quantity has been limited!!');
     }
-
 
     /**
      * Test product in history order when product is deleting by order again function
