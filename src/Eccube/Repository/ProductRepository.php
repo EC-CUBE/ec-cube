@@ -98,7 +98,7 @@ class ProductRepository extends EntityRepository
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s', $key, $key))
+                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR NORMALIZE(p.search_word) LIKE NORMALIZE(:%s)', $key, $key))
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
