@@ -117,6 +117,9 @@ class DeliveryControllerTest extends AbstractWebTestCase
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_delivery')));
+        $crawler = $client->followRedirect();
+        $this->assertContains('登録を完了しました。', $crawler->filter('div.alert-success')->text());
+
     }
 
     public function testEdit()
@@ -157,6 +160,9 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->expected = $form['name']['name01'];
         $this->actual = $CustomerAddress->getName01();
         $this->verify();
+
+        $crawler = $client->followRedirect();
+        $this->assertContains('登録を完了しました。', $crawler->filter('div.alert-success')->text());
     }
 
     public function testDelete()
@@ -179,10 +185,8 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $CustomerAddress = $this->app['eccube.repository.customer_address']->find($id);
         $this->assertNull($CustomerAddress);
-
-        $this->expected = array('mypage.address.delete.complete');
-        $this->actual = $this->app['session']->getFlashBag()->get('eccube.front.success');
-        $this->verify();
+        $crawler = $client->followRedirect();
+        $this->assertContains('削除しました。', $crawler->filter('div.alert-success')->text());
     }
 
     public function testDeleteWithFailure()
@@ -196,9 +200,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('mypage_delivery')));
-
-        $this->expected = array('mypage.address.delete.failed');
-        $this->actual = $this->app['session']->getFlashBag()->get('eccube.front.error');
-        $this->verify();
+        $crawler = $client->followRedirect();
+        $this->assertContains('削除できません。', $crawler->filter('div.alert-danger')->text());
     }
 }
