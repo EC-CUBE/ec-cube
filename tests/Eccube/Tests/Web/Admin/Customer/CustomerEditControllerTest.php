@@ -121,18 +121,18 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * testShowPenddingOrder
+     * testShowOrder
      */
-    public function testShowPenddingOrder()
+    public function testShowOrder()
     {
         $id = $this->Customer->getId();
 
         //add Order pendding status for this customer
         $Order = $this->createOrder($this->Customer);
-        $Order = $this->createOrder($this->Customer);
-        $Order = $this->createOrder($this->Customer);
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_pre_end']);
         $Order->setOrderStatus($OrderStatus);
+        $this->Customer->addOrder($Order);
+        $this->app['orm.em']->persist($this->Customer);
         $this->app['orm.em']->flush();
 
         $crawler = $this->client->request(
