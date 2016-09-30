@@ -55,7 +55,7 @@ class Normalize extends FunctionNode
                 $sql = sprintf('%s COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
                 break;
             default:
-                $sql = $this->string->dispatch($sqlWalker);
+                $sql = sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker));
                 break;
         }
         return $sql;
