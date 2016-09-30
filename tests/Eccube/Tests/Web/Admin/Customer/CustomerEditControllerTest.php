@@ -68,6 +68,21 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * testIndex
+     */
+    public function testIndexBackButton()
+    {
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->path('admin_customer_edit', array('id' => $this->Customer->getId()))
+        );
+
+        $this->expected = '検索画面に戻る';
+        $this->actual = $crawler->filter('#detail_box__footer')->text();
+        $this->assertContains($this->expected, $this->actual);
+    }
+
+    /**
      * testIndexWithPost
      */
     public function testIndexWithPost()
