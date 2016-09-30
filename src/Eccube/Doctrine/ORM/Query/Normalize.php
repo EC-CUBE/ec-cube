@@ -47,10 +47,17 @@ class Normalize extends FunctionNode
 
     public function getSql(SqlWalker $sqlWalker)
     {
-        if ($sqlWalker->getConnection()->getDriver()->getName() == 'pdo_pgsql') {
-            return sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO);
-        } else {
-            return sprintf('%s COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
+        switch ($sqlWalker->getConnection()->getDriver()->getName()) {
+            case 'pdo_pgsql':
+                $sql = sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO);
+                break;
+            case 'pdo_mysql':
+                $sql = sprintf('%s COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
+                break;
+            default:
+                $sql = $this->string->dispatch($sqlWalker);
+                break;
         }
+        return $sql;
     }
 }
