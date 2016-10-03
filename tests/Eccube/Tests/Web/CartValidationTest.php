@@ -293,7 +293,6 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartProductType()
     {
-        $this->markTestSkipped('Wrong message: この商品は同時に購入することはできません。contains "お支払方法が異なるためこの商品は同時に購入することはできません。".');
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $BaseInfo->setOptionMultipleShipping(Constant::DISABLED);
@@ -360,7 +359,7 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $message = $crawler->filter('.errormsg')->text();
-        $this->assertContains("お支払方法が異なるためこの商品は同時に購入することはできません。", $message);
+        $this->assertContains("この商品は同時に購入することはできません。", $message);
     }
 
     /**
@@ -431,12 +430,12 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartDeletedFromShopping()
     {
-        $this->markTestSkipped('Test product in cart when product is deleting by shopping step: Need handle in code');
         $this->logIn();
 
         /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
-        $productClassId = $Product->getProductClasses()->first()->getId();
+        $ProductClass = $Product->getProductClasses()->first();
+        $productClassId = $ProductClass->getId();
 
         /** @var Client $client */
         $client = $this->client;
@@ -444,15 +443,19 @@ class CartValidationTest extends AbstractWebTestCase
         // add to cart
         $this->scenarioCartIn($client, $productClassId);
 
-        // delete product
-        $this->deleteAllProduct();
+        // Remove product (delete flg)
+        $Product->setDelFlg(Constant::ENABLED);
+        $ProductClass->setDelFlg(Constant::ENABLED);
+        $this->app['orm.em']->persist($Product);
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->flush();
 
         // shopping step
         $this->scenarioConfirm($client);
-
+        $client->followRedirect();
         $crawler = $client->followRedirect();
 
-        $message = $crawler->filter('.errormsg')->text();
+        $message = $crawler->filter('body')->text();
 
         $this->assertContains('現時点で販売していない商品が含まれておりました。該当商品をカートから削除しました。', $message);
     }
@@ -640,7 +643,7 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartProductTypeFromShopping()
     {
-        $this->markTestSkipped('The current systems are missing message: 配送の準備ができていない商品が含まれております');
+        $this->markTestSkipped('The current systems are missing message: 配送の準備ができていない商品が含まれております。恐れ入りますがお問い合わせページよりお問い合わせください。 and redirect to shopping page!');
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -923,7 +926,6 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartChangeProductTypeBeforePlus()
     {
-        $this->markTestSkipped('Wrong message!!!');
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -970,7 +972,7 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains("お支払方法が異なるためこの商品は同時に購入することはできません。", $message);
+        $this->assertContains("この商品は同時に購入することはできません。", $message);
     }
 
     /**
@@ -1212,7 +1214,6 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartChangeProductTypeBeforeMinus()
     {
-        $this->markTestSkipped('Wrong message!!!');
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -1259,7 +1260,7 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains("お支払方法が異なるためこの商品は同時に購入することはできません。", $message);
+        $this->assertContains("この商品は同時に購入することはできません。", $message);
     }
 
     /**
@@ -2387,8 +2388,6 @@ class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderWhenProductTypeIsChangedFromOrderAgain()
     {
-        $this->markTestSkipped('Wrong message!!');
-
         // GIVE
         // disable multi shipping
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
@@ -2456,7 +2455,7 @@ class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertContains("お支払方法が異なるためこの商品は同時に購入することはできません。", $message);
+        $this->assertContains("この商品は同時に購入することはできません。", $message);
     }
 
 
