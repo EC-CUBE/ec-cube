@@ -33,27 +33,27 @@ class PaymentOption extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $delivery_id;
+    protected $delivery_id;
 
     /**
      * @var integer
      */
-    private $payment_id;
+    protected $payment_id;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var \Eccube\Entity\Delivery
      */
-    private $Delivery;
+    protected $Delivery;
 
     /**
      * @var \Eccube\Entity\Payment
      */
-    private $Payment;
+    protected $Payment;
 
     /**
      * Set delivery_id

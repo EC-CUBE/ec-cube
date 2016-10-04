@@ -54,32 +54,32 @@ class Template extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
      */
-    private $DeviceType;
+    protected $DeviceType;
 
 
     /**

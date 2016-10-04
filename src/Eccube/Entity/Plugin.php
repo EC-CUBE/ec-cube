@@ -34,81 +34,81 @@ class Plugin extends AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string
      */
-    private $class_name;
+    protected $class_name;
 
     /**
      * @var integer
      */
-    private $enable;
+    protected $enable;
 
     /**
      * @var string
      */
-    private $version;
+    protected $version;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var integer
      */
-    private $source;
+    protected $source;
 
 
-    private $update_date;
+    protected $update_date;
 
     // local property
     /**
      * @var string
      */
-    private $update_status;
+    protected $update_status;
 
     /**
      * @var string
      */
-    private $new_version;
+    protected $new_version;
 
     /**
      * @var string
      */
-    private $last_update_date;
+    protected $last_update_date;
 
     /**
      * @var string
      */
-    private $product_url;
+    protected $product_url;
 
     /**
      * @var array
      */
-    private $eccube_version;
+    protected $eccube_version;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $PluginEventHandlers;
+    protected $PluginEventHandlers;
 
 
     public function __construct()

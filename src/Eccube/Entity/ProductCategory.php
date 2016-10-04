@@ -32,27 +32,27 @@ class ProductCategory extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $product_id;
+    protected $product_id;
 
     /**
      * @var integer
      */
-    private $category_id;
+    protected $category_id;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var \Eccube\Entity\Product
      */
-    private $Product;
+    protected $Product;
 
     /**
      * @var \Eccube\Entity\Category
      */
-    private $Category;
+    protected $Category;
 
     /**
      * Set product_id

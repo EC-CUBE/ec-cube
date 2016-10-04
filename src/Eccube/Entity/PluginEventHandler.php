@@ -51,46 +51,46 @@ class PluginEventHandler extends AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $event;
+    protected $event;
 
     /**
      * @var int
      */
-    private $priority;
+    protected $priority;
 
     /**
      * @var int
      */
-    private $plugin_id;
+    protected $plugin_id;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var string
      */
-    private $handler;
+    protected $handler;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
-    private $Plugin;
+    protected $Plugin;
 
-    private $handler_type;
+    protected $handler_type;
 
     /**
      * Get id

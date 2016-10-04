@@ -32,202 +32,202 @@ class BaseInfo extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $company_name;
+    protected $company_name;
 
     /**
      * @var string
      */
-    private $company_kana;
+    protected $company_kana;
 
     /**
      * @var string
      */
-    private $zip01;
+    protected $zip01;
 
     /**
      * @var string
      */
-    private $zip02;
+    protected $zip02;
 
     /**
      * @var string
      */
-    private $zipcode;
+    protected $zipcode;
 
     /**
      * @var string
      */
-    private $addr01;
+    protected $addr01;
 
     /**
      * @var string
      */
-    private $addr02;
+    protected $addr02;
 
     /**
      * @var string
      */
-    private $tel01;
+    protected $tel01;
 
     /**
      * @var string
      */
-    private $tel02;
+    protected $tel02;
 
     /**
      * @var string
      */
-    private $tel03;
+    protected $tel03;
 
     /**
      * @var string
      */
-    private $fax01;
+    protected $fax01;
 
     /**
      * @var string
      */
-    private $fax02;
+    protected $fax02;
 
     /**
      * @var string
      */
-    private $fax03;
+    protected $fax03;
 
     /**
      * @var string
      */
-    private $business_hour;
+    protected $business_hour;
 
     /**
      * @var string
      */
-    private $email01;
+    protected $email01;
 
     /**
      * @var string
      */
-    private $email02;
+    protected $email02;
 
     /**
      * @var string
      */
-    private $email03;
+    protected $email03;
 
     /**
      * @var string
      */
-    private $email04;
+    protected $email04;
 
     /**
      * @var string
      */
-    private $shop_name;
+    protected $shop_name;
 
     /**
      * @var string
      */
-    private $shop_kana;
+    protected $shop_kana;
 
     /**
      * @var string
      */
-    private $shop_name_eng;
+    protected $shop_name_eng;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var string
      */
-    private $good_traded;
+    protected $good_traded;
 
     /**
      * @var string
      */
-    private $message;
+    protected $message;
 
     /**
      * @var string
      */
-    private $latitude;
+    protected $latitude;
 
     /**
      * @var string
      */
-    private $longitude;
+    protected $longitude;
 
     /**
      * @var string
      */
-    private $delivery_free_amount;
+    protected $delivery_free_amount;
 
     /**
      * @var integer
      */
-    private $delivery_free_quantity;
+    protected $delivery_free_quantity;
 
     /**
      * @var integer
      */
-    private $option_multiple_shipping;
+    protected $option_multiple_shipping;
 
     /**
      * @var integer
      */
-    private $option_mypage_order_status_display;
+    protected $option_mypage_order_status_display;
 
     /**
      * @var integer
      */
-    private $nostock_hidden;
+    protected $nostock_hidden;
 
     /**
      * @var integer
      */
-    private $option_favorite_product;
+    protected $option_favorite_product;
 
     /**
      * @var integer
      */
-    private $option_product_delivery_fee;
+    protected $option_product_delivery_fee;
 
     /**
      * @var integer
      */
-    private $option_product_tax_rule;
+    protected $option_product_tax_rule;
 
     /**
      * @var integer
      */
-    private $option_customer_activate;
+    protected $option_customer_activate;
 
     /**
      * @var integer
      */
-    private $option_remember_me;
+    protected $option_remember_me;
 
     /**
      * @var string
      */
-    private $authentication_key;
+    protected $authentication_key;
 
     /**
      * @var \Eccube\Entity\Master\Country
      */
-    private $Country;
+    protected $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
      */
-    private $Pref;
+    protected $Pref;
 
 
     /**

@@ -40,17 +40,17 @@ class Db extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * Get id

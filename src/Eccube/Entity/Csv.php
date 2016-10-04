@@ -12,57 +12,57 @@ class Csv extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $entity_name;
+    protected $entity_name;
 
     /**
      * @var string
      */
-    private $field_name;
+    protected $field_name;
 
     /**
      * @var string
      */
-    private $reference_field_name;
+    protected $reference_field_name;
 
     /**
      * @var string
      */
-    private $disp_name;
+    protected $disp_name;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var integer
      */
-    private $enable_flg;
+    protected $enable_flg;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Eccube\Entity\Master\CsvType
      */
-    private $CsvType;
+    protected $CsvType;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
 
     /**

@@ -32,72 +32,72 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $service_name;
+    protected $service_name;
 
     /**
      * @var string
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      */
-    private $confirm_url;
+    protected $confirm_url;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Eccube\Entity\Master\ProductType
      */
-    private $ProductType;
+    protected $ProductType;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $DeliveryFees;
+    protected $DeliveryFees;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $DeliveryTimes;
+    protected $DeliveryTimes;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $PaymentOptions;
+    protected $PaymentOptions;
 
     /**
      * Constructor

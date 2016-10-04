@@ -42,52 +42,52 @@ class MailTemplate extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $file_name;
+    protected $file_name;
 
     /**
      * @var string
      */
-    private $subject;
+    protected $subject;
 
     /**
      * @var string
      */
-    private $header;
+    protected $header;
 
     /**
      * @var string
      */
-    private $footer;
+    protected $footer;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
 
     /**

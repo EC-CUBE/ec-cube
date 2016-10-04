@@ -193,72 +193,72 @@ class PageLayout extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * @var string
      */
-    private $file_name;
+    protected $file_name;
 
     /**
      * @var integer
      */
-    private $edit_flg;
+    protected $edit_flg;
 
     /**
      * @var string
      */
-    private $author;
+    protected $author;
 
     /**
      * @var string
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      */
-    private $keyword;
+    protected $keyword;
 
     /**
      * @var string
      */
-    private $update_url;
+    protected $update_url;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var string
      */
-    private $meta_robots;
+    protected $meta_robots;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $BlockPositions;
+    protected $BlockPositions;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
      */
-    private $DeviceType;
+    protected $DeviceType;
 
     /**
      * Constructor

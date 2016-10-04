@@ -31,19 +31,19 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Product extends \Eccube\Entity\AbstractEntity
 {
-    private $_calc = false;
-    private $stockFinds = array();
-    private $stocks = array();
-    private $stockUnlimiteds = array();
-    private $price01 = array();
-    private $price02 = array();
-    private $price01IncTaxs = array();
-    private $price02IncTaxs = array();
-    private $codes = array();
-    private $classCategories1 = array();
-    private $classCategories2 = array();
-    private $className1;
-    private $className2;
+    protected $_calc = false;
+    protected $stockFinds = array();
+    protected $stocks = array();
+    protected $stockUnlimiteds = array();
+    protected $price01 = array();
+    protected $price02 = array();
+    protected $price01IncTaxs = array();
+    protected $price02IncTaxs = array();
+    protected $codes = array();
+    protected $classCategories1 = array();
+    protected $classCategories2 = array();
+    protected $className1;
+    protected $className2;
 
     /**
      * @return string
@@ -425,77 +425,77 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $note;
+    protected $note;
 
     /**
      * @var string
      */
-    private $description_list;
+    protected $description_list;
 
     /**
      * @var string
      */
-    private $description_detail;
+    protected $description_detail;
 
     /**
      * @var string
      */
-    private $search_word;
+    protected $search_word;
 
     /**
      * @var string
      */
-    private $free_area;
+    protected $free_area;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductCategories;
+    protected $ProductCategories;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductClasses;
+    protected $ProductClasses;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $CustomerFavoriteProducts;
+    protected $CustomerFavoriteProducts;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * @var \Eccube\Entity\Master\Disp
      */
-    private $Status;
+    protected $Status;
 
     /**
      * Constructor
@@ -932,12 +932,12 @@ class Product extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductImage;
+    protected $ProductImage;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductTag;
+    protected $ProductTag;
 
 
     /**

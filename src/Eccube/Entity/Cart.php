@@ -29,22 +29,22 @@ class Cart extends \Eccube\Entity\AbstractEntity
     /**
      * @var bool
      */
-    private $lock = false;
+    protected $lock = false;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $CartItems;
+    protected $CartItems;
 
     /**
      * @var string
      */
-    private $pre_order_id = null;
+    protected $pre_order_id = null;
 
     /**
      * @var array
      */
-    private $Payments = array();
+    protected $Payments = array();
 
     public function __construct()
     {

@@ -34,167 +34,167 @@ class Shipping extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name01;
+    protected $name01;
 
     /**
      * @var string
      */
-    private $name02;
+    protected $name02;
 
     /**
      * @var string
      */
-    private $kana01;
+    protected $kana01;
 
     /**
      * @var string
      */
-    private $kana02;
+    protected $kana02;
 
     /**
      * @var string
      */
-    private $company_name;
+    protected $company_name;
 
     /**
      * @var string
      */
-    private $tel01;
+    protected $tel01;
 
     /**
      * @var string
      */
-    private $tel02;
+    protected $tel02;
 
     /**
      * @var string
      */
-    private $tel03;
+    protected $tel03;
 
     /**
      * @var string
      */
-    private $fax01;
+    protected $fax01;
 
     /**
      * @var string
      */
-    private $fax02;
+    protected $fax02;
 
     /**
      * @var string
      */
-    private $fax03;
+    protected $fax03;
 
     /**
      * @var string
      */
-    private $zip01;
+    protected $zip01;
 
     /**
      * @var string
      */
-    private $zip02;
+    protected $zip02;
 
     /**
      * @var string
      */
-    private $zipcode;
+    protected $zipcode;
 
     /**
      * @var string
      */
-    private $addr01;
+    protected $addr01;
 
     /**
      * @var string
      */
-    private $addr02;
+    protected $addr02;
 
     /**
      * @var string
      */
-    private $shipping_delivery_name;
+    protected $shipping_delivery_name;
 
     /**
      * @var string
      */
-    private $shipping_delivery_time;
+    protected $shipping_delivery_time;
 
     /**
      * @var \DateTime
      */
-    private $shipping_delivery_date;
+    protected $shipping_delivery_date;
 
     /**
      * @var string
      */
-    private $shipping_delivery_fee;
+    protected $shipping_delivery_fee;
 
     /**
      * @var \DateTime
      */
-    private $shipping_commit_date;
+    protected $shipping_commit_date;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ShipmentItems;
+    protected $ShipmentItems;
 
     /**
      * @var \Eccube\Entity\Master\Country
      */
-    private $Country;
+    protected $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
      */
-    private $Pref;
+    protected $Pref;
 
     /**
      * @var \Eccube\Entity\Order
      */
-    private $Order;
+    protected $Order;
 
     /**
      * @var \Eccube\Entity\Delivery
      */
-    private $Delivery;
+    protected $Delivery;
 
     /**
      * @var \Eccube\Entity\DeliveryTime
      */
-    private $DeliveryTime;
+    protected $DeliveryTime;
 
     /**
      * @var \Eccube\Entity\DeliveryFee
      */
-    private $DeliveryFee;
+    protected $DeliveryFee;
 
     /**
      * Constructor

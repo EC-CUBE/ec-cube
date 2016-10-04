@@ -416,15 +416,13 @@ class Application extends ApplicationTrait
             ->directories()
             ->depth(0);
 
-        $ormMappings = array();
-        $ormMappings[] = array(
-            'type' => 'yml',
-            'namespace' => 'Eccube\Entity',
-            'path' => array(
-                __DIR__.'/Resource/doctrine',
-                __DIR__.'/Resource/doctrine/master',
-            ),
+        $basePaths = array(
+            __DIR__.'/Resource/doctrine',
+            __DIR__.'/Resource/doctrine/master',
         );
+        $ormMappings = array();
+        $pluginMappings = array();
+        $allPaths = array();
 
         foreach ($finder as $dir) {
 
@@ -444,13 +442,26 @@ class Application extends ApplicationTrait
                 foreach ($config['orm.path'] as $path) {
                     $paths[] = $pluginBasePath.'/'.$config['code'].$path;
                 }
-                $ormMappings[] = array(
+                $pluginMappings[] = array(
                     'type' => 'yml',
                     'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
                     'path' => $paths,
                 );
+                $allPaths = array_merge($allPaths, $paths);
             }
         }
+
+        $ormMappings[] = array(
+            'type' => 'yml',
+            'namespace' => 'Eccube\Entity',
+            'path' => array_merge($basePaths, $allPaths),
+        );
+
+        foreach ($pluginMappings as &$pluginMapping) {
+            $pluginMapping['path'] = array_unique(array_merge($pluginMapping['path'], $allPaths, $basePaths));
+        }
+
+        $ormMappings = array_merge($ormMappings, $pluginMappings);
 
         $options = array(
             'mappings' => $ormMappings
@@ -924,6 +935,17 @@ class Application extends ApplicationTrait
                         continue;
                     }
                     $this->register(new $class($this));
+                }
+            }
+            if (isset($config['extended_entities'])) {
+                foreach ($config['extended_entities'] as $entity) {
+                    $driverChain = $this['orm.em']->getConfiguration()->getMetadataDriverImpl();
+                    $drivers = $driverChain->getDrivers();
+                    foreach ($drivers as $namespace => $driver) {
+                        if ($driver instanceof \Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver) {
+                            $driver->addExtendedEntity($entity);
+                        }
+                    }
                 }
             }
         }

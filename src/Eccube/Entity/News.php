@@ -40,62 +40,62 @@ class News extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \DateTime
      */
-    private $date;
+    protected $date;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $comment;
+    protected $comment;
 
     /**
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * @var integer
      */
-    private $select;
+    protected $select;
 
     /**
      * @var integer
      */
-    private $link_method;
+    protected $link_method;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * Get id

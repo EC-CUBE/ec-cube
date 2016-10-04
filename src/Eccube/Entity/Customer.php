@@ -40,202 +40,202 @@ class Customer extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name01;
+    protected $name01;
 
     /**
      * @var string
      */
-    private $name02;
+    protected $name02;
 
     /**
      * @var string
      */
-    private $kana01;
+    protected $kana01;
 
     /**
      * @var string
      */
-    private $kana02;
+    protected $kana02;
 
     /**
      * @var string
      */
-    private $company_name;
+    protected $company_name;
 
     /**
      * @var string
      */
-    private $zip01;
+    protected $zip01;
 
     /**
      * @var string
      */
-    private $zip02;
+    protected $zip02;
 
     /**
      * @var string
      */
-    private $zipcode;
+    protected $zipcode;
 
     /**
      * @var string
      */
-    private $addr01;
+    protected $addr01;
 
     /**
      * @var string
      */
-    private $addr02;
+    protected $addr02;
 
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      */
-    private $tel01;
+    protected $tel01;
 
     /**
      * @var string
      */
-    private $tel02;
+    protected $tel02;
 
     /**
      * @var string
      */
-    private $tel03;
+    protected $tel03;
 
     /**
      * @var string
      */
-    private $fax01;
+    protected $fax01;
 
     /**
      * @var string
      */
-    private $fax02;
+    protected $fax02;
 
     /**
      * @var string
      */
-    private $fax03;
+    protected $fax03;
 
     /**
      * @var \DateTime
      */
-    private $birth;
+    protected $birth;
 
     /**
      * @var string
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string
      */
-    private $salt;
+    protected $salt;
 
     /**
      * @var string
      */
-    private $secret_key;
+    protected $secret_key;
 
     /**
      * @var \DateTime
      */
-    private $first_buy_date;
+    protected $first_buy_date;
 
     /**
      * @var \DateTime
      */
-    private $last_buy_date;
+    protected $last_buy_date;
 
     /**
      * @var string
      */
-    private $buy_times;
+    protected $buy_times;
 
     /**
      * @var string
      */
-    private $buy_total;
+    protected $buy_total;
 
     /**
      * @var string
      */
-    private $note;
+    protected $note;
 
     /**
      * @var string
      */
-    private $reset_key;
+    protected $reset_key;
 
     /**
      * @var \DateTime
      */
-    private $reset_expire;
+    protected $reset_expire;
 
     /**
      * @var \Eccube\Entity\Master\CustomerStatus
      */
-    private $Status;
+    protected $Status;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Eccube\Entity\Master\Sex
      */
-    private $Sex;
+    protected $Sex;
 
     /**
      * @var \Eccube\Entity\Master\Job
      */
-    private $Job;
+    protected $Job;
 
     /**
      * @var \Eccube\Entity\Master\Country
      */
-    private $Country;
+    protected $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
      */
-    private $Pref;
+    protected $Pref;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $CustomerFavoriteProducts;
+    protected $CustomerFavoriteProducts;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $CustomerAddresses;
+    protected $CustomerAddresses;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $Orders;
+    protected $Orders;
 
     /**
      * Constructor

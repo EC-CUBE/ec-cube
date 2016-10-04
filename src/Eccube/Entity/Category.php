@@ -127,57 +127,57 @@ class Category extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var integer
      */
-    private $level;
+    protected $level;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductCategories;
+    protected $ProductCategories;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $Children;
+    protected $Children;
 
     /**
      * @var \Eccube\Entity\Category
      */
-    private $Parent;
+    protected $Parent;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * Constructor
