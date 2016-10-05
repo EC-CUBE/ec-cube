@@ -318,7 +318,9 @@ class Application extends ApplicationTrait
         // twigのグローバル変数を定義.
         $app = $this;
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
-            if (!$event->isMasterRequest()) {
+            // 未ログイン時にマイページや管理画面以下にアクセスするとSubRequestで実行されるため,
+            // $event->isMasterRequest()ではなく、グローバル変数が初期化済かどうかの判定を行う
+            if (isset($app['twig_global_initialized']) && $app['twig_global_initialized'] === true) {
                 return;
             }
             // ショップ基本情報
@@ -371,6 +373,8 @@ class Application extends ApplicationTrait
                 $app['twig']->addGlobal('PageLayout', $PageLayout);
                 $app['twig']->addGlobal('title', $PageLayout->getName());
             }
+
+            $app['twig_global_initialized'] = true;
         });
     }
 
