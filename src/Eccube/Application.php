@@ -683,6 +683,7 @@ class Application extends ApplicationTrait
             }
 
             $app['monolog']->debug('KernelEvents::REQUEST '.$route);
+            $app['monolog']->info('処理を開始しますた。ﾉｼ ');
 
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
@@ -815,6 +816,8 @@ class Application extends ApplicationTrait
 
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
+
+            $app['monolog']->info('処理を終了しますた。ﾉｼ ');
         });
     }
 
