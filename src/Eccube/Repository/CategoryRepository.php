@@ -58,9 +58,11 @@ class CategoryRepository extends EntityRepository
      * 引数 $Parent を指定した場合は, 指定したカテゴリの子以下を取得する.
      *
      * @param \Eccube\Entity\Category|null $Parent 指定の親カテゴリ
+     * @param bool $flat trueの場合, 階層化されたカテゴリを一つの配列にまとめる
+     *
      * @return \Eccube\Entity\Category[] カテゴリの配列
      */
-    public function getList(Category $Parent = null)
+    public function getList(Category $Parent = null, $flat = false)
     {
         $qb = $this->createQueryBuilder('c1')
             ->select('c1, c2, c3, c4, c5')
@@ -81,6 +83,14 @@ class CategoryRepository extends EntityRepository
         }
         $Categories = $qb->getQuery()
             ->getResult();
+
+        if ($flat) {
+            $array = array();
+            foreach ($Categories as $Category) {
+                $array = array_merge($array, $Category->getSelfAndDescendants());
+            }
+            $Categories = $array;
+        }
 
         return $Categories;
     }
