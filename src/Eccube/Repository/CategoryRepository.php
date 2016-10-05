@@ -62,12 +62,22 @@ class CategoryRepository extends EntityRepository
      */
     public function getList(Category $Parent = null)
     {
-        $qb = $this->createQueryBuilder('c')
-            ->orderBy('c.rank', 'DESC');
+        $qb = $this->createQueryBuilder('c1')
+            ->select('c1, c2, c3, c4, c5')
+            ->leftJoin('c1.Children', 'c2')
+            ->leftJoin('c2.Children', 'c3')
+            ->leftJoin('c3.Children', 'c4')
+            ->leftJoin('c4.Children', 'c5')
+            ->orderBy('c1.rank', 'DESC')
+            ->addOrderBy('c2.rank', 'DESC')
+            ->addOrderBy('c3.rank', 'DESC')
+            ->addOrderBy('c4.rank', 'DESC')
+            ->addOrderBy('c5.rank', 'DESC');
+
         if ($Parent) {
-            $qb->where('c.Parent = :Parent')->setParameter('Parent', $Parent);
+            $qb->where('c1.Parent = :Parent')->setParameter('Parent', $Parent);
         } else {
-            $qb->where('c.Parent IS NULL');
+            $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
             ->getResult();
