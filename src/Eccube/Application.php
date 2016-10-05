@@ -318,6 +318,9 @@ class Application extends ApplicationTrait
         // twigのグローバル変数を定義.
         $app = $this;
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
             // ショップ基本情報
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
@@ -668,6 +671,9 @@ class Application extends ApplicationTrait
         });
 
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+            if (!$event->isMasterRequest()) {
+                return;
+            }
             $route = $event->getRequest()->attributes->get('_route');
             $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
         });
@@ -675,7 +681,7 @@ class Application extends ApplicationTrait
         // Request Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function (\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) use ($app) {
 
-            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
 
@@ -706,10 +712,9 @@ class Application extends ApplicationTrait
         // Controller Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
 
-            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
-
 
             $route = $event->getRequest()->attributes->get('_route');
 
@@ -736,8 +741,7 @@ class Application extends ApplicationTrait
 
         // Response Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
-
-            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
 
@@ -767,7 +771,7 @@ class Application extends ApplicationTrait
         // Exception Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function (\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) use ($app) {
 
-            if (\Symfony\Component\HttpKernel\HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+            if (!$event->isMasterRequest()) {
                 return;
             }
 
@@ -1075,6 +1079,10 @@ class Application extends ApplicationTrait
 
         // Response Event(http cache対応、event実行は一番遅く設定)
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+
+            if (!$event->isMasterRequest()) {
+                return;
+            }
 
             $request = $event->getRequest();
             $response = $event->getResponse();
