@@ -112,19 +112,17 @@ class CategoryController extends AbstractController
             }
         }
 
-        $Children = $app['eccube.repository.category']->getList(null);
         $Categories = $app['eccube.repository.category']->getList($Parent);
-        $TopCategories = $app['eccube.repository.category']->findBy(array('Parent' => null), array('rank' => 'DESC'));
-        $category_count = $app['eccube.repository.category']->getTotalCount();
+
+        // ツリー表示のため、ルートからのカテゴリを取得
+        $TopCategories = $app['eccube.repository.category']->getList(null);
 
         return $app->render('Product/category.twig', array(
             'form' => $form->createView(),
-            'Children' => $Children,
             'Parent' => $Parent,
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
-            'category_count' => $category_count,
         ));
     }
 
