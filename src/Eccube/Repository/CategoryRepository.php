@@ -100,6 +100,8 @@ class CategoryRepository extends EntityRepository
      *
      * @param  \Eccube\Entity\Category $Category カテゴリ
      * @return boolean 成功した場合 true
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function up(\Eccube\Entity\Category $Category)
     {
@@ -150,6 +152,8 @@ class CategoryRepository extends EntityRepository
      *
      * @param  \Eccube\Entity\Category $Category カテゴリ
      * @return boolean 成功した場合 true
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function down(\Eccube\Entity\Category $Category)
     {
