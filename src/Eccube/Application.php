@@ -94,6 +94,7 @@ class Application extends ApplicationTrait
                 ->parseConfig('nav', $configAll, true)
                 ->parseConfig('doctrine_cache', $configAll)
                 ->parseConfig('http_cache', $configAll)
+                ->parseConfig('extended_entities', $configAll)
                 ->parseConfig('session_handler', $configAll);
 
             return $configAll;
@@ -421,12 +422,6 @@ class Application extends ApplicationTrait
             __DIR__.'/Resource/doctrine/master',
         );
         $ormMappings = array();
-        $ormMappings[] = array(
-            'type' => 'yml',
-            'namespace' => 'Eccube\Entity',
-            'path' => $basePaths,
-        );
-
         $pluginMappings = array();
         $allPaths = array();
 
@@ -457,9 +452,16 @@ class Application extends ApplicationTrait
             }
         }
 
+        $ormMappings[] = array(
+            'type' => 'yml',
+            'namespace' => 'Eccube\Entity',
+            'path' => array_merge($basePaths, $allPaths),
+        );
+
         foreach ($pluginMappings as &$pluginMapping) {
             $pluginMapping['path'] = array_unique(array_merge($pluginMapping['path'], $allPaths, $basePaths));
         }
+
         $ormMappings = array_merge($ormMappings, $pluginMappings);
 
         $options = array(
@@ -946,6 +948,14 @@ class Application extends ApplicationTrait
                         }
                     }
                 }
+            }
+        }
+
+        $driverChain = $this['orm.em']->getConfiguration()->getMetadataDriverImpl();
+        $drivers = $driverChain->getDrivers();
+        foreach ($drivers as $namespace => $driver) {
+            if ($driver instanceof \Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver) {
+                $driver->addExtendedEntity('Eccube\Entity\OrigProduct');
             }
         }
     }
