@@ -421,6 +421,12 @@ class Application extends ApplicationTrait
             __DIR__.'/Resource/doctrine/master',
         );
         $ormMappings = array();
+        $ormMappings[] = array(
+            'type' => 'yml',
+            'namespace' => 'Eccube\Entity',
+            'path' => $basePaths,
+        );
+
         $pluginMappings = array();
         $allPaths = array();
 
@@ -451,16 +457,9 @@ class Application extends ApplicationTrait
             }
         }
 
-        $ormMappings[] = array(
-            'type' => 'yml',
-            'namespace' => 'Eccube\Entity',
-            'path' => array_merge($basePaths, $allPaths),
-        );
-
         foreach ($pluginMappings as &$pluginMapping) {
             $pluginMapping['path'] = array_unique(array_merge($pluginMapping['path'], $allPaths, $basePaths));
         }
-
         $ormMappings = array_merge($ormMappings, $pluginMappings);
 
         $options = array(
