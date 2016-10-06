@@ -57,10 +57,20 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
      */
     public function addExtendedEntity($extendedEntity)
     {
-        if (!in_array($extendedEntity, $this->extendedEntities, true)) {
+        if (!in_array($extendedEntity, $this->getExtendedEntities(), true)) {
             $this->extendedEntities[] = $extendedEntity;
         }
         return $this;
+    }
+
+    /**
+     * Getter for extendedEntities.
+     *
+     * @return array
+     */
+    public function getExtendedEntities()
+    {
+        return $this->extendedEntities;
     }
 
     /**
@@ -73,7 +83,7 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
         return array_filter(
             $classNames,
             function ($className) use ($driver) {
-                return !in_array($className, $driver->extendedEntities, true);
+                return !in_array($className, $driver->getExtendedEntities(), true);
             }
         );
     }
@@ -92,7 +102,7 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
     public function isTransient($className)
     {
         $isTransient = parent::isTransient($className);
-        if (!$isTransient && in_array($className, $this->extendedEntities, true)) {
+        if (!$isTransient && in_array($className, $this->getExtendedEntities(), true)) {
             $isTransient = true;
         }
         return $isTransient;
