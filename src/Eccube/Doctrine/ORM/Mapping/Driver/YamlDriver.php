@@ -43,6 +43,14 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
         return Yaml::parse(file_get_contents($file));
     }
 
+    /*
+     * 以下、エンティティ拡張機構
+     *
+     * Copyright (c) by Paulius Jarmalavicius
+     * Released under the MIT license
+     * https://opensource.org/licenses/mit-license.php
+     */
+
     /**
      * @var array
      */
