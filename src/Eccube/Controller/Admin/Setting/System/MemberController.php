@@ -63,23 +63,24 @@ class MemberController extends AbstractController
     {
         $previous_password = null;
         if ($id) {
-            $Member = $app['eccube.repository.member']->find($id);
-            if (!$Member) {
+            $OriginalMember = $app['eccube.repository.member']->find($id);
+            if (!$OriginalMember) {
                 throw new NotFoundHttpException();
             }
-            $previous_password = $Member->getPassword();
-            $Member->setPassword($app['config']['default_password']);
+            $previous_password = $OriginalMember->getPassword();
+            $OriginalMember->setPassword($app['config']['default_password']);
         } else {
-            $Member = new \Eccube\Entity\Member();
+            $OriginalMember = new \Eccube\Entity\Member();
         }
 
-        $builder = $app['form.factory']
-            ->createBuilder('admin_member', $Member);
+        $Member = clone $OriginalMember;
+        $builder = $app['form.factory']->createBuilder('admin_member', $Member);
 
         $event = new EventArgs(
             array(
                 'builder' => $builder,
                 'Member' => $Member,
+                'OriginalMember' => $OriginalMember,
             ),
             $request
         );
@@ -106,13 +107,15 @@ class MemberController extends AbstractController
                     $password = $app['eccube.repository.member']->encryptPassword($Member);
                     $Member->setPassword($password);
                 }
-                $status = $app['eccube.repository.member']->save($Member);
+                $OriginalMember->copyProperties($Member);
+                $status = $app['eccube.repository.member']->save($OriginalMember);
 
                 if ($status) {
                     $event = new EventArgs(
                         array(
                             'form' => $form,
                             'Member' => $Member,
+                            'OriginalMember' => $OriginalMember,
                         ),
                         $request
                     );
@@ -130,6 +133,7 @@ class MemberController extends AbstractController
         return $app->render('Setting/System/member_edit.twig', array(
             'form' => $form->createView(),
             'Member' => $Member,
+            'OriginalMember' => $OriginalMember,
         ));
 
     }
