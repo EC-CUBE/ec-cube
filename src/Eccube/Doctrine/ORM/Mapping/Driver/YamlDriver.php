@@ -49,10 +49,9 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
     protected $extendedEntities = array();
 
     /**
-     * Setter for extendedEntities.
+     * 継承元のエンティティを追加する
      *
      * @param string $extendedEntity
-     *
      * @return $this
      */
     public function addExtendedEntity($extendedEntity)
@@ -64,7 +63,7 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
     }
 
     /**
-     * Getter for extendedEntities.
+     * 継承元エンティティの配列を取得する
      *
      * @return array
      */
@@ -74,49 +73,28 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllClassNames()
     {
         $driver = $this;
         $classNames = parent::getAllClassNames();
-        return array_filter(
-            $classNames,
-            function ($className) use ($driver) {
-                return !in_array($className, $driver->getExtendedEntities(), true);
-            }
-        );
+        $filter = function ($className) use ($driver) {
+            return !in_array($className, $driver->getExtendedEntities(), true);
+        };
+        return array_filter($classNames, $filter);
     }
 
     /**
-     * Returns whether the class with the specified name is transient. Only non-transient
-     * classes, that is entities and mapped superclasses, should have their metadata loaded.
-     *
-     * A class is non-transient if it is annotated with an annotation
-     * from the {@see AnnotationDriver::entityAnnotationClasses}.
-     *
-     * @param string $className
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isTransient($className)
     {
-        $isTransient = parent::isTransient($className);
-        if (!$isTransient && in_array($className, $this->getExtendedEntities(), true)) {
-            $isTransient = true;
-        }
-        return $isTransient;
+        return parent::isTransient($className) || in_array($className, $this->getExtendedEntities(), true);
     }
 
     /**
-     * Gets the element of schema meta data for the class from the mapping file.
-     * This will lazily load the mapping file if it is not loaded yet.
-     *
-     * Overridden in order to merger mapping with parent class if 'extended_entity' is provided.
-     *
-     * @param string $className
-     *
-     * @return array The element of schema meta data.
+     * {@inheritdoc}
      */
     public function getElement($className)
     {
@@ -130,18 +108,15 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
     }
 
     /**
-     * Merges mappings recursively and overrides duplicated values with second mappings values.
-     *
      * @param array $mapping1
      * @param array $mapping2
-     *
      * @return array
      */
     protected function mergeMappings(array &$mapping1, array &$mapping2)
     {
         $merged = $mapping1;
         foreach ($mapping2 as $key => &$value) {
-            if (is_array ($value) && isset($merged[$key]) && is_array($merged[$key])) {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
                 $merged[$key] = $this->mergeMappings($merged[$key], $value);
             } else {
                 $merged[$key] = $value;
