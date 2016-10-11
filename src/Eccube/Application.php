@@ -133,7 +133,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
-        $this->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+        $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
         $app = $this;
         $this->error(function (\Exception $e, $code) use ($app) {
@@ -202,15 +202,10 @@ class Application extends ApplicationTrait
 
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
+            'translator.cache_dir' => $this['config']['root_dir'].'/app/cache/trans',
         ));
         $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
-
-            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-            $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
-            if (file_exists($file)) {
-                $translator->addResource('xliff', $file, $app['locale'], 'validators');
-            }
 
             $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
             if (file_exists($file)) {
