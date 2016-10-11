@@ -69,7 +69,8 @@
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin",
             "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
-        }
+        },
+        "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
     },
     "autoload-dev" : {
         "psr-4": {
