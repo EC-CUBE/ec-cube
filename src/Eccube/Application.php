@@ -202,7 +202,7 @@ class Application extends ApplicationTrait
 
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
-            'translator.cache_dir' => $this['config']['root_dir'].'/app/cache/trans',
+            'translator.cache_dir' => $this['debug'] ? null : $this['config']['root_dir'].'/app/cache/trans',
         ));
         $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
