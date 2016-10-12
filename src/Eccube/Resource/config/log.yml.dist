@@ -2,9 +2,42 @@ log:
     prefix: site_
     suffix:
     format: Y-m-d
-    action_level: INFO
     log_level: INFO
+    action_level: DEBUG
     max_files: 90
+    channel:
+        monolog:
+            filename: site
+            delimiter: _
+            dateformat: Y-m-d
+            log_level: INFO
+            action_level: DEBUG
+            max_files: 90
+            log_dateformat: Y-m-d H:i:s,u
+        front:
+            filename: front_site
+            delimiter: _
+            dateformat: Y-m-d
+            log_level: INFO
+            action_level: DEBUG
+            max_files: 90
+            log_dateformat: Y-m-d H:i:s,u
+        admin:
+            filename: admin_site
+            delimiter: _
+            dateformat: Y-m-d
+            log_level: INFO
+            action_level: DEBUG
+            max_files: 90
+            log_dateformat: Y-m-d H:i:s,u
+        plugin:
+            filename: plugin_site
+            delimiter: _
+            dateformat: Y-m-d
+            log_level: INFO
+            action_level: DEBUG
+            max_files: 90
+            log_dateformat: Y-m-d H:i:s,u
     exclude_keys:
         - password
         - app
