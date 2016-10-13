@@ -191,15 +191,21 @@ class EditController extends AbstractController
                             }
                         }
 
+                        $Customer = $TargetOrder->getCustomer();
+                        if ($Customer) {
+                            // 受注情報の会員情報を更新
+                            $TargetOrder->setSex($Customer->getSex());
+                            $TargetOrder->setJob($Customer->getJob());
+                            $TargetOrder->setBirth($Customer->getBirth());
+                        }
+
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
-                        $Customer = $TargetOrder->getCustomer();
                         if ($Customer) {
                             // 会員の場合、購入回数、購入金額などを更新
                             $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
                         }
-
 
                         $event = new EventArgs(
                             array(
