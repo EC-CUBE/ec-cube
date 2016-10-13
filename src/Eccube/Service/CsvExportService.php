@@ -238,7 +238,6 @@ class CsvExportService
         foreach ($query->getResult() as $iteratableResult) {
             $closure($iteratableResult, $this);
             $this->em->detach($iteratableResult);
-            $this->em->clear();
             $query->free();
             flush();
         }
