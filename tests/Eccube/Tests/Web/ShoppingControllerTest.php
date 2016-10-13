@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Order;
+
 class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
 
@@ -106,6 +108,39 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->expected = $Customer->getName01();
         $this->actual = $Order->getName01();
         $this->verify();
+
+        $form = $this->createFormData();
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_mail', array('id' => $Order->getId())),
+            array(
+                'mail' => $form,
+                'mode' => 'complete'
+            )
+        );
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->url('mypage_history', array('id' => $Order->getId()))
+        );
+
+        //check shop name exist or not.
+        $expected = $form['subject'];
+        $actual = $crawler->filter('#mail_list')->html();
+        $this->assertContains($expected, $actual);
+    }
+
+    public function createFormData()
+    {
+        $faker = $this->getFaker();
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $form = array(
+            'template' => 1,
+            'subject' => '[' . $BaseInfo->getShopName() . '] '. $faker->word,
+            'header' => $faker->paragraph,
+            'footer' => $faker->paragraph,
+            '_token' => 'dummy'
+        );
+        return $form;
     }
 
     /**
