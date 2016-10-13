@@ -18,11 +18,4 @@ Eccube\Entity\CategoryTotalCount:
         create_date:
             type: datetime
             nullable: false
-    oneToOne:
-        Category:
-            targetEntity: Category
-            inversedBy: CategoryTotalCount
-            joinColumn:
-                name: category_id
-                referencedColumnName: category_id
     lifecycleCallbacks: {  }

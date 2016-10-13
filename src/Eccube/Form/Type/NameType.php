@@ -26,8 +26,8 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -75,7 +75,6 @@ class NameType extends AbstractType
 
         $builder->setAttribute('lastname_name', $options['lastname_name']);
         $builder->setAttribute('firstname_name', $options['firstname_name']);
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

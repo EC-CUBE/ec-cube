@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -69,7 +70,6 @@ class SearchProductType extends AbstractType
         $builder->add('orderby', 'product_list_order_by', array(
             'label' => '表示順',
         ));
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

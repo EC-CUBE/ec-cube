@@ -46,6 +46,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         // login
         $c->match('/login', '\Eccube\Controller\Admin\AdminController::login')->bind('admin_login');
 
+        // change password
+        $c->match('/change_password', '\Eccube\Controller\Admin\AdminController::changePassword')->bind('admin_change_password');
 
         // product
         $c->match('/product', '\Eccube\Controller\Admin\Product\ProductController::index')->bind('admin_product');
@@ -202,6 +204,7 @@ class AdminControllerProvider implements ControllerProviderInterface
 
         // system/masterdata
         $c->match('/setting/system/masterdata', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata');
+        $c->match('/setting/system/masterdata/{entity}/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::index')->bind('admin_setting_system_masterdata_view');
         $c->match('/setting/system/masterdata/edit', '\Eccube\Controller\Admin\Setting\System\MasterdataController::edit')->bind('admin_setting_system_masterdata_edit');
 
         // store

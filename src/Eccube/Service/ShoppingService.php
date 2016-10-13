@@ -129,7 +129,13 @@ class ShoppingService
     public function createOrder($Customer)
     {
         // ランダムなpre_order_idを作成
-        $preOrderId = sha1(Str::random(32));
+        do {
+            $preOrderId = sha1(Str::random(32));
+            $Order = $this->app['eccube.repository.order']->findOneBy(array(
+                'pre_order_id' => $preOrderId,
+                'OrderStatus' => $this->app['config']['order_processing'],
+            ));
+        } while ($Order);
 
         // 受注情報、受注明細情報、お届け先情報、配送商品情報を作成
         $Order = $this->registerPreOrder(
@@ -907,6 +913,12 @@ class ShoppingService
         foreach ($Order->getOrderDetails() as $detail) {
             $deliveryDate = $detail->getProductClass()->getDeliveryDate();
             if (!is_null($deliveryDate)) {
+                if ($deliveryDate->getValue() < 0) {
+                    // 配送日数がマイナスの場合はお取り寄せなのでスキップする
+                    $deliveryDateFlag = false;
+                    break;
+                }
+
                 if ($minDate < $deliveryDate->getValue()) {
                     $minDate = $deliveryDate->getValue();
                 }

@@ -95,6 +95,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 'delFlg' => Constant::DISABLED,
                 'CustomerStatus' => $CustomerStatus,
             ))
+            ->setMaxResults(1)
             ->getQuery();
         $Customer = $query->getOneOrNullResult();
         if (!$Customer) {
@@ -395,6 +396,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->where('c.email = :email AND c.Status = :status')
             ->setParameter('email', $email)
             ->setParameter('status', CustomerStatus::ACTIVE)
+            ->setMaxResults(1)
             ->getQuery();
 
         $Customer = $query->getOneOrNullResult();

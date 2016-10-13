@@ -15,11 +15,13 @@
 # 使い方
 # Configurationの内容を自分の環境に併せて修正
 # PostgreSQLの場合は、DBユーザーを予め作成しておいて
-# > ./ec_cube_install.sh pgsql
+# > ./eccube_install.sh pgsql
 # MySQLはMYSQLのRoot以外のユーザーで実行する場合は、128行目をコメントアウトして
-# > ./ec_cube_install.sh mysql
+# > ./eccube_install.sh mysql
+# SQLiteの場合は、以下を実行
+# > ./eccube_install.sh sqlite3
 # composerを実行しない場合は, 第2引数に"none"を指定するとスキップできる
-# > ./ec_cube_install.sh mysql none
+# > ./eccube_install.sh mysql none
 #
 # 開発コミュニティの関連スレッド
 # http://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=4918&forum=14&post_id=23090#forumpost23090
@@ -57,6 +59,7 @@ export ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 export ROOT_DIR=${BASE_DIR}
 export ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html"}
+export ROOT_PUBLIC_URLPATH=${ROOT_URLPATH}
 export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
 export USER_DATA_ROUTE=${USER_DATA_ROUTE:-"user_data"}
 export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}
@@ -207,13 +210,13 @@ case "${DBTYPE}" in
     ${PSQL} -U ${PGUSER} -c "create database ${DBNAME} owner ${DBUSER}"
 
     echo "create table..."
-    ./vendor/bin/doctrine orm:schema-tool:create
+    ./vendor/bin/doctrine orm:schema-tool:create || exit 1
 
     echo "migration..."
-    php app/console migrations:migrate  --no-interaction
+    php app/console migrations:migrate --no-interaction || exit 1
 
     echo "execute optional SQL..."
-    get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME}
+    get_optional_sql | ${PSQL} -U ${DBUSER} -q ${DBNAME} || exit 1
 ;;
 "mysql" )
     DBPASS=`echo $DBPASS | tr -d " "`
@@ -233,26 +236,26 @@ case "${DBTYPE}" in
     ${MYSQL} -u ${ROOTUSER} ${PASSOPT} -e "GRANT ALL ON \`${DBNAME}\`.* TO '${DBUSER}'@'%' IDENTIFIED BY '${DBPASS}'"
 
     echo "create table..."
-    ./vendor/bin/doctrine orm:schema-tool:create
+    ./vendor/bin/doctrine orm:schema-tool:create || exit 1
 
     echo "migration..."
-    php app/console migrations:migrate  --no-interaction
+    php app/console migrations:migrate  --no-interaction || exit 1
 
     echo "execute optional SQL..."
-    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME}
+    get_optional_sql | ${MYSQL} -u ${DBUSER} ${PASSOPT} ${DBNAME} || exit 1
 ;;
 "sqlite3" )
     # sqlite3
     echo "removedb..."
     rm -v ${DBPATH}
     echo "create table..."
-   ./vendor/bin/doctrine orm:schema-tool:create
+   ./vendor/bin/doctrine orm:schema-tool:create || exit 1
 
     echo "migration..."
-   php app/console migrations:migrate  --no-interaction
+    php app/console migrations:migrate --no-interaction || exit 1
 
     echo "execute optional SQL..."
-    get_optional_sql | ${SQLITE3} ${DBPATH}
+    get_optional_sql | ${SQLITE3} ${DBPATH} || exit 1
 ;;
 esac
 

@@ -28,15 +28,15 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->createProduct();
         $this->Customer = $this->createCustomer();
         $this->Customer->setName01('立方体長');
-        $Customer2 = $this->createCustomer();
-        $Customer2->setName01('立方隊員');
+        $this->Customer2 = $this->createCustomer();
+        $this->Customer2->setName01('立方隊員');
         $this->app['orm.em']->persist($this->Customer);
-        $this->app['orm.em']->persist($Customer2);
+        $this->app['orm.em']->persist($this->Customer2);
         $this->app['orm.em']->flush();
 
         $this->Order = $this->createOrder($this->Customer);
         $this->Order1 = $this->createOrder($this->Customer);
-        $this->Order2 = $this->createOrder($Customer2);
+        $this->Order2 = $this->createOrder($this->Customer2);
     }
 
     public function scenario()
@@ -131,11 +131,11 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testTel01()
     {
-        $this->Order1->setTel01('090');
+        $this->Order1->setTel01('999');
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'tel01' => '090'
+            'tel01' => '999'
         );
         $this->scenario();
 
@@ -146,11 +146,11 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testTel02()
     {
-        $this->Order1->setTel02('090');
+        $this->Order1->setTel02('999');
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'tel02' => '090'
+            'tel02' => '999'
         );
         $this->scenario();
 
@@ -161,11 +161,11 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testTel03()
     {
-        $this->Order1->setTel03('090');
+        $this->Order1->setTel03('999');
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'tel03' => '090'
+            'tel03' => '999'
         );
         $this->scenario();
 
@@ -177,6 +177,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     public function testBirthStart()
     {
         $this->Customer->setBirth(new \DateTime('2006-09-01'));
+        $this->Customer2->setBirth(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -192,6 +193,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     public function testBirthEnd()
     {
         $this->Customer->setBirth(new \DateTime('2006-09-01'));
+        $this->Customer2->setBirth(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
@@ -209,6 +211,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $Male = $this->app['eccube.repository.master.sex']->find(1);
         $Female = $this->app['eccube.repository.master.sex']->find(2);
         $this->Customer->setSex($Male);
+        $this->Customer2->setSex(null);
         $this->app['orm.em']->flush();
 
         $this->searchData = array(

@@ -43,7 +43,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminContentNewsEdit()
     {
         // before
-        $TestCreator = $this->findMember(1);
+        $TestCreator = $this->findMember(2);
         $TestNews = $this->newTestNews($TestCreator);
         $this->insertTestNews($TestNews);
 
@@ -63,7 +63,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminContentNewsDelete()
     {
         // before
-        $TestCreator = $this->findMember(1);
+        $TestCreator = $this->findMember(2);
         $TestNews = $this->newTestNews($TestCreator);
         $this->insertTestNews($TestNews);
 
@@ -83,7 +83,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminContentNewsUp()
     {
         // before
-        $TestCreator = $this->findMember(1);
+        $TestCreator = $this->findMember(2);
         $TestNews1 = $this->newTestNews($TestCreator, 1);
         $TestNews2 = $this->newTestNews($TestCreator, 2);
         $this->insertTestNews($TestNews1);
@@ -106,7 +106,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminContentNewsDown()
     {
         // before
-        $TestCreator = $this->findMember(1);
+        $TestCreator = $this->findMember(2);
         $TestNews1 = $this->newTestNews($TestCreator, 1);
         $TestNews2 = $this->newTestNews($TestCreator, 2);
         $this->insertTestNews($TestNews1);
@@ -145,9 +145,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     private function findMember($id)
     {
-        return $this->app['orm.em']
-            ->getRepository('Eccube\Entity\Member')
-            ->find($id);
+        return $this->createMember();
     }
 
     private function insertTestNews($TestNews)

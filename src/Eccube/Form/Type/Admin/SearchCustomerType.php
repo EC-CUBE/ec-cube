@@ -205,7 +205,6 @@ class SearchCustomerType extends AbstractType
                 'multiple' => true,
                 'empty_value' => false,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

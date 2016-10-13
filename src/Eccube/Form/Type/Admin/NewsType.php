@@ -25,7 +25,6 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -85,8 +84,7 @@ class NewsType extends AbstractType
             ))
             ->add('select', 'hidden', array(
                 'data' => '0',
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

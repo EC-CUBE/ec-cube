@@ -75,8 +75,7 @@ class NonMemberType extends AbstractType
             ->add('tel', 'tel', array(
                 'required' => true,
             ))
-            ->add('email', 'repeated_email')
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ->add('email', 'repeated_email');
     }
 
     /**

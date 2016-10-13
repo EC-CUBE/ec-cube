@@ -24,7 +24,6 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -53,7 +52,6 @@ class ProductListOrderByType extends AbstractType
                 $event->setData($data);
             }
         });
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

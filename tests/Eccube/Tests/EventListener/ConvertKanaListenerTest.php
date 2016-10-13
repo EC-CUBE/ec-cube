@@ -10,7 +10,7 @@ class ConvertKanaListenerTest extends \PHPUnit_Framework_TestCase
     public function testConvertKana_string()
     {
         $data = '１２３４５';
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener();
@@ -22,7 +22,7 @@ class ConvertKanaListenerTest extends \PHPUnit_Framework_TestCase
     public function testConvertKana_array()
     {
         $data = array('１２３４５');
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener();
@@ -34,7 +34,7 @@ class ConvertKanaListenerTest extends \PHPUnit_Framework_TestCase
     public function testConvertKana_HiraganaToKana()
     {
         $data = 'あいうえお';
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener('CV');

@@ -4,13 +4,8 @@ composer.phar
 /vendor/
 /app/cache/*
 !/app/cache/.gitkeep
-/app/config/eccube/config.yml
-/app/config/eccube/database.yml
-/app/config/eccube/constant.yml
-/app/config/eccube/mail.yml
-/app/config/eccube/path.yml
-/app/config/eccube/database.yml
-/app/config/eccube/log.yml
+/app/config/eccube/*
+!/app/config/eccube/.gitkeep
 /app/log/*
 !/app/log/.gitkeep
 /app/Plugin/*
@@ -33,6 +28,7 @@ composer.phar
 /html/user_data/*
 !/html/user_data/.gitkeep
 /phpunit.xml
+/src/Eccube/Resource/config/*.dist.php
 /tests/tmp/*
 /reports/*
 .idea

@@ -166,9 +166,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminProductCategoryShow()
     {
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
+        $TestCreator = $this->createMember();
         $TestParentCategory = $this->newTestCategory($TestCreator);
         $this->app['orm.em']->persist($TestParentCategory);
         $this->app['orm.em']->flush();
@@ -199,9 +197,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminProductCategoryEdit()
     {
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
+        $TestCreator = $this->createMember();
         $TestCategory = $this->newTestCategory($TestCreator);
         $this->app['orm.em']->persist($TestCategory);
         $this->app['orm.em']->flush();
@@ -226,9 +222,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminProductCategoryDelete()
     {
         // before
-        $TestCreator = $this->app['orm.em']
-            ->getRepository('\Eccube\Entity\Member')
-            ->find(1);
+        $TestCreator = $this->createMember();
         $TestCategory = $this->newTestCategory($TestCreator);
         $this->app['orm.em']->persist($TestCategory);
         $this->app['orm.em']->flush();

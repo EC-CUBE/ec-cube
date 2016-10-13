@@ -26,10 +26,9 @@ namespace Eccube\Form\Type\Master;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PageMaxType extends AbstractType
 {
@@ -52,8 +51,7 @@ class PageMaxType extends AbstractType
                 $data = current($values);
                 $event->setData($data);
             }
-        })
-        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        });
     }
 
     /**

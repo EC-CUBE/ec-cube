@@ -26,8 +26,8 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryType extends AbstractType
 {
@@ -53,7 +53,6 @@ class CategoryType extends AbstractType
                     )),
                 ),
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 
