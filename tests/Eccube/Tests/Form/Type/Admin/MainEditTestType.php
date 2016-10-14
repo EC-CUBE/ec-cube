@@ -71,7 +71,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidName_MaxLength()
     {
-        $this->formData['name'] = '123456789012345678901234567890123456789012345678901';
+        $this->formData['name'] = str_repeat('1', $this->app['config']['stext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -120,7 +120,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidUrl_MaxLength()
     {
-        $this->formData['url'] = '123456789012345678901234567890123456789012345678901';
+        $this->formData['url'] = str_repeat('1', $this->app['config']['stext_len'] + 1);;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -184,7 +184,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidFileName_MaxLength()
     {
-        $this->formData['file_name'] = '123456789012345678901234567890123456789012345678901';
+        $this->formData['file_name'] = str_repeat('1', $this->app['config']['stext_len'] + 1);;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -205,7 +205,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidAuthor_MaxLength()
     {
-        $this->formData['author'] = '123456789012345678901234567890123456789012345678901';
+        $this->formData['author'] = str_repeat('1', $this->app['config']['stext_len'] + 1);;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -219,7 +219,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidDescription_MaxLength()
     {
-        $this->formData['description'] = '123456789012345678901234567890123456789012345678901';
+        $this->formData['description'] = str_repeat('1', $this->app['config']['stext_len'] + 1);;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -233,7 +233,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidKeyword_MaxLength()
     {
-        $this->formData['keyword'] = '123456789012345678901234567890123456789012345678901';
+        $this->formData['keyword'] = str_repeat('1', $this->app['config']['stext_len'] + 1);;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
@@ -247,7 +247,7 @@ class MainEditTestType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testInValidMetaRobots_MaxLength()
     {
-        $this->formData['meta_robots'] = '123456789012345678901234567890123456789012345678901';
+        $this->formData['meta_robots'] = str_repeat('1', $this->app['config']['stext_len'] + 1);;
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
