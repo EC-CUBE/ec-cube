@@ -234,6 +234,16 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
+     * PageLayout オブジェクトを生成して返す
+     *
+     * @return \Eccube\Entity\PageLayout
+     */
+    public function createPageLayout()
+    {
+        return $this->app['eccube.fixture.generator']->createPageLayout();
+    }
+
+    /**
      * テーブルのデータを全て削除する.
      *
      * このメソッドは、参照制約の関係で、 Doctrine ORM ではデータ削除できない場合に使用する.
