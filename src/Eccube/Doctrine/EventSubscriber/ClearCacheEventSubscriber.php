@@ -83,7 +83,7 @@ class ClearCacheEventSubscriber implements EventSubscriber
         $classes = $this->classes;
         foreach ($classes as $class) {
             if ($entity instanceof $class) {
-                $this->app['monolog']->debug('clear result cache: '.$classes);
+                $this->app['monolog']->debug('clear result cache: '.$class);
                 $cache = $args->getObjectManager()->getConfiguration()->getResultCacheImpl();
                 $cache->deleteAll();
                 break;
