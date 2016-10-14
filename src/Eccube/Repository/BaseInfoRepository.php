@@ -43,6 +43,12 @@ class BaseInfoRepository extends EntityRepository
      */
     public function get($id = 1)
     {
-        return $this->find($id);
+        $qb = $this->createQueryBuilder('b')
+            ->where('b.id = :id')
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()
+            ->useResultCache(true)
+            ->getSingleResult();
     }
 }

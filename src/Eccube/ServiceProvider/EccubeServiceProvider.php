@@ -251,6 +251,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
                 $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
 
+                // clear cache
+                $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
+                $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
+
                 // filters
                 $config = $em->getConfiguration();
                 $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');

@@ -128,6 +128,7 @@ class PageLayoutRepository extends EntityRepository
 
         $ownResult = $qb
             ->getQuery()
+            ->useResultCache(true)
             ->setParameters(array(
                 'DeviceType' => $DeviceType,
                 'url'  => $url,
@@ -144,6 +145,7 @@ class PageLayoutRepository extends EntityRepository
 
         $anyResults = $qb
             ->getQuery()
+            ->useResultCache(true)
             ->setParameters(array(
                 'DeviceType' => $DeviceType,
             ))

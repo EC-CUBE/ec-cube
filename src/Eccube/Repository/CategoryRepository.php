@@ -82,6 +82,7 @@ class CategoryRepository extends EntityRepository
             $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
+            ->useResultCache(true)
             ->getResult();
 
         if ($flat) {
