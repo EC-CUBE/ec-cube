@@ -111,6 +111,7 @@ class ProductRepository extends EntityRepository
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->groupBy('p.id');
             $qb->orderBy('price02_min', 'ASC');
+            $qb->addOrderBy('p.id', 'DESC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->orderBy('p.create_date', 'DESC');
