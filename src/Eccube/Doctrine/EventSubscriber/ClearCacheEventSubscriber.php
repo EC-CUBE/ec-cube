@@ -60,9 +60,16 @@ class ClearCacheEventSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
+            Events::postPersist,
             Events::postRemove,
             Events::postUpdate,
         );
+    }
+
+    public function postPersist(LifecycleEventArgs $args)
+    {
+        $this->app['monolog']->debug('clear result cache: postPersist');
+        $this->clearCache($args);
     }
 
     public function postRemove(LifecycleEventArgs $args)
