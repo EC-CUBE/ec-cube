@@ -59,11 +59,18 @@ class ClearCacheEventSubscriber implements EventSubscriber
 
     public function getSubscribedEvents()
     {
-        return array(
-            Events::postPersist,
-            Events::postRemove,
-            Events::postUpdate,
-        );
+        $options = $this->app['config']['doctrine_cache'];
+        $clearCache = $options['result_cache']['clear_cache'];
+
+        if ($clearCache) {
+            return array(
+                Events::postPersist,
+                Events::postRemove,
+                Events::postUpdate,
+            );
+        }
+        // キャッシュの削除オプションが無効の場合は、イベントを定義せず空の配列を返す.
+        return array();
     }
 
     public function postPersist(LifecycleEventArgs $args)
