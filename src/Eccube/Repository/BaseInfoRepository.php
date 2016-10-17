@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Application;
 
 /**
  * BaseInfoRepository
@@ -35,6 +36,16 @@ use Doctrine\ORM\EntityRepository;
 class BaseInfoRepository extends EntityRepository
 {
     /**
+     * @var \Eccube\Application
+     */
+    protected $app;
+
+    public function setApplication(Application $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
      * get
      *
      * @param mixed $id The identifier.
@@ -43,12 +54,15 @@ class BaseInfoRepository extends EntityRepository
      */
     public function get($id = 1)
     {
+        $options = $this->app['config']['doctrine_cache'];
+        $lifetime = $options['result_cache']['lifetime'];
+
         $qb = $this->createQueryBuilder('b')
             ->where('b.id = :id')
             ->setParameter('id', $id);
 
         return $qb->getQuery()
-            ->useResultCache(true)
+            ->useResultCache(true, $lifetime)
             ->getSingleResult();
     }
 }

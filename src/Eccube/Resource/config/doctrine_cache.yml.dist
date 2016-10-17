@@ -17,6 +17,7 @@ doctrine_cache:
     host:
     port:
     password:
+    lifetime: 3600
   hydration_cache:
     driver: array
     path:

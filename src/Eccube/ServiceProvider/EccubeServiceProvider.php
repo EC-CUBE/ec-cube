@@ -129,7 +129,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\PaymentOption');
         });
         $app['eccube.repository.category'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Category');
+            $CategoryRepository = $app['orm.em']->getRepository('Eccube\Entity\Category');
+            $CategoryRepository->setApplication($app);
+
+            return $CategoryRepository;
         });
         $app['eccube.repository.customer'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Customer');
@@ -174,7 +177,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
         });
         $app['eccube.repository.base_info'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
+            $BaseInfoRepository = $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
+            $BaseInfoRepository->setApplication($app);
+
+            return $BaseInfoRepository;
         });
         $app['eccube.repository.tax_rule'] = $app->share(function () use ($app) {
             $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');

@@ -118,6 +118,9 @@ class PageLayoutRepository extends EntityRepository
 
     public function getByUrl(DeviceType $DeviceType, $url)
     {
+        $options = $this->app['config']['doctrine_cache'];
+        $lifetime = $options['result_cache']['lifetime'];
+
         $qb = $this->createQueryBuilder('p')
             ->select('p, bp, b')
             ->leftJoin('p.BlockPositions', 'bp', 'WITH', 'p.id = bp.page_id')
@@ -128,7 +131,7 @@ class PageLayoutRepository extends EntityRepository
 
         $ownResult = $qb
             ->getQuery()
-            ->useResultCache(true)
+            ->useResultCache(true, $lifetime)
             ->setParameters(array(
                 'DeviceType' => $DeviceType,
                 'url'  => $url,
@@ -145,7 +148,7 @@ class PageLayoutRepository extends EntityRepository
 
         $anyResults = $qb
             ->getQuery()
-            ->useResultCache(true)
+            ->useResultCache(true, $lifetime)
             ->setParameters(array(
                 'DeviceType' => $DeviceType,
             ))

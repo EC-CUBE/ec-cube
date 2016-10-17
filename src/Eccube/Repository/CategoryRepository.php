@@ -25,6 +25,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Application;
 use Eccube\Entity\Category;
 
 /**
@@ -35,6 +36,16 @@ use Eccube\Entity\Category;
  */
 class CategoryRepository extends EntityRepository
 {
+    /**
+     * @var \Eccube\Application
+     */
+    protected $app;
+
+    public function setApplication(Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * 全カテゴリの合計を取得する.
      *
@@ -64,6 +75,9 @@ class CategoryRepository extends EntityRepository
      */
     public function getList(Category $Parent = null, $flat = false)
     {
+        $options = $this->app['config']['doctrine_cache'];
+        $lifetime = $options['result_cache']['lifetime'];
+
         $qb = $this->createQueryBuilder('c1')
             ->select('c1, c2, c3, c4, c5')
             ->leftJoin('c1.Children', 'c2')
@@ -82,7 +96,7 @@ class CategoryRepository extends EntityRepository
             $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
-            ->useResultCache(true)
+            ->useResultCache(true, $lifetime)
             ->getResult();
 
         if ($flat) {
