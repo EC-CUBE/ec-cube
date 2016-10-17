@@ -192,7 +192,7 @@ class CategoryRepositoryTest extends EccubeTestCase
     public function testUp()
     {
         // CategoryRepository::upは、現状機能しておらず、期待値を返さないが、deprecatedのためスキップする
-        $this->markTestSkipped();
+        $this->markTestSkipped('CategoryRepository::up() is deprecated.');
 
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
         // CategoryRepository::up() では, rank を1つだけ加算することに注意
@@ -243,7 +243,7 @@ class CategoryRepositoryTest extends EccubeTestCase
     public function testDown()
     {
         // CategoryRepository::downは、現状機能しておらず、期待値を返さないが、deprecatedのためスキップする
-        $this->markTestSkipped();
+        $this->markTestSkipped('CategoryRepository::down() is deprecated.');
 
         $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
         // CategoryRepository::down() では, rank を1つだけ減算することに注意
