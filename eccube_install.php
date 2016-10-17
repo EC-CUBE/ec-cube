@@ -121,6 +121,11 @@ function initializeDefaultVariables($database_driver)
             break;
         case 'pdo_mysql':
             putenv('ROOTUSER='.(getenv('ROOTUSER') ? getenv('ROOTUSER') : (getenv('DBUSER') ? getenv('DBUSER') : 'root')));
+            putenv('DBSERVER='.(getenv('DBSERVER') ? getenv('DBSERVER') : 'localhost'));
+            putenv('DBNAME='.(getenv('DBNAME') ? getenv('DBNAME') : 'cube3_dev'));
+            putenv('DBUSER='.(getenv('DBUSER') ? getenv('DBUSER') : 'cube3_dev_user'));
+            putenv('DBPORT='.(getenv('DBPORT') ? getenv('DBPORT') : '3306'));
+            putenv('DBPASS='.(getenv('DBPASS') ? getenv('DBPASS') : 'password'));
             if (getenv('TRAVIS')) {
                 putenv('DBPASS=');
                 putenv('ROOTPASS=');
@@ -128,11 +133,6 @@ function initializeDefaultVariables($database_driver)
                 putenv('DBPASS='.(getenv('DBPASS') ? getenv('DBPASS') : 'password'));
                 putenv('ROOTPASS='.(getenv('ROOTPASS') ? getenv('ROOTPASS') : (getenv('DBPASS') ? getenv('DBPASS') : 'password')));
             }
-            putenv('DBSERVER='.(getenv('DBSERVER') ? getenv('DBSERVER') : 'localhost'));
-            putenv('DBNAME='.(getenv('DBNAME') ? getenv('DBNAME') : 'cube3_dev'));
-            putenv('DBUSER='.(getenv('DBUSER') ? getenv('DBUSER') : 'cube3_dev_user'));
-            putenv('DBPORT='.(getenv('DBPORT') ? getenv('DBPORT') : '3306'));
-            putenv('DBPASS='.(getenv('DBPASS') ? getenv('DBPASS') : 'password'));
             break;
         default:
         case 'pdo_sqlite':
