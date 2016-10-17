@@ -44,7 +44,7 @@ class CustomerLoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', 'text', array( // todo text -> email ?
+        $builder->add('login_email', 'email', array( // todo text -> email ?
             'attr' => array(
                 'max_length' => 320, // todo
             ),
