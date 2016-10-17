@@ -70,7 +70,8 @@ if (!in_array('--skip-createdb', $argv)) {
 $app = createApplication();
 initializeDatabase($app);
 out('EC-CUBE3 install finished successfully!', 'success');
-if (PHP_VERSION_ID >= 50400 && empty(getenv('ROOT_URLPATH'))) {
+$root_urlpath = getenv('ROOT_URLPATH');
+if (PHP_VERSION_ID >= 50400 && empty($root_urlpath)) {
     out('PHP built-in web server to run applications, `php -S localhost:8080 -t html`', 'info');
     out('Open your browser and access the http://localhost:8080/', 'info');
 }
