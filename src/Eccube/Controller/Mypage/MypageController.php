@@ -141,9 +141,6 @@ class MypageController extends AbstractController
             'id' => $id,
             'Customer' => $app->user(),
         ));
-
-        var_dump(__METHOD__.__LINE__);
-        var_dump($Order->getId());
         
         $event = new EventArgs(
             array(
