@@ -136,18 +136,11 @@ class MypageController extends AbstractController
             'Eccube\Entity\ProductClass',
         ));
 
+        $app['orm.em']->getFilters()->enable('incomplete_order_status_hidden');
         $Order = $app['eccube.repository.order']->findOneBy(array(
             'id' => $id,
             'Customer' => $app->user(),
         ));
-        //受注ステータス確認
-        $haystack = array();
-        $haystack[] = $app['config']['order_pending'];
-        $haystack[] = $app['config']['order_processing'];
-        //購入処理中と決済処理中場合は非表示にする
-        if(!$Order || in_array($Order->getOrderStatus()->getId(), $haystack)){
-            $Order = null;
-        }
 
         $event = new EventArgs(
             array(
