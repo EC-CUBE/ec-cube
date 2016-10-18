@@ -116,8 +116,10 @@ class MypageControllerTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
+        var_dump(__METHOD__.__LINE__);
          // 後方互換のため最初の1つのみ渡す
         $Order = $this->app['eccube.fixture.generator']->createOrder($Customer, array($ProductClasses[0]),null,0,0, 'order_new');
+        var_dump($Order->getId());
         $this->logIn($Customer);
         $client = $this->client;
 
