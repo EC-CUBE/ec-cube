@@ -293,4 +293,37 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->actual = $EditedOrderafterEdit->getTax();
         $this->verify();
     }
+
+    /**
+     * 受注登録時に会員情報が正しく保存されているかどうかのテスト
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1682
+     */
+    public function testOrderProcessingWithCustomer()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_new'),
+            array(
+                'order' => $this->createFormData($this->Customer, $this->Product),
+                'mode' => 'register'
+            )
+        );
+
+        $url = $crawler->filter('a')->text();
+
+        $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
+        $SavedOrder = $this->app['eccube.repository.order']->find($savedOderId);
+
+        $this->expected = $this->Customer->getSex();
+        $this->actual = $SavedOrder->getSex();
+        $this->verify('会員の性別が保存されている');
+
+        $this->expected = $this->Customer->getJob();
+        $this->actual = $SavedOrder->getJob();
+        $this->verify('会員の職業が保存されている');
+
+        $this->expected = $this->Customer->getBirth();
+        $this->actual = $SavedOrder->getBirth();
+        $this->verify('会員の誕生日が保存されている');
+    }
 }

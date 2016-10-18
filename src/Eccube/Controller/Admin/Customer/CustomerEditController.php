@@ -35,6 +35,7 @@ class CustomerEditController extends AbstractController
 {
     public function index(Application $app, Request $request, $id = null)
     {
+        $app['orm.em']->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
             $Customer = $app['orm.em']

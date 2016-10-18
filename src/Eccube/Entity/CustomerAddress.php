@@ -158,7 +158,7 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
      */
     public function getShippingMultipleDefaultName()
     {
-        return $this->getName01() . ' ' . $this->getAddr02() . ' ' . $this->getPref()->getName() . $this->getAddr01();
+        return $this->getName01() . ' ' . $this->getPref()->getName() . ' ' . $this->getAddr01() . ' ' . $this->getAddr02();
     }
     
     /**

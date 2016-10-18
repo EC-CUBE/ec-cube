@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Admin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -44,18 +45,6 @@ class PaymentRegisterType extends AbstractType
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
-                ),
-            ))
-            ->add('charge', 'money', array(
-                'label' => '手数料',
-                'currency' => 'JPY',
-                'precision' => 0,
-                'constraints' => array(
-                    new Assert\NotBlank(),
-                    new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form.type.numeric.invalid'
-                    )),
                 ),
             ))
             ->add('rule_min', 'money', array(
@@ -97,6 +86,27 @@ class PaymentRegisterType extends AbstractType
                 $ruleMin = $form['rule_min']->getData();
                 if (!empty($ruleMin) && !empty($ruleMax) && $ruleMax < $ruleMin) {
                     $form['rule_min']->addError(new FormError('利用条件(下限)は'.$ruleMax.'円以下にしてください。'));
+                }
+            })
+            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+                $form = $event->getForm();
+                /** @var \Eccube\Entity\Payment $Payment */
+                $Payment = $event->getData();
+                if (is_null($Payment) || $Payment->getChargeFlg() == 1) {
+                    $form->add('charge', 'money', array(
+                        'label' => '手数料',
+                        'currency' => 'JPY',
+                        'precision' => 0,
+                        'constraints' => array(
+                            new Assert\NotBlank(),
+                            new Assert\Regex(array(
+                                'pattern' => "/^\d+$/u",
+                                'message' => 'form.type.numeric.invalid'
+                            )),
+                        ),
+                    ));
+                } else {
+                    $form->add('charge', 'hidden');
                 }
             })
         ;

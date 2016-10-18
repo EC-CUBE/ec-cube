@@ -322,6 +322,10 @@ class Generator {
 
             $this->app['orm.em']->persist($ProductClass);
             $this->app['orm.em']->flush($ProductClass);
+
+            $ProductStock->setProductClass($ProductClass);
+            $ProductStock->setProductClassId($ProductClass->getId());
+            $this->app['orm.em']->flush($ProductStock);
             $Product->addProductClass($ProductClass);
         }
 
@@ -351,6 +355,11 @@ class Generator {
             ->setProduct($Product);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush($ProductClass);
+
+        $ProductStock->setProductClass($ProductClass);
+        $ProductStock->setProductClassId($ProductClass->getId());
+        $this->app['orm.em']->flush($ProductStock);
+
         $Product->addProductClass($ProductClass);
 
         $Categories = $this->app['eccube.repository.category']->findAll();
