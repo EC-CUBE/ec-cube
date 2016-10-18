@@ -31,6 +31,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SearchProductType extends AbstractType
 {
+    public $app;
+
+    public function __construct(\Silex\Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -39,18 +46,13 @@ class SearchProductType extends AbstractType
         $builder->add('mode', 'hidden', array(
             'data' => 'search',
         ));
-        $builder->add('category_id', 'entity', array(
-            'class' => 'Eccube\Entity\Category',
-            'property' => 'NameWithLevel',
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('c')
-                    ->orderBy('c.rank', 'DESC');
-            },
+        $builder->add('category_id', 'category', array(
             'empty_value' => '全ての商品',
             'empty_data' => null,
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
+            // Choices list (overdrive mapped)
+            'choices' => $this->getCategoryChoice($this->app)
         ));
         $builder->add('name', 'search', array(
             'required' => false,
@@ -79,6 +81,22 @@ class SearchProductType extends AbstractType
             'csrf_protection' => false,
             'allow_extra_fields' => true,
         ));
+    }
+
+    /**
+     * Overdrive choice Category method
+     * @param \Silex\Application $app
+     * @return array
+     */
+    private function getCategoryChoice(\Silex\Application $app)
+    {
+        $RootCategories = $app['eccube.repository.category']->getList();
+        $CategoriesForChoice = array();
+        foreach ($RootCategories as $Root) {
+            $CategoriesForChoice = array_merge($CategoriesForChoice, $Root->getSelfAndDescendants());
+        }
+
+        return $CategoriesForChoice;
     }
 
     /**
