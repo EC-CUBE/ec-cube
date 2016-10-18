@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Monolog\Handler;
+namespace Eccube\Monolog\Helper;
 
 use Eccube\Application;
 use Eccube\Monolog\Processor\EccubeWebProcessor;
@@ -39,7 +39,7 @@ class EccubeMonologHelper
     protected $app;
 
     /**
-     * EccubeMonologHandler constructor.
+     * EccubeMonologHelper constructor.
      *
      */
     public function __construct($app)
@@ -47,19 +47,25 @@ class EccubeMonologHelper
         $this->app = $app;
     }
 
-    public function getHandler($channelName, $values)
+    /**
+     * log.ymlの内容に応じたHandlerの設定を行う
+     *
+     * @param $channelValues
+     * @return FingersCrossedHandler
+     */
+    public function getHandler($channelValues)
     {
         $app = $this->app;
 
         $levels = Logger::getLevels();
 
-        $logFileName = $values['filename'];
-        $delimiter = $values['delimiter'];
-        $dateFormat  = $values['dateformat'];
-        $logLevel = $values['log_level'];
-        $actionLevel = $values['action_level'];
-        $maxFiles = $values['max_files'];
-        $logDateFormate = $values['log_dateformat'];
+        $logFileName = $channelValues['filename'];
+        $delimiter = $channelValues['delimiter'];
+        $dateFormat = $channelValues['dateformat'];
+        $logLevel = $channelValues['log_level'];
+        $actionLevel = $channelValues['action_level'];
+        $maxFiles = $channelValues['max_files'];
+        $logDateFormate = $channelValues['log_dateformat'];
 
         if ($app['debug']) {
             $level = Logger::DEBUG;
@@ -87,11 +93,12 @@ class EccubeMonologHelper
         );
 
 
-        // Processorの設定
+        // Processorの内容をログ出力
         $web = new EccubeWebProcessor();
         $uid = new UidProcessor(8);
 
         $FingerCrossedHandler->pushProcessor(function ($record) use ($app, $uid, $web) {
+            // ログフォーマットに出力する値を独自に設定
 
             $record['level_name'] = sprintf("%-5s", $record['level_name']);
 
@@ -103,6 +110,7 @@ class EccubeMonologHelper
             $record['ip'] = $web->serverData['REMOTE_ADDR'];
             $record['referrer'] = isset($web->serverData['HTTP_REFERER']) ? $web->serverData['HTTP_REFERER'] : '';
 
+            // クラス名などを一旦保持し、不要な情報は削除
             $line = $record['extra']['line'];
             // $className = $record['extra']['class'];
             $functionName = $record['extra']['function'];
@@ -125,7 +133,8 @@ class EccubeMonologHelper
             return $record;
         });
 
-        $intro = new IntrospectionProcessor();
+        // クラス名等を取得するProcessor、ログ出力時にクラス名を無視するための設定を行っている
+        $intro = new IntrospectionProcessor(Logger::DEBUG, array('Psr\\Log\\', 'EccubeLog'));
         $FingerCrossedHandler->pushProcessor($intro);
 
         return $FingerCrossedHandler;

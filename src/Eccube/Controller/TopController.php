@@ -26,15 +26,11 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 
-class TopController
+class TopController extends AbstractController
 {
 
     public function index(Application $app)
     {
-        $app->log('処理を開始しました。');
-        $app->log('1', array('a', 'b' => 'hogehoge'));
-
-
         return $app->render('index.twig');
     }
 }

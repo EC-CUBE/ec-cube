@@ -69,7 +69,10 @@
             "Eccube\\": "src/Eccube",
             "Plugin\\": "app/Plugin",
             "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
-        }
+        },
+        "files": [
+            "src/Eccube/Monolog/EccubeLog.php"
+        ]
     },
     "autoload-dev" : {
         "psr-4": {

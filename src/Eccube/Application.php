@@ -686,7 +686,6 @@ class Application extends ApplicationTrait
             }
 
             $app['monolog']->debug('KernelEvents::REQUEST '.$route);
-            $app['monolog']->info('START', array($route));
 
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
@@ -719,6 +718,7 @@ class Application extends ApplicationTrait
             }
 
             $app['monolog']->debug('KernelEvents::CONTROLLER '.$route);
+            \EccubeLog::info('処理を開始しました', array($route));
 
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.controller', $event);
@@ -820,7 +820,7 @@ class Application extends ApplicationTrait
             // 全体
             $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
 
-            $app['monolog']->info('END', array($route));
+            \EccubeLog::info('処理を終了しました', array($route));
         });
     }
 

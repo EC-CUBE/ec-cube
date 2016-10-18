@@ -2,7 +2,7 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Monolog\Handler\EccubeMonologHelper;
+use Eccube\Monolog\Helper\EccubeMonologHelper;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -18,12 +18,13 @@ class EccubeMonologServiceProvider implements ServiceProviderInterface
         $app->register(new \Silex\Provider\MonologServiceProvider());
 
         // ログクラス作成ファクトリー
-        $app['monolog.factory'] = $app->protect(function ($channelName, array $values) use ($app) {
+        $app['monolog.factory'] = $app->protect(function ($channelName, array $channelValues) use ($app) {
 
             $log = new $app['monolog.logger.class']($channelName);
 
             $helper = new EccubeMonologHelper($app);
-            $log->pushHandler($helper->getHandler($channelName, $values));
+            // EccubeMonologHelper内でHandlerを設定している
+            $log->pushHandler($helper->getHandler($channelValues));
 
             return $log;
         });
@@ -32,17 +33,18 @@ class EccubeMonologServiceProvider implements ServiceProviderInterface
         $channels = $app['config']['log']['channel'];
         // monologの設定は除外
         unset($channels['monolog']);
-        foreach ($channels as $channel => $value) {
-            $app[$channel.'.monolog'] = $app->share(function ($app) use ($channel, $value) {
-                return $app['monolog.factory']($channel, $value);
+        foreach ($channels as $channel => $channelValues) {
+            $app['monolog.logger.'.$channel] = $app->share(function ($app) use ($channel, $channelValues) {
+                return $app['monolog.factory']($channel, $channelValues);
             });
         }
 
         // MonologServiceProviderで定義されているmonolog.handlerの置換
         $app['monolog.handler'] = $app->share(function ($app) {
             $helper = new EccubeMonologHelper($app);
-            $value = $app['config']['log']['channel']['monolog'];
-            return $helper->getHandler('monolog', $value);
+            $channelValues = $app['config']['log']['channel']['monolog'];
+
+            return $helper->getHandler($channelValues);
         });
 
         $app['listener.requestdump'] = $app->share(function ($app) {
