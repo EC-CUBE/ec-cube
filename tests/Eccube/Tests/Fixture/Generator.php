@@ -392,13 +392,17 @@ class Generator {
      * @param integer $add_discount Order に加算される値引き額
      * @return \Eccube\Entity\Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0)
+    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusType = null)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
         $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
         $Payments = $this->app['eccube.repository.payment']->findAll();
-        $Order = new Order($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']));
+        if(!$statusType){
+            $statusType = 'order_processing';
+        }
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config'][$statusType]);
+        $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
         $Order
