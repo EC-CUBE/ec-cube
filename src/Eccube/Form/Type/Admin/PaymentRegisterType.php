@@ -33,11 +33,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PaymentRegisterType extends AbstractType
 {
+    protected $app;
+
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $app = $this->app;
+
         $builder
             ->add('method', 'text', array(
                 'label' => '支払方法',
@@ -53,7 +62,7 @@ class PaymentRegisterType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'max' => 10,
+                        'max' => $app['config']['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
@@ -67,7 +76,7 @@ class PaymentRegisterType extends AbstractType
                 'precision' => 0,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => 10,
+                        'max' => $app['config']['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
@@ -82,7 +91,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => 10,
+                        'max' => $app['config']['int_len'],
                     )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",

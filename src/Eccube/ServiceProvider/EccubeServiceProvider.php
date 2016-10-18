@@ -342,7 +342,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShippingType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShipmentItemType($app);
-            $types[] = new \Eccube\Form\Type\Admin\PaymentRegisterType();
+            $types[] = new \Eccube\Form\Type\Admin\PaymentRegisterType($app);
             $types[] = new \Eccube\Form\Type\Admin\TaxRuleType();
             $types[] = new \Eccube\Form\Type\Admin\MainEditType($app);
             $types[] = new \Eccube\Form\Type\Admin\MailType();
