@@ -58,19 +58,39 @@ class CategoryRepository extends EntityRepository
      * 引数 $Parent を指定した場合は, 指定したカテゴリの子以下を取得する.
      *
      * @param \Eccube\Entity\Category|null $Parent 指定の親カテゴリ
+     * @param bool $flat trueの場合, 階層化されたカテゴリを一つの配列にまとめる
+     *
      * @return \Eccube\Entity\Category[] カテゴリの配列
      */
-    public function getList(Category $Parent = null)
+    public function getList(Category $Parent = null, $flat = false)
     {
-        $qb = $this->createQueryBuilder('c')
-            ->orderBy('c.rank', 'DESC');
+        $qb = $this->createQueryBuilder('c1')
+            ->select('c1, c2, c3, c4, c5')
+            ->leftJoin('c1.Children', 'c2')
+            ->leftJoin('c2.Children', 'c3')
+            ->leftJoin('c3.Children', 'c4')
+            ->leftJoin('c4.Children', 'c5')
+            ->orderBy('c1.rank', 'DESC')
+            ->addOrderBy('c2.rank', 'DESC')
+            ->addOrderBy('c3.rank', 'DESC')
+            ->addOrderBy('c4.rank', 'DESC')
+            ->addOrderBy('c5.rank', 'DESC');
+
         if ($Parent) {
-            $qb->where('c.Parent = :Parent')->setParameter('Parent', $Parent);
+            $qb->where('c1.Parent = :Parent')->setParameter('Parent', $Parent);
         } else {
-            $qb->where('c.Parent IS NULL');
+            $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
             ->getResult();
+
+        if ($flat) {
+            $array = array();
+            foreach ($Categories as $Category) {
+                $array = array_merge($array, $Category->getSelfAndDescendants());
+            }
+            $Categories = $array;
+        }
 
         return $Categories;
     }
@@ -80,6 +100,8 @@ class CategoryRepository extends EntityRepository
      *
      * @param  \Eccube\Entity\Category $Category カテゴリ
      * @return boolean 成功した場合 true
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function up(\Eccube\Entity\Category $Category)
     {
@@ -130,6 +152,8 @@ class CategoryRepository extends EntityRepository
      *
      * @param  \Eccube\Entity\Category $Category カテゴリ
      * @return boolean 成功した場合 true
+     *
+     * @deprecated since 3.0.0, to be removed in 3.1
      */
     public function down(\Eccube\Entity\Category $Category)
     {

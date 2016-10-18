@@ -72,7 +72,8 @@
         },
         "files": [
             "src/Eccube/Monolog/EccubeLog.php"
-        ]
+        ],
+        "exclude-from-classmap": ["**/Test/**", "**/Tests/**", "**/test/**", "**/tests/**"]
     },
     "autoload-dev" : {
         "psr-4": {
