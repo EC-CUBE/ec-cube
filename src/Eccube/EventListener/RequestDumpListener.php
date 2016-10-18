@@ -43,6 +43,9 @@ class RequestDumpListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
         $log = '** before *****************************************:'.PHP_EOL;
         $request = $event->getRequest();
         $log .= $this->logRequest($request);
@@ -60,6 +63,9 @@ class RequestDumpListener implements EventSubscriberInterface
      */
     public function onResponse(FilterResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
         $log = '** after *****************************************:'.PHP_EOL;
         $response = $event->getResponse();
         $log .= $this->logResponse($response);

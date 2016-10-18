@@ -29,7 +29,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SearchProductType extends AbstractType
+class SearchProductBlockType extends AbstractType
 {
     /**
      * @var Application
@@ -54,9 +54,6 @@ class SearchProductType extends AbstractType
         $Categories = $this->app['eccube.repository.category']
             ->getList(null, true);
 
-        $builder->add('mode', 'hidden', array(
-            'data' => 'search',
-        ));
         $builder->add('category_id', 'entity', array(
             'class' => 'Eccube\Entity\Category',
             'property' => 'NameWithLevel',
@@ -73,14 +70,6 @@ class SearchProductType extends AbstractType
             'attr' => array(
                 'maxlength' => 50,
             ),
-        ));
-        $builder->add('pageno', 'hidden', array(
-        ));
-        $builder->add('disp_number', 'product_list_max', array(
-            'label' => '表示件数',
-        ));
-        $builder->add('orderby', 'product_list_order_by', array(
-            'label' => '表示順',
         ));
     }
 
@@ -100,6 +89,6 @@ class SearchProductType extends AbstractType
      */
     public function getName()
     {
-        return 'search_product';
+        return 'search_product_block';
     }
 }
