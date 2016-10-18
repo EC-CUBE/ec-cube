@@ -539,6 +539,9 @@ class ShoppingServiceTest extends AbstractServiceTestCase
      */
     public function testGetNewOrderDetailForTaxRate()
     {
+        // 個別税率設定を有効化
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
         // 個別税率が設定された商品企画を準備
         $Product = $this->createProduct('テスト商品', 1);
         $ProductClass = $Product->getProductClasses()[0];
@@ -552,7 +555,7 @@ class ShoppingServiceTest extends AbstractServiceTestCase
             ->setCalcRule($CalcRule)
             ->setTaxRate(10)
             ->setTaxAdjust(0)
-            ->setApplyDate(new \DateTime())
+            ->setApplyDate(new \DateTime('-1 second')) // nowだとタイミングによってはテストが失敗する
             ->setDelFlg(Constant::DISABLED);
         $ProductClass->setTaxRule($TaxRule)
             ->setTaxRate($TaxRule->getTaxRate());
