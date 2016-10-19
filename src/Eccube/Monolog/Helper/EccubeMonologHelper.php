@@ -52,22 +52,24 @@ class EccubeMonologHelper
     /**
      * log.ymlの内容に応じたHandlerの設定を行う
      *
-     * @param $channelValues
+     * @param array $channelValues
      * @return FingersCrossedHandler
      */
-    public function getHandler($channelValues)
+    public function getHandler(array $channelValues)
     {
         $app = $this->app;
 
         $levels = Logger::getLevels();
 
-        $logFileName = $channelValues['filename'];
-        $delimiter = $channelValues['delimiter'];
-        $dateFormat = $channelValues['dateformat'];
-        $logLevel = $channelValues['log_level'];
-        $actionLevel = $channelValues['action_level'];
-        $maxFiles = $channelValues['max_files'];
-        $logDateFormat = $channelValues['log_dateformat'];
+        // ファイル名などの設定を行い、設定がなければデフォルト値を設定
+        $logFileName = isset($channelValues['filename']) ? $channelValues['filename'] : $app['config']['log']['filename'];
+        $delimiter = isset($channelValues['delimiter']) ? $channelValues['delimiter'] : $app['config']['log']['delimiter'];
+        $dateFormat = isset($channelValues['dateformat']) ? $channelValues['dateformat'] : $app['config']['log']['dateformat'];
+        $logLevel = isset($channelValues['log_level']) ? $channelValues['log_level'] : $app['config']['log']['log_level'];
+        $actionLevel = isset($channelValues['action_level']) ? $channelValues['action_level'] : $app['config']['log']['action_level'];
+        $maxFiles = isset($channelValues['max_files']) ? $channelValues['max_files'] : $app['config']['log']['max_files'];
+        $logDateFormat = isset($channelValues['log_dateformat']) ? $channelValues['log_dateformat'] : $app['config']['log']['log_dateformat'];
+        $logFormat = isset($channelValues['log_format']) ? $channelValues['log_format'] : $app['config']['log']['log_format'];
 
         if ($app['debug']) {
             $level = Logger::DEBUG;
@@ -85,8 +87,7 @@ class EccubeMonologHelper
         );
 
         // ログフォーマットの設定(設定ファイルで定義)
-        $format = $channelValues['log_format']."\n";
-        $RotateHandler->setFormatter(new LineFormatter($format, $logDateFormat, true, true));
+        $RotateHandler->setFormatter(new LineFormatter($logFormat."\n", $logDateFormat, true, true));
 
         // FingerCossedHandlerの設定
         $FingerCrossedHandler = new FingersCrossedHandler(
