@@ -4,7 +4,6 @@ if (php_sapi_name() !== 'cli') {
     exit(1);
 }
 
-require __DIR__.'/autoload.php';
 set_time_limit(0);
 ini_set('display_errors', 1);
 
@@ -60,6 +59,11 @@ if ($argv[2] != 'none') {
     composerSetup();
     composerInstall();
 }
+
+require __DIR__.'/autoload.php';
+
+out('update permissions...');
+updatePermissions($argv);
 
 createConfigFiles($database_driver);
 
@@ -330,6 +334,38 @@ function initializeDatabase(\Eccube\Application $app)
         )
     );
     $stmt->closeCursor();
+}
+
+function updatePermissions($argv)
+{
+    $finder = \Symfony\Component\Finder\Finder::create();
+    $finder
+        ->in('html')
+        ->in('app')
+        ->exclude(array('console', '.htaccess'));
+
+    $verbose = false;
+    if (in_array('-V', $argv) || in_array('--verbose', $argv)) {
+        $verbose = true;
+    }
+    foreach ($finder as $content) {
+        if (!$content->isWritable()) {
+            $permission = substr(sprintf('%o', $content->getPerms()), -4);
+            $realPath = $content->getRealPath();
+            if ($verbose) {
+                out($realPath.' '.$permission.' to ', 'info', false);
+            }
+            $permission += 22;   // chmod to go+w
+            $result = chmod($realPath, $permission);
+            if ($verbose) {
+                if ($result) {
+                    out($permission);
+                } else {
+                    out('failure', 'error');
+                }
+            }
+        }
+    }
 }
 
 function createConfigFiles($database_driver)
