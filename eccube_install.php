@@ -452,48 +452,26 @@ function getMailConfig()
     return $mail;
 }
 
+/**
+ * @see \Eccube\Controller\Install\InstallController::createPathYamlFile()
+ */
 function getPathConfig()
 {
-    $root_dir = realpath(__DIR__);
-    $root_urlpath = getenv('ROOT_URLPATH');
-    // TODO path.yml.dist から取得したい
-    $path = array (
-        'root' => $root_urlpath.'/',
-        'admin_dir' => getenv('ADMIN_ROUTE'),
-        'tpl' => $root_urlpath.'/user_data/packages/default/',
-        'admin_tpl' => $root_urlpath.'/user_data/packages/admin/',
-        'image_path' => $root_urlpath.'/upload/save_image/',
-        'root_dir' => $root_dir,
-        'root_urlpath' => $root_urlpath,
-        'template_code' => 'default',
-        'admin_route' => 'admin',
-        'user_data_route' => 'user_data',
-        'public_path' => '/html',
-        'public_path_realdir' => $root_dir.'/html',
-        'image_save_realdir' => $root_dir.'/html/upload/save_image',
-        'image_temp_realdir' => $root_dir.'/html/upload/temp_image',
-        'user_data_realdir' => $root_dir.'/html/user_data',
-        'block_default_realdir' => $root_dir.'/src/Eccube/Resource/template/default/Block',
-        'block_realdir' => $root_dir.'/app/template/default/Block',
-        'template_default_realdir' => $root_dir.'/src/Eccube/Resource/template/default',
-        'template_default_html_realdir' => $root_dir.'/html/template/default',
-        'template_admin_realdir' => $root_dir.'/src/Eccube/Resource/template/admin',
-        'template_admin_html_realdir' => $root_dir.'/html/template/admin',
-        'template_realdir' => $root_dir.'/app/template/default',
-        'template_html_realdir' => $root_dir.'/html/template/default',
-        'template_temp_realdir' => $root_dir.'/app/cache/eccube/template',
-        'csv_temp_realdir' => $root_dir.'/app/cache/eccube/csv',
-        'plugin_realdir' => $root_dir.'/app/Plugin',
-        'plugin_temp_realdir' => $root_dir.'/app/cache/plugin',
-        'plugin_html_realdir' => $root_dir.'/html/plugin',
-        'admin_urlpath' => $root_urlpath.'/template/admin',
-        'front_urlpath' => $root_urlpath.'/template/default',
-        'image_save_urlpath' => $root_urlpath.'/upload/save_image',
-        'image_temp_urlpath' => $root_urlpath.'/upload/temp_image',
-        'user_data_urlpath' => $root_urlpath.'/user_data',
-        'plugin_urlpath' => $root_urlpath.'/plugin',
+    $ADMIN_ROUTE = getenv('ADMIN_ROUTE');
+    $TEMPLATE_CODE = 'default';
+    $USER_DATA_ROUTE = 'user_data';
+    $ROOT_DIR = realpath(__DIR__);
+    $ROOT_URLPATH = getenv('ROOT_URLPATH');
+    $ROOT_PUBLIC_URLPATH = $ROOT_URLPATH.RELATIVE_PUBLIC_DIR_PATH;
+
+    $target = array('${ADMIN_ROUTE}', '${TEMPLATE_CODE}', '${USER_DATA_ROUTE}', '${ROOT_DIR}', '${ROOT_URLPATH}', '${ROOT_PUBLIC_URLPATH}');
+    $replace = array($ADMIN_ROUTE, $TEMPLATE_CODE, $USER_DATA_ROUTE, $ROOT_DIR, $ROOT_URLPATH, $ROOT_PUBLIC_URLPATH);
+    $content = str_replace(
+        $target,
+        $replace,
+        file_get_contents(__DIR__.'/src/Eccube/Resource/config/path.yml.dist')
     );
-    return $path;
+    return \Symfony\Component\Yaml\Yaml::parse($content);
 }
 
 /**
