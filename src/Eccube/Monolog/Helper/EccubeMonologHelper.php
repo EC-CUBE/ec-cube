@@ -80,7 +80,8 @@ class EccubeMonologHelper
 
 
         // RotateHandlerの設定
-        $filename = $app['config']['root_dir'].'/app/log/'.$logFileName.'.log';
+        $logDir = isset($app['config']['log_realdir']) ? $app['config']['log_realdir'].'/' : $app['config']['root_dir'].'/app/log/';
+        $filename = $logDir.$logFileName.'.log';
         $RotateHandler = new RotatingFileHandler($filename, $maxFiles, $level);
         $RotateHandler->setFilenameFormat(
             $logFileName.$delimiter.'{date}'.$app['config']['log']['suffix'],
@@ -88,7 +89,7 @@ class EccubeMonologHelper
         );
 
         // ログフォーマットの設定(設定ファイルで定義)
-        $RotateHandler->setFormatter(new LineFormatter($logFormat."\n", $logDateFormat, true, true));
+        $RotateHandler->setFormatter(new LineFormatter($logFormat.PHP_EOL, $logDateFormat, true, true));
 
         // FingerCossedHandlerの設定
         $FingerCrossedHandler = new FingersCrossedHandler(
@@ -114,7 +115,7 @@ class EccubeMonologHelper
                     $record['session_id'] = substr(sha1($app['session']->getId()), 0, 8);
                 }
                 $user = $app->user();
-                if ($user instanceof Customer || $user instanceof  Member) {
+                if ($user instanceof Customer || $user instanceof Member) {
                     $record['user_id'] = $user->getId();
                 }
             }

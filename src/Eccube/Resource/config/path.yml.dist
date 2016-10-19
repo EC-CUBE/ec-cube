@@ -18,6 +18,9 @@ user_data_route: ${USER_DATA_ROUTE}
 public_path: /html
 public_path_realdir: ${ROOT_DIR}/html
 
+# log directory
+log_realdir: ${ROOT_DIR}/app/log
+
 # realdir::image
 image_save_realdir: ${ROOT_DIR}/html/upload/save_image
 image_temp_realdir: ${ROOT_DIR}/html/upload/temp_image
