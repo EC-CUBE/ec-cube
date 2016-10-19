@@ -3,6 +3,7 @@
 namespace Eccube\ServiceProvider;
 
 use Eccube\Monolog\Helper\EccubeMonologHelper;
+use Eccube\Monolog\Listener\EccubeMonologListener;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -51,6 +52,10 @@ class EccubeMonologServiceProvider implements ServiceProviderInterface
             return $app['eccube.monolog.helper']->getHandler($channelValues);
         });
 
+        $app['eccube.monolog.listener'] = $app->share(function () use ($app) {
+            return new EccubeMonologListener();
+        });
+
         $app['listener.requestdump'] = $app->share(function ($app) {
             return new \Eccube\EventListener\RequestDumpListener($app);
         });
@@ -59,5 +64,6 @@ class EccubeMonologServiceProvider implements ServiceProviderInterface
     public function boot(Application $app)
     {
         $app['dispatcher']->addSubscriber($app['listener.requestdump']);
+        $app['dispatcher']->addSubscriber($app['eccube.monolog.listener']);
     }
 }
