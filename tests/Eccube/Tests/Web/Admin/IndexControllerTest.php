@@ -178,9 +178,17 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $Member = clone $this->Member;
         $Member->setPassword($form['change_password']['first']);
 
-        $this->expected = $this->app['eccube.repository.member']->encryptPassword($Member);;
+        $this->expected = $this->app['eccube.repository.member']->encryptPassword($Member);
         $this->actual = $this->Member->getPassword();
-        $this->verify();
+
+        $this->verify(
+            'パスワードのハッシュ値が異なります '.PHP_EOL
+            .' AUTH_MAGIC='.$this->app['config']['auth_magic'].PHP_EOL
+            .' HASH_Algos='.$this->app['config']['password_hash_algos'].PHP_EOL
+            .' Input Password='.$form['change_password']['first'].PHP_EOL
+            .' Expected: salt='.$Member->getSalt().', raw password='.$Member->getPassword().PHP_EOL
+            .' Actual: salt='.$this->Member->getSalt()
+        );
     }
 
     public function testChangePasswordWithPostInvalid()
