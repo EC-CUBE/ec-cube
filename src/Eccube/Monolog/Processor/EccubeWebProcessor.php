@@ -27,7 +27,6 @@ use Monolog\Processor\WebProcessor;
 
 /**
  * WebProcessor拡張クラス
- * protectedであるプロパティをpublicに変更する
  *
  * @package Eccube\Monolog\Processor
  */
@@ -40,7 +39,6 @@ class EccubeWebProcessor extends WebProcessor
      */
     public function __construct($serverData = null, array $extraFields = null)
     {
-        $extraFields = array('user_agent' =>'HTTP_USER_AGENT');
         parent::__construct($serverData, $extraFields);
     }
 

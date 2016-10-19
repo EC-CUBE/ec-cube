@@ -109,7 +109,9 @@ class EccubeMonologHelper
             $record['session_id'] = null;
             $record['user_id'] = null;
             if ($app->isBooted()) {
-                $record['session_id'] = substr(sha1($app['session']->getId()), 0, 8);
+                if (isset($app['session'])) {
+                    $record['session_id'] = substr(sha1($app['session']->getId()), 0, 8);
+                }
                 $user = $app->user();
                 if ($user instanceof UserInterface) {
                     $record['user_id'] = $user->getId();
