@@ -128,7 +128,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
         
     }
-    public function sstestHistory404()
+    public function testHistory404()
     {
         $Customer = $this->createCustomer();
         $Product = $this->createProduct();
