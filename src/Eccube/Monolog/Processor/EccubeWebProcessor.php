@@ -33,10 +33,6 @@ use Monolog\Processor\WebProcessor;
  */
 class EccubeWebProcessor extends WebProcessor
 {
-    /**
-     * @var array|\ArrayAccess
-     */
-    public $serverData;
 
     /**
      * @param array|\ArrayAccess $serverData Array or object w/ ArrayAccess that provides access to the $_SERVER data
@@ -44,7 +40,38 @@ class EccubeWebProcessor extends WebProcessor
      */
     public function __construct($serverData = null, array $extraFields = null)
     {
+        $extraFields = array('user_agent' =>'HTTP_USER_AGENT');
         parent::__construct($serverData, $extraFields);
+    }
+
+    public function getRequestUri()
+    {
+        return isset($this->serverData['REQUEST_URI']) ? $this->serverData['REQUEST_URI'] : null;
+    }
+
+    public function getClientIp()
+    {
+        return isset($this->serverData['REMOTE_ADDR']) ? $this->serverData['REMOTE_ADDR'] : null;
+    }
+
+    public function getReferer()
+    {
+        return isset($this->serverData['HTTP_REFERER']) ? $this->serverData['HTTP_REFERER'] : null;
+    }
+
+    public function getMethod()
+    {
+        return isset($this->serverData['REQUEST_METHOD']) ? $this->serverData['REQUEST_METHOD'] : null;
+    }
+
+    public function getHost()
+    {
+        return isset($this->serverData['SERVER_NAME']) ? $this->serverData['SERVER_NAME'] : null;
+    }
+
+    public function getUserAgent()
+    {
+        return isset($this->serverData['HTTP_USER_AGENT']) ? $this->serverData['HTTP_USER_AGENT'] : null;
     }
 
 }

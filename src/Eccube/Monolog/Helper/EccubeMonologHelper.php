@@ -32,10 +32,12 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\UidProcessor;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class EccubeMonologHelper
 {
 
+    /** @var  \Eccube\Application */
     protected $app;
 
     /**
@@ -65,7 +67,7 @@ class EccubeMonologHelper
         $logLevel = $channelValues['log_level'];
         $actionLevel = $channelValues['action_level'];
         $maxFiles = $channelValues['max_files'];
-        $logDateFormate = $channelValues['log_dateformat'];
+        $logDateFormat = $channelValues['log_dateformat'];
 
         if ($app['debug']) {
             $level = Logger::DEBUG;
@@ -82,9 +84,9 @@ class EccubeMonologHelper
             $dateFormat
         );
 
-        // ログフォーマットの設定
-        $format = "[%datetime%] %channel%.%level_name% [%token%] [%uid%] [%class%:%function%:%line%] - %message% %context% %extra% [%url%, %ip%, %referrer%]\n";
-        $RotateHandler->setFormatter(new LineFormatter($format, $logDateFormate, true, true));
+        // ログフォーマットの設定(設定ファイルで定義)
+        $format = $channelValues['log_format']."\n";
+        $RotateHandler->setFormatter(new LineFormatter($format, $logDateFormat, true, true));
 
         // FingerCossedHandlerの設定
         $FingerCrossedHandler = new FingersCrossedHandler(
@@ -94,26 +96,38 @@ class EccubeMonologHelper
 
 
         // Processorの内容をログ出力
-        $web = new EccubeWebProcessor();
-        $uid = new UidProcessor(8);
+        $webProcessor = new EccubeWebProcessor();
+        $uidProcessor = new UidProcessor(8);
 
-        $FingerCrossedHandler->pushProcessor(function ($record) use ($app, $uid, $web) {
+        $FingerCrossedHandler->pushProcessor(function ($record) use ($app, $uidProcessor, $webProcessor) {
             // ログフォーマットに出力する値を独自に設定
 
             $record['level_name'] = sprintf("%-5s", $record['level_name']);
 
-            $sessionId = substr(sha1($app['session']->getId()), 0, 8);
-            $record['token'] = $sessionId;
-            $record['uid'] = $uid->getUid();
+            // セッションIDと会員IDを設定
+            $record['session_id'] = null;
+            $record['user_id'] = null;
+            if ($app->isBooted()) {
+                $record['session_id'] = substr(sha1($app['session']->getId()), 0, 8);
+                $user = $app->user();
+                if ($user instanceof UserInterface) {
+                    $record['user_id'] = $user->getId();
+                }
+            }
 
-            $record['url'] = $web->serverData['REQUEST_URI'];
-            $record['ip'] = $web->serverData['REMOTE_ADDR'];
-            $record['referrer'] = isset($web->serverData['HTTP_REFERER']) ? $web->serverData['HTTP_REFERER'] : '';
+            $record['uid'] = $uidProcessor->getUid();
+
+            $record['url'] = $webProcessor->getRequestUri();
+            $record['ip'] = $webProcessor->getClientIp();
+            $record['referrer'] = $webProcessor->getReferer();
+            $record['method'] = $webProcessor->getMethod();
+            $record['user_agent'] = $webProcessor->getUserAgent();
 
             // クラス名などを一旦保持し、不要な情報は削除
             $line = $record['extra']['line'];
-            // $className = $record['extra']['class'];
             $functionName = $record['extra']['function'];
+            // php5.3だとclass名が取得できないため、ファイル名を元に出力
+            // $className = $record['extra']['class'];
             $className = $record['extra']['file'];
 
             // 不要な情報を削除
@@ -122,11 +136,7 @@ class EccubeMonologHelper
             unset($record['extra']['class']);
             unset($record['extra']['function']);
 
-            // php5.3だとclass名が取得できないため、ファイル名を出力
-            //  $className = substr(strrchr($className, '\\'), 1);
-            $className = strstr(substr(strrchr($className, '/'), 1), '.', true);
-
-            $record['class'] = $className;
+            $record['class'] = pathinfo($className, PATHINFO_FILENAME);
             $record['function'] = $functionName;
             $record['line'] = $line;
 

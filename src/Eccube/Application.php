@@ -79,6 +79,16 @@ class Application extends ApplicationTrait
         $this->initLogger();
     }
 
+    /**
+     * Application::runが実行されているか親クラスのプロパティから判定
+     *
+     * @return bool
+     */
+    public function isBooted()
+    {
+        return $this->booted;
+    }
+
     public function initConfig()
     {
         // load config
@@ -104,8 +114,6 @@ class Application extends ApplicationTrait
     {
         $app = $this;
         $this->register(new ServiceProvider\EccubeMonologServiceProvider($app));
-        $this['monolog.logfile'] = __DIR__.'/../../app/log/site.log';
-        $this['monolog.name'] = 'eccube';
     }
 
     public function initialize()
