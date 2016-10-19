@@ -340,26 +340,29 @@ function updatePermissions($argv)
 {
     $finder = \Symfony\Component\Finder\Finder::create();
     $finder
-        ->in('html')
-        ->in('app')
-        ->exclude(array('console', '.htaccess'));
+        ->in('html')->notName('.htaccess')
+        ->in('app')->notName('console');
 
     $verbose = false;
     if (in_array('-V', $argv) || in_array('--verbose', $argv)) {
         $verbose = true;
     }
     foreach ($finder as $content) {
-        if (!$content->isWritable()) {
-            $permission = substr(sprintf('%o', $content->getPerms()), -4);
+        $permission = $content->getPerms();
+        // see also http://www.php.net/fileperms
+        if (!($permission & 0x0010) || !($permission & 0x0002)) {
             $realPath = $content->getRealPath();
             if ($verbose) {
-                out($realPath.' '.$permission.' to ', 'info', false);
+                out(sprintf('%s %s to ', $realPath, substr(sprintf('%o', $permission), -4)), 'info', false);
             }
-            $permission += 22;   // chmod to go+w
+            $permission = !($permission & 0x0020) ? $permission += 040 : $permission; // g+r
+            $permission = !($permission & 0x0010) ? $permission += 020 : $permission; // g+w
+            $permission = !($permission & 0x0004) ? $permission += 04 : $permission;  // o+r
+            $permission = !($permission & 0x0002) ? $permission += 02 : $permission;  // o+w
             $result = chmod($realPath, $permission);
             if ($verbose) {
                 if ($result) {
-                    out($permission);
+                    out(substr(sprintf('%o', $permission), -4), 'info');
                 } else {
                     out('failure', 'error');
                 }
