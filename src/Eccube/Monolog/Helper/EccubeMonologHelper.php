@@ -24,6 +24,8 @@
 namespace Eccube\Monolog\Helper;
 
 use Eccube\Application;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
 use Eccube\Monolog\Processor\EccubeWebProcessor;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
@@ -32,7 +34,6 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\UidProcessor;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class EccubeMonologHelper
 {
@@ -113,7 +114,7 @@ class EccubeMonologHelper
                     $record['session_id'] = substr(sha1($app['session']->getId()), 0, 8);
                 }
                 $user = $app->user();
-                if ($user instanceof UserInterface) {
+                if ($user instanceof Customer || $user instanceof  Member) {
                     $record['user_id'] = $user->getId();
                 }
             }
