@@ -544,7 +544,8 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
         // 個別税率が設定された商品企画を準備
         $Product = $this->createProduct('テスト商品', 1);
-        $ProductClass = $Product->getProductClasses()[0];
+        $ProductClassList = $Product->getProductClasses();
+        $ProductClass = $ProductClassList[0];
         $CalcRule = $this->app['orm.em']
             ->getRepository('Eccube\Entity\Master\Taxrule')
             ->find(1);
