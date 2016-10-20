@@ -310,6 +310,7 @@ class ProductController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                \EccubeLog::info('商品登録開始', array($id));
                 $Product = $form->getData();
 
                 if (!$has_class) {
@@ -450,6 +451,8 @@ class ProductController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
+                \EccubeLog::info('商品登録終了', array($id));
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
@@ -463,6 +466,7 @@ class ProductController extends AbstractController
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
+                \EccubeLog::info('商品登録チェックエラー', array($id));
                 $app->addError('admin.register.failed', 'admin');
             }
         }
