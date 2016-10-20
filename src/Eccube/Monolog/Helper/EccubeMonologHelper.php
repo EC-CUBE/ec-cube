@@ -111,7 +111,10 @@ class EccubeMonologHelper
             $record['user_id'] = null;
             if ($app->isBooted()) {
                 if (isset($app['session'])) {
-                    $record['session_id'] = substr(sha1($app['session']->getId()), 0, 8);
+                    $sessionId = $app['session']->getId();
+                    if ($sessionId) {
+                        $record['session_id'] = substr(sha1($sessionId), 0, 8);
+                    }
                 }
                 $user = $app->user();
                 if ($user instanceof Customer || $user instanceof Member) {

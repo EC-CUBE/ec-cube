@@ -3,8 +3,6 @@
 namespace Eccube\Monolog\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -14,15 +12,26 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Log request,controller,terminate and exceptions.
+ * EccubeMonologListener
+ *
+ * @package Eccube\Monolog\Listener
  */
 class EccubeMonologListener implements EventSubscriberInterface
 {
+    /**
+     * @param GetResponseEvent $event
+     */
+    public function onKernelRequestEarly(GetResponseEvent $event)
+    {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        \EccubeLog::info('INIT');
+    }
 
     /**
-     * Logs master requests on event KernelEvents::Request.
-     *
-     * @param FilterControllerEvent $event
+     * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -30,12 +39,11 @@ class EccubeMonologListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logRequest($event->getRequest());
+        $route = $this->getRoute($event->getRequest());
+        \EccubeLog::info('PROCESS START', array($route));
     }
 
     /**
-     * Logs master requests on event KernelEvents::CONTROLLER.
-     *
      * @param FilterControllerEvent $event
      */
     public function onKernelController(FilterControllerEvent $event)
@@ -44,84 +52,38 @@ class EccubeMonologListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logController($event->getRequest());
+        $route = $this->getRoute($event->getRequest());
+        \EccubeLog::info('LOGIC START', array($route));
     }
 
+    /**
+     * @param FilterResponseEvent $event
+     */
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
         }
 
-        $this->logResponse($event->getRequest(), $event->getResponse());
+        $route = $this->getRoute($event->getRequest());
+        \EccubeLog::info('LOGIC END', array($route));
     }
 
     /**
-     * Logs terminate on event KernelEvents::TERMINATE.
-     *
      * @param PostResponseEvent $event
      */
     public function onKernelTerminate(PostResponseEvent $event)
     {
-        $this->logTerminate($event->getRequest(), $event->getResponse());
+        $route = $this->getRoute($event->getRequest());
+        \EccubeLog::info('PROCESS END', array($route));
     }
 
     /**
-     * Logs uncaught exceptions on event KernelEvents::EXCEPTION.
-     *
      * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        $this->logException($event->getException());
-    }
-
-    /**
-     * Logs a request
-     *
-     * @param Request $request
-     */
-    protected function logRequest(Request $request)
-    {
-        // このイベントのタイミングでは、ルーティングは確定していない.
-        \EccubeLog::info('PRCESS START');
-    }
-
-    /**
-     * Logs a controller
-     *
-     * @param Request $request
-     */
-    protected function logController(Request $request)
-    {
-        $route = $request->attributes->get('_route');
-        \EccubeLog::info('LOGIC START', array($route));
-    }
-
-    /**
-     * Logs a response.
-     *
-     * @param Response $response
-     */
-    protected function logResponse(Request $request, Response $response)
-    {
-        $route = $request->attributes->get('_route');
-        \EccubeLog::info('LOGIC END', array($route));
-    }
-
-    protected function logTerminate(Request $request, Response $response)
-    {
-        $route = $request->attributes->get('_route');
-        \EccubeLog::info('PRCESS END', array($route));
-    }
-
-    /**
-     * Logs an exception.
-     *
-     * @param \Exception $e
-     */
-    protected function logException(\Exception $e)
-    {
+        $e = $event->getException();
         if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
             \EccubeLog::info($e->getMessage(), array($e->getStatusCode()));
 
@@ -137,10 +99,19 @@ class EccubeMonologListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array('onKernelRequest', 500),
+
+            KernelEvents::REQUEST => array(
+                // Application::initRenderingで、フロント/管理画面の判定が行われた後に実行
+                array('onKernelRequestEarly', 500),
+                // SecurityServiceProviderで、認証処理が完了した後に実行.
+                array('onKernelRequest', 6),
+            ),
             KernelEvents::RESPONSE => array('onKernelResponse', 0),
             KernelEvents::CONTROLLER => array('onKernelController', 0),
             KernelEvents::TERMINATE => array('onKernelTerminate', 0),
@@ -150,5 +121,16 @@ class EccubeMonologListener implements EventSubscriberInterface
              */
             KernelEvents::EXCEPTION => array('onKernelException', -4),
         );
+    }
+
+    /**
+     * ルーティング名を取得する.
+     *
+     * @param $request
+     * @return string
+     */
+    private function getRoute($request)
+    {
+        return $request->attributes->get('_route');
     }
 }
