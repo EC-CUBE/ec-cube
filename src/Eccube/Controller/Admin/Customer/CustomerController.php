@@ -185,6 +185,8 @@ class CustomerController extends AbstractController
     {
         $this->isTokenValid($app);
 
+        \EccubeLog::info('会員削除開始', array($id));
+
         $session = $request->getSession();
         $page_no = intval($session->get('eccube.admin.customer.search.page_no'));
         $page_no = $page_no ? $page_no : Constant::ENABLED;
@@ -201,6 +203,8 @@ class CustomerController extends AbstractController
         $Customer->setDelFlg(Constant::ENABLED);
         $app['orm.em']->persist($Customer);
         $app['orm.em']->flush();
+
+        \EccubeLog::info('会員削除完了', array($id));
 
         $event = new EventArgs(
             array(
