@@ -53,6 +53,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         vfsStream::setup('rootDir');
         $config = $this->app['config'];
 
+        $roodDir = $config['root_dir'];
+
         $this->configFileReal = $config['root_dir'].'/app/config/eccube/config.yml';
         $this->pathFileReal = $config['root_dir'].'/app/config/eccube/path.yml';
         if (!file_exists($this->configFileReal) || !file_exists($this->pathFileReal)) {
@@ -75,6 +77,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         // dump file
         $this->configFile = $config['root_dir'].'/app/config/eccube/config.yml';
         $this->pathFile = $config['root_dir'].'/app/config/eccube/path.yml';
+
+        $config['root_dir'] = $roodDir;
 
         $this->app['config'] = $config;
         vfsStream::create($structure);

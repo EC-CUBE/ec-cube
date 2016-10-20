@@ -80,8 +80,7 @@ class EccubeMonologHelper
 
 
         // RotateHandlerの設定
-        $logDir = isset($app['config']['log_realdir']) ? $app['config']['log_realdir'].'/' : $app['config']['root_dir'].'/app/log/';
-        $filename = $logDir.$logFileName.'.log';
+        $filename = $app['config']['root_dir'].'/app/log/'.$logFileName.'.log';
         $RotateHandler = new RotatingFileHandler($filename, $maxFiles, $level);
         $RotateHandler->setFilenameFormat(
             $logFileName.$delimiter.'{date}'.$app['config']['log']['suffix'],
