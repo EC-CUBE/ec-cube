@@ -192,6 +192,8 @@ class OrderController extends AbstractController
             return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
         }
 
+        \EccubeLog::info('受注削除開始', array($Order->getId()));
+
         $Order->setDelFlg(Constant::ENABLED);
 
         $app['orm.em']->persist($Order);
@@ -213,6 +215,8 @@ class OrderController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_DELETE_COMPLETE, $event);
 
         $app->addSuccess('admin.order.delete.complete', 'admin');
+
+        \EccubeLog::info('受注削除完了', array($Order->getId()));
 
         return $app->redirect($app->url('admin_order_page', array('page_no' => $page_no)).'?resume='.Constant::ENABLED);
     }
