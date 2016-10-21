@@ -209,7 +209,7 @@ class EntryController extends AbstractController
             $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
             $this->getSecurity($app)->setToken($token);
 
-            \EccubeLog::info('ログイン済に変更', $app->user()->getId());
+            \EccubeLog::info('ログイン済に変更', array($app->user()->getId()));
 
             return $app->render('Entry/activate.twig');
         } else {
