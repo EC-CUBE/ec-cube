@@ -72,7 +72,10 @@ if (!in_array('--skip-createdb', $argv)) {
 }
 
 $app = createApplication();
-initializeDatabase($app);
+if (!in_array('--skip-initdb', $argv)) {
+    initializeDatabase($app);
+}
+
 out('EC-CUBE3 install finished successfully!', 'success');
 $root_urlpath = getenv('ROOT_URLPATH');
 if (PHP_VERSION_ID >= 50400 && empty($root_urlpath)) {
@@ -99,6 +102,7 @@ Options:
 -v, --version        print ec-cube version
 -V, --verbose        enable verbose output
 --skip-createdb      skip to create database
+--skip-initdb        skip to initialize database
 --help               this help
 --ansi               force ANSI color output
 --no-ansi            disable ANSI color output
@@ -153,6 +157,8 @@ function initializeDefaultVariables($database_driver)
     putenv('MAIL_PASS='.(getenv('MAIL_PASS') ? getenv('MAIL_PASS') : null));
     putenv('ADMIN_ROUTE='.(getenv('ADMIN_ROUTE') ? getenv('ADMIN_ROUTE') : 'admin'));
     putenv('ROOT_URLPATH='.(getenv('ROOT_URLPATH') ? getenv('ROOT_URLPATH') : null));
+    putenv('AUTH_MAGIC='.(getenv('AUTH_MAGIC') ? getenv('AUTH_MAGIC') :
+                          substr(str_replace(array('/', '+', '='), '', base64_encode(openssl_random_pseudo_bytes(32 * 2))), 0, 32)));
 }
 
 function getExampleVariables()
@@ -174,7 +180,8 @@ function getExampleVariables()
         'MAIL_HOST' => 'localhost',
         'MAIL_PORT' => '25',
         'MAIL_USER' => '<SMTP AUTH user>',
-        'MAIL_PASS' => '<SMTP AUTH password>'
+        'MAIL_PASS' => '<SMTP AUTH password>',
+        'AUTH_MAGIC' => '<auth_magic>'
     );
 }
 
@@ -390,7 +397,7 @@ function createYaml($config, $path)
 function getConfig()
 {
     $config = array (
-        'auth_magic' => \Eccube\Util\Str::random(32),
+        'auth_magic' => getenv('AUTH_MAGIC'),
         'password_hash_algos' => 'sha256',
         'shop_name' => getenv('SHOP_NAME'),
         'force_ssl' => NULL,
