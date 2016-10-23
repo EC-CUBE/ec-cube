@@ -71,8 +71,8 @@ if (!in_array('--skip-createdb', $argv)) {
     createDatabase($connectionParams);
 }
 
-$app = createApplication();
 if (!in_array('--skip-initdb', $argv)) {
+    $app = createApplication();
     initializeDatabase($app);
 }
 
