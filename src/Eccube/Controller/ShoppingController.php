@@ -75,7 +75,7 @@ class ShoppingController extends AbstractController
 
         // カートチェック
         if (!$cartService->isLocked()) {
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
         }
@@ -169,7 +169,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -332,7 +332,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -555,7 +555,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -700,7 +700,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -818,7 +818,7 @@ class ShoppingController extends AbstractController
 
                 $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
                 if (!$Order) {
-                    \EccubeLog::info('カートがロックされていないためエラー');
+                    \EccubeLog::info('カートが存在しません');
                     $app->addError('front.shopping.order.error');
                     return $app->redirect($app->url('shopping_error'));
                 }
@@ -917,7 +917,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -1097,7 +1097,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -1312,7 +1312,7 @@ class ShoppingController extends AbstractController
     {
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
-            \EccubeLog::info('カートがロックされていないためショッピングカート画面にリダイレクト');
+            \EccubeLog::info('カートが存在しません');
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
         }
