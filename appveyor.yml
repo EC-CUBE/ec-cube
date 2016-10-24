@@ -69,7 +69,7 @@ install:
 build: off
 
 before_test:
-  - bash eccube_install.sh mysql none
+  - php eccube_install.php mysql none
 
 test_script:
   - vendor\bin\phpunit.bat
