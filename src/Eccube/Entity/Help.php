@@ -33,157 +33,157 @@ class Help extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $customer_agreement;
+    protected $customer_agreement;
 
     /**
      * @var string
      */
-    private $law_company;
+    protected $law_company;
 
     /**
      * @var string
      */
-    private $law_manager;
+    protected $law_manager;
 
     /**
      * @var string
      */
-    private $law_zip01;
+    protected $law_zip01;
 
     /**
      * @var string
      */
-    private $law_zip02;
+    protected $law_zip02;
 
     /**
      * @var string
      */
-    private $law_zipcode;
+    protected $law_zipcode;
 
     /**
      * @var string
      */
-    private $law_addr01;
+    protected $law_addr01;
 
     /**
      * @var string
      */
-    private $law_addr02;
+    protected $law_addr02;
 
     /**
      * @var string
      */
-    private $law_tel01;
+    protected $law_tel01;
 
     /**
      * @var string
      */
-    private $law_tel02;
+    protected $law_tel02;
 
     /**
      * @var string
      */
-    private $law_tel03;
+    protected $law_tel03;
 
     /**
      * @var string
      */
-    private $law_fax01;
+    protected $law_fax01;
 
     /**
      * @var string
      */
-    private $law_fax02;
+    protected $law_fax02;
 
     /**
      * @var string
      */
-    private $law_fax03;
+    protected $law_fax03;
 
     /**
      * @var string
      */
-    private $law_email;
+    protected $law_email;
 
     /**
      * @var string
      */
-    private $law_url;
+    protected $law_url;
 
     /**
      * @var string
      */
-    private $law_term01;
+    protected $law_term01;
 
     /**
      * @var string
      */
-    private $law_term02;
+    protected $law_term02;
 
     /**
      * @var string
      */
-    private $law_term03;
+    protected $law_term03;
 
     /**
      * @var string
      */
-    private $law_term04;
+    protected $law_term04;
 
     /**
      * @var string
      */
-    private $law_term05;
+    protected $law_term05;
 
     /**
      * @var string
      */
-    private $law_term06;
+    protected $law_term06;
 
     /**
      * @var string
      */
-    private $law_term07;
+    protected $law_term07;
 
     /**
      * @var string
      */
-    private $law_term08;
+    protected $law_term08;
 
     /**
      * @var string
      */
-    private $law_term09;
+    protected $law_term09;
 
     /**
      * @var string
      */
-    private $law_term10;
+    protected $law_term10;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Eccube\Entity\Master\Country
      */
-    private $LawCountry;
+    protected $LawCountry;
 
     /**
      * @var \Eccube\Entity\Master\Pref
      */
-    private $LawPref;
+    protected $LawPref;
 
 
     /**

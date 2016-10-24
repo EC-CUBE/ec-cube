@@ -40,72 +40,72 @@ class Payment extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $method;
+    protected $method;
 
     /**
      * @var string
      */
-    private $charge;
+    protected $charge;
 
     /**
      * @var string
      */
-    private $rule_min;
+    protected $rule_min;
 
     /**
      * @var string
      */
-    private $rule_max;
+    protected $rule_max;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var integer
      */
-    private $fix_flg;
+    protected $fix_flg;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var string
      */
-    private $payment_image;
+    protected $payment_image;
 
     /**
      * @var integer
      */
-    private $charge_flg;
+    protected $charge_flg;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $PaymentOptions;
+    protected $PaymentOptions;
 
     /**
      * Constructor

@@ -12,32 +12,32 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var integer
      */
-    private $product_class_id;
+    protected $product_class_id;
 
     /**
      * @var string
      */
-    private $stock;
+    protected $stock;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     public function __clone()
     {
@@ -171,7 +171,7 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Eccube\Entity\ProductClass
      */
-    private $ProductClass;
+    protected $ProductClass;
 
 
     /**

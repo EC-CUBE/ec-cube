@@ -32,22 +32,22 @@ class DeliveryFee extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $fee;
+    protected $fee;
 
     /**
      * @var \Eccube\Entity\Delivery
      */
-    private $Delivery;
+    protected $Delivery;
 
     /**
      * @var \Eccube\Entity\Master\Pref
      */
-    private $Pref;
+    protected $Pref;
 
     /**
      * Get id

@@ -75,72 +75,72 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $department;
+    protected $department;
 
     /**
      * @var string
      */
-    private $login_id;
+    protected $login_id;
 
     /**
      * @var string
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string
      */
-    private $salt;
+    protected $salt;
 
     /**
      * @var \Eccube\Entity\Master\Authority
      */
-    private $Authority;
+    protected $Authority;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var \Eccube\Entity\Master\Work
      */
-    private $Work;
+    protected $Work;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \DateTime
      */
-    private $login_date;
+    protected $login_date;
 
     /**
      * Get id

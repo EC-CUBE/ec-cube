@@ -42,4 +42,94 @@ class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
     {
         return Yaml::parse(file_get_contents($file));
     }
+
+    /*
+     * 以下、エンティティ拡張機構
+     *
+     * Copyright (c) by Paulius Jarmalavicius
+     * Released under the MIT license
+     * https://opensource.org/licenses/mit-license.php
+     */
+
+    /**
+     * @var array
+     */
+    protected $extendedEntities = array();
+
+    /**
+     * 継承元のエンティティを追加する
+     *
+     * @param string $extendedEntity
+     * @return $this
+     */
+    public function addExtendedEntity($extendedEntity)
+    {
+        if (!in_array($extendedEntity, $this->getExtendedEntities(), true)) {
+            $this->extendedEntities[] = $extendedEntity;
+        }
+        return $this;
+    }
+
+    /**
+     * 継承元エンティティの配列を取得する
+     *
+     * @return array
+     */
+    public function getExtendedEntities()
+    {
+        return $this->extendedEntities;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllClassNames()
+    {
+        $driver = $this;
+        $classNames = parent::getAllClassNames();
+        $filter = function ($className) use ($driver) {
+            return !in_array($className, $driver->getExtendedEntities(), true);
+        };
+        return array_filter($classNames, $filter);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTransient($className)
+    {
+        return parent::isTransient($className) || in_array($className, $this->getExtendedEntities(), true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getElement($className)
+    {
+        $result = parent::getElement($className);
+        if (isset($result['extended_entity'])) {
+            $extendedElement = $this->getElement($result['extended_entity']);
+            unset($result['extended_entity']);
+            $result = $this->mergeMappings($extendedElement, $result);
+        }
+        return $result;
+    }
+
+    /**
+     * @param array $mapping1
+     * @param array $mapping2
+     * @return array
+     */
+    protected function mergeMappings(array &$mapping1, array &$mapping2)
+    {
+        $merged = $mapping1;
+        foreach ($mapping2 as $key => &$value) {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                $merged[$key] = $this->mergeMappings($merged[$key], $value);
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+        return $merged;
+    }
 }

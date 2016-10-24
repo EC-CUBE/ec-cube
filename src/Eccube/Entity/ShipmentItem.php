@@ -31,7 +31,7 @@ use Eccube\Util\EntityUtil;
  */
 class ShipmentItem extends \Eccube\Entity\AbstractEntity
 {
-    private $price_inc_tax = null;
+    protected $price_inc_tax = null;
 
     /**
      * Set price IncTax
@@ -67,57 +67,57 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $product_name;
+    protected $product_name;
 
     /**
      * @var string
      */
-    private $product_code;
+    protected $product_code;
 
     /**
      * @var string
      */
-    private $class_category_name1;
+    protected $class_category_name1;
 
     /**
      * @var string
      */
-    private $class_category_name2;
+    protected $class_category_name2;
 
     /**
      * @var string
      */
-    private $price;
+    protected $price;
 
     /**
      * @var string
      */
-    private $quantity;
+    protected $quantity;
 
     /**
      * @var \Eccube\Entity\Order
      */
-    private $Order;
+    protected $Order;
 
     /**
      * @var \Eccube\Entity\Product
      */
-    private $Product;
+    protected $Product;
 
     /**
      * @var \Eccube\Entity\ProductClass
      */
-    private $ProductClass;
+    protected $ProductClass;
 
     /**
      * @var \Eccube\Entity\Shipping
      */
-    private $Shipping;
+    protected $Shipping;
 
 
     /**
@@ -365,12 +365,12 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     /**
      * @var string
      */
-    private $class_name1;
+    protected $class_name1;
 
     /**
      * @var string
      */
-    private $class_name2;
+    protected $class_name2;
 
 
     /**

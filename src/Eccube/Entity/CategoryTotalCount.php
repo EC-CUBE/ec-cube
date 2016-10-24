@@ -34,17 +34,17 @@ class CategoryTotalCount extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $category_id;
+    protected $category_id;
 
     /**
      * @var integer
      */
-    private $product_count;
+    protected $product_count;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * Get category_id

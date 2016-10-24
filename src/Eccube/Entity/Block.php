@@ -17,47 +17,47 @@ class Block extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $file_name;
+    protected $file_name;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var integer
      */
-    private $logic_flg;
+    protected $logic_flg;
 
     /**
      * @var integer
      */
-    private $deletable_flg;
+    protected $deletable_flg;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $BlockPositions;
+    protected $BlockPositions;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
      */
-    private $DeviceType;
+    protected $DeviceType;
 
     /**
      * Constructor

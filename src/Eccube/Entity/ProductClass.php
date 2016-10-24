@@ -29,10 +29,10 @@ namespace Eccube\Entity;
  */
 class ProductClass extends \Eccube\Entity\AbstractEntity
 {
-    private $price01_inc_tax = null;
-    private $price02_inc_tax = null;
-    private $add = false;
-    private $tax_rate = false;
+    protected $price01_inc_tax = null;
+    protected $price02_inc_tax = null;
+    protected $add = false;
+    protected $tax_rate = false;
 
     /**
      * Is Enable
@@ -156,87 +156,87 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string
      */
-    private $stock;
+    protected $stock;
 
     /**
      * @var integer
      */
-    private $stock_unlimited;
+    protected $stock_unlimited;
 
     /**
      * @var string
      */
-    private $sale_limit;
+    protected $sale_limit;
 
     /**
      * @var string
      */
-    private $price01;
+    protected $price01;
 
     /**
      * @var string
      */
-    private $price02;
+    protected $price02;
 
     /**
      * @var string
      */
-    private $delivery_fee;
+    protected $delivery_fee;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Eccube\Entity\Product
      */
-    private $Product;
+    protected $Product;
 
     /**
      * @var \Eccube\Entity\Master\ProductType
      */
-    private $ProductType;
+    protected $ProductType;
 
     /**
      * @var \Eccube\Entity\ClassCategory
      */
-    private $ClassCategory1;
+    protected $ClassCategory1;
 
     /**
      * @var \Eccube\Entity\ClassCategory
      */
-    private $ClassCategory2;
+    protected $ClassCategory2;
 
     /**
      * @var \Eccube\Entity\DeliveryDate
      */
-    private $DeliveryDate;
+    protected $DeliveryDate;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     public function __clone()
     {
@@ -644,7 +644,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Eccube\Entity\ProductStock
      */
-    private $ProductStock;
+    protected $ProductStock;
 
 
     /**
@@ -672,7 +672,7 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     /**
      * @var \Eccube\Entity\TaxRule
      */
-    private $TaxRule;
+    protected $TaxRule;
 
 
     /**

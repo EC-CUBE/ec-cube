@@ -27,11 +27,11 @@ namespace Eccube\Entity;
 class CartItem extends \Eccube\Entity\AbstractEntity
 {
 
-    private $class_name;
-    private $class_id;
-    private $price;
-    private $quantity;
-    private $object;
+    protected $class_name;
+    protected $class_id;
+    protected $price;
+    protected $quantity;
+    protected $object;
 
     public function __construct()
     {

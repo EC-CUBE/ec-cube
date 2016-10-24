@@ -153,247 +153,247 @@ class Order extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $pre_order_id;
+    protected $pre_order_id;
 
     /**
      * @var string
      */
-    private $message;
+    protected $message;
 
     /**
      * @var string
      */
-    private $name01;
+    protected $name01;
 
     /**
      * @var string
      */
-    private $name02;
+    protected $name02;
 
     /**
      * @var string
      */
-    private $kana01;
+    protected $kana01;
 
     /**
      * @var string
      */
-    private $kana02;
+    protected $kana02;
 
     /**
      * @var string
      */
-    private $company_name;
+    protected $company_name;
 
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      */
-    private $tel01;
+    protected $tel01;
 
     /**
      * @var string
      */
-    private $tel02;
+    protected $tel02;
 
     /**
      * @var string
      */
-    private $tel03;
+    protected $tel03;
 
     /**
      * @var string
      */
-    private $fax01;
+    protected $fax01;
 
     /**
      * @var string
      */
-    private $fax02;
+    protected $fax02;
 
     /**
      * @var string
      */
-    private $fax03;
+    protected $fax03;
 
     /**
      * @var string
      */
-    private $zip01;
+    protected $zip01;
 
     /**
      * @var string
      */
-    private $zip02;
+    protected $zip02;
 
     /**
      * @var string
      */
-    private $zipcode;
+    protected $zipcode;
 
     /**
      * @var string
      */
-    private $addr01;
+    protected $addr01;
 
     /**
      * @var string
      */
-    private $addr02;
+    protected $addr02;
 
     /**
      * @var \DateTime
      */
-    private $birth;
+    protected $birth;
 
     /**
      * @var string
      */
-    private $subtotal;
+    protected $subtotal;
 
     /**
      * @var string
      */
-    private $discount;
+    protected $discount;
 
     /**
      * @var string
      */
-    private $delivery_fee_total;
+    protected $delivery_fee_total;
 
     /**
      * @var string
      */
-    private $charge;
+    protected $charge;
 
     /**
      * @var string
      */
-    private $tax;
+    protected $tax;
 
     /**
      * @var string
      */
-    private $total;
+    protected $total;
 
     /**
      * @var string
      */
-    private $payment_total;
+    protected $payment_total;
 
     /**
      * @var string
      */
-    private $payment_method;
+    protected $payment_method;
 
     /**
      * @var string
      */
-    private $note;
+    protected $note;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \DateTime
      */
-    private $order_date;
+    protected $order_date;
 
     /**
      * @var \DateTime
      */
-    private $commit_date;
+    protected $commit_date;
 
     /**
      * @var \DateTime
      */
-    private $payment_date;
+    protected $payment_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $OrderDetails;
+    protected $OrderDetails;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $Shippings;
+    protected $Shippings;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $MailHistories;
+    protected $MailHistories;
 
     /**
      * @var \Eccube\Entity\Customer
      */
-    private $Customer;
+    protected $Customer;
 
     /**
      * @var \Eccube\Entity\Master\Country
      */
-    private $Country;
+    protected $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
      */
-    private $Pref;
+    protected $Pref;
 
     /**
      * @var \Eccube\Entity\Master\Sex
      */
-    private $Sex;
+    protected $Sex;
 
     /**
      * @var \Eccube\Entity\Master\Job
      */
-    private $Job;
+    protected $Job;
 
     /**
      * @var \Eccube\Entity\Payment
      */
-    private $Payment;
+    protected $Payment;
 
     /**
      * @var \Eccube\Entity\Master\DeviceType
      */
-    private $DeviceType;
+    protected $DeviceType;
 
     /**
      * @var \Eccube\Entity\Master\CustomerOrderStatus
      */
-    private $CustomerOrderStatus;
+    protected $CustomerOrderStatus;
 
     /**
      * @var \Eccube\Entity\Master\OrderStatus
      */
-    private $OrderStatus;
+    protected $OrderStatus;
 
     /**
      * @var \Eccube\Entity\Master\OrderStatusColor
      */
-    private $OrderStatusColor;
+    protected $OrderStatusColor;
 
     /**
      * Constructor

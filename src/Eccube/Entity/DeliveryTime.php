@@ -32,17 +32,17 @@ class DeliveryTime extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $delivery_time;
+    protected $delivery_time;
 
     /**
      * @var \Eccube\Entity\Delivery
      */
-    private $Delivery;
+    protected $Delivery;
 
     /**
      * Get id

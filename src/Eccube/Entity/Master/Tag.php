@@ -20,22 +20,22 @@ class Tag extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
-    private $ProductTag;
+    protected $ProductTag;
 
     /**
      * Constructor

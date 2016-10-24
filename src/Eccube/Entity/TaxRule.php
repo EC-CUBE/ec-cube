@@ -37,7 +37,7 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $rank;
+    protected $rank;
 
     /**
      * is default
@@ -75,67 +75,67 @@ class TaxRule extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $tax_rate;
+    protected $tax_rate;
 
     /**
      * @var string
      */
-    private $tax_adjust;
+    protected $tax_adjust;
 
     /**
      * @var \DateTime
      */
-    private $apply_date;
+    protected $apply_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * @var \Eccube\Entity\Master\Country
      */
-    private $Country;
+    protected $Country;
 
     /**
      * @var \Eccube\Entity\Master\Pref
      */
-    private $Pref;
+    protected $Pref;
 
     /**
      * @var \Eccube\Entity\Product
      */
-    private $Product;
+    protected $Product;
 
     /**
      * @var \Eccube\Entity\ProductClass
      */
-    private $ProductClass;
+    protected $ProductClass;
 
     /**
      * @var \Eccube\Entity\Master\Taxrule
      */
-    private $CalcRule;
+    protected $CalcRule;
 
 
     /**

@@ -32,32 +32,32 @@ class CustomerFavoriteProduct extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \DateTime
      */
-    private $create_date;
+    protected $create_date;
 
     /**
      * @var \DateTime
      */
-    private $update_date;
+    protected $update_date;
 
     /**
      * @var integer
      */
-    private $del_flg;
+    protected $del_flg;
 
     /**
      * @var \Eccube\Entity\Customer
      */
-    private $Customer;
+    protected $Customer;
 
     /**
      * @var \Eccube\Entity\Product
      */
-    private $Product;
+    protected $Product;
 
     /**
      * Get id

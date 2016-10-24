@@ -12,37 +12,37 @@ class BlockPosition extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $page_id;
+    protected $page_id;
 
     /**
      * @var integer
      */
-    private $target_id;
+    protected $target_id;
 
     /**
      * @var integer
      */
-    private $block_id;
+    protected $block_id;
 
     /**
      * @var integer
      */
-    private $block_row;
+    protected $block_row;
 
     /**
      * @var integer
      */
-    private $anywhere;
+    protected $anywhere;
 
     /**
      * @var \Eccube\Entity\Block
      */
-    private $Block;
+    protected $Block;
 
     /**
      * @var \Eccube\Entity\PageLayout
      */
-    private $PageLayout;
+    protected $PageLayout;
 
 
     /**

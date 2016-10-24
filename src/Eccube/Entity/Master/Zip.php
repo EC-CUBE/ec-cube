@@ -40,27 +40,27 @@ class Zip extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $zipcode;
+    protected $zipcode;
 
     /**
      * @var string
      */
-    private $state;
+    protected $state;
 
     /**
      * @var string
      */
-    private $city;
+    protected $city;
 
     /**
      * @var string
      */
-    private $town;
+    protected $town;
 
     /**
      * Get id

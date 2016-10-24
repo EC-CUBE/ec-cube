@@ -40,37 +40,37 @@ class MailHistory extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \DateTime
      */
-    private $send_date;
+    protected $send_date;
 
     /**
      * @var string
      */
-    private $subject;
+    protected $subject;
 
     /**
      * @var string
      */
-    private $mail_body;
+    protected $mail_body;
 
     /**
      * @var \Eccube\Entity\Order
      */
-    private $Order;
+    protected $Order;
 
     /**
      * @var \Eccube\Entity\MailTemplate
      */
-    private $MailTemplate;
+    protected $MailTemplate;
 
     /**
      * @var \Eccube\Entity\Member
      */
-    private $Creator;
+    protected $Creator;
 
     /**
      * Get id
