@@ -289,6 +289,8 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
 
+        \EccubeLog::info('受注CSV出力ファイル名', array($filename));
+
         return $response;
     }
 
@@ -365,6 +367,8 @@ class OrderController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
+
+        \EccubeLog::info('配送CSV出力ファイル名', array($filename));
 
         return $response;
     }
