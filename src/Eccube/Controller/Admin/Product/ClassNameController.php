@@ -65,7 +65,7 @@ class ClassNameController extends AbstractController
                 $status = $app['eccube.repository.class_name']->save($TargetClassName);
 
                 if ($status) {
-                    \EccubeLog::info('商品規格登録終了', array($id));
+                    \EccubeLog::info('商品規格登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -110,7 +110,7 @@ class ClassNameController extends AbstractController
         $status = $app['eccube.repository.class_name']->delete($TargetClassName);
 
         if ($status === true) {
-            \EccubeLog::info('商品規格削除終了', array($id));
+            \EccubeLog::info('商品規格削除完了', array($id));
 
             $event = new EventArgs(
                 array(

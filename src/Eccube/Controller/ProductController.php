@@ -276,7 +276,7 @@ class ProductController
                         $app->addRequestError($e->getMessage());
                     }
 
-                    \EccubeLog::info('カート追加処理終了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+                    \EccubeLog::info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
                     $event = new EventArgs(
                         array(

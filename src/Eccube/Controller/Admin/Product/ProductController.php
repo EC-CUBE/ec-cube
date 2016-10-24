@@ -451,7 +451,7 @@ class ProductController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
-                \EccubeLog::info('商品登録終了', array($id));
+                \EccubeLog::info('商品登録完了', array($id));
 
                 $event = new EventArgs(
                     array(
@@ -574,7 +574,7 @@ class ProductController extends AbstractController
                     }
                 }
 
-                \EccubeLog::info('商品削除終了', array($id));
+                \EccubeLog::info('商品削除完了', array($id));
 
                 $app->addSuccess('admin.delete.complete', 'admin');
             } else {

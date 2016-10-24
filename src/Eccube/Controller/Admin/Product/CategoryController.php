@@ -90,7 +90,7 @@ class CategoryController extends AbstractController
 
                 if ($status) {
 
-                    \EccubeLog::info('カテゴリ登録終了', array($id));
+                    \EccubeLog::info('カテゴリ登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -147,7 +147,7 @@ class CategoryController extends AbstractController
 
         if ($status === true) {
 
-            \EccubeLog::info('カテゴリ削除終了', array($id));
+            \EccubeLog::info('カテゴリ削除完了', array($id));
 
             $event = new EventArgs(
                 array(

@@ -359,7 +359,7 @@ class ProductClassController
 
                     $app['orm.em']->flush();
 
-                    \EccubeLog::info('商品規格新規登録終了', array($id));
+                    \EccubeLog::info('商品規格新規登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -463,7 +463,7 @@ class ProductClassController
 
                     $app['orm.em']->flush();
 
-                    \EccubeLog::info('商品規格更新終了', array($id));
+                    \EccubeLog::info('商品規格更新完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -507,7 +507,7 @@ class ProductClassController
                     $defaultProductClass->setDelFlg(Constant::DISABLED);
 
                     $app['orm.em']->flush();
-                    \EccubeLog::info('商品規格削除終了', array($id));
+                    \EccubeLog::info('商品規格削除完了', array($id));
 
                     $event = new EventArgs(
                         array(

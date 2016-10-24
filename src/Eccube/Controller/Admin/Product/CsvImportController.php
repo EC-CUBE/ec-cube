@@ -395,7 +395,7 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
-                    \EccubeLog::info('商品CSV登録終了');
+                    \EccubeLog::info('商品CSV登録完了');
 
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
@@ -534,7 +534,7 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
-                    \EccubeLog::info('カテゴリCSV登録終了');
+                    \EccubeLog::info('カテゴリCSV登録完了');
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }

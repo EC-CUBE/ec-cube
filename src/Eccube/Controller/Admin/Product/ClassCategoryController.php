@@ -74,7 +74,7 @@ class ClassCategoryController extends AbstractController
 
                 if ($status) {
 
-                    \EccubeLog::info('規格分類登録終了', array($id));
+                    \EccubeLog::info('規格分類登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -136,7 +136,7 @@ class ClassCategoryController extends AbstractController
 
             if ($status === true) {
 
-                \EccubeLog::info('規格分類削除終了', array($id));
+                \EccubeLog::info('規格分類削除完了', array($id));
 
                 $event = new EventArgs(
                     array(
