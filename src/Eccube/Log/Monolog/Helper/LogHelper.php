@@ -26,13 +26,13 @@ namespace Eccube\Log\Monolog\Helper;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\Member;
+use Eccube\Log\Monolog\Processor\IntrospectionProcessor;
 use Eccube\Log\Monolog\Processor\WebProcessor;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
-use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\UidProcessor;
 
 class LogHelper
@@ -150,8 +150,18 @@ class LogHelper
             return $record;
         });
 
-        // クラス名等を取得するProcessor、ログ出力時にクラス名を無視するための設定を行っている
-        $intro = new IntrospectionProcessor(Logger::DEBUG, array('Psr\\Log\\', 'EccubeLog'));
+        // クラス名等を取得するProcessor、ログ出力時にクラス名/関数名を無視するための設定を行っている
+        $skipClasses = array('Psr\\Log\\', 'Eccube\\Log\\');
+        $skipFunctions = array(
+            'log_info',
+            'log_notice',
+            'log_warning',
+            'log_error',
+            'log_critical',
+            'log_alert',
+            'log_emergency'
+        );
+        $intro = new IntrospectionProcessor(Logger::DEBUG, $skipClasses, $skipFunctions);
         $FingerCrossedHandler->pushProcessor($intro);
 
         return $FingerCrossedHandler;
