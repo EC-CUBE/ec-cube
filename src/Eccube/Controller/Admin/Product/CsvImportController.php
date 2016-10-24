@@ -74,6 +74,8 @@ class CsvImportController
 
                 if (!empty($formFile)) {
 
+                    \EccubeLog::info('商品CSV登録開始');
+
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
@@ -393,6 +395,8 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
+                    \EccubeLog::info('商品CSV登録終了');
+
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
 
@@ -421,6 +425,8 @@ class CsvImportController
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
+
+                    \EccubeLog::info('カテゴリCSV登録開始');
 
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
@@ -527,6 +533,8 @@ class CsvImportController
 
                     $this->em->flush();
                     $this->em->getConnection()->commit();
+
+                    \EccubeLog::info('カテゴリCSV登録終了');
 
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }

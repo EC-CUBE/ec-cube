@@ -188,7 +188,7 @@ class ProductController extends AbstractController
     public function addImage(Application $app, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+            throw new BadRequestHttpException('リクエストが不正です');
         }
 
         $images = $request->files->get('admin_product');
@@ -200,7 +200,7 @@ class ProductController extends AbstractController
                     //ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
                     if (0 !== strpos($mimeType, 'image')) {
-                        throw new UnsupportedMediaTypeHttpException();
+                        throw new UnsupportedMediaTypeHttpException('ファイル形式が不正です');
                     }
 
                     $extension = $image->getClientOriginalExtension();
@@ -515,6 +515,8 @@ class ProductController extends AbstractController
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
+                \EccubeLog::info('商品削除開始', array($id));
+
                 $Product->setDelFlg(Constant::ENABLED);
 
                 $ProductClasses = $Product->getProductClasses();
@@ -572,11 +574,15 @@ class ProductController extends AbstractController
                     }
                 }
 
+                \EccubeLog::info('商品削除終了', array($id));
+
                 $app->addSuccess('admin.delete.complete', 'admin');
             } else {
+                \EccubeLog::info('商品削除エラー', array($id));
                 $app->addError('admin.delete.failed', 'admin');
             }
         } else {
+            \EccubeLog::info('商品削除エラー', array($id));
             $app->addError('admin.delete.failed', 'admin');
         }
 
@@ -770,6 +776,8 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
+
+        \EccubeLog::info('商品CSV出力ファイル名', array($filename));
 
         return $response;
     }
