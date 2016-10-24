@@ -35,6 +35,11 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 
+/**
+ * Handler生成クラス
+ *
+ * @package Eccube\Log\Monolog\Helper
+ */
 class LogHelper
 {
 

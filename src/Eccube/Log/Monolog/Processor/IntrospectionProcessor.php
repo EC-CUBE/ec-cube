@@ -7,7 +7,7 @@ use Monolog\Logger;
 /**
  * IntrospectionProcessor拡張クラス
  *
- * @package Monolog\Processor
+ * @package Eccube\Log\Monolog\Processor
  */
 class IntrospectionProcessor
 {

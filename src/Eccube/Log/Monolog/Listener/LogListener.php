@@ -13,7 +13,9 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * EccubeListener
+ * ログ出力リスナー
+ *
+ * @package Eccube\Log\Monolog\Listener
  */
 class LogListener implements EventSubscriberInterface
 {

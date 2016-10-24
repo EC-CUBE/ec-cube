@@ -28,6 +28,8 @@ use Monolog\Processor\WebProcessor as BaseWebProcessor;
 
 /**
  * WebProcessor拡張クラス
+ *
+ * @package Eccube\Log\Monolog\Processor
  */
 class WebProcessor extends BaseWebProcessor
 {
