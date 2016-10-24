@@ -35,7 +35,7 @@ use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\UidProcessor;
 
-class EccubeHelper
+class LogHelper
 {
 
     /** @var  \Eccube\Application */

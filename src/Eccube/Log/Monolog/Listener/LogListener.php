@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * EccubeListener
  */
-class EccubeListener implements EventSubscriberInterface
+class LogListener implements EventSubscriberInterface
 {
 
     protected $log;
