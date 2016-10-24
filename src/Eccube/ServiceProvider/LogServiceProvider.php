@@ -2,26 +2,38 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Monolog\Helper\EccubeMonologHelper;
-use Eccube\Monolog\Listener\EccubeMonologListener;
+use Eccube\Log\Log;
+use Eccube\Log\Logger;
+use Eccube\Log\Monolog\Helper\EccubeHelper;
+use Eccube\Log\Monolog\Listener\EccubeListener;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
 /**
- * Class EccubeMonologServiceProvider
+ * Class LogServiceProvider
  *
  * @package Eccube\ServiceProvider
  */
-class EccubeMonologServiceProvider implements ServiceProviderInterface
+class LogServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
         $app->register(new \Silex\Provider\MonologServiceProvider());
 
+        // Log
+        $app['eccube.loger'] = $app->share(function ($app) {
+            return new Logger($app);
+        });
+        $app['eccube.log'] = $app->share(function ($app) {
+            $log = new Log();
+            $log->setLogger($app['eccube.loger']);
+
+            return $log;
+        });
 
         // ヘルパー作成
         $app['eccube.monolog.helper'] = $app->share(function ($app) {
-            return new EccubeMonologHelper($app);
+            return new EccubeHelper($app);
         });
 
         // ログクラス作成ファクトリー
@@ -53,7 +65,7 @@ class EccubeMonologServiceProvider implements ServiceProviderInterface
         });
 
         $app['eccube.monolog.listener'] = $app->share(function () use ($app) {
-            return new EccubeMonologListener();
+            return new EccubeListener($app['eccube.log']);
         });
 
         $app['listener.requestdump'] = $app->share(function ($app) {

@@ -113,7 +113,7 @@ class Application extends ApplicationTrait
     public function initLogger()
     {
         $app = $this;
-        $this->register(new ServiceProvider\EccubeMonologServiceProvider($app));
+        $this->register(new ServiceProvider\LogServiceProvider($app));
     }
 
     public function initialize()

@@ -1,7 +1,8 @@
 <?php
 
-namespace Eccube\Monolog\Listener;
+namespace Eccube\Log\Monolog\Listener;
 
+use Eccube\Log\Log;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -12,12 +13,18 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * EccubeMonologListener
- *
- * @package Eccube\Monolog\Listener
+ * EccubeListener
  */
-class EccubeMonologListener implements EventSubscriberInterface
+class EccubeListener implements EventSubscriberInterface
 {
+
+    protected $log;
+
+    public function __construct(Log $log)
+    {
+        $this->log = $log;
+    }
+
     /**
      * @param GetResponseEvent $event
      */
@@ -27,7 +34,7 @@ class EccubeMonologListener implements EventSubscriberInterface
             return;
         }
 
-        \EccubeLog::info('INIT');
+        $this->log->info('INIT');
     }
 
     /**
@@ -40,7 +47,7 @@ class EccubeMonologListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        \EccubeLog::info('PROCESS START', array($route));
+        $this->log->info('PROCESS START', array($route));
     }
 
     /**
@@ -53,7 +60,7 @@ class EccubeMonologListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        \EccubeLog::info('LOGIC START', array($route));
+        $this->log->info('LOGIC START', array($route));
     }
 
     /**
@@ -66,7 +73,7 @@ class EccubeMonologListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        \EccubeLog::info('LOGIC END', array($route));
+        $this->log->info('LOGIC END', array($route));
     }
 
     /**
@@ -75,7 +82,7 @@ class EccubeMonologListener implements EventSubscriberInterface
     public function onKernelTerminate(PostResponseEvent $event)
     {
         $route = $this->getRoute($event->getRequest());
-        \EccubeLog::info('PROCESS END', array($route));
+        $this->log->info('PROCESS END', array($route));
     }
 
     /**
@@ -85,7 +92,7 @@ class EccubeMonologListener implements EventSubscriberInterface
     {
         $e = $event->getException();
         if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
-            \EccubeLog::info($e->getMessage(), array($e->getStatusCode()));
+            $this->log->info($e->getMessage(), array($e->getStatusCode()));
 
         } else {
             $message = sprintf(
@@ -95,7 +102,7 @@ class EccubeMonologListener implements EventSubscriberInterface
                 $e->getFile(),
                 $e->getLine()
             );
-            \EccubeLog::error($message, array('exception' => $e));
+            $this->log->error($message, array('exception' => $e));
         }
     }
 
