@@ -316,6 +316,8 @@ class ShoppingController extends AbstractController
         // 受注IDセッションを削除
         $app['session']->remove($this->sessionOrderKey);
 
+        \EccubeLog::info('購入処理完了', array($orderId));
+
         return $app->render('Shopping/complete.twig', array(
             'orderId' => $orderId,
         ));
