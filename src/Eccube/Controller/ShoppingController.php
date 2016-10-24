@@ -255,7 +255,7 @@ class ShoppingController extends AbstractController
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING, $event);
 
             if ($event->getResponse() !== null) {
-                \EccubeLog::info('イベントレスポンス返却');
+                \EccubeLog::info('イベントレスポンス返却', array($Order->getId()));
                 return $event->getResponse();
             }
 
@@ -276,7 +276,7 @@ class ShoppingController extends AbstractController
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE, $event);
 
             if ($event->getResponse() !== null) {
-                \EccubeLog::info('イベントレスポンス返却', array('受注ID' => $Order->getId()));
+                \EccubeLog::info('イベントレスポンス返却', array($Order->getId()));
                 return $event->getResponse();
             }
 
@@ -284,7 +284,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping_complete'));
         }
 
-        \EccubeLog::info('購入チェックエラー', array('受注ID' => $Order->getId()));
+        \EccubeLog::info('購入チェックエラー', array($Order->getId()));
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -745,14 +745,17 @@ class ShoppingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('お届け先追加処理開始', array('受注ID' => $Order->getId(), '配送ID' => $id));
+            \EccubeLog::info('お届け先追加処理開始', array('id' => $Order->getId(), 'shipping' => $id));
 
             // 会員の場合、お届け先情報を新規登録
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
             if ($Customer instanceof Customer) {
                 $app['orm.em']->persist($CustomerAddress);
-                \EccubeLog::info('新規お届け先登録', array($CustomerAddress->getId()));
+                \EccubeLog::info('新規お届け先登録', array(
+                    'id' => $Order->getId(),
+                    'shipping' => $id,
+                    'customer address' => $CustomerAddress->getId()));
             }
 
             // 配送料金の設定
@@ -774,7 +777,7 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
 
-            \EccubeLog::info('お届け先追加処理完了', array('受注ID' => $Order->getId(), '配送ID' => $id));
+            \EccubeLog::info('お届け先追加処理完了', array('id' => $Order->getId(), 'shipping' => $id));
             return $app->redirect($app->url('shopping'));
         }
 
@@ -853,7 +856,7 @@ class ShoppingController extends AbstractController
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
 
-                \EccubeLog::info('非会員お客様情報変更処理完了', array('受注ID' => $Order->getId()));
+                \EccubeLog::info('非会員お客様情報変更処理完了', array($Order->getId()));
                 $response = new Response(json_encode('OK'));
                 $response->headers->set('Content-Type', 'application/json');
             } catch (\Exception $e) {
@@ -1029,7 +1032,7 @@ class ShoppingController extends AbstractController
                 return $event->getResponse();
             }
 
-            \EccubeLog::info('非会員お客様情報登録完了', array('受注ID' => $Order->getId()));
+            \EccubeLog::info('非会員お客様情報登録完了', array($Order->getId()));
 
             return $app->redirect($app->url('shopping'));
         }
@@ -1167,7 +1170,7 @@ class ShoppingController extends AbstractController
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('複数配送設定処理開始', array('受注ID' => $Order->getId()));
+            \EccubeLog::info('複数配送設定処理開始', array($Order->getId()));
             $data = $form['shipping_multiple'];
 
             // 数量が超えていないか、同一でないとエラー
@@ -1194,7 +1197,7 @@ class ShoppingController extends AbstractController
                         $errors[] = array('message' => $app->trans('shopping.multiple.quantity.diff'));
 
                         // 対象がなければエラー
-                        \EccubeLog::info('複数配送設定入力チェックエラー', array('受注ID' => $Order->getId()));
+                        \EccubeLog::info('複数配送設定入力チェックエラー', array($Order->getId()));
                         return $app->render('Shopping/shipping_multiple.twig', array(
                             'form' => $form->createView(),
                             'shipmentItems' => $shipmentItems,
@@ -1293,7 +1296,7 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE, $event);
 
-            \EccubeLog::info('複数配送設定処理完了', array('受注ID' => $Order->getId()));
+            \EccubeLog::info('複数配送設定処理完了', array($Order->getId()));
             return $app->redirect($app->url('shopping'));
         }
 
