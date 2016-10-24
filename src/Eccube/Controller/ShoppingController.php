@@ -462,7 +462,7 @@ class ShoppingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('支払い方法変更処理開始');
+            \EccubeLog::info('支払い方法変更処理開始', array("id" => $Order->getId()));
 
             $data = $form->getData();
             $payment = $data['payment'];
@@ -488,7 +488,8 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_PAYMENT_COMPLETE, $event);
 
-            \EccubeLog::info('支払い方法変更処理完了');
+            \EccubeLog::info('支払い方法変更処理完了', array("id" => $Order->getId(), "payment" => $payment->getId()));
+
             return $app->redirect($app->url('shopping'));
         }
 
