@@ -26,7 +26,9 @@ if (!function_exists('log_emergency')) {
     function log_emergency($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->emergency($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->emergency($message);
+        }
     }
 }
 
@@ -34,7 +36,9 @@ if (!function_exists('log_alert')) {
     function log_alert($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->alert($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->alert($message);
+        }
     }
 }
 
@@ -42,7 +46,9 @@ if (!function_exists('log_critical')) {
     function log_critical($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->critical($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->critical($message);
+        }
     }
 }
 
@@ -50,7 +56,9 @@ if (!function_exists('log_error')) {
     function log_error($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->error($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->error($message);
+        }
     }
 }
 
@@ -58,7 +66,9 @@ if (!function_exists('log_warning')) {
     function log_warning($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->warning($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->warning($message);
+        }
     }
 }
 
@@ -66,7 +76,9 @@ if (!function_exists('log_notice')) {
     function log_notice($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->notice($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->notice($message);
+        }
     }
 }
 
@@ -74,7 +86,9 @@ if (!function_exists('log_info')) {
     function log_info($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->info($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->info($message);
+        }
     }
 }
 
@@ -82,6 +96,8 @@ if (!function_exists('log_debug')) {
     function log_debug($message)
     {
         $app = \Eccube\Application::getInstance();
-        $app['eccube.log']->debug($message);
+        if (isset($app['eccube.log'])) {
+            $app['eccube.log']->debug($message);
+        }
     }
 }
