@@ -363,7 +363,7 @@ class ShoppingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            \EccubeLog::info('配送業者変更処理開始');
+            \EccubeLog::info('配送業者変更処理開始', array($Order->getId()));
 
             $data = $form->getData();
 
@@ -418,11 +418,11 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_DELIVERY_COMPLETE, $event);
 
-            \EccubeLog::info('配送業者変更処理完了');
+            \EccubeLog::info('配送業者変更処理完了', array($Order->getId()));
             return $app->redirect($app->url('shopping'));
         }
 
-        \EccubeLog::info('配送業者変更入力チェックエラー');
+        \EccubeLog::info('配送業者変更入力チェックエラー', array($Order->getId()));
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
@@ -493,7 +493,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        \EccubeLog::info('支払い方法変更入力チェックエラー');
+        \EccubeLog::info('支払い方法変更入力チェックエラー', array("id" => $Order->getId()));
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
