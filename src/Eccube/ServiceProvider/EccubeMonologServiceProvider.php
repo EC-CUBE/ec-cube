@@ -2,45 +2,61 @@
 
 namespace Eccube\ServiceProvider;
 
+use Eccube\Monolog\Helper\EccubeMonologHelper;
+use Eccube\Monolog\Listener\EccubeMonologListener;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
-use Monolog\Handler\FingersCrossedHandler;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
 
 /**
- * MonologServiceProvider for EC-CUBE.
+ * Class EccubeMonologServiceProvider
  *
- * @author Kentaro Ohkouchi
+ * @package Eccube\ServiceProvider
  */
 class EccubeMonologServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
         $app->register(new \Silex\Provider\MonologServiceProvider());
-        $app['monolog.handler'] = function() use ($app) {
-            $levels = Logger::getLevels();
-            if ($app['debug']) {
-                $level = Logger::DEBUG;
-            } else {
-                $level = $app['config']['log']['log_level'];
-            }
 
-            $RotateHandler = new RotatingFileHandler($app['monolog.logfile'], $app['config']['log']['max_files'], $level);
-            $RotateHandler->setFilenameFormat(
-                $app['config']['log']['prefix'].'{date}'.$app['config']['log']['suffix'],
-                $app['config']['log']['format']
-            );
-            $RotateHandler->setFormatter(new LineFormatter(null, null, true));
-            $FingerCrossedHandler = new FingersCrossedHandler(
-                $RotateHandler,
-                new ErrorLevelActivationStrategy($levels[$app['config']['log']['action_level']])
-            );
-            return $FingerCrossedHandler;
-        };
-        $app['listener.requestdump'] = $app->share(function($app) {
+
+        // ヘルパー作成
+        $app['eccube.monolog.helper'] = $app->share(function ($app) {
+            return new EccubeMonologHelper($app);
+        });
+
+        // ログクラス作成ファクトリー
+        $app['eccube.monolog.factory'] = $app->protect(function (array $channelValues) use ($app) {
+
+            $log = new $app['monolog.logger.class']($channelValues['name']);
+
+            // EccubeMonologHelper内でHandlerを設定している
+            $log->pushHandler($app['eccube.monolog.helper']->getHandler($channelValues));
+
+            return $log;
+        });
+
+        // チャネルに応じてログを作成し、フロント、管理、プラグイン用のログ出力クラスを作成
+        $channels = $app['config']['log']['channel'];
+        // monologの設定は除外
+        unset($channels['monolog']);
+        foreach ($channels as $channel => $channelValues) {
+            $app['monolog.logger.'.$channel] = $app->share(function ($app) use ($channelValues) {
+                return $app['eccube.monolog.factory']($channelValues);
+            });
+        }
+
+        // MonologServiceProviderで定義されているmonolog.handlerの置換
+        $channelValues = $app['config']['log']['channel']['monolog'];
+        $app['monolog.name'] = $channelValues['name'];
+        $app['monolog.handler'] = $app->share(function ($app) use ($channelValues) {
+            return $app['eccube.monolog.helper']->getHandler($channelValues);
+        });
+
+        $app['eccube.monolog.listener'] = $app->share(function () use ($app) {
+            return new EccubeMonologListener();
+        });
+
+        $app['listener.requestdump'] = $app->share(function ($app) {
             return new \Eccube\EventListener\RequestDumpListener($app);
         });
     }
@@ -48,5 +64,6 @@ class EccubeMonologServiceProvider implements ServiceProviderInterface
     public function boot(Application $app)
     {
         $app['dispatcher']->addSubscriber($app['listener.requestdump']);
+        $app['dispatcher']->addSubscriber($app['eccube.monolog.listener']);
     }
 }

@@ -79,6 +79,16 @@ class Application extends ApplicationTrait
         $this->initLogger();
     }
 
+    /**
+     * Application::runが実行されているか親クラスのプロパティから判定
+     *
+     * @return bool
+     */
+    public function isBooted()
+    {
+        return $this->booted;
+    }
+
     public function initConfig()
     {
         // load config
@@ -104,8 +114,6 @@ class Application extends ApplicationTrait
     {
         $app = $this;
         $this->register(new ServiceProvider\EccubeMonologServiceProvider($app));
-        $this['monolog.logfile'] = __DIR__.'/../../app/log/site.log';
-        $this['monolog.name'] = 'eccube';
     }
 
     public function initialize()
@@ -259,29 +267,34 @@ class Application extends ApplicationTrait
         }));
 
         $this->before(function (Request $request, \Silex\Application $app) {
+            $app['admin'] = false;
+            $app['front'] = false;
+            $pathinfo = rawurldecode($request->getPathInfo());
+            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
+                $app['admin'] = true;
+            } else {
+                $app['front'] = true;
+            }
+
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
             $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
-
-                $app['admin'] = false;
-                $app['front'] = false;
-
                 if (isset($app['profiler'])) {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
                 } else {
                     $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
-                $pathinfo = rawurldecode($app['request']->getPathInfo());
-                if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
+
+                if ($app->isAdminRequest()) {
                     if (file_exists(__DIR__.'/../../app/template/admin')) {
                         $paths[] = __DIR__.'/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
                     $paths[] = __DIR__.'/../../app/Plugin';
                     $cache = $cacheBaseDir.'admin';
-                    $app['admin'] = true;
+
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
@@ -298,8 +311,7 @@ class Application extends ApplicationTrait
             }));
 
             // 管理画面のIP制限チェック.
-            $pathinfo = rawurldecode($app['request']->getPathInfo());
-            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
+            if ($app->isAdminRequest()) {
                 // IP制限チェック
                 $allowHost = $app['config']['admin_allow_host'];
                 if (count($allowHost) > 0) {
@@ -322,8 +334,7 @@ class Application extends ApplicationTrait
             $BaseInfo = $app['eccube.repository.base_info']->get();
             $app['twig']->addGlobal('BaseInfo', $BaseInfo);
 
-            $pathinfo = rawurldecode($app['request']->getPathInfo());
-            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
+            if ($app->isAdminRequest()) {
                 // 管理画面
                 // 管理画面メニュー
                 $menus = array('', '', '');
