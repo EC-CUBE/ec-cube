@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,29 +22,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Monolog;
+namespace Eccube\Log;
 
 use Eccube\Application;
 use Psr\Log\AbstractLogger;
 
-class EccubeLogger extends AbstractLogger
+class Logger extends AbstractLogger
 {
+    protected $app;
 
-    protected static $instance;
-
-    /**
-     *
-     * Returns a singleton of the EccubeLogger
-     *
-     * @return EccubeLogger
-     */
-    public static function getInstance()
+    public function __construct(Application $app)
     {
-        if (!is_object(self::$instance)) {
-            self::$instance = new EccubeLogger();
-        }
-
-        return self::$instance;
+        $this->app = $app;
     }
 
     /**
@@ -55,22 +45,20 @@ class EccubeLogger extends AbstractLogger
      */
     public function log($level, $message, array $context = array())
     {
-        $app = Application::getInstance();
-
-        if ($app->isFrontRequest()) {
+        if ($this->app->isFrontRequest()) {
             // フロント画面用のログ出力
-            $app['monolog.logger.front']->log($level, $message, $context);
-        } elseif ($app->isAdminRequest()) {
+            $this->app['monolog.logger.front']->log($level, $message, $context);
+        } elseif ($this->app->isAdminRequest()) {
             // 管理画面用のログ出力
-            $app['monolog.logger.admin']->log($level, $message, $context);
+            $this->app['monolog.logger.admin']->log($level, $message, $context);
         } else {
             // 両方に当てはまらない場合、monolog用へログ出力
-            $app['monolog']->log($level, $message, $context);
+            $this->app['monolog']->log($level, $message, $context);
         }
 
-        if ($app['debug']) {
+        if ($this->app['debug']) {
             // debugが有効時はフロント、管理両方のログをmonologにも出力
-            $app['monolog']->log($level, $message, $context);
+            $this->app['monolog']->log($level, $message, $context);
         }
 
     }

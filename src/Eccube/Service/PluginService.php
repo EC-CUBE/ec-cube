@@ -47,6 +47,7 @@ class PluginService
         $tmp = null;
 
         try {
+            $this->app->removePluginConfigCache();
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
@@ -64,6 +65,7 @@ class PluginService
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
             $this->registerPlugin($config, $event, $source); // dbにプラグイン登録
+            $this->app->writePluginConfigCache();
         } catch (PluginException $e) {
             $this->deleteDirs(array($tmp, $pluginBaseDir));
             throw $e;
@@ -116,10 +118,14 @@ class PluginService
         }
     }
 
-    public function checkPluginArchiveContent($dir)
+    public function checkPluginArchiveContent($dir, array $config_cache = array())
     {
         try {
-            $meta = $this->readYml($dir . '/config.yml');
+            if (!empty($config_cache)) {
+                $meta = $config_cache;
+            } else {
+                $meta = $this->readYml($dir . '/config.yml');
+            }
         } catch (\Symfony\Component\Yaml\Exception\ParseException $e) {
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
@@ -262,12 +268,12 @@ class PluginService
     public function uninstall(\Eccube\Entity\Plugin $plugin)
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
-
+        $this->app->removePluginConfigCache();
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->unregisterPlugin($plugin);
         $this->deleteFile($pluginDir);
-
+        $this->app->writePluginConfigCache();
         return true;
     }
 
@@ -301,6 +307,7 @@ class PluginService
     {
         $em = $this->app['orm.em'];
         try {
+            $this->app->removePluginConfigCache();
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
@@ -308,6 +315,7 @@ class PluginService
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
             $em->flush();
             $em->getConnection()->commit();
+            $this->app->writePluginConfigCache();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
@@ -321,6 +329,7 @@ class PluginService
         $pluginBaseDir = null;
         $tmp = null;
         try {
+            $this->app->removePluginConfigCache();
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
@@ -342,6 +351,7 @@ class PluginService
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
+            $this->app->writePluginConfigCache();
         } catch (PluginException $e) {
             foreach (array($tmp) as $dir) {
                 if (file_exists($dir)) {

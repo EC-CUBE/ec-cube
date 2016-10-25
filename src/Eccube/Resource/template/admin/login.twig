@@ -23,14 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block javascript %}
-<script>
-$(function() {
-    $('#login_id').focus();
-});
-</script>
-{% endblock javascript %}
-
 {% block main %}
 
     <div class="login-box">
@@ -44,7 +36,7 @@ $(function() {
                     {% endfor %}
                 {% endif %}
                 <div class="form-group has-feedback">
-                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'size': 20, 'class': 'box25', 'placeholder': 'ログインID'}}) }}
+                    {{ form_widget(form.login_id, {'id': 'login_id', 'attr': {'style' : 'ime-mode: disabled;', 'size': 20, 'class': 'box25', 'placeholder': 'ログインID', 'autofocus': true}}) }}
                 </div>
                 <div class="form-group has-feedback">
                     {{ form_widget(form.password, {'attr': {'size': 20, 'class': 'box25', 'placeholder': 'パスワード'}}) }}

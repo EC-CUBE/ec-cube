@@ -79,6 +79,13 @@ $(function(){
     $('#add-cart').click(function() {
         $('#mode').val('add_cart');
     });
+
+    // bfcache無効化
+    $(window).bind('pageshow', function(event) {
+        if (event.originalEvent.persisted) {
+            location.reload(true);
+        }
+    });
 });
 </script>
 
@@ -134,7 +141,7 @@ $(function(){
 
                     <!--★通常価格★-->
                     {% if Product.hasProductClass -%}
-                        {% if Product.getPrice01Min is not null and Product.getPrice01Min == Product.getPrice01Max %}
+                        {% if Product.getPrice01Min is not null and Product.getPrice01IncTaxMin == Product.getPrice01IncTaxMax %}
                         <p id="detail_description_box__class_normal_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
                         {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
                         <p id="detail_description_box__class_normal_range_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }} ～ {{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span></p>
@@ -147,7 +154,7 @@ $(function(){
 
                     <!--★販売価格★-->
                     {% if Product.hasProductClass -%}
-                        {% if Product.getPrice02Min == Product.getPrice02Max %}
+                        {% if Product.getPrice02IncTaxMin == Product.getPrice02IncTaxMax %}
                         <p id="detail_description_box__class_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span></p>
                         {% else %}
                         <p id="detail_description_box__class_range_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }} ～ {{  Product.getPrice02IncTaxMax|price }}</span> <span class="small">税込</span></p>

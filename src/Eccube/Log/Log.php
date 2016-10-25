@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,17 +22,26 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-use Eccube\Monolog\EccubeLogger;
+namespace Eccube\Log;
+
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * EC-CUBE専用ログ出力クラス
  * namespaceは設定せず、各プログラムからはクラス名::関数名(\EccubeLog::info())で利用できるようにしている。
  * ログ出力時はレベルに応じた関数を使用する。
  *
- * ログ出力は実際にはEccubeLoggerクラスで行っている。
+ * ログ出力は実際にはLoggerクラスで行っている。
  */
-class EccubeLog
+class Log implements LoggerAwareInterface
 {
+    protected $logger;
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * emergencyレベル用
@@ -39,11 +49,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function emergency($message, array $context = array())
+    public function emergency($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->emergency($message, $context);
+        $this->logger->emergency($message, $context);
     }
 
     /**
@@ -52,11 +60,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function alert($message, array $context = array())
+    public function alert($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->alert($message, $context);
+        $this->logger->alert($message, $context);
     }
 
     /**
@@ -65,11 +71,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function critical($message, array $context = array())
+    public function critical($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->critical($message, $context);
+        $this->logger->critical($message, $context);
     }
 
     /**
@@ -78,11 +82,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function error($message, array $context = array())
+    public function error($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->error($message, $context);
+        $this->logger->error($message, $context);
     }
 
     /**
@@ -91,11 +93,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function warning($message, array $context = array())
+    public function warning($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->warning($message, $context);
+        $this->logger->warning($message, $context);
     }
 
     /**
@@ -104,11 +104,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function notice($message, array $context = array())
+    public function notice($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->notice($message, $context);
+        $this->logger->notice($message, $context);
     }
 
     /**
@@ -117,11 +115,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function info($message, array $context = array())
+    public function info($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->info($message, $context);
+        $this->logger->info($message, $context);
     }
 
     /**
@@ -130,11 +126,9 @@ class EccubeLog
      * @param $message
      * @param array $context
      */
-    public static function debug($message, array $context = array())
+    public function debug($message, array $context = array())
     {
-        $logger = EccubeLogger::getInstance();
-
-        $logger->debug($message, $context);
+        $this->logger->debug($message, $context);
     }
 
 }

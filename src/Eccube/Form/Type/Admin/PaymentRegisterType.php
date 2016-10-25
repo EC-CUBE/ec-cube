@@ -34,11 +34,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PaymentRegisterType extends AbstractType
 {
+    protected $app;
+
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $app = $this->app;
+
         $builder
             ->add('method', 'text', array(
                 'label' => '支払方法',
@@ -52,6 +61,9 @@ class PaymentRegisterType extends AbstractType
                 'currency' => 'JPY',
                 'precision' => 0,
                 'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['int_len'],
+                    )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
@@ -64,6 +76,9 @@ class PaymentRegisterType extends AbstractType
                 'precision' => 0,
                 'required' => false,
                 'constraints' => array(
+                    new Assert\Length(array(
+                        'max' => $app['config']['int_len'],
+                    )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
@@ -88,7 +103,7 @@ class PaymentRegisterType extends AbstractType
                     $form['rule_min']->addError(new FormError('利用条件(下限)は'.$ruleMax.'円以下にしてください。'));
                 }
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) use ($app) {
                 $form = $event->getForm();
                 /** @var \Eccube\Entity\Payment $Payment */
                 $Payment = $event->getData();
@@ -99,6 +114,9 @@ class PaymentRegisterType extends AbstractType
                         'precision' => 0,
                         'constraints' => array(
                             new Assert\NotBlank(),
+                            new Assert\Length(array(
+                                'max' => $app['config']['int_len'],
+                            )),
                             new Assert\Regex(array(
                                 'pattern' => "/^\d+$/u",
                                 'message' => 'form.type.numeric.invalid'

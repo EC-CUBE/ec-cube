@@ -136,11 +136,12 @@ class MypageController extends AbstractController
             'Eccube\Entity\ProductClass',
         ));
 
+        $app['orm.em']->getFilters()->enable('incomplete_order_status_hidden');
         $Order = $app['eccube.repository.order']->findOneBy(array(
             'id' => $id,
             'Customer' => $app->user(),
         ));
-
+        
         $event = new EventArgs(
             array(
                 'Order' => $Order,
