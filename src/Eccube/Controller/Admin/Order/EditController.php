@@ -546,7 +546,7 @@ class EditController extends AbstractController
             if (!$OrderDetail->getId()) {
                 $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
                     $OrderDetail->getProductClass());
-                $OrderDetail->setTaxRule($TaxRule->getCalcRule()->getId());
+                $OrderDetail->setTaxRule($TaxRule->getId());
                 $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
                 $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
                 $OrderDetail->setClassName1($OrderDetail->getProductClass()->hasClassCategory1()
