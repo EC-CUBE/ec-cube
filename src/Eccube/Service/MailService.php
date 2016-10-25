@@ -52,7 +52,7 @@ class MailService
     public function sendCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
 
-        \EccubeLog::info('仮会員登録メール送信開始');
+        log_info('仮会員登録メール送信開始');
 
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
@@ -82,7 +82,7 @@ class MailService
 
         $count = $this->app->mail($message, $failures);
 
-        \EccubeLog::info('仮会員登録メール送信完了', array('メール送信数' => $count));
+        log_info('仮会員登録メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
@@ -94,7 +94,7 @@ class MailService
      */
     public function sendCustomerCompleteMail(\Eccube\Entity\Customer $Customer)
     {
-        \EccubeLog::info('会員登録完了メール送信開始');
+        log_info('会員登録完了メール送信開始');
 
         $body = $this->app->renderView('Mail/entry_complete.twig', array(
             'Customer' => $Customer,
@@ -122,7 +122,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('会員登録完了メール送信完了', array('メール送信数' => $count));
+        log_info('会員登録完了メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
@@ -136,7 +136,7 @@ class MailService
      */
     public function sendCustomerWithdrawMail(\Eccube\Entity\Customer $Customer, $email)
     {
-        \EccubeLog::info('退会手続き完了メール送信開始');
+        log_info('退会手続き完了メール送信開始');
 
         $body = $this->app->renderView('Mail/customer_withdraw_mail.twig', array(
             'Customer' => $Customer,
@@ -165,7 +165,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('退会手続き完了メール送信完了', array('メール送信数' => $count));
+        log_info('退会手続き完了メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
@@ -178,7 +178,7 @@ class MailService
      */
     public function sendContactMail($formData)
     {
-        \EccubeLog::info('お問い合わせ受付メール送信開始');
+        log_info('お問い合わせ受付メール送信開始');
 
         $body = $this->app->renderView('Mail/contact_mail.twig', array(
             'data' => $formData,
@@ -207,7 +207,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('お問い合わせ受付メール送信完了', array('メール送信数' => $count));
+        log_info('お問い合わせ受付メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
@@ -233,7 +233,7 @@ class MailService
      */
     public function sendOrderMail(\Eccube\Entity\Order $Order)
     {
-        \EccubeLog::info('受注メール送信開始');
+        log_info('受注メール送信開始');
 
         $MailTemplate = $this->app['eccube.repository.mail_template']->find(1);
 
@@ -265,7 +265,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('受注メール送信完了', array('メール送信数' => $count));
+        log_info('受注メール送信完了', array('メール送信数' => $count));
 
         return $message;
 
@@ -280,7 +280,7 @@ class MailService
      */
     public function sendAdminCustomerConfirmMail(\Eccube\Entity\Customer $Customer, $activateUrl)
     {
-        \EccubeLog::info('仮会員登録再送メール送信開始');
+        log_info('仮会員登録再送メール送信開始');
 
         $body = $this->app->renderView('Mail/entry_confirm.twig', array(
             'Customer' => $Customer,
@@ -309,7 +309,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('仮会員登録再送メール送信完了', array('メール送信数' => $count));
+        log_info('仮会員登録再送メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
@@ -323,7 +323,7 @@ class MailService
      */
     public function sendAdminOrderMail(\Eccube\Entity\Order $Order, $formData)
     {
-        \EccubeLog::info('受注管理通知メール送信開始');
+        log_info('受注管理通知メール送信開始');
 
         $body = $this->app->renderView('Mail/order.twig', array(
             'header' => $formData['header'],
@@ -353,7 +353,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('受注管理通知メール送信完了', array('メール送信数' => $count));
+        log_info('受注管理通知メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
@@ -365,7 +365,7 @@ class MailService
      */
     public function sendPasswordResetNotificationMail(\Eccube\Entity\Customer $Customer, $reset_url)
     {
-        \EccubeLog::info('パスワード再発行メール送信開始');
+        log_info('パスワード再発行メール送信開始');
 
         $body = $this->app->renderView('Mail/forgot_mail.twig', array(
             'Customer' => $Customer,
@@ -394,7 +394,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('パスワード再発行メール送信完了', array('メール送信数' => $count));
+        log_info('パスワード再発行メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
@@ -406,7 +406,7 @@ class MailService
      */
     public function sendPasswordResetCompleteMail(\Eccube\Entity\Customer $Customer, $password)
     {
-        \EccubeLog::info('パスワード変更完了メール送信開始');
+        log_info('パスワード変更完了メール送信開始');
 
         $body = $this->app->renderView('Mail/reset_complete_mail.twig', array(
             'Customer' => $Customer,
@@ -435,7 +435,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        \EccubeLog::info('パスワード変更完了メール送信完了', array('メール送信数' => $count));
+        log_info('パスワード変更完了メール送信完了', array('メール送信数' => $count));
 
         return $count;
     }
