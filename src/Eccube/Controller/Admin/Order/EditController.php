@@ -103,10 +103,10 @@ class EditController extends AbstractController
             switch ($request->get('mode')) {
                 case 'register':
 
-                    \EccubeLog::info('受注登録開始', array($TargetOrder->getId()));
+                    log_info('受注登録開始', array($TargetOrder->getId()));
 
                     if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
-                        \EccubeLog::info('受注登録入力チェックエラー', array($TargetOrder->getId()));
+                        log_info('受注登録入力チェックエラー', array($TargetOrder->getId()));
                         $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
                     } elseif ($form->isValid()) {
 
@@ -225,7 +225,7 @@ class EditController extends AbstractController
 
                         $app->addSuccess('admin.order.save.complete', 'admin');
 
-                        \EccubeLog::info('受注登録完了', array($TargetOrder->getId()));
+                        log_info('受注登録完了', array($TargetOrder->getId()));
 
                         return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
                     }
