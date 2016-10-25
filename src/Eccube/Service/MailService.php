@@ -82,7 +82,7 @@ class MailService
 
         $count = $this->app->mail($message, $failures);
 
-        log_info('仮会員登録メール送信完了', array('メール送信数' => $count));
+        log_info('仮会員登録メール送信完了', array('count' => $count));
 
         return $count;
     }
@@ -122,7 +122,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('会員登録完了メール送信完了', array('メール送信数' => $count));
+        log_info('会員登録完了メール送信完了', array('count' => $count));
 
         return $count;
     }
@@ -165,7 +165,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('退会手続き完了メール送信完了', array('メール送信数' => $count));
+        log_info('退会手続き完了メール送信完了', array('count' => $count));
 
         return $count;
     }
@@ -207,7 +207,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('お問い合わせ受付メール送信完了', array('メール送信数' => $count));
+        log_info('お問い合わせ受付メール送信完了', array('count' => $count));
 
         return $count;
     }
@@ -265,7 +265,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('受注メール送信完了', array('メール送信数' => $count));
+        log_info('受注メール送信完了', array('count' => $count));
 
         return $message;
 
@@ -309,7 +309,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('仮会員登録再送メール送信完了', array('メール送信数' => $count));
+        log_info('仮会員登録再送メール送信完了', array('count' => $count));
 
         return $count;
     }
@@ -353,7 +353,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('受注管理通知メール送信完了', array('メール送信数' => $count));
+        log_info('受注管理通知メール送信完了', array('count' => $count));
 
         return $count;
     }
@@ -394,7 +394,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('パスワード再発行メール送信完了', array('メール送信数' => $count));
+        log_info('パスワード再発行メール送信完了', array('count' => $count));
 
         return $count;
     }
@@ -435,7 +435,7 @@ class MailService
 
         $count = $this->app->mail($message);
 
-        log_info('パスワード変更完了メール送信完了', array('メール送信数' => $count));
+        log_info('パスワード変更完了メール送信完了', array('count' => $count));
 
         return $count;
     }
