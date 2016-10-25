@@ -2,10 +2,9 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Log\Log;
+use Eccube\EventListener\LogListener;
 use Eccube\Log\Logger;
-use Eccube\Log\Monolog\Helper\EccubeHelper;
-use Eccube\Log\Monolog\Listener\EccubeListener;
+use Eccube\Log\Monolog\Helper\LogHelper;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -21,19 +20,13 @@ class LogServiceProvider implements ServiceProviderInterface
         $app->register(new \Silex\Provider\MonologServiceProvider());
 
         // Log
-        $app['eccube.loger'] = $app->share(function ($app) {
+        $app['eccube.logger'] = $app->share(function ($app) {
             return new Logger($app);
-        });
-        $app['eccube.log'] = $app->share(function ($app) {
-            $log = new Log();
-            $log->setLogger($app['eccube.loger']);
-
-            return $log;
         });
 
         // ヘルパー作成
         $app['eccube.monolog.helper'] = $app->share(function ($app) {
-            return new EccubeHelper($app);
+            return new LogHelper($app);
         });
 
         // ログクラス作成ファクトリー
@@ -65,7 +58,7 @@ class LogServiceProvider implements ServiceProviderInterface
         });
 
         $app['eccube.monolog.listener'] = $app->share(function () use ($app) {
-            return new EccubeListener($app['eccube.log']);
+            return new LogListener($app['eccube.logger']);
         });
 
         $app['listener.requestdump'] = $app->share(function ($app) {
