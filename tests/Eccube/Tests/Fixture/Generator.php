@@ -9,8 +9,10 @@ use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\DeliveryFee;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
+use Eccube\Entity\PageLayout;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
@@ -590,6 +592,31 @@ class Generator {
 
         $this->app['orm.em']->flush($Delivery);
         return $Delivery;
+    }
+
+    /**
+     * ページを生成する
+     *
+     * @return PageLayout
+     */
+    public function createPageLayout()
+    {
+        $faker = $this->getFaker();
+        $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+        /** @var PageLayout $PageLayout */
+        $PageLayout = $this->app['eccube.repository.page_layout']->newPageLayout($DeviceType);
+        $PageLayout
+            ->setName($faker->word)
+            ->setUrl($faker->word)
+            ->setFileName($faker->word)
+            ->setAuthor($faker->word)
+            ->setDescription($faker->word)
+            ->setKeyword($faker->word)
+            ->setMetaRobots($faker->word)
+        ;
+        $this->app['orm.em']->persist($PageLayout);
+        $this->app['orm.em']->flush($PageLayout);
+        return $PageLayout;
     }
 
     /**
