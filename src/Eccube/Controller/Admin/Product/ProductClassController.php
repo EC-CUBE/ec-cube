@@ -51,13 +51,15 @@ class ProductClassController
         $hasClassCategoryFlg = false;
 
         if (!$Product) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('商品が存在しません');
         }
 
 
         // 商品規格情報が存在しなければ新規登録させる
         if (!$Product->hasProductClass()) {
             // 登録画面を表示
+
+            log_info('商品規格新規登録表示', array($id));
 
             $builder = $app['form.factory']->createBuilder();
 
@@ -100,6 +102,8 @@ class ProductClassController
 
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
+
+                    log_info('選択された商品規格', array($ClassName1, $ClassName2));
 
                     // 各規格が選択されている際に、分類を保有しているか確認
                     $class1Valied = $this->isValiedCategory($ClassName1);
@@ -168,6 +172,8 @@ class ProductClassController
 
         } else {
             // 既に商品規格が登録されている場合、商品規格画面を表示する
+
+            log_info('商品規格登録済表示', array($id));
 
             // 既に登録されている商品規格を取得
             $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
@@ -278,7 +284,7 @@ class ProductClassController
         $Product = $app['eccube.repository.product']->find($id);
 
         if (!$Product) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('商品が存在しません');
         }
 
         $builder = $app['form.factory']->createBuilder();
@@ -309,9 +315,11 @@ class ProductClassController
             switch ($request->get('mode')) {
                 case 'edit':
                     // 新規登録
+                    log_info('商品規格新規登録開始', array($id));
 
                     if (count($ProductClasses) > 0) {
                         // 既に登録されていれば最初の画面に戻す
+                        log_info('商品規格登録済', array($id));
                         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
                     }
 
@@ -335,6 +343,7 @@ class ProductClassController
 
                     if (count($addProductClasses) == 0) {
                         // 対象がなければエラー
+                        log_info('商品規格が未選択', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
                         return $this->render($app, $Product, $tmpProductClass, true, $form, $error);
                     }
@@ -349,6 +358,8 @@ class ProductClassController
                     $defaultProductClass->setDelFlg(Constant::ENABLED);
 
                     $app['orm.em']->flush();
+
+                    log_info('商品規格新規登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -365,9 +376,11 @@ class ProductClassController
                     break;
                 case 'update':
                     // 更新
+                    log_info('商品規格更新開始', array($id));
 
                     if (count($ProductClasses) == 0) {
                         // 商品規格が0件であれば最初の画面に戻す
+                        log_info('商品規格が存在しません', array($id));
                         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
                     }
 
@@ -394,6 +407,7 @@ class ProductClassController
 
                     if (count($checkProductClasses) == 0) {
                         // 対象がなければエラー
+                        log_info('商品規格が存在しません', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
                         return $this->render($app, $Product, $tempProductClass, false, $form, $error);
                     }
@@ -449,6 +463,8 @@ class ProductClassController
 
                     $app['orm.em']->flush();
 
+                    log_info('商品規格更新完了', array($id));
+
                     $event = new EventArgs(
                         array(
                             'form' => $form,
@@ -465,9 +481,11 @@ class ProductClassController
                     break;
                 case 'delete':
                     // 削除
+                    log_info('商品規格削除開始', array($id));
 
                     if (count($ProductClasses) == 0) {
                         // 既に商品が削除されていれば元の画面に戻す
+                        log_info('商品規格が存在しません', array($id));
                         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
                     }
 
@@ -489,6 +507,7 @@ class ProductClassController
                     $defaultProductClass->setDelFlg(Constant::DISABLED);
 
                     $app['orm.em']->flush();
+                    log_info('商品規格削除完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -549,6 +568,8 @@ class ProductClassController
                 'data' => $ClassName2,
             ))
             ->getForm();
+
+        log_info('商品規格登録エラー');
 
 
         return $app->render('Product/product_class.twig', array(

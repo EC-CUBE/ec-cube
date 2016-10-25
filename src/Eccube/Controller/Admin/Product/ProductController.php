@@ -188,7 +188,7 @@ class ProductController extends AbstractController
     public function addImage(Application $app, Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            throw new BadRequestHttpException();
+            throw new BadRequestHttpException('リクエストが不正です');
         }
 
         $images = $request->files->get('admin_product');
@@ -200,7 +200,7 @@ class ProductController extends AbstractController
                     //ファイルフォーマット検証
                     $mimeType = $image->getMimeType();
                     if (0 !== strpos($mimeType, 'image')) {
-                        throw new UnsupportedMediaTypeHttpException();
+                        throw new UnsupportedMediaTypeHttpException('ファイル形式が不正です');
                     }
 
                     $extension = $image->getClientOriginalExtension();
@@ -310,6 +310,7 @@ class ProductController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                log_info('商品登録開始', array($id));
                 $Product = $form->getData();
 
                 if (!$has_class) {
@@ -450,6 +451,8 @@ class ProductController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
+                log_info('商品登録完了', array($id));
+
                 $event = new EventArgs(
                     array(
                         'form' => $form,
@@ -463,6 +466,7 @@ class ProductController extends AbstractController
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
+                log_info('商品登録チェックエラー', array($id));
                 $app->addError('admin.register.failed', 'admin');
             }
         }
@@ -511,6 +515,8 @@ class ProductController extends AbstractController
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
+                log_info('商品削除開始', array($id));
+
                 $Product->setDelFlg(Constant::ENABLED);
 
                 $ProductClasses = $Product->getProductClasses();
@@ -568,11 +574,15 @@ class ProductController extends AbstractController
                     }
                 }
 
+                log_info('商品削除完了', array($id));
+
                 $app->addSuccess('admin.delete.complete', 'admin');
             } else {
+                log_info('商品削除エラー', array($id));
                 $app->addError('admin.delete.failed', 'admin');
             }
         } else {
+            log_info('商品削除エラー', array($id));
             $app->addError('admin.delete.failed', 'admin');
         }
 
@@ -766,6 +776,8 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
+
+        log_info('商品CSV出力ファイル名', array($filename));
 
         return $response;
     }
