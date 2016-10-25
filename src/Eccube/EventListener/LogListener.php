@@ -1,6 +1,6 @@
 <?php
 
-namespace Eccube\Log\Monolog\Listener;
+namespace Eccube\EventListener;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * ログ出力リスナー
  *
- * @package Eccube\Log\Monolog\Listener
+ * @package Eccube\EventListener
  */
 class LogListener implements EventSubscriberInterface, LoggerAwareInterface
 {

@@ -2,10 +2,9 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Log\Log;
+use Eccube\EventListener\LogListener;
 use Eccube\Log\Logger;
 use Eccube\Log\Monolog\Helper\LogHelper;
-use Eccube\Log\Monolog\Listener\LogListener;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
