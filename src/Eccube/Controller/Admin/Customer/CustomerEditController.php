@@ -74,7 +74,7 @@ class CustomerEditController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                \EccubeLog::info('会員登録開始', array($Customer->getId()));
+                log_info('会員登録開始', array($Customer->getId()));
 
                 if ($Customer->getId() === null) {
                     $Customer->setSalt(
@@ -121,7 +121,7 @@ class CustomerEditController extends AbstractController
                 $app['orm.em']->persist($Customer);
                 $app['orm.em']->flush();
 
-                \EccubeLog::info('会員登録完了', array($Customer->getId()));
+                log_info('会員登録完了', array($Customer->getId()));
 
                 $event = new EventArgs(
                     array(

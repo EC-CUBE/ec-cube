@@ -103,12 +103,12 @@ class DeliveryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            \EccubeLog::info('お届け先登録開始', array($id));
+            log_info('お届け先登録開始', array($id));
 
             $app['orm.em']->persist($CustomerAddress);
             $app['orm.em']->flush();
 
-            \EccubeLog::info('お届け先登録開始', array($id));
+            log_info('お届け先登録完了', array($id));
 
             $event = new EventArgs(
                 array(
@@ -145,7 +145,7 @@ class DeliveryController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        \EccubeLog::info('お届け先削除開始', array($id));
+        log_info('お届け先削除開始', array($id));
 
         $Customer = $app['user'];
 
@@ -162,12 +162,12 @@ class DeliveryController extends AbstractController
 
             $app->addSuccess('mypage.address.delete.complete');
 
-            \EccubeLog::info('お届け先削除完了', array($id));
+            log_info('お届け先削除完了', array($id));
 
         } else {
             $app->addError('mypage.address.delete.failed');
 
-            \EccubeLog::info('お届け先削除失敗', array($id));
+            log_info('お届け先削除失敗', array($id));
         }
 
         return $app->redirect($app->url('mypage_delivery'));

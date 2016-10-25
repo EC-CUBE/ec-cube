@@ -45,7 +45,7 @@ class MypageController extends AbstractController
     public function login(Application $app, Request $request)
     {
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
-            \EccubeLog::info('認証済のためログイン処理をスキップ');
+            log_info('認証済のためログイン処理をスキップ');
 
             return $app->redirect($app->url('mypage'));
         }
@@ -175,7 +175,7 @@ class MypageController extends AbstractController
     {
         $this->isTokenValid($app);
 
-        \EccubeLog::info('再注文開始', array($id));
+        log_info('再注文開始', array($id));
 
         $Customer = $app->user();
 
@@ -195,7 +195,7 @@ class MypageController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_ORDER_INITIALIZE, $event);
 
         if (!$Order) {
-            \EccubeLog::info('対象の注文が見つかりません', array($id));
+            log_info('対象の注文が見つかりません', array($id));
             throw new NotFoundHttpException();
         }
 
@@ -205,11 +205,11 @@ class MypageController extends AbstractController
                     $OrderDetail->getProductClass()) {
                     $app['eccube.service.cart']->addProduct($OrderDetail->getProductClass()->getId(), $OrderDetail->getQuantity())->save();
                 } else {
-                    \EccubeLog::error($app->trans('cart.product.delete'), array($id));
+                    log_info($app->trans('cart.product.delete'), array($id));
                     $app->addRequestError('cart.product.delete');
                 }
             } catch (CartException $e) {
-                \EccubeLog::error($e->getMessage(), array($id));
+                log_info($e->getMessage(), array($id));
                 $app->addRequestError($e->getMessage());
             }
         }
@@ -227,7 +227,7 @@ class MypageController extends AbstractController
             return $event->getResponse();
         }
 
-        \EccubeLog::info('再注文完了', array($id));
+        log_info('再注文完了', array($id));
 
         return $app->redirect($app->url('cart'));
     }
@@ -298,7 +298,7 @@ class MypageController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE, $event);
 
         if ($Product) {
-            \EccubeLog::info('お気に入り商品削除開始');
+            log_info('お気に入り商品削除開始');
 
             $app['eccube.repository.customer_favorite_product']->deleteFavorite($Customer, $Product);
 
@@ -310,7 +310,7 @@ class MypageController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE, $event);
 
-            \EccubeLog::info('お気に入り商品削除完了');
+            log_info('お気に入り商品削除完了');
         }
 
         return $app->redirect($app->url('mypage_favorite'));

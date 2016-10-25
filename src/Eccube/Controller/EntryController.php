@@ -46,7 +46,7 @@ class EntryController extends AbstractController
     public function index(Application $app, Request $request)
     {
         if ($app->isGranted('ROLE_USER')) {
-            \EccubeLog::info('認証済のためログイン処理をスキップ');
+            log_info('認証済のためログイン処理をスキップ');
 
             return $app->redirect($app->url('mypage'));
         }
@@ -74,18 +74,18 @@ class EntryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
-                    \EccubeLog::info('会員登録確認開始');
+                    log_info('会員登録確認開始');
                     $builder->setAttribute('freeze', true);
                     $form = $builder->getForm();
                     $form->handleRequest($request);
-                    \EccubeLog::info('会員登録確認完了');
+                    log_info('会員登録確認完了');
 
                     return $app->render('Entry/confirm.twig', array(
                         'form' => $form->createView(),
                     ));
 
                 case 'complete':
-                    \EccubeLog::info('会員登録開始');
+                    log_info('会員登録開始');
                     $Customer
                         ->setSalt(
                             $app['eccube.repository.customer']->createSalt(5)
@@ -105,7 +105,7 @@ class EntryController extends AbstractController
                     $app['orm.em']->persist($CustomerAddress);
                     $app['orm.em']->flush();
 
-                    \EccubeLog::info('会員登録完了');
+                    log_info('会員登録完了');
 
                     $event = new EventArgs(
                         array(
@@ -132,12 +132,12 @@ class EntryController extends AbstractController
                             return $event->getResponse();
                         }
 
-                        \EccubeLog::info('仮会員登録完了画面へリダイレクト');
+                        log_info('仮会員登録完了画面へリダイレクト');
 
                         return $app->redirect($app->url('entry_complete'));
                         // 仮会員設定が無効な場合は認証URLへ遷移させ、会員登録を完了させる.
                     } else {
-                        \EccubeLog::info('本会員登録画面へリダイレクト');
+                        log_info('本会員登録画面へリダイレクト');
 
                         return $app->redirect($activateUrl);
                     }
@@ -179,7 +179,7 @@ class EntryController extends AbstractController
         );
 
         if ($request->getMethod() === 'GET' && count($errors) === 0) {
-            \EccubeLog::info('本会員登録開始');
+            log_info('本会員登録開始');
             try {
                 $Customer = $app['eccube.repository.customer']
                     ->getNonActiveCustomerBySecretKey($secret_key);
@@ -192,7 +192,7 @@ class EntryController extends AbstractController
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
 
-            \EccubeLog::info('本会員登録完了');
+            log_info('本会員登録完了');
 
             $event = new EventArgs(
                 array(
@@ -209,7 +209,7 @@ class EntryController extends AbstractController
             $token = new UsernamePasswordToken($Customer, null, 'customer', array('ROLE_USER'));
             $this->getSecurity($app)->setToken($token);
 
-            \EccubeLog::info('ログイン済に変更', array($app->user()->getId()));
+            log_info('ログイン済に変更', array($app->user()->getId()));
 
             return $app->render('Entry/activate.twig');
         } else {
