@@ -75,14 +75,14 @@ class ShoppingController extends AbstractController
 
         // カートチェック
         if (!$cartService->isLocked()) {
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
         }
 
         // カートチェック
         if (count($cartService->getCart()->getCartItems()) <= 0) {
-            \EccubeLog::info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
+            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
             // カートが存在しない時はエラー
             return $app->redirect($app->url('cart'));
         }
@@ -98,7 +98,7 @@ class ShoppingController extends AbstractController
                 $Customer = $app['eccube.service.shopping']->getNonMember($this->sessionKey);
 
                 if (is_null($Customer)) {
-                    \EccubeLog::info('未ログインのためログイン画面にリダイレクト');
+                    log_info('未ログインのためログイン画面にリダイレクト');
                     return $app->redirect($app->url('shopping_login'));
                 }
             } else {
@@ -109,7 +109,7 @@ class ShoppingController extends AbstractController
                 // 受注情報を作成
                 $Order = $app['eccube.service.shopping']->createOrder($Customer);
             } catch (CartException $e) {
-                \EccubeLog::error('初回受注情報作成エラー', array($e->getMessage()));
+                log_error('初回受注情報作成エラー', array($e->getMessage()));
                 $app->addRequestError($e->getMessage());
                 return $app->redirect($app->url('cart'));
             }
@@ -138,7 +138,7 @@ class ShoppingController extends AbstractController
 
         if ($Order->getTotalPrice() < 0) {
             // 合計金額がマイナスの場合、エラー
-            \EccubeLog::info('受注金額マイナスエラー', array($Order->getId()));
+            log_info('受注金額マイナスエラー', array($Order->getId()));
             $message = $app->trans('shopping.total.price', array('totalPrice' => number_format($Order->getTotalPrice())));
             $app->addError($message);
 
@@ -169,13 +169,13 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
-            \EccubeLog::info('購入処理中の受注情報がないため購入エラー');
+            log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
             return $app->redirect($app->url('shopping_error'));
         }
@@ -203,7 +203,7 @@ class ShoppingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            \EccubeLog::info('購入処理開始', array($Order->getId()));
+            log_info('購入処理開始', array($Order->getId()));
 
             // トランザクション制御
             $em = $app['orm.em'];
@@ -218,11 +218,11 @@ class ShoppingController extends AbstractController
                 $em->flush();
                 $em->getConnection()->commit();
 
-                \EccubeLog::info('購入処理完了', array($Order->getId()));
+                log_info('購入処理完了', array($Order->getId()));
 
             } catch (ShoppingException $e) {
 
-                \EccubeLog::error('購入エラー', array($e->getMessage()));
+                log_error('購入エラー', array($e->getMessage()));
 
                 $em->getConnection()->rollback();
 
@@ -232,7 +232,7 @@ class ShoppingController extends AbstractController
                 return $app->redirect($app->url('shopping_error'));
             } catch (\Exception $e) {
 
-                \EccubeLog::error('予期しないエラー', array($e->getMessage()));
+                log_error('予期しないエラー', array($e->getMessage()));
 
                 $em->getConnection()->rollback();
 
@@ -255,7 +255,7 @@ class ShoppingController extends AbstractController
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_PROCESSING, $event);
 
             if ($event->getResponse() !== null) {
-                \EccubeLog::info('イベントレスポンス返却', array($Order->getId()));
+                log_info('イベントレスポンス返却', array($Order->getId()));
                 return $event->getResponse();
             }
 
@@ -276,7 +276,7 @@ class ShoppingController extends AbstractController
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_COMPLETE, $event);
 
             if ($event->getResponse() !== null) {
-                \EccubeLog::info('イベントレスポンス返却', array($Order->getId()));
+                log_info('イベントレスポンス返却', array($Order->getId()));
                 return $event->getResponse();
             }
 
@@ -284,7 +284,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping_complete'));
         }
 
-        \EccubeLog::info('購入チェックエラー', array($Order->getId()));
+        log_info('購入チェックエラー', array($Order->getId()));
 
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
@@ -316,7 +316,7 @@ class ShoppingController extends AbstractController
         // 受注IDセッションを削除
         $app['session']->remove($this->sessionOrderKey);
 
-        \EccubeLog::info('購入処理完了', array($orderId));
+        log_info('購入処理完了', array($orderId));
 
         return $app->render('Shopping/complete.twig', array(
             'orderId' => $orderId,
@@ -332,13 +332,13 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
-            \EccubeLog::info('購入処理中の受注情報がないため購入エラー');
+            log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
             return $app->redirect($app->url('shopping_error'));
         }
@@ -363,7 +363,7 @@ class ShoppingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            \EccubeLog::info('配送業者変更処理開始', array($Order->getId()));
+            log_info('配送業者変更処理開始', array($Order->getId()));
 
             $data = $form->getData();
 
@@ -418,11 +418,11 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_DELIVERY_COMPLETE, $event);
 
-            \EccubeLog::info('配送業者変更処理完了', array($Order->getId()));
+            log_info('配送業者変更処理完了', array($Order->getId()));
             return $app->redirect($app->url('shopping'));
         }
 
-        \EccubeLog::info('配送業者変更入力チェックエラー', array($Order->getId()));
+        log_info('配送業者変更入力チェックエラー', array($Order->getId()));
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
@@ -436,7 +436,7 @@ class ShoppingController extends AbstractController
     {
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
-            \EccubeLog::info('購入処理中の受注情報がないため購入エラー');
+            log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
             return $app->redirect($app->url('shopping_error'));
         }
@@ -462,7 +462,7 @@ class ShoppingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('支払い方法変更処理開始', array("id" => $Order->getId()));
+            log_info('支払い方法変更処理開始', array("id" => $Order->getId()));
 
             $data = $form->getData();
             $payment = $data['payment'];
@@ -488,12 +488,12 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_PAYMENT_COMPLETE, $event);
 
-            \EccubeLog::info('支払い方法変更処理完了', array("id" => $Order->getId(), "payment" => $payment->getId()));
+            log_info('支払い方法変更処理完了', array("id" => $Order->getId(), "payment" => $payment->getId()));
 
             return $app->redirect($app->url('shopping'));
         }
 
-        \EccubeLog::info('支払い方法変更入力チェックエラー', array("id" => $Order->getId()));
+        log_info('支払い方法変更入力チェックエラー', array("id" => $Order->getId()));
         return $app->render('Shopping/index.twig', array(
             'form' => $form->createView(),
             'Order' => $Order,
@@ -555,7 +555,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -564,7 +564,7 @@ class ShoppingController extends AbstractController
 
             if (is_null($address)) {
                 // 選択されていなければエラー
-                \EccubeLog::info('お届け先入力チェックエラー');
+                log_info('お届け先入力チェックエラー');
                 return $app->render(
                     'Shopping/shipping.twig',
                     array(
@@ -586,7 +586,7 @@ class ShoppingController extends AbstractController
 
             $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
             if (!$Order) {
-                \EccubeLog::info('購入処理中の受注情報がないため購入エラー');
+                log_info('購入処理中の受注情報がないため購入エラー');
                 $app->addError('front.shopping.order.error');
 
                 return $app->redirect($app->url('shopping_error'));
@@ -597,7 +597,7 @@ class ShoppingController extends AbstractController
                 throw new NotFoundHttpException('お届け先情報が存在しない');
             }
 
-            \EccubeLog::info('お届先情報更新開始', array($Shipping->getId()));
+            log_info('お届先情報更新開始', array($Shipping->getId()));
 
             // お届け先情報を更新
             $Shipping
@@ -621,7 +621,7 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_COMPLETE, $event);
 
-            \EccubeLog::info('お届先情報更新完了', array($Shipping->getId()));
+            log_info('お届先情報更新完了', array($Shipping->getId()));
             return $app->redirect($app->url('shopping'));
         }
 
@@ -700,13 +700,13 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
-            \EccubeLog::info('購入処理中の受注情報がないため購入エラー');
+            log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
             return $app->redirect($app->url('shopping_error'));
         }
@@ -745,14 +745,14 @@ class ShoppingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('お届け先追加処理開始', array('id' => $Order->getId(), 'shipping' => $id));
+            log_info('お届け先追加処理開始', array('id' => $Order->getId(), 'shipping' => $id));
 
             // 会員の場合、お届け先情報を新規登録
             $Shipping->setFromCustomerAddress($CustomerAddress);
 
             if ($Customer instanceof Customer) {
                 $app['orm.em']->persist($CustomerAddress);
-                \EccubeLog::info('新規お届け先登録', array(
+                log_info('新規お届け先登録', array(
                     'id' => $Order->getId(),
                     'shipping' => $id,
                     'customer address' => $CustomerAddress->getId()));
@@ -777,7 +777,7 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE, $event);
 
-            \EccubeLog::info('お届け先追加処理完了', array('id' => $Order->getId(), 'shipping' => $id));
+            log_info('お届け先追加処理完了', array('id' => $Order->getId(), 'shipping' => $id));
             return $app->redirect($app->url('shopping'));
         }
 
@@ -795,7 +795,7 @@ class ShoppingController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             try {
 
-                \EccubeLog::info('非会員お客様情報変更処理開始');
+                log_info('非会員お客様情報変更処理開始');
 
                 $data = $request->request->all();
 
@@ -804,7 +804,7 @@ class ShoppingController extends AbstractController
 
                 foreach ($errors as $error) {
                     if ($error->count() != 0) {
-                        \EccubeLog::info('非会員お客様情報変更入力チェックエラー');
+                        log_info('非会員お客様情報変更入力チェックエラー');
                         $response = new Response(json_encode('NG'), 400);
                         $response->headers->set('Content-Type', 'application/json');
                         return $response;
@@ -813,7 +813,7 @@ class ShoppingController extends AbstractController
 
                 $pref = $app['eccube.repository.master.pref']->findOneBy(array('name' => $data['customer_pref']));
                 if (!$pref) {
-                    \EccubeLog::info('非会員お客様情報変更入力チェックエラー');
+                    log_info('非会員お客様情報変更入力チェックエラー');
                     $response = new Response(json_encode('NG'), 400);
                     $response->headers->set('Content-Type', 'application/json');
                     return $response;
@@ -821,7 +821,7 @@ class ShoppingController extends AbstractController
 
                 $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
                 if (!$Order) {
-                    \EccubeLog::info('カートが存在しません');
+                    log_info('カートが存在しません');
                     $app->addError('front.shopping.order.error');
                     return $app->redirect($app->url('shopping_error'));
                 }
@@ -856,11 +856,11 @@ class ShoppingController extends AbstractController
                 );
                 $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
 
-                \EccubeLog::info('非会員お客様情報変更処理完了', array($Order->getId()));
+                log_info('非会員お客様情報変更処理完了', array($Order->getId()));
                 $response = new Response(json_encode('OK'));
                 $response->headers->set('Content-Type', 'application/json');
             } catch (\Exception $e) {
-                \EccubeLog::error('予期しないエラー', array($e->getMessage()));
+                log_error('予期しないエラー', array($e->getMessage()));
                 $app['monolog']->error($e);
 
                 $response = new Response(json_encode('NG'), 500);
@@ -920,7 +920,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
@@ -932,7 +932,7 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (count($cartService->getCart()->getCartItems()) <= 0) {
             // カートが存在しない時はエラー
-            \EccubeLog::info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
+            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
             return $app->redirect($app->url('cart'));
         }
 
@@ -952,7 +952,7 @@ class ShoppingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('非会員お客様情報登録開始');
+            log_info('非会員お客様情報登録開始');
 
             $data = $form->getData();
             $Customer = new Customer();
@@ -1032,7 +1032,7 @@ class ShoppingController extends AbstractController
                 return $event->getResponse();
             }
 
-            \EccubeLog::info('非会員お客様情報登録完了', array($Order->getId()));
+            log_info('非会員お客様情報登録完了', array($Order->getId()));
 
             return $app->redirect($app->url('shopping'));
         }
@@ -1100,21 +1100,21 @@ class ShoppingController extends AbstractController
         // カートチェック
         if (!$cartService->isLocked()) {
             // カートが存在しない、カートがロックされていない時はエラー
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             return $app->redirect($app->url('cart'));
         }
 
         // カートチェック
         if (count($cartService->getCart()->getCartItems()) <= 0) {
             // カートが存在しない時はエラー
-            \EccubeLog::info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
+            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
             return $app->redirect($app->url('cart'));
         }
 
         /** @var \Eccube\Entity\Order $Order */
         $Order = $app['eccube.service.shopping']->getOrder($app['config']['order_processing']);
         if (!$Order) {
-            \EccubeLog::info('購入処理中の受注情報がないため購入エラー');
+            log_info('購入処理中の受注情報がないため購入エラー');
             $app->addError('front.shopping.order.error');
             return $app->redirect($app->url('shopping_error'));
         }
@@ -1170,7 +1170,7 @@ class ShoppingController extends AbstractController
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('複数配送設定処理開始', array($Order->getId()));
+            log_info('複数配送設定処理開始', array($Order->getId()));
             $data = $form['shipping_multiple'];
 
             // 数量が超えていないか、同一でないとエラー
@@ -1197,7 +1197,7 @@ class ShoppingController extends AbstractController
                         $errors[] = array('message' => $app->trans('shopping.multiple.quantity.diff'));
 
                         // 対象がなければエラー
-                        \EccubeLog::info('複数配送設定入力チェックエラー', array($Order->getId()));
+                        log_info('複数配送設定入力チェックエラー', array($Order->getId()));
                         return $app->render('Shopping/shipping_multiple.twig', array(
                             'form' => $form->createView(),
                             'shipmentItems' => $shipmentItems,
@@ -1296,7 +1296,7 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_COMPLETE, $event);
 
-            \EccubeLog::info('複数配送設定処理完了', array($Order->getId()));
+            log_info('複数配送設定処理完了', array($Order->getId()));
             return $app->redirect($app->url('shopping'));
         }
 
@@ -1315,7 +1315,7 @@ class ShoppingController extends AbstractController
     {
         // カートチェック
         if (!$app['eccube.service.cart']->isLocked()) {
-            \EccubeLog::info('カートが存在しません');
+            log_info('カートが存在しません');
             // カートが存在しない、カートがロックされていない時はエラー
             return $app->redirect($app->url('cart'));
         }
@@ -1343,7 +1343,7 @@ class ShoppingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            \EccubeLog::info('非会員お届け先追加処理開始');
+            log_info('非会員お届け先追加処理開始');
 
             // 非会員用のセッションに追加
             $customerAddresses = $app['session']->get($this->sessionCustomerAddressKey);
@@ -1360,7 +1360,7 @@ class ShoppingController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_EDIT_COMPLETE, $event);
 
-            \EccubeLog::info('非会員お届け先追加処理完了');
+            log_info('非会員お届け先追加処理完了');
 
             return $app->redirect($app->url('shopping_shipping_multiple'));
         }
