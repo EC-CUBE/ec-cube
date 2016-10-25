@@ -2,7 +2,8 @@
 
 namespace Eccube\Log\Monolog\Listener;
 
-use Eccube\Log\Log;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -17,14 +18,21 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @package Eccube\Log\Monolog\Listener
  */
-class LogListener implements EventSubscriberInterface
+class LogListener implements EventSubscriberInterface, LoggerAwareInterface
 {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
-    protected $log;
-
-    public function __construct(Log $log)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->log = $log;
+        $this->setLogger($logger);
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -36,7 +44,7 @@ class LogListener implements EventSubscriberInterface
             return;
         }
 
-        $this->log->info('INIT');
+        $this->logger->info('INIT');
     }
 
     /**
@@ -49,7 +57,7 @@ class LogListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        $this->log->info('PROCESS START', array($route));
+        $this->logger->info('PROCESS START', array($route));
     }
 
     /**
@@ -62,7 +70,7 @@ class LogListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        $this->log->info('LOGIC START', array($route));
+        $this->logger->info('LOGIC START', array($route));
     }
 
     /**
@@ -75,7 +83,7 @@ class LogListener implements EventSubscriberInterface
         }
 
         $route = $this->getRoute($event->getRequest());
-        $this->log->info('LOGIC END', array($route));
+        $this->logger->info('LOGIC END', array($route));
     }
 
     /**
@@ -84,7 +92,7 @@ class LogListener implements EventSubscriberInterface
     public function onKernelTerminate(PostResponseEvent $event)
     {
         $route = $this->getRoute($event->getRequest());
-        $this->log->info('PROCESS END', array($route));
+        $this->logger->info('PROCESS END', array($route));
     }
 
     /**
@@ -94,7 +102,7 @@ class LogListener implements EventSubscriberInterface
     {
         $e = $event->getException();
         if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
-            $this->log->info($e->getMessage(), array($e->getStatusCode()));
+            $this->logger->info($e->getMessage(), array($e->getStatusCode()));
 
         } else {
             $message = sprintf(
@@ -104,7 +112,7 @@ class LogListener implements EventSubscriberInterface
                 $e->getFile(),
                 $e->getLine()
             );
-            $this->log->error($message, array('exception' => $e));
+            $this->logger->error($message, array('exception' => $e));
         }
     }
 

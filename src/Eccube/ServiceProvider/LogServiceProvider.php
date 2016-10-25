@@ -21,14 +21,8 @@ class LogServiceProvider implements ServiceProviderInterface
         $app->register(new \Silex\Provider\MonologServiceProvider());
 
         // Log
-        $app['eccube.loger'] = $app->share(function ($app) {
+        $app['eccube.logger'] = $app->share(function ($app) {
             return new Logger($app);
-        });
-        $app['eccube.log'] = $app->share(function ($app) {
-            $log = new Log();
-            $log->setLogger($app['eccube.loger']);
-
-            return $log;
         });
 
         // ヘルパー作成
@@ -65,7 +59,7 @@ class LogServiceProvider implements ServiceProviderInterface
         });
 
         $app['eccube.monolog.listener'] = $app->share(function () use ($app) {
-            return new LogListener($app['eccube.log']);
+            return new LogListener($app['eccube.logger']);
         });
 
         $app['listener.requestdump'] = $app->share(function ($app) {
