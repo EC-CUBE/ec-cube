@@ -69,12 +69,12 @@ class ClassCategoryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                \EccubeLog::info('規格分類登録開始', array($id));
+                log_info('規格分類登録開始', array($id));
                 $status = $app['eccube.repository.class_category']->save($TargetClassCategory);
 
                 if ($status) {
 
-                    \EccubeLog::info('規格分類登録完了', array($id));
+                    log_info('規格分類登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -90,7 +90,7 @@ class ClassCategoryController extends AbstractController
 
                     return $app->redirect($app->url('admin_product_class_category', array('class_name_id' => $ClassName->getId())));
                 } else {
-                    \EccubeLog::info('規格分類登録エラー', array($id));
+                    log_info('規格分類登録エラー', array($id));
                     $app->addError('admin.class_category.save.error', 'admin');
                 }
             }
@@ -115,7 +115,7 @@ class ClassCategoryController extends AbstractController
             throw new NotFoundHttpException('商品規格が存在しません');
         }
 
-        \EccubeLog::info('規格分類削除開始', array($id));
+        log_info('規格分類削除開始', array($id));
 
         $TargetClassCategory = $app['eccube.repository.class_category']->find($id);
         if (!$TargetClassCategory || $TargetClassCategory->getClassName() != $ClassName) {
@@ -136,7 +136,7 @@ class ClassCategoryController extends AbstractController
 
             if ($status === true) {
 
-                \EccubeLog::info('規格分類削除完了', array($id));
+                log_info('規格分類削除完了', array($id));
 
                 $event = new EventArgs(
                     array(
@@ -149,7 +149,7 @@ class ClassCategoryController extends AbstractController
 
                 $app->addSuccess('admin.class_category.delete.complete', 'admin');
             } else {
-                \EccubeLog::info('規格分類削除エラー', array($id));
+                log_info('規格分類削除エラー', array($id));
 
                 $app->addError('admin.class_category.delete.error', 'admin');
             }

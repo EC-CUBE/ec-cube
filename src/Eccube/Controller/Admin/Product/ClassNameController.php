@@ -61,11 +61,11 @@ class ClassNameController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                \EccubeLog::info('商品規格登録開始', array($id));
+                log_info('商品規格登録開始', array($id));
                 $status = $app['eccube.repository.class_name']->save($TargetClassName);
 
                 if ($status) {
-                    \EccubeLog::info('商品規格登録完了', array($id));
+                    log_info('商品規格登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -80,7 +80,7 @@ class ClassNameController extends AbstractController
 
                     return $app->redirect($app->url('admin_product_class_name'));
                 } else {
-                    \EccubeLog::info('商品規格登録エラー', array($id));
+                    log_info('商品規格登録エラー', array($id));
                     $app->addError('admin.class_name.save.error', 'admin');
                 }
             }
@@ -105,12 +105,12 @@ class ClassNameController extends AbstractController
             return $app->redirect($app->url('admin_product_class_name'));
         }
 
-        \EccubeLog::info('商品規格削除開始', array($id));
+        log_info('商品規格削除開始', array($id));
 
         $status = $app['eccube.repository.class_name']->delete($TargetClassName);
 
         if ($status === true) {
-            \EccubeLog::info('商品規格削除完了', array($id));
+            log_info('商品規格削除完了', array($id));
 
             $event = new EventArgs(
                 array(

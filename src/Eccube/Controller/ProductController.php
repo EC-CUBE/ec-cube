@@ -267,16 +267,16 @@ class ProductController
                     }
                 } elseif ($addCartData['mode'] === 'add_cart') {
 
-                    \EccubeLog::info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+                    log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
                     } catch (CartException $e) {
-                        \EccubeLog::info('カート追加エラー', array($e->getMessage()));
+                        log_info('カート追加エラー', array($e->getMessage()));
                         $app->addRequestError($e->getMessage());
                     }
 
-                    \EccubeLog::info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+                    log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
                     $event = new EventArgs(
                         array(

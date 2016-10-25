@@ -85,12 +85,12 @@ class CategoryController extends AbstractController
                 if ($app['config']['category_nest_level'] < $TargetCategory->getLevel()) {
                     throw new BadRequestHttpException('リクエストが不正です');
                 }
-                \EccubeLog::info('カテゴリ登録開始', array($id));
+                log_info('カテゴリ登録開始', array($id));
                 $status = $app['eccube.repository.category']->save($TargetCategory);
 
                 if ($status) {
 
-                    \EccubeLog::info('カテゴリ登録完了', array($id));
+                    log_info('カテゴリ登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -110,7 +110,7 @@ class CategoryController extends AbstractController
                         return $app->redirect($app->url('admin_product_category'));
                     }
                 } else {
-                    \EccubeLog::info('カテゴリ登録エラー', array($id));
+                    log_info('カテゴリ登録エラー', array($id));
                     $app->addError('admin.category.save.error', 'admin');
                 }
             }
@@ -141,13 +141,13 @@ class CategoryController extends AbstractController
         }
         $Parent = $TargetCategory->getParent();
 
-        \EccubeLog::info('カテゴリ削除開始', array($id));
+        log_info('カテゴリ削除開始', array($id));
 
         $status = $app['eccube.repository.category']->delete($TargetCategory);
 
         if ($status === true) {
 
-            \EccubeLog::info('カテゴリ削除完了', array($id));
+            log_info('カテゴリ削除完了', array($id));
 
             $event = new EventArgs(
                 array(
@@ -160,7 +160,7 @@ class CategoryController extends AbstractController
 
             $app->addSuccess('admin.category.delete.complete', 'admin');
         } else {
-            \EccubeLog::info('カテゴリ削除エラー', array($id));
+            log_info('カテゴリ削除エラー', array($id));
             $app->addError('admin.category.delete.error', 'admin');
         }
 
@@ -244,7 +244,7 @@ class CategoryController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
 
-        \EccubeLog::info('カテゴリCSV出力ファイル名', array($filename));
+        log_info('カテゴリCSV出力ファイル名', array($filename));
 
         return $response;
     }

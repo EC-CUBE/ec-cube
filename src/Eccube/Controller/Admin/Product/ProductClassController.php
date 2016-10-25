@@ -59,7 +59,7 @@ class ProductClassController
         if (!$Product->hasProductClass()) {
             // 登録画面を表示
 
-            \EccubeLog::info('商品規格新規登録表示', array($id));
+            log_info('商品規格新規登録表示', array($id));
 
             $builder = $app['form.factory']->createBuilder();
 
@@ -103,7 +103,7 @@ class ProductClassController
                     $ClassName1 = $data['class_name1'];
                     $ClassName2 = $data['class_name2'];
 
-                    \EccubeLog::info('選択された商品規格', array($ClassName1, $ClassName2));
+                    log_info('選択された商品規格', array($ClassName1, $ClassName2));
 
                     // 各規格が選択されている際に、分類を保有しているか確認
                     $class1Valied = $this->isValiedCategory($ClassName1);
@@ -173,7 +173,7 @@ class ProductClassController
         } else {
             // 既に商品規格が登録されている場合、商品規格画面を表示する
 
-            \EccubeLog::info('商品規格登録済表示', array($id));
+            log_info('商品規格登録済表示', array($id));
 
             // 既に登録されている商品規格を取得
             $ProductClasses = $this->getProductClassesExcludeNonClass($Product);
@@ -315,11 +315,11 @@ class ProductClassController
             switch ($request->get('mode')) {
                 case 'edit':
                     // 新規登録
-                    \EccubeLog::info('商品規格新規登録開始', array($id));
+                    log_info('商品規格新規登録開始', array($id));
 
                     if (count($ProductClasses) > 0) {
                         // 既に登録されていれば最初の画面に戻す
-                        \EccubeLog::info('商品規格登録済', array($id));
+                        log_info('商品規格登録済', array($id));
                         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
                     }
 
@@ -343,7 +343,7 @@ class ProductClassController
 
                     if (count($addProductClasses) == 0) {
                         // 対象がなければエラー
-                        \EccubeLog::info('商品規格が未選択', array($id));
+                        log_info('商品規格が未選択', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
                         return $this->render($app, $Product, $tmpProductClass, true, $form, $error);
                     }
@@ -359,7 +359,7 @@ class ProductClassController
 
                     $app['orm.em']->flush();
 
-                    \EccubeLog::info('商品規格新規登録完了', array($id));
+                    log_info('商品規格新規登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -376,11 +376,11 @@ class ProductClassController
                     break;
                 case 'update':
                     // 更新
-                    \EccubeLog::info('商品規格更新開始', array($id));
+                    log_info('商品規格更新開始', array($id));
 
                     if (count($ProductClasses) == 0) {
                         // 商品規格が0件であれば最初の画面に戻す
-                        \EccubeLog::info('商品規格が存在しません', array($id));
+                        log_info('商品規格が存在しません', array($id));
                         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
                     }
 
@@ -407,7 +407,7 @@ class ProductClassController
 
                     if (count($checkProductClasses) == 0) {
                         // 対象がなければエラー
-                        \EccubeLog::info('商品規格が存在しません', array($id));
+                        log_info('商品規格が存在しません', array($id));
                         $error = array('message' => '商品規格が選択されていません。');
                         return $this->render($app, $Product, $tempProductClass, false, $form, $error);
                     }
@@ -463,7 +463,7 @@ class ProductClassController
 
                     $app['orm.em']->flush();
 
-                    \EccubeLog::info('商品規格更新完了', array($id));
+                    log_info('商品規格更新完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -481,11 +481,11 @@ class ProductClassController
                     break;
                 case 'delete':
                     // 削除
-                    \EccubeLog::info('商品規格削除開始', array($id));
+                    log_info('商品規格削除開始', array($id));
 
                     if (count($ProductClasses) == 0) {
                         // 既に商品が削除されていれば元の画面に戻す
-                        \EccubeLog::info('商品規格が存在しません', array($id));
+                        log_info('商品規格が存在しません', array($id));
                         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
                     }
 
@@ -507,7 +507,7 @@ class ProductClassController
                     $defaultProductClass->setDelFlg(Constant::DISABLED);
 
                     $app['orm.em']->flush();
-                    \EccubeLog::info('商品規格削除完了', array($id));
+                    log_info('商品規格削除完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -569,7 +569,7 @@ class ProductClassController
             ))
             ->getForm();
 
-        \EccubeLog::info('商品規格登録エラー');
+        log_info('商品規格登録エラー');
 
 
         return $app->render('Product/product_class.twig', array(

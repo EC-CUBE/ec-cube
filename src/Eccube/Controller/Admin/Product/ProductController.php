@@ -310,7 +310,7 @@ class ProductController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                \EccubeLog::info('商品登録開始', array($id));
+                log_info('商品登録開始', array($id));
                 $Product = $form->getData();
 
                 if (!$has_class) {
@@ -451,7 +451,7 @@ class ProductController extends AbstractController
                 }
                 $app['orm.em']->flush();
 
-                \EccubeLog::info('商品登録完了', array($id));
+                log_info('商品登録完了', array($id));
 
                 $event = new EventArgs(
                     array(
@@ -466,7 +466,7 @@ class ProductController extends AbstractController
 
                 return $app->redirect($app->url('admin_product_product_edit', array('id' => $Product->getId())));
             } else {
-                \EccubeLog::info('商品登録チェックエラー', array($id));
+                log_info('商品登録チェックエラー', array($id));
                 $app->addError('admin.register.failed', 'admin');
             }
         }
@@ -515,7 +515,7 @@ class ProductController extends AbstractController
             }
 
             if ($Product instanceof \Eccube\Entity\Product) {
-                \EccubeLog::info('商品削除開始', array($id));
+                log_info('商品削除開始', array($id));
 
                 $Product->setDelFlg(Constant::ENABLED);
 
@@ -574,15 +574,15 @@ class ProductController extends AbstractController
                     }
                 }
 
-                \EccubeLog::info('商品削除完了', array($id));
+                log_info('商品削除完了', array($id));
 
                 $app->addSuccess('admin.delete.complete', 'admin');
             } else {
-                \EccubeLog::info('商品削除エラー', array($id));
+                log_info('商品削除エラー', array($id));
                 $app->addError('admin.delete.failed', 'admin');
             }
         } else {
-            \EccubeLog::info('商品削除エラー', array($id));
+            log_info('商品削除エラー', array($id));
             $app->addError('admin.delete.failed', 'admin');
         }
 
@@ -777,7 +777,7 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
 
-        \EccubeLog::info('商品CSV出力ファイル名', array($filename));
+        log_info('商品CSV出力ファイル名', array($filename));
 
         return $response;
     }
