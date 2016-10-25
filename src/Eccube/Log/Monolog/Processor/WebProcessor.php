@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,16 +22,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Monolog\Processor;
+namespace Eccube\Log\Monolog\Processor;
 
-use Monolog\Processor\WebProcessor;
+use Monolog\Processor\WebProcessor as BaseWebProcessor;
 
 /**
  * WebProcessor拡張クラス
- *
- * @package Eccube\Monolog\Processor
  */
-class EccubeWebProcessor extends WebProcessor
+class WebProcessor extends BaseWebProcessor
 {
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,12 +22,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Monolog\Helper;
+namespace Eccube\Log\Monolog\Helper;
 
-use Eccube\Application;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Member;
-use Eccube\Monolog\Processor\EccubeWebProcessor;
+use Eccube\Log\Monolog\Processor\WebProcessor;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
@@ -35,7 +35,7 @@ use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\UidProcessor;
 
-class EccubeMonologHelper
+class EccubeHelper
 {
 
     /** @var  \Eccube\Application */
@@ -98,7 +98,7 @@ class EccubeMonologHelper
 
 
         // Processorの内容をログ出力
-        $webProcessor = new EccubeWebProcessor();
+        $webProcessor = new WebProcessor();
         $uidProcessor = new UidProcessor(8);
 
         $FingerCrossedHandler->pushProcessor(function ($record) use ($app, $uidProcessor, $webProcessor) {
