@@ -73,6 +73,7 @@ class LogHelper
         $dateFormat = isset($channelValues['dateformat']) ? $channelValues['dateformat'] : $app['config']['log']['dateformat'];
         $logLevel = isset($channelValues['log_level']) ? $channelValues['log_level'] : $app['config']['log']['log_level'];
         $actionLevel = isset($channelValues['action_level']) ? $channelValues['action_level'] : $app['config']['log']['action_level'];
+        $passthruLevel = isset($channelValues['passthru_level']) ? $channelValues['passthru_level'] : $app['config']['log']['passthru_level'];
         $maxFiles = isset($channelValues['max_files']) ? $channelValues['max_files'] : $app['config']['log']['max_files'];
         $logDateFormat = isset($channelValues['log_dateformat']) ? $channelValues['log_dateformat'] : $app['config']['log']['log_dateformat'];
         $logFormat = isset($channelValues['log_format']) ? $channelValues['log_format'] : $app['config']['log']['log_format'];
@@ -98,7 +99,11 @@ class LogHelper
         // FingerCossedHandlerの設定
         $FingerCrossedHandler = new FingersCrossedHandler(
             $RotateHandler,
-            new ErrorLevelActivationStrategy($levels[$actionLevel])
+            new ErrorLevelActivationStrategy($levels[$actionLevel]),
+            0,
+            true,
+            true,
+            $levels[$passthruLevel]
         );
 
 

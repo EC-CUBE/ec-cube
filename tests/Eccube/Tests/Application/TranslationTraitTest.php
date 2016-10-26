@@ -11,7 +11,7 @@
 
 namespace Eccube\Tests\Application;
 
-use Silex\Provider\TranslationServiceProvider;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * TranslationTrait test cases.
@@ -20,7 +20,7 @@ use Silex\Provider\TranslationServiceProvider;
  *
  * @requires PHP 5.4
  */
-class TranslationTraitTest extends \PHPUnit_Framework_TestCase
+class TranslationTraitTest extends EccubeTestCase
 {
     public function testTrans()
     {
@@ -36,13 +36,5 @@ class TranslationTraitTest extends \PHPUnit_Framework_TestCase
         $app['translator'] = $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')->disableOriginalConstructor()->getMock();
         $translator->expects($this->once())->method('transChoice');
         $app->transChoice('foo', 2);
-    }
-
-    public function createApplication()
-    {
-        $app = new \Eccube\Application();
-        $app->register(new TranslationServiceProvider());
-
-        return $app;
     }
 }

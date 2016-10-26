@@ -11,7 +11,7 @@
 
 namespace Eccube\Tests\Application;
 
-use Silex\Provider\UrlGeneratorServiceProvider;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * UrlGeneratorTrait test cases.
@@ -20,7 +20,7 @@ use Silex\Provider\UrlGeneratorServiceProvider;
  *
  * @requires PHP 5.4
  */
-class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
+class UrlGeneratorTraitTest extends EccubeTestCase
 {
     public function testUrl()
     {
@@ -36,13 +36,5 @@ class UrlGeneratorTraitTest extends \PHPUnit_Framework_TestCase
         $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
         $translator->expects($this->once())->method('generate')->with('foo', array(), false);
         $app->path('foo');
-    }
-
-    public function createApplication()
-    {
-        $app = new \Eccube\Application();
-        $app->register(new UrlGeneratorServiceProvider());
-
-        return $app;
     }
 }
