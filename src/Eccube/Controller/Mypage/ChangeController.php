@@ -66,6 +66,8 @@ class ChangeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            log_info('会員編集開始');
+
             if ($Customer->getPassword() === $app['config']['default_password']) {
                 $Customer->setPassword($previous_password);
             } else {
@@ -77,6 +79,8 @@ class ChangeController extends AbstractController
                 );
             }
             $app['orm.em']->flush();
+
+            log_info('会員編集完了');
 
             $event = new EventArgs(
                 array(
