@@ -24,6 +24,6 @@ class FormTraitTest extends EccubeTestCase
 {
     public function testForm()
     {
-        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->createApplication()->form());
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->app->form());
     }
 }

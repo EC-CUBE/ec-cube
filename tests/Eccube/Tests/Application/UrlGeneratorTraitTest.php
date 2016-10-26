@@ -24,7 +24,7 @@ class UrlGeneratorTraitTest extends EccubeTestCase
 {
     public function testUrl()
     {
-        $app = $this->createApplication();
+        $app = $this->app;
         $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
         $translator->expects($this->once())->method('generate')->with('foo', array(), true);
         $app->url('foo');
@@ -32,7 +32,7 @@ class UrlGeneratorTraitTest extends EccubeTestCase
 
     public function testPath()
     {
-        $app = $this->createApplication();
+        $app = $this->app;
         $app['url_generator'] = $translator = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
         $translator->expects($this->once())->method('generate')->with('foo', array(), false);
         $app->path('foo');

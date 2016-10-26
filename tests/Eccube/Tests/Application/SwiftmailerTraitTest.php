@@ -24,7 +24,7 @@ class SwiftmailerTraitTest extends EccubeTestCase
 {
     public function testMail()
     {
-        $app = $this->createApplication();
+        $app = $this->app;
 
         $message = $this->getMockBuilder('Swift_Message')->disableOriginalConstructor()->getMock();
         $app['mailer'] = $mailer = $this->getMockBuilder('Swift_Mailer')->disableOriginalConstructor()->getMock();

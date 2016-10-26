@@ -11,7 +11,6 @@
 
 namespace Eccube\Tests\Application;
 
-use Eccube\Tests\EccubeTestCase;
 use Silex\Provider\SecurityServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -24,11 +23,10 @@ use Symfony\Component\Security\Core\User\User;
  *
  * @requires PHP 5.4
  */
-class SecurityTraitTest extends EccubeTestCase
+class SecurityTraitTest extends \PHPUnit_Framework_TestCase
 {
     public function testUser()
     {
-        $this->markTestSkipped();
         $request = Request::create('/');
 
         $app = $this->createApplication(array(
@@ -47,7 +45,6 @@ class SecurityTraitTest extends EccubeTestCase
 
     public function testUserWithNoToken()
     {
-        $this->markTestSkipped();
         $request = Request::create('/');
 
         $app = $this->createApplication();
@@ -58,7 +55,6 @@ class SecurityTraitTest extends EccubeTestCase
 
     public function testUserWithInvalidUser()
     {
-        $this->markTestSkipped();
         $request = Request::create('/');
 
         $app = $this->createApplication();
@@ -72,7 +68,6 @@ class SecurityTraitTest extends EccubeTestCase
 
     public function testEncodePassword()
     {
-        $this->markTestSkipped();
         $app = $this->createApplication(array(
             'fabien' => array('ROLE_ADMIN', '5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg=='),
         ));
@@ -84,6 +79,25 @@ class SecurityTraitTest extends EccubeTestCase
     public function createApplication($users = array())
     {
         $app = new \Eccube\Application();
+
+        // ログの内容をERRORレベルでしか出力しないように設定を上書き
+        $app['config'] = $app->share($app->extend('config', function ($config, \Silex\Application $app) {
+            $config['log']['log_level'] = 'ERROR';
+            $config['log']['action_level'] = 'ERROR';
+            $config['log']['passthru_level'] = 'ERROR';
+
+            $channel = $config['log']['channel'];
+            foreach (array('monolog', 'front', 'admin') as $key) {
+                $channel[$key]['log_level'] = 'ERROR';
+                $channel[$key]['action_level'] = 'ERROR';
+                $channel[$key]['passthru_level'] = 'ERROR';
+            }
+            $config['log']['channel'] = $channel;
+
+            return $config;
+        }));
+        $app->initLogger();
+
         $app->register(new SecurityServiceProvider(), array(
             'security.firewalls' => array(
                 'default' => array(
