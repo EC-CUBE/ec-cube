@@ -85,6 +85,10 @@ class Cache
             apc_clear_cache();
         }
 
+        if (function_exists('wincache_ucache_clear')) {
+            wincache_ucache_clear();
+        }
+
         return true;
     }
 }
