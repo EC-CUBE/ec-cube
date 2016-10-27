@@ -54,6 +54,7 @@ class RequestDumpListener implements EventSubscriberInterface
             $log .= $this->logSession($Session);
         }
         $this->app->log($log, array(), Logger::DEBUG);
+        log_debug($log);
     }
 
     /**
@@ -76,6 +77,7 @@ class RequestDumpListener implements EventSubscriberInterface
             $log .= $this->logSession($Session);
         }
         $this->app->log($log, array(), Logger::DEBUG);
+        log_debug($log);
     }
 
     /**
@@ -86,7 +88,7 @@ class RequestDumpListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST  => 'onKernelRequest',
+            KernelEvents::REQUEST => 'onKernelRequest',
             KernelEvents::RESPONSE => 'onResponse',
         );
     }
