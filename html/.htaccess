@@ -9,6 +9,6 @@ allow from all
 
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpg|css|ico|js)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpe?g|css|ico|js|svg)$ [NC]
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
