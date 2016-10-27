@@ -70,6 +70,10 @@ class Cache
                 $finder = Finder::create()->in($cacheDir.'/twig');
                 $filesystem->remove($finder);
             }
+            if (is_dir($cacheDir.'/translator')) {
+                $finder = Finder::create()->in($cacheDir.'/translator');
+                $filesystem->remove($finder);
+            }
         }
 
         return true;

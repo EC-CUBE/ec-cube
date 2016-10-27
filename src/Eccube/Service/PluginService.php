@@ -26,6 +26,7 @@ namespace Eccube\Service;
 
 use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
+use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
@@ -48,6 +49,7 @@ class PluginService
 
         try {
             $this->app->removePluginConfigCache();
+            Cache::clear($this->app, false);
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
@@ -269,6 +271,7 @@ class PluginService
     {
         $pluginDir = $this->calcPluginDir($plugin->getCode());
         $this->app->removePluginConfigCache();
+        Cache::clear($this->app, false);
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'disable');
         $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), 'uninstall');
         $this->unregisterPlugin($plugin);
@@ -308,6 +311,7 @@ class PluginService
         $em = $this->app['orm.em'];
         try {
             $this->app->removePluginConfigCache();
+            Cache::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
             $plugin->setEnable($enable ? Constant::ENABLED : Constant::DISABLED);
@@ -330,6 +334,7 @@ class PluginService
         $tmp = null;
         try {
             $this->app->removePluginConfigCache();
+            Cache::clear($this->app, false);
             $tmp = $this->createTempDir();
 
             $this->unpackPluginArchive($path, $tmp); //一旦テンポラリに展開
