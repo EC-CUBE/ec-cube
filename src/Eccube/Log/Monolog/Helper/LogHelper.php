@@ -121,9 +121,11 @@ class LogHelper
                         $record['session_id'] = substr(sha1($sessionId), 0, 8);
                     }
                 }
-                $user = $app->user();
-                if ($user instanceof Customer || $user instanceof Member) {
-                    $record['user_id'] = $user->getId();
+                if (isset($app['user'])) {
+                    $user = $app->user();
+                    if ($user instanceof Customer || $user instanceof Member) {
+                        $record['user_id'] = $user->getId();
+                    }
                 }
             }
 
