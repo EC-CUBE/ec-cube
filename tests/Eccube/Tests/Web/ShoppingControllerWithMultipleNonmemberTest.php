@@ -127,13 +127,13 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                 // 配送先1
                 array(
                     'delivery' => 1,
-                    'deliveryTime' => 1
+                    'deliveryTime' => 1,
                 ),
                 // 配送先2
                 array(
                     'delivery' => 1,
-                    'deliveryTime' => 1
-                )
+                    'deliveryTime' => 1,
+                ),
             )
         );
 
