@@ -41,8 +41,6 @@ matrix:
       env: DB=sqlite
     - PHP: 5.6
       env: DB=sqlite
-    - php: 5.6 # for coverrage (travis で phpdbg が動かなくなったため, phpdbg が動くようになるまでの暫定)
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - php: 7.0.12 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
 
@@ -67,7 +65,6 @@ before_script:
 
 script: # PHP7 + precise のテストは実行されない
   - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'trusty' ]]; then phpdbg -qrr ./vendor/bin/phpunit --coverage-clover=coverage.clover ; fi
-  - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'precise' ]] && [[ $TRAVIS_PHP_VERSION =~ ^[5] ]]; then phpunit --coverage-clover=coverage.clover ; fi # (travis で phpdbg が動かなくなったため, phpdbg が動くようになるまでの暫定)
   - if [[ $PHP_SAPI != 'phpdbg' ]]; then phpunit ; fi
 
 after_script:
