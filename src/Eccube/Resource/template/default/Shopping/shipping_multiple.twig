@@ -148,8 +148,13 @@ $(function() {
                                     </div>
                                     <div id="multiple_list__shipping_quantity--{{ idx }}_{{ loop.index0 }}" class="form-group">
                                         <label>数量</label>
-                                        {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}}) }}
-                                        {{ form_errors(shipping.quantity) }}
+                                        {% for key, value in compItemQuantities %}
+                                            {% if shipmentItem.productClass.id == key %}
+                                                {% set quantity = shipping.quantity.vars.value ?: value %}
+                                                {{ form_widget(shipping.quantity, {'attr': {'class': 'quantity'}, 'value': quantity}) }}
+                                                {{ form_errors(shipping.quantity) }}
+                                            {% endif %}
+                                        {% endfor %}
                                     </div>
                                     <button id="button__delete--{{ idx }}_{{ loop.index0 }}" type="button" class="btn btn-default btn-sm delete" data-itemidx="{{ idx }}-{{ loop.index0 }}" style="{% if loop.index0 == 0 %}display: none;{% endif %}">削除</button>
                                 </div>

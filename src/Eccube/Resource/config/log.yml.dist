@@ -1,10 +1,48 @@
 log:
-    prefix: site_
     suffix:
-    format: Y-m-d
-    action_level: INFO
+    filename: site
+    delimiter: _
+    dateformat: Y-m-d
     log_level: INFO
+    action_level: ERROR
+    passthru_level: INFO
     max_files: 90
+    log_dateformat: Y-m-d H:i:s,u
+    log_format: '[%datetime%] %channel%.%level_name% [%session_id%] [%uid%] [%user_id%] [%class%:%function%:%line%] - %message% %context% %extra% [%method%, %url%, %ip%, %referrer%, %user_agent%]'
+    channel:
+        monolog:
+            name: eccube
+            filename: site
+            delimiter: _
+            dateformat: Y-m-d
+            log_level: INFO
+            action_level: ERROR
+            passthru_level: INFO
+            max_files: 90
+            log_dateformat: Y-m-d H:i:s,u
+            log_format: '[%datetime%] %channel%.%level_name% [%session_id%] [%uid%] [%user_id%] [%class%:%function%:%line%] - %message% %context% %extra% [%method%, %url%, %ip%, %referrer%, %user_agent%]'
+        front:
+            name: front
+            filename: front_site
+            delimiter: _
+            dateformat: Y-m-d
+            log_level: INFO
+            action_level: ERROR
+            passthru_level: INFO
+            max_files: 90
+            log_dateformat: Y-m-d H:i:s,u
+            log_format: '[%datetime%] %channel%.%level_name% [%session_id%] [%uid%] [%user_id%] [%class%:%function%:%line%] - %message% %context% %extra% [%method%, %url%, %ip%, %referrer%, %user_agent%]'
+        admin:
+            name: admin
+            filename: admin_site
+            delimiter: _
+            dateformat: Y-m-d
+            log_level: INFO
+            action_level: ERROR
+            passthru_level: INFO
+            max_files: 90
+            log_dateformat: Y-m-d H:i:s,u
+            log_format: '[%datetime%] %channel%.%level_name% [%session_id%] [%uid%] [%user_id%] [%class%:%function%:%line%] - %message% %context% %extra% [%method%, %url%, %ip%, %referrer%, %user_agent%]'
     exclude_keys:
         - password
         - app

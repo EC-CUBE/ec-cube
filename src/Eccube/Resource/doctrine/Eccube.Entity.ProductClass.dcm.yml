@@ -2,6 +2,14 @@ Eccube\Entity\ProductClass:
     type: entity
     table: dtb_product_class
     repositoryClass: Eccube\Repository\ProductClassRepository
+    indexes:
+        dtb_product_class_price02_idx:
+            columns:
+                - price02
+        dtb_product_class_stock_stock_unlimited_idx:
+            columns:
+                - stock
+                - stock_unlimited
     id:
         id:
             type: integer

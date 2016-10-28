@@ -11,7 +11,7 @@
 
 namespace Eccube\Tests\Application;
 
-use Silex\Provider\FormServiceProvider;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * FormTrait test cases.
@@ -20,18 +20,10 @@ use Silex\Provider\FormServiceProvider;
  *
  * @requires PHP 5.4
  */
-class FormTraitTest extends \PHPUnit_Framework_TestCase
+class FormTraitTest extends EccubeTestCase
 {
     public function testForm()
     {
-        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->createApplication()->form());
-    }
-
-    public function createApplication()
-    {
-        $app = new \Eccube\Application();
-        $app->register(new FormServiceProvider());
-
-        return $app;
+        $this->assertInstanceOf('Symfony\Component\Form\FormBuilder', $this->app->form());
     }
 }

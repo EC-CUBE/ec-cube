@@ -68,6 +68,21 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * testIndex
+     */
+    public function testIndexBackButton()
+    {
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->path('admin_customer_edit', array('id' => $this->Customer->getId()))
+        );
+
+        $this->expected = '検索画面に戻る';
+        $this->actual = $crawler->filter('#detail_box__footer')->text();
+        $this->assertContains($this->expected, $this->actual);
+    }
+
+    /**
      * testIndexWithPost
      */
     public function testIndexWithPost()
@@ -119,4 +134,53 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $NewCustomer = $this->app['eccube.repository.customer']->findOneBy(array('email' => $form['email']));
         $this->assertTrue($form['email'] == $NewCustomer->getEmail());
     }
+
+    /**
+     * testShowOrder
+     */
+    public function testShowOrder()
+    {
+        $id = $this->Customer->getId();
+
+        //add Order pendding status for this customer
+        $Order = $this->createOrder($this->Customer);
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_pre_end']);
+        $Order->setOrderStatus($OrderStatus);
+        $this->Customer->addOrder($Order);
+        $this->app['orm.em']->persist($this->Customer);
+        $this->app['orm.em']->flush();
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->path('admin_customer_edit', array('id' => $id))
+        );
+
+        $orderListing = $crawler->filter('#history_box__body')->text();
+        $this->assertRegexp('/'.$Order->getId().'/', $orderListing);
+    }
+
+    public function testNotShowProcessingOrder()
+    {
+        $this->markTestSkipped('Problem with Doctrine');
+        $id = $this->Customer->getId();
+
+        //add Order pendding status for this customer
+        $Order = $this->createOrder($this->Customer);
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
+        $Order->setOrderStatus($OrderStatus);
+        $this->Customer->addOrder($Order);
+        $this->app['orm.em']->persist($Order);
+        $this->app['orm.em']->persist($this->Customer);
+        $this->app['orm.em']->flush();
+        unset($this->Customer);
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->app->path('admin_customer_edit', array('id' => $id))
+        );
+
+        $orderListing = $crawler->filter('#history_box')->text();
+        $this->assertContains('データはありません', $orderListing);
+    }
+
 }

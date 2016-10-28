@@ -298,14 +298,19 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBirthMonth()
     {
-        // TODO 本体未実装
+        $this->Customer->setBirth(new \DateTime('2016-09-29'));
+        $this->Customer1->setBirth(new \DateTime('2010-09-01'));
+        $this->Customer2->setBirth(new \DateTime('2016-01-01'));
+        $this->Customer3->setBirth(null);
+        $this->app['orm.em']->flush();
+
         $this->searchData = array(
-            'birth_month' => 5
+            'birth_month' => 9
         );
 
         $this->scenario();
 
-        $this->expected = 4;
+        $this->expected = 2;
         $this->actual = count($this->Results);
         $this->verify();
     }
