@@ -19,7 +19,7 @@ php:
 matrix:
   fast_finish: true
   include:
-    - php: 7.0 # for coverrage
+    - php: 7.0.12 # for coverrage
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
       sudo: required
       dist: trusty
@@ -43,7 +43,7 @@ matrix:
       env: DB=sqlite
     - php: 5.6 # for coverrage (travis で phpdbg が動かなくなったため, phpdbg が動くようになるまでの暫定)
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-    - php: 7.0 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
+    - php: 7.0.12 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
 
 env:
