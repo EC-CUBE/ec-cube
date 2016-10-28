@@ -311,11 +311,27 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        // Two product
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
 
-        $this->scenarioCartIn($client);
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
 
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
@@ -363,7 +379,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $client->request(
             'POST',
             $this->app->url('shopping_shipping_multiple'),
-            array("form" => $multiForm)
+            array('form' => $multiForm)
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
@@ -385,8 +401,30 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
+        // Address 2
+        $CustomerAddress = $this->createCustomerAddress($User);
+        $User->addCustomerAddress($CustomerAddress);
+
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
 
         $this->scenarioCartIn($client);
 
@@ -396,14 +434,6 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // お届け先指定画面
         $shippingUrl = $crawler->filter('a.btn-shipping')->attr('href');
         $this->scenarioComplete($client, $shippingUrl);
-
-        // Address 1
-        $CustomerAddress = $this->createCustomerAddress($User);
-        $User->addCustomerAddress($CustomerAddress);
-
-        // Address 2
-        $CustomerAddress = $this->createCustomerAddress($User);
-        $User->addCustomerAddress($CustomerAddress);
 
         $arrCustomerAddress = $User->getCustomerAddresses();
 
@@ -458,8 +488,27 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
 
         $this->scenarioCartIn($client);
 
@@ -535,11 +584,36 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
 
-        $this->scenarioCartIn($client);
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
@@ -617,9 +691,36 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         $this->scenarioCartIn($client);
 
@@ -702,9 +803,36 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         $this->scenarioCartIn($client);
 
@@ -984,11 +1112,36 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
 
-        $this->scenarioCartIn($client);
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
@@ -1068,11 +1221,36 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $User = $this->logIn();
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
 
-        $this->scenarioCartIn($client);
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         // 確認画面
         $crawler = $this->scenarioConfirm($client);
@@ -1714,7 +1892,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // 完了画面
         $this->scenarioComplete(
             $client,
-            $this->app->path('shopping_confirm'),
+            $this->app->url('shopping_confirm'),
             array(
                 // Product type 1 with address 1 (two item)
                 array(

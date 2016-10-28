@@ -28,12 +28,16 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Delivery;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -1158,6 +1162,9 @@ class ShoppingController extends AbstractController
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE, $event);
 
+        /**
+         * @var Form $form
+         */
         $form = $builder->getForm();
 
         $form->handleRequest($request);
@@ -1236,14 +1243,24 @@ class ShoppingController extends AbstractController
             foreach ($data as $mulitples) {
                 /** @var \Eccube\Entity\ShipmentItem $multipleItem */
                 $multipleItem = $mulitples->getData();
-
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
                         // 追加された配送先情報を作成
+                        /**
+                         * @var Delivery $Delivery
+                         */
                         $Delivery = $multipleItem->getShipping()->getDelivery();
+                        $DeliveryDate = $multipleItem->getShipping()->getShippingDeliveryDate();
+                        $DeliveryTime = $multipleItem->getShipping()->getDeliveryTime();
+
+                        /**
+                         * @var ProductClass $ProductClass
+                         */
                         $ProductClass = $multipleItem->getProductClass();
+                        /**
+                         * @var Product $Product
+                         */
                         $Product = $multipleItem->getProduct();
-                        $quantity = $item['quantity']->getData();
                         $productType = $ProductClass->getProductType()->getId();
                         $productClassId = $ProductClass->getId();
 
@@ -1273,6 +1290,8 @@ class ShoppingController extends AbstractController
                         } else {
                             $Shipping = new Shipping();
                             $Shipping
+                                ->setShippingDeliveryDate($DeliveryDate)
+                                ->setDeliveryTime($DeliveryTime)
                                 ->setFromCustomerAddress($CustomerAddress)
                                 ->setDelivery($Delivery)
                                 ->setDelFlg(Constant::DISABLED)
