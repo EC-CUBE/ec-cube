@@ -44,6 +44,7 @@ class SearchCustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->config;
+        $months = range(1, 12);
         $builder
             // 会員ID・メールアドレス・名前・名前(フリガナ)
             ->add('multi', 'text', array(
@@ -73,7 +74,7 @@ class SearchCustomerType extends AbstractType
             ->add('birth_month', 'choice', array(
                 'label' => '誕生月',
                 'required' => false,
-                'choices' => array(1, 2, 3, 4, 5, 6, 7, 8, 8, 10, 11, 12),
+                'choices' => array_combine($months, $months),
             ))
             ->add('birth_start', 'birthday', array(
                 'label' => '誕生日',

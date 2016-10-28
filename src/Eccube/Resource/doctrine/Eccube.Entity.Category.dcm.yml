@@ -52,6 +52,7 @@ Eccube\Entity\Category:
         ProductCategories:
             targetEntity: Eccube\Entity\ProductCategory
             mappedBy: Category
+            fetch: EXTRA_LAZY
         Children:
             targetEntity: Eccube\Entity\Category
             mappedBy: Parent

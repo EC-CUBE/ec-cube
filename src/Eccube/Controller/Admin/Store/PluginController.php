@@ -28,7 +28,6 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
-use Eccube\Util\Cache;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -199,8 +198,6 @@ class PluginController extends AbstractController
                     $fs->remove($tmpDir);
 
                     $app->addSuccess('admin.plugin.update.complete', 'admin');
-
-                    Cache::clear($app, false);
 
                     return $app->redirect($app->url('admin_store_plugin'));
 
@@ -578,9 +575,6 @@ class PluginController extends AbstractController
 
                                 $service->update($Plugin, $tmpDir.'/'.$tmpFile);
                                 $app->addSuccess('admin.plugin.update.complete', 'admin');
-
-                                Cache::clear($app, false);
-
                             }
 
                             $fs = new Filesystem();

@@ -35,7 +35,7 @@ class SearchProductController
     {
         /** @var $form \Symfony\Component\Form\Form */
         $builder = $app['form.factory']
-            ->createNamedBuilder('', 'search_product')
+            ->createNamedBuilder('', 'search_product_block')
             ->setMethod('GET');
 
         $event = new EventArgs(

@@ -24,16 +24,27 @@
 
 namespace Eccube\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class SearchProductType to search product.
+ */
 class SearchProductType extends AbstractType
 {
-    public $app;
+    /**
+     * @var Application
+     */
+    protected $app;
 
-    public function __construct(\Silex\Application $app)
+    /**
+     * SearchProductType constructor.
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -43,16 +54,20 @@ class SearchProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $Categories = $this->app['eccube.repository.category']
+            ->getList(null, true);
+
         $builder->add('mode', 'hidden', array(
             'data' => 'search',
         ));
-        $builder->add('category_id', 'category', array(
+        $builder->add('category_id', 'entity', array(
+            'class' => 'Eccube\Entity\Category',
+            'property' => 'NameWithLevel',
+            'choices' => $Categories,
             'empty_value' => '全ての商品',
             'empty_data' => null,
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
-            // Choices list (overdrive mapped)
-            'choices' => $this->getCategoryChoice($this->app)
         ));
         $builder->add('name', 'search', array(
             'required' => false,
@@ -62,8 +77,7 @@ class SearchProductType extends AbstractType
                 'maxlength' => 50,
             ),
         ));
-        $builder->add('pageno', 'hidden', array(
-        ));
+        $builder->add('pageno', 'hidden', array());
         $builder->add('disp_number', 'product_list_max', array(
             'label' => '表示件数',
         ));
@@ -75,28 +89,12 @@ class SearchProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
             'allow_extra_fields' => true,
         ));
-    }
-
-    /**
-     * Overdrive choice Category method
-     * @param \Silex\Application $app
-     * @return array
-     */
-    private function getCategoryChoice(\Silex\Application $app)
-    {
-        $RootCategories = $app['eccube.repository.category']->getList();
-        $CategoriesForChoice = array();
-        foreach ($RootCategories as $Root) {
-            $CategoriesForChoice = array_merge($CategoriesForChoice, $Root->getSelfAndDescendants());
-        }
-
-        return $CategoriesForChoice;
     }
 
     /**

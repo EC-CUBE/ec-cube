@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                         <div id="customer_box__body_inner" class="column_inner clearfix">
                             <div class="icon"><svg class="cb cb-user-circle"><use xlink:href="#cb-user-circle"></use></svg></div>
                             <div id="customer_box__login_email" class="form-group">
-                                {{ form_widget(form.login_email, {attr: {placeholder: 'メールアドレス'}}) }} <br class="sp">
+                                {{ form_widget(form.login_email, {attr: {'style' : 'ime-mode: disabled;', placeholder: 'メールアドレス', 'autofocus': true}}) }} <br class="sp">
                             </div>
                             <div id="customer_box__login_pass" class="form-group">
                                 {{ form_widget(form.login_pass, {attr: {placeholder: 'パスワード'}}) }}

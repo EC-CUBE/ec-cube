@@ -60,11 +60,15 @@ class WithdrawController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
+                    log_info('退会確認画面表示');
+
                     return $app->render('Mypage/withdraw_confirm.twig', array(
                         'form' => $form->createView(),
                     ));
 
                 case 'complete':
+                    log_info('退会処理開始');
+
                     /* @var $Customer \Eccube\Entity\Customer */
                     $Customer = $app->user();
 
@@ -75,6 +79,8 @@ class WithdrawController extends AbstractController
                     $Customer->setDelFlg(Constant::ENABLED);
 
                     $app['orm.em']->flush();
+
+                    log_info('退会処理完了');
 
                     $event = new EventArgs(
                         array(
@@ -89,6 +95,8 @@ class WithdrawController extends AbstractController
 
                     // ログアウト
                     $this->getSecurity($app)->setToken(null);
+
+                    log_info('ログアウト完了');
 
                     return $app->redirect($app->url('mypage_withdraw_complete'));
             }

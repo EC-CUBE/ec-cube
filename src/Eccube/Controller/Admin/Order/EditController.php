@@ -102,7 +102,11 @@ class EditController extends AbstractController
             // 登録ボタン押下
             switch ($request->get('mode')) {
                 case 'register':
+
+                    log_info('受注登録開始', array($TargetOrder->getId()));
+
                     if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
+                        log_info('受注登録入力チェックエラー', array($TargetOrder->getId()));
                         $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
                     } elseif ($form->isValid()) {
 
@@ -191,15 +195,21 @@ class EditController extends AbstractController
                             }
                         }
 
+                        $Customer = $TargetOrder->getCustomer();
+                        if ($Customer) {
+                            // 受注情報の会員情報を更新
+                            $TargetOrder->setSex($Customer->getSex());
+                            $TargetOrder->setJob($Customer->getJob());
+                            $TargetOrder->setBirth($Customer->getBirth());
+                        }
+
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
-                        $Customer = $TargetOrder->getCustomer();
                         if ($Customer) {
                             // 会員の場合、購入回数、購入金額などを更新
                             $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
                         }
-
 
                         $event = new EventArgs(
                             array(
@@ -214,6 +224,8 @@ class EditController extends AbstractController
                         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_COMPLETE, $event);
 
                         $app->addSuccess('admin.order.save.complete', 'admin');
+
+                        log_info('受注登録完了', array($TargetOrder->getId()));
 
                         return $app->redirect($app->url('admin_order_edit', array('id' => $TargetOrder->getId())));
                     }
@@ -339,6 +351,7 @@ class EditController extends AbstractController
                     'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(), $Customer->getKana01(),
                         $Customer->getKana02()),
                     'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'email' => $Customer->getEmail(),
                 );
             }
 
@@ -423,21 +436,37 @@ class EditController extends AbstractController
         }
     }
 
-    public function searchProduct(Application $app, Request $request)
+    public function searchProduct(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
             $app['monolog']->addDebug('search product start.');
+            $page_count = $app['config']['default_page_count'];
+            $session = $app['session'];
 
-            $searchData = array(
-                'name' => $request->get('id'),
-            );
+            if ('POST' === $request->getMethod()) {
 
-            if ($categoryId = $request->get('category_id')) {
-                $Category = $app['eccube.repository.category']->find($categoryId);
-                $searchData['category_id'] = $Category;
+                $page_no = 1;
+
+                $searchData = array(
+                    'name' => $request->get('id'),
+                );
+
+                if ($categoryId = $request->get('category_id')) {
+                    $Category = $app['eccube.repository.category']->find($categoryId);
+                    $searchData['category_id'] = $Category;
+                }
+
+                $session->set('eccube.admin.order.product.search', $searchData);
+                $session->set('eccube.admin.order.product.search.page_no', $page_no);
+            } else {
+                $searchData = (array)$session->get('eccube.admin.order.product.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.order.product.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.order.product.search.page_no', $page_no);
+                }
             }
 
-            /** @var $Products \Eccube\Entity\Product[] */
             $qb = $app['eccube.repository.product']
                 ->getQueryBuilderBySearchData($searchData);
 
@@ -450,8 +479,16 @@ class EditController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH, $event);
 
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                array('wrap-queries' => true)
+            );
+
             /** @var $Products \Eccube\Entity\Product[] */
-            $Products = $qb->getQuery()->getResult();
+            $Products = $pagination->getItems();
 
             if (empty($Products)) {
                 $app['monolog']->addDebug('search product not found.');
@@ -471,6 +508,7 @@ class EditController extends AbstractController
                 array(
                     'forms' => $forms,
                     'Products' => $Products,
+                    'pagination' => $pagination,
                 ),
                 $request
             );
@@ -479,6 +517,7 @@ class EditController extends AbstractController
             return $app->render('Order/search_product.twig', array(
                 'forms' => $forms,
                 'Products' => $Products,
+                'pagination' => $pagination,
             ));
         }
     }
@@ -513,7 +552,7 @@ class EditController extends AbstractController
             if (!$OrderDetail->getId()) {
                 $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
                     $OrderDetail->getProductClass());
-                $OrderDetail->setTaxRule($TaxRule->getCalcRule()->getId());
+                $OrderDetail->setTaxRule($TaxRule->getId());
                 $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
                 $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
                 $OrderDetail->setClassName1($OrderDetail->getProductClass()->hasClassCategory1()
