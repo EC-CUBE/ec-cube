@@ -87,6 +87,8 @@ class ProductType extends AbstractType
                 'required' => false,
             ))
             ->add('Category', 'entity', array(
+                'class' => 'Eccube\Entity\Category',
+                'property' => 'NameWithLevel',
                 'label' => '商品カテゴリ',
                 'multiple' => true,
                 'mapped' => false,
