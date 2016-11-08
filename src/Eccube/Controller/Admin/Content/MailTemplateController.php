@@ -148,6 +148,12 @@ class MailTemplateController extends AbstractController
 
         $form->get('tpl_data')->setData($tplData);
 
+        // ファイル生成・更新
+        $filePath = $app['config']['template_realdir'].'/Mail/'.$name;
+
+        $fs = new Filesystem();
+        $fs->dumpFile($filePath, $tplData);
+
         $app->addSuccess('admin.content.mail.init.complete', 'admin');
 
         return $app->render('Content/mail_edit.twig', array(
