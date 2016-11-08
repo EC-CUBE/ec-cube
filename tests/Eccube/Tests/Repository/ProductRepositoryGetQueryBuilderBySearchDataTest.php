@@ -148,7 +148,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         }
         $this->app['orm.em']->flush();
 
-        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(3);
+        $ProductListOrderBy = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\ProductListOrderBy')->find(100);
         $this->searchData = array(
             'orderby' => $ProductListOrderBy
         );

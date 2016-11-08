@@ -21,14 +21,14 @@ class Version20161108095350 extends AbstractMigration
         $repository = $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListOrderBy');
 
         // 価格が高い順ソートの追加
-        $ProductListOrderBy = $repository->find(3);
+        $ProductListOrderBy = $repository->find(100);
         if (is_null($ProductListOrderBy)) {
             $rank = $repository->createQueryBuilder('pl')
                 ->select('MAX(pl.rank)')
                 ->getQuery()
                 ->getSingleScalarResult();
             $ProductListOrderBy = new ProductListOrderBy();
-            $ProductListOrderBy->setId(3);
+            $ProductListOrderBy->setId(100);
             $ProductListOrderBy->setName('価格が高い順');
             $ProductListOrderBy->setRank($rank + 1);
             $app['orm.em']->persist($ProductListOrderBy);

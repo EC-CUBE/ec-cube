@@ -117,7 +117,7 @@ class ProductRepository extends EntityRepository
             $qb->orderBy('price02_min', 'ASC');
             $qb->addOrderBy('p.id', 'DESC');
             // 価格高い順
-        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '3') {
+        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '100') {
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->groupBy('p');
