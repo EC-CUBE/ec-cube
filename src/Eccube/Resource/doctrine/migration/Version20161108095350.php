@@ -6,6 +6,8 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Eccube\Application;
 use Eccube\Entity\Master\ProductListOrderBy;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -43,19 +45,34 @@ class Version20161108095350 extends AbstractMigration
         }
 
         // 価格が高い順ソートの追加
-        $ProductListOrderBy = $repository->find(100);
-        if (is_null($ProductListOrderBy)) {
-            $rank = $repository->createQueryBuilder('pl')
-                ->select('MAX(pl.rank)')
-                ->getQuery()
-                ->getSingleScalarResult();
-            $ProductListOrderBy = new ProductListOrderBy();
-            $ProductListOrderBy->setId(100);
-            $ProductListOrderBy->setName('価格が高い順');
-            $ProductListOrderBy->setRank($rank + 1);
-            $app['orm.em']->persist($ProductListOrderBy);
-            $app['orm.em']->flush($ProductListOrderBy);
-        }
+        $id = $repository->createQueryBuilder('pl')
+            ->select('MAX(pl.id) + 1')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $rank = $repository->createQueryBuilder('pl')
+            ->select('MAX(pl.rank) + 1')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $ProductListOrderBy = new ProductListOrderBy();
+        $ProductListOrderBy->setId($id);
+        $ProductListOrderBy->setName('価格が高い順');
+        $ProductListOrderBy->setRank($rank);
+        $app['orm.em']->persist($ProductListOrderBy);
+        $app['orm.em']->flush($ProductListOrderBy);
+
+        // constant.ymlへ価格が高い順のIDを記録.
+        $file = $app['config']['root_dir'].'/app/config/eccube/constant.yml';
+        $fs = new Filesystem();
+
+        $constant = $fs->exists($file)
+            ? Yaml::parse(file_get_contents($file))
+            : array();
+
+        $constant['product_order_price_higher'] = $id;
+        $yaml = Yaml::dump($constant);
+        $fs->dumpFile($file, $yaml);
 
         // "価格順"の名称を"価格が低い順"へ変更
         $ProductListOrderBy = $repository->find(1);
@@ -75,7 +92,7 @@ class Version20161108095350 extends AbstractMigration
             $entity->setRank(2);
             $app['orm.em']->flush($entity);
 
-            $entity = $repository->find(100);
+            $entity = $repository->find($id);
             dump($entity);
             $entity->setRank(1);
             $app['orm.em']->flush($entity);
