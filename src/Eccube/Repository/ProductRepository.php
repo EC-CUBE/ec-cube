@@ -133,11 +133,11 @@ class ProductRepository extends EntityRepository
             $qb->addOrderBy('p.id', 'DESC');
             // 価格高い順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_higher']) {
-            $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
+            $qb->addSelect('MAX(pc.price02) as HIDDEN price02_max');
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->groupBy('p');
-            $qb->orderBy('price02_min', 'DESC');
-            $qb->addOrderBy('p.id', 'ASC');
+            $qb->orderBy('price02_max', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_newer']) {
             $qb->orderBy('p.create_date', 'DESC');
