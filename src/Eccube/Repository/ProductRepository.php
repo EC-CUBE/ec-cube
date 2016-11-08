@@ -104,7 +104,7 @@ class ProductRepository extends EntityRepository
         }
 
         // Order By
-        // 価格順
+        // 価格低い順
         if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
@@ -116,6 +116,13 @@ class ProductRepository extends EntityRepository
             // $qb->groupBy('p.id');
             $qb->orderBy('price02_min', 'ASC');
             $qb->addOrderBy('p.id', 'DESC');
+            // 価格高い順
+        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '3') {
+            $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
+            $qb->innerJoin('p.ProductClasses', 'pc');
+            $qb->groupBy('p');
+            $qb->orderBy('price02_min', 'DESC');
+            $qb->addOrderBy('p.id', 'ASC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->orderBy('p.create_date', 'DESC');
