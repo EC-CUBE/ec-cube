@@ -63,16 +63,18 @@ class Version20161108095350 extends AbstractMigration
         $app['orm.em']->flush($ProductListOrderBy);
 
         // constant.ymlへ価格が高い順のIDを記録.
-        $file = $app['config']['root_dir'].'/app/config/eccube/constant.yml';
-        $fs = new Filesystem();
+        if ($id !== $app['config']['product_order_price_higher']) {
+            $file = $app['config']['root_dir'].'/app/config/eccube/constant.yml';
+            $fs = new Filesystem();
 
-        $constant = $fs->exists($file)
-            ? Yaml::parse(file_get_contents($file))
-            : array();
+            $constant = $fs->exists($file)
+                ? Yaml::parse(file_get_contents($file))
+                : array();
 
-        $constant['product_order_price_higher'] = $id;
-        $yaml = Yaml::dump($constant);
-        $fs->dumpFile($file, $yaml);
+            $constant['product_order_price_higher'] = $id;
+            $yaml = Yaml::dump($constant);
+            $fs->dumpFile($file, $yaml);
+        }
 
         // "価格順"の名称を"価格が低い順"へ変更
         $ProductListOrderBy = $repository->find(1);
@@ -93,7 +95,6 @@ class Version20161108095350 extends AbstractMigration
             $app['orm.em']->flush($entity);
 
             $entity = $repository->find($id);
-            dump($entity);
             $entity->setRank(1);
             $app['orm.em']->flush($entity);
         }
