@@ -173,6 +173,9 @@ admin.content.template.delete.current.error: 現在設定中のテンプレー�
 
 admin.content.cache.save.complete: キャッシュを削除しました。
 
+admin.content.mail.edit.error: 対象ファイルが存在しません。
+admin.content.mail.init.complete: 初期設定に戻しました。
+
 admin.system.security.save.complete: セキュリティ設定を保存しました。
 admin.system.security.route.dir.complete: 管理画面のURLを変更しましたので再ログインをしてください。
 

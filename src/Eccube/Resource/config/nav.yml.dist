@@ -61,6 +61,9 @@
       - id: block
         name: ブロック管理
         url: admin_content_block
+      - id: mail
+        name: メール管理
+        url: admin_content_mail
       - id: cache
         name: キャッシュ管理
         url: admin_content_cache
