@@ -1,12 +1,12 @@
 doctrine_cache:
   metadata_cache:
-    driver: array
+    driver: apc
     path:
     host:
     port:
     password:
   query_cache:
-    driver: array
+    driver: apc
     path:
     host:
     port:
