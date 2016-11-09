@@ -23,6 +23,7 @@ class Version20161108095350 extends AbstractMigration
         $repository = $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListOrderBy');
 
         $isDefault = true;
+
         $default = array(
             array(
                 'id' => 1,
@@ -44,37 +45,17 @@ class Version20161108095350 extends AbstractMigration
             }
         }
 
-        // 価格が高い順ソートの追加
-        $id = $repository->createQueryBuilder('pl')
-            ->select('MAX(pl.id) + 1')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        $rank = $repository->createQueryBuilder('pl')
-            ->select('MAX(pl.rank) + 1')
-            ->getQuery()
-            ->getSingleScalarResult();
+        // mtb_product_list_orderbyに変更がある場合は何もしない
+        if (!$isDefault) {
+            return;
+        }
 
         $ProductListOrderBy = new ProductListOrderBy();
-        $ProductListOrderBy->setId($id);
+        $ProductListOrderBy->setId(3);
         $ProductListOrderBy->setName('価格が高い順');
-        $ProductListOrderBy->setRank($rank);
+        $ProductListOrderBy->setRank(2);
         $app['orm.em']->persist($ProductListOrderBy);
         $app['orm.em']->flush($ProductListOrderBy);
-
-        // constant.ymlへ価格が高い順のIDを記録.
-        if ($id !== $app['config']['product_order_price_higher']) {
-            $file = $app['config']['root_dir'].'/app/config/eccube/constant.yml';
-            $fs = new Filesystem();
-
-            $constant = $fs->exists($file)
-                ? Yaml::parse(file_get_contents($file))
-                : array();
-
-            $constant['product_order_price_higher'] = $id;
-            $yaml = Yaml::dump($constant);
-            $fs->dumpFile($file, $yaml);
-        }
 
         // "価格順"の名称を"価格が低い順"へ変更
         $ProductListOrderBy = $repository->find(1);
@@ -84,20 +65,21 @@ class Version20161108095350 extends AbstractMigration
             $app['orm.em']->flush($ProductListOrderBy);
         }
 
-        // mtb_product_list_orderbyが初期状態から変更がなければ、価格が低い順->価格が高い順->新着順の順にrankを振り直す
-        if ($isDefault) {
-            $entity = $repository->find(1);
-            $entity->setRank(0);
-            $app['orm.em']->flush($entity);
+        // 価格が低い順->価格が高い順->新着順の順にrankを振り直す
+        // 価格が低い順
+        $entity = $repository->find(1);
+        $entity->setRank(0);
+        $app['orm.em']->flush($entity);
 
-            $entity = $repository->find(2);
-            $entity->setRank(2);
-            $app['orm.em']->flush($entity);
+        // 価格が高い順
+        $entity = $repository->find(3);
+        $entity->setRank(1);
+        $app['orm.em']->flush($entity);
 
-            $entity = $repository->find($id);
-            $entity->setRank(1);
-            $app['orm.em']->flush($entity);
-        }
+        // 新着順
+        $entity = $repository->find(2);
+        $entity->setRank(2);
+        $app['orm.em']->flush($entity);
     }
 
     /**
