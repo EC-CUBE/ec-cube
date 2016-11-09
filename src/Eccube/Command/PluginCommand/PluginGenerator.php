@@ -33,6 +33,7 @@ use Eccube\Command\PluginCommand\AbstractGenerator;
 
 class PluginGenerator extends AbstractGenerator
 {
+
     /**
      *
      * @var array
@@ -44,12 +45,12 @@ class PluginGenerator extends AbstractGenerator
      * @var array
      */
     private $events = null;
-    
+
     protected function getHeader()
     {
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('---プラグインジェネレータ');
-        $this->output->writeln('---※プログラムを終了するにはquitを入力してください');
+        $this->output->writeln('---※プログラムを終了するには' . self::STOP_PROCESS . 'を入力してください');
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('');
     }

@@ -43,7 +43,7 @@ class PluginEntityGenerator extends AbstractGenerator
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('---プラグインEntityジェネレータ');
         $this->output->writeln('---※先にテーブルを作成が必要です');
-        $this->output->writeln('---※プログラムを終了するにはquitを入力してください');
+        $this->output->writeln('---※プログラムを終了するには' . self::STOP_PROCESS . 'を入力してください');
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('');
     }

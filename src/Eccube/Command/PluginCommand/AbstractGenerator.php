@@ -25,6 +25,7 @@
 namespace Eccube\Command\PluginCommand;
 
 use Eccube\Common\Constant;
+use Symfony\Component\Console\Question\Question;
 
 abstract class AbstractGenerator implements GeneratorInterface
 {
@@ -38,8 +39,8 @@ abstract class AbstractGenerator implements GeneratorInterface
     protected $app;
 
     /**
-     * DialogHelper
-     * @var \Symfony\Component\Console\Helper\DialogHelper
+     * QuestionHelper
+     * @var \Symfony\Component\Console\Helper\QuestionHelper
      */
     protected $dialog;
 
@@ -78,7 +79,7 @@ abstract class AbstractGenerator implements GeneratorInterface
 
     /**
      * 
-     * @param \Symfony\Component\Console\Helper\DialogHelper $dialog
+     * @param \Symfony\Component\Console\Helper\QuestionHelper $dialog
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
@@ -122,9 +123,8 @@ abstract class AbstractGenerator implements GeneratorInterface
             }
         }
         $this->output->writeln('');
-        $value = $this->dialog->ask(
-            $this->output, '<comment>上のプラグイン作成してよろしですか？「y/n」 : </comment>', ''
-        );
+        $Question = new Question('<comment>上のプラグイン作成してよろしですか？「y/n」 : </comment>', '');
+        $value = $this->dialog->ask($this->input, $this->output, $Question);
         if ($value != 'y') {
             $this->exitGenerator();
             return;
@@ -151,9 +151,8 @@ abstract class AbstractGenerator implements GeneratorInterface
     protected function makeLineRequest($params)
     {
         $this->output->writeln($params['name']);
-        $value = $this->dialog->ask(
-            $this->output, '<comment>入力 : </comment>', ''
-        );
+        $Question = new Question('<comment>入力 : </comment>', '');
+        $value = $this->dialog->ask($this->input, $this->output, $Question);
         $value = trim($value);
         if ($value === self::STOP_PROCESS) {
             return false;
@@ -194,7 +193,7 @@ abstract class AbstractGenerator implements GeneratorInterface
                     foreach ($row as $eventKey => $eventConst) {
                         if (strpos($eventKey, $value) !== false || strpos($eventConst, $value) !== false) {
                             if (count($searchList) > $max) {
-                                $this->output->writeln('--- 件数は' . $max . '以上あります');
+                                $searchList['-'] = '-- 件数は' . $max . '以上あります';
                                 break;
                             }
                             $searchList[$eventKey] = $eventConst;
@@ -212,6 +211,9 @@ abstract class AbstractGenerator implements GeneratorInterface
                         }
                     }
 
+                    if (!empty($searchList)) {
+                        $this->output->writeln('');
+                    }
                     return $this->makeLineRequest($params);
                 }
             }

@@ -31,6 +31,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Validator\Constraints as Assert;
 use Eccube\Command\PluginCommand\PluginGenerator;
 use Eccube\Command\PluginCommand\PluginEntityGenerator;
+use Symfony\Component\Console\Helper\QuestionHelper;
+
 
 class PluginCommand extends \Knp\Command\Command
 {
@@ -69,18 +71,20 @@ EOF
         $this->app->boot();
 
         $mode = $input->getArgument('mode');
+        
+        $QuestionHelper = new QuestionHelper();
 
         //プラグイン作成
         if ($mode == 'generate') {
             $PluginGenerator = new PluginGenerator($this->app);
-            $PluginGenerator->init($this->getHelper('dialog'), $input, $output);
+            $PluginGenerator->init($QuestionHelper, $input, $output);
             $PluginGenerator->run();
             return;
         }
         //プラグインEntity用作成
         if ($mode == 'entity') {          
             $PluginEntityGenerator = new PluginEntityGenerator($this->app);
-            $PluginEntityGenerator->init($this->getHelper('dialog'), $input, $output);
+            $PluginEntityGenerator->init($QuestionHelper, $input, $output);
             $PluginEntityGenerator->run();
             return;
         }
