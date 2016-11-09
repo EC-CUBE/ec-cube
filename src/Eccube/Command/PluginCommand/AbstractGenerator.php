@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,144 +22,201 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Command\PluginCommand;
 
-namespace Eccube\Command;
+use Eccube\Common\Constant;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
-
-class PluginCommand extends \Knp\Command\Command
+abstract class AbstractGenerator implements GeneratorInterface
 {
 
+    const STOP_PROCESS = 'quit';
+
+    /**
+     * app
+     * @var \Eccube\Application
+     */
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) 
+    /**
+     * DialogHelper
+     * @var \Symfony\Component\Console\Helper\DialogHelper
+     */
+    protected $dialog;
+
+    /**
+     * InputInterface
+     * @var \Symfony\Component\Console\Input\InputInterface
+     */
+    protected $input;
+
+    /**
+     * InputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
+     */
+    protected $output;
+
+    /**
+     * ヘッダー
+     */
+    abstract protected function getHeader();
+
+    /**
+     * 
+     * @var array $paramList
+     */
+    abstract protected function start($paramList);
+
+    /**
+     * フィルドーセット
+     */
+    abstract protected function getFildset();
+
+    public function __construct(\Eccube\Application $app)
     {
-        parent::__construct($name);
         $this->app = $app;
     }
 
-    protected function configure() 
+    /**
+     * 
+     * @param \Symfony\Component\Console\Helper\DialogHelper $dialog
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     */
+    public function init($dialog, $input, $output)
     {
-        $this
-            ->setName('plugin:develop')
-            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reload)', null)
-            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip') 
-            ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
-            ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
-            ->setDescription('plugin commandline installer.')
-            ->setHelp(<<<EOF
-The <info>%command.name%</info> plugin installer runner for developer;
-EOF
-            );
+        $this->dialog = $dialog;
+        $this->input = $input;
+        $this->output = $output;
     }
 
-
-    protected function getPluginFromCode($pluginCode) 
+    public function run()
     {
-        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0, 'code'=>$pluginCode));
+        //ヘッダー部分
+        $this->getHeader();
+
+        $paramList = $this->getFildset();
+
+        foreach ($paramList as $paramKey => $params) {
+            $value = $this->makeLineRequest($params);
+            if ($value === false) {
+                $this->exitGenerator();
+                return;
+            }
+            $paramList[$paramKey]['value'] = $value;
+        }
+
+        $this->output->writeln('');
+        $this->output->writeln('---入力内容確認');
+        foreach ($paramList as $paramKey => $params) {
+            if (is_array($params['value'])) {
+                $this->output->writeln($params['label']);
+                foreach ($params['value'] as $keys => $val) {
+                    if ($keys == $val) {
+                        $this->output->writeln('<info>  ' . $keys . '</info>');
+                    } else {
+                        $this->output->writeln('<info>  ' . $keys . ' : ' . $val . '</info>');
+                    }
+                }
+            } else {
+                $this->output->writeln($params['label'] . ' <info>' . $params['value'] . '</info>');
+            }
+        }
+        $this->output->writeln('');
+        $value = $this->dialog->ask(
+            $this->output, '<comment>上のプラグイン作成してよろしですか？「y/n」 : </comment>', ''
+        );
+        if ($value != 'y') {
+            $this->exitGenerator();
+            return;
+        }
+
+        $this->start($paramList);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) 
+    protected function exitGenerator($msg = '完了 Bye bye.')
     {
-        $this->app->initialize();
-        $this->app->boot();
+        $this->output->writeln($msg);
+    }
 
-        $mode = $input->getArgument('mode');
-        $path = $input->getOption('path');
-        $code = $input->getOption('code');
-        $uninstallForce = $input->getOption('uninstall-force');
+    /**
+     * 3.0.9以上かチェック
+     * 3.0.9以上であれば新しいフックポイントが利用可能
+     * @return mixed
+     */
+    protected function isNextVersion()
+    {
+        return version_compare(Constant::VERSION, '3.0.9', '>=');
+    }
 
-        $service = $this->app['eccube.service.plugin'];
+    protected function makeLineRequest($params)
+    {
+        $this->output->writeln($params['name']);
+        $value = $this->dialog->ask(
+            $this->output, '<comment>入力 : </comment>', ''
+        );
+        $value = trim($value);
+        if ($value === self::STOP_PROCESS) {
+            return false;
+        }
+        foreach ($params['validation'] as $key => $row) {
 
-        if ($mode == 'install') {
-            // アーカイブからインストール
-            if ($path) {
-                if ($service->install($path)) {
-                    $output->writeln('success');
+            if ($key == 'isRequired' && $row == true) {
+                if ($value === '' || strlen($value) == 0) {
 
-                    return;
+                    $this->output->writeln('[※]入力されていません');
+                    return $this->makeLineRequest($params);
+                }
+            } elseif ($key == 'patern' && preg_match($row, $value) == false) {
+                $this->output->writeln('<error>[※]有効な値ではありません</error>');
+                return $this->makeLineRequest($params);
+            } elseif ($key == 'inArray') {
+
+                if ($value == '') {
+                    return $params['value'];
+                }
+                if (isset($row[$value])) {
+                    if (!is_array($params['value'])) {
+                        $value = $row[$value];
+                        continue;
+                    }
+                    $params['value'][$value] = $row[$value];
+                    $this->output->writeln('<info>---現在リスト</info>');
+                    foreach ($params['value'] as $subKey => $node) {
+                        $this->output->writeln('<info> - ' . $subKey . ' : ' . $node . '</info>');
+                    }
+                    $this->output->writeln('');
+                    $this->output->writeln('---※追加完了するにはエンターを入力してください---');
+
+                    return $this->makeLineRequest($params);
+                } else {
+                    $searchList = array();
+                    $max = 12;
+                    foreach ($row as $eventKey => $eventConst) {
+                        if (strpos($eventKey, $value) !== false || strpos($eventConst, $value) !== false) {
+                            if (count($searchList) > $max) {
+                                $this->output->writeln('--- 件数は' . $max . '以上あります');
+                                break;
+                            }
+                            $searchList[$eventKey] = $eventConst;
+                        }
+                    }
+                    $this->output->writeln('<error>[※]入力値は正しくありません</error>');
+                    if (!empty($searchList)) {
+                        $this->output->writeln('---こちらの検索結果を確認してください');
+                    }
+                    foreach ($searchList as $subKey => $node) {
+                        if ($subKey == $node) {
+                            $this->output->writeln(' - ' . $subKey);
+                        } else {
+                            $this->output->writeln(' - ' . $subKey . ' : ' . $node);
+                        }
+                    }
+
+                    return $this->makeLineRequest($params);
                 }
             }
-            // 設置済ファイルからインストール
-            if ($code) {
-                $pluginDir = $service->calcPluginDir($code);
-                $service->checkPluginArchiveContent($pluginDir);
-                $config = $service->readYml($pluginDir.'/config.yml');
-                $event = $service->readYml($pluginDir.'/event.yml');
-                $service->checkSamePlugin($config['code']);
-                $service->registerPlugin($config, $event);
-
-                $output->writeln('success');
-
-                return;
-            }
-
-            $output->writeln('path or code is required.');
-
-            return;
-        }
-        if ($mode == 'update') {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-            if (empty($path)) {
-                $output->writeln('path is required.');
-                return;
-            }
-            $plugin = $this->getPluginFromCode($code);
-            if ($service->update($plugin, $path)) {
-                $output->writeln('success');
-                return;
-            }
         }
 
-        if ($mode == 'uninstall') {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-
-            $plugin = $this->getPluginFromCode($code);
-
-            // ディレクトリも含め全て削除.
-            if ($uninstallForce) {
-
-                if ($service->uninstall($plugin)) {
-                    $output->writeln('success');
-                    return;
-                }
-
-                return;
-            }
-
-            // ディレクトリは残し, プラグインを削除.
-            $pluginDir = $service->calcPluginDir($code);
-            $config = $service->readYml($pluginDir.'/config.yml');
-            $service->callPluginManagerMethod($config, 'disable');
-            $service->callPluginManagerMethod($config, 'uninstall');
-            $service->unregisterPlugin($plugin);
-
-            $output->writeln('success');
-            return;
-
-        }
-
-        if (in_array($mode, array('enable', 'disable'), true)) {
-            if (empty($code)) {
-                $output->writeln('code is required.');
-                return;
-            }
-
-            $plugin = $this->getPluginFromCode($code);
-            if ($service->$mode($plugin)) {
-                $output->writeln('success');
-                return;
-            }
-        }
-        $output->writeln('undefined mode.');
+        return $value;
     }
 }
