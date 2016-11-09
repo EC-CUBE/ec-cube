@@ -34,7 +34,7 @@ use Eccube\Command\PluginCommand\PluginEntityGenerator;
 
 class PluginCommand extends \Knp\Command\Command
 {
-    
+
     protected $app;
 
     public function __construct(\Eccube\Application $app, $name = null) 
@@ -47,7 +47,7 @@ class PluginCommand extends \Knp\Command\Command
     {
         $this
             ->setName('plugin:develop')
-            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reloadgenerate/generate/entity)', null)
+            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reload/generate/entity)', null)
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip') 
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
@@ -90,7 +90,7 @@ EOF
         $uninstallForce = $input->getOption('uninstall-force');
 
         $service = $this->app['eccube.service.plugin'];
-        
+
         if ($mode == 'install') {
             // アーカイブからインストール
             if ($path) {
@@ -144,7 +144,6 @@ EOF
 
             // ディレクトリも含め全て削除.
             if ($uninstallForce) {
-
                 if ($service->uninstall($plugin)) {
                     $output->writeln('success');
                     return;
