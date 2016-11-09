@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,58 +22,73 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Command\PluginCommand\PluginGenerator;
+use Eccube\Command\PluginCommand\PluginEntityGenerator;
 
 class PluginCommand extends \Knp\Command\Command
 {
-
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null) 
+    public function __construct(\Eccube\Application $app, $name = null)
     {
         parent::__construct($name);
         $this->app = $app;
     }
 
-    protected function configure() 
+    protected function configure()
     {
         $this
             ->setName('plugin:develop')
-            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reload)', null)
-            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip') 
+            ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reloadgenerate/generate/entity)', null)
+            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
             ->setDescription('plugin commandline installer.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> plugin installer runner for developer;
 EOF
-            );
+        );
     }
 
-
-    protected function getPluginFromCode($pluginCode) 
+    protected function getPluginFromCode($pluginCode)
     {
-        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0, 'code'=>$pluginCode));
+        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg' => 0, 'code' => $pluginCode));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) 
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->app->initialize();
         $this->app->boot();
 
         $mode = $input->getArgument('mode');
+
+        //プラグイン作成
+        if ($mode == 'generate') {
+            $PluginGenerator = new PluginGenerator($this->app);
+            $PluginGenerator->init($this->getHelper('dialog'), $input, $output);
+            $PluginGenerator->run();
+            return;
+        }
+        //プラグインEntity用作成
+        if ($mode == 'entity') {          
+            $PluginEntityGenerator = new PluginEntityGenerator($this->app);
+            $PluginEntityGenerator->init($this->getHelper('dialog'), $input, $output);
+            $PluginEntityGenerator->run();
+            return;
+        }
+
         $path = $input->getOption('path');
         $code = $input->getOption('code');
         $uninstallForce = $input->getOption('uninstall-force');
 
         $service = $this->app['eccube.service.plugin'];
-
         if ($mode == 'install') {
             // アーカイブからインストール
             if ($path) {
@@ -86,8 +102,8 @@ EOF
             if ($code) {
                 $pluginDir = $service->calcPluginDir($code);
                 $service->checkPluginArchiveContent($pluginDir);
-                $config = $service->readYml($pluginDir.'/config.yml');
-                $event = $service->readYml($pluginDir.'/event.yml');
+                $config = $service->readYml($pluginDir . '/config.yml');
+                $event = $service->readYml($pluginDir . '/event.yml');
                 $service->checkSamePlugin($config['code']);
                 $service->registerPlugin($config, $event);
 
@@ -137,14 +153,13 @@ EOF
 
             // ディレクトリは残し, プラグインを削除.
             $pluginDir = $service->calcPluginDir($code);
-            $config = $service->readYml($pluginDir.'/config.yml');
+            $config = $service->readYml($pluginDir . '/config.yml');
             $service->callPluginManagerMethod($config, 'disable');
             $service->callPluginManagerMethod($config, 'uninstall');
             $service->unregisterPlugin($plugin);
 
             $output->writeln('success');
             return;
-
         }
 
         if (in_array($mode, array('enable', 'disable'), true)) {
@@ -161,4 +176,5 @@ EOF
         }
         $output->writeln('undefined mode.');
     }
+
 }
