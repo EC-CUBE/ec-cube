@@ -40,7 +40,7 @@ class Version20161108095350 extends AbstractMigration
             ->getQuery()
             ->getArrayResult();
 
-        if ($entities === $default) {
+        if ($entities !== $default) {
             return;
         }
 
