@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of EC-CUBE
  *
@@ -22,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+
 namespace Eccube\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,20 +34,21 @@ use Eccube\Command\PluginCommand\PluginEntityGenerator;
 
 class PluginCommand extends \Knp\Command\Command
 {
+    
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null)
+    public function __construct(\Eccube\Application $app, $name = null) 
     {
         parent::__construct($name);
         $this->app = $app;
     }
 
-    protected function configure()
+    protected function configure() 
     {
         $this
             ->setName('plugin:develop')
             ->addArgument('mode', InputArgument::REQUIRED, 'mode(install/uninstall/enable/disable/update/reloadgenerate/generate/entity)', null)
-            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
+            ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip') 
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
             ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory')
             ->setDescription('plugin commandline installer.')
@@ -59,10 +60,10 @@ EOF
 
     protected function getPluginFromCode($pluginCode)
     {
-        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg' => 0, 'code' => $pluginCode));
+        return $this->app['eccube.repository.plugin']->findOneBy(array('del_flg'=>0, 'code'=>$pluginCode));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) 
     {
         $this->app->initialize();
         $this->app->boot();
@@ -89,6 +90,7 @@ EOF
         $uninstallForce = $input->getOption('uninstall-force');
 
         $service = $this->app['eccube.service.plugin'];
+        
         if ($mode == 'install') {
             // アーカイブからインストール
             if ($path) {
@@ -102,8 +104,8 @@ EOF
             if ($code) {
                 $pluginDir = $service->calcPluginDir($code);
                 $service->checkPluginArchiveContent($pluginDir);
-                $config = $service->readYml($pluginDir . '/config.yml');
-                $event = $service->readYml($pluginDir . '/event.yml');
+                $config = $service->readYml($pluginDir.'/config.yml');
+                $event = $service->readYml($pluginDir.'/event.yml');
                 $service->checkSamePlugin($config['code']);
                 $service->registerPlugin($config, $event);
 
@@ -146,6 +148,7 @@ EOF
                 if ($service->uninstall($plugin)) {
                     $output->writeln('success');
                     return;
+                    
                 }
 
                 return;
@@ -153,7 +156,7 @@ EOF
 
             // ディレクトリは残し, プラグインを削除.
             $pluginDir = $service->calcPluginDir($code);
-            $config = $service->readYml($pluginDir . '/config.yml');
+            $config = $service->readYml($pluginDir.'/config.yml');
             $service->callPluginManagerMethod($config, 'disable');
             $service->callPluginManagerMethod($config, 'uninstall');
             $service->unregisterPlugin($plugin);
@@ -176,5 +179,4 @@ EOF
         }
         $output->writeln('undefined mode.');
     }
-
 }
