@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Tests\Fixture\Generator;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -312,16 +313,34 @@ class EditController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
+     * @param integer $page_no
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function searchCustomer(Application $app, Request $request)
+    public function searchCustomer(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
             $app['monolog']->addDebug('search customer start.');
+            $page_count = $app['config']['default_page_count'];
+            $session = $app['session'];
 
-            $searchData = array(
-                'multi' => $request->get('search_word'),
-            );
+            if ('POST' === $request->getMethod()) {
+
+                $page_no = 1;
+
+                $searchData = array(
+                    'multi' => $request->get('search_word'),
+                );
+
+                $session->set('eccube.admin.order.customer.search', $searchData);
+                $session->set('eccube.admin.order.customer.search.page_no', $page_no);
+            } else {
+                $searchData = (array)$session->get('eccube.admin.order.customer.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.order.customer.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.order.customer.search.page_no', $page_no);
+                }
+            }
 
             $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
 
@@ -334,8 +353,16 @@ class EditController extends AbstractController
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
 
-            $Customers = $qb->getQuery()->getResult();
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                array('wrap-queries' => true)
+            );
 
+            /** @var $Customers \Eccube\Entity\Customer[] */
+            $Customers = $pagination->getItems();
 
             if (empty($Customers)) {
                 $app['monolog']->addDebug('search customer not found.');
@@ -359,13 +386,17 @@ class EditController extends AbstractController
                 array(
                     'data' => $data,
                     'Customers' => $Customers,
+                    'pagination' => $pagination,
                 ),
                 $request
             );
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
             $data = $event->getArgument('data');
 
-            return $app->json($data);
+            return $app->render('Order/search_customer.twig', array(
+                'data' => $data,
+                'pagination' => $pagination,
+            ));
         }
     }
 
