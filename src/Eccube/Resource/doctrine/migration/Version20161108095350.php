@@ -22,8 +22,7 @@ class Version20161108095350 extends AbstractMigration
         $app = Application::getInstance();
         $repository = $app['orm.em']->getRepository('Eccube\Entity\Master\ProductListOrderBy');
 
-        $isDefault = true;
-
+        // mtb_product_list_orderbyが初期状態から変更がある場合は、マイグレーションを適用しない
         $default = array(
             array(
                 'id' => 1,
@@ -36,20 +35,16 @@ class Version20161108095350 extends AbstractMigration
                 'rank' => 1,
             ),
         );
+        $entities = $repository->createQueryBuilder('pl')
+            ->orderBy('pl.id', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
 
-        // mtb_product_list_orderbyが初期状態から変更がないかどうかの判定
-        $entities = $repository->findBy(array(), array('id' => 'ASC'));
-        foreach ($entities as $entity) {
-            if (!in_array($entity->toArray(), $default, true)) {
-                $isDefault = false;
-            }
-        }
-
-        // mtb_product_list_orderbyに変更がある場合は何もしない
-        if (!$isDefault) {
+        if ($entities === $default) {
             return;
         }
 
+        // 価格が高い順を追加
         $ProductListOrderBy = new ProductListOrderBy();
         $ProductListOrderBy->setId(3);
         $ProductListOrderBy->setName('価格が高い順');
