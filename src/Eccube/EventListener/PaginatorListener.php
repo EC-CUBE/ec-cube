@@ -1,21 +1,21 @@
 <?php
 
-namespace Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QuerySubscriber;
+namespace Eccube\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Component\Pager\Event\ItemsEvent;
 use Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QuerySubscriber;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Doctrine\ORM\Tools\Pagination\CountWalker;
+use Eccube\Doctrine\ORM\Tools\Pagination\Paginator;
+use Eccube\Doctrine\ORM\Tools\Pagination\CountWalker;
 
-class UsesPaginator implements EventSubscriberInterface
+class PaginatorListener implements EventSubscriberInterface
 {
     const HINT_FETCH_JOIN_COLLECTION = 'knp_paginator.fetch_join_collection';
 
     public function items(ItemsEvent $event)
     {
-        if (!class_exists('Doctrine\ORM\Tools\Pagination\Paginator')) {
+        if (!class_exists('Eccube\Doctrine\ORM\Tools\Pagination\Paginator')) {
             return;
         }
         if (!$event->target instanceof Query) {
@@ -52,7 +52,17 @@ class UsesPaginator implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'knp_pager.items' => array('items', 0)
+            /**
+             * Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QuerySubscriber\UsesPaginator
+             * よりも先に実行させるため, 優先度を1に設定.
+             *
+             * 通常では
+             * - Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QueryBuilderSubscriber
+             * - Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QuerySubscriber\UsesPaginator
+             * の順に実行されるが,
+             * 優先度を1に設定し, UsesPaginatorの代わりにPaginatorListenerが動作するようにする
+             */
+            'knp_pager.items' => array('items', 1)
         );
     }
 }
