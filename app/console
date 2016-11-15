@@ -30,5 +30,6 @@ $console = $app["console"];
 $console->add(new Eccube\Command\RouterCommand($app));
 $console->add(new Eccube\Command\CacheClearCommand($app));
 $console->add(new Eccube\Command\PluginCommand($app));
+$console->add(new Eccube\Command\ConfigCommand());
 
 $console->run();
