@@ -26,20 +26,18 @@ namespace Eccube\Command;
 use Knp\Command\Command;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\TableHelper;
-use Symfony\Component\Yaml\Inline;
 
 
 class ConfigCommand extends Command
 {
     protected function configure()
     {
-
         $this
             ->setName('debug:config')
             ->setDefinition(array(
@@ -109,6 +107,7 @@ EOF
 
 
         if ($filter) {
+            // コマンド実行時にパラメータを指定
 
             $config = array();
             $app->parseConfig($filter, $config);
