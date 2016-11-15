@@ -90,4 +90,40 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
     }
 
+    public function test_routing_AdminContentPage_edit_name()
+    {
+        $client = $this->client;
+
+        $editable = false;
+
+        $templatePath = $this->app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
+        $PageLayout = $this->app['eccube.repository.page_layout']->find(1);
+
+        $client->request(
+            'POST',
+            $this->app->url(
+                'admin_content_page_edit',
+                array('id' => $PageLayout->getId())
+            ),
+            array(
+                'main_edit' => array(
+                    'id' => $PageLayout->getId(),
+                    'name' => 'testtest',
+                    'url' => $PageLayout->getUrl(),
+                    'file_name' => $PageLayout->getFileName(),
+                    '_token' => 'dummy'
+                ),
+                'page_id' => $PageLayout->getId(),
+                'editable' => $editable,
+                'template_path' => $templatePath,
+            )
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_content_page_edit', array('id' => $PageLayout->getId()))));
+
+        $this->expected = 'testtest';
+        $this->actual = $PageLayout->getName();
+        $this->verify();
+    }
+
 }
