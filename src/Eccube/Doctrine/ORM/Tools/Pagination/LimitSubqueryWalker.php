@@ -16,7 +16,7 @@
  * @license     http://hobodave.com/license.txt New BSD License
  */
 
-namespace Doctrine\ORM\Tools\Pagination;
+namespace Eccube\Doctrine\ORM\Tools\Pagination;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

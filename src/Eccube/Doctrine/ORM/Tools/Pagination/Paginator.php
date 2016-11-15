@@ -17,7 +17,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\ORM\Tools\Pagination;
+namespace Eccube\Doctrine\ORM\Tools\Pagination;
 
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\QueryBuilder;
@@ -141,9 +141,9 @@ class Paginator implements \Countable, \IteratorAggregate
             $subQuery = $this->cloneQuery($this->query);
 
             if ($this->useOutputWalker($subQuery)) {
-                $subQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Doctrine\ORM\Tools\Pagination\LimitSubqueryOutputWalker');
+                $subQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Eccube\Doctrine\ORM\Tools\Pagination\LimitSubqueryOutputWalker');
             } else {
-                $this->appendTreeWalker($subQuery, 'Doctrine\ORM\Tools\Pagination\LimitSubqueryWalker');
+                $this->appendTreeWalker($subQuery, 'Eccube\Doctrine\ORM\Tools\Pagination\LimitSubqueryWalker');
             }
 
             $subQuery->setFirstResult($offset)->setMaxResults($length);
@@ -156,18 +156,18 @@ class Paginator implements \Countable, \IteratorAggregate
                 return new \ArrayIterator(array());
             }
 
-            $this->appendTreeWalker($whereInQuery, 'Doctrine\ORM\Tools\Pagination\WhereInWalker');
+            $this->appendTreeWalker($whereInQuery, 'Eccube\Doctrine\ORM\Tools\Pagination\WhereInWalker');
             $whereInQuery->setHint(WhereInWalker::HINT_PAGINATOR_ID_COUNT, count($ids));
             $whereInQuery->setFirstResult(null)->setMaxResults(null);
             $whereInQuery->setParameter(WhereInWalker::PAGINATOR_ID_ALIAS, $ids);
-            $whereInQuery->setCacheable($this->query->isCacheable());
+            //$whereInQuery->setCacheable($this->query->isCacheable());
 
             $result = $whereInQuery->getResult($this->query->getHydrationMode());
         } else {
             $result = $this->cloneQuery($this->query)
                 ->setMaxResults($length)
                 ->setFirstResult($offset)
-                ->setCacheable($this->query->isCacheable())
+                //->setCacheable($this->query->isCacheable())
                 ->getResult($this->query->getHydrationMode())
             ;
         }
@@ -188,7 +188,7 @@ class Paginator implements \Countable, \IteratorAggregate
         $cloneQuery = clone $query;
 
         $cloneQuery->setParameters(clone $query->getParameters());
-        $cloneQuery->setCacheable(false);
+        //$cloneQuery->setCacheable(false);
 
         foreach ($query->getHints() as $name => $value) {
             $cloneQuery->setHint($name, $value);
@@ -251,10 +251,10 @@ class Paginator implements \Countable, \IteratorAggregate
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult($platform->getSQLResultCasing('dctrn_count'), 'count');
 
-            $countQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Doctrine\ORM\Tools\Pagination\CountOutputWalker');
+            $countQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Eccube\Doctrine\ORM\Tools\Pagination\CountOutputWalker');
             $countQuery->setResultSetMapping($rsm);
         } else {
-            $this->appendTreeWalker($countQuery, 'Doctrine\ORM\Tools\Pagination\CountWalker');
+            $this->appendTreeWalker($countQuery, 'Eccube\Doctrine\ORM\Tools\Pagination\CountWalker');
         }
 
         $countQuery->setFirstResult(null)->setMaxResults(null);

@@ -11,7 +11,7 @@
  * to kontakt@beberlei.de so I can send you a copy immediately.
  */
 
-namespace Doctrine\ORM\Tools\Pagination;
+namespace Eccube\Doctrine\ORM\Tools\Pagination;
 
 use Doctrine\ORM\Query\TreeWalkerAdapter;
 use Doctrine\ORM\Query\AST\SelectStatement;

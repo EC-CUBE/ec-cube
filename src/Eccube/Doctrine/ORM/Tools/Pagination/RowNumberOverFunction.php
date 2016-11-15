@@ -18,7 +18,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\ORM\Tools\Pagination;
+namespace Eccube\Doctrine\ORM\Tools\Pagination;
 
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;

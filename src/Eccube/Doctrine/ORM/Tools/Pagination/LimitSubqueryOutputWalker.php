@@ -11,7 +11,7 @@
  * to kontakt@beberlei.de so I can send you a copy immediately.
  */
 
-namespace Doctrine\ORM\Tools\Pagination;
+namespace Eccube\Doctrine\ORM\Tools\Pagination;
 
 use Doctrine\DBAL\Platforms\DB2Platform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
@@ -86,7 +86,7 @@ class LimitSubqueryOutputWalker extends SqlWalker
     /**
      * @var array
      */
-    private $orderByPathExpressions = [];
+    private $orderByPathExpressions = array();
 
     /**
      * @var bool We don't want to add path expressions from sub-selects into the select clause of the containing query.
@@ -147,7 +147,7 @@ class LimitSubqueryOutputWalker extends SqlWalker
     private function rebuildOrderByForRowNumber(SelectStatement $AST)
     {
         $orderByClause = $AST->orderByClause;
-        $selectAliasToExpressionMap = [];
+        $selectAliasToExpressionMap = array();
         // Get any aliases that are available for select expressions.
         foreach ($AST->selectClause->selectExpressions as $selectExpression) {
             $selectAliasToExpressionMap[$selectExpression->fieldIdentificationVariable] = $selectExpression->expression;
@@ -306,7 +306,7 @@ class LimitSubqueryOutputWalker extends SqlWalker
      */
     private function addMissingItemsFromOrderByToSelect(SelectStatement $AST)
     {
-        $this->orderByPathExpressions = [];
+        $this->orderByPathExpressions = array();
 
         // We need to do this in another walker because otherwise we'll end up
         // polluting the state of this one.
@@ -320,12 +320,12 @@ class LimitSubqueryOutputWalker extends SqlWalker
         $orderByPathExpressions = $walker->getOrderByPathExpressions();
 
         // Get a map of referenced identifiers to field names.
-        $selects = [];
+        $selects = array();
         foreach ($orderByPathExpressions as $pathExpression) {
             $idVar = $pathExpression->identificationVariable;
             $field = $pathExpression->field;
             if (!isset($selects[$idVar])) {
-                $selects[$idVar] = [];
+                $selects[$idVar] = array();
             }
             $selects[$idVar][$field] = true;
         }
@@ -401,7 +401,7 @@ class LimitSubqueryOutputWalker extends SqlWalker
             = $dqlAliasToClassMap
             = $selectListAdditions
             = $orderByItems
-            = [];
+            = array();
 
         // Generate DQL alias -> SQL table alias mapping
         foreach(array_keys($this->rsm->aliasMap) as $dqlAlias) {
@@ -485,7 +485,7 @@ class LimitSubqueryOutputWalker extends SqlWalker
         // Set every select expression as visible(hidden = false) to
         // make $AST have scalar mappings properly - this is relevant for referencing selected
         // fields from outside the subquery, for example in the ORDER BY segment
-        $hiddens = [];
+        $hiddens = array();
 
         foreach ($AST->selectClause->selectExpressions as $idx => $expr) {
             $hiddens[$idx] = $expr->hiddenAliasResultVariable;
@@ -526,7 +526,7 @@ class LimitSubqueryOutputWalker extends SqlWalker
         $rootIdentifier = $rootClass->identifier;
 
         // For every identifier, find out the SQL alias by combing through the ResultSetMapping
-        $sqlIdentifier = [];
+        $sqlIdentifier = array();
         foreach ($rootIdentifier as $property) {
             if (isset($rootClass->fieldMappings[$property])) {
                 foreach (array_keys($this->rsm->fieldMappings, $property) as $alias) {
