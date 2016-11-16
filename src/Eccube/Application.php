@@ -249,7 +249,6 @@ class Application extends ApplicationTrait
     public function initSession()
     {
         $cookieName = 'eccube';
-        
         if ($this->isAdminRequest()) {
             $cookieName .= '_admin';
         }
@@ -296,26 +295,26 @@ class Application extends ApplicationTrait
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
                 if (isset($app['profiler'])) {
-                $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
+                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
                 } else {
-                $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
                 }
 
                 if ($app->isAdminRequest()) {
-                if (file_exists(__DIR__.'/../../app/template/admin')) {
-                    $paths[] = __DIR__.'/../../app/template/admin';
+                    if (file_exists(__DIR__.'/../../app/template/admin')) {
+                        $paths[] = __DIR__.'/../../app/template/admin';
                     }
                     $paths[] = $app['config']['template_admin_realdir'];
-                $paths[] = __DIR__.'/../../app/Plugin';
-                $cache = $cacheBaseDir.'admin';
+                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $cache = $cacheBaseDir.'admin';
 
                 } else {
                     if (file_exists($app['config']['template_realdir'])) {
                         $paths[] = $app['config']['template_realdir'];
                     }
                     $paths[] = $app['config']['template_default_realdir'];
-                $paths[] = __DIR__.'/../../app/Plugin';
-                $cache = $cacheBaseDir.$app['config']['template_code'];
+                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $cache = $cacheBaseDir.$app['config']['template_code'];
                     $app['front'] = true;
                 }
                 $twig->setCache($cache);
