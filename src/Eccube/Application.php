@@ -168,8 +168,8 @@ class Application extends ApplicationTrait
             }
 
             return $app->render('error.twig', array(
-                    'error_title' => $title,
-                    'error_message' => $message,
+                'error_title' => $title,
+                'error_message' => $message,
             ));
         });
 
@@ -216,19 +216,19 @@ class Application extends ApplicationTrait
             'translator.cache_dir' => $this['debug'] ? null : $this['config']['root_dir'].'/app/cache/translator',
         ));
         $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
-                $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
-                if (file_exists($file)) {
-                    $translator->addResource('yaml', $file, $app['locale'], 'validators');
-                }
+            if (file_exists($file)) {
+                $translator->addResource('yaml', $file, $app['locale'], 'validators');
+            }
 
             $file = __DIR__.'/Resource/locale/message.'.$app['locale'].'.yml';
-                if (file_exists($file)) {
-                    $translator->addResource('yaml', $file, $app['locale']);
-                }
+            if (file_exists($file)) {
+                $translator->addResource('yaml', $file, $app['locale']);
+            }
 
-                return $translator;
+            return $translator;
         }));
     }
 
@@ -254,15 +254,15 @@ class Application extends ApplicationTrait
             $cookieName .= '_admin';
         }
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
-            'session.storage.save_path' => $this['config']['root_dir'] . '/app/cache/eccube/session',
+            'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
             'session.storage.options' => array(
                 'name' => $cookieName,
                 'cookie_path' => $this['config']['root_urlpath'] ?: '/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
                 'cookie_httponly' => true,
-            // cookie_domainは指定しない
-            // http://blog.tokumaru.org/2011/10/cookiedomain.html
+                // cookie_domainは指定しない
+                // http://blog.tokumaru.org/2011/10/cookiedomain.html
             ),
         ));
 
@@ -282,46 +282,46 @@ class Application extends ApplicationTrait
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
         $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
-                $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
-                $twig->addExtension(new \Twig_Extension_StringLoader());
+            $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
+            $twig->addExtension(new \Twig_Extension_StringLoader());
 
-                return $twig;
+            return $twig;
         }));
 
         $this->before(function (Request $request, \Silex\Application $app) {
 
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
             $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
-                    $paths = array();
+                $paths = array();
 
-                    // 互換性がないのでprofiler とproduction 時のcacheを分離する
-                    if (isset($app['profiler'])) {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
-                    } else {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                // 互換性がないのでprofiler とproduction 時のcacheを分離する
+                if (isset($app['profiler'])) {
+                $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
+                } else {
+                $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                }
+
+                if ($app->isAdminRequest()) {
+                if (file_exists(__DIR__.'/../../app/template/admin')) {
+                    $paths[] = __DIR__.'/../../app/template/admin';
                     }
+                    $paths[] = $app['config']['template_admin_realdir'];
+                $paths[] = __DIR__.'/../../app/Plugin';
+                $cache = $cacheBaseDir.'admin';
 
-                    if ($app->isAdminRequest()) {
-                    if (file_exists(__DIR__.'/../../app/template/admin')) {
-                        $paths[] = __DIR__.'/../../app/template/admin';
-                        }
-                        $paths[] = $app['config']['template_admin_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    $cache = $cacheBaseDir.'admin';
-
-                    } else {
-                        if (file_exists($app['config']['template_realdir'])) {
-                            $paths[] = $app['config']['template_realdir'];
-                        }
-                        $paths[] = $app['config']['template_default_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    $cache = $cacheBaseDir.$app['config']['template_code'];
-                        $app['front'] = true;
+                } else {
+                    if (file_exists($app['config']['template_realdir'])) {
+                        $paths[] = $app['config']['template_realdir'];
                     }
-                    $twig->setCache($cache);
-                    $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+                    $paths[] = $app['config']['template_default_realdir'];
+                $paths[] = __DIR__.'/../../app/Plugin';
+                $cache = $cacheBaseDir.$app['config']['template_code'];
+                    $app['front'] = true;
+                }
+                $twig->setCache($cache);
+                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
-                    return $twig;
+                return $twig;
             }));
 
             // 管理画面のIP制限チェック.
@@ -433,7 +433,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
             'dbs.options' => array(
                 'default' => $this['config']['database']
-        )));
+            )));
         $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
@@ -880,11 +880,11 @@ class Application extends ApplicationTrait
             // const
             if (isset($config['const'])) {
                 $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
-                        $eccubeConfig[$config['code']] = array(
-                            'const' => $config['const'],
-                        );
+                    $eccubeConfig[$config['code']] = array(
+                        'const' => $config['const'],
+                    );
 
-                        return $eccubeConfig;
+                    return $eccubeConfig;
                 }));
             }
 
@@ -927,7 +927,7 @@ class Application extends ApplicationTrait
             // Type: ServiceProvider
             if (isset($config['service'])) {
                 foreach ($config['service'] as $service) {
-                    $class = '\\Plugin\\' . $config['code'] . '\\ServiceProvider\\' . $service;
+                    $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
                     if (!class_exists($class)) {
                         $this['monolog']->warning("skip {$code} loading. service provider class not foud.", array(
                             'class' => $class,
