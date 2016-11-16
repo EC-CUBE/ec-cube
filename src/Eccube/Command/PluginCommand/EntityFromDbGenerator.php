@@ -25,9 +25,9 @@
 namespace Eccube\Command\PluginCommand;
 
 use Symfony\Component\Yaml\Yaml;
-use Eccube\Command\PluginCommand\AbstractGenerator;
+use Eccube\Command\PluginCommand\AbstractPluginGenerator;
 
-class PluginEntityGenerator extends AbstractGenerator
+class EntityFromDbGenerator extends AbstractPluginGenerator
 {
 
     const PLUGIN_PREFIX = 'plg_';
@@ -48,18 +48,18 @@ class PluginEntityGenerator extends AbstractGenerator
         $this->output->writeln('');
     }
 
-    protected function start($paramList)
+    protected function start()
     {
         $fsList = array(
             'dir' => array(),
             'file' => array(),
         );
 
-        $pluginCode = $paramList['pluginCode']['value'];
-        $tableList = $paramList['tableList']['value'];
+        $pluginCode = $this->paramList['pluginCode']['value'];
+        $tableList = $this->paramList['tableList']['value'];
         $codePath = $this->app['config']['root_dir'] . '/app/Plugin/' . $pluginCode;
 
-        $dirList = array('Entity', 'Migration', 'Repository', 'Resource', 'Resource/doctrine');
+        $dirList = array('Entity', 'Repository', 'Resource', 'Resource/doctrine', '/Resource/doctrine/migration');
         foreach ($dirList as $dirName) {
             $dirPath = $codePath . '/' . $dirName;
             if (!is_dir($dirPath)) {
@@ -73,13 +73,23 @@ class PluginEntityGenerator extends AbstractGenerator
         }
         $entityInfoList = array();
         $SchemaManager = $this->app['orm.em']->getConnection()->getSchemaManager();
+        $migration = array();
         foreach ($SchemaManager->listTables() as $Table) {
             foreach ($tableList as $tableName) {
                 if ($tableName == $Table->getName()) {
                     $entityInfoList[] = $this->makeEntity($pluginCode, $Table);
+                    $migration[] = $Table;
                 }
             }
         }
+        if (count($migration)) {
+            $migrationContent = $this->makeMigration($pluginCode, $migration);
+            $timeSt = date('YmdHis');
+            $migrationContent = str_replace('[datetime]', $timeSt, $migrationContent);
+            $path = '/Resource/doctrine/migration/Version' . $timeSt . '.php';
+            $entityInfoList[] = array($path => $migrationContent);
+        }
+
         foreach ($entityInfoList as $entityInfo) {
             foreach ($entityInfo as $path => $body) {
                 $fullPath = $this->app['config']['root_dir'] . '/app/Plugin/' . $pluginCode . $path;
@@ -130,14 +140,12 @@ class PluginEntityGenerator extends AbstractGenerator
 
         $ret['/Repository/' . $nameFormated . 'Repository.php'] = $this->getRepo($pluginCode, $TableInfo);
 
-        $ret['/Migration/create_' . $nameFormated . '.php'] = $this->getMigration($TableInfo);
-
         return $ret;
     }
 
-    protected function getFildset()
+    protected function initFildset()
     {
-        return array(
+        $this->paramList = array(
             'pluginCode' => array(
                 'label' => '■プラグインコード: ',
                 'value' => null,
@@ -154,6 +162,17 @@ class PluginEntityGenerator extends AbstractGenerator
                 'validation' => array(
                     'isRequired' => false,
                     'inArray' => $this->getTableList()
+                )
+            ),
+            'supportFlag' => array(
+                'label' => '■サーポットバージョン: ',
+                'value' => null,
+                'name' => '■サーホットバージョン対応いりますか? [y/n]',
+                'show' => array(
+                    1 => 'Yes' ,0 => 'No'),
+                'validation' => array(
+                    'isRequired' => true,
+                    'choice' => array('y' => 1, 'n' => 0)
                 )
             )
         );
@@ -201,8 +220,7 @@ class PluginEntityGenerator extends AbstractGenerator
 
     private function getSrc($pluginCode, $TableInfo)
     {
-        $table_name = str_replace(self ::PLUGIN_PREFIX, '', $TableInfo->getName());
-        $nameFormated = $this->toCamelCase($table_name);
+        $nameFormated = $this->getShortClassName($TableInfo->getName());
 
         $ret = join(PHP_EOL, $this->getTopPart($pluginCode, $nameFormated));
 
@@ -319,8 +337,7 @@ class PluginEntityGenerator extends AbstractGenerator
 
     private function getConfig($pluginCode, $TableInfo)
     {
-        $table_name = str_replace(self ::PLUGIN_PREFIX, '', $TableInfo->getName());
-        $nameFormated = $this->toCamelCase($table_name);
+        $nameFormated = $this->getShortClassName($TableInfo->getName());
 
         $indexes = $TableInfo->getindexes();
 
@@ -405,8 +422,7 @@ class PluginEntityGenerator extends AbstractGenerator
 
     private function getRepo($pluginCode, $TableInfo)
     {
-        $table_name = str_replace(self::PLUGIN_PREFIX, '', $TableInfo->getName());
-        $nameFormated = $this->toCamelCase($table_name);
+        $nameFormated = $this->getShortClassName($TableInfo->getName());
 
         $line = array();
         $line[] = '<?php';
@@ -436,84 +452,141 @@ class PluginEntityGenerator extends AbstractGenerator
         return join(PHP_EOL, $line);
     }
 
-    private function getMigration($TableInfo)
+    private function makeMigration($pluginCode, $migration)
     {
-        $table_name = str_replace(self::PLUGIN_PREFIX, '', $TableInfo->getName());
-        $nameFormated = $this->toCamelCase($table_name);
+        if ($this->paramList['supportFlag']['value']) {
+            $migrationFileCont = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/MigrationVersionSupport.php');
+        } else {
+            $migrationFileCont = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/MigrationVersion.php');
+        }
 
+        $entityList = $this->createEntityList($pluginCode, $migration);
+
+        $entityListStr = join(',' . PHP_EOL, $entityList);
+        $migrationFileCont = str_replace('[entityList]', $entityListStr, $migrationFileCont);
+
+        if ($this->paramList['supportFlag']['value']) {
+            $createParts = $this->makeCreateParts($migration);
+            $tableNameArr = array();
+            foreach ($createParts as $tableName => $tableArr) {
+                $tableNameArr[] = '            $this->createTable' . $tableName . '($schema);';
+            }
+            $tableNameStr = join(PHP_EOL, $tableNameArr);
+            $migrationFileCont = str_replace('[createTable]', $tableNameStr, $migrationFileCont);
+
+            $createPartsStr = '';
+            foreach ($createParts as $parts) {
+                $createPartsStr .= join(PHP_EOL, $parts);
+            }
+            $migrationFileCont = str_replace('[createFunction]', $createPartsStr, $migrationFileCont);
+
+            $dropParts = $this->makeDropParts($migration);
+            $dropPartsStr = join(PHP_EOL, $dropParts);
+            $migrationFileCont = str_replace('[dropTable]', $dropPartsStr, $migrationFileCont);
+        }
+
+        return $migrationFileCont;
+    }
+
+    private function createEntityList($pluginCode, $migration)
+    {
         $ret = array();
-        $line[] = '<?php';
-        $line[] = '';
-        $ret[] = ' function createTable' . ucfirst($nameFormated) . '(Schema $schema)';
-        $ret[] = '    {';
-        $ret[] = '        $table = $schema->createTable(\'' . $TableInfo->getName() . '\');';
-        $columns = $TableInfo->getColumns();
-        foreach ($columns as $column) {
-
-            $typeName = $column->getType()->getName();
-            $ret[] = '        $table->addColumn(\'' . $column->getName() . '\', \'' . $typeName . '\', array(';
-            $param = array();
-            if ($column->getNotNull()) {
-                $param['notnull'] = 'true';
-            } else {
-                $param['notnull'] = 'false';
-            }
-            if ($column->getUnsigned()) {
-                $param['unsigned'] = 'true';
-            }
-            if ($column->getDefault()) {
-                $param['default'] = '\'' . $column->getDefault() . '\'';
-            }
-            if ($column->getAutoincrement()) {
-                $param['autoincrement'] = 'true';
-            }
-            if ($column->getComment()) {
-                $param['comment'] = '\'' . str_replace('\'', '\\\'', $column->getComment()) . '\'';
-            }
-            if ($column->getLength()) {
-                $param['length'] = '\'' . $column->getLength() . '\'';
-            }
-
-            if ($typeName == 'decimal') {
-                $param['precision'] = $column->getPrecision();
-                $param['scale'] = $column->getScale();
-            }
-            foreach ($param as $parKey => $parVal) {
-                $ret[] = '            \'' . $parKey . '\' => ' . $parVal . ',';
-            }
-            $ret[] = '        ));';
+        foreach ($migration as $TableInfo) {
+            $ret[] = "        '" . 'Plugin\\' . $pluginCode . '\Entity\\' . ucfirst($this->getShortClassName($TableInfo->getName())) . "'";
         }
+        return $ret;
+    }
 
-        $ret[] = '';
-        $ret[] = '		';
+    private function getShortClassName($dbTableName)
+    {
+        return $this->toCamelCase(str_replace(self ::PLUGIN_PREFIX, '', $dbTableName));
+    }
 
-        $indexes = $TableInfo->getindexes();
+    private function makeCreateParts($migration)
+    {
+        $ret = array();
+        foreach ($migration as $TableInfo) {
+            $nameFormated = $this->getShortClassName($TableInfo->getName());
+            $tmp = array();
+            $tmp[] = PHP_EOL;
+            $tmp[] = '    public function createTable' . ucfirst($nameFormated) . '(Schema $schema)';
+            $tmp[] = '    {';
+            $tmp[] = '        $table = $schema->createTable(\'' . $TableInfo->getName() . '\');';
+            $columns = $TableInfo->getColumns();
+            foreach ($columns as $column) {
 
-        foreach ($indexes as $index) {
-            if ($index->isPrimary()) {
-                $tmpCol = $index->getColumns();
-                foreach ($tmpCol as $colName) {
-                    $ret[] = '        $table->setPrimaryKey(array(\'' . $colName . '\'));';
-                    break;
-                }
-            } else {
-                $ret[] = '        $columnNames = array();';
-                foreach ($index->getColumns() as $IdentName) {
-                    $ret[] = '        $columnNames[] = \'' . $IdentName . '\';';
-                }
-                $ret[] = '        $indexName = \'' . $index->getName() . '\';';
-                $ret[] = '        $options = ' . var_export($index->getOptions(), true) . ';';
-                if ($index->isUnique()) {
-                    $ret[] = '        $table->addUniqueIndex($columnNames, $indexName, $options);';
+                $typeName = $column->getType()->getName();
+                $tmp[] = '        $table->addColumn(\'' . $column->getName() . '\', \'' . $typeName . '\', array(';
+                $param = array();
+                if ($column->getNotNull()) {
+                    $param['notnull'] = 'true';
                 } else {
-                    $ret[] = '        $flags = ' . var_export($index->getFlags(), true) . ';';
-                    $ret[] = '        $table->addIndex($columnNames, $indexName,$flags, $options);';
+                    $param['notnull'] = 'false';
+                }
+                if ($column->getUnsigned()) {
+                    $param['unsigned'] = 'true';
+                }
+                if ($column->getDefault()) {
+                    $param['default'] = '\'' . $column->getDefault() . '\'';
+                }
+                if ($column->getAutoincrement()) {
+                    $param['autoincrement'] = 'true';
+                }
+                if ($column->getComment()) {
+                    $param['comment'] = '\'' . str_replace('\'', '\\\'', $column->getComment()) . '\'';
+                }
+                if ($column->getLength()) {
+                    $param['length'] = '\'' . $column->getLength() . '\'';
+                }
+
+                if ($typeName == 'decimal') {
+                    $param['precision'] = $column->getPrecision();
+                    $param['scale'] = $column->getScale();
+                }
+                foreach ($param as $parKey => $parVal) {
+                    $tmp[] = '            \'' . $parKey . '\' => ' . $parVal . ',';
+                }
+                $tmp[] = '        ));';
+            }
+            $indexes = $TableInfo->getindexes();
+
+            foreach ($indexes as $index) {
+                if ($index->isPrimary()) {
+                    $tmpCol = $index->getColumns();
+                    foreach ($tmpCol as $colName) {
+                        $tmp[] = '        $table->setPrimaryKey(array(\'' . $colName . '\'));';
+                        break;
+                    }
+                } else {
+                    $tmp[] = '        $columnNames = array();';
+                    foreach ($index->getColumns() as $IdentName) {
+                        $tmp[] = '        $columnNames[] = \'' . $IdentName . '\';';
+                    }
+                    $tmp[] = '        $indexName = \'' . $index->getName() . '\';';
+                    $tmp[] = '        $options = ' . var_export($index->getOptions(), true) . ';';
+                    if ($index->isUnique()) {
+                        $tmp[] = '        $table->addUniqueIndex($columnNames, $indexName, $options);';
+                    } else {
+                        $tmp[] = '        $flags = ' . var_export($index->getFlags(), true) . ';';
+                        $tmp[] = '        $table->addIndex($columnNames, $indexName,$flags, $options);';
+                    }
                 }
             }
+
+            $tmp[] = '    }';
+            $ret[ucfirst($nameFormated)] = $tmp;
         }
 
-        $ret[] = '    }';
+        return $ret;
+    }
 
-        return join(PHP_EOL, $ret);
+    private function makeDropParts($migration)
+    {
+        $ret = array();
+        foreach ($migration as $TableInfo) {
+            $ret[] = '            $schema->dropTable(\'' . $TableInfo->getName() . '\');';
+        }
+
+        return $ret;
     }
 }

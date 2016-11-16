@@ -27,9 +27,10 @@ namespace Eccube\Command\PluginCommand;
 use Eccube\Common\Constant;
 use Symfony\Component\Console\Question\Question;
 
-abstract class AbstractGenerator implements GeneratorInterface
+abstract class AbstractPluginGenerator
 {
 
+    const NEW_HOOK_VERSION = '3.0.9';
     const STOP_PROCESS = 'quit';
 
     /**
@@ -57,20 +58,25 @@ abstract class AbstractGenerator implements GeneratorInterface
     protected $output;
 
     /**
+     * $paramList
+     * @var array $paramList
+     */
+    protected $paramList;
+
+    /**
      * ヘッダー
      */
     abstract protected function getHeader();
 
     /**
-     * 
-     * @var array $paramList
+     * start()
      */
-    abstract protected function start($paramList);
+    abstract protected function start();
 
     /**
      * フィルドーセット
      */
-    abstract protected function getFildset();
+    abstract protected function initFildset();
 
     public function __construct(\Eccube\Application $app)
     {
@@ -88,6 +94,7 @@ abstract class AbstractGenerator implements GeneratorInterface
         $this->dialog = $dialog;
         $this->input = $input;
         $this->output = $output;
+        $this->initFildset();
     }
 
     public function run()
@@ -95,57 +102,46 @@ abstract class AbstractGenerator implements GeneratorInterface
         //ヘッダー部分
         $this->getHeader();
 
-        $paramList = $this->getFildset();
-
-        foreach ($paramList as $paramKey => $params) {
+        foreach ($this->paramList as $paramKey => $params) {
             $value = $this->makeLineRequest($params);
             if ($value === false) {
                 $this->exitGenerator();
                 return;
             }
-            $paramList[$paramKey]['value'] = $value;
+            $this->paramList[$paramKey]['value'] = $value;
         }
 
         $this->output->writeln('');
         $this->output->writeln('---入力内容確認');
-        foreach ($paramList as $paramKey => $params) {
+        foreach ($this->paramList as $paramKey => $params) {
             if (is_array($params['value'])) {
                 $this->output->writeln($params['label']);
                 foreach ($params['value'] as $keys => $val) {
-                    if ($keys == $val) {
-                        $this->output->writeln('<info>  ' . $keys . '</info>');
-                    } else {
-                        $this->output->writeln('<info>  ' . $keys . ' : ' . $val . '</info>');
-                    }
+                    $this->output->writeln('<info>  ' . $keys . '</info>');
                 }
             } else {
-                $this->output->writeln($params['label'] . ' <info>' . $params['value'] . '</info>');
+                if (isset($params['show'])) {
+                    $disp = $params['show'][$params['value']];
+                } else {
+                    $disp = $params['value'];
+                }
+                $this->output->writeln($params['label'] . ' <info>' . $disp . '</info>');
             }
         }
         $this->output->writeln('');
-        $Question = new Question('<comment>上のプラグイン作成してよろしですか？「y/n」 : </comment>', '');
+        $Question = new Question('<comment>上のプラグイン作成してよろしですか? [y/n] : </comment>', '');
         $value = $this->dialog->ask($this->input, $this->output, $Question);
         if ($value != 'y') {
             $this->exitGenerator();
             return;
         }
 
-        $this->start($paramList);
+        $this->start();
     }
 
     protected function exitGenerator($msg = '完了 Bye bye.')
     {
         $this->output->writeln($msg);
-    }
-
-    /**
-     * 3.0.9以上かチェック
-     * 3.0.9以上であれば新しいフックポイントが利用可能
-     * @return mixed
-     */
-    protected function isNextVersion()
-    {
-        return version_compare(Constant::VERSION, '3.0.9', '>=');
     }
 
     protected function makeLineRequest($params)
@@ -168,8 +164,11 @@ abstract class AbstractGenerator implements GeneratorInterface
             } elseif ($key == 'patern' && preg_match($row, $value) == false) {
                 $this->output->writeln('<error>[※]有効な値ではありません</error>');
                 return $this->makeLineRequest($params);
-            } elseif ($key == 'inArray') {
+            } elseif ($key == 'inArray' || $key == 'choice') {
 
+                if (is_string($row)) {
+                    $row = $this->$row();
+                }
                 if ($value == '') {
                     return $params['value'];
                 }
@@ -181,7 +180,7 @@ abstract class AbstractGenerator implements GeneratorInterface
                     $params['value'][$value] = $row[$value];
                     $this->output->writeln('<info>---現在リスト</info>');
                     foreach ($params['value'] as $subKey => $node) {
-                        $this->output->writeln('<info> - ' . $subKey . ' : ' . $node . '</info>');
+                        $this->output->writeln('<info> - ' . $subKey . '</info>');
                     }
                     $this->output->writeln('');
                     $this->output->writeln('---※追加完了するにはエンターを入力してください---');
@@ -189,11 +188,11 @@ abstract class AbstractGenerator implements GeneratorInterface
                     return $this->makeLineRequest($params);
                 } else {
                     $searchList = array();
-                    $max = 12;
+                    $max = 16;
                     foreach ($row as $eventKey => $eventConst) {
                         if (strpos($eventKey, $value) !== false || strpos($eventConst, $value) !== false) {
-                            if (count($searchList) > $max) {
-                                $searchList['-'] = '-- 件数は' . $max . '以上あります';
+                            if (count($searchList) >= $max) {
+                                $searchList['-- 件数は' . $max . '以上あります'] = '';
                                 break;
                             }
                             $searchList[$eventKey] = $eventConst;
@@ -204,11 +203,7 @@ abstract class AbstractGenerator implements GeneratorInterface
                         $this->output->writeln('---こちらの検索結果を確認してください');
                     }
                     foreach ($searchList as $subKey => $node) {
-                        if ($subKey == $node) {
-                            $this->output->writeln(' - ' . $subKey);
-                        } else {
-                            $this->output->writeln(' - ' . $subKey . ' : ' . $node);
-                        }
+                        $this->output->writeln(' - ' . $subKey);
                     }
 
                     if (!empty($searchList)) {

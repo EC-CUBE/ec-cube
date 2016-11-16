@@ -29,9 +29,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
-use Eccube\Command\PluginCommand\AbstractGenerator;
+use Eccube\Command\PluginCommand\AbstractPluginGenerator;
 
-class PluginGenerator extends AbstractGenerator
+class PluginGenerator extends AbstractPluginGenerator
 {
 
     /**
@@ -55,9 +55,9 @@ class PluginGenerator extends AbstractGenerator
         $this->output->writeln('');
     }
 
-    protected function getFildset()
+    protected function initFildset()
     {
-        return array(
+        $this->paramList = array(
             'pluginName' => array(
                 'label' => '■プラグイン名: ',
                 'value' => null,
@@ -92,13 +92,23 @@ class PluginGenerator extends AbstractGenerator
                     'isRequired' => true,
                 )
             ),
+            'supportFlag' => array(
+                'label' => '■サーポットバージョン: ',
+                'value' => null,
+                'name' => '■サーホットバージョン対応いりますか? [y/n]',
+                'show' => array(1 => 'Yes' ,0 => 'No'),
+                'validation' => array(
+                    'isRequired' => true,
+                    'choice' => array('y' => 1, 'n' => 0)
+                )
+            ),
             'events' => array(
-                'label' => '■共通イベント: ',
+                'label' => '■サイト共通イベント: ',
                 'value' => array(),
-                'name' => '■共通イベントを入力してください、例：eccube.event.front.response',
+                'name' => '■サイト共通イベントを入力してください(プラグイン仕様書を参照 http://www.ec-cube.net/plugin/)',
                 'validation' => array(
                     'isRequired' => false,
-                    'inArray' => $this->getEvents()
+                    'inArray' => 'getEvents'
                 )
             ),
             'hookPoints' => array(
@@ -116,42 +126,71 @@ class PluginGenerator extends AbstractGenerator
     private function getHookPoints()
     {
         if ($this->hookPoints === null) {
-            if ($this->isNextVersion()) {
-                $Ref = new \ReflectionClass('\Eccube\Event\EccubeEvents');
-                $this->hookPoints = array_flip($Ref->getConstants());
-            } else {
-                $this->hookPoints = array();
-            }
+            $Ref = new \ReflectionClass('\Eccube\Event\EccubeEvents');
+            $this->hookPoints = array_flip($Ref->getConstants());
         }
-
         return $this->hookPoints;
     }
 
-    private function getEvents()
+    protected function getEvents()
     {
+        if (!isset($this->paramList['supportFlag']['value'])) {
+            return array();
+        }
         if ($this->events === null) {
-            if ($this->isNextVersion()) {
-                $this->events = include $this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/eventsListNew.php';
-            } else {
+            $this->events = array();
+            $routeEvents = array();
+            if ($this->paramList['supportFlag']['value']) {
                 $this->events = include $this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/eventsList.php';
+                $routeEvents['eccube.event.controller.__route__.before'] = 'Controller__route__Before';
+                $routeEvents['eccube.event.controller.__route__.after'] = 'Controller__route__After';
+                $routeEvents['eccube.event.controller.__route__.finish'] = 'Controller__route__Finish';
+                $routeEvents['eccube.event.render.__route__.before'] = 'Render__route__Before';
+            }
+            $this->events += include $this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/eventsListNew.php';
+
+            $routeEvents['eccube.event.route.__route__.request'] = 'Route__route__Request';
+            $routeEvents['eccube.event.route.__route__.controller'] = 'Route__route__Controller';
+            $routeEvents['eccube.event.route.__route__.response'] = 'Route__route__Response';
+            $routeEvents['eccube.event.route.__route__.exception'] = 'Route__route__Exception';
+            $routeEvents['eccube.event.route.__route__.terminate'] = 'Route__route__Terminate';
+            $allRoutes = array();
+
+            $controllers = $this->app['controllers'];
+            $collection = $controllers->flush();
+            foreach ($collection as $eventName => $dummy) {
+                $allRoutes[] = $eventName;
+            }
+
+            $routes = $this->app['routes']->all();
+
+            foreach ($routes as $eventName => $dummy) {
+                $allRoutes[] = $eventName;
+            }
+
+            foreach ($allRoutes as $eventName) {
+                $eventOnFunc = join(array_map('ucfirst', explode('_', strtolower($eventName))));
+
+                foreach ($routeEvents as $keys => $node) {
+                    $this->events[str_replace('__route__', $eventName, $keys)] = str_replace('__route__', $eventOnFunc, $node);
+                }
             }
         }
 
         return $this->events;
     }
 
-    protected function start($paramList)
+    protected function start()
     {
-
-        $pluginCode = $paramList['pluginCode']['value'];
+        $pluginCode = $this->paramList['pluginCode']['value'];
 
         $Plugin = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $pluginCode));
         if ($Plugin) {
             $this->exitGenerator('<error>同じcodeのプラグインが既に作成されています</error>');
             return;
         }
-        $this->createFilesAndFolders($pluginCode, $paramList);
-        $this->createDbRecords($pluginCode, $paramList);
+        $this->createFilesAndFolders($pluginCode, $this->paramList);
+        $this->createDbRecords($pluginCode, $this->paramList);
         $this->exitGenerator('プラグイン作成完了しました');
     }
 
@@ -345,128 +384,75 @@ class PluginGenerator extends AbstractGenerator
             $fsList['file'][$srcPath] = false;
         }
 
-        if ($this->isNextVersion()) {
-            $events = $paramList['events']['value'];
-            $eventsArr = array();
-            if (count($events) > 0) {
-                foreach ($events as $eventKey => $eventConst) {
-                    $eventsArr[$eventKey] = array(array('on' . $eventConst . ', NORMAL'));
-                }
+        $onFunctions = array();
+        $onEvents = array();
+
+        //イベント
+        $events = $paramList['events']['value'];
+        if (count($events) > 0) {
+            foreach ($events as $eventKey => $eventConst) {
+                $onEvents[$eventKey] = array(array('on' . $eventConst . ', NORMAL'));
+                $onFunctions[] = 'on' . $eventConst;
             }
+        }
 
-            $hookPoints = $paramList['hookPoints']['value'];
-            $hookArr = array();
-            $hookpointFunctions = array();
-            if (count($hookPoints)) {
-                foreach ($hookPoints as $hookKey => $hookConst) {
-                    $onName = 'on' . join(array_map('ucfirst', explode('_', strtolower($hookConst))));
-                    $hookArr[$hookKey] = array(array($onName . ', NORMAL'));
-                    $hookpointFunctions[] = $onName;
-                }
+        //フックポイント
+        $hookPoints = $paramList['hookPoints']['value'];
+        if (count($hookPoints)) {
+            foreach ($hookPoints as $hookKey => $hookConst) {
+                $onName = 'on' . join(array_map('ucfirst', explode('_', strtolower($hookConst))));
+                $onEvents[$hookKey] = array(array($onName . ', NORMAL'));
+                $onFunctions[] = $onName;
             }
+        }
 
-            if (count($hookArr)) {
-                $srcPath = $codePath . '/event.yml';
-                file_put_contents($srcPath, str_replace('\'', '', Yaml::dump($hookArr + $eventsArr)));
-                if (is_file($srcPath)) {
-                    $fsList['file'][$srcPath] = true;
-                } else {
-                    $fsList['file'][$srcPath] = false;
-                }
-                if (count($eventsArr)) {
-                    $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/EventHookpoint2.php');
-                } else {
-                    $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/EventHookpoint.php');
-                }
-
-                // Event
-                $from = '/\[code\]/';
-                $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
-                $from = '/\[author\]/';
-                $pluginFileAfter = preg_replace($from, $author, $pluginFileAfter);
-                $from = '/\[year\]/';
-                $pluginFileAfter = preg_replace($from, $year, $pluginFileAfter);
-
-                $functions = '';
-                foreach ($hookpointFunctions as $functionName) {
-                    $functions .= "    public function " . $functionName . "(EventArgs \$event)\n    {\n    }\n\n";
-                }
-                $from = '/\[hookpoint_function\]/';
-                $pluginFileAfter = preg_replace($from, $functions, $pluginFileAfter);
-                $srcPath = $codePath . '/' . $code . 'Event.php';
-                file_put_contents($srcPath, $pluginFileAfter);
-                if (is_file($srcPath)) {
-                    $fsList['file'][$srcPath] = true;
-                } else {
-                    $fsList['file'][$srcPath] = false;
-                }
-
-                // config.ymlを再作成
-                $config = array();
-                $config['name'] = $paramList['pluginName']['value'];
-                $config['code'] = $code;
-                $config['version'] = $paramList['version']['value'];
-                $config['event'] = $code . 'Event';
-                $config['service'] = array($code . 'ServiceProvider');
-                $srcPath = $codePath . '/config.yml';
-                file_put_contents($srcPath, Yaml::dump($config));
-                if (is_file($srcPath)) {
-                    $fsList['file'][$srcPath] = true;
-                } else {
-                    $fsList['file'][$srcPath] = false;
-                }
+        if (count($onEvents)) {
+            $srcPath = $codePath . '/event.yml';
+            file_put_contents($srcPath, str_replace('\'', '', Yaml::dump($onEvents)));
+            if (is_file($srcPath)) {
+                $fsList['file'][$srcPath] = true;
             } else {
-                if (count($eventsArr)) {
-                    $srcPath = $codePath . '/event.yml';
-                    file_put_contents($srcPath, str_replace('\'', '', Yaml::dump($eventsArr)));
-                    if (is_file($srcPath)) {
-                        $fsList['file'][$srcPath] = true;
-                    } else {
-                        $fsList['file'][$srcPath] = false;
-                    }
-                    // Event
-                    $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/Event2.php');
-                    $from = '/\[code\]/';
-                    $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
-                    $from = '/\[author\]/';
-                    $pluginFileAfter = preg_replace($from, $author, $pluginFileAfter);
-                    $from = '/\[year\]/';
-                    $pluginFileAfter = preg_replace($from, $year, $pluginFileAfter);
+                $fsList['file'][$srcPath] = false;
+            }
 
-                    $srcPath = $codePath . '/' . $code . 'Event.php';
-                    file_put_contents($srcPath, $pluginFileAfter);
-                    if (is_file($srcPath)) {
-                        $fsList['file'][$srcPath] = true;
-                    } else {
-                        $fsList['file'][$srcPath] = false;
-                    }
-                }
+            $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/EventHookpoint2.php');
+
+            // Event
+            $from = '/\[code\]/';
+            $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
+            $from = '/\[author\]/';
+            $pluginFileAfter = preg_replace($from, $author, $pluginFileAfter);
+            $from = '/\[year\]/';
+            $pluginFileAfter = preg_replace($from, $year, $pluginFileAfter);
+
+            $functions = '';
+            foreach ($onFunctions as $functionName) {
+                $functions .= "    public function " . $functionName . "(EventArgs \$event)\n    {\n    }\n\n";
             }
+            $from = '/\[hookpoint_function\]/';
+            $pluginFileAfter = preg_replace($from, $functions, $pluginFileAfter);
+            $srcPath = $codePath . '/' . $code . 'Event.php';
+            file_put_contents($srcPath, $pluginFileAfter);
+            if (is_file($srcPath)) {
+                $fsList['file'][$srcPath] = true;
+            } else {
+                $fsList['file'][$srcPath] = false;
+            }
+        }
+
+        // config.ymlを再作成
+        $config = array();
+        $config['name'] = $paramList['pluginName']['value'];
+        $config['code'] = $code;
+        $config['version'] = $paramList['version']['value'];
+        $config['event'] = $code . 'Event';
+        $config['service'] = array($code . 'ServiceProvider');
+        $srcPath = $codePath . '/config.yml';
+        file_put_contents($srcPath, Yaml::dump($config));
+        if (is_file($srcPath)) {
+            $fsList['file'][$srcPath] = true;
         } else {
-            if (count($eventsArr)) {
-                $srcPath = $codePath . '/event.yml';
-                file_put_contents($srcPath, str_replace('\'', '', Yaml::dump($eventsArr)));
-                if (is_file($srcPath)) {
-                    $fsList['file'][$srcPath] = true;
-                } else {
-                    $fsList['file'][$srcPath] = false;
-                }
-                // Event
-                $pluginFileBefore = file_get_contents($this->app['config']['root_dir'] . '/src/Eccube/Command/PluginCommand/Resource/Event.php');
-                $from = '/\[code\]/';
-                $pluginFileAfter = preg_replace($from, $code, $pluginFileBefore);
-                $from = '/\[author\]/';
-                $pluginFileAfter = preg_replace($from, $author, $pluginFileAfter);
-                $from = '/\[year\]/';
-                $pluginFileAfter = preg_replace($from, $year, $pluginFileAfter);
-                $srcPath = $codePath . '/' . $code . 'Event.php';
-                file_put_contents($srcPath, $pluginFileAfter);
-                if (is_file($srcPath)) {
-                    $fsList['file'][$srcPath] = true;
-                } else {
-                    $fsList['file'][$srcPath] = false;
-                }
-            }
+            $fsList['file'][$srcPath] = false;
         }
 
         // LICENSE

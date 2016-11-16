@@ -16,9 +16,4 @@ return array(
     'eccube.event.admin.response' => 'AdminResponse',
     'eccube.event.admin.exception' => 'AdminException',
     'eccube.event.admin.terminate' => 'AdminTerminate',
-    'eccube.event.route.homepage.request' => 'RouteRequest',
-    'eccube.event.route.homepage.controller' => 'RouteController',
-    'eccube.event.route.homepage.response' => 'RouteResponse',
-    'eccube.event.route.homepage.exception' => 'RouteException',
-    'eccube.event.route.homepage.terminate' => 'RouteTerminate'
 );
