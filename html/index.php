@@ -46,9 +46,9 @@ if ($app['config']['eccube_install']) {
     $app->initialize();
     $app->initializePlugin();
     if ($app['config']['http_cache']['enabled']) {
-        $app['http_cache']->run($app['initRequest']);
+        $app['http_cache']->run();
     } else {
-        $app->run($app['initRequest']);
+        $app->run();
     }
 } else {
     $location = str_replace('index.php', 'install.php', $_SERVER['SCRIPT_NAME']);

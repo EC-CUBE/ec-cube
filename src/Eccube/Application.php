@@ -125,9 +125,6 @@ class Application extends ApplicationTrait
         // init locale
         $this->initLocale();
 
-        // init Request
-        $this->initRequest();
-
         // init session
         if (!$this->isSessionStarted()) {
             $this->initSession();
@@ -232,30 +229,12 @@ class Application extends ApplicationTrait
         }));
     }
 
-    public function initRequest()
-    {
-        $this['initRequest'] = Request::createFromGlobals();
-        $pathinfo = rawurldecode($this['initRequest']->getPathInfo());
-         $this['admin'] = false;
-         $this['front'] = false;
-         $pathinfo = rawurldecode($this['initRequest']->getPathInfo());
-         if (strpos($pathinfo, '/' . trim($this['config']['admin_route'], '/') . '/') === 0) {
-             $this['admin'] = true;
-         } else {
-             $this['front'] = true;
-         }
-    }
-
     public function initSession()
     {
-        $cookieName = 'eccube';
-        if ($this->isAdminRequest()) {
-            //$cookieName .= '_admin';
-        }
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
             'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
             'session.storage.options' => array(
-                'name' => $cookieName,
+                'name' => 'eccube',
                 'cookie_path' => $this['config']['root_urlpath'] ?: '/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
@@ -288,6 +267,14 @@ class Application extends ApplicationTrait
         }));
 
         $this->before(function (Request $request, \Silex\Application $app) {
+            $app['admin'] = false;
+            $app['front'] = false;
+            $pathinfo = rawurldecode($request->getPathInfo());
+            if (strpos($pathinfo, '/'.trim($app['config']['admin_route'], '/').'/') === 0) {
+                $app['admin'] = true;
+            } else {
+                $app['front'] = true;
+            }
 
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
             $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
