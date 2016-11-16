@@ -250,7 +250,7 @@ class Application extends ApplicationTrait
     {
         $cookieName = 'eccube';
         if ($this->isAdminRequest()) {
-            $cookieName .= '_admin';
+            //$cookieName .= '_admin';
         }
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
             'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
