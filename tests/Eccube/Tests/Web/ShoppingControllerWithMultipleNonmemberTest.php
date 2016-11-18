@@ -20,8 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
-
 namespace Eccube\Tests\Web;
 
 /**
@@ -127,13 +125,13 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
                 // 配送先1
                 array(
                     'delivery' => 1,
-                    'deliveryTime' => 1
+                    'deliveryTime' => 1,
                 ),
                 // 配送先2
                 array(
                     'delivery' => 1,
-                    'deliveryTime' => 1
-                )
+                    'deliveryTime' => 1,
+                ),
             )
         );
 
@@ -281,9 +279,26 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     public function testAddMultiShippingWithOneAddressTwoItemsTwoQuantities()
     {
         $client = $this->client;
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 1));
 
-        $this->scenarioCartIn($client);
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
@@ -344,9 +359,27 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     public function testAddMultiShippingWithTwoAddressesTwoItemsThreeQuantities()
     {
         $client = $this->client;
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
 
-        $this->scenarioCartIn($client);
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
@@ -430,9 +463,27 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     {
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $this->scenarioCartIn($client);
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
@@ -520,10 +571,36 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     {
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
-        $this->scenarioCartIn($client);
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
@@ -604,10 +681,36 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     {
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 1));
-        $this->scenarioCartIn($client);
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
@@ -703,10 +806,38 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     {
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 3));
-        $this->scenarioCartIn($client);
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
+        $this->scenarioCartIn($client, $ProductClass3->getId());
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
@@ -1096,10 +1227,38 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     {
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', array('product_class_id' => 10, 'quantity' => 2));
-        $client->request('POST', '/cart/add', array('product_class_id' => 1, 'quantity' => 1));
-        $client->request('POST', '/cart/add', array('product_class_id' => 2, 'quantity' => 3));
-        $this->scenarioCartIn($client);
+        // Product test 1 with type 1
+        $Product = $this->createProduct();
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStock(111);
+
+        // Product test 2
+        $Product2 = $this->createProduct();
+        $ProductClass2 = $Product2->getProductClasses()->first();
+        $ProductClass2->setStock(111);
+
+        // Product test 3
+        $Product3 = $this->createProduct();
+        $ProductClass3 = $Product3->getProductClasses()->first();
+        $ProductClass3->setStock(111);
+
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->persist($ProductClass2);
+        $this->app['orm.em']->persist($ProductClass3);
+        $this->app['orm.em']->flush();
+
+        // Item of product 1
+        $this->scenarioCartIn($client, $ProductClass->getId());
+        $this->scenarioCartIn($client, $ProductClass->getId());
+
+        // Item of product 2
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+        $this->scenarioCartIn($client, $ProductClass2->getId());
+
+        // Item of product 3
+        $this->scenarioCartIn($client, $ProductClass3->getId());
+        $this->scenarioCartIn($client, $ProductClass3->getId());
+        $this->scenarioCartIn($client, $ProductClass3->getId());
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($client, $formData);
@@ -1855,7 +2014,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // 完了画面
         $this->scenarioComplete(
             $client,
-            $this->app->path('shopping_confirm'),
+            $this->app->url('shopping_confirm'),
             array(
                 // Product type 1 with address 1 (two item)
                 array(

@@ -1236,14 +1236,12 @@ class ShoppingController extends AbstractController
             foreach ($data as $mulitples) {
                 /** @var \Eccube\Entity\ShipmentItem $multipleItem */
                 $multipleItem = $mulitples->getData();
-
                 foreach ($mulitples as $items) {
                     foreach ($items as $item) {
                         // 追加された配送先情報を作成
                         $Delivery = $multipleItem->getShipping()->getDelivery();
                         $ProductClass = $multipleItem->getProductClass();
                         $Product = $multipleItem->getProduct();
-                        $quantity = $item['quantity']->getData();
                         $productType = $ProductClass->getProductType()->getId();
                         $productClassId = $ProductClass->getId();
 

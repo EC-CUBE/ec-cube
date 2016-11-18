@@ -107,6 +107,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
                   )
             )
         );
+
         return $crawler;
     }
 }
