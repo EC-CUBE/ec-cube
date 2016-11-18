@@ -23,6 +23,8 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
  * Symfony Validator component Provider.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * 
+ * @deprecated since 3.0.0, to be removed in 3.1
  */
 class ValidatorServiceProvider implements ServiceProviderInterface
 {

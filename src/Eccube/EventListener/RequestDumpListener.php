@@ -3,6 +3,7 @@
 namespace Eccube\EventListener;
 
 use Eccube\Application;
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Monolog\Logger;
 
 /**
  * リクエストログ出力ため Listener
@@ -43,6 +43,9 @@ class RequestDumpListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
         $log = '** before *****************************************:'.PHP_EOL;
         $request = $event->getRequest();
         $log .= $this->logRequest($request);
@@ -51,6 +54,7 @@ class RequestDumpListener implements EventSubscriberInterface
             $log .= $this->logSession($Session);
         }
         $this->app->log($log, array(), Logger::DEBUG);
+        log_debug($log);
     }
 
     /**
@@ -60,6 +64,9 @@ class RequestDumpListener implements EventSubscriberInterface
      */
     public function onResponse(FilterResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
         $log = '** after *****************************************:'.PHP_EOL;
         $response = $event->getResponse();
         $log .= $this->logResponse($response);
@@ -70,6 +77,7 @@ class RequestDumpListener implements EventSubscriberInterface
             $log .= $this->logSession($Session);
         }
         $this->app->log($log, array(), Logger::DEBUG);
+        log_debug($log);
     }
 
     /**
@@ -80,7 +88,7 @@ class RequestDumpListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST  => 'onKernelRequest',
+            KernelEvents::REQUEST => 'onKernelRequest',
             KernelEvents::RESPONSE => 'onResponse',
         );
     }

@@ -181,12 +181,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('sexs', $sexs);
         }
 
-        // birth_month
-        // TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
         if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
-//            $qb
-//                ->andWhere('extract(month from c.birth) = :birth_month')
-//                ->setParameter('birth_month', $searchData['birth_month']);
+            $qb
+                ->andWhere('EXTRACT(MONTH FROM c.birth) = :birth_month')
+                ->setParameter('birth_month', $searchData['birth_month']);
         }
 
         // birth

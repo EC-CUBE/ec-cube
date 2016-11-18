@@ -24,6 +24,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -122,6 +123,25 @@ class Category extends \Eccube\Entity\AbstractEntity
     {
         return array_merge(array($this), $this->getDescendants());
 
+    }
+
+    /**
+     * カテゴリに紐づく商品があるかどうかを調べる.
+     *
+     * ProductCategoriesはExtra Lazyのため, lengthやcountで評価した際にはCOUNTのSQLが発行されるが,
+     * COUNT自体が重いので, LIMIT 1で取得し存在チェックを行う.
+     *
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#filtering-collections
+     * @return bool
+     */
+    public function hasProductCategories()
+    {
+        $criteria = Criteria::create()
+            ->orderBy(array('category_id' => Criteria::ASC))
+            ->setFirstResult(0)
+            ->setMaxResults(1);
+
+        return $this->ProductCategories->matching($criteria)->count() === 1;
     }
 
     /**

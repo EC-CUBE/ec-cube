@@ -36,6 +36,7 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 }
 
 // output_config_php = true に設定することで、Config Yaml ファイルを元に Config PHP ファイルが出力されます。
+// app/config/eccube, src/Eccube/Resource/config 以下に書き込み権限が必要です。
 // Config PHP ファイルが存在する場合は、 Config Yaml より優先されます。
 // Yaml ファイルをパースする必要が無いため、高速化が期待できます。
 $app = \Eccube\Application::getInstance(array('output_config_php' => false));

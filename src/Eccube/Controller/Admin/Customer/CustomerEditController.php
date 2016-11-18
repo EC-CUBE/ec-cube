@@ -35,6 +35,7 @@ class CustomerEditController extends AbstractController
 {
     public function index(Application $app, Request $request, $id = null)
     {
+        $app['orm.em']->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
             $Customer = $app['orm.em']
@@ -73,6 +74,8 @@ class CustomerEditController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                log_info('会員登録開始', array($Customer->getId()));
+
                 if ($Customer->getId() === null) {
                     $Customer->setSalt(
                         $app['eccube.repository.customer']->createSalt(5)
@@ -116,8 +119,9 @@ class CustomerEditController extends AbstractController
                 }
 
                 $app['orm.em']->persist($Customer);
-
                 $app['orm.em']->flush();
+
+                log_info('会員登録完了', array($Customer->getId()));
 
                 $event = new EventArgs(
                     array(

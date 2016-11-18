@@ -251,6 +251,12 @@
             </div>
             {% endif %}
 
+            <div id="detail_box__footer" class="row hidden-xs hidden-sm">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                    <p><a href="{{ url('admin_customer_page', { page_no : app.session.get('eccube.admin.customer.search.page_no')|default('1') } ) }}?resume=1">検索画面に戻る</a></p>
+                </div>
+            </div>
+
         </div><!-- /.col -->
 
         <div id="common_box" class="col-md-3" id="aside_column">
