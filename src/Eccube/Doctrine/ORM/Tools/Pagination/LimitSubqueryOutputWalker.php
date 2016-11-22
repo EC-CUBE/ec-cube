@@ -376,24 +376,20 @@ class LimitSubqueryOutputWalker extends SqlWalker
         /* @var array $orderBy an array of rebuilt order by items */
         $orderBy = $this->rebuildOrderByClauseForOuterScope($orderByClause);
 
-        $orderByFields = str_replace(array(' DESC', ' ASC'), array('', ''), $orderBy);
-        $innerSqlIdentifier = array();
-        foreach ($orderByFields as $k => $v) {
-            // remove fields that are selected by identifiers,
+        $innerSqlIdentifier = $sqlIdentifier;
+
+        foreach ($orderBy as $field) {
+            $field = preg_replace('/((\S+)\s+(ASC|DESC)\s*,?)*/', '${2}', $field);
+
+            // skip fields that are selected by identifiers,
             // if those are ordered by in the query
-            if (in_array($v, $sqlIdentifier)) {
-                unset($orderByFields[$k]);
+            if (in_array($field, $sqlIdentifier, true)) {
+                continue;
             }
+            $innerSqlIdentifier[] = $field;
         }
-        foreach ($sqlIdentifier as $k => $v) {
-            $innerSqlIdentifier[$k] = 'dctrn_result_inner.' . $v;
-            $sqlIdentifier[$k] = 'dctrn_result.' . $v;
-        }
-        // add the
-        foreach ($orderByFields as $k => $v) {
-            $innerSqlIdentifier[$k] = 'dctrn_result_inner.' . $v;
-        }
-        // Build the select distinct statement
+
+        // Build the innner select statement
         $sql = sprintf(
             'SELECT DISTINCT %s FROM (%s) dctrn_result_inner ORDER BY %s',
             implode(', ', $innerSqlIdentifier),
@@ -403,6 +399,7 @@ class LimitSubqueryOutputWalker extends SqlWalker
 
         // now only select distinct identifier
         $sql = sprintf('SELECT DISTINCT %s FROM (%s) dctrn_result', implode(', ', $sqlIdentifier), $sql);
+
         return $sql;
     }
 
