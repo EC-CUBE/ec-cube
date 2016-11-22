@@ -96,6 +96,10 @@ class ContactControllerTest extends AbstractWebTestCase
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
 
+        $expected = "お問い合わせ(確認ページ)";
+        $actual = $crawler->filter('title')->text();
+        $this->assertContains($expected, $actual);
+
         // FIXME https://github.com/EC-CUBE/ec-cube/issues/1323
         // 修正したらコメントをはずすこと
         // $this->expected = 'お問い合わせ(確認ページ)';
