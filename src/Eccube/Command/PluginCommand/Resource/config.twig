@@ -3,7 +3,7 @@
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
 {% block title %}[code]画面{% endblock %}
-{% block sub_title %}{% endblock %}
+{% block sub_title %}[code]設定{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
@@ -17,13 +17,7 @@
                         <h3 class="box-title">[code]設定</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body form-horizontal">
-                        <div class="form-group {% if form.name.vars.errors|length %} has-error {% endif %}">
-                            <label class="col-sm-4 control-label">項目A<span class="text-danger">*</span></label>
-                            <div class="col-sm-8">
-                                {{ form_widget(form.name) }}
-                                {{ form_errors(form.name) }}
-                            </div>
-                        </div>
+                        {{ form_row(form.name) }}
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div><!-- /.col -->

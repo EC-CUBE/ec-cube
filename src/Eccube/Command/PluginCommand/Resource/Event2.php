@@ -11,6 +11,7 @@
 
 namespace Plugin\[code];
 
+use Eccube\Application;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -23,7 +24,7 @@ class [code]Event
     /** @var  \Eccube\Application $app */
     private $app;
 
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }

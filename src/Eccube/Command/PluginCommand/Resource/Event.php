@@ -11,6 +11,7 @@
 
 namespace Plugin\[code];
 
+use Eccube\Application;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class [code]Event
@@ -19,7 +20,7 @@ class [code]Event
     /** @var  \Eccube\Application $app */
     private $app;
 
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -53,4 +54,5 @@ class [code]Event
     {
         error_log('onRenderBefore');
     }
+
 }

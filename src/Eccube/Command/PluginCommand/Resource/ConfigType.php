@@ -18,17 +18,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class [code]ConfigType extends AbstractType
 {
-    protected $app;
-
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', 'text', array(
+                'label' => '項目A',
+                'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
@@ -39,4 +35,5 @@ class [code]ConfigType extends AbstractType
     {
         return '[code_name]_config';
     }
+
 }

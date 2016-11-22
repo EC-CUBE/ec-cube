@@ -11,6 +11,7 @@
 
 namespace Plugin\[code];
 
+use Eccube\Application;
 use Eccube\Event\EventArgs;
 
 class [code]Event
@@ -19,10 +20,9 @@ class [code]Event
     /** @var  \Eccube\Application $app */
     private $app;
 
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-[hookpoint_function]
-}
+[hookpoint_function]}

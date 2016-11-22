@@ -11,18 +11,20 @@
 
 namespace Plugin\[code];
 
+use Eccube\Application;
 use Eccube\Plugin\AbstractPluginManager;
 
 class PluginManager extends AbstractPluginManager
 {
+
     /**
      * プラグインインストール時の処理
      *
      * @param $config
-     * @param $app
+     * @param Application $app
      * @throws \Exception
      */
-    public function install($config, $app)
+    public function install($config, Application $app)
     {
     }
 
@@ -30,9 +32,9 @@ class PluginManager extends AbstractPluginManager
      * プラグイン削除時の処理
      *
      * @param $config
-     * @param $app
+     * @param Application $app
      */
-    public function uninstall($config, $app)
+    public function uninstall($config, Application $app)
     {
     }
 
@@ -40,10 +42,10 @@ class PluginManager extends AbstractPluginManager
      * プラグイン有効時の処理
      *
      * @param $config
-     * @param $app
+     * @param Application $app
      * @throws \Exception
      */
-    public function enable($config, $app)
+    public function enable($config, Application $app)
     {
     }
 
@@ -51,13 +53,22 @@ class PluginManager extends AbstractPluginManager
      * プラグイン無効時の処理
      *
      * @param $config
-     * @param $app
+     * @param Application $app
+     * @throws \Exception
      */
-    public function disable($config, $app)
+    public function disable($config, Application $app)
     {
     }
 
-    public function update($config, $app)
+    /**
+     * プラグイン更新時の処理
+     *
+     * @param $config
+     * @param Application $app
+     * @throws \Exception
+     */
+    public function update($config, Application $app)
     {
     }
+
 }
