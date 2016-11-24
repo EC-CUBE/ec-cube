@@ -27,8 +27,8 @@ namespace Eccube\Form\Type\Admin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductType extends AbstractType
 {
@@ -135,7 +135,6 @@ class ProductType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
 
     }

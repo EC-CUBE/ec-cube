@@ -83,6 +83,7 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
                     'login_id' => $username,
                     'Work' => $Work,
             ))
+            ->setMaxResults(1)
             ->getQuery();
         $Member = $query->getOneOrNullResult();
         if (!$Member) {

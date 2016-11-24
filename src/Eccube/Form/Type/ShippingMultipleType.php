@@ -67,8 +67,7 @@ class ShippingMultipleType extends AbstractType
                         'allow_delete' => true,
                     ));
 
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
 
     }
 

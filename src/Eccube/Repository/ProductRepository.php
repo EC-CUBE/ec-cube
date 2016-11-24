@@ -110,7 +110,12 @@ class ProductRepository extends EntityRepository
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
             $qb->groupBy('p');
+            // postgres9.0以下は, groupBy('p.id')が利用できない
+            // mysqlおよびpostgresql9.1以上であればgroupBy('p.id')にすることで性能向上が期待できる.
+            // @see https://github.com/EC-CUBE/ec-cube/issues/1904
+            // $qb->groupBy('p.id');
             $qb->orderBy('price02_min', 'ASC');
+            $qb->addOrderBy('p.id', 'DESC');
             // 新着順
         } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
             $qb->orderBy('p.create_date', 'DESC');

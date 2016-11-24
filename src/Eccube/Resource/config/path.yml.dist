@@ -1,9 +1,9 @@
 # duplicated
 root: ${ROOT_URLPATH}/ # root_urlpath
 admin_dir: ${ADMIN_ROUTE}/ # admin_route
-tpl: ${ROOT_URLPATH}/user_data/packages/default/ # front_urlpath
-admin_tpl: ${ROOT_URLPATH}/user_data/packages/admin/ # admin_urlpath
-image_path: ${ROOT_URLPATH}/upload/save_image/ # image_save_urlpath
+tpl: ${ROOT_PUBLIC_URLPATH}/user_data/packages/default/ # front_urlpath
+admin_tpl: ${ROOT_PUBLIC_URLPATH}/user_data/packages/admin/ # admin_urlpath
+image_path: ${ROOT_PUBLIC_URLPATH}/upload/save_image/ # image_save_urlpath
 
 # base valiables
 root_dir: ${ROOT_DIR}
@@ -47,9 +47,9 @@ plugin_temp_realdir: ${ROOT_DIR}/app/cache/plugin
 plugin_html_realdir: ${ROOT_DIR}/html/plugin
 
 # urlpath
-admin_urlpath: ${ROOT_URLPATH}/template/admin
-front_urlpath: ${ROOT_URLPATH}/template/${TEMPLATE_CODE}
-image_save_urlpath: ${ROOT_URLPATH}/upload/save_image
-image_temp_urlpath: ${ROOT_URLPATH}/upload/temp_image
-user_data_urlpath: ${ROOT_URLPATH}/user_data
-plugin_urlpath: ${ROOT_URLPATH}/plugin
+admin_urlpath: ${ROOT_PUBLIC_URLPATH}/template/admin
+front_urlpath: ${ROOT_PUBLIC_URLPATH}/template/${TEMPLATE_CODE}
+image_save_urlpath: ${ROOT_PUBLIC_URLPATH}/upload/save_image
+image_temp_urlpath: ${ROOT_PUBLIC_URLPATH}/upload/temp_image
+user_data_urlpath: ${ROOT_PUBLIC_URLPATH}/user_data
+plugin_urlpath: ${ROOT_PUBLIC_URLPATH}/plugin

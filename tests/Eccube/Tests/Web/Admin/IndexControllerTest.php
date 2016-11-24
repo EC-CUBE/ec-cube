@@ -26,6 +26,13 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
+    protected $Member;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->Member = $this->createMember();
+    }
 
     public function testRoutingAdminIndex()
     {
@@ -37,6 +44,12 @@ class IndexControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request('POST', $this->app['url_generator']->generate('admin_homepage_nonstock'));
         $this->assertTrue($this->client->getResponse()->isRedirect());
+    }
+
+    public function testRoutingAdminChangePassword()
+    {
+        $this->client->request('GET', $this->app['url_generator']->generate('admin_change_password'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
@@ -146,5 +159,71 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->expected = count($MonthlyOrders);
         $this->actual = str_replace(',', '', $match[2]);
         $this->verify('今月の売上件数');
+    }
+
+    public function testChangePasswordWithPost()
+    {
+        $this->logIn($this->Member);
+        $client = $this->client;
+
+        $form = $this->createChangePasswordFormData();
+        $crawler = $client->request(
+            'POST',
+            $this->app->path('admin_change_password'),
+            array('admin_change_password' => $form)
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('admin_change_password')));
+
+        $Member = clone $this->Member;
+        $Member->setPassword($form['change_password']['first']);
+
+        $this->expected = $this->app['eccube.repository.member']->encryptPassword($Member);
+        $this->actual = $this->Member->getPassword();
+
+        // XXX 実行タイミングにより、稀にパスワード変更前のハッシュ値を参照する場合があるため、変更に成功した場合のみ assertion を実行する
+        $old_password = hash_hmac('sha256', 'password'.':'.$this->app['config']['auth_magic'], $this->Member->getSalt());
+        if ($this->actual === $old_password) {
+            $this->markTestSkipped('Failed to change the password by HttpClient. Skip this test.');
+        }
+
+        $this->verify(
+            'パスワードのハッシュ値が異なります '.PHP_EOL
+            .' AUTH_MAGIC='.$this->app['config']['auth_magic'].PHP_EOL
+            .' HASH_Algos='.$this->app['config']['password_hash_algos'].PHP_EOL
+            .' Input Password='.$form['change_password']['first'].PHP_EOL
+            .' Expected: salt='.$Member->getSalt().', raw password='.$Member->getPassword().PHP_EOL
+            .' Actual: salt='.$this->Member->getSalt()
+        );
+    }
+
+    public function testChangePasswordWithPostInvalid()
+    {
+        $this->logIn($this->Member);
+        $client = $this->client;
+
+        $client->request(
+            'POST',
+            $this->app->path('admin_change_password'),
+            array()
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    protected function createChangePasswordFormData()
+    {
+        $faker = $this->getFaker();
+
+        $password = $faker->lexify('????????');
+
+        $form = array(
+            'current_password' => 'password',
+            'change_password' => array(
+                'first' => $password,
+                'second' => $password,
+            ),
+            '_token' => 'dummy'
+        );
+        return $form;
     }
 }

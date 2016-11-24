@@ -265,12 +265,18 @@ class ProductController
                         $app['session']->getFlashBag()->set('eccube.add.favorite', true);
                         return $app->redirect($app->url('mypage_login'));
                     }
-                } else {
+                } elseif ($addCartData['mode'] === 'add_cart') {
+
+                    log_info('カート追加処理開始', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
+
                     try {
                         $app['eccube.service.cart']->addProduct($addCartData['product_class_id'], $addCartData['quantity'])->save();
                     } catch (CartException $e) {
+                        log_info('カート追加エラー', array($e->getMessage()));
                         $app->addRequestError($e->getMessage());
                     }
+
+                    log_info('カート追加処理完了', array('product_id' => $Product->getId(), 'product_class_id' => $addCartData['product_class_id'], 'quantity' => $addCartData['quantity']));
 
                     $event = new EventArgs(
                         array(

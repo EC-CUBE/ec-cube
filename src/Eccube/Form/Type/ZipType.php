@@ -25,8 +25,8 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -73,7 +73,6 @@ class ZipType extends AbstractType
 
         $builder->setAttribute('zip01_name', $options['zip01_name']);
         $builder->setAttribute('zip02_name', $options['zip02_name']);
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

@@ -61,6 +61,26 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
+    /**
+     * loadUserByUsernameb内のgetNullOrSingleResultが正しい値を返却するかを確認する
+     * ※getNullOrSingleResultは「NonUniqueResultException」をスローするが >
+     * > 同一IDのデーターを投入→取得した際にエラーがでないか確認を行う
+     * 投入データーは、同一レコード2件
+     * 2件の同一データ取得時に、setMaxResult(1)で「NonUniqueResultException」をスローせず >
+     * > 値が一件(Order句がないため順位不同)とれる事が成功テストケース
+     */
+    public function testLoadUserByUsernameSetSameRecord()
+    {
+        $email1 = 'same@example.com';
+        $email2 = 'same@example.com';
+        $Customer1 = $this->createCustomer($email1);
+        $Customer2 = $this->createCustomer($email2);
+        $GetCustomer1 = $this->app['eccube.repository.customer']->loadUserByUsername($email1);
+        $this->expected = $GetCustomer1->getEmail();
+        $this->actual = $Customer1->getEmail();
+        $this->verify();
+    }
+
     public function testRefreshUser()
     {
         $this->expected = $this->Customer;

@@ -3219,3 +3219,7 @@ textarea#log {
     filter: alpha(opacity=50);
     opacity: .5;
 }
+
+#shipping_info__button_new {
+    margin-bottom: 20px;
+}

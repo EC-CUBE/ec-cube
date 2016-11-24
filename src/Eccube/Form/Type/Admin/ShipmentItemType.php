@@ -106,7 +106,6 @@ class ShipmentItemType extends AbstractType
                 }
             }
         });
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

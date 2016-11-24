@@ -24,6 +24,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -125,6 +126,25 @@ class Category extends \Eccube\Entity\AbstractEntity
     }
 
     /**
+     * カテゴリに紐づく商品があるかどうかを調べる.
+     *
+     * ProductCategoriesはExtra Lazyのため, lengthやcountで評価した際にはCOUNTのSQLが発行されるが,
+     * COUNT自体が重いので, LIMIT 1で取得し存在チェックを行う.
+     *
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#filtering-collections
+     * @return bool
+     */
+    public function hasProductCategories()
+    {
+        $criteria = Criteria::create()
+            ->orderBy(array('category_id' => Criteria::ASC))
+            ->setFirstResult(0)
+            ->setMaxResults(1);
+
+        return $this->ProductCategories->matching($criteria)->count() === 1;
+    }
+
+    /**
      * @var integer
      */
     private $id;
@@ -158,16 +178,6 @@ class Category extends \Eccube\Entity\AbstractEntity
      * @var integer
      */
     private $del_flg;
-
-    /**
-     * @var \Eccube\Entity\CategoryCount
-     */
-    private $CategoryCount;
-
-    /**
-     * @var \Eccube\Entity\CategoryTotalCount
-     */
-    private $CategoryTotalCount;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -344,52 +354,6 @@ class Category extends \Eccube\Entity\AbstractEntity
     public function getDelFlg()
     {
         return $this->del_flg;
-    }
-
-    /**
-     * Set CategoryCount
-     *
-     * @param  \Eccube\Entity\CategoryCount $categoryCount
-     * @return Category
-     */
-    public function setCategoryCount(\Eccube\Entity\CategoryCount $categoryCount = null)
-    {
-        $this->CategoryCount = $categoryCount;
-
-        return $this;
-    }
-
-    /**
-     * Get CategoryCount
-     *
-     * @return \Eccube\Entity\CategoryCount
-     */
-    public function getCategoryCount()
-    {
-        return $this->CategoryCount;
-    }
-
-    /**
-     * Set CategoryTotalCount
-     *
-     * @param  \Eccube\Entity\CategoryTotalCount $categoryTotalCount
-     * @return Category
-     */
-    public function setCategoryTotalCount(\Eccube\Entity\CategoryTotalCount $categoryTotalCount = null)
-    {
-        $this->CategoryTotalCount = $categoryTotalCount;
-
-        return $this;
-    }
-
-    /**
-     * Get CategoryTotalCount
-     *
-     * @return \Eccube\Entity\CategoryTotalCount
-     */
-    public function getCategoryTotalCount()
-    {
-        return $this->CategoryTotalCount;
     }
 
     /**

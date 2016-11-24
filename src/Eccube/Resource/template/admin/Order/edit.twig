@@ -72,13 +72,15 @@ $(function() {
                 for (var i = 0; i < data.length; i++) {
                     // モーダルウィンドウ内に結果を出力.
                     var tr = $('<tr></tr>');
-                    var id = $('<td>' + data[i]['id'] + '</td>');
-                    var name = $('<td>' + data[i]['name'] + '</td>');
-                    var tel = $('<td>' + data[i]['tel'] + '</td>');
+                    var id = $('<td>').text(data[i]['id']);
+                    var name = $('<td>').text(data[i]['name']);
+                    var tel = $('<td>').text(data[i]['tel']);
+                    var email = $('<td>').text(data[i]['email']);
                     var select = $('<td data-customer="' + data[i]['id'] + '"><button type="button" class="btn btn-default btn-sm">決定</button></td>');
                     tr.append(id);
                     tr.append(name);
                     tr.append(tel);
+                    tr.append(email);
                     tr.append(select);
                     tbody.append(tr);
 
@@ -134,8 +136,8 @@ $(function() {
 
     // 商品検索
     $('#searchProductModalButton').on('click', function() {
-        var tbody = $('#searchProductModalList tbody');
-        tbody.children().remove();
+        var list = $('#searchProductModalList');
+        list.children().remove();
 
         var data = $(this).data();
         shipment_idx = data.idx;
@@ -719,7 +721,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             <div id="detail__back_button" class="row hidden-xs hidden-sm">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
                     {% if id is not null %}
-                        <p><a href="{{ url('admin_order') }}">戻る</a></p>
+                        <p><a href="{{ url('admin_order_page', { page_no: app.session.get('eccube.admin.order.search.page_no')|default('1') }) }}?resume=1">戻る</a></p>
                     {% endif %}
                 </div>
             </div>
@@ -764,6 +766,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <th>会員ID</th>
                                 <th>お名前(カナ)</th>
                                 <th>電話番号</th>
+                                <th>メールアドレス</th>
                                 <th>決定</th>
                             </tr>
                             </thead>

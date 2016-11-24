@@ -39,7 +39,6 @@ class DeliveryFeeType extends AbstractType
             ->add('fee', 'price', array(
                 'label' => false,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber())
         ;
     }
 

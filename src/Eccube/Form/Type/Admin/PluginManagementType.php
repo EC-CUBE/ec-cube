@@ -65,8 +65,7 @@ class PluginManagementType extends AbstractType
                         'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
                     )),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

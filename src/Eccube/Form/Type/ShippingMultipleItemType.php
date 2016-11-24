@@ -126,8 +126,7 @@ class ShippingMultipleItemType extends AbstractType
 
                 $form['quantity']->setData($quantity);
 
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
 
     }
 

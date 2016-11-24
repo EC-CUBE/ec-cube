@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Eccube\Common\Constant;
+use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class ProductControllerTest extends AbstractAdminWebTestCase
@@ -98,7 +100,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testEditWithPost()
     {
-        $Product = $this->createProduct();
+        $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
@@ -122,7 +124,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_product_product_delete', array('id' => $Product->getId()))
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_page', array('page_no' => 1)).'?resume=1'));
 
         $DeletedProduct = $this->app['eccube.repository.product']->find($Product->getId());
         $this->expected = 1;
@@ -197,5 +199,130 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         return $TestProductStock;
     }
 
+    /**
+     * @param $taxRate
+     * @param $expected
+     * @dataProvider dataNewProductProvider
+     */
+    public function testNewWithPostTaxRate($taxRate, $expected)
+    {
+        // Give
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $formData = $this->createFormData();
 
+        $formData['class']['tax_rate'] = $taxRate;
+        // When
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_new'),
+            array('admin_product' => $formData)
+        );
+
+        // Then
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $arrTmp = explode('/', $this->client->getResponse()->getTargetUrl());
+        $productId = $arrTmp[count($arrTmp)-2];
+        $Product = $this->app['eccube.repository.product']->find($productId);
+
+        $this->expected = $expected;
+        $Taxrule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product));
+        $taxRate = is_null($taxRate) ? null : $Taxrule->getTaxRate();
+        $this->actual = $taxRate;
+        $this->assertTrue($this->actual === $this->expected);
+    }
+
+    public function dataNewProductProvider()
+    {
+        return array(
+            array(null, null),
+            array("0", "0"),
+            array("1", "1"),
+        );
+    }
+
+    /**
+     * 個別税率設定のテストケース
+     * 個別税率設定を有効にし、商品編集時に更新されることを確認する
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/1547
+     * @param $before 更新前の税率
+     * @param $after POST値
+     * @param $expected 期待値
+     *
+     * @dataProvider dataEditProductProvider
+     */
+    public function testEditWithPostTaxRate($before, $after, $expected)
+    {
+        // Give
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        $Product = $this->createProduct(null, 0);
+        $ProductClasses = $Product->getProductClasses();
+        $ProductClass = $ProductClasses[0];
+        $formData = $this->createFormData();
+
+        if (!is_null($after)) {
+            $formData['class']['tax_rate'] = $after;
+        }
+        if (!is_null($before)) {
+            $DefaultTaxRule = $this->app['eccube.repository.tax_rule']->find(\Eccube\Entity\TaxRule::DEFAULT_TAX_RULE_ID);
+
+            $TaxRule = new TaxRule();
+            $TaxRule->setProductClass($ProductClass)
+                ->setCreator($Product->getCreator())
+                ->setProduct($Product)
+                ->setCalcRule($DefaultTaxRule->getCalcRule())
+                ->setTaxRate($before)
+                ->setTaxAdjust(0)
+                ->setApplyDate(new \DateTime())
+                ->setDelFlg(Constant::DISABLED);
+            $ProductClass->setTaxRule($TaxRule);
+            $this->app['orm.em']->persist($TaxRule);
+            $this->app['orm.em']->flush();
+        }
+
+        // When
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_product_product_edit', array('id' => $Product->getId())),
+            array('admin_product' => $formData)
+        );
+
+        // Then
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_product_edit', array('id' => $Product->getId()))));
+
+        $this->expected = $expected;
+        $TaxRule = $this->app['eccube.repository.tax_rule']->findOneBy(array('Product' => $Product, 'ProductClass' => $ProductClass));
+
+        if (is_null($TaxRule)) {
+            $this->actual = null;
+        } else {
+            $this->actual = $TaxRule->getTaxRate();
+        }
+
+        $this->assertTrue($this->actual === $this->expected);
+    }
+
+    /**
+     * 個別税率編集時のテストデータ
+     * 更新前の税率 / POST値 / 期待値の配列を返す
+     *
+     * @return array
+     */
+    public function dataEditProductProvider()
+    {
+        return array(
+            array('0', '0', '0'),
+            array('0', '1', '1'),
+            array('0', null, null),
+            array('1', '0', '0'),
+            array('1', '1', '1'),
+            array('1', null, null),
+            array(null, '0', '0'),
+            array(null, '1', '1'),
+            array(null, null, null),
+        );
+    }
 }

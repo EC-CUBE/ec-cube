@@ -25,6 +25,7 @@ namespace Eccube\Util;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Eccube\Application;
 
 /**
  * キャッシュ関連のユーティリティクラス.
@@ -69,6 +70,23 @@ class Cache
                 $finder = Finder::create()->in($cacheDir.'/twig');
                 $filesystem->remove($finder);
             }
+            if (is_dir($cacheDir.'/translator')) {
+                $finder = Finder::create()->in($cacheDir.'/translator');
+                $filesystem->remove($finder);
+            }
+        }
+
+        if (function_exists('opcache_reset')) {
+            opcache_reset();
+        }
+
+        if (function_exists('apc_clear_cache')) {
+            apc_clear_cache('user');
+            apc_clear_cache();
+        }
+
+        if (function_exists('wincache_ucache_clear')) {
+            wincache_ucache_clear();
         }
 
         return true;

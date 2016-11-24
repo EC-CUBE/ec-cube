@@ -24,10 +24,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginLocalInstallType extends AbstractType
 {
@@ -50,8 +50,7 @@ class PluginLocalInstallType extends AbstractType
                         'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
                     )),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

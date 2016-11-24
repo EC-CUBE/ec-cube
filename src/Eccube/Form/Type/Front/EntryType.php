@@ -128,8 +128,7 @@ class EntryType extends AbstractType
                 if (0 < count($Customer)) {
                     $form['email']['first']->addError(new FormError('既に利用されているメールアドレスです'));
                 }
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
     }
 
     /**

@@ -25,6 +25,8 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Csv;
+use Eccube\Entity\Master\CsvType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CsvControllerTest extends AbstractAdminWebTestCase
@@ -50,7 +52,6 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     public function testGetCsv()
     {
-
         $CsvType = $this->app['eccube.repository.master.csv_type']->find(1);
         $this->assertNotEmpty($CsvType);
 
@@ -75,4 +76,79 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->app['orm.em']->getConnection()->rollback();
     }
 
+    /**
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function testRoutingCsvFail()
+    {
+        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+            // 何故か CsvType が EntityNotFoundException: Entity was not found. になる
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+        $this->client->request('GET', $this->app->url('admin_setting_shop_csv', array('id' => 9999)));
+        $this->fail();
+    }
+
+    public function testSubmit()
+    {
+        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+            // 何故か CsvType が EntityNotFoundException: Entity was not found. になる
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+
+        $csvType = CsvType::CSV_TYPE_PRODUCT;
+        $CsvOut = $this->createCsv($csvType);
+        $CsvNotOut = $this->createCsv($csvType);
+
+        $form = array(
+            '_token' => 'dummy',
+            'csv_type' => $csvType,
+            'csv_not_output' => array(
+                $CsvOut->getId(),
+            ),
+            'csv_output' => array(
+                $CsvNotOut->getId(),
+            ),
+        );
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_shop_csv', array('id' => $csvType)),
+            array('form' => $form)
+        );
+
+        $redirectUrl = $this->app->url('admin_setting_shop_csv', array('id' => $csvType));
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        $this->actual = array($CsvNotOut->getEnableFlg(), $CsvOut->getEnableFlg());
+        $this->expected = array(Constant::ENABLED, Constant::DISABLED);
+        $this->verify();
+    }
+
+    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = 'Eccube\Entity\Product', $ref = null)
+    {
+        $CsvType = $this->app['eccube.repository.master.csv_type']->find($csvType);
+        $Creator = $this->app['eccube.repository.member']->find(2);
+
+        $csv = $this->app['eccube.repository.csv']->findOneBy(array('CsvType' => $CsvType), array('rank' => 'DESC'));
+        $rank = 1;
+        if ($csv) {
+            $rank = $csv->getRank() + 1;
+        }
+
+        $Csv = new Csv();
+        $Csv->setCsvType($CsvType);
+        $Csv->setCreator($Creator);
+        $Csv->setEntityName($entity);
+        $Csv->setFieldName($field);
+        $Csv->setReferenceFieldName($ref);
+        $Csv->setDispName('Test');
+        $Csv->setEnableFlg(Constant::DISABLED);
+        $Csv->setRank($rank);
+
+        $this->app['orm.em']->persist($Csv);
+        $this->app['orm.em']->flush();
+
+        return $Csv;
+    }
 }

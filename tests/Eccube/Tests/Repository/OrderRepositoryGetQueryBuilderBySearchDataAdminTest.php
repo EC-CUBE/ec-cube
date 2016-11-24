@@ -191,14 +191,25 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testTel()
     {
+        $Orders = $this->app['eccube.repository.order']->findAll();
+        // 全受注の Tel を変更しておく
+        foreach ($Orders as $Order) {
+            $Order
+                ->setTel01('111')
+                ->setTel02('2222')
+                ->setTel03('8888');
+        }
+        $this->app['orm.em']->flush();
+
+        // 1受注のみ検索対象とする
         $this->Order1
-            ->setTel01('090')
+            ->setTel01('999')
             ->setTel02('9999')
             ->setTel03('8888');
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'tel' => '090'
+            'tel' => '999'
         );
         $this->scenario();
 
@@ -242,6 +253,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $Male = $this->app['eccube.repository.master.sex']->find(1);
         $Female = $this->app['eccube.repository.master.sex']->find(2);
         $this->Order1->setSex($Male);
+        $this->Order2->setSex(null);
         $this->app['orm.em']->flush();
 
         $Sexs = new ArrayCollection(array($Male, $Female));
