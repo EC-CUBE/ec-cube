@@ -81,9 +81,11 @@ class ContactController
                     $builder->setAttribute('freeze', true);
                     $form = $builder->getForm();
                     $form->handleRequest($request);
+                    $title = 'お問い合わせ(確認ページ)';
 
                     return $app->render('Contact/confirm.twig', array(
                         'form' => $form->createView(),
+                        'title' => $title,
                     ));
 
                 case 'complete':
