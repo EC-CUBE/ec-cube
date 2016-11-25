@@ -2,6 +2,26 @@ Eccube\Entity\Order:
     type: entity
     table: dtb_order
     repositoryClass: Eccube\Repository\OrderRepository
+    indexes:
+        # requires a length on MySQL
+        # dtb_order_pre_order_id_idx:
+        #     columns:
+        #         - pre_order_id
+        # dtb_order_order_email_idx:
+        #     columns:
+        #         - order_email
+        dtb_order_order_date_idx:
+            columns:
+                - order_date
+        dtb_order_payment_date_idx:
+            columns:
+                - payment_date
+        dtb_order_commit_date_idx:
+            columns:
+                - commit_date
+        dtb_order_update_date_idx:
+            columns:
+                - update_date
     id:
         id:
             type: integer

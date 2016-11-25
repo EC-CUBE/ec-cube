@@ -129,7 +129,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\PaymentOption');
         });
         $app['eccube.repository.category'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\Category');
+            $CategoryRepository = $app['orm.em']->getRepository('Eccube\Entity\Category');
+            $CategoryRepository->setApplication($app);
+
+            return $CategoryRepository;
         });
         $app['eccube.repository.customer'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Customer');
@@ -161,6 +164,9 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.repository.product_stock'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductStock');
         });
+        $app['eccube.repository.product_tag'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Eccube\Entity\ProductTag');
+        });
         $app['eccube.repository.class_name'] = $app->share(function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ClassName');
         });
@@ -171,7 +177,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
         });
         $app['eccube.repository.base_info'] = $app->share(function () use ($app) {
-            return $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
+            $BaseInfoRepository = $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
+            $BaseInfoRepository->setApplication($app);
+
+            return $BaseInfoRepository;
         });
         $app['eccube.repository.tax_rule'] = $app->share(function () use ($app) {
             $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');
@@ -248,6 +257,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
                 $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
 
+                // clear cache
+                $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
+                $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
+
                 // filters
                 $config = $em->getConfiguration();
                 $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
@@ -301,7 +314,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
             if (isset($app['security']) && isset($app['eccube.repository.customer_favorite_product'])) {
                 $types[] = new \Eccube\Form\Type\AddCartType($app['config'], $app['security'], $app['eccube.repository.customer_favorite_product']);
             }
-            $types[] = new \Eccube\Form\Type\SearchProductType();
+            $types[] = new \Eccube\Form\Type\SearchProductType($app);
+            $types[] = new \Eccube\Form\Type\SearchProductBlockType($app);
             $types[] = new \Eccube\Form\Type\OrderSearchType($app);
             $types[] = new \Eccube\Form\Type\ShippingItemType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleType($app);
@@ -342,7 +356,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\OrderDetailType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShippingType($app);
             $types[] = new \Eccube\Form\Type\Admin\ShipmentItemType($app);
-            $types[] = new \Eccube\Form\Type\Admin\PaymentRegisterType();
+            $types[] = new \Eccube\Form\Type\Admin\PaymentRegisterType($app);
             $types[] = new \Eccube\Form\Type\Admin\TaxRuleType();
             $types[] = new \Eccube\Form\Type\Admin\MainEditType($app);
             $types[] = new \Eccube\Form\Type\Admin\MailType();

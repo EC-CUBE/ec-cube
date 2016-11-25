@@ -4,9 +4,7 @@ namespace Eccube\Tests;
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\MigrationException;
 use Eccube\Application;
-use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Mock\CsrfTokenMock;
 use Faker\Factory as Faker;
@@ -150,7 +148,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * Member オブジェクトを生成して返す.
      *
-     * @param string $username. null の場合は, ランダムなユーザーIDが生成される.
+     * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
      * @return \Eccube\Entity\Member
      */
     public function createMember($username = null)
@@ -214,7 +212,8 @@ abstract class EccubeTestCase extends WebTestCase
     {
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
-         // 後方互換のため最初の1つのみ渡す
+
+        // 後方互換のため最初の1つのみ渡す
         return $this->app['eccube.fixture.generator']->createOrder($Customer, array($ProductClasses[0]));
     }
 
@@ -231,6 +230,16 @@ abstract class EccubeTestCase extends WebTestCase
     public function createPayment(\Eccube\Entity\Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
     {
         return $this->app['eccube.fixture.generator']->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
+    }
+
+    /**
+     * PageLayout オブジェクトを生成して返す
+     *
+     * @return \Eccube\Entity\PageLayout
+     */
+    public function createPageLayout()
+    {
+        return $this->app['eccube.fixture.generator']->createPageLayout();
     }
 
     /**
@@ -258,6 +267,25 @@ abstract class EccubeTestCase extends WebTestCase
     {
         $app = Application::getInstance();
         $app['debug'] = true;
+
+        // ログの内容をERRORレベルでしか出力しないように設定を上書き
+        $app['config'] = $app->share($app->extend('config', function ($config, \Silex\Application $app) {
+            $config['log']['log_level'] = 'ERROR';
+            $config['log']['action_level'] = 'ERROR';
+            $config['log']['passthru_level'] = 'ERROR';
+
+            $channel = $config['log']['channel'];
+            foreach (array('monolog', 'front', 'admin') as $key) {
+                $channel[$key]['log_level'] = 'ERROR';
+                $channel[$key]['action_level'] = 'ERROR';
+                $channel[$key]['passthru_level'] = 'ERROR';
+            }
+            $config['log']['channel'] = $channel;
+
+            return $config;
+        }));
+        $app->initLogger();
+
         $app->initialize();
         $app->initializePlugin();
         $app['session.test'] = true;
@@ -364,6 +392,7 @@ abstract class EccubeTestCase extends WebTestCase
         $client = new Client();
         $request = $client->get(self::MAILCATCHER_URL.'messages');
         $response = $request->send();
+
         return json_decode($response->getBody(true));
     }
 
@@ -378,6 +407,7 @@ abstract class EccubeTestCase extends WebTestCase
         $client = new Client();
         $request = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
         $response = $request->send();
+
         return json_decode($response->getBody(true));
     }
 
@@ -398,9 +428,11 @@ abstract class EccubeTestCase extends WebTestCase
     protected function isSqliteInMemory()
     {
         if (array_key_exists('memory', $this->app['config']['database'])
-            && $this->app['config']['database']['memory']) {
+            && $this->app['config']['database']['memory']
+        ) {
             return true;
         }
+
         return false;
     }
 }

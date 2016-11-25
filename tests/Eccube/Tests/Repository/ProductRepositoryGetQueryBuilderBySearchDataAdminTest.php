@@ -130,6 +130,19 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     public function testStockStatus()
     {
+        $faker = $this->getFaker();
+        // 全商品の在庫を 1 以上にしておく
+        $Products = $this->app['eccube.repository.product']->findAll();
+        foreach ($Products as $Product) {
+            foreach ($Product->getProductClasses() as $ProductClass) {
+                $ProductClass
+                    ->setStockUnlimited(false)
+                    ->setStock($faker->numberBetween(1, 999));
+            }
+        }
+        $this->app['orm.em']->flush();
+
+        // 1商品だけ 0 に設定する
         $Product = $this->app['eccube.repository.product']->findOneBy(array('name' => '商品-1'));
         foreach ($Product->getProductClasses() as $ProductClass) {
             $ProductClass

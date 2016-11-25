@@ -9,8 +9,10 @@ use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\DeliveryFee;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
+use Eccube\Entity\PageLayout;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\Product;
@@ -322,6 +324,10 @@ class Generator {
 
             $this->app['orm.em']->persist($ProductClass);
             $this->app['orm.em']->flush($ProductClass);
+
+            $ProductStock->setProductClass($ProductClass);
+            $ProductStock->setProductClassId($ProductClass->getId());
+            $this->app['orm.em']->flush($ProductStock);
             $Product->addProductClass($ProductClass);
         }
 
@@ -351,6 +357,11 @@ class Generator {
             ->setProduct($Product);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush($ProductClass);
+
+        $ProductStock->setProductClass($ProductClass);
+        $ProductStock->setProductClassId($ProductClass->getId());
+        $this->app['orm.em']->flush($ProductStock);
+
         $Product->addProductClass($ProductClass);
 
         $Categories = $this->app['eccube.repository.category']->findAll();
@@ -383,13 +394,17 @@ class Generator {
      * @param integer $add_discount Order に加算される値引き額
      * @return \Eccube\Entity\Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0)
+    public function createOrder(Customer $Customer, array $ProductClasses = array(), Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusType = null)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
         $Pref = $this->app['eccube.repository.master.pref']->find($faker->numberBetween(1, 47));
         $Payments = $this->app['eccube.repository.payment']->findAll();
-        $Order = new Order($this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']));
+        if(!$statusType){
+            $statusType = 'order_processing';
+        }
+        $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config'][$statusType]);
+        $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
         $Order
@@ -581,6 +596,31 @@ class Generator {
 
         $this->app['orm.em']->flush($Delivery);
         return $Delivery;
+    }
+
+    /**
+     * ページを生成する
+     *
+     * @return PageLayout
+     */
+    public function createPageLayout()
+    {
+        $faker = $this->getFaker();
+        $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+        /** @var PageLayout $PageLayout */
+        $PageLayout = $this->app['eccube.repository.page_layout']->newPageLayout($DeviceType);
+        $PageLayout
+            ->setName($faker->word)
+            ->setUrl($faker->word)
+            ->setFileName($faker->word)
+            ->setAuthor($faker->word)
+            ->setDescription($faker->word)
+            ->setKeyword($faker->word)
+            ->setMetaRobots($faker->word)
+        ;
+        $this->app['orm.em']->persist($PageLayout);
+        $this->app['orm.em']->flush($PageLayout);
+        return $PageLayout;
     }
 
     /**

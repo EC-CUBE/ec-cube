@@ -38,7 +38,7 @@ class ClassNameController extends AbstractController
         if ($id) {
             $TargetClassName = $app['eccube.repository.class_name']->find($id);
             if (!$TargetClassName) {
-                throw new NotFoundHttpException();
+                throw new NotFoundHttpException('商品規格が存在しません');
             }
         } else {
             $TargetClassName = new \Eccube\Entity\ClassName();
@@ -61,9 +61,11 @@ class ClassNameController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                log_info('商品規格登録開始', array($id));
                 $status = $app['eccube.repository.class_name']->save($TargetClassName);
 
                 if ($status) {
+                    log_info('商品規格登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -78,6 +80,7 @@ class ClassNameController extends AbstractController
 
                     return $app->redirect($app->url('admin_product_class_name'));
                 } else {
+                    log_info('商品規格登録エラー', array($id));
                     $app->addError('admin.class_name.save.error', 'admin');
                 }
             }
@@ -102,9 +105,12 @@ class ClassNameController extends AbstractController
             return $app->redirect($app->url('admin_product_class_name'));
         }
 
+        log_info('商品規格削除開始', array($id));
+
         $status = $app['eccube.repository.class_name']->delete($TargetClassName);
 
         if ($status === true) {
+            log_info('商品規格削除完了', array($id));
 
             $event = new EventArgs(
                 array(

@@ -124,7 +124,11 @@ class CartController extends AbstractController
             $productClassId = $event->getArgument('productClassId');
             $quantity = $event->getArgument('quantity');
 
+            log_info('カート追加処理開始', array('product_class_id' => $productClassId, 'quantity' => $quantity));
+
             $app['eccube.service.cart']->addProduct($productClassId, $quantity)->save();
+
+            log_info('カート追加処理完了', array('product_class_id' => $productClassId, 'quantity' => $quantity));
 
             // FRONT_CART_ADD_COMPLETE
             $event = new EventArgs(
@@ -141,6 +145,8 @@ class CartController extends AbstractController
             }
 
         } catch (CartException $e) {
+
+            log_info('カート追加エラー', array($e->getMessage()));
 
             // FRONT_CART_ADD_EXCEPTION
             $event = new EventArgs(
@@ -184,6 +190,8 @@ class CartController extends AbstractController
 
         try {
 
+            log_info('カート加算処理開始', array('product_class_id' => $productClassId));
+
             $productClassId = $event->getArgument('productClassId');
 
             $app['eccube.service.cart']->upProductQuantity($productClassId)->save();
@@ -201,7 +209,11 @@ class CartController extends AbstractController
                 return $event->getResponse();
             }
 
+            log_info('カート加算処理完了', array('product_class_id' => $productClassId));
+
         } catch (CartException $e) {
+
+            log_info('カート加算エラー', array($e->getMessage()));
 
             // FRONT_CART_UP_EXCEPTION
             $event = new EventArgs(
@@ -245,6 +257,9 @@ class CartController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_CART_DOWN_INITIALIZE, $event);
 
         try {
+
+            log_info('カート減算処理開始', array('product_class_id' => $productClassId));
+
             $productClassId = $event->getArgument('productClassId');
             $app['eccube.service.cart']->downProductQuantity($productClassId)->save();
 
@@ -261,7 +276,10 @@ class CartController extends AbstractController
                 return $event->getResponse();
             }
 
+            log_info('カート減算処理完了', array('product_class_id' => $productClassId));
+
         } catch (CartException $e) {
+            log_info('カート減算エラー', array($e->getMessage()));
 
             // FRONT_CART_DOWN_EXCEPTION
             $event = new EventArgs(
@@ -294,6 +312,8 @@ class CartController extends AbstractController
     {
         $this->isTokenValid($app);
 
+        log_info('カート削除処理開始', array('product_class_id' => $productClassId));
+
         // FRONT_CART_REMOVE_INITIALIZE
         $event = new EventArgs(
             array(
@@ -305,6 +325,8 @@ class CartController extends AbstractController
 
         $productClassId = $event->getArgument('productClassId');
         $app['eccube.service.cart']->removeProduct($productClassId)->save();
+
+        log_info('カート削除処理完了', array('product_class_id' => $productClassId));
 
         // FRONT_CART_REMOVE_COMPLETE
         $event = new EventArgs(

@@ -26,7 +26,7 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 
-class TopController
+class TopController extends AbstractController
 {
 
     public function index(Application $app)

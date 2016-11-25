@@ -191,6 +191,17 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testTel()
     {
+        $Orders = $this->app['eccube.repository.order']->findAll();
+        // 全受注の Tel を変更しておく
+        foreach ($Orders as $Order) {
+            $Order
+                ->setTel01('111')
+                ->setTel02('2222')
+                ->setTel03('8888');
+        }
+        $this->app['orm.em']->flush();
+
+        // 1受注のみ検索対象とする
         $this->Order1
             ->setTel01('999')
             ->setTel02('9999')
