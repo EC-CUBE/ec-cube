@@ -585,4 +585,98 @@ EOD;
         // アンインストールできるか
         $this->assertTrue($service->uninstall($plugin));
     }
+
+    /**
+     * プラグイン設定ファイルキャッシュの検証
+     */
+    public function testPluginConfigCache()
+    {
+        $this->app['debug'] = false;
+        $pluginConfigCache = $this->app['config']['plugin_temp_realdir'].'/config_cache.php';
+
+        // 事前にキャッシュを削除しておく
+        if (file_exists($pluginConfigCache)) {
+            unlink($pluginConfigCache);
+        }
+
+        // インストールするプラグインを作成する
+        $tmpname="dummy".sha1(mt_rand());
+        $config=array();
+        $config['name'] = $tmpname."_name";
+        $config['code'] = $tmpname;
+        $config['version'] = $tmpname."_version";
+        $config['const']['A'] = 'A';
+        $config['const']['C'] =  1;
+
+        $event = array (
+            'eccube.event.app.request' =>
+            array (
+                0 =>
+                array (
+                    0 => 'onAppRequest',
+                    1 => 'NORMAL',
+                ),
+            )
+        );
+
+        $tmpdir=$this->createTempDir();
+        $tmpfile=$tmpdir.'/plugin.tar';
+
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('event.yml', Yaml::dump($event));
+        $service = $this->app['eccube.service.plugin'];
+
+        // インストールできるか
+        $this->assertTrue($service->install($tmpfile));
+
+        $this->assertTrue((boolean)$plugin=$this->app['eccube.repository.plugin']->findOneBy(array('code'=>$tmpname)));
+
+        $this->expected = $pluginConfigCache;
+        $this->actual = $this->app->getPluginConfigCacheFile();
+        $this->verify('キャッシュファイル名が一致するか');
+
+        $pluginConfigs = $this->app->parsePluginConfigs();
+        $this->assertTrue(array_key_exists($tmpname, $pluginConfigs));
+        $this->expected = $config;
+        $this->actual = $pluginConfigs[$tmpname]['config'];
+        $this->verify('parsePluginConfigs の結果が一致するか');
+
+        $this->assertTrue(false !== $this->app->writePluginConfigCache(), 'キャッシュファイルが書き込まれるか');
+
+        $this->assertTrue(file_exists($pluginConfigCache), 'キャッシュファイルが存在するか');
+
+        $this->assertTrue($this->app->removePluginConfigCache(), 'キャッシュファイルを削除できるか');
+
+        $this->assertFalse(file_exists($pluginConfigCache), 'キャッシュファイルが削除されているか');
+
+        $pluginConfigs = $this->app->getPluginConfigAll();
+
+        $this->assertTrue(file_exists($pluginConfigCache), 'キャッシュファイルが再生成されているか');
+
+        $this->expected = $config;
+        $this->actual = $pluginConfigs[$tmpname]['config'];
+        $this->verify('getPluginConfigAll の結果が一致するか');
+
+
+        // インストール後disable状態でもconstがロードされているか
+        $config = $this->app['config'];
+        $config[$tmpname]['const']['A'] = null;
+        $config[$tmpname]['const']['C'] = null;
+        // const が存在しないのを確認後, 再ロード
+        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['A']));
+        $this->assertFalse(isset($this->app['config'][$tmpname]['const']['C']));
+
+        $this->app->initPluginEventDispatcher();
+        $this->app->loadPlugin();
+        $this->app->boot();
+        $this->assertEquals('A',$this->app['config'][$tmpname]['const']['A']);
+        $this->assertEquals('1',$this->app['config'][$tmpname]['const']['C']);
+
+        // アンインストールできるか
+        $this->assertTrue($service->uninstall($plugin));
+
+        $pluginConfigs = $this->app->getPluginConfigAll();
+        $this->assertFalse(array_key_exists($tmpname, $pluginConfigs), 'キャッシュからプラグインが削除されているか');
+    }
 }

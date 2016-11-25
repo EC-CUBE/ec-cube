@@ -80,8 +80,7 @@ class TaxRuleType extends AbstractType
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
-            ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ));
     }
 
     /**

@@ -42,6 +42,9 @@ final class EccubeEvents
 
     // searchNonStockProducts
 
+    // changePassword
+    const ADMIN_ADMIM_CHANGE_PASSWORD_INITIALIZE = 'admin.admin.change_password.initialize';
+    const ADMIN_ADMIN_CHANGE_PASSWORD_COMPLETE = 'admin.admin.change_password.complete';
 
     /**
      * Admin/Content/BlockController

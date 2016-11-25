@@ -145,7 +145,10 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
         // Since the CSV has column headers use them to construct an associative array for the columns in this line
         if ($this->valid()) {
-            $line = $this->file->current();
+            $current = $this->file->current();
+            $current = $this->convertEncodingRows($current);
+
+            $line = $current;
 
             // See if values for duplicate headers should be merged
             if (self::DUPLICATE_HEADERS_MERGE === $this->duplicateHeadersFlag) {
@@ -181,6 +184,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     public function setColumnHeaders(array $columnHeaders)
     {
+        $columnHeaders = $this->convertEncodingRows($columnHeaders);
         $this->columnHeaders = array_count_values($columnHeaders);
         $this->headersCount = count($columnHeaders);
     }
@@ -204,7 +208,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         $headers = $this->readHeaderRow($rowNumber);
 
         if ($headers === false) {
-            return false;            
+            return false;
         }
         $this->setColumnHeaders($headers);
         return true;
@@ -400,4 +404,18 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         return $values;
     }
 
+    /**
+     * 行の文字エンコーディングを変換する.
+     *
+     * Windows 版 PHP7 環境では、ファイルエンコーディングが CP932 になるため UTF-8 に変換する.
+     * それ以外の環境では何もしない。
+     */
+    protected function convertEncodingRows($row) {
+        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
+            foreach ($row as &$col) {
+                $col = mb_convert_encoding($col , 'UTF-8', 'SJIS-win');
+            }
+        }
+        return $row;
+    }
 }

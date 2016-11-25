@@ -336,10 +336,15 @@ class MailController
                 }
             }
         } else {
-            foreach ($_GET as $key => $value) {
-                $ids = str_replace('ids', '', $key) . ',' . $ids;
-            }
-            $ids = substr($ids, 0, -1);
+            $filter = function ($v) {
+                return preg_match('/^ids\d+$/', $v);
+            };
+            $map = function ($v) {
+                return preg_replace('/[^\d+]/', '', $v);
+            };
+            $keys = array_keys($request->query->all());
+            $idArray = array_map($map, array_filter($keys, $filter));
+            $ids = implode(',', $idArray);
         }
 
         return $app->render('Order/mail_all.twig', array(

@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Plugin
  */
-class Plugin
+class Plugin extends AbstractEntity
 {
     /**
      * @var integer

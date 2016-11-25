@@ -24,10 +24,10 @@
 
 namespace Eccube\Form\Type\Front;
 
-use \Symfony\Component\Form\AbstractType;
-use \Symfony\Component\Form\Extension\Core\Type;
-use \Symfony\Component\Form\FormBuilderInterface;
-use \Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ForgotType extends AbstractType
 {
@@ -42,10 +42,9 @@ class ForgotType extends AbstractType
             ),
             'constraints' => array(
                 new Assert\NotBlank(),
-                new Assert\Email(),
+                new Assert\Email(array('strict' => true)),
             ),
-        ))
-        ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+        ));
     }
 
     /**

@@ -1,7 +1,7 @@
 <script>
     // 商品規格情報. 規格2のプルダウンリストの設定に利用する,
     var productsClassCategories = {
-        {% for Product in Products %}
+        {% for Product in pagination %}
         "{{ Product.id|escape('js') }}": {{ Product.class_categories|json_encode|raw }}{% if loop.last == false %}, {% endif %}
         {% endfor %}
     };
@@ -127,16 +127,38 @@
 
         return false;
     }
+
+    // 商品検索
+    $('#pagination_wrap a').on('click', function(event) {
+        var list = $('#searchProductModalList');
+        list.children().remove();
+
+        $.ajax({
+            type: 'GET',
+            dataType: 'html',
+            url: $(this).attr('href'),
+            success: function(data) {
+                $('#searchProductModalList').html(data);
+            },
+            error: function() {
+                alert('search product failed.');
+            }
+        });
+        event.preventDefault();
+    });
 </script>
 <div class="table-responsive">
     <table class="table">
         <tbody>
 
-        {% for Product in Products %}
+        {% for Product in pagination %}
             <form name="product_form{{ Product.id }}">
                 {% set form = forms[Product.id] %}
 
                 <tr>
+                    <td>
+                        {{ Product.id }}
+                    </td>
                     <td>
                         {{ Product.name }}
                         {% if Product.hasProductClass %}
@@ -173,4 +195,7 @@
 
         </tbody>
     </table>
+    {% if pagination.totalItemCount > 0 %}
+        {% include "pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+    {% endif %}
 </div>

@@ -55,7 +55,7 @@ class MasterdataTypeTest extends AbstractTypeTestCase
         $view = $this->form['masterdata']->createView();
         $choices = $view->vars['choices'];
 
-        $expect = 'Eccube\Entity';
+        $expect = 'Eccube-Entity';
 
         foreach ($choices as $choice) {
             $actual = $choice->data;

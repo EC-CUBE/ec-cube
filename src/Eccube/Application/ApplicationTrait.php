@@ -70,12 +70,12 @@ class ApplicationTrait extends \Silex\Application
 
     public function isAdminRequest()
     {
-        return $this['admin'];
+        return isset($this['admin']) ? $this['admin'] : null;
     }
 
     public function isFrontRequest()
     {
-        return $this['front'];
+        return isset($this['front']) ? $this['front'] : null;
     }
 
     /*

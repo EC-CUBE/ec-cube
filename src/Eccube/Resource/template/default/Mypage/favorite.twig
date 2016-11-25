@@ -37,7 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <p id="favorite_lst__total_item_count" class="intro"><strong>{{ pagination.totalItemCount }}件</strong>のお気に入りがあります。</p>
                 <div id="item_list">
                     <div id="favorite_list__list" class="row no-padding">
-                        {% for Product in pagination %}
+                        {% for FavoriteProduct in pagination %}
+                        {% set Product = FavoriteProduct.Product %}
                         <div id="favorite__list--{{ Product.id }}" class="col-sm-3 col-xs-6">
                             <div id="favorite_list__item--{{ Product.id }}" class="product_item">
                                 <a href="{{ url('product_detail', {'id': Product.id}) }}">

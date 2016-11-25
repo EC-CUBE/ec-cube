@@ -117,7 +117,7 @@ class OrderType extends AbstractType
                 'label' => 'メールアドレス',
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 ),
             ))
             ->add('tel', 'tel', array(
@@ -142,7 +142,7 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('message', 'textarea', array(
-                'label' => '備考',
+                'label' => 'お問い合わせ',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -282,7 +282,6 @@ class OrderType extends AbstractType
                 $form['charge']->addError(new FormError('商品が追加されていません。'));
             }
         });
-        $builder->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**

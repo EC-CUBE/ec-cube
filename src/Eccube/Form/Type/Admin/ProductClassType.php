@@ -155,8 +155,7 @@ class ProductClassType extends AbstractType
                 if (empty($data['stock_unlimited']) && is_null($data['stock'])) {
                     $form['stock_unlimited']->addError(new FormError('在庫数を入力、もしくは在庫無制限を設定してください。'));
                 }
-            })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            });
 
         $transformer = new DataTransformer\IntegerToBooleanTransformer();
 

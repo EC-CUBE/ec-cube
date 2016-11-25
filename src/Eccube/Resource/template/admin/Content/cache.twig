@@ -37,12 +37,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <div id="cache_box__header" class="box-header">
                     <h3 class="box-title">キャッシュ管理</h3>
                     <div id="cache_box__message" style="margin-left: 10px;">
-                        <p class="text-danger">本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュをクリアをする必要があります。</p>
-                        <p>キャッシュをクリアをするには「キャッシュクリア」ボタンを押してください。</p>
+                        <p class="text-danger">本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。</p>
+                        <p>キャッシュ削除するディレクトリを選択してください。</p>
                     </div>
+                    {{ form_widget(form.cache) }}
+                    {{ form_errors(form.cache) }}
                 </div>
                 <div id="cache_box__clear_button" class="box-body">
-                    <button type="submit" class="btn btn-primary" name="mode" value="twig">キャッシュクリア</button>
+                    <button type="submit" class="btn btn-primary">キャッシュ削除</button>
                 </div>
             </div>
         </div>

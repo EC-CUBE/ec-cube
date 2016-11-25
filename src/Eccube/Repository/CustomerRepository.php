@@ -95,6 +95,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 'delFlg' => Constant::DISABLED,
                 'CustomerStatus' => $CustomerStatus,
             ))
+            ->setMaxResults(1)
             ->getQuery();
         $Customer = $query->getOneOrNullResult();
         if (!$Customer) {
@@ -180,12 +181,10 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 ->setParameter('sexs', $sexs);
         }
 
-        // birth_month
-        // TODO: http://docs.symfony.gr.jp/symfony2/cookbook/doctrine/custom_dql_functions.html
         if (!empty($searchData['birth_month']) && $searchData['birth_month']) {
-//            $qb
-//                ->andWhere('extract(month from c.birth) = :birth_month')
-//                ->setParameter('birth_month', $searchData['birth_month']);
+            $qb
+                ->andWhere('EXTRACT(MONTH FROM c.birth) = :birth_month')
+                ->setParameter('birth_month', $searchData['birth_month']);
         }
 
         // birth
@@ -395,6 +394,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
             ->where('c.email = :email AND c.Status = :status')
             ->setParameter('email', $email)
             ->setParameter('status', CustomerStatus::ACTIVE)
+            ->setMaxResults(1)
             ->getQuery();
 
         $Customer = $query->getOneOrNullResult();
