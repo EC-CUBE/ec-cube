@@ -36,20 +36,22 @@
 
     // 会員検索
     $('#customer_pagination a').on('click', function(event) {
-        var list = $('#searchCustomerModalList');
-        list.children().remove();
+        if (!$(this).parent().is('.active')) {
+            var list = $('#searchCustomerModalList');
+            list.children().remove();
 
-        $.ajax({
-            type: 'GET',
-            dataType: 'html',
-            url: $(this).attr('href'),
-            success: function(data) {
-                $('#searchCustomerModalList').html(data);
-            },
-            error: function() {
-                alert('search customer failed.');
-            }
-        });
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                url: $(this).attr('href'),
+                success: function(data) {
+                    $('#searchCustomerModalList').html(data);
+                },
+                error: function() {
+                    alert('search customer failed.');
+                }
+            });
+        }
         event.preventDefault();
     });
 </script>
@@ -87,6 +89,6 @@
         </tbody>
     </table>
     {% if pagination.totalItemCount > 0 %}
-        {% include "pager.twig" with {'id': 'customer_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_customer_page'} %}
+        {% include "pager.twig" with {'id': 'customer_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_customer_html_page'} %}
     {% endif %}
 </div>

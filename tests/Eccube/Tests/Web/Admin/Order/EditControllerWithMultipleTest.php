@@ -121,6 +121,27 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                 'CONTENT_TYPE' => 'application/json',
             )
         );
+        $Result = json_decode($this->client->getResponse()->getContent(), true);
+
+        $this->expected = $this->Customer->getName01().$this->Customer->getName02().'('.$this->Customer->getKana01().$this->Customer->getKana02().')';
+        $this->actual = $Result[0]['name'];
+        $this->verify();
+    }
+
+    public function testSearchCustomerHtml()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }

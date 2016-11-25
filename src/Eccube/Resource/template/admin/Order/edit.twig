@@ -69,7 +69,7 @@ $(function() {
             type: 'POST',
             dataType: 'html',
             data: { 'search_word' : $('#admin_search_customer_multi').val() },
-            url: '{{ url('admin_order_search_customer') }}',
+            url: '{{ url('admin_order_search_customer_html') }}',
             success: function(data) {
                 // モーダルに結果を書き出し.
                 $('#searchCustomerModalList').html(data);

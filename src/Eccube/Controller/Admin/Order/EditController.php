@@ -312,10 +312,72 @@ class EditController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function searchCustomer(Application $app, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $app['monolog']->addDebug('search customer start.');
+
+            $searchData = array(
+                'multi' => $request->get('search_word'),
+            );
+
+            $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+
+            $event = new EventArgs(
+                array(
+                    'qb' => $qb,
+                    'data' => $searchData,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
+
+            $Customers = $qb->getQuery()->getResult();
+
+
+            if (empty($Customers)) {
+                $app['monolog']->addDebug('search customer not found.');
+            }
+
+            $data = array();
+
+            $formatTel = '%s-%s-%s';
+            $formatName = '%s%s(%s%s)';
+            foreach ($Customers as $Customer) {
+                $data[] = array(
+                    'id' => $Customer->getId(),
+                    'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(), $Customer->getKana01(),
+                        $Customer->getKana02()),
+                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'email' => $Customer->getEmail(),
+                );
+            }
+
+            $event = new EventArgs(
+                array(
+                    'data' => $data,
+                    'Customers' => $Customers,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+            $data = $event->getArgument('data');
+
+            return $app->json($data);
+        }
+    }
+
+    /**
+     * 顧客情報を検索する.
+     *
+     * @param Application $app
+     * @param Request $request
      * @param integer $page_no
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function searchCustomer(Application $app, Request $request, $page_no = null)
+    public function searchCustomerHtml(Application $app, Request $request, $page_no = null)
     {
         if ($request->isXmlHttpRequest()) {
             $app['monolog']->addDebug('search customer start.');
@@ -384,8 +446,7 @@ class EditController extends AbstractController
             $event = new EventArgs(
                 array(
                     'data' => $data,
-                    'Customers' => $Customers,
-                    'pagination' => $pagination,
+                    'Customers' => $pagination,
                 ),
                 $request
             );
