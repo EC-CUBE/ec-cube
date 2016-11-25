@@ -30,11 +30,7 @@ class CategoryController
 {
     public function index(Application $app)
     {
-        $Categories = $app['eccube.repository.category']
-            ->findBy(
-                array('Parent' => null),
-                array('rank' => 'DESC')
-            );
+        $Categories = $app['eccube.repository.category']->getList();
 
         return $app->render('Block/category.twig', array(
             'Categories' => $Categories

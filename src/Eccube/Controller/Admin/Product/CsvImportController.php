@@ -74,6 +74,8 @@ class CsvImportController
 
                 if (!empty($formFile)) {
 
+                    log_info('商品CSV登録開始');
+
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
                         $this->addErrors('CSVのフォーマットが一致しません。');
@@ -393,6 +395,8 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
+                    log_info('商品CSV登録完了');
+
                     $app->addSuccess('admin.product.csv_import.save.complete', 'admin');
                 }
 
@@ -421,6 +425,8 @@ class CsvImportController
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {
+
+                    log_info('カテゴリCSV登録開始');
 
                     $data = $this->getImportData($app, $formFile);
                     if ($data === false) {
@@ -528,6 +534,8 @@ class CsvImportController
                     $this->em->flush();
                     $this->em->getConnection()->commit();
 
+                    log_info('カテゴリCSV登録完了');
+
                     $app->addSuccess('admin.category.csv_import.save.complete', 'admin');
                 }
 
@@ -622,10 +630,20 @@ class CsvImportController
         $formFile->move($app['config']['csv_temp_realdir'], $this->fileName);
 
         $file = file_get_contents($app['config']['csv_temp_realdir'] . '/' . $this->fileName);
-        // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-        $encode = Str::characterEncoding(substr($file, 0, 6));
-        if ($encode != 'UTF-8') {
-            $file = mb_convert_encoding($file, 'UTF-8', $encode);
+
+        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
+            // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
+            // see https://github.com/EC-CUBE/ec-cube/issues/1780
+            setlocale(LC_ALL, ''); // 既定のロケールに設定
+            if (mb_detect_encoding($file) === 'UTF-8') { // UTF-8 を検出したら SJIS-win に変換
+                $file = mb_convert_encoding($file, 'SJIS-win', 'UTF-8');
+            }
+        } else {
+            // アップロードされたファイルがUTF-8以外は文字コード変換を行う
+            $encode = Str::characterEncoding(substr($file, 0, 6));
+            if ($encode != 'UTF-8') {
+                $file = mb_convert_encoding($file, 'UTF-8', $encode);
+            }
         }
         $file = Str::convertLineFeed($file);
 

@@ -145,10 +145,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="detail_box__body" class="box-body">
 
                         {{ form_row(form.method) }}
-
-                        {% if(Payment.charge_flg == 1) %}
-                            {{ form_row(form.charge) }}
-                        {% endif %}
+                        {{ form_row(form.charge) }}
 
                         <div id="detail_box__rule" class="form-group">
                             <label class="col-sm-2 control-label">

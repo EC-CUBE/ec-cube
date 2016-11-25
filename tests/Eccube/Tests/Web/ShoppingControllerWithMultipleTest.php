@@ -126,4 +126,43 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->actual = $Order->getName01();
         $this->verify();
     }
+
+    public function testDisplayCustomerAddress()
+    {
+        $faker = $this->getFaker();
+        $Customer = $this->logIn();
+        $CustomerAddress = $this->createCustomerAddress($Customer);
+
+        $client = $this->client;
+        // 2個カート投入
+        $this->scenarioCartIn($client);
+        $this->scenarioCartIn($client);
+
+        // 確認画面
+        $crawler = $this->scenarioConfirm($client);
+        $this->expected = 'ご注文内容のご確認';
+        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->verify();
+
+        // 複数配送画面
+        $crawler = $client->request('GET', $this->app->path('shopping_shipping_multiple'));
+        // 配送先1, 配送先2の情報を返す
+        $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
+            function ($node, $i) {
+
+                return array(
+                    'customer_address' => $node->html(),
+                    'quantity' => 1
+                );
+            }
+        );
+
+        $address = $Customer->getName01() . ' ' . $Customer->getPref()->getName() . ' ' . $Customer->getAddr01() . ' ' . $Customer->getAddr02();
+        $this->expected = $address;
+        $this->actual = $shippings[0]['customer_address'];
+        $this->verify();
+
+    }
+
+
 }

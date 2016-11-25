@@ -11,6 +11,7 @@
 
 namespace Eccube\Tests\Application;
 
+use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -21,22 +22,37 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  *
  * @requires PHP 5.4
  */
-class TwigTraitTest extends \PHPUnit_Framework_TestCase
+class TwigTraitTest extends EccubeTestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $paths = array();
+        $paths[] = $this->app['config']['template_admin_realdir'];
+        $paths[] = $this->app['config']['template_realdir'];
+        $paths[] = $this->app['config']['template_default_realdir'];
+        $this->app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+        $app['admin'] = true;
+        $app['front'] = true;
+    }
+
     public function testRender()
     {
-        $app = $this->createApplication();
+        $app = $this->app;
 
-        $response = $app->render('error.twig');
+        $parameters = array('error_title' => 'error', 'error_message' => 'error');
+        $response = $app->render('error.twig', $parameters);
         $this->assertEquals('Symfony\Component\HttpFoundation\Response', get_class($response));
         $this->assertStringStartsWith('<!doctype html>', $response->getContent());
     }
 
     public function testRenderKeepResponse()
     {
-        $app = $this->createApplication();
+        $app = $this->app;
 
-        $response = $app->render('error.twig', array(), new Response('', 404));
+        $parameters = array('error_title' => 'error', 'error_message' => 'error');
+        $response = $app->render('error.twig', $parameters, new Response('', 404));
         $this->assertEquals(404, $response->getStatusCode());
     }
 
@@ -45,9 +61,10 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
         if (php_sapi_name() == 'phpdbg') {
             $this->markTestSkipped('Can not support of ob_*()');
         }
-        $app = $this->createApplication();
+        $app = $this->app;
 
-        $response = $app->render('error.twig', array(), new StreamedResponse());
+        $parameters = array('error_title' => 'error', 'error_message' => 'error');
+        $response = $app->render('error.twig', $parameters, new StreamedResponse());
         $this->assertEquals('Symfony\Component\HttpFoundation\StreamedResponse', get_class($response));
 
         ob_start();
@@ -57,27 +74,9 @@ class TwigTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderView()
     {
-        $app = $this->createApplication();
+        $app = $this->app;
 
-        $app->renderView('error.twig');
-    }
-
-    public function createApplication()
-    {
-        $app = new \Eccube\Application();
-
-        $app->initialize();
-        $app->initializePlugin();
-        $app->boot();
-
-        $paths = array();
-        $paths[] = $app['config']['template_admin_realdir'];
-        $paths[] = $app['config']['template_realdir'];
-        $paths[] = $app['config']['template_default_realdir'];
-        $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
-        $app['admin'] = true;
-        $app['front'] = true;
-
-        return $app;
+        $parameters = array('error_title' => 'error', 'error_message' => 'error');
+        $app->renderView('error.twig', $parameters);
     }
 }

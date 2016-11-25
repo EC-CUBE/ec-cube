@@ -41,7 +41,7 @@ class CategoryController extends AbstractController
         if ($parent_id) {
             $Parent = $app['eccube.repository.category']->find($parent_id);
             if (!$Parent) {
-                throw new NotFoundHttpException();
+                throw new NotFoundHttpException('親カテゴリが存在しません');
             }
         } else {
             $Parent = null;
@@ -49,7 +49,7 @@ class CategoryController extends AbstractController
         if ($id) {
             $TargetCategory = $app['eccube.repository.category']->find($id);
             if (!$TargetCategory) {
-                throw new NotFoundHttpException();
+                throw new NotFoundHttpException('カテゴリが存在しません');
             }
             $Parent = $TargetCategory->getParent();
         } else {
@@ -83,11 +83,14 @@ class CategoryController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($app['config']['category_nest_level'] < $TargetCategory->getLevel()) {
-                    throw new BadRequestHttpException();
+                    throw new BadRequestHttpException('リクエストが不正です');
                 }
+                log_info('カテゴリ登録開始', array($id));
                 $status = $app['eccube.repository.category']->save($TargetCategory);
 
                 if ($status) {
+
+                    log_info('カテゴリ登録完了', array($id));
 
                     $event = new EventArgs(
                         array(
@@ -107,24 +110,23 @@ class CategoryController extends AbstractController
                         return $app->redirect($app->url('admin_product_category'));
                     }
                 } else {
+                    log_info('カテゴリ登録エラー', array($id));
                     $app->addError('admin.category.save.error', 'admin');
                 }
             }
         }
 
-        $Children = $app['eccube.repository.category']->getList(null);
         $Categories = $app['eccube.repository.category']->getList($Parent);
-        $TopCategories = $app['eccube.repository.category']->findBy(array('Parent' => null), array('rank' => 'DESC'));
-        $category_count = $app['eccube.repository.category']->getTotalCount();
+
+        // ツリー表示のため、ルートからのカテゴリを取得
+        $TopCategories = $app['eccube.repository.category']->getList(null);
 
         return $app->render('Product/category.twig', array(
             'form' => $form->createView(),
-            'Children' => $Children,
             'Parent' => $Parent,
             'Categories' => $Categories,
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
-            'category_count' => $category_count,
         ));
     }
 
@@ -139,9 +141,13 @@ class CategoryController extends AbstractController
         }
         $Parent = $TargetCategory->getParent();
 
+        log_info('カテゴリ削除開始', array($id));
+
         $status = $app['eccube.repository.category']->delete($TargetCategory);
 
         if ($status === true) {
+
+            log_info('カテゴリ削除完了', array($id));
 
             $event = new EventArgs(
                 array(
@@ -154,6 +160,7 @@ class CategoryController extends AbstractController
 
             $app->addSuccess('admin.category.delete.complete', 'admin');
         } else {
+            log_info('カテゴリ削除エラー', array($id));
             $app->addError('admin.category.delete.error', 'admin');
         }
 
@@ -236,6 +243,8 @@ class CategoryController extends AbstractController
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
         $response->send();
+
+        log_info('カテゴリCSV出力ファイル名', array($filename));
 
         return $response;
     }

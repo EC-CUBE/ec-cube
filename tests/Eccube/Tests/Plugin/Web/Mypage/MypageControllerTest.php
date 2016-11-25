@@ -146,7 +146,10 @@ class MypageControllerTest extends AbstractWebTestCase
     public function testHistory()
     {
         $Customer = $this->createCustomer();
-        $Order = $this->createOrder($Customer);
+        $Product = $this->createProduct();
+        $ProductClasses = $Product->getProductClasses();
+        // 後方互換のため最初の1つのみ渡す
+        $Order = $this->app['eccube.fixture.generator']->createOrder($Customer, array($ProductClasses[0]),null,0,0, 'order_new');
         $this->logIn($Customer);
         $client = $this->client;
 

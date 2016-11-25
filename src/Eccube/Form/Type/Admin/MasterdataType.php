@@ -60,7 +60,8 @@ class MasterdataType extends AbstractType
                         && $meta->hasField('name')
                         && $meta->hasField('rank')
                     ) {
-                        $masterdata[$meta->getName()] = $meta->getTableName();
+                        $metadataName = str_replace('\\', '-', $meta->getName());
+                        $masterdata[$metadataName] = $meta->getTableName();
                     }
                 }
             }

@@ -11,7 +11,7 @@
 
 namespace Eccube\Tests\Application;
 
-use Silex\Provider\SwiftmailerServiceProvider;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * SwiftmailerTrait test cases.
@@ -20,11 +20,11 @@ use Silex\Provider\SwiftmailerServiceProvider;
  *
  * @requires PHP 5.4
  */
-class SwiftmailerTraitTest extends \PHPUnit_Framework_TestCase
+class SwiftmailerTraitTest extends EccubeTestCase
 {
     public function testMail()
     {
-        $app = $this->createApplication();
+        $app = $this->app;
 
         $message = $this->getMockBuilder('Swift_Message')->disableOriginalConstructor()->getMock();
         $app['mailer'] = $mailer = $this->getMockBuilder('Swift_Mailer')->disableOriginalConstructor()->getMock();
@@ -34,13 +34,5 @@ class SwiftmailerTraitTest extends \PHPUnit_Framework_TestCase
         ;
 
         $app->mail($message);
-    }
-
-    public function createApplication()
-    {
-        $app = new \Eccube\Application();
-        $app->register(new SwiftmailerServiceProvider());
-
-        return $app;
     }
 }
