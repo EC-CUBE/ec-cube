@@ -59,6 +59,7 @@ export ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 export SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
 export ROOT_DIR=${BASE_DIR}
 export ROOT_URLPATH=${ROOT_URLPATH:-"/ec-cube/html"}
+export ROOT_PUBLIC_URLPATH=${ROOT_URLPATH}
 export ADMIN_ROUTE=${ADMIN_ROUTE:-"admin"}
 export USER_DATA_ROUTE=${USER_DATA_ROUTE:-"user_data"}
 export TEMPLATE_CODE=${TEMPLATE_CODE:-"default"}

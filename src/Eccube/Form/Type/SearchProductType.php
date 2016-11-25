@@ -24,29 +24,43 @@
 
 namespace Eccube\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchProductType extends AbstractType
 {
+    /**
+     * @var Application
+     */
+    protected $app;
+
+    /**
+     * SearchProductType constructor.
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $Categories = $this->app['eccube.repository.category']
+            ->getList(null, true);
+
         $builder->add('mode', 'hidden', array(
             'data' => 'search',
         ));
         $builder->add('category_id', 'entity', array(
             'class' => 'Eccube\Entity\Category',
             'property' => 'NameWithLevel',
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('c')
-                    ->orderBy('c.rank', 'DESC');
-            },
+            'choices' => $Categories,
             'empty_value' => '全ての商品',
             'empty_data' => null,
             'required' => false,
@@ -73,7 +87,7 @@ class SearchProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,

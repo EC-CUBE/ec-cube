@@ -19,7 +19,7 @@ php:
 matrix:
   fast_finish: true
   include:
-    - php: 7.0 # for coverrage
+    - php: 7.0.12 # for coverrage
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
       sudo: required
       dist: trusty
@@ -29,6 +29,8 @@ matrix:
     - php: 5.4
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - php: 5.5
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+    - php: 5.6
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - php: 7.0
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
@@ -41,9 +43,7 @@ matrix:
       env: DB=sqlite
     - PHP: 5.6
       env: DB=sqlite
-    - php: 5.6 # for coverrage (travis で phpdbg が動かなくなったため, phpdbg が動くようになるまでの暫定)
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-    - php: 7.0 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
+    - php: 7.0.12 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
 
 env:
@@ -62,14 +62,11 @@ before_script:
   - if [[ $PHP_SAPI = 'phpdbg' ]]; then echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini ; fi
   - composer self-update || true
   - composer install --dev --no-interaction -o
-  - sh -c "if [ '$DB' = 'mysql' ]; then sh ./eccube_install.sh mysql none; fi"
-  - sh -c "if [ '$DB' = 'pgsql' ]; then sh ./eccube_install.sh pgsql none; fi"
-  - sh -c "if [ '$DB' = 'sqlite' ]; then sh ./eccube_install.sh sqlite3 none; fi"
+  - php ./eccube_install.php $DB none
   - mailcatcher
 
 script: # PHP7 + precise のテストは実行されない
   - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'trusty' ]]; then phpdbg -qrr ./vendor/bin/phpunit --coverage-clover=coverage.clover ; fi
-  - if [[ $PHP_SAPI = 'phpdbg' ]] && [[ $CODENAME = 'precise' ]] && [[ $TRAVIS_PHP_VERSION =~ ^[5] ]]; then phpunit --coverage-clover=coverage.clover ; fi # (travis で phpdbg が動かなくなったため, phpdbg が動くようになるまでの暫定)
   - if [[ $PHP_SAPI != 'phpdbg' ]]; then phpunit ; fi
 
 after_script:

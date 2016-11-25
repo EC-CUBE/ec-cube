@@ -39,7 +39,7 @@ class FrontControllerProvider implements ControllerProviderInterface
         }
 
         // user定義
-        $c->match('/'.$app['config']['user_data_route'].'/{route}', '\Eccube\Controller\UserDataController::index')->assert('route', '[0-9a-zA-Z_]+')->bind('user_data');
+        $c->match('/'.$app['config']['user_data_route'].'/{route}', '\Eccube\Controller\UserDataController::index')->assert('route', '([0-9a-zA-Z_\-]+\/?)+(?<!\/)')->bind('user_data');
 
         // root
         $c->match('/', '\Eccube\Controller\TopController::index')->bind('homepage');

@@ -59,15 +59,6 @@ class SearchOrderType extends AbstractType
             ->add('name', 'text', array(
                 'required' => false,
             ))
-            ->add('kana', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        'message' => 'form.type.admin.notkanastyle',
-                    )),
-                ),
-            ))
             ->add('email', 'email', array(
                 'required' => false,
             ))
@@ -169,6 +160,20 @@ class SearchOrderType extends AbstractType
                 'required' => false,
             ))
         ;
+
+        $builder->add(
+            $builder
+                ->create('kana', 'text', array(
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                            'message' => 'form.type.admin.notkanastyle',
+                        )),
+                    ),
+                ))
+                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+        );
     }
 
     /**

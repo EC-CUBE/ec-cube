@@ -532,4 +532,56 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         $this->actual = count($Payments);
         $this->verify();
     }
+
+    /**
+     * #1739のテストケース
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1739
+     */
+    public function testGetNewOrderDetailForTaxRate()
+    {
+        $DefaultTaxRule = $this->app['eccube.repository.tax_rule']->find(1);
+        $DefaultTaxRule->setApplyDate(new \DateTime('-2 day'));
+        $this->app['orm.em']->flush();
+
+        // 個別税率設定を有効化
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
+        // 個別税率が設定された商品企画を準備
+        $Product = $this->createProduct('テスト商品', 1);
+        $ProductClassList = $Product->getProductClasses();
+        $ProductClass = $ProductClassList[0];
+        $CalcRule = $this->app['orm.em']
+            ->getRepository('Eccube\Entity\Master\Taxrule')
+            ->find(1);
+        $TaxRule = new \Eccube\Entity\TaxRule();
+        $TaxRule->setProductClass($ProductClass)
+            ->setCreator($Product->getCreator())
+            ->setProduct($Product)
+            ->setCalcRule($CalcRule)
+            ->setTaxRate(10)
+            ->setTaxAdjust(0)
+            ->setApplyDate(new \DateTime('-1 days')) // nowだとタイミングによってはテストが失敗する
+            ->setDelFlg(Constant::DISABLED);
+        $ProductClass->setTaxRule($TaxRule)
+            ->setTaxRate($TaxRule->getTaxRate());
+
+        $this->app['orm.em']->persist($TaxRule);
+        $this->app['orm.em']->flush();
+
+        // テスト用に税率設定のキャッシュをクリア
+        $this->app['eccube.repository.tax_rule']->clearCache();
+
+        // ShoppingServiceにテスト用のEntityManagerを設定
+        $ShoppingService = $this->app['eccube.service.shopping'];
+        $RefrectionClass = new \ReflectionClass(get_class($ShoppingService));
+        $Property = $RefrectionClass->getProperty('em');
+        $Property->setAccessible(true);
+        $Property->setValue($ShoppingService, $this->app['orm.em']);
+
+        $OrderDetail = $this->app['eccube.service.shopping']->getNewOrderDetail($Product, $ProductClass, 1);
+
+        $this->expected = $TaxRule->getId();
+        $this->actual = $OrderDetail->getTaxRule();
+        $this->verify('受注詳細の税率が正しく設定されている');
+    }
 }
