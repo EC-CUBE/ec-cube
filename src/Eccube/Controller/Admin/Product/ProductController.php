@@ -153,21 +153,19 @@ class ProductController extends AbstractController
                         array('wrap-queries' => true)
                     );
 
-                    // セッションから検索条件を復元
+                    // セッションから検索条件を復元(カテゴリ)
                     if (!empty($searchData['category_id'])) {
                         $searchData['category_id'] = $app['eccube.repository.category']->find($searchData['category_id']);
                     }
-                    if (empty($status)) {
-                        if (count($searchData['status']) > 0) {
-                            $status_ids = array();
-                            foreach ($searchData['status'] as $Status) {
-                                $status_ids[] = $Status->getId();
-                            }
-                            $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
+                    // セッションから検索条件を復元(スーテタス)
+                    if (count($searchData['status']) > 0) {
+                        $status_ids = array();
+                        foreach ($searchData['status'] as $Status) {
+                            $status_ids[] = $Status->getId();
                         }
-                        $searchData['link_status'] = null;
-                        $searchData['stock_status'] = null;
+                        $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                     }
+                    
                     $searchForm->setData($searchData);
                 }
             }
