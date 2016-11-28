@@ -24,17 +24,29 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class ProductType.
+ */
 class ProductType extends AbstractType
 {
+    /**
+     * @var Application
+     */
     public $app;
 
-    public function __construct(\Silex\Application $app)
+    /**
+     * ProductType constructor.
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -44,7 +56,10 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
+        /**
+         * @var ArrayCollection $arrCategory array of category
+         */
+        $arrCategory = $this->app['eccube.repository.category']->getList(null, true);
 
         $builder
             // 商品規格情報
@@ -71,10 +86,14 @@ class ProductType extends AbstractType
                 'label' => '商品説明(一覧)',
                 'required' => false,
             ))
-            ->add('Category', 'category', array(
-               'label' => '商品カテゴリ',
-               'multiple' => true,
-               'mapped' => false,
+            ->add('Category', 'entity', array(
+                'class' => 'Eccube\Entity\Category',
+                'property' => 'NameWithLevel',
+                'label' => '商品カテゴリ',
+                'multiple' => true,
+                'mapped' => false,
+                // Choices list (overdrive mapped)
+                'choices' => $arrCategory,
             ))
 
             // 詳細な説明
@@ -136,13 +155,12 @@ class ProductType extends AbstractType
                 'allow_delete' => true,
             ))
         ;
-
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
     }
 
