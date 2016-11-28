@@ -51,5 +51,7 @@ class EccubeExceptionHandler extends ExceptionHandler
         $response = Response::create($view, 500);
         $response->sendHeaders();
         $response->sendContent();
+
+        $app->terminate($app['request'], $response);
     }
 }
