@@ -145,6 +145,13 @@ class OrderController extends AbstractController
                     if (!empty($searchData['status'])) {
                         $searchData['status'] = $app['eccube.repository.master.order_status']->find($searchData['status']);
                     }
+                    if (count($searchData['multi_status']) > 0) {
+                        $statusIds = array();
+                        foreach ($searchData['multi_status'] as $Status) {
+                            $statusIds[] = $Status->getId();
+                        }
+                        $searchData['multi_status'] = $app['eccube.repository.master.order_status']->findBy(array('id' => $statusIds));
+                    }
                     if (count($searchData['sex']) > 0) {
                         $sex_ids = array();
                         foreach ($searchData['sex'] as $Sex) {
