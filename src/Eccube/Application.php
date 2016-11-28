@@ -124,6 +124,9 @@ class Application extends ApplicationTrait
 
         // init locale
         $this->initLocale();
+        
+        // init Request
+        $this->initRequest();
 
         // init session
         if (!$this->isSessionStarted()) {
@@ -228,13 +231,34 @@ class Application extends ApplicationTrait
             return $translator;
         }));
     }
+    
+    public function initRequest()
+    {
+        $this['initRequest'] = Request::createFromGlobals();
+        $pathinfo = rawurldecode($this['initRequest']->getPathInfo());
+         $this['admin'] = false;
+         $this['front'] = false;
+         $pathinfo = rawurldecode($this['initRequest']->getPathInfo());
+         if (strpos($pathinfo, '/' . trim($this['config']['admin_route'], '/') . '/') === 0) {
+             $this['admin'] = true;
+         } else {
+             $this['front'] = true;
+         }
+    }
 
     public function initSession()
     {
+        
+        $cookieName = 'eccube';
+        
+        if ($this->isAdminRequest()) {
+            $cookieName .= '_admin';
+        }
+        
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
             'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
             'session.storage.options' => array(
-                'name' => 'eccube',
+                'name' => $cookieName,
                 'cookie_path' => $this['config']['root_urlpath'] ?: '/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
