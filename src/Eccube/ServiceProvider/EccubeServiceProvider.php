@@ -62,6 +62,24 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.mail'] = $app->share(function () use ($app) {
             return new \Eccube\Service\MailService($app);
         });
+        $app['eccube.calculate.context'] = $app->share(function () use ($app) {
+                return new \Eccube\Service\Calculator\CalculateContext();
+        });
+        $app['eccube.service.calculate'] = $app->protect(function ($Order, $Customer) use ($app) {
+                $Service = new \Eccube\Service\CalculateService($Order, $Customer);
+                $Context = $app['eccube.calculate.context'];
+                $Context->setCalculateStrategies($app['eccube.calculate.strategies']);
+                $Context->setOrder($Order);
+                $Service->setContext($Context);
+                return $Service;
+        });
+
+        $app['eccube.calculate.strategies'] = function () use ($app) {
+            // デフォルトのストラテジーをセットしておく
+            $Strategies = [];
+            $Strategies[] = new \Eccube\Service\Calculator\Strategy\ShippingStrategy();
+            return $Strategies;          // ArrayIterator にしたい
+        };
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
             $csvService->setEntityManager($app['orm.em']);
