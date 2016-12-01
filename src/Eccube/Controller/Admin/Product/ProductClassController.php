@@ -526,8 +526,6 @@ class ProductClassController
         return $app->redirect($app->url('admin_product_product_class', array('id' => $id)));
     }
 
-
-
     /**
      * 登録、更新時のエラー画面表示
      *
