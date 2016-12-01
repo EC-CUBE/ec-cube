@@ -37,7 +37,7 @@ install:
   #- cinst mysql
   #- SET PATH=C:\tools\mysql\current\bin\;%PATH%
   # Set PHP.
-  - cinst php
+  - cinst php --version 7.0.9
   - SET PATH=C:\tools\php\;%PATH%
   - copy C:\tools\php\php.ini-production C:\tools\php\php.ini
   - echo date.timezone="Asia/Tokyo" >> C:\tools\php\php.ini
