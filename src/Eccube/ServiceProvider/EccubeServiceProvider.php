@@ -76,10 +76,18 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
         $app['eccube.calculate.strategies'] = function () use ($app) {
             // デフォルトのストラテジーをセットしておく
-            $Strategies = [];
-            $Strategies[] = new \Eccube\Service\Calculator\Strategy\ShippingStrategy();
-            return $Strategies;          // ArrayIterator にしたい
+            $Strategies = [     // ArrayIterator にしたい
+                $app['eccube.calculate.strategy.shipping'],
+                $app['eccube.calculate.strategy.tax']
+            ];
+            return $Strategies;
         };
+        $app['eccube.calculate.strategy.shipping'] = $app->share(function () use ($app) {
+                return new  \Eccube\Service\Calculator\Strategy\ShippingStrategy($app);
+        });
+        $app['eccube.calculate.strategy.tax'] = $app->share(function () use ($app) {
+                return new  \Eccube\Service\Calculator\Strategy\TaxStrategy($app);
+        });
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
             $csvService->setEntityManager($app['orm.em']);
