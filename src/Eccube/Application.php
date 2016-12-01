@@ -477,6 +477,9 @@ class Application extends ApplicationTrait
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
             'orm.em.options' => $options,
+            'orm.custom.functions.string' => array(
+                'NORMALIZE' => 'Eccube\Doctrine\ORM\Query\Normalize',
+            ),
             'orm.custom.functions.numeric' => array(
                 'EXTRACT' => 'Eccube\Doctrine\ORM\Query\Extract',
             ),
