@@ -117,6 +117,15 @@ EOF;
 
 function initializeDefaultVariables($database_driver)
 {
+    $database_url = getenv('DATABASE_URL');
+    if ($database_url) {
+        $url = parse_url($database_url);
+        putenv('DBSERVER='.$url['host']);
+        putenv('DBNAME='.substr($url['path'], 1));
+        putenv('DBUSER='.$url['user']);
+        putenv('DBPORT='.$url['port']);
+        putenv('DBPASS='.$url['pass']);
+    }
     switch ($database_driver) {
         case 'pdo_pgsql':
             putenv('ROOTUSER='.(getenv('ROOTUSER') ? getenv('ROOTUSER') : (getenv('DBUSER') ? getenv('DBUSER') : 'postgres')));
