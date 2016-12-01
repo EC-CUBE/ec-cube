@@ -91,6 +91,8 @@ class ProductRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.Status = 1');
 
+        // class
+        $classJoin = false;
         // category
         $categoryJoin = false;
         if (!empty($searchData['category_id']) && $searchData['category_id']) {
@@ -112,8 +114,9 @@ class ProductRepository extends EntityRepository
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s', $key, $key))
+                    ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s OR pc2.code LIKE :%s', $key, $key, $key))
                     ->setParameter($key, '%' . $keyword . '%');
+                $classJoin = true;
             }
         }
 
@@ -149,6 +152,10 @@ class ProductRepository extends EntityRepository
             }
             $qb
                 ->addOrderBy('p.id', 'DESC');
+        }
+
+        if ($classJoin) {
+            $qb->innerJoin('p.ProductClasses', 'pc2');
         }
 
         return $qb;

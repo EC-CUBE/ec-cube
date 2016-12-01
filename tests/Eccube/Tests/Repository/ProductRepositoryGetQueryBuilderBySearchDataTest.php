@@ -81,14 +81,23 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     {
         $Products = $this->app['eccube.repository.product']->findAll();
         $Products[0]->setName('りんご');
+        foreach ($Products[0]->getProductClasses() as $ProductClass) {
+            $ProductClass->setCode('apple');
+        }
         $Products[1]->setName('アイス');
         $Products[1]->setSearchWord('抹茶');
+        foreach ($Products[1]->getProductClasses() as $ProductClass) {
+            $ProductClass->setCode('ice');
+        }
         $Products[2]->setName('お鍋');
         $Products[2]->setSearchWord('立方体');
+        foreach ($Products[2]->getProductClasses() as $ProductClass) {
+            $ProductClass->setCode('nabe');
+        }
         $this->app['orm.em']->flush();
 
         $this->searchData = array(
-            'name' => 'お鍋　立方体'
+            'name' => 'お鍋　立方体 nabe'
         );
         $this->scenario();
 
