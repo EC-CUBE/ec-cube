@@ -35,6 +35,8 @@ class ShippingStrategy implements CalculateStrategyInterface
             ->setPrice($delivery_fee_total)
             ->setPriceIncTax($delivery_fee_total)
             ->setQuantity(1);
+
+        // 初回集計時と再集計時で処理を分けないといけない
         $OrderDetails[] = $OrderDetail;
     }
 
