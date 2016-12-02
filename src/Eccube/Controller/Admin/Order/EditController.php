@@ -569,15 +569,15 @@ class EditController extends AbstractController
                     : null);
             }
 
-            // 税
-            $tax = $app['eccube.service.tax_rule']
-                ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
-            $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+            // // 税
+            // $tax = $app['eccube.service.tax_rule']
+            //     ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
+            // $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
 
-            $taxtotal += $tax * $OrderDetail->getQuantity();
+            // $taxtotal += $tax * $OrderDetail->getQuantity();
 
-            // 小計
-            $subtotal += $OrderDetail->getTotalPrice();
+            // // 小計
+            // $subtotal += $OrderDetail->getTotalPrice();
         }
 
         $shippings = $Order->getShippings();
@@ -604,12 +604,16 @@ class EditController extends AbstractController
             }
         }
 
-        // 受注データの税・小計・合計を再計算
-        $Order->setTax($taxtotal);
-        $Order->setSubtotal($subtotal);
-        $Order->setTotal($subtotal + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount());
-        // お支払い合計は、totalと同一金額(2系ではtotal - point)
-        $Order->setPaymentTotal($Order->getTotal());
+        // // 受注データの税・小計・合計を再計算
+        // $Order->setTax($taxtotal);
+        // $Order->setSubtotal($subtotal);
+        // $Order->setTotal($subtotal + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount());
+        // // お支払い合計は、totalと同一金額(2系ではtotal - point)
+        // $Order->setPaymentTotal($Order->getTotal());
+
+        // 集計は,この1行でいけるはず
+        // プラグインで Strategy をセットしたりする
+        $this->app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
     }
 
     /**

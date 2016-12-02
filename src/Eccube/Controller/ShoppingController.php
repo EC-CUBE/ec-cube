@@ -213,7 +213,11 @@ class ShoppingController extends AbstractController
                 // お問い合わせ、配送時間などのフォーム項目をセット
                 $app['eccube.service.shopping']->setFormData($Order, $data);
                 // 購入処理
-                $app['eccube.service.shopping']->processPurchase($Order);
+                $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
+
+                // 集計は,この1行でいけるはず
+                // プラグインで Strategy をセットしたりする
+                $this->app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
                 $em->flush();
                 $em->getConnection()->commit();
@@ -764,7 +768,7 @@ class ShoppingController extends AbstractController
             // 合計金額の再計算
             $app['eccube.service.shopping']->getAmount($Order);
 
-            // 配送先を更新 
+            // 配送先を更新
             $app['orm.em']->flush();
 
             $event = new EventArgs(
