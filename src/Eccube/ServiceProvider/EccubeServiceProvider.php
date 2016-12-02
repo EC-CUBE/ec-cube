@@ -68,25 +68,31 @@ class EccubeServiceProvider implements ServiceProviderInterface
         $app['eccube.service.calculate'] = $app->protect(function ($Order, $Customer) use ($app) {
                 $Service = new \Eccube\Service\CalculateService($Order, $Customer);
                 $Context = $app['eccube.calculate.context'];
-                $Context->setCalculateStrategies($app['eccube.calculate.strategies']);
+                $Context->setCalculateStrategies($app['eccube.calculate.strategies']($Order));
                 $Context->setOrder($Order);
                 $Service->setContext($Context);
                 return $Service;
         });
 
-        $app['eccube.calculate.strategies'] = function () use ($app) {
+        $app['eccube.calculate.strategies'] = $app->protect(function ($Order) use ($app) {
             // デフォルトのストラテジーをセットしておく
             $Strategies = [     // ArrayIterator にしたい
-                $app['eccube.calculate.strategy.shipping'],
-                $app['eccube.calculate.strategy.tax']
+                $app['eccube.calculate.strategy.shipping']($Order),
+                $app['eccube.calculate.strategy.tax']($Order)
             ];
             return $Strategies;
-        };
-        $app['eccube.calculate.strategy.shipping'] = $app->share(function () use ($app) {
-                return new  \Eccube\Service\Calculator\Strategy\ShippingStrategy($app);
         });
-        $app['eccube.calculate.strategy.tax'] = $app->share(function () use ($app) {
-                return new  \Eccube\Service\Calculator\Strategy\TaxStrategy($app);
+        $app['eccube.calculate.strategy.shipping'] = $app->protect(function ($Order) use ($app) {
+                $Strategy = new \Eccube\Service\Calculator\Strategy\ShippingStrategy();
+                $Strategy->setApplication($app);
+                $Strategy->setOrder($Order);
+                return $Strategy;
+        });
+        $app['eccube.calculate.strategy.tax'] = $app->protect(function ($Order) use ($app) {
+                $Strategy = new \Eccube\Service\Calculator\Strategy\TaxStrategy();
+                $Strategy->setApplication($app);
+                $Strategy->setOrder($Order);
+                return $Strategy;
         });
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
