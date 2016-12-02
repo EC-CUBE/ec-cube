@@ -51,6 +51,7 @@ class CalculateContext
     public function setOrder(Order $Order)
     {
         $this->Order = $Order;
-        $this->OrderDetails = $Order->getOrderDetails();
+        // ArrayIterator のラップしたクラスを作って明細種別ごとに管理したい
+        $this->OrderDetails = new OrderDetailCollection($Order->getOrderDetails());
     }
 }

@@ -4,11 +4,11 @@ namespace Eccube\Service\Calculator\Strategy;
 
 use Eccube\Application;
 use Eccube\Entity\Order;
+use Eccube\Service\Calculator\OrderDetailCollection;
 
 interface CalculateStrategyInterface
 {
-    // 引数に型パラメータを指定したい
-    public function execute(&$OrderDetails);
+    public function execute(OrderDetailCollection $OrderDetails);
 
     public function setApplication(Application $app);
 
