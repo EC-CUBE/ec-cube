@@ -25,7 +25,6 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
-use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
@@ -33,7 +32,7 @@ use Symfony\Component\DomCrawler\Form;
 /**
  * Class ProductClassControllerTest
  */
-class ProductClassControllerTest extends ProductCommon
+class AbstractProductClassContorllerTest extends AbstractProductCommonTestCase
 {
     /**
      * Render test

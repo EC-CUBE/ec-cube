@@ -34,9 +34,8 @@ use Faker\Generator;
 
 /**
  * Class ProductCommon
- * @package Eccube\Tests\Web\Admin\Product
  */
-class ProductCommon extends AbstractAdminWebTestCase
+abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 {
     /**
      * @var Generator
