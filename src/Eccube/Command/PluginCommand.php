@@ -94,7 +94,7 @@ EOF
         //プラグインEntity用作成
         if ($mode == 'entity') {
             $output->writeln('');
-            $Question = new Question('<comment>[entity]作成方法を選択してください? [d => db, y => yaml] : </comment>', '');
+            $Question = new Question('<comment>[entity]How to generate entities from db schema or yaml? [d => db, y => yaml] : </comment>', '');
             $QuestionHelper = $this->getHelper('question');
             $value = $QuestionHelper->ask($input, $output, $Question);
             $value = substr(strtolower(trim($value)), 0, 1);
@@ -109,7 +109,7 @@ EOF
                 $PluginEntityGenerator->run();
             } else {
                 //入力値正しくない
-                $output->writeln('入力値は正しくない、[d]か[y]を入力してください。');
+                $output->writeln('Input value is incorrect, please choose [d] for database schema or [y] for yaml file.');
             }
 
             return;

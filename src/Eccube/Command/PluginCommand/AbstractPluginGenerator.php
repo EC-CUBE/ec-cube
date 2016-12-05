@@ -122,7 +122,7 @@ abstract class AbstractPluginGenerator
         }
 
         $this->output->writeln('');
-        $this->output->writeln('---入力内容確認');
+        $this->output->writeln('---Entry confirmation');
         foreach ($this->paramList as $paramKey => $params) {
             if (is_array($params['value'])) {
                 $this->output->writeln($params['label']);
@@ -139,7 +139,7 @@ abstract class AbstractPluginGenerator
             }
         }
         $this->output->writeln('');
-        $Question = new Question('<comment>[confirm]上の内容を作成してよろしですか? [y/n] : </comment>', '');
+        $Question = new Question('<comment>[confirm] Do you want to proceed? [y/n] : </comment>', '');
         $value = $this->dialog->ask($this->input, $this->output, $Question);
         if ($value != 'y') {
             $this->exitGenerator();
@@ -149,7 +149,7 @@ abstract class AbstractPluginGenerator
         $this->start();
     }
 
-    protected function exitGenerator($msg = '完了 Bye bye.')
+    protected function exitGenerator($msg = 'Quitting Bye bye.')
     {
         $this->output->writeln($msg);
     }
@@ -165,7 +165,7 @@ abstract class AbstractPluginGenerator
         $this->nestingLevel--;
         
         $this->output->writeln($params['name']);
-        $Question = new Question('<comment>入力' . self::INPUT_OPEN . $params['no'] . self::INPUT_CLOSE . ' : </comment>', '');
+        $Question = new Question('<comment>Input' . self::INPUT_OPEN . $params['no'] . self::INPUT_CLOSE . ' : </comment>', '');
         $value = $this->dialog->ask($this->input, $this->output, $Question);
         $value = trim($value);
         if ($value === self::STOP_PROCESS) {
@@ -176,11 +176,11 @@ abstract class AbstractPluginGenerator
             if ($key == 'isRequired' && $row == true) {
                 if ($value === '' || strlen($value) == 0) {
 
-                    $this->output->writeln('[※]入力されていません');
+                    $this->output->writeln('[!] Value cannot be empty.');
                     return $this->makeLineRequest($params);
                 }
             } elseif ($key == 'patern' && preg_match($row, $value) == false) {
-                $this->output->writeln('<error>[※]有効な値ではありません</error>');
+                $this->output->writeln('<error>[!] Value is not valid.</error>');
                 return $this->makeLineRequest($params);
             } elseif ($key == 'inArray' || $key == 'choice') {
 
@@ -196,12 +196,12 @@ abstract class AbstractPluginGenerator
                         continue;
                     }
                     $params['value'][$value] = $row[$value];
-                    $this->output->writeln('<info>---現在リスト</info>');
+                    $this->output->writeln('<info>--- your entry list</info>');
                     foreach ($params['value'] as $subKey => $node) {
                         $this->output->writeln('<info> - ' . $subKey . '</info>');
                     }
                     $this->output->writeln('');
-                    $this->output->writeln('---※追加完了するにはエンターを入力してください---');
+                    $this->output->writeln('--- Press Enter to move to the next step ---');
 
                     return $this->makeLineRequest($params);
                 } else {
@@ -210,15 +210,15 @@ abstract class AbstractPluginGenerator
                     foreach ($row as $eventKey => $eventConst) {
                         if (strpos($eventKey, $value) !== false || strpos($eventConst, $value) !== false) {
                             if (count($searchList) >= $max) {
-                                $searchList['-- 件数は' . $max . '以上あります'] = '';
+                                $searchList['-- there are more then ' . $max . ''] = '';
                                 break;
                             }
                             $searchList[$eventKey] = $eventConst;
                         }
                     }
-                    $this->output->writeln('<error>[※]入力値は正しくありません</error>');
+                    $this->output->writeln('<error>[!] No results have been found</error>');
                     if (!empty($searchList)) {
-                        $this->output->writeln('---こちらの検索結果を確認してください');
+                        $this->output->writeln('--- there are more then one search result');
                     }
                     foreach ($searchList as $subKey => $node) {
                         $this->output->writeln(' - ' . $subKey);

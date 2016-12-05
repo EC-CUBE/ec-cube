@@ -32,75 +32,75 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
             1 => array(
                 array(
                     'input' => '',
-                    'output' => '入力されていません',
+                    'output' => 'Value cannot be empty',
                 ),
                 array(
-                    'input' => 'テストプラグイン名',
-                    'output' => 'プラグインコード',
+                    'input' => 'Plugin Name',
+                    'output' => 'Plugin Code:',
                 ),
             ),
             //プラグインコード
             2 => array(
                 array(
                     'input' => '',
-                    'output' => '入力されていません',
+                    'output' => 'Value cannot be empty',
                 ),
                 array(
-                    'input' => 'テストプラグイン名',
-                    'output' => 'プラグインコードは英数字で1文字目は必ず半角英字の大文字で入力',
+                    'input' => 'Plugin Name',
+                    'output' => 'only pascal case letters numbers and allowed',
                 ),
                 array(
                     'input' => strtolower($code),
-                    'output' => 'プラグインコードは英数字で1文字目は必ず半角英字の大文字で入力',
+                    'output' => 'only pascal case letters numbers and allowed',
                 ),
                 array(
                     'input' => $code,
-                    'output' => 'バージョン',
+                    'output' => 'Version:',
                 ),
             ),
             //バージョン
             3 => array(
                 array(
                     'input' => '',
-                    'output' => '入力されていません',
+                    'output' => 'Value cannot be empty',
                 ),
                 array(
                     'input' => 'ひらがな',
-                    'output' => '有効な値ではありません',
+                    'output' => 'correct format is x.y.z',
                 ),
                 array(
                     'input' => 'alphabet',
-                    'output' => '有効な値ではありません',
+                    'output' => 'correct format is x.y.z',
                 ),
                 array(
                     'input' => '1.3.4',
-                    'output' => '作成者名',
+                    'output' => 'Author:',
                 )
             ),
             //バージョン
             4 => array(
                 array(
                     'input' => '',
-                    'output' => '入力されていません',
+                    'output' => 'Value cannot be empty',
                 ),
                 array(
-                    'input' => '作成者名',
-                    'output' => 'サーホットバージョン',
+                    'input' => 'Author Name',
+                    'output' => 'Old version support:',
                 ),
             ),
             //サーポットバージョン
             5 => array(
                 array(
                     'input' => '',
-                    'output' => '入力されていません',
+                    'output' => 'Value cannot be empty',
                 ),
                 array(
                     'input' => 'a',
-                    'output' => '入力値は正しくありません',
+                    'output' => 'No results have been found',
                 ),
                 array(
                     'input' => 'y',
-                    'output' => 'サイト共通イベント',
+                    'output' => 'Site events:',
                 ),
             ),
             //サイト共通イベント
@@ -108,28 +108,28 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                 array(
                     'input' => 'entry',
                     'output' => array(
-                        '入力値は正しくありません',
+                        'there are more then one search result',
                         'eccube.event.render.entry.before'
                     ),
                 ),
                 array(
                     'input' => 'eccube.event.render.entry.before',
                     'output' => array(
-                        '現在リスト',
+                        'your entry list',
                         'eccube.event.render.entry.before'
                     ),
                 ),
                 array(
                     'input' => 'product_list',
                     'output' => array(
-                        '入力値は正しくありません',
+                        'there are more then one search result',
                         'eccube.event.render.product_list.before'
                     ),
                 ),
                 array(
                     'input' => 'eccube.event.render.product_list.before',
                     'output' => array(
-                        '現在リスト',
+                        'your entry list',
                         'eccube.event.render.product_list.before'
                     ),
                 ),
@@ -142,28 +142,28 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                 array(
                     'input' => 'entry',
                     'output' => array(
-                        '入力値は正しくありません',
+                        'No results have been found',
                         'front.entry.index.initialize'
                     ),
                 ),
                 array(
                     'input' => 'front.entry.index.initialize',
                     'output' => array(
-                        '現在リスト',
+                        'your entry list',
                         'front.entry.index.initialize'
                     ),
                 ),
                 array(
                     'input' => 'change_password',
                     'output' => array(
-                        '入力値は正しくありません',
+                        'No results have been found',
                         'admin.admin.change_password.complete'
                     ),
                 ),
                 array(
                     'input' => 'admin.admin.change_password.complete',
                     'output' => array(
-                        '現在リスト',
+                        'your entry list',
                         'admin.admin.change_password.complete'
                     ),
                 ),
@@ -175,10 +175,10 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
             'confirm' => array(
                 array(
                     'output' => array(
-                        'テストプラグイン名',
+                        'Plugin Name',
                         $code,
                         '1.3.4',
-                        '作成者名',
+                        'Author Name',
                         'Yes',
                         'eccube.event.render.entry.before',
                         'eccube.event.render.product_list.before',

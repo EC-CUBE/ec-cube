@@ -49,8 +49,8 @@ class PluginGenerator extends AbstractPluginGenerator
     protected function getHeader()
     {
         $this->output->writeln('------------------------------------------------------');
-        $this->output->writeln('---プラグインジェネレータ');
-        $this->output->writeln('---※プログラムを終了するには' . self::STOP_PROCESS . 'を入力してください');
+        $this->output->writeln('---Plugin Generator');
+        $this->output->writeln('---[*]You can exit from Console Application, by typing ' . self::STOP_PROCESS . ' instead of typing another word.');
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('');
     }
@@ -60,18 +60,18 @@ class PluginGenerator extends AbstractPluginGenerator
         $this->paramList = array(
             'pluginName' => array(
                 'no' => 1,
-                'label' => '■プラグイン名: ',
+                'label' => '[+]Plugin Name: ',
                 'value' => null,
-                'name' => '■プラグイン名を入力してください',
+                'name' => '[+]Please enter Plugin Name',
                 'validation' => array(
                     'isRequired' => true,
                 )
             ),
             'pluginCode' => array(
                 'no' => 2,
-                'label' => '■プラグインコード: ',
+                'label' => '[+]Plugin Code: ',
                 'value' => null,
-                'name' => '■プラグインコードは英数字で1文字目は必ず半角英字の大文字で入力してください',
+                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers and allowed)',
                 'validation' => array(
                     'isRequired' => true,
                     'patern' => '/^[A-Z][0-9a-zA-Z]*$/'
@@ -79,9 +79,9 @@ class PluginGenerator extends AbstractPluginGenerator
             ),
             'version' => array(
                 'no' => 3,
-                'label' => '■バージョン: ',
+                'label' => '[+]Version: ',
                 'value' => null,
-                'name' => '■バージョン形式はメジャー.マイナー.パッチ(x.x.x)',
+                'name' => '[+]Please enter version (correct format is x.y.z)',
                 'validation' => array(
                     'isRequired' => true,
                     'patern' => '/^\d+.\d+.\d+$/'
@@ -89,18 +89,18 @@ class PluginGenerator extends AbstractPluginGenerator
             ),
             'author' => array(
                 'no' => 4,
-                'label' => '■作成者: ',
+                'label' => '[+]Author: ',
                 'value' => null,
-                'name' => '■作成者名や会社名を入力してください',
+                'name' => '[+]Please enter author name or company',
                 'validation' => array(
                     'isRequired' => true,
                 )
             ),
             'supportFlag' => array(
                 'no' => 5,
-                'label' => '■サーポットバージョン: ',
+                'label' => '[+]Old version support: ',
                 'value' => null,
-                'name' => '■サーホットバージョン対応いりますか? [y/n]',
+                'name' => '[+]Do you want to support old versions too? [y/n]',
                 'show' => array(1 => 'Yes' ,0 => 'No'),
                 'validation' => array(
                     'isRequired' => true,
@@ -109,9 +109,9 @@ class PluginGenerator extends AbstractPluginGenerator
             ),
             'events' => array(
                 'no' => 6,
-                'label' => '■サイト共通イベント: ',
+                'label' => '[+]Site events: ',
                 'value' => array(),
-                'name' => '■サイト共通イベントを入力してください(プラグイン仕様書を参照 http://www.ec-cube.net/plugin/)',
+                'name' => '[+]Please enter site events(you can find documentation here http://www.ec-cube.net/plugin/)',
                 'validation' => array(
                     'isRequired' => false,
                     'inArray' => 'getEvents'
@@ -119,9 +119,9 @@ class PluginGenerator extends AbstractPluginGenerator
             ),
             'hookPoints' => array(
                 'no' => 7,
-                'label' => '■フックポイント: ',
+                'label' => '[+]Hook points: ',
                 'value' => array(),
-                'name' => '■フックポイントを入力してください、例：front.cart.up.initialize',
+                'name' => '[+]Please enter hook point, sample：front.cart.up.initialize',
                 'validation' => array(
                     'isRequired' => false,
                     'inArray' => $this->getHookPoints()
@@ -193,12 +193,12 @@ class PluginGenerator extends AbstractPluginGenerator
 
         $Plugin = $this->app['eccube.repository.plugin']->findOneBy(array('code' => $pluginCode));
         if ($Plugin) {
-            $this->exitGenerator('<error>同じcodeのプラグインが既に作成されています</error>');
+            $this->exitGenerator('<error>Plugin with this name already exists</error>');
             return;
         }
         $this->createFilesAndFolders($pluginCode, $this->paramList);
         $this->createDbRecords($pluginCode, $this->paramList);
-        $this->exitGenerator('プラグイン作成完了しました');
+        $this->exitGenerator('Plugin was created successfully');
     }
 
     private function createFilesAndFolders($code, $paramList)
@@ -488,10 +488,10 @@ class PluginGenerator extends AbstractPluginGenerator
             }
         }
         $this->output->writeln('');
-        $this->output->writeln('■ファイルシステム');
+        $this->output->writeln('[+]File system');
         if (!empty($dirFileOk)) {
             $this->output->writeln('');
-            $this->output->writeln('  以下のファイルとフォルダーを作成しました');
+            $this->output->writeln(' this files and folders were created.');
             foreach ($dirFileOk as $path) {
                 $this->output->writeln('<info> - ' . $path . '</info>');
             }
@@ -499,7 +499,7 @@ class PluginGenerator extends AbstractPluginGenerator
 
         if (!empty($dirFileNg)) {
             $this->output->writeln('');
-            $this->output->writeln('  以下のファイルとフォルダーを作成失敗しました');
+            $this->output->writeln(' this files and folders was not created.');
             foreach ($dirFileOk as $path) {
                 $this->output->writeln('<error> - ' . $path . '</error>');
             }
@@ -522,11 +522,11 @@ class PluginGenerator extends AbstractPluginGenerator
         $this->app['orm.em']->flush($Plugin);
 
         $this->output->writeln('');
-        $this->output->writeln('■データベース');
+        $this->output->writeln('[+]Database');
         if ($Plugin->getId()) {
-            $this->output->writeln('<info> テーブル「DB.Plugin」に登録しました（id=' . $Plugin->getId() . '）</info>');
+            $this->output->writeln('<info> Plugin information was added to table [DB.Plugin] (id=' . $Plugin->getId() . ')</info>');
         } else {
-            $this->output->writeln('<error> テーブル「DB.Plugin」に登録失敗しました（id=' . $Plugin->getId() . '）</error>');
+            $this->output->writeln('<error> there was a problem inserting plugin information to table [DB.Plugin] (id=' . $Plugin->getId() . ')</error>');
         }
 
         $hookPoints = $paramList['hookPoints']['value'];
@@ -550,7 +550,7 @@ class PluginGenerator extends AbstractPluginGenerator
         $this->app['orm.em']->flush();
         if ($eventCount) {
             $this->output->writeln('');
-            $this->output->writeln('<info> テーブル「DB.PluginEventHandler」に登録しました（件数=' . $eventCount . '）</info>');
+            $this->output->writeln('<info> Plugin information was added to table [DB.PluginEventHandler] (inserts number=' . $eventCount . ') </info>');
         }
     }
 }

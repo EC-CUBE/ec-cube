@@ -45,7 +45,7 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
             1 => array(
                 array(
                     'input' => '',
-                    'output' => '入力されていません',
+                    'output' => 'Value cannot be empty',
                 ),
                 array(
                     'input' => 'テストプラグイン名',

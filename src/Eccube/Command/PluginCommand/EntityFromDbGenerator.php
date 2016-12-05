@@ -41,9 +41,9 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
     protected function getHeader()
     {
         $this->output->writeln('------------------------------------------------------');
-        $this->output->writeln('---プラグインEntityジェネレータ');
-        $this->output->writeln('---※先にテーブルを作成が必要です');
-        $this->output->writeln('---※プログラムを終了するには' . self::STOP_PROCESS . 'を入力してください');
+        $this->output->writeln('---Plugin Generator for Entity');
+        $this->output->writeln('---[*] You need to create table schema first.');
+        $this->output->writeln('---[*]You can exit from Console Application, by typing ' . self::STOP_PROCESS . ' instead of typing another word.');
         $this->output->writeln('------------------------------------------------------');
         $this->output->writeln('');
     }
@@ -118,10 +118,10 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
             }
         }
         $this->output->writeln('');
-        $this->output->writeln('■ファイルシステム');
+        $this->output->writeln('[+]file system');
         if (!empty($dirFileOk)) {
             $this->output->writeln('');
-            $this->output->writeln('  以下のファイルとフォルダーを作成しました');
+            $this->output->writeln(' this files and folders were created.');
             foreach ($dirFileOk as $path) {
                 $this->output->writeln('<info> - ' . $path . '</info>');
             }
@@ -148,9 +148,9 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
         $this->paramList = array(
             'pluginCode' => array(
                 'no' => 1,
-                'label' => '■プラグインコード: ',
+                'label' => '[+]Plugin Code: ',
                 'value' => null,
-                'name' => '■プラグインコードを入力してください',
+                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers and allowed)',
                 'validation' => array(
                     'isRequired' => true,
                     'inArray' => $this->getPluginList()
@@ -158,9 +158,9 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
             ),
             'tableList' => array(
                 'no' => 2,
-                'label' => '■テーブル名: ',
+                'label' => '[+]Table name: ',
                 'value' => array(),
-                'name' => '■テーブル名を入力してください',
+                'name' => '[+]Please enter table name',
                 'validation' => array(
                     'isRequired' => false,
                     'inArray' => $this->getTableList()
@@ -168,11 +168,11 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
             ),
             'supportFlag' => array(
                 'no' => 3,
-                'label' => '■サーポットバージョン: ',
+                'label' => '[+]Old version support: ',
                 'value' => null,
-                'name' => '■サーホットバージョン対応いりますか? [y/n]',
+                'name' => '[+]Do you want to support old versions too? [y/n]',
                 'show' => array(
-                    1 => 'Yes' ,0 => 'No'),
+                    1 => 'Yes', 0 => 'No'),
                 'validation' => array(
                     'isRequired' => true,
                     'choice' => array('y' => 1, 'n' => 0)
