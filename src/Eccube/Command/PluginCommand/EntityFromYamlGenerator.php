@@ -159,6 +159,7 @@ class EntityFromYamlGenerator extends AbstractPluginGenerator
     {
         $this->paramList = array(
             'pluginCode' => array(
+                'no' => 1,
                 'label' => '■プラグインコード: ',
                 'value' => null,
                 'name' => '■プラグインコードを入力してください',
@@ -168,6 +169,7 @@ class EntityFromYamlGenerator extends AbstractPluginGenerator
                 )
             ),
             'entityList' => array(
+                'no' => 2,
                 'label' => '■Yamlファイル名: ',
                 'value' => array(),
                 'name' => '■Yamlファイル名を入力してください',
@@ -177,6 +179,7 @@ class EntityFromYamlGenerator extends AbstractPluginGenerator
                 )
             ),
             'supportFlag' => array(
+                'no' => 3,
                 'label' => '■サーポットバージョン: ',
                 'value' => null,
                 'name' => '■サーホットバージョン対応いりますか? [y/n]',

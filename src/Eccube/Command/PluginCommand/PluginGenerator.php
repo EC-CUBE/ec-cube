@@ -59,6 +59,7 @@ class PluginGenerator extends AbstractPluginGenerator
     {
         $this->paramList = array(
             'pluginName' => array(
+                'no' => 1,
                 'label' => '■プラグイン名: ',
                 'value' => null,
                 'name' => '■プラグイン名を入力してください',
@@ -67,6 +68,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 )
             ),
             'pluginCode' => array(
+                'no' => 2,
                 'label' => '■プラグインコード: ',
                 'value' => null,
                 'name' => '■プラグインコードは英数字で1文字目は必ず半角英字の大文字で入力してください',
@@ -76,6 +78,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 )
             ),
             'version' => array(
+                'no' => 3,
                 'label' => '■バージョン: ',
                 'value' => null,
                 'name' => '■バージョン形式はメジャー.マイナー.パッチ(x.x.x)',
@@ -85,6 +88,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 )
             ),
             'author' => array(
+                'no' => 4,
                 'label' => '■作成者: ',
                 'value' => null,
                 'name' => '■作成者名や会社名を入力してください',
@@ -93,6 +97,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 )
             ),
             'supportFlag' => array(
+                'no' => 5,
                 'label' => '■サーポットバージョン: ',
                 'value' => null,
                 'name' => '■サーホットバージョン対応いりますか? [y/n]',
@@ -103,6 +108,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 )
             ),
             'events' => array(
+                'no' => 6,
                 'label' => '■サイト共通イベント: ',
                 'value' => array(),
                 'name' => '■サイト共通イベントを入力してください(プラグイン仕様書を参照 http://www.ec-cube.net/plugin/)',
@@ -112,6 +118,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 )
             ),
             'hookPoints' => array(
+                'no' => 7,
                 'label' => '■フックポイント: ',
                 'value' => array(),
                 'name' => '■フックポイントを入力してください、例：front.cart.up.initialize',

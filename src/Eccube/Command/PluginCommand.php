@@ -40,11 +40,6 @@ class PluginCommand extends \Knp\Command\Command
 
     protected $app;
 
-    public function __construct(\Eccube\Application $app, $name = null)
-    {
-        parent::__construct($name);
-        $this->app = $app;
-    }
 
     protected function configure()
     {
@@ -83,24 +78,24 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->app = $this->getSilexApplication();
         $this->app->initialize();
         $this->app->boot();
 
         $mode = $input->getArgument('mode');
 
-        $QuestionHelper = new QuestionHelper();
-
         //プラグイン作成
         if ($mode == 'generate') {
             $PluginGenerator = new PluginGenerator($this->app);
-            $PluginGenerator->init($QuestionHelper, $input, $output);
+            $PluginGenerator->init($this->getHelper('question'), $input, $output);
             $PluginGenerator->run();
             return;
         }
         //プラグインEntity用作成
         if ($mode == 'entity') {
             $output->writeln('');
-            $Question = new Question('<comment>Entiy作成方法を選択してください? [d => db, y => yaml] : </comment>', '');
+            $Question = new Question('<comment>[entity]作成方法を選択してください? [d => db, y => yaml] : </comment>', '');
+            $QuestionHelper = $this->getHelper('question');
             $value = $QuestionHelper->ask($input, $output, $Question);
             $value = substr(strtolower(trim($value)), 0, 1);
             if ($value == 'd') {
@@ -208,8 +203,9 @@ EOF
                 return;
             }
         }
-        
+
         $output->writeln(' mode is not correct, try help for more options');
         $output->writeln(' plugin:develop --help  ');
     }
+    
 }

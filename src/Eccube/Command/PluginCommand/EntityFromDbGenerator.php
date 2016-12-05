@@ -147,6 +147,7 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
     {
         $this->paramList = array(
             'pluginCode' => array(
+                'no' => 1,
                 'label' => '■プラグインコード: ',
                 'value' => null,
                 'name' => '■プラグインコードを入力してください',
@@ -156,6 +157,7 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
                 )
             ),
             'tableList' => array(
+                'no' => 2,
                 'label' => '■テーブル名: ',
                 'value' => array(),
                 'name' => '■テーブル名を入力してください',
@@ -165,6 +167,7 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
                 )
             ),
             'supportFlag' => array(
+                'no' => 3,
                 'label' => '■サーポットバージョン: ',
                 'value' => null,
                 'name' => '■サーホットバージョン対応いりますか? [y/n]',

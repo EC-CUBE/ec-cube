@@ -30,8 +30,11 @@ use Symfony\Component\Console\Question\Question;
 abstract class AbstractPluginGenerator
 {
 
+    const DEFAULT_NESTING_LEVEL = 100;
     const NEW_HOOK_VERSION = '3.0.9';
     const STOP_PROCESS = 'quit';
+    const INPUT_OPEN = '[';
+    const INPUT_CLOSE = ']';
 
     /**
      * app
@@ -64,6 +67,12 @@ abstract class AbstractPluginGenerator
     protected $paramList;
 
     /**
+     *
+     * @var int
+     */
+    private $nestingLevel;
+
+    /**
      * ヘッダー
      */
     abstract protected function getHeader();
@@ -81,6 +90,7 @@ abstract class AbstractPluginGenerator
     public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
+        $this->nestingLevel = self::DEFAULT_NESTING_LEVEL;
     }
 
     /**
@@ -129,7 +139,7 @@ abstract class AbstractPluginGenerator
             }
         }
         $this->output->writeln('');
-        $Question = new Question('<comment>上のプラグイン作成してよろしですか? [y/n] : </comment>', '');
+        $Question = new Question('<comment>[confirm]上の内容を作成してよろしですか? [y/n] : </comment>', '');
         $value = $this->dialog->ask($this->input, $this->output, $Question);
         if ($value != 'y') {
             $this->exitGenerator();
@@ -146,8 +156,16 @@ abstract class AbstractPluginGenerator
 
     protected function makeLineRequest($params)
     {
+        //nesting loop protection
+        if ($this->getNestingLevel() < 0) {
+            rewind($this->output->getStream());
+            $display = stream_get_contents($this->output->getStream());
+            throw new \Exception($display);
+        }
+        $this->nestingLevel--;
+        
         $this->output->writeln($params['name']);
-        $Question = new Question('<comment>入力 : </comment>', '');
+        $Question = new Question('<comment>入力' . self::INPUT_OPEN . $params['no'] . self::INPUT_CLOSE . ' : </comment>', '');
         $value = $this->dialog->ask($this->input, $this->output, $Question);
         $value = trim($value);
         if ($value === self::STOP_PROCESS) {
@@ -215,5 +233,15 @@ abstract class AbstractPluginGenerator
         }
 
         return $value;
+    }
+
+    protected function getNestingLevel()
+    {
+        return $this->nestingLevel;
+    }
+
+    protected function setNestingLevel($nestingLevel)
+    {
+        $this->nestingLevel = $nestingLevel;
     }
 }
