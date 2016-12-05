@@ -37,5 +37,6 @@ $console->getHelperSet()->set(new \Symfony\Component\Console\Helper\QuestionHelp
 $console->add(new Eccube\Command\RouterCommand());
 $console->add(new Eccube\Command\CacheClearCommand());
 $console->add(new Eccube\Command\PluginCommand());
+$console->add(new Eccube\Command\ConfigCommand());
 
 $console->run();

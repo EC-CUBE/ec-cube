@@ -153,6 +153,8 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
         $app['eccube.repository.product'] = $app->share(function () use ($app) {
             $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
+            $productRepository->setApplication($app);
+
             return $productRepository;
         });
         $app['eccube.repository.product_image'] = $app->share(function () use ($app) {
@@ -232,7 +234,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
         });
 
         $app['paginator'] = $app->protect(function () {
-            return new \Knp\Component\Pager\Paginator();
+            $paginator = new \Knp\Component\Pager\Paginator();
+            $paginator->subscribe(new \Eccube\EventListener\PaginatorListener());
+
+            return $paginator;
         });
 
         $app['eccube.repository.help'] = $app->share(function () use ($app) {

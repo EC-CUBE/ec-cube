@@ -24,6 +24,7 @@
 
 namespace Eccube\Repository;
 
+use Eccube\Application;
 use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
@@ -37,6 +38,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductRepository extends EntityRepository
 {
+
+    /**
+     * @var \Eccube\Application
+     */
+    protected $app;
+
+    /**
+     * @param Application $app
+     */
+    public function setApplication(Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * get Product.
@@ -98,14 +112,15 @@ class ProductRepository extends EntityRepository
             foreach ($keywords as $index => $keyword) {
                 $key = sprintf('keyword%s', $index);
                 $qb
-                    ->andWhere(sprintf('p.name LIKE :%s OR p.search_word LIKE :%s', $key, $key))
+                    ->andWhere(sprintf('NORMALIZE(p.name) LIKE NORMALIZE(:%s) OR NORMALIZE(p.search_word) LIKE NORMALIZE(:%s)', $key, $key))
                     ->setParameter($key, '%' . $keyword . '%');
             }
         }
 
         // Order By
-        // 価格順
-        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '1') {
+        // 価格低い順
+        $config = $this->app['config'];
+        if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_lower']) {
             //@see http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html
             $qb->addSelect('MIN(pc.price02) as HIDDEN price02_min');
             $qb->innerJoin('p.ProductClasses', 'pc');
@@ -116,8 +131,15 @@ class ProductRepository extends EntityRepository
             // $qb->groupBy('p.id');
             $qb->orderBy('price02_min', 'ASC');
             $qb->addOrderBy('p.id', 'DESC');
+            // 価格高い順
+        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_price_higher']) {
+            $qb->addSelect('MAX(pc.price02) as HIDDEN price02_max');
+            $qb->innerJoin('p.ProductClasses', 'pc');
+            $qb->groupBy('p');
+            $qb->orderBy('price02_max', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
             // 新着順
-        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == '2') {
+        } else if (!empty($searchData['orderby']) && $searchData['orderby']->getId() == $config['product_order_newer']) {
             $qb->orderBy('p.create_date', 'DESC');
         } else {
             if ($categoryJoin === false) {

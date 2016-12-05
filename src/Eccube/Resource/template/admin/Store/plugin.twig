@@ -33,6 +33,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         document.forms[form_name].action = action;
         document.forms[form_name].submit();
     }
+    $(function(){
+        $('[data-readme]').on('click', function() {
+            var url = '{{ url('admin_store_plugin_readme', {'id': '999999'}) }}';
+            $.ajax({
+                type: 'GET',
+                url: url.replace('999999', $(this).data('readme')),
+                dataType: "json",
+                success: function(data) {
+                    $(".prevention-masked").remove();
+                    $('#readmeModalLabel').text(data.name);
+                    $('#readmeContent').html(data.readme);
+                    $('#readmeModal').modal('show');
+                },
+                error: function() {
+                    $(".prevention-masked").remove();
+                    alert('Failed to read README.');
+                }
+            });
+            return false;
+        });
+    });
 </script>
 {% endblock javascript %}
 
@@ -70,4 +91,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% endif %}
         </div><!-- /.col -->
     </div>
+{% endblock %}
+{% block modal %}
+<div class="modal" id="readmeModal" tabindex="-1" role="dialog" aria-labelledby="readmeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg class="cb cb-close" aria-hidden="true"><use xlink:href="#cb-close"></svg></button>
+                <h4 class="modal-title" id="readmeModalLabel">{# プラグイン名 #}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" id="readmeContent">
+                    {# README #}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

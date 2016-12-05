@@ -143,6 +143,27 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
+    public function testMultiStatus()
+    {
+        $this->Order1->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_new']));
+        $this->Order2->setOrderStatus($this->app['eccube.repository.order_status']->find($this->app['config']['order_cancel']));
+        $this->app['orm.em']->flush();
+
+        $Statuses = new ArrayCollection(array(
+            $this->app['config']['order_new'],
+            $this->app['config']['order_cancel'],
+            $this->app['config']['order_pending'],
+        ));
+        $this->searchData = array(
+            'multi_status' => $Statuses,
+        );
+        $this->scenario();
+
+        $this->expected = 2;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
     public function testName()
     {
         $this->Order2

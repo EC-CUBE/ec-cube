@@ -29,6 +29,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class SearchProductType to search product.
+ */
 class SearchProductType extends AbstractType
 {
     /**
@@ -74,8 +77,7 @@ class SearchProductType extends AbstractType
                 'maxlength' => 50,
             ),
         ));
-        $builder->add('pageno', 'hidden', array(
-        ));
+        $builder->add('pageno', 'hidden', array());
         $builder->add('disp_number', 'product_list_max', array(
             'label' => '表示件数',
         ));
