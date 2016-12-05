@@ -24,6 +24,8 @@ $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(),
     'db.migrations.path' => __DIR__ . '/../src/Eccube/Resource/doctrine/migration',
 ));
 
+$app->initializePlugin();
+
 $app->boot();
 
 $console = $app["console"];
