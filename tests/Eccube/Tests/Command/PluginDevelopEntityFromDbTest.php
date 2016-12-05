@@ -264,7 +264,7 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
             }
         }
 
-        throw new \Exception('Test case not set.' . "\r\n" . ' output=' . $output);
+        throw new \Exception('Test case not set.' . PHP_EOL . ' output=' . $output);
     }
 
     protected function assertInOutput($output, $msg)
@@ -273,7 +273,7 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
             $this->assertTrue(true);
             return true;
         }
-        $error = 'Input string not found in output.' . "\r\n" . ' search=' . $msg . "\r\n" . ' output=' . $output . '' . "\r\n";
+        $error = 'Input string not found in output.' . PHP_EOL . ' search=' . $msg . PHP_EOL . ' output=' . $output . '' . PHP_EOL;
         $this->assertTrue(false, $error);
         return false;
     }

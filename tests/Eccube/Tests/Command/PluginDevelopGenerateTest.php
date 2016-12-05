@@ -73,7 +73,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                     'output' => 'correct format is x.y.z',
                 ),
                 array(
-                    'input' => '1.3.4',
+                    'input' => '1.0.0',
                     'output' => 'Author:',
                 )
             ),
@@ -177,7 +177,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                     'output' => array(
                         'Plugin Name',
                         $code,
-                        '1.3.4',
+                        '1.0.0',
                         'Author Name',
                         'Yes',
                         'eccube.event.render.entry.before',
@@ -188,7 +188,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                 ),
                 array(
                     'input' => 'y',
-                    'output' => 'ysadsad',
+                    'output' => '',
                 ),
             )
         );
@@ -262,7 +262,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
             }
         }
 
-        throw new \Exception('Test case not set.' . "\r\n" . ' output=' . $output);
+        throw new \Exception('Test case not set.' . PHP_EOL . ' output=' . $output);
     }
 
     protected function assertInOutput($output, $msg)
@@ -271,7 +271,7 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
             $this->assertTrue(true);
             return true;
         }
-        $error = 'Input string not found in output.' . "\r\n" . ' search=' . $msg . "\r\n" . ' output=' . $output . '' . "\r\n";
+        $error = 'Input string not found in output.' . PHP_EOL . ' search=' . $msg . PHP_EOL . ' output=' . $output . '' . PHP_EOL;
         $this->assertTrue(false, $error);
         return false;
     }
