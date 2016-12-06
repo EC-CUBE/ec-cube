@@ -150,7 +150,7 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
                 'no' => 1,
                 'label' => '[+]Plugin Code: ',
                 'value' => null,
-                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers and allowed)',
+                'name' => '[+]Please enter Plugin Code (only pascal case letters numbers are allowed)',
                 'validation' => array(
                     'isRequired' => true,
                     'inArray' => $this->getPluginList()
@@ -211,6 +211,7 @@ class EntityFromDbGenerator extends AbstractPluginGenerator
                 $ret[$fileInfo->getFilename()] = $fileInfo->getFilename();
             }
         }
+        
         return $ret;
     }
 

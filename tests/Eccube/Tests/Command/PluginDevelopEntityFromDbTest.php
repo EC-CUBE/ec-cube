@@ -21,24 +21,21 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
 
     public function testFirst()
     {
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-        return ;
         $code = 'PluginUnittestSample';
 
         $codePath = $this->app['config']['root_dir'] . '/app/Plugin/' . $code;
         $this->removePluginDir($codePath);
-        
-        $this->createTable($code);
+        $this->createPluginDir($codePath);
+
         $this->dropTable($code);
-        
+        $this->createTable($code);
+        $tableName = 'plg_' . strtolower($code);
+
         $testCase = array(
             //プラグイン名
             'entity' => array(
                 array(
                     'input' => 'd',
-                    'output' => 'プラグインコードを入力してください',
                 )
             ),
             //プラグインコード
@@ -49,148 +46,60 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
                 ),
                 array(
                     'input' => 'テストプラグイン名',
-                    'output' => 'プラグインコードは英数字で1文字目は必ず半角英字の大文字で入力',
+                    'output' => 'only pascal case letters numbers are allowed',
                 ),
                 array(
                     'input' => strtolower($code),
-                    'output' => 'プラグインコードは英数字で1文字目は必ず半角英字の大文字で入力',
+                    'output' => 'only pascal case letters numbers are allowed',
                 ),
                 array(
                     'input' => $code,
-                    'output' => 'バージョン',
+                    'output' => 'Table name:',
                 ),
             ),
-            //バージョン
+            //Table name:
+            2 => array(
+                array(
+                    'input' => 'plg_',
+                    'output' => array(
+                        'No results have been found',
+                        $tableName
+                    ),
+                ),
+                array(
+                    'input' => $tableName,
+                    'output' => array(
+                        'your entry list',
+                        $tableName
+                    ),
+                ),
+                array(
+                    'input' => '',
+                ),
+            ),
+            //supportFlag
             3 => array(
                 array(
                     'input' => '',
-                    'output' => '入力されていません',
-                ),
-                array(
-                    'input' => 'ひらがな',
-                    'output' => '有効な値ではありません',
-                ),
-                array(
-                    'input' => 'alphabet',
-                    'output' => '有効な値ではありません',
-                ),
-                array(
-                    'input' => '1.3.4',
-                    'output' => '作成者名',
-                )
-            ),
-            //バージョン
-            4 => array(
-                array(
-                    'input' => '',
-                    'output' => '入力されていません',
-                ),
-                array(
-                    'input' => '作成者名',
-                    'output' => 'サーホットバージョン',
-                ),
-            ),
-            //サーポットバージョン
-            5 => array(
-                array(
-                    'input' => '',
-                    'output' => '入力されていません',
+                    'output' => 'Value cannot be empty',
                 ),
                 array(
                     'input' => 'a',
-                    'output' => '入力値は正しくありません',
+                    'output' => 'No results have been found',
                 ),
                 array(
-                    'input' => 'y',
-                    'output' => 'サイト共通イベント',
-                ),
-            ),
-            //サイト共通イベント
-            6 => array(
-                array(
-                    'input' => 'entry',
-                    'output' => array(
-                        '入力値は正しくありません',
-                        'eccube.event.render.entry.before'
-                    ),
-                ),
-                array(
-                    'input' => 'eccube.event.render.entry.before',
-                    'output' => array(
-                        '現在リスト',
-                        'eccube.event.render.entry.before'
-                    ),
-                ),
-                array(
-                    'input' => 'product_list',
-                    'output' => array(
-                        '入力値は正しくありません',
-                        'eccube.event.render.product_list.before'
-                    ),
-                ),
-                array(
-                    'input' => 'eccube.event.render.product_list.before',
-                    'output' => array(
-                        '現在リスト',
-                        'eccube.event.render.product_list.before'
-                    ),
-                ),
-                array(
-                    'input' => '',
-                ),
-            ),
-            //フックポイント
-            7 => array(
-                array(
-                    'input' => 'entry',
-                    'output' => array(
-                        '入力値は正しくありません',
-                        'front.entry.index.initialize'
-                    ),
-                ),
-                array(
-                    'input' => 'front.entry.index.initialize',
-                    'output' => array(
-                        '現在リスト',
-                        'front.entry.index.initialize'
-                    ),
-                ),
-                array(
-                    'input' => 'change_password',
-                    'output' => array(
-                        '入力値は正しくありません',
-                        'admin.admin.change_password.complete'
-                    ),
-                ),
-                array(
-                    'input' => 'admin.admin.change_password.complete',
-                    'output' => array(
-                        '現在リスト',
-                        'admin.admin.change_password.complete'
-                    ),
-                ),
-                array(
-                    'input' => '',
+                    'input' => 'y'
                 ),
             ),
             //確認
             'confirm' => array(
                 array(
                     'output' => array(
-                        'テストプラグイン名',
-                        $code,
-                        '1.3.4',
-                        '作成者名',
-                        'Yes',
-                        'eccube.event.render.entry.before',
-                        'eccube.event.render.product_list.before',
-                        'front.entry.index.initialize',
-                        'admin.admin.change_password.complete',
+                        $tableName
                     ),
                 ),
                 array(
-                    'input' => 'y',
-                    'output' => 'ysadsad',
+                    'input' => 'y'
                 ),
             )
         );
@@ -198,40 +107,33 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
 
         $commandArg = array(
             'command' => 'plugin:develop',
-            'mode' => 'generate',
+            'mode' => 'entity',
             '--no-ansi' => true,
         );
 
         $this->executeTester(array($this, 'checkQuestion'), $commandArg);
-
+        
         //ファイルとフォルダー作成確認
         $ff = array(
-            $codePath,
-            $codePath . '/ServiceProvider',
-            $codePath . '/ServiceProvider/' . $code . 'ServiceProvider.php',
-            $codePath . '/Controller',
-            $codePath . '/Form/Type',
-            $codePath . '/Resource/template/admin',
-            $codePath . '/config.yml',
-            $codePath . '/PluginManager.php',
-            $codePath . '/Controller/ConfigController.php',
-            $codePath . '/Controller/' . $code . 'Controller.php',
-            $codePath . '/Form/Type/' . $code . 'ConfigType.php',
-            $codePath . '/Resource/template/admin/config.twig',
-            $codePath . '/Resource/template/index.twig',
-            $codePath . '/event.yml',
-            $codePath . '/' . $code . 'Event.php',
-            $codePath . '/LICENSE',
+            $codePath,            
+            $codePath . '/Entity',
+            $codePath . '/Entity/' . ucfirst(strtolower($code)) . '.php',
+            $codePath . '/Repository',
+            $codePath . '/Repository/' . ucfirst(strtolower($code)) . 'Repository.php',
+            $codePath . '/Resource',
+            $codePath . '/Resource/doctrine',
+            $codePath . '/Resource/doctrine/Plugin.' . $code . '.Entity.' . ucfirst(strtolower($code)) . '.dcm.yml',
+            $codePath . '/Resource/doctrine/migration',
         );
-
+        
         $this->checkFileAndFolder($ff);
-
         $this->removePluginDir($codePath);
         $this->removePluginDb($code);
     }
 
     public function checkQuestion($text, Question $question)
     {
+
         $output = $this->getLastContent();
         foreach ($this->testCase as $no => $row) {
             if (is_numeric($no)) {
@@ -291,6 +193,13 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
         }
     }
 
+    protected function createPluginDir($codePath)
+    {
+        if (!is_dir($codePath)) {
+            mkdir($codePath);
+        }
+    }
+
     protected function removePluginDb($code)
     {
         /* @var $entityManager \Doctrine\ORM\EntityManager  */
@@ -319,28 +228,41 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
             $this->assertTrue(file_exists($path), $msg);
         }
     }
-    
-    private function dropTable($code){
+
+    private function dropTable($code)
+    {
+
+        $tableName = 'plg_' . strtolower($code);
+
         /* @var $entityManager \Doctrine\ORM\EntityManager  */
         $entityManager = $this->app['orm.em'];
+        /* @var $schema \Doctrine\DBAL\Schema\Schema  */
         $schema = $entityManager->getConnection()->getSchemaManager()->createSchema();
+        $dbName = $schema->getName();
+        $tableNames = array_flip($schema->getTableNames());
+
+        if (!isset($tableNames[$dbName . '.' . $tableName])) {
+            return;
+        }
+
         $toSchema = clone $schema;
-        
-        $toSchema->dropTable('plg_'. strtolower($code));
+
+        $toSchema->dropTable($tableName);
         $platform = $entityManager->getConnection()->getDatabasePlatform();
         $queries = $schema->getMigrateToSql($toSchema, $platform);
-        
-        if(is_array($queries)){
-            foreach($queries as $query){
+
+        if (is_array($queries)) {
+            foreach ($queries as $query) {
                 $entityManager->getConnection()->executeQuery($query);
             }
         }
-        
     }
-    private function createTable($code){
-        
+
+    private function createTable($code)
+    {
+
         $schema = new \Doctrine\DBAL\Schema\Schema();
-        $table = $schema->createTable('plg_'. strtolower($code));
+        $table = $schema->createTable('plg_' . strtolower($code));
         $table->addColumn('id', 'integer', array(
             'notnull' => true,
             'unsigned' => true,
@@ -434,12 +356,11 @@ class PluginDevelopEntityFromDbTest extends AbstractCommandTest
         $entityManager = $this->app['orm.em'];
         $platform = $entityManager->getConnection()->getDatabasePlatform();
         $queries = $schema->toSql($platform);
-        
-        if(is_array($queries)){
-            foreach($queries as $query){
+
+        if (is_array($queries)) {
+            foreach ($queries as $query) {
                 $entityManager->getConnection()->executeQuery($query);
             }
         }
     }
-    
 }

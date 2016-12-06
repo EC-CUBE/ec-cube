@@ -71,7 +71,7 @@ class PluginGenerator extends AbstractPluginGenerator
                 'no' => 2,
                 'label' => '[+]Plugin Code: ',
                 'value' => null,
-                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers and allowed)',
+                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers are allowed)',
                 'validation' => array(
                     'isRequired' => true,
                     'patern' => '/^[A-Z][0-9a-zA-Z]*$/'

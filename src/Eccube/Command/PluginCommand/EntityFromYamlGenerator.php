@@ -26,7 +26,7 @@ namespace Eccube\Command\PluginCommand;
 
 use Symfony\Component\Yaml\Yaml;
 use Eccube\Command\PluginCommand\AbstractPluginGenerator;
-use Doctrine\ORM\Mapping\Driver\YamlDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Tools\EntityGenerator;
@@ -162,7 +162,7 @@ class EntityFromYamlGenerator extends AbstractPluginGenerator
                 'no' => 1,
                  'label' => '[+]Plugin Code: ',
                 'value' => null,
-                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers and allowed)',
+                'name' => '[+]Please enter Plugin Name (only pascal case letters numbers are allowed)',
                 'validation' => array(
                     'isRequired' => true,
                     'inArray' => $this->getPluginList()

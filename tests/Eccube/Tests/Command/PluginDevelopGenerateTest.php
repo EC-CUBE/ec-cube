@@ -47,11 +47,11 @@ class PluginDevelopGenerateTest extends AbstractCommandTest
                 ),
                 array(
                     'input' => 'Plugin Name',
-                    'output' => 'only pascal case letters numbers and allowed',
+                    'output' => 'only pascal case letters numbers are allowed',
                 ),
                 array(
                     'input' => strtolower($code),
-                    'output' => 'only pascal case letters numbers and allowed',
+                    'output' => 'only pascal case letters numbers are allowed',
                 ),
                 array(
                     'input' => $code,
