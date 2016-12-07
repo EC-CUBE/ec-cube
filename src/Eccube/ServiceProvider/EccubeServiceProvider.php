@@ -74,6 +74,10 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 return $Service;
         });
 
+        $app['eccube.service.payment'] = $app->protect(function ($clazz) use ($app) {
+                return new $clazz;
+        });
+
         $app['eccube.calculate.strategies'] = $app->protect(function ($Order) use ($app) {
             // デフォルトのストラテジーをセットしておく
             $Strategies = [     // ArrayIterator にしたい
@@ -94,6 +98,13 @@ class EccubeServiceProvider implements ServiceProviderInterface
                 $Strategy->setOrder($Order);
                 return $Strategy;
         });
+
+        $app['payment.method'] = $app->protect(function ($clazz, $form) use ($app) {
+                $PaymentMethod = new $clazz;
+                $PaymentMethod->setFormType($form);
+                return $PaymentMethod;
+        });
+
         $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
             $csvService->setEntityManager($app['orm.em']);

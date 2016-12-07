@@ -805,7 +805,7 @@ class ShoppingService
     public function setOrderUpdateData(Order $Order)
     {
         // 受注情報を更新
-        $Order->setOrderDate(new \DateTime());
+        $Order->setOrderDate(new \DateTime()); // XXX 後続の setOrderStatus でも時刻を更新している
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
         $this->setOrderStatus($Order, $OrderStatus);
 

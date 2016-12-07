@@ -433,4 +433,15 @@ class Payment extends \Eccube\Entity\AbstractEntity
     {
         return $this->PaymentOptions;
     }
+
+    public function getMethodClass()
+    {
+        // TODO
+        return '\Eccube\Service\Payment\Method\EccubePaymentCreditCard';
+    }
+    public function getServiceClass()
+    {
+        // TODO
+        return '\Eccube\Service\PaymentService';
+    }
 }

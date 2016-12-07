@@ -219,6 +219,25 @@ class ShoppingController extends AbstractController
                 // プラグインで Strategy をセットしたりする
                 $this->app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
+                // Order も引数で渡すのがベスト??
+                $paymentService = $app['eccube.service.payment']($Order->getPayment()->getServiceClass());
+
+                $paymentMethod = $app['payment.method']($Order->getPayment()->getMethodClass(), $form);
+                // 必要に応じて別のコントローラへ forward or redirect(移譲)
+                // forward の処理はプラグイン内で書けるようにしておく
+                // dispatch をしたら, パスを返して forwardする
+                // http://silex.sensiolabs.org/doc/cookbook/sub_requests.html
+                // 確認画面も挟める
+                $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
+                if ($dispatcher instanceof Response) { // $paymentMethod->apply() が Response を返した場合は画面遷移
+                    return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
+                }
+                $PaymentResult = $paymentService->doCheckout($paymentMethod); // 決済実行
+                if (!$PaymentResult->isSuccess()) {
+                    $em->getConnection()->rollback();
+                    return $app->redirect($app->url('shopping_error'));
+                }
+
                 $em->flush();
                 $em->getConnection()->commit();
 
