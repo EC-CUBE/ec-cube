@@ -251,15 +251,15 @@ $(function() {
                             {{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
                             <div id="shopping_confirm_box__shipping_delivery--{{ idx }}" class="form-inline form-group">
                                 <label>配送方法</label>
-                                {{ form_widget(form.shippings[idx].delivery, {'attr': {'class': 'delivery'}}) }}
-                                {{ form_errors(form.shippings[idx].delivery) }}
+                                {{ form_widget(form.Shippings[idx].Delivery, {'attr': {'class': 'delivery'}}) }}
+                                {{ form_errors(form.Shippings[idx].Delivery) }}
                             </div>
 
                             <div id="shopping_confirm_box__shipping_delivery_date_time--{{ idx }}" class="form-inline form-group">
                                 <label>お届け日</label>
-                                {{ form_widget(form.shippings[idx].shippingDeliveryDate) }}<br class="sp">
+                                {{ form_widget(form.Shippings[idx].shipping_delivery_date) }}<br class="sp">
                                 <label>お届け時間</label>
-                                {{ form_widget(form.shippings[idx].deliveryTime) }}
+                                {{ form_widget(form.Shippings[idx].DeliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
                             <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
@@ -278,15 +278,15 @@ $(function() {
                     <div id="payment_list" class="column">
                         <div id="payment_list__body" class="form-group">
                             <ul id="payment_list__list" class="payment_list">
-                            {% for key, child in form.payment %}
+                            {% for key, child in form.Payment %}
                             <li>
                                 {{ form_widget(child, {'attr': {'class': 'payment' }}) }}
-                                {% if form.payment.vars.choices[key].data.payment_image is not null %}
+                                {% if form.Payment.vars.choices[key].data.payment_image is not null %}
                                 <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}">
                                 {% endif %}
                             </li>
                             {% endfor %}
-                            {{ form_errors(form.payment) }}
+                            {{ form_errors(form.Payment) }}
                             </ul>
                         </div>
                     </div>

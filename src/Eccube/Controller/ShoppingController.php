@@ -123,7 +123,8 @@ class ShoppingController extends AbstractController
         $app['orm.em']->refresh($Order);
 
         // form作成
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+//        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+        $builder = $app['form.factory']->createBuilder('_shopping_order', $Order);
 
         $event = new EventArgs(
             array(
