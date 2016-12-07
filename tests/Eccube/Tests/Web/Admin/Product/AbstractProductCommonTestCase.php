@@ -166,6 +166,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         if (!$Creator) {
             $Creator = $this->createMember();
         }
+        $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
         $ProductClass = new ProductClass();
         $ProductType = $this->app['orm.em']
             ->getRepository('\Eccube\Entity\Master\ProductType')
@@ -182,6 +183,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setPrice01(10000)
             ->setPrice02(5000)
             ->setDeliveryFee(1000)
+            ->setDeliveryDate($DeliveryDates[$this->faker->numberBetween(0, 8)])
             ->setCreator($Creator)
             ->setDelFlg(Constant::DISABLED);
 
@@ -190,7 +192,12 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
         $this->createProductStock($Creator, $ProductClass);
 
+        $this->app['orm.em']->persist($ProductClass);
+        $this->app['orm.em']->flush($ProductClass);
+
         $TestProduct->addProductClass($ProductClass);
+        $this->app['orm.em']->persist($TestProduct);
+        $this->app['orm.em']->flush($TestProduct);
 
         return $ProductClass;
     }
@@ -209,6 +216,7 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         }
         $TestProductStock = new ProductStock();
         $TestProductStock->setProductClass($TestProductClass);
+        $TestProductStock->setProductClassId($TestProductClass->getId());
         $TestProductStock->setStock($TestProductClass->getStock());
         $TestProductStock->setCreator($Creator);
 

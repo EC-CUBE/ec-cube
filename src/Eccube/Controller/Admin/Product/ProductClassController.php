@@ -744,12 +744,12 @@ class ProductClassController
             // 初期税率設定の計算方法を設定する
             $CalcRule = $TaxRule->getCalcRule();
             foreach ($ProductClasses as $ProductClass) {
-                if ($ProductClass && $ProductClass->getTaxRate()) {
+                if ($ProductClass && is_numeric($taxRate = $ProductClass->getTaxRate())) {
                     $TaxRule = new TaxRule();
                     $TaxRule->setProduct($Product);
                     $TaxRule->setProductClass($ProductClass);
                     $TaxRule->setCalcRule($CalcRule);
-                    $TaxRule->setTaxRate($ProductClass->getTaxRate());
+                    $TaxRule->setTaxRate($taxRate);
                     $TaxRule->setTaxAdjust(0);
                     $TaxRule->setApplyDate(new \DateTime());
                     $TaxRule->setDelFlg(Constant::DISABLED);
