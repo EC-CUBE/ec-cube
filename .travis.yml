@@ -35,6 +35,8 @@ matrix:
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - php: 7.0
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+    - php: 7.1
+      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
   allow_failures:
     - PHP: 5.3
       env: DB=sqlite
