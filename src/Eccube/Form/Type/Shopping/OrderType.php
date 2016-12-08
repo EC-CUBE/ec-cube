@@ -68,6 +68,9 @@ class OrderType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) {
                 $Order = $event->getData();
+                if (is_null($Order) || !$Order->getId()) {
+                    return;
+                }
                 $OrderDetails = $Order->getOrderDetails();
 
                 // 受注明細に含まれる商品種別を抽出.
