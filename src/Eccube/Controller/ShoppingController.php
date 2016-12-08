@@ -122,8 +122,10 @@ class ShoppingController extends AbstractController
         // 受注関連情報を最新状態に更新
         $app['orm.em']->refresh($Order);
 
+        // 構築したOrderを集計する.
+        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+
         // フォームの生成
-        // TODO OrderはCalculatorに集計させる必要がある
         $builder = $app['form.factory']->createBuilder('_shopping_order', $Order);
 
         $event = new EventArgs(
@@ -138,9 +140,11 @@ class ShoppingController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        // 支払い方法の変更や配送業者の変更があった場合はDBに保存.
+        // requestのバインド後、Calculatorに再集計させる
+        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+
+        // 支払い方法の変更や配送業者の変更があった場合はDBに保持する.
         if ($form->isSubmitted() && $form->isValid()) {
-            // TODO OrderはCalculatorに集計させる必要がある
             $app['orm.em']->flush();
         }
 
@@ -193,7 +197,7 @@ class ShoppingController extends AbstractController
         }
 
         // form作成
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+        $builder = $app['form.factory']->createBuilder('_shopping_order', $Order);
 
         $event = new EventArgs(
             array(
@@ -205,8 +209,9 @@ class ShoppingController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_CONFIRM_INITIALIZE, $event);
 
         $form = $builder->getForm();
-
         $form->handleRequest($request);
+        // requestのバインド後、Calculatorに再集計させる
+        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -219,7 +224,9 @@ class ShoppingController extends AbstractController
             try {
 
                 // お問い合わせ、配送時間などのフォーム項目をセット
-                $app['eccube.service.shopping']->setFormData($Order, $data);
+                // FormTypeで更新されるため不要
+                //$app['eccube.service.shopping']->setFormData($Order, $data);
+
                 // 購入処理
                 $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
@@ -369,7 +376,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
-        $builder = $app['eccube.service.shopping']->getShippingFormBuilder($Order);
+        $builder = $app['form.factory']->createBuilder('_shopping_order', $Order);
 
         $event = new EventArgs(
             array(
@@ -381,13 +388,14 @@ class ShoppingController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE, $event);
 
         $form = $builder->getForm();
-
         $form->handleRequest($request);
+        // requestのバインド後、Calculatorに再集計させる
+        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $message = $data['message'];
-            $Order->setMessage($message);
+//            $data = $form->getData();
+//            $message = $data['message'];
+//            $Order->setMessage($message);
             // 受注情報を更新
             $app['orm.em']->flush();
 
