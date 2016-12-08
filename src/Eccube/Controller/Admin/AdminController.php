@@ -31,6 +31,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends AbstractController
@@ -262,24 +263,22 @@ class AdminController extends AbstractController
     public function searchNonStockProducts(Application $app, Request $request)
     {
         // 商品マスター検索用フォーム
+        /* @var Form $form */
         $form = $app['form.factory']
             ->createBuilder('admin_search_product')
             ->getForm();
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
+            $searchData = array();
+            $searchData['stock_status'] = Constant::DISABLED;
+            $session = $request->getSession();
+            $session->set('eccube.admin.product.search', $searchData);
 
-            if ($form->isValid()) {
-                // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
-                $searchData = array();
-                $searchData['stock_status'] = Constant::DISABLED;
-                $session = $request->getSession();
-                $session->set('eccube.admin.product.search', $searchData);
-
-                return $app->redirect($app->url('admin_product_page', array(
-                    'page_no' => 1,
-                    'status' => $app['config']['admin_product_stock_status'])));
-            }
+            return $app->redirect($app->url('admin_product_page', array(
+                'page_no' => 1,
+                'status' => $app['config']['admin_product_stock_status'])));
         }
 
         return $app->redirect($app->url('admin_homepage'));
@@ -392,7 +391,7 @@ class AdminController extends AbstractController
         /** @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->getRepository('Eccube\Entity\Product')
             ->createQueryBuilder('p')
-            ->select('count(p.id)')
+            ->select('count(DISTINCT p.id)')
             ->innerJoin('p.ProductClasses', 'pc')
             ->where('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
             ->setParameter('StockUnlimited', Constant::DISABLED);
