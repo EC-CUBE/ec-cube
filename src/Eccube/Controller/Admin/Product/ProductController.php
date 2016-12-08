@@ -119,9 +119,9 @@ class ProductController extends AbstractController
                     if (!empty($status)) {
                         if ($status != $app['config']['admin_product_stock_status']) {
                             $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
-                            $searchData['status'] = null;
                             $session->set('eccube.admin.product.search', $searchData);
                         } else {
+                            $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
                         }
                         $page_status = $status;
@@ -157,15 +157,15 @@ class ProductController extends AbstractController
                     if (!empty($searchData['category_id'])) {
                         $searchData['category_id'] = $app['eccube.repository.category']->find($searchData['category_id']);
                     }
+
                     // セッションから検索条件を復元(スーテタス)
-                    if (count($searchData['status']) > 0) {
+                    if (isset($searchData['status']) && count($searchData['status']) > 0) {
                         $status_ids = array();
                         foreach ($searchData['status'] as $Status) {
                             $status_ids[] = $Status->getId();
                         }
                         $searchData['status'] = $app['eccube.repository.master.disp']->findBy(array('id' => $status_ids));
                     }
-                    
                     $searchForm->setData($searchData);
                 }
             }

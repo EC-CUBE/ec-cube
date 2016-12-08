@@ -53,10 +53,10 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $section = trim($crawler->filter($this->target.' .shop-stock-detail .item_number')->text());
         $this->expected = $showNumber = preg_replace('/\D/', '', $section);
 
-        $client->request('POST', $this->app->url('admin_homepage_nonstock'));
+        $client->request('POST', $this->app->url('admin_homepage_nonstock'), array('admin_search_product' => array('_token' => 'dummy')));
 
         $crawler = $client->followRedirect();
-        $this->actual = $crawler->filter('.tableish')->count();
+        $this->actual = $crawler->filter('.tableish .item_box')->count();
 
         $this->verify();
     }
