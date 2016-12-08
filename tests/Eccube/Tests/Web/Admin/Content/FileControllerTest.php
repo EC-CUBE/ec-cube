@@ -27,6 +27,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     {
         $dirs = array();
         $finder = new Finder();
+        //許可がありませんDIR対応
         $finder->ignoreUnreadableDirs(true);
         $iterator = $finder
             ->in(sys_get_temp_dir())
