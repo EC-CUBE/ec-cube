@@ -23,6 +23,11 @@ class TransactionListenerTest extends WebTestCase
     public function setUp()
     {
         parent::setUp();
+        if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
+            // Connection が別物になってしまうため
+            $this->markTestSkipped('Can not support for sqlite3');
+        }
+
         $c = $this->app['controllers_factory'];
         $c->match('/tran1', '\Eccube\Tests\Transaction\TransactionControllerMock::tran1')->bind('tran1');
         $c->match('/tran2', '\Eccube\Tests\Transaction\TransactionControllerMock::tran2')->bind('tran2');
@@ -255,6 +260,25 @@ class TransactionListenerTest extends WebTestCase
     {
         $app = Application::getInstance();
         $app['debug'] = true;
+
+        // ログの内容をERRORレベルでしか出力しないように設定を上書き
+        $app['config'] = $app->share($app->extend('config', function ($config, \Silex\Application $app) {
+            $config['log']['log_level'] = 'ERROR';
+            $config['log']['action_level'] = 'ERROR';
+            $config['log']['passthru_level'] = 'ERROR';
+
+            $channel = $config['log']['channel'];
+            foreach (array('monolog', 'front', 'admin') as $key) {
+                $channel[$key]['log_level'] = 'ERROR';
+                $channel[$key]['action_level'] = 'ERROR';
+                $channel[$key]['passthru_level'] = 'ERROR';
+            }
+            $config['log']['channel'] = $channel;
+
+            return $config;
+        }));
+        $app->initLogger();
+
         $app->initialize();
         $app->initPluginEventDispatcher();
         $app->initializePlugin();

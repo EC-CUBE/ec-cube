@@ -79,6 +79,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             $Category->setUpdateDate(new \DateTime());
             $this->app['orm.em']->persist($Category);
             $this->app['orm.em']->flush();
+
             if (!array_key_exists('child', $category_array)) {
                 continue;
             }
@@ -91,6 +92,9 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                 $Child->setUpdateDate(new \DateTime());
                 $this->app['orm.em']->persist($Child);
                 $this->app['orm.em']->flush();
+                // add child category
+                $Category->addChild($Child);
+
                 if (!array_key_exists('child', $child_array)) {
                     continue;
                 }
@@ -103,6 +107,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
                     $Grandson->setUpdateDate(new \DateTime());
                     $this->app['orm.em']->persist($Grandson);
                     $this->app['orm.em']->flush();
+                    // add child category
+                    $Child->addChild($Grandson);
                 }
             }
         }
@@ -291,5 +297,46 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         }
 
         return $TestCategory;
+    }
+
+    public function testMoveRankAndShow()
+    {
+        // Give
+        $Category = $this->app['eccube.repository.category']->findOneBy(array('name' => '親1'));
+        $Category2 = $this->app['eccube.repository.category']->findOneBy(array('name' => '親2'));
+        $newRanks = array(
+            $Category->getId() => $Category2->getRank(),
+            $Category2->getId() => $Category->getRank()
+        );
+
+        // When
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_product_category_rank_move'),
+            $newRanks,
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        // Then
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = $newRanks[$Category->getId()];
+        $this->actual = $Category->getRank();
+        $this->verify();
+
+        $crawler = $this->client->request('GET',
+            $this->app->url('admin_product_product_new')
+        );
+
+        $CategoryLast = $this->app['eccube.repository.category']->findOneBy(array('name' => '子2-2'));
+        $categoryNameLastElement = $crawler->filter('#detail_wrap select#admin_product_Category option')->last()->text();
+
+        $this->expected = $CategoryLast->getNameWithLevel();
+        $this->actual = $categoryNameLastElement;
+        $this->verify();
     }
 }

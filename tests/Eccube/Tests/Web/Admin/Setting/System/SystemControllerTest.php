@@ -26,19 +26,34 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
+/**
+ * Class SystemControllerTest
+ * @package Eccube\Tests\Web\Admin\Setting\System
+ */
 class SystemControllerTest extends AbstractAdminWebTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
+    /**
+     * testRoutingAdminSettingSystemSystemIndex
+     */
     public function testRoutingAdminSettingSystemSystemIndex()
     {
         $this->client->request(
             'GET',
             $this->app->url('admin_setting_system_system')
         );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * testInfoAdminSettingSystemSystem
+     */
+    public function testInfoAdminSettingSystemSystem()
+    {
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_setting_system_system', array('mode' => 'info'))
+        );
+
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

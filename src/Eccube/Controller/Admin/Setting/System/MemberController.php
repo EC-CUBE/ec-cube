@@ -73,6 +73,9 @@ class MemberController extends AbstractController
             $Member = new \Eccube\Entity\Member();
         }
 
+        $LoginMember = clone $app->user();
+        $app['orm.em']->detach($LoginMember);
+
         $builder = $app['form.factory']
             ->createBuilder('admin_member', $Member);
 
@@ -126,6 +129,8 @@ class MemberController extends AbstractController
                 }
             }
         }
+
+        $app['security']->getToken()->setUser($LoginMember);
 
         return $app->render('Setting/System/member_edit.twig', array(
             'form' => $form->createView(),

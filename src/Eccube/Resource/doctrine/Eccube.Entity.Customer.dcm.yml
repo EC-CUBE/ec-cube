@@ -6,6 +6,26 @@ Eccube\Entity\Customer:
         secret_key:
             columns:
                 - secret_key
+    indexes:
+        # requires a length on MySQL
+        # dtb_customer_email_idx:
+        #     columns:
+        #         - email
+        dtb_customer_create_date_idx:
+            columns:
+                - create_date
+        dtb_customer_update_date_idx:
+            columns:
+                - update_date
+        dtb_customer_last_buy_date_idx:
+            columns:
+                - last_buy_date
+        dtb_customer_buy_times_idx:
+            columns:
+                - buy_times
+        dtb_customer_buy_total_idx:
+            columns:
+                - buy_total
     id:
         id:
             type: integer

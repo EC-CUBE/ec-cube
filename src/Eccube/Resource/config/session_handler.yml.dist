@@ -1,0 +1,15 @@
+# PHP/PHP拡張のセッションハンドラを利用する場合, enable: trueに設定します。
+session_handler:
+    enabled: false
+
+## memcache
+#    save_handler: memcache
+#    save_path: 127.0.0.1:11211
+
+## memcached
+#    save_handler: memcached
+#    save_path: 127.0.0.1:11211
+
+## redis
+#    save_handler: redis
+#    save_path: 127.0.0.1:6379

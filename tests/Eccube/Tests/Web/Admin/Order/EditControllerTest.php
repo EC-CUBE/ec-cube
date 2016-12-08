@@ -23,10 +23,9 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Entity\Order;
 
-class EditControllerTest extends AbstractAdminWebTestCase
+class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
     protected $Order;
@@ -37,227 +36,10 @@ class EditControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-    }
-
-    public function createFormData($Customer, $Product)
-    {
-        $ProductClasses = $Product->getProductClasses();
-        $faker = $this->getFaker();
-        $tel = explode('-', $faker->phoneNumber);
-
-        $email = $faker->safeEmail;
-        $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');
-
-        $order = array(
-            '_token' => 'dummy',
-            'Customer' => $Customer->getId(),
-            'OrderStatus' => 1,
-            'name' => array(
-                'name01' => $faker->lastName,
-                'name02' => $faker->firstName,
-            ),
-            'kana' => array(
-                'kana01' => $faker->lastKanaName,
-                'kana02' => $faker->firstKanaName,
-            ),
-            'company_name' => $faker->company,
-            'zip' => array(
-                'zip01' => $faker->postcode1(),
-                'zip02' => $faker->postcode2(),
-            ),
-            'address' => array(
-                'pref' => '5',
-                'addr01' => $faker->city,
-                'addr02' => $faker->streetAddress,
-            ),
-            'tel' => array(
-                'tel01' => $tel[0],
-                'tel02' => $tel[1],
-                'tel03' => $tel[2],
-            ),
-            'fax' => array(
-                'fax01' => $tel[0],
-                'fax02' => $tel[1],
-                'fax03' => $tel[2],
-            ),
-            'email' => $email,
-            'message' => $faker->text,
-            'Payment' => 1,
-            'discount' => 0,
-            'delivery_fee_total' => 0,
-            'charge' => 0,
-            'note' => $faker->text,
-            'OrderDetails' => array(
-                array(
-                    'Product' => $Product->getId(),
-                    'ProductClass' => $ProductClasses[0]->getId(),
-                    'price' => $ProductClasses[0]->getPrice02(),
-                    'quantity' => 1,
-                    'tax_rate' => 8
-                )
-            ),
-            'Shippings' => array(
-                array(
-                    'name' => array(
-                        'name01' => $faker->lastName,
-                        'name02' => $faker->firstName,
-                    ),
-                    'kana' => array(
-                        'kana01' => $faker->lastKanaName,
-                        'kana02' => $faker->firstKanaName,
-                    ),
-                    'company_name' => $faker->company,
-                    'zip' => array(
-                        'zip01' => $faker->postcode1(),
-                        'zip02' => $faker->postcode2(),
-                    ),
-                    'address' => array(
-                        'pref' => '5',
-                        'addr01' => $faker->city,
-                        'addr02' => $faker->streetAddress,
-                    ),
-                    'tel' => array(
-                        'tel01' => $tel[0],
-                        'tel02' => $tel[1],
-                        'tel03' => $tel[2],
-                    ),
-                    'fax' => array(
-                        'fax01' => $tel[0],
-                        'fax02' => $tel[1],
-                        'fax03' => $tel[2],
-                    ),
-                    'Delivery' => 1,
-                    'DeliveryTime' => 1,
-                    'shipping_delivery_date' => array(
-                        'year' => $delivery_date->format('Y'),
-                        'month' => $delivery_date->format('n'),
-                        'day' => $delivery_date->format('j')
-                    )
-                )
-            )
-        );
-        return $order;
-    }
-
-    /**
-     * 受注編集用フォーム作成
-     * @param Order $Order
-     * @return array
-     */
-    public function createFormDataForEdit(Order $Order)
-    {
-        //受注アイテム
-        $orderDetail = array();
-        $OrderDetailColl = $Order->getOrderDetails();
-        foreach ($OrderDetailColl as $OrderDetail) {
-            $orderDetail[] = array(
-                'Product' => $OrderDetail->getProduct()->getId(),
-                'ProductClass' => $OrderDetail->getProductClass()->getId(),
-                'price' => $OrderDetail->getPrice(),
-                'quantity' => $OrderDetail->getQuantity(),
-                'tax_rate' => $OrderDetail->getTaxRate(),
-                'tax_rule' => $OrderDetail->getTaxRule(),
-            );
-        }
-        //受注お届け
-        $shippings = array();
-        $ShippingsColl = $Order->getShippings();
-        foreach ($ShippingsColl as $Shippings) {
-            $shippings[] = array(
-                'name' =>
-                array(
-                    'name01' => $Shippings->getName01(),
-                    'name02' => $Shippings->getName02(),
-                ),
-                'kana' =>
-                array(
-                    'kana01' => $Shippings->getKana01(),
-                    'kana02' => $Shippings->getKana02(),
-                ),
-                'company_name' => $Shippings->getCompanyName(),
-                'zip' =>
-                array(
-                    'zip01' => $Shippings->getZip01(),
-                    'zip02' => $Shippings->getZip02(),
-                ),
-                'address' =>
-                array(
-                    'pref' => $Shippings->getPref()->getId(),
-                    'addr01' => $Shippings->getAddr01(),
-                    'addr02' => $Shippings->getAddr02(),
-                ),
-                'tel' =>
-                array(
-                    'tel01' => $Shippings->getTel01(),
-                    'tel02' => $Shippings->getTel02(),
-                    'tel03' => $Shippings->getTel03(),
-                ),
-                'fax' =>
-                array(
-                    'fax01' => $Shippings->getFax01(),
-                    'fax02' => $Shippings->getFax02(),
-                    'fax03' => $Shippings->getFax03(),
-                ),
-                'Delivery' => $Shippings->getDelivery()->getId(),
-                'DeliveryTime' => $Shippings->getDeliveryTime()->getId(),
-                'shipping_delivery_date' =>
-                array(
-                    'year' => $Shippings->getShippingDeliveryDate()->format('Y'),
-                    'month' => $Shippings->getShippingDeliveryDate()->format('m'),
-                    'day' => $Shippings->getShippingDeliveryDate()->format('d'),
-                ),
-            );
-        }
-        //受注フォーム
-        $order = array(
-            '_token' => 'dummy',
-            'OrderStatus' => (string) $Order->getOrderStatus(),
-            'Customer' => (string) $Order->getCustomer()->getId(),
-            'name' =>
-            array(
-                'name01' => $Order->getName01(),
-                'name02' => $Order->getName02(),
-            ),
-            'kana' =>
-            array(
-                'kana01' => $Order->getKana01(),
-                'kana02' => $Order->getKana02(),
-            ),
-            'zip' =>
-            array(
-                'zip01' => $Order->getZip01(),
-                'zip02' => $Order->getZip02(),
-            ),
-            'address' =>
-            array(
-                'pref' => $Order->getPref()->getId(),
-                'addr01' => $Order->getAddr01(),
-                'addr02' => $Order->getAddr02(),
-            ),
-            'email' => $Order->getEmail(),
-            'tel' =>
-            array(
-                'tel01' => $Order->getTel01(),
-                'tel02' => $Order->getTel02(),
-                'tel03' => $Order->getTel03(),
-            ),
-            'fax' =>
-            array(
-                'fax01' => $Order->getFax01(),
-                'fax02' => $Order->getFax02(),
-                'fax03' => $Order->getFax03(),
-            ),
-            'company_name' => $Order->getCompanyName(),
-            'message' => $Order->getMessage(),
-            'OrderDetails' => $orderDetail,
-            'discount' => $Order->getDiscount(),
-            'delivery_fee_total' => $Order->getDeliveryFeeTotal(),
-            'charge' => $Order->getCharge(),
-            'Payment' => $Order->getPayment()->getId(),
-            'Shippings' => $shippings,
-            'note' => $Order->getNote(),
-        );
-        return $order;
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        // 複数配送を無効に
+        $BaseInfo->setOptionMultipleShipping(0);
+        $this->app['orm.em']->flush($BaseInfo);
     }
 
     public function testRoutingAdminOrderNew()
@@ -329,6 +111,24 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $this->expected = $this->Customer->getName01().$this->Customer->getName02().'('.$this->Customer->getKana01().$this->Customer->getKana02().')';
         $this->actual = $Result[0]['name'];
         $this->verify();
+    }
+
+    public function testSearchCustomerHtml()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testSearchCustomerById()
@@ -510,5 +310,38 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $this->expected = $totalTax;
         $this->actual = $EditedOrderafterEdit->getTax();
         $this->verify();
+    }
+
+    /**
+     * 受注登録時に会員情報が正しく保存されているかどうかのテスト
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1682
+     */
+    public function testOrderProcessingWithCustomer()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_new'),
+            array(
+                'order' => $this->createFormData($this->Customer, $this->Product),
+                'mode' => 'register'
+            )
+        );
+
+        $url = $crawler->filter('a')->text();
+
+        $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
+        $SavedOrder = $this->app['eccube.repository.order']->find($savedOderId);
+
+        $this->expected = $this->Customer->getSex();
+        $this->actual = $SavedOrder->getSex();
+        $this->verify('会員の性別が保存されている');
+
+        $this->expected = $this->Customer->getJob();
+        $this->actual = $SavedOrder->getJob();
+        $this->verify('会員の職業が保存されている');
+
+        $this->expected = $this->Customer->getBirth();
+        $this->actual = $SavedOrder->getBirth();
+        $this->verify('会員の誕生日が保存されている');
     }
 }

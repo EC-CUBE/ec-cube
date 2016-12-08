@@ -492,7 +492,7 @@ class ShoppingService
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getCalcRule()->getId())
+            ->setTaxRule($TaxRule->getId())
             ->setTaxRate($TaxRule->getTaxRate());
 
         $ClassCategory1 = $ProductClass->getClassCategory1();
@@ -913,6 +913,12 @@ class ShoppingService
         foreach ($Order->getOrderDetails() as $detail) {
             $deliveryDate = $detail->getProductClass()->getDeliveryDate();
             if (!is_null($deliveryDate)) {
+                if ($deliveryDate->getValue() < 0) {
+                    // 配送日数がマイナスの場合はお取り寄せなのでスキップする
+                    $deliveryDateFlag = false;
+                    break;
+                }
+
                 if ($minDate < $deliveryDate->getValue()) {
                     $minDate = $deliveryDate->getValue();
                 }

@@ -119,7 +119,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testEditWithPost()
     {
-        $Product = $this->createProduct();
+        $Product = $this->createProduct(null, 0);
         $formData = $this->createFormData();
         $crawler = $this->client->request(
             'POST',
@@ -151,7 +151,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_product_product_delete', array('id' => $Product->getId()))
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_product_page', array('page_no' => 1)).'?resume=1'));
 
         $expected = array(
             EccubeEvents::ADMIN_PRODUCT_DELETE_COMPLETE,

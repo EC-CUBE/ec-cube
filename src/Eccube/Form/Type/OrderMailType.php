@@ -70,7 +70,6 @@ class OrderMailType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

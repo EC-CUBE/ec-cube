@@ -287,14 +287,26 @@ class OrderRepository extends EntityRepository
         }
 
         // status
+        $filterStatus = false;
         if (!empty($searchData['status']) && $searchData['status']) {
             $qb
                 ->andWhere('o.OrderStatus = :status')
                 ->setParameter('status', $searchData['status']);
-        } else {
+            $filterStatus = true;
+        }
+        if (!empty($searchData['multi_status']) && count($searchData['multi_status'])) {
+            $qb
+                ->andWhere($qb->expr()->in('o.OrderStatus', ':multi_status'))
+                ->setParameter('multi_status', $searchData['multi_status']->toArray());
+            $filterStatus = true;
+        }
+        if (!$filterStatus) {
             // 購入処理中は検索対象から除外
-            $qb->andWhere('o.OrderStatus <> :status')
-                ->setParameter('status', $this->app['config']['order_processing']);
+            $OrderStatuses = $this->getEntityManager()
+                ->getRepository('Eccube\Entity\Master\OrderStatus')
+                ->findNotContainsBy(array('id' => $this->app['config']['order_processing']));
+            $qb->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
+                ->setParameter('status', $OrderStatuses);
         }
 
         // name

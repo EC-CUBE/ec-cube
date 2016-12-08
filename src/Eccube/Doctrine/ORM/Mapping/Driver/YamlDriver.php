@@ -21,17 +21,25 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
-namespace Eccube\Tests\Web\Admin\Basis;
+use Symfony\Component\Yaml\Yaml;
 
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-
-class ShopControllerTest extends AbstractAdminWebTestCase
+/**
+ * The YamlDriver reads the mapping metadata from yaml schema files.
+ *
+ * YamlDriverのPHP7対応. Doctrine2.4で修正されれば不要.
+ *
+ * @see https://github.com/EC-CUBE/ec-cube/issues/1338
+ * @package Eccube\Doctrine\ORM\Mapping\Driver
+ */
+class YamlDriver extends \Doctrine\ORM\Mapping\Driver\YamlDriver
 {
-
-    public function testRoutingAdminBasis()
+    /**
+     * {@inheritDoc}
+     */
+    protected function loadMappingFile($file)
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_setting_shop'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        return Yaml::parse(file_get_contents($file));
     }
 }

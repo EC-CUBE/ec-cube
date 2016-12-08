@@ -56,17 +56,13 @@ class SearchOrderType extends AbstractType
             ->add('status', 'order_status', array(
                 'label' => '対応状況',
             ))
+            ->add('multi_status', 'order_status', array(
+                'label' => '対応状況',
+                'expanded' => true,
+                'multiple' => true,
+            ))
             ->add('name', 'text', array(
                 'required' => false,
-            ))
-            ->add('kana', 'text', array(
-                'required' => false,
-                'constraints' => array(
-                    new Assert\Regex(array(
-                        'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
-                        'message' => 'form.type.admin.notkanastyle',
-                    )),
-                ),
             ))
             ->add('email', 'email', array(
                 'required' => false,
@@ -168,8 +164,21 @@ class SearchOrderType extends AbstractType
                 'label' => '購入商品名',
                 'required' => false,
             ))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
+
+        $builder->add(
+            $builder
+                ->create('kana', 'text', array(
+                    'required' => false,
+                    'constraints' => array(
+                        new Assert\Regex(array(
+                            'pattern' => "/^[ァ-ヶｦ-ﾟー]+$/u",
+                            'message' => 'form.type.admin.notkanastyle',
+                        )),
+                    ),
+                ))
+                ->addEventSubscriber(new \Eccube\EventListener\ConvertKanaListener('CV'))
+        );
     }
 
     /**

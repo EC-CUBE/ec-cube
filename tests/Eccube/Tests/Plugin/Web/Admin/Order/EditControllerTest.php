@@ -239,6 +239,29 @@ class EditControllerTest extends AbstractAdminWebTestCase
         $this->verifyOutputString($expected);
     }
 
+    public function testSearchCustomerHtml()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_customer_html'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $expected = array(
+            EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH,
+            EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE,
+        );
+
+        $this->verifyOutputString($expected);
+    }
+
     public function testSearchCustomerById()
     {
         $crawler = $this->client->request(

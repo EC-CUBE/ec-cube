@@ -25,12 +25,12 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AuthorityRoleType extends AbstractType
 {
@@ -71,7 +71,6 @@ class AuthorityRoleType extends AbstractType
                     $form['deny_url']->addError(new FormError('拒否URLが入力されていません。'));
                 }
             })
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
         ;
     }
 

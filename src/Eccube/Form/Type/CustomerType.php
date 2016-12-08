@@ -96,7 +96,7 @@ class CustomerType extends AbstractType
             ->add('email', 'email', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
-                    new Assert\Email(),
+                    new Assert\Email(array('strict' => true)),
                 )
             ))
             ->add('sex', 'sex', array(
@@ -126,8 +126,7 @@ class CustomerType extends AbstractType
             ->add('note', 'textarea', array(
                 'required' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'))
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
+            ->add('save', 'submit', array('label' => 'この内容で登録する'));
     }
 
     /**

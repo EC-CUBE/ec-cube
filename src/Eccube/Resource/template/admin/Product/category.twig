@@ -165,7 +165,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                                                     <li><a>編集中</a></li>
                                                 {% endif %}
 
-                                                {% if Category.Children|length > 0 or Category.ProductCategories|length > 0 %}
+                                                {% if Category.Children|length > 0 or Category.hasProductCategories %}
                                                     <li><a title="子カテゴリが存在するため削除できません。">削除</a></li>
                                                 {% else %}
                                                     <li>

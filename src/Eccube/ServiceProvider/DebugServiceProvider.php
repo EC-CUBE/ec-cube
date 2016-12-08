@@ -80,10 +80,9 @@ class DebugServiceProvider implements ServiceProviderInterface
             return $cloner;
         });
 
-        $app['data_collector.templates'] = array_merge(
-            $app['data_collector.templates'],
-            array(array('dump', '@Debug/Profiler/dump.html.twig'))
-        );
+        $app['data_collector.templates'] = $app->share($app->extend('data_collector.templates', function ($templates) {
+            return array_merge($templates, array(array('dump', '@Debug/Profiler/dump.html.twig')));
+        }));
 
         $app['data_collector.dump'] = $app->share(function ($app) {
             return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format']);

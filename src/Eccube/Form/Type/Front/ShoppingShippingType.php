@@ -36,8 +36,6 @@ class ShoppingShippingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->addEventSubscriber(new \Eccube\Event\FormEventSubscriber());
     }
 
     /**
