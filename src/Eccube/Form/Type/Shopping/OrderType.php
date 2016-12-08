@@ -3,6 +3,7 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Application;
+use Eccube\Entity\Order;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
@@ -106,6 +107,15 @@ class OrderType extends AbstractType
                 );
             }
         );
+
+        // POSTされないデータをエンティティにセットする.
+        // TODO Calculatorで行うのが適切.
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+            /** @var Order $Order */
+            $Order = $event->getData();
+            $Order->setPaymentMethod($Order->getPayment()->getMethod());
+            $Order->setCharge($Order->getPayment()->getCharge());
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

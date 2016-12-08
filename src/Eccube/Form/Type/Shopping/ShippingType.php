@@ -2,6 +2,8 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\DeliveryFeeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -20,11 +22,19 @@ class ShippingType extends AbstractType
     /** @var  DeliveryRepository */
     protected $deliveryRepository;
 
+    /** @var DeliveryFeeRepository */
+    protected $deliveryFeeRepository;
+
+    /** @var BaseInfoRepository */
+    protected $baseInfoRepository;
+
     public function __construct(\Eccube\Application $app)
     {
         $this->app = $app;
         $this->config = $app['config'];
         $this->deliveryRepository = $app['eccube.repository.delivery'];
+        $this->deliveryFeeRepository = $app['eccube.repository.delivery_fee'];
+        $this->baseInfoRepository = $app['eccube.repository.base_info'];
     }
 
     /**
@@ -178,6 +188,23 @@ class ShippingType extends AbstractType
             }
         );
 
+        // POSTされないデータをエンティティにセットする.
+        // TODO Calculatorで行うのが適切.
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+            $Shipping = $event->getData();
+            $Delivery = $Shipping->getDelivery();
+
+            if ($Delivery) {
+                $DeliveryFee = $this->deliveryFeeRepository->findOneBy(array(
+                    'Delivery' => $Delivery,
+                    'Pref' => $Shipping->getPref()
+                ));
+
+                $Shipping->setDeliveryFee($DeliveryFee);
+                $Shipping->setShippingDeliveryFee($DeliveryFee->getFee());
+                $Shipping->setShippingDeliveryName($Delivery->getName());
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
