@@ -362,7 +362,7 @@ abstract class EccubeTestCase extends WebTestCase
         } catch (HttpException $e) {
             $this->markTestSkipped($e->getMailCatcherMessage().'['.$e->getStatusCode().']');
         } catch (\Exception $e) {
-            $message = 'MailCatcher is not alivable';
+            $message = 'MailCatcher is not available';
             $this->markTestSkipped($message);
             $this->app->log($message);
         }

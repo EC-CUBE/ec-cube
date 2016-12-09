@@ -143,7 +143,7 @@ $(function(){
                                             </div>
                                             <dl id="shipping_list__shipment_detail--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_detail">
                                                 <dt id="shipping_list__shipment_product_name--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_name text-default">
-                                                    {{ shipmentItem.productName }}
+                                                    {{ shipmentItem.productName }} ×{{ shipmentItem.quantity }}
                                                 </dt>
                                                 <dd id="shipping_list__shipment_class_category--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_pattern small">
                                                     {% if shipmentItem.productClass.classCategory1 %}
@@ -152,12 +152,6 @@ $(function(){
                                                     {% if shipmentItem.productClass.classCategory2 %}
                                                         <br>{{ shipmentItem.productClass.classCategory2.className }}：{{ shipmentItem.productClass.classCategory2 }}
                                                     {% endif %}
-                                                </dd>
-                                                <dd id="shipping_list__shipment_price_inc_tax--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_price">
-                                                    {{ shipmentItem.priceIncTax|price }} ×{{ shipmentItem.quantity }}
-                                                </dd>
-                                                <dd id="shipping_list__shipment_total_price--{{ Shipping.id }}_{{ shipmentItem.product.id }}" class="item_subtotal">
-                                                    小計：{{ shipmentItem.totalPrice|price }}
                                                 </dd>
                                             </dl>
                                         </div>
