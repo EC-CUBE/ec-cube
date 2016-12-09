@@ -1215,6 +1215,12 @@ class Application extends ApplicationTrait
         $pluginConfigs = array();
         foreach ($finder as $dir) {
             $code = $dir->getBaseName();
+            if (!$code) {
+                //PHP5.3のgetBaseNameバグ対応
+                if (version_compare(PHP_VERSION, '4.0.0') < 0) {
+                    $code = $dir->getFilename();
+                }
+            }
             $file = $dir->getRealPath().'/config.yml';
             $config = null;
             if (file_exists($file)) {
