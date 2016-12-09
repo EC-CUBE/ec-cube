@@ -49,19 +49,25 @@ class OrderType extends AbstractType
             ->add(
                 'message',
                 'textarea',
-                array(
+                [
                     'required' => false,
-                    'constraints' => array(
-                        new Length(array('min' => 0, 'max' => 3000)),
-                    ),
-                )
+                    'constraints' => [
+                        new Length(['min' => 0, 'max' => 3000]),
+                    ],
+                ]
             )
             ->add(
                 'Shippings',
                 'collection',
-                array(
+                [
                     'type' => '_shopping_shipping',
-                )
+                ]
+            )->add(
+                'mode',
+                'hidden'
+            )->add(
+                'param',
+                'hidden,'
             );
 
         // 支払い方法のプルダウンを生成
@@ -75,7 +81,7 @@ class OrderType extends AbstractType
                 $OrderDetails = $Order->getOrderDetails();
 
                 // 受注明細に含まれる商品種別を抽出.
-                $ProductTypes = array();
+                $ProductTypes = [];
                 foreach ($OrderDetails as $OrderDetail) {
                     $ProductClass = $OrderDetail->getProductClass();
                     if (is_null($ProductClass)) {
@@ -95,35 +101,38 @@ class OrderType extends AbstractType
                 $form->add(
                     'Payment',
                     'entity',
-                    array(
+                    [
                         'class' => 'Eccube\Entity\Payment',
                         'property' => 'method',
                         'expanded' => true,
-                        'constraints' => array(
+                        'constraints' => [
                             new NotBlank(),
-                        ),
+                        ],
                         'choices' => $Payments,
-                    )
+                    ]
                 );
             }
         );
 
         // POSTされないデータをエンティティにセットする.
         // TODO Calculatorで行うのが適切.
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
-            /** @var Order $Order */
-            $Order = $event->getData();
-            $Order->setPaymentMethod($Order->getPayment()->getMethod());
-            $Order->setCharge($Order->getPayment()->getCharge());
-        });
+        $builder->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) {
+                /** @var Order $Order */
+                $Order = $event->getData();
+                $Order->setPaymentMethod($Order->getPayment()->getMethod());
+                $Order->setCharge($Order->getPayment()->getCharge());
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Eccube\Entity\Order',
-            )
+            ]
         );
     }
 
