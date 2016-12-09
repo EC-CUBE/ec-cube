@@ -211,9 +211,9 @@ class ShoppingController extends AbstractController
             try {
 
                 // お問い合わせ、配送時間などのフォーム項目をセット
-                $app['eccube.service.shopping']->setFormData($Order, $data);
-                // 購入処理
-                $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
+                // $app['eccube.service.shopping']->setFormData($Order, $data);
+                // // 購入処理
+                // $app['eccube.service.shopping']->processPurchase($Order); // XXX フロント画面に依存してるので管理画面では使えない
 
                 // 集計は,この1行でいけるはず
                 // プラグインで Strategy をセットしたりする
@@ -228,6 +228,7 @@ class ShoppingController extends AbstractController
                 // dispatch をしたら, パスを返して forwardする
                 // http://silex.sensiolabs.org/doc/cookbook/sub_requests.html
                 // 確認画面も挟める
+                // Request をセッションに入れるべし
                 $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
                 if ($dispatcher instanceof Response) { // $paymentMethod->apply() が Response を返した場合は画面遷移
                     return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
