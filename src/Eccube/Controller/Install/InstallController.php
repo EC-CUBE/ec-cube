@@ -343,7 +343,7 @@ class InstallController
 
         foreach ($this->recommended_module as $module) {
             if (!extension_loaded($module)) {
-                if ($module == self::MCRYPT && version_compare(PHP_VERSION, '7.1.0') >= 0) {
+                if ($module == self::MCRYPT && PHP_VERSION_ID >= 70100) {
                     //The mcrypt extension has been deprecated in PHP 7.1.x 
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
