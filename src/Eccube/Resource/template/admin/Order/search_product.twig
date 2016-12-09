@@ -129,7 +129,7 @@
     }
 
     // 商品検索
-    $('#pagination_wrap a').on('click', function(event) {
+    $('#product_pagination a').on('click', function(event) {
         var list = $('#searchProductModalList');
         list.children().remove();
 
@@ -196,6 +196,6 @@
         </tbody>
     </table>
     {% if pagination.totalItemCount > 0 %}
-        {% include "pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+        {% include "pager.twig" with {'id': 'product_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
     {% endif %}
 </div>

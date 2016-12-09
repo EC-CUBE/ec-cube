@@ -374,6 +374,97 @@ class EditController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
+     * @param integer $page_no
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function searchCustomerHtml(Application $app, Request $request, $page_no = null)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $app['monolog']->addDebug('search customer start.');
+            $page_count = $app['config']['default_page_count'];
+            $session = $app['session'];
+
+            if ('POST' === $request->getMethod()) {
+
+                $page_no = 1;
+
+                $searchData = array(
+                    'multi' => $request->get('search_word'),
+                );
+
+                $session->set('eccube.admin.order.customer.search', $searchData);
+                $session->set('eccube.admin.order.customer.search.page_no', $page_no);
+            } else {
+                $searchData = (array)$session->get('eccube.admin.order.customer.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.order.customer.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.order.customer.search.page_no', $page_no);
+                }
+            }
+
+            $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+
+            $event = new EventArgs(
+                array(
+                    'qb' => $qb,
+                    'data' => $searchData,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
+
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                array('wrap-queries' => true)
+            );
+
+            /** @var $Customers \Eccube\Entity\Customer[] */
+            $Customers = $pagination->getItems();
+
+            if (empty($Customers)) {
+                $app['monolog']->addDebug('search customer not found.');
+            }
+
+            $data = array();
+
+            $formatTel = '%s-%s-%s';
+            $formatName = '%s%s(%s%s)';
+            foreach ($Customers as $Customer) {
+                $data[] = array(
+                    'id' => $Customer->getId(),
+                    'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(), $Customer->getKana01(),
+                        $Customer->getKana02()),
+                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'email' => $Customer->getEmail(),
+                );
+            }
+
+            $event = new EventArgs(
+                array(
+                    'data' => $data,
+                    'Customers' => $pagination,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+            $data = $event->getArgument('data');
+
+            return $app->render('Order/search_customer.twig', array(
+                'data' => $data,
+                'pagination' => $pagination,
+            ));
+        }
+    }
+
+    /**
+     * 顧客情報を検索する.
+     *
+     * @param Application $app
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function searchCustomerById(Application $app, Request $request)
