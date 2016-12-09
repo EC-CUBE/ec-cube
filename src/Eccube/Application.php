@@ -852,10 +852,9 @@ class Application extends ApplicationTrait
             // 正しい形式の pluginConfig のみ読み込む
             $path = $basePath.'/'.$code;
             try {
-                echo $path.PHP_EOL;
                 $this['eccube.service.plugin']->checkPluginArchiveContent($path, $pluginConfig['config']);
             } catch (\Eccube\Exception\PluginException $e) {
-                $this['monolog']->warning("Configuration file config.yml for plugin {$code} not found or is invalid.", array(
+                $this['monolog']->warning("Configuration file config.yml for plugin {$code} not found or is invalid. Skipping loading.", array(
                     'path' => $path,
                     'original-message' => $e->getMessage()
                 ));
