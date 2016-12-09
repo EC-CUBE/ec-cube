@@ -1217,7 +1217,7 @@ class Application extends ApplicationTrait
             $code = $dir->getBaseName();
             if (!$code) {
                 //PHP5.3のgetBaseNameバグ対応
-                if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+                if (PHP_VERSION_ID < 50400) {
                     $code = $dir->getFilename();
                 }
             }
