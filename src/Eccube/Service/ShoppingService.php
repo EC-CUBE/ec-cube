@@ -1016,6 +1016,8 @@ class ShoppingService
      *
      * @param Order $Order
      * @return \Symfony\Component\Form\FormBuilderInterface
+     *
+     * @deprecated 利用している箇所なし
      */
     public function getShippingFormBuilder(Order $Order)
     {
@@ -1048,6 +1050,8 @@ class ShoppingService
      *
      * @param Order $Order
      * @param array $data
+     *
+     * @deprecated
      */
     public function setFormData(Order $Order, array $data)
     {
