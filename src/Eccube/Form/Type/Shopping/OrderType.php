@@ -64,10 +64,16 @@ class OrderType extends AbstractType
                 ]
             )->add(
                 'mode',
-                'hidden'
+                'hidden',
+                [
+                    'mapped' => false,
+                ]
             )->add(
                 'param',
-                'hidden,'
+                'hidden',
+                [
+                    'mapped' => false,
+                ]
             );
 
         // 支払い方法のプルダウンを生成

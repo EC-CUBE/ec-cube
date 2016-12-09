@@ -212,7 +212,7 @@ class ShoppingController extends AbstractController
                     // お届け先設定一覧へリダイレクト
                     $param = $form['param']->getData();
                     return $app->redirect($app->url('shopping_shipping_edit', array('id' => $param)));
-                case 'shipping_multiple_edit_Change':
+                case 'shipping_multiple_change':
                     // 複数配送設定へリダイレクト
                     return $app->redirect($app->url('shopping_shipping_multiple'));
                 case 'payment':

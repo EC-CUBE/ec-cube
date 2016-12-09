@@ -26,28 +26,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 $(function() {
 
     $('.delivery').on('change', function() {
-        $('#shopping-form').attr('action', '{{ url("shopping") }}').submit();
+        $('#shopping_order_mode').val('delivery');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
     });
 
     $('.payment').on('change', function() {
-        $('#shopping-form').attr('action', '{{ url("shopping") }}').submit();
+        $('#shopping_order_mode').val('payment');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
     });
 
     $('.btn-shipping').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping_order_mode').val('shipping_change');
+        $('#shopping_order_param').val($(this).data('id'));
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
         $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
     $('.btn-shipping-edit').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping_order_mode').val('shipping_edit_change');
+        $('#shopping_order_param').val($(this).data('id'));
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
         $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
     $('.btn-shipping-multiple').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping_order_mode').val('shipping_multiple_change');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
         $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
@@ -161,6 +177,8 @@ $(function() {
         </div><!-- /.row -->
         <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
             {{ form_widget(form._token) }}
+            {{ form_widget(form.mode) }}
+            {{ form_widget(form.param) }}
             <div id="shopping_confirm" class="row">
                 <div id="confirm_main" class="col-sm-8">
                     <div id="cart_box" class="cart_item table">
@@ -262,9 +280,9 @@ $(function() {
                                 {{ form_widget(form.Shippings[idx].DeliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping" data-id="{{ shipping.id }}">変更</a></p>
                             {% else %}
-                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit" data-id="{{ shipping.id }}">変更</a></p>
                             {% endif %}
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
