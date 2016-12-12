@@ -107,7 +107,11 @@ class ShoppingController extends AbstractController
 
             try {
                 // 受注情報を作成
-                $Order = $app['eccube.service.shopping']->createOrder($Customer);
+                //$Order = $app['eccube.service.shopping']->createOrder($Customer);
+                $Order = $app['eccube.heler.order']->createProcessingOrder(
+                    $Customer, $Customer->getCustomerAddresses(), $cartService->getCart()->getCartItems());
+                $cartService->setPreOrderId($Order->getPreOrderId());
+                $cartService->save();
             } catch (CartException $e) {
                 log_error('初回受注情報作成エラー', array($e->getMessage()));
                 $app->addRequestError($e->getMessage());
