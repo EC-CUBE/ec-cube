@@ -65,7 +65,7 @@ class UserDataControllerTest extends AbstractWebTestCase
     {
         // debugはONの時に404ページ表示しない例外になります。
         if($this->app['debug'] == true){
-            $this->expectException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
         $client = $this->createClient();
         $crawler = $client->request(

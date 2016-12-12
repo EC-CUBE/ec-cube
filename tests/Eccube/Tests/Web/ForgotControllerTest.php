@@ -100,7 +100,7 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         // debugはONの時に403ページ表示しない例外になります。
         if($this->app['debug'] == true){
-            $this->expectException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
         }
         $client = $this->createClient();
             $crawler = $client->request(
@@ -120,7 +120,7 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         // debugはONの時に404ページ表示しない例外になります。
         if($this->app['debug'] == true){
-            $this->expectException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
         $client = $this->createClient();
         
