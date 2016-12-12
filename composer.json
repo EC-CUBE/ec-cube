@@ -55,6 +55,7 @@
         "symfony/var-dumper": ">=2.7,<2.8",
         "symfony/debug-bundle": ">=2.7,<2.8",
         "psr/log": "^1.0",
+        "composer/ca-bundle": "^1.0",
         "ext-mbstring": "*"
     },
     "require-dev": {
