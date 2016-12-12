@@ -10,7 +10,8 @@ class PaymentService
     {
         // PaymentMethod->apply に処理を移譲する
         // 別のコントローラに forward など
-        return $method->apply();
+        $request = null;
+        return $method->apply($request);
     }
 
     public function doCheckout(PaymentMethod $method)

@@ -1,25 +1,44 @@
 <?php
 
 namespace Eccube\Service\Payment\Method;
+
 use Eccube\Service\Payment\PaymentMethod;
 use Eccube\Service\Payment\PaymentResult;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class EccubePaymentCreditCard extends CreditCard
 {
-   public function checkout()
+    protected $app;
+    protected $request;
+
+    public function checkout()
     {
         // 支払処理をしたら PaymentResult を返す
         return new PaymentResult();
     }
 
-    public function apply()
+    public function apply($request)
     {
-        // forward
-        // return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
-        return false;
+        // XXX forward すると, ヘッダ・フッタがでない. 画面表示を伴わない処理なら OK
+        $subRequest = Request::create('/shopping/shipping_multiple', 'GET', array(), $this->request->cookies->all(), array(), $this->request->server->all());
+        if ($this->request->getSession()) {
+            $subRequest->setSession($this->request->getSession());
+        }
+        return $this->app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
     }
     public function setFormType($form)
     {
         // nothing
+    }
+
+    public function setApplication($app)
+    {
+        $this->app = $app;
+    }
+
+    public function setRequest($request)
+    {
+        $this->request = $request;
     }
 }

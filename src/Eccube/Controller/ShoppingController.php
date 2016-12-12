@@ -289,12 +289,12 @@ class ShoppingController extends AbstractController
 
                 // 集計は,この1行でいけるはず
                 // プラグインで Strategy をセットしたりする
-                $this->app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+                $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
                 // Order も引数で渡すのがベスト??
                 $paymentService = $app['eccube.service.payment']($Order->getPayment()->getServiceClass());
 
-                $paymentMethod = $app['payment.method']($Order->getPayment()->getMethodClass(), $form);
+                $paymentMethod = $app['payment.method.request']($Order->getPayment()->getMethodClass(), $form, $request);
                 // 必要に応じて別のコントローラへ forward or redirect(移譲)
                 // forward の処理はプラグイン内で書けるようにしておく
                 // dispatch をしたら, パスを返して forwardする

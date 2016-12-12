@@ -9,7 +9,7 @@ class Cash implements PaymentMethod
         return true;
     }
 
-    public function apply()
+    public function apply($request)
     {
         return false;
     }

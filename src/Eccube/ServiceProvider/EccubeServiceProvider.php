@@ -101,7 +101,16 @@ class EccubeServiceProvider implements ServiceProviderInterface
 
         $app['payment.method'] = $app->protect(function ($clazz, $form) use ($app) {
                 $PaymentMethod = new $clazz;
+                $PaymentMethod->setApplication($app);
                 $PaymentMethod->setFormType($form);
+                return $PaymentMethod;
+        });
+
+        $app['payment.method.request'] = $app->protect(function ($clazz, $form, $request) use ($app) {
+                $PaymentMethod = new $clazz;
+                $PaymentMethod->setApplication($app);
+                $PaymentMethod->setFormType($form);
+                $PaymentMethod->setRequest($request);
                 return $PaymentMethod;
         });
 
