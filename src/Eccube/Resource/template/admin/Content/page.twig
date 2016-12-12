@@ -29,8 +29,6 @@
 {% block sub_title %}ページ管理{% endblock %}
 
 {% block main %}
-<form name="content_page_form" action="" method="post">
-</form>
 <div id="page_wrap" class="container-fluid">
     <div id="page_list" class="row">
         <div id="page_list_box" class="col-md-12">
@@ -43,11 +41,22 @@
                 <div id="sortable_list_box" class="box-body no-padding no-border">
                     <div id="sortable_list_box__list" class="sortable_list">
                         <div class="tableish">
-
+                            <div class="item_box tr" style="background-color: #F9F9F9;">
+                                <div class="item_pattern td"><strong>ページ名</strong></div>
+                                <div class="item_pattern td"><strong>ルーティング名</strong></div>
+                                <div class="item_pattern td"><strong>ファイル名</strong></div>
+                                <div class="item_pattern td"></div>
+                            </div>
                             {% for PageLayout in PageLayouts %}
                                 <div id="sortable_list_box__item--{{ PageLayout.id }}" class="item_box tr">
                                     <div id="sortable_list_box__name--{{ PageLayout.id }}" class="item_pattern td">
                                         {{ PageLayout.name }}
+                                    </div>
+                                    <div id="sortable_list_box__url--{{ PageLayout.id }}" class="td">
+                                        {{ PageLayout.url }}
+                                    </div>
+                                    <div id="sortable_list_box__file_name--{{ PageLayout.id }}" class="td">
+                                        {% if PageLayout.file_name %}{{ PageLayout.file_name }}.twig{% endif %}
                                     </div>
                                     <div id="sortable_list_box__menu_box--{{ PageLayout.id }}" class="icon_edit td">
                                         <div id="sortable_list_box__menu_box_toggle--{{ PageLayout.id }}" class="dropdown">
