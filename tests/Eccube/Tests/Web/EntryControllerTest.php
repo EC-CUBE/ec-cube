@@ -227,7 +227,6 @@ class EntryControllerTest extends AbstractWebTestCase
         if($this->app['debug'] == true){
             $this->expectException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
-        //try {
         $client = $this->createClient();
         $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => 'aaaaa')));
         // debugはOFFの時に404ページが表示します。
