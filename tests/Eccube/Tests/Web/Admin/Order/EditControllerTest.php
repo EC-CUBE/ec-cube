@@ -113,6 +113,24 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->verify();
     }
 
+    public function testSearchCustomerHtml()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
     public function testSearchCustomerById()
     {
         $crawler = $this->client->request(
