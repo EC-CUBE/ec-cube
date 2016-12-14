@@ -22,9 +22,12 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     protected $Product;
     protected $TaxRule2;
     protected $TaxRule3;
+    
+    private $DateTimeNow = null;
 
     public function setUp()
     {
+        $this->DateTimeNow = new \DateTime('+1 minutes');
         parent::setUp();
         $this->BaseInfo = $this->app['eccube.repository.base_info']->get();
         $this->BaseInfo->setOptionProductTaxRule(0);
@@ -32,11 +35,12 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         // 2017-04-01とか指定すると, 2017年以降で結果が変わってしまうので1年後の日付を指定する
         $ApplyDate = new \DateTime('+1 years');
         $this->TaxRule1 = $this->app['eccube.repository.tax_rule']->find(1);
-        $this->TaxRule1->setApplyDate(new \DateTime());
+        $this->TaxRule1->setApplyDate($this->DateTimeNow);
         $this->TaxRule2 = $this->createTaxRule(10, $ApplyDate);
         $this->TaxRule3 = $this->createTaxRule(8, $ApplyDate);
         $this->app['orm.em']->flush();
     }
+    
 
     public function createTaxRule($tax_rate = 8, $apply_date = null)
     {
@@ -46,7 +50,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
             ->find(1);
         $Member = $this->app['eccube.repository.member']->find(2);
         if (is_null($apply_date)) {
-            $apply_date = new \DateTime();
+            $apply_date = $this->DateTimeNow;
         }
         $TaxRule
             ->setTaxRate($tax_rate)
