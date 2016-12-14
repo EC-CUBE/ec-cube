@@ -68,17 +68,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <form name="page_navi_top" id="page_navi_top" action="?">
             <p id="result_info_box__item_count" class="intro col-sm-6"><strong><span id="productscount">{{ pagination.totalItemCount }}</span>件</strong>の商品がみつかりました。
             </p>
-
-            <div id="result_info_box__menu_box" class="col-sm-6 no-padding">
-                <ul id="result_info_box__menu" class="pagenumberarea clearfix">
-                    <li id="result_info_box__disp_menu">
-                        {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
-                    </li>
-                    <li id="result_info_box__order_menu">
-                        {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
-                    </li>
-                </ul>
-            </div>
+            {% if pagination.totalItemCount > 0 %}
+                <div id="result_info_box__menu_box" class="col-sm-6 no-padding">
+                    <ul id="result_info_box__menu" class="pagenumberarea clearfix">
+                        <li id="result_info_box__disp_menu">
+                            {{ form_widget(disp_number_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeDispNumber(this.value);"}}) }}
+                        </li>
+                        <li id="result_info_box__order_menu">
+                            {{ form_widget(order_by_form, {'id': '', 'attr': {'onchange': "javascript:fnChangeOrderBy(this.value);"}}) }}
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
 
             {% for f in disp_number_form.getIterator %}
                 {% if f.vars.name matches '[^plg*]' %}
