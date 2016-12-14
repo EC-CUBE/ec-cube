@@ -129,7 +129,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             {% if is_object(form.vars.data) %}
                 {{ form.vars.data.name|default(form.vars.data) }}
             {% else %}
-                {{ choices[form.vars.data].label|default(form.vars.data) }}
+                {% for choice in choices %}
+                    {% if form.vars.data is same as (choice.value) %}
+                        {{ choice.label }}
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         {%- endif -%}
         <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }}>
