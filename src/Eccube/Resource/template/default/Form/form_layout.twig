@@ -126,7 +126,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- block choice_widget_expanded -%}
     {% if freeze %}
         {%- if freeze_display_text -%}
-            {{ form.vars.data.name|default(form.vars.data) }}
+            {{ choices[form.vars.data].label|default(form.vars.data) }}
         {%- endif -%}
         <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }}>
     {%- else -%}
