@@ -351,6 +351,13 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
                                     {{ form_widget(orderDetailForm.Product) }}
                                     {{ form_widget(orderDetailForm.ProductClass) }}
+                                    {{ form_widget(orderDetailForm.product_name) }}
+                                    {{ form_widget(orderDetailForm.product_code) }}
+                                    {{ form_widget(orderDetailForm.class_name1) }}
+                                    {{ form_widget(orderDetailForm.class_name2) }}
+                                    {{ form_widget(orderDetailForm.class_category_name1) }}
+                                    {{ form_widget(orderDetailForm.class_category_name2) }}
+                                    {{ form_widget(orderDetailForm.tax_rule) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
@@ -405,7 +412,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% if BaseInfo.optionMultipleShipping %}
                                     {% else %}
                                     <div id="product_info_list__button_multiple_shipping_delete--{{ loop.index }}" class="icon_edit">
-                                        <button class="btn btn-default btn-sm delete-item">削除</button>
+                                        <button type="button" class="btn btn-default btn-sm delete-item">削除</button>
                                     </div>
                                     {% endif %}
                                 </div><!-- /.item_box -->
@@ -498,9 +505,17 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              {% endfilter %}">
 
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}
-                            {{ form_widget(shipmentItemForm.Product) }}
-                            {{ form_widget(shipmentItemForm.ProductClass) }}
                             <div id="shipment_item__id--{{ shippingIndex }}" class="item_box shipment_item_idx{{ shippingIndex }}">
+                                {{ form_widget(shipmentItemForm.Product) }}
+                                {{ form_widget(shipmentItemForm.ProductClass) }}
+                                {{ form_widget(shipmentItemForm.Product) }}
+                                {{ form_widget(shipmentItemForm.ProductClass) }}
+                                {{ form_widget(shipmentItemForm.product_name) }}
+                                {{ form_widget(shipmentItemForm.product_code) }}
+                                {{ form_widget(shipmentItemForm.class_name1) }}
+                                {{ form_widget(shipmentItemForm.class_name2) }}
+                                {{ form_widget(shipmentItemForm.class_category_name1) }}
+                                {{ form_widget(shipmentItemForm.class_category_name2) }}
                                 <div id="shipment_item__detail--{{ shippingIndex }}" class="item_detail">
                                     <div id="shipment_item__name_detail--{{ shippingIndex }}" class="item_name_area">
                                         <strong id="shipment_item__product_name--{{ shippingIndex }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
@@ -532,7 +547,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     </div>
                                 </div>
                             </div><!-- /.item_box -->
-                            {{ form_widget(shipmentItemForm.itemidx) }}
                         {% endfor %}
                             </div>
                         {% endif %}
