@@ -293,6 +293,7 @@ class ShoppingController extends AbstractController
 
                 // 集計は,この1行でいけるはず
                 // プラグインで Strategy をセットしたりする
+                // 集計はステートレスな実装とし、再計算時に状態を考慮しなくても良いようにする
                 $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
                 // Order も引数で渡すのがベスト??
@@ -306,6 +307,8 @@ class ShoppingController extends AbstractController
                 // 確認画面も挟める
                 // Request をセッションに入れるべし
                 $dispatcher = $paymentService->dispatch($paymentMethod); // 決済処理中.
+                // 一旦、決済処理中になった後は、購入処理中に戻せない。キャンセル or 購入完了の仕様とする
+                // ステータス履歴も保持しておく？ 在庫引き当ての仕様もセットで。
                 if ($dispatcher instanceof Response) { // $paymentMethod->apply() が Response を返した場合は画面遷移
                     return $dispatcher;                // 画面遷移したいパターンが複数ある場合はどうする？ 引数で制御？
                 }
