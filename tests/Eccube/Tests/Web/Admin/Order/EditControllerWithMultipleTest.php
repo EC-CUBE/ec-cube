@@ -128,6 +128,24 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->verify();
     }
 
+    public function testSearchCustomerHtml()
+    {
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_order_search_customer'),
+            array(
+                'search_word' => $this->Customer->getId()
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            )
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
     public function testSearchCustomerById()
     {
         $crawler = $this->client->request(
@@ -297,11 +315,18 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         //税金計算
         $totalTax = 0;
+        $addQuantity = 2;
         foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
-            //商品数変更3個追加
-            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
+            //商品数追加
+            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + $addQuantity * count($Shippings);
             $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+        }
+
+        foreach ($formDataForEdit['Shippings'] as &$shipping) {
+            foreach ($shipping['ShipmentItems'] as &$shipmentItem) {
+                $shipmentItem['quantity'] += $addQuantity;
+            }
         }
 
         // 管理画面で受注編集する
@@ -342,7 +367,10 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                         'ProductClass' => $Item['ProductClass'],
                         'price' => $Item['price'],
                         'quantity' => $Item['quantity'],
-                        'tax_rate' => 8 // XXX ハードコーディング
+                        'tax_rate' => 8, // XXX ハードコーディング
+                        'tax_rule' => 1,
+                        'product_name' => $Item['product_name'],
+                        'product_code' => $Item['product_code'],
                     );
                 } else {
                     $OrderDetails[$Item['ProductClass']]['quantity'] += $Item['quantity'];
@@ -374,7 +402,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                 'ProductClass' => $ProductClass->getId(),
                 'price' => $ProductClass->getPrice02(),
                 'quantity' => $faker->randomNumber(2),
-                'itemidx' => ''
+                'product_name' => $ProductClass->getProduct()->getName(),
+                'product_code' => $ProductClass->getCode(),
             );
         }
         $Shipping =

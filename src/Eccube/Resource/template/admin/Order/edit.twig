@@ -62,64 +62,17 @@ $(function() {
     });
     // 会員検索
     $('#searchCustomerModalButton').on('click', function() {
-        var tbody = $('#searchCustomerModalList tbody');
-        tbody.children().remove();
+        var list = $('#searchCustomerModalList');
+        list.children().remove();
+
         $.ajax({
             type: 'POST',
+            dataType: 'html',
             data: { 'search_word' : $('#admin_search_customer_multi').val() },
-            url: '{{ url('admin_order_search_customer') }}',
+            url: '{{ url('admin_order_search_customer_html') }}',
             success: function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    // モーダルウィンドウ内に結果を出力.
-                    var tr = $('<tr></tr>');
-                    var id = $('<td>').text(data[i]['id']);
-                    var name = $('<td>').text(data[i]['name']);
-                    var tel = $('<td>').text(data[i]['tel']);
-                    var email = $('<td>').text(data[i]['email']);
-                    var select = $('<td data-customer="' + data[i]['id'] + '"><button type="button" class="btn btn-default btn-sm">決定</button></td>');
-                    tr.append(id);
-                    tr.append(name);
-                    tr.append(tel);
-                    tr.append(email);
-                    tr.append(select);
-                    tbody.append(tr);
-
-                    // 決定ボタンに検索イベントを設定.
-                    select.on('click', function() {
-                        $.ajax({
-                            type: 'POST',
-                            data: { 'id' : this.dataset.customer },
-                            url: '{{ url('admin_order_search_customer_by_id') }}',
-                            success: function(data) {
-                                // 顧客情報をフォームにセットする.
-                                $('#order_CustomerId').html(data['id']);
-                                $('#order_Customer').val(data['id']);
-                                $('#order_name_name01').val(data['name01']);
-                                $('#order_name_name02').val(data['name02']);
-                                $('#order_kana_kana01').val(data['kana01']);
-                                $('#order_kana_kana02').val(data['kana02']);
-                                $('#order_zip_zip01').val(data['zip01']);
-                                $('#order_zip_zip02').val(data['zip02']);
-                                $('#order_address_pref').val(data['pref']);
-                                $('#order_address_addr01').val(data['addr01']);
-                                $('#order_address_addr02').val(data['addr02']);
-                                $('#order_email').val(data['email']);
-                                $('#order_tel_tel01').val(data['tel01']);
-                                $('#order_tel_tel02').val(data['tel02']);
-                                $('#order_tel_tel03').val(data['tel03']);
-                                $('#order_fax_fax01').val(data['fax01']);
-                                $('#order_fax_fax02').val(data['fax02']);
-                                $('#order_fax_fax03').val(data['fax03']);
-                                $('#order_company_name').val(data['company_name']);
-                                // モーダルを閉じる.
-                                $('#searchCustomerModal').modal('hide');
-                            },
-                            error: function() {
-                                alert('search customer(by id) failed.');
-                            }
-                        });
-                     });
-                }
+                // モーダルに結果を書き出し.
+                $('#searchCustomerModalList').html(data);
             },
             error: function() {
                 alert('search customer failed.');
@@ -398,6 +351,13 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
                                     {{ form_widget(orderDetailForm.Product) }}
                                     {{ form_widget(orderDetailForm.ProductClass) }}
+                                    {{ form_widget(orderDetailForm.product_name) }}
+                                    {{ form_widget(orderDetailForm.product_code) }}
+                                    {{ form_widget(orderDetailForm.class_name1) }}
+                                    {{ form_widget(orderDetailForm.class_name2) }}
+                                    {{ form_widget(orderDetailForm.class_category_name1) }}
+                                    {{ form_widget(orderDetailForm.class_category_name2) }}
+                                    {{ form_widget(orderDetailForm.tax_rule) }}
                                     <div id="product_info_list__item_detail--{{ loop.index }}" class="item_detail">
                                         <div id="product_info_list__detail_name--{{ loop.index }}" class="item_name_area">
                                             <strong id="product_info_list__product_name--{{ loop.index }}" class="item_name">{{ orderDetailForm.vars.value.product_name }}</strong><br>
@@ -452,7 +412,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% if BaseInfo.optionMultipleShipping %}
                                     {% else %}
                                     <div id="product_info_list__button_multiple_shipping_delete--{{ loop.index }}" class="icon_edit">
-                                        <button class="btn btn-default btn-sm delete-item">削除</button>
+                                        <button type="button" class="btn btn-default btn-sm delete-item">削除</button>
                                     </div>
                                     {% endif %}
                                 </div><!-- /.item_box -->
@@ -545,9 +505,17 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                              {% endfilter %}">
 
                         {% for shipmentItemForm in shippingForm.ShipmentItems %}
-                            {{ form_widget(shipmentItemForm.Product) }}
-                            {{ form_widget(shipmentItemForm.ProductClass) }}
                             <div id="shipment_item__id--{{ shippingIndex }}" class="item_box shipment_item_idx{{ shippingIndex }}">
+                                {{ form_widget(shipmentItemForm.Product) }}
+                                {{ form_widget(shipmentItemForm.ProductClass) }}
+                                {{ form_widget(shipmentItemForm.Product) }}
+                                {{ form_widget(shipmentItemForm.ProductClass) }}
+                                {{ form_widget(shipmentItemForm.product_name) }}
+                                {{ form_widget(shipmentItemForm.product_code) }}
+                                {{ form_widget(shipmentItemForm.class_name1) }}
+                                {{ form_widget(shipmentItemForm.class_name2) }}
+                                {{ form_widget(shipmentItemForm.class_category_name1) }}
+                                {{ form_widget(shipmentItemForm.class_category_name2) }}
                                 <div id="shipment_item__detail--{{ shippingIndex }}" class="item_detail">
                                     <div id="shipment_item__name_detail--{{ shippingIndex }}" class="item_name_area">
                                         <strong id="shipment_item__product_name--{{ shippingIndex }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
@@ -579,7 +547,6 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     </div>
                                 </div>
                             </div><!-- /.item_box -->
-                            {{ form_widget(shipmentItemForm.itemidx) }}
                         {% endfor %}
                             </div>
                         {% endif %}
@@ -758,22 +725,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                 <div id="search_customer_modal_box__button_search" class="form-group">
                     <button type="button" id="searchCustomerModalButton" class="btn btn-primary" >検索</button>
                 </div>
-                <div id="search_customer_modal_box__body_inner" class="form-group">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="searchCustomerModalList">
-                            <thead >
-                            <tr id="search_customer_modal_box__body_inner_header">
-                                <th>会員ID</th>
-                                <th>お名前(カナ)</th>
-                                <th>電話番号</th>
-                                <th>メールアドレス</th>
-                                <th>決定</th>
-                            </tr>
-                            </thead>
-                            <tbody id="search_customer_modal_box__body_inner_body">
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="form-group" id="searchCustomerModalList">
                 </div>
             </div>
         </div>

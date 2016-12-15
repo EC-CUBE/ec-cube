@@ -101,6 +101,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->match('/order/export/order', '\Eccube\Controller\Admin\Order\OrderController::exportOrder')->bind('admin_order_export_order');
         $c->match('/order/export/shipping', '\Eccube\Controller\Admin\Order\OrderController::exportShipping')->bind('admin_order_export_shipping');
         $c->post('/order/search/customer', '\Eccube\Controller\Admin\Order\EditController::searchCustomer')->bind('admin_order_search_customer');
+        $c->post('/order/search/customer/html', '\Eccube\Controller\Admin\Order\EditController::searchCustomerHtml')->bind('admin_order_search_customer_html');
+        $c->match('/order/search/customer/html/page/{page_no}', '\Eccube\Controller\Admin\Order\EditController::searchCustomerHtml')->assert('page_no', '\d+')->bind('admin_order_search_customer_html_page');
         $c->post('/order/search/customer/id', '\Eccube\Controller\Admin\Order\EditController::searchCustomerById')->bind('admin_order_search_customer_by_id');
         $c->post('/order/search/product', '\Eccube\Controller\Admin\Order\EditController::searchProduct')->bind('admin_order_search_product');
         $c->match('/order/search/product/page/{page_no}', '\Eccube\Controller\Admin\Order\EditController::searchProduct')->assert('page_no', '\d+')->bind('admin_order_search_product_page');
@@ -223,10 +225,10 @@ class AdminControllerProvider implements ControllerProviderInterface
         $c->put('/store/plugin/{id}/disable', '\Eccube\Controller\Admin\Store\PluginController::disable')->assert('id', '\d+')->bind('admin_store_plugin_disable');
         $c->post('/store/plugin/{id}/update', '\Eccube\Controller\Admin\Store\PluginController::update')->assert('id', '\d+')->bind('admin_store_plugin_update');
         $c->delete('/store/plugin/{id}/uninstall', '\Eccube\Controller\Admin\Store\PluginController::uninstall')->assert('id', '\d+')->bind('admin_store_plugin_uninstall');
+        $c->match('/store/plugin/{id}/readme', '\Eccube\Controller\Admin\Store\PluginController::readme')->assert('id', '\d+')->bind('admin_store_plugin_readme');
         $c->match('/store/plugin/handler_up/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_up')->bind('admin_store_plugin_handler_up');
         $c->match('/store/plugin/handler_down/{handlerId}', '\Eccube\Controller\Admin\Store\PluginController::handler_down')->bind('admin_store_plugin_handler_down');
         $c->match('/store/plugin/authentication_setting', '\Eccube\Controller\Admin\Store\PluginController::authenticationSetting')->bind('admin_store_authentication_setting');
-        $c->put('/store/plugin/authentication_setting_download', '\Eccube\Controller\Admin\Store\PluginController::download')->bind('admin_setting_system_authority_download');
 
         return $c;
     }

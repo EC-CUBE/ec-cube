@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 <th>コード</th>
                 <th>アップデート</th>
                 <th>設定</th>
+                <th>README</th>
             </tr>
             </thead>
             <tbody>
@@ -58,6 +59,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             {% else %}
                                 &nbsp;-&nbsp;
                             {% endif %}
+                        </td>
+                        <td class="tr text-center">
+                           {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
+                           <a class="prevention-mask view_readme" href="" data-readme="{{ Plugin.id }}">README</a>
+                           {% endif %}
                         </td>
                     </tr>
                 </form>

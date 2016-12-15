@@ -32,6 +32,7 @@ use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,11 +41,6 @@ use Monolog\Logger;
 
 class PluginController extends AbstractController
 {
-
-    /**
-     * @var string 証明書ファイル
-     */
-    private $certFileName = 'cacert.pem';
 
     /**
      * インストール済プラグイン画面
@@ -299,6 +295,40 @@ class PluginController extends AbstractController
         $app->addSuccess('admin.plugin.uninstall.complete', 'admin');
 
         return $app->redirect($app->url('admin_store_plugin'));
+    }
+
+    /**
+     * 対象プラグインの README を返却します。
+     *
+     * @param Application $app
+     * @param unknown $code
+     */
+    public function readme(Application $app, Request $request, $id)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $Plugin = $app['eccube.repository.plugin']->find($id);
+            if (!$Plugin) {
+                $response = new Response(json_encode('NG'), 400);
+                $response->headers->set('Content-Type', 'application/json');
+                return $response;
+            }
+
+            $code = $Plugin->getCode();
+            $readme = $app['config'][$code]['const']['readme'];
+            $data = array(
+                'code' => $code,
+                'name' => $Plugin->getName(),
+                'readme' => $readme,
+            );
+
+            $response = new Response(json_encode($data));
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
+        }
+
+        $response = new Response(json_encode('NG'), 400);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
     public function handler(Application $app)
@@ -661,58 +691,6 @@ class PluginController extends AbstractController
 
 
     /**
-     * 認証キーダウンロード
-     *
-     * @param Application $app
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function download(Application $app, Request $request)
-    {
-
-        $this->isTokenValid($app);
-
-        $url = $app['config']['cacert_pem_url'];
-
-        $curl = curl_init($url);
-        $fileName = $app['config']['root_dir'].'/app/config/eccube/'.$this->certFileName;
-        $fp = fopen($fileName, 'w');
-        if ($fp === false) {
-            $app->addError('admin.plugin.download.pem.error', 'admin');
-            $app->log('Cannot fopen to '.$fileName, array(), Logger::ERROR);
-            return $app->redirect($app->url('admin_store_authentication_setting'));
-        }
-
-        curl_setopt($curl, CURLOPT_FILE, $fp);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-
-        $results = curl_exec($curl);
-        $error = curl_error($curl);
-        curl_close($curl);
-
-        // curl で取得できない場合は file_get_contents で取得を試みる
-        if ($results === false) {
-            $file = file_get_contents($url);
-            if ($file !== false) {
-                fwrite($fp, $file);
-            }
-        }
-        fclose($fp);
-
-        $f = new Filesystem();
-        if ($f->exists($fileName) && filesize($fileName) > 0) {
-            $app->addSuccess('admin.plugin.download.pem.complete', 'admin');
-        } else {
-            $app->addError('admin.plugin.download.pem.error', 'admin');
-            $app->log('curl_error: '.$error, array(), Logger::ERROR);
-        }
-
-        return $app->redirect($app->url('admin_store_authentication_setting'));
-
-    }
-
-
-    /**
      * APIリクエスト処理
      *
      * @param Request $request
@@ -736,17 +714,10 @@ class PluginController extends AbstractController
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,
+            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
         );
 
         curl_setopt_array($curl, $options); /// オプション値を設定
-
-        $certFile = $app['config']['root_dir'].'/app/config/eccube/'.$this->certFileName;
-        if (file_exists($certFile)) {
-            // php5.6でサーバ上に適切な証明書がなければhttps通信エラーが発生するため、
-            // http://curl.haxx.se/ca/cacert.pem を利用して通信する
-            curl_setopt($curl, CURLOPT_CAINFO, $certFile);
-        }
-
         $result = curl_exec($curl);
         $info = curl_getinfo($curl);
 

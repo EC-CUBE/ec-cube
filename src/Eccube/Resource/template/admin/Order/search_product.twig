@@ -80,44 +80,81 @@
 
         // 受注明細行を取得.
         var list = $('#order_detail_list');
+        var orderDetailExists = false;
 
-        // prototype templateを取得.
-        var newWidget = list.attr('data-prototype');
-        // レコード数カウンタで置換.
-        newWidget = newWidget.replace(/__name__/g, order_details_count);
-        // フォーム入力値をセットm
-        $newWidget = $(newWidget);
-        $newWidget.find('#order_OrderDetails_' + order_details_count + '_Product').val(product_id);
-        $newWidget.find('#order_OrderDetails_' + order_details_count + '_ProductClass').val(product_class_id);
-        $newWidget.find('#order_OrderDetails_' + order_details_count + '_price').val(price);
-        $newWidget.find('#order_OrderDetails_' + order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
-        $newWidget.find('#order_OrderDetails_' + order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
+        $('*[id^="product_info_list__item--"]').each(function () {
+            var $inputs = $(this).find(':input');
+            if ($inputs.filter('[id$="_ProductClass"][value="'+product_class_id+'"]').length > 0) {
+                var $quantity = $inputs.filter('[id$="_quantity"]');
+                var quantity = $quantity.val().trim();
+                if (quantity.match(/^\d+$/)) {
+                    $quantity.val(parseInt(quantity) + 1);
+                }
+                orderDetailExists = true;
+                return false;
+            }
+        });
 
-        // 明細行に追加.
-        list.append($newWidget);
+        if (!orderDetailExists) {
 
-        // 受注明細行を取得.
-        list = $('#shipment_item_list' + shipment_idx);
-
-        // prototype templateを取得.
-        if (typeof(list) !== 'undefined' && list.length > 0) {
-            newWidget = list.attr('data-prototype');
+            // prototype templateを取得.
+            var newWidget = list.attr('data-prototype');
             // レコード数カウンタで置換.
-            newWidget = newWidget.replace(/__name__/g, shipmentItem_idx);
-            // フォーム入力値をセット
+            newWidget = newWidget.replace(/__name__/g, order_details_count);
+            // フォーム入力値をセットm
             $newWidget = $(newWidget);
-            $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_Product').val(product_id);
-            $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_ProductClass').val(product_class_id);
-            $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_price').val(price);
-            $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
-            $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_itemidx').val(order_details_count);
+            $newWidget.find('#order_OrderDetails_' + order_details_count + '_Product').val(product_id);
+            $newWidget.find('#order_OrderDetails_' + order_details_count + '_ProductClass').val(product_class_id);
+            $newWidget.find('#order_OrderDetails_' + order_details_count + '_price').val(price);
+            $newWidget.find('#order_OrderDetails_' + order_details_count + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
+            $newWidget.find('#order_OrderDetails_' + order_details_count + '_tax_rate').val(8); // コントローラ側で再取得するため、仮の値をセット
 
             // 明細行に追加.
             list.append($newWidget);
         }
 
-        // カウンタを更新.
-        order_details_count++;
+        // 配送商品行を取得.
+        list = $('#shipment_item_list' + shipment_idx);
+
+        // prototype templateを取得.
+        if (typeof(list) !== 'undefined' && list.length > 0) {
+
+            var itemExists = false;
+
+            list.find('*[id^="shipment_item__id--"]').each(function () {
+                var $inputs = $(this).find(':input');
+                if ($inputs.filter('[id$="_ProductClass"][value="'+product_class_id+'"]').length > 0) {
+                    var $quantity = $inputs.filter('[id$="_quantity"]');
+                    var quantity = $quantity.val().trim();
+                    if (quantity.match(/^\d+$/)) {
+                        $quantity.val(parseInt(quantity) + 1);
+                    }
+                    itemExists = true;
+                    return false;
+                }
+            });
+
+            if (!itemExists) {
+
+                newWidget = list.attr('data-prototype');
+                // レコード数カウンタで置換.
+                newWidget = newWidget.replace(/__name__/g, shipmentItem_idx);
+                // フォーム入力値をセット
+                $newWidget = $(newWidget);
+                $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_Product').val(product_id);
+                $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_ProductClass').val(product_class_id);
+                $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_price').val(price);
+                $newWidget.find('#order_Shippings_' + shipment_idx + '_ShipmentItems_' + shipmentItem_idx + '_quantity').val(1); // コントローラ側で再取得するため、仮の値をセット
+
+                // 明細行に追加.
+                list.append($newWidget);
+            }
+        }
+
+        if (orderDetailExists) {
+            // カウンタを更新.
+            order_details_count++;
+        }
 
         // モーダル閉じる.
         $('#searchProductModal').modal('hide');
@@ -129,7 +166,7 @@
     }
 
     // 商品検索
-    $('#pagination_wrap a').on('click', function(event) {
+    $('#product_pagination a').on('click', function(event) {
         var list = $('#searchProductModalList');
         list.children().remove();
 
@@ -196,6 +233,6 @@
         </tbody>
     </table>
     {% if pagination.totalItemCount > 0 %}
-        {% include "pager.twig" with {'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
+        {% include "pager.twig" with {'id': 'product_pagination', 'pages': pagination.paginationData, 'routes': 'admin_order_search_product_page'} %}
     {% endif %}
 </div>

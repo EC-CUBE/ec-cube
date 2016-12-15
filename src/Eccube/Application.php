@@ -234,7 +234,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\SessionServiceProvider(), array(
             'session.storage.save_path' => $this['config']['root_dir'].'/app/cache/eccube/session',
             'session.storage.options' => array(
-                'name' => 'eccube',
+                'name' => $this['config']['cookie_name'],
                 'cookie_path' => $this['config']['root_urlpath'] ?: '/',
                 'cookie_secure' => $this['config']['force_ssl'],
                 'cookie_lifetime' => $this['config']['cookie_lifetime'],
@@ -477,6 +477,9 @@ class Application extends ApplicationTrait
         $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
             'orm.em.options' => $options,
+            'orm.custom.functions.string' => array(
+                'NORMALIZE' => 'Eccube\Doctrine\ORM\Query\Normalize',
+            ),
             'orm.custom.functions.numeric' => array(
                 'EXTRACT' => 'Eccube\Doctrine\ORM\Query\Extract',
             ),
@@ -538,7 +541,7 @@ class Application extends ApplicationTrait
                 ),
                 'remember_me' => array(
                     'key' => sha1($this['config']['auth_magic']),
-                    'name' => 'eccube_rememberme',
+                    'name' => $this['config']['cookie_name'].'_rememberme',
                     // lifetimeはデフォルトの1年間にする
                     // 'lifetime' => $this['config']['cookie_lifetime'],
                     'path' => $this['config']['root_urlpath'] ?: '/',
@@ -851,7 +854,7 @@ class Application extends ApplicationTrait
             try {
                 $this['eccube.service.plugin']->checkPluginArchiveContent($path, $pluginConfig['config']);
             } catch (\Eccube\Exception\PluginException $e) {
-                $this['monolog']->warning("skip {$code} config loading. config.yml not foud or invalid.", array(
+                $this['monolog']->warning("Configuration file config.yml for plugin {$code} not found or is invalid. Skipping loading.", array(
                     'path' => $path,
                     'original-message' => $e->getMessage()
                 ));
@@ -885,7 +888,7 @@ class Application extends ApplicationTrait
                 $eventExists = true;
 
                 if (!class_exists($class)) {
-                    $this['monolog']->warning("skip {$code} loading. event class not foud.", array(
+                    $this['monolog']->warning("Event class for plugin {$code} not exists.", array(
                         'class' => $class,
                     ));
                     $eventExists = false;
@@ -915,7 +918,7 @@ class Application extends ApplicationTrait
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
                     if (!class_exists($class)) {
-                        $this['monolog']->warning("skip {$code} loading. service provider class not foud.", array(
+                        $this['monolog']->warning("Service provider class for plugin {$code} not exists.", array(
                             'class' => $class,
                         ));
                         continue;
@@ -1212,6 +1215,12 @@ class Application extends ApplicationTrait
         $pluginConfigs = array();
         foreach ($finder as $dir) {
             $code = $dir->getBaseName();
+            if (!$code) {
+                //PHP5.3のgetBaseNameバグ対応
+                if (PHP_VERSION_ID < 50400) {
+                    $code = $dir->getFilename();
+                }
+            }
             $file = $dir->getRealPath().'/config.yml';
             $config = null;
             if (file_exists($file)) {

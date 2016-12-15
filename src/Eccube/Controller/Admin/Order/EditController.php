@@ -374,6 +374,97 @@ class EditController extends AbstractController
      *
      * @param Application $app
      * @param Request $request
+     * @param integer $page_no
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function searchCustomerHtml(Application $app, Request $request, $page_no = null)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $app['monolog']->addDebug('search customer start.');
+            $page_count = $app['config']['default_page_count'];
+            $session = $app['session'];
+
+            if ('POST' === $request->getMethod()) {
+
+                $page_no = 1;
+
+                $searchData = array(
+                    'multi' => $request->get('search_word'),
+                );
+
+                $session->set('eccube.admin.order.customer.search', $searchData);
+                $session->set('eccube.admin.order.customer.search.page_no', $page_no);
+            } else {
+                $searchData = (array)$session->get('eccube.admin.order.customer.search');
+                if (is_null($page_no)) {
+                    $page_no = intval($session->get('eccube.admin.order.customer.search.page_no'));
+                } else {
+                    $session->set('eccube.admin.order.customer.search.page_no', $page_no);
+                }
+            }
+
+            $qb = $app['eccube.repository.customer']->getQueryBuilderBySearchData($searchData);
+
+            $event = new EventArgs(
+                array(
+                    'qb' => $qb,
+                    'data' => $searchData,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH, $event);
+
+            /** @var \Knp\Component\Pager\Pagination\SlidingPagination $pagination */
+            $pagination = $app['paginator']()->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                array('wrap-queries' => true)
+            );
+
+            /** @var $Customers \Eccube\Entity\Customer[] */
+            $Customers = $pagination->getItems();
+
+            if (empty($Customers)) {
+                $app['monolog']->addDebug('search customer not found.');
+            }
+
+            $data = array();
+
+            $formatTel = '%s-%s-%s';
+            $formatName = '%s%s(%s%s)';
+            foreach ($Customers as $Customer) {
+                $data[] = array(
+                    'id' => $Customer->getId(),
+                    'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(), $Customer->getKana01(),
+                        $Customer->getKana02()),
+                    'tel' => sprintf($formatTel, $Customer->getTel01(), $Customer->getTel02(), $Customer->getTel03()),
+                    'email' => $Customer->getEmail(),
+                );
+            }
+
+            $event = new EventArgs(
+                array(
+                    'data' => $data,
+                    'Customers' => $pagination,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_COMPLETE, $event);
+            $data = $event->getArgument('data');
+
+            return $app->render('Order/search_customer.twig', array(
+                'data' => $data,
+                'pagination' => $pagination,
+            ));
+        }
+    }
+
+    /**
+     * 顧客情報を検索する.
+     *
+     * @param Application $app
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function searchCustomerById(Application $app, Request $request)
@@ -548,31 +639,11 @@ class EditController extends AbstractController
         /** @var $OrderDetails \Eccube\Entity\OrderDetail[] */
         $OrderDetails = $Order->getOrderDetails();
         foreach ($OrderDetails as $OrderDetail) {
-            // 新規登録の場合は, 入力されたproduct_id/produc_class_idから明細にセットする.
-            if (!$OrderDetail->getId()) {
-                $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
-                    $OrderDetail->getProductClass());
-                $OrderDetail->setTaxRule($TaxRule->getId());
-                $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
-                $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
-                $OrderDetail->setClassName1($OrderDetail->getProductClass()->hasClassCategory1()
-                    ? $OrderDetail->getProductClass()->getClassCategory1()->getClassName()->getName()
-                    : null);
-                $OrderDetail->setClassName2($OrderDetail->getProductClass()->hasClassCategory2()
-                    ? $OrderDetail->getProductClass()->getClassCategory2()->getClassName()->getName()
-                    : null);
-                $OrderDetail->setClassCategoryName1($OrderDetail->getProductClass()->hasClassCategory1()
-                    ? $OrderDetail->getProductClass()->getClassCategory1()->getName()
-                    : null);
-                $OrderDetail->setClassCategoryName2($OrderDetail->getProductClass()->hasClassCategory2()
-                    ? $OrderDetail->getProductClass()->getClassCategory2()->getName()
-                    : null);
-            }
 
-            // // 税
-            // $tax = $app['eccube.service.tax_rule']
-            //     ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
-            // $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
+            // 税
+            $tax = $app['eccube.service.tax_rule']
+                ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
+            $OrderDetail->setPriceIncTax($OrderDetail->getPrice() + $tax);
 
             // $taxtotal += $tax * $OrderDetail->getQuantity();
 
@@ -583,25 +654,7 @@ class EditController extends AbstractController
         $shippings = $Order->getShippings();
         /** @var \Eccube\Entity\Shipping $Shipping */
         foreach ($shippings as $Shipping) {
-            $shipmentItems = $Shipping->getShipmentItems();
             $Shipping->setDelFlg(Constant::DISABLED);
-            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-            foreach ($shipmentItems as $ShipmentItem) {
-                $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
-                $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
-                $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
-                    : null);
-                $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
-                    : null);
-                $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
-                    : null);
-                $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
-                    : null);
-            }
         }
 
         // // 受注データの税・小計・合計を再計算

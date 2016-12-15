@@ -48,12 +48,7 @@
                         <div id="detail_box__name" class="form-group">
                             {{ form_label(form.name) }}
                             <div class="col-sm-9 col-lg-10">
-                                {% if editable %}
-                                    {{ form_widget(form.name) }}
-                                {% else %}
-                                    {{ form.name.vars.value }}
-                                    {{ form_widget(form.name, { type : 'hidden' } ) }}
-                                {% endif %}
+                                {{ form_widget(form.name) }}
                                 {{ form_errors(form.name) }}
                             </div>
                         </div>
@@ -128,9 +123,7 @@
                         <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg"
-                                            onclick="document.content_page_form.submit();">登録
-                                    </button>
+                                    <button class="btn btn-primary btn-block btn-lg" type="submit">登録</button>
                                 </div>
                             </div>
                         </div>

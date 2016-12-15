@@ -19,6 +19,25 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
+<script type="text/javascript">
+$(function(){
+    $(".newslist").each(function(){
+        var listLenght = $(this).find("dl").length;
+        if(listLenght>5){
+            $(this).find("dl:gt(4)").each(function(){$(this).hide();});
+            $(this).append('<a id="news_readmore">» もっと見る</a>');
+            var dispNum = 5;
+            $(this).find("#news_readmore").click(function(){
+                dispNum +=5;
+                $(this).parent().find("dl:lt("+dispNum+")").show(400);
+                if (dispNum>=listLenght) {
+                    $(this).hide();
+                }
+            })
+        }
+    });
+});
+</script>
 <div class="col-sm-9 news_contents">
     <div id="news_area">
         <h2 class="heading01">新着情報</h2>
