@@ -45,11 +45,9 @@ class MasterdataEditType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $app = $this->app;
-
         $builder
             ->add('data', 'collection', array(
-                'type' => new MasterdataDataType($app),
+                'type' => 'admin_system_masterdata_data',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
