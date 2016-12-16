@@ -34,8 +34,17 @@ class InstallApplication extends ApplicationTrait
 
         parent::__construct($values);
 
+        $base = __DIR__ . '/../..';
+        $installLog = '/app/log/install.log';
+
+        // log file for install has to be writable
+        if (!is_writable($base . $installLog)) {
+            echo '以下のファイルのアクセス制限を変更してください。<br>' . PHP_EOL;
+            echo '× : '.$installLog.'<br><br>' . PHP_EOL;
+        }
+
         $app->register(new \Silex\Provider\MonologServiceProvider(), array(
-            'monolog.logfile' => __DIR__.'/../../app/log/install.log',
+            'monolog.logfile' => __DIR__.'/../..' . $installLog,
         ));
 
         // load config
