@@ -56,7 +56,8 @@
         "symfony/debug-bundle": ">=2.7,<2.8",
         "psr/log": "^1.0",
         "composer/ca-bundle": "^1.0",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ddesrosiers/silex-annotation-provider": "~1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
@@ -71,6 +72,7 @@
         "files": [ "src/Eccube/Resource/functions/log.php" ],
         "psr-4": {
             "Eccube\\": "src/Eccube",
+            "Eccube2\\": "app/Eccube",
             "Plugin\\": "app/Plugin",
             "Dbtlr\\MigrationProvider\\Provider\\": "src/silex-doctrine-migrations"
         },

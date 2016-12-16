@@ -191,6 +191,12 @@ class Application extends ApplicationTrait
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
+        $this->register(new \DDesrosiers\SilexAnnotations\AnnotationServiceProvider(), array(
+            // "annot.cache" => new ApcCache(),
+            "annot.controllerDir" => __DIR__.'/../../app/Eccube/Controller',
+            "annot.controllerNamespace" => "Eccube2\\Controller\\"
+        ));
+
         // add transaction listener
         $this['dispatcher']->addSubscriber(new TransactionListener($this));
 

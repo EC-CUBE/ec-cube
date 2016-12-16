@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7e4a710dfad670a6b9dbe972d253ffc8",
-    "content-hash": "af0fed65716b85c3cae6f455bef74eda",
+    "hash": "cd176fdb858749e6d7cd7dbaa8324d8b",
+    "content-hash": "37832e77de4ca04918eba33c2f8b91ab",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -63,6 +63,58 @@
                 "tls"
             ],
             "time": "2016-07-18 23:07:53"
+        },
+        {
+            "name": "ddesrosiers/silex-annotation-provider",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/danadesrosiers/silex-annotation-provider.git",
+                "reference": "d279a9f683c64025d123f2252dbc4edbb14f0860"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/danadesrosiers/silex-annotation-provider/zipball/d279a9f683c64025d123f2252dbc4edbb14f0860",
+                "reference": "d279a9f683c64025d123f2252dbc4edbb14f0860",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "~1.0",
+                "doctrine/cache": "~1.0",
+                "silex/silex": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7.0",
+                "symfony/browser-kit": "~2.3.0",
+                "symfony/security": "~2.3"
+            },
+            "suggest": {
+                "symfony/security": "You will need this package to use the `Secure` annotation"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DDesrosiers\\SilexAnnotations\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dana Desrosiers",
+                    "email": "dana.desrosiers@gmail.com"
+                }
+            ],
+            "description": "A silex service provider that allows the use of annotations in ServiceControllers.",
+            "keywords": [
+                "annotation",
+                "provider",
+                "service",
+                "silex"
+            ],
+            "time": "2014-11-28 19:21:45"
         },
         {
             "name": "dflydev/doctrine-orm-service-provider",
