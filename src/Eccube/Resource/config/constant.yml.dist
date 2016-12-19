@@ -244,6 +244,7 @@ admin_product_stock_status: 3
 enabled: 1
 disabled: 0
 eccube_info_url: 'https://www.ec-cube.net/info/3/'
+customer_secret_key_expire: 30
 customer_reset_expire: 10
 # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
 csv_export_separator: ,

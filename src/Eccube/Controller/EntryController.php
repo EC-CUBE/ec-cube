@@ -95,6 +95,9 @@ class EntryController extends AbstractController
                         )
                         ->setSecretKey(
                             $app['eccube.repository.customer']->getUniqueSecretKey($app)
+                        )
+                        ->setSecretKeyExpire(
+                            new \DateTime('+' . $app['config']['customer_secret_key_expire'] .' min')
                         );
 
                     $CustomerAddress = new \Eccube\Entity\CustomerAddress();
@@ -184,11 +187,12 @@ class EntryController extends AbstractController
                 $Customer = $app['eccube.repository.customer']
                     ->getNonActiveCustomerBySecretKey($secret_key);
             } catch (\Exception $e) {
-                throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了しているか、無効なURLです。');
+                throw new HttpException\NotFoundHttpException('※ 既に会員登録が完了している、もしくは有効期限が切れているか、無効なURLです。');
             }
 
             $CustomerStatus = $app['eccube.repository.customer_status']->find(CustomerStatus::ACTIVE);
             $Customer->setStatus($CustomerStatus);
+            $Customer->setSecretKeyExpire(null);
             $app['orm.em']->persist($Customer);
             $app['orm.em']->flush();
 

@@ -206,7 +206,10 @@ class EntryControllerTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
         $Status = $this->app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
-        $Customer->setStatus($Status);
+        $expire = '+'.$this->app['config']['customer_secret_key_expire'].' min';
+        $Customer
+            ->setStatus($Status)
+            ->setSecretKeyExpire(new \DateTime($expire));
         $this->app['orm.em']->flush();
 
         $client = $this->createClient();
@@ -228,7 +231,7 @@ class EntryControllerTest extends AbstractWebTestCase
             $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => 'aaaaa')));
             $this->fail();
         } catch (HttpException\NotFoundHttpException $e) {
-            $this->expected = '※ 既に会員登録が完了しているか、無効なURLです。';
+            $this->expected = '※ 既に会員登録が完了している、もしくは有効期限が切れているか、無効なURLです。';
             $this->actual = $e->getMessage();
         }
         $this->verify();

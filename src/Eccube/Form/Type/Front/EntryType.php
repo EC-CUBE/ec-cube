@@ -29,14 +29,16 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 
 class EntryType extends AbstractType
 {
-    protected $config;
+    protected $app;
 
-    public function __construct($config)
+    public function __construct($app)
     {
-        $this->config = $config;
+        $this->app = $app;
     }
 
     /**
@@ -44,6 +46,8 @@ class EntryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $app = $this->app;
+
         $builder
             ->add('name', 'name', array(
                 'required' => true,
@@ -55,7 +59,7 @@ class EntryType extends AbstractType
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
-                        'max' => $this->config['stext_len'],
+                        'max' => $app['config']['stext_len'],
                     )),
                 ),
             ))
@@ -72,7 +76,7 @@ class EntryType extends AbstractType
             ->add('birth', 'birthday', array(
                 'required' => false,
                 'input' => 'datetime',
-                'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
+                'years' => range(date('Y'), date('Y') - $app['config']['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy/MM/dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
@@ -89,7 +93,42 @@ class EntryType extends AbstractType
             ->add('job', 'job', array(
                 'required' => false,
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', 'submit', array('label' => 'この内容で登録する'))
+            ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
+                $form = $event->getForm();
+                $email = $form['email']->getData();
+
+                if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                    $previous = $app['orm.em']
+                        ->getUnitOfWork()
+                        ->getOriginalEntityData($app->user());
+
+                    if (isset($previous['email']) && $previous['email']==$email) {
+                        return;
+                    }
+                }
+
+                $CustomerStatus = $app['orm.em']->createQueryBuilder()
+                    ->select('cs')
+                    ->from('Eccube\Entity\Master\CustomerStatus', 'cs')
+                    ->where('cs.id = :id')
+                    ->setParameter('id', \Eccube\Entity\Master\CustomerStatus::ACTIVE)
+                    ->getQuery()
+                    ->getSingleResult();
+
+                $qb = $app['orm.em']->createQueryBuilder()
+                    ->select('c')
+                    ->from('Eccube\Entity\Customer', 'c')
+                    ->where('c.email = :email')
+                    ->setParameter('email', $email)
+                    ->andWhere('c.Status = :Status')
+                    ->setParameter('Status', $CustomerStatus);
+
+                $Customer = $qb->getQuery()->getResult();
+                if (0 < count($Customer)) {
+                    $form['email']['first']->addError(new FormError('既に利用されているメールアドレスです'));
+                }
+            });
     }
 
     /**
