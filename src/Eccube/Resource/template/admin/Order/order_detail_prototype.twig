@@ -3,6 +3,6 @@
     {{ form_widget(orderDetailForm.Product) }}
     {{ form_widget(orderDetailForm.ProductClass) }}
     {{ form_widget(orderDetailForm.price) }}
-    {{ form_widget(orderDetailForm.quantity) }}
-    {{ form_widget(orderDetailForm.tax_rate) }}
+    {{ form_widget(orderDetailForm.quantity, {'type': 'hidden'}) }}
+    {{ form_widget(orderDetailForm.tax_rate, {'type': 'hidden'}) }}
 </div>
