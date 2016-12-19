@@ -28,15 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block javascript %}
-<script>
-function changeAction(action) {
-    document.form1.action = action;
-    document.form1.submit();
-}
-</script>
-{% endblock javascript %}
-
 {% block main %}
     <div id="news_wrap" class="row">
         <div id="news_list_box" class="col-md-12">

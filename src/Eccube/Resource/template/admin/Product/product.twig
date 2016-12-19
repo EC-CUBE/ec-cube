@@ -175,28 +175,11 @@ $(function() {
         $('#{{ form.product_image.vars.id }}').click();
     });
 });
-function fnConfirm(action) {
-    document.form1.action = action;
-    document.form1.submit();
-}
-
-function fnDelete(action) {
-    if (confirm('この商品情報を削除しても宜しいですか？')) {
-        document.form1.action = action;
-        document.form1.submit();
-    }
-}
-
-function fnCopy(action) {
-    if (confirm('この商品情報を複製しても宜しいですか？')) {
-        document.form1.action = action;
-        document.form1.submit();
-    }
-}
 
 function fnClass(action) {
     document.form1.action = action;
     document.form1.submit();
+    return false;
 }
 
 </script>

@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     function changeActionSubmit(action, form_name) {
         document.forms[form_name].action = action;
         document.forms[form_name].submit();
+        return false;
     }
     $(function(){
         $('[data-readme]').on('click', function() {
