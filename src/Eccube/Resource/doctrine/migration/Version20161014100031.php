@@ -43,11 +43,11 @@ class Version20161014100031 extends AbstractMigration
         $this->dropIndex($schema, 'dtb_customer', 'dtb_customer_buy_times_idx');
         $this->dropIndex($schema, 'dtb_customer', 'dtb_customer_buy_total_idx');
         $this->dropIndex($schema, 'dtb_order', 'dtb_order_pre_order_id_idx');
-        $this->dropIndex($schema, 'dtb_order', 'dtb_order_pre_order_email_idx');
-        $this->dropIndex($schema, 'dtb_order', 'dtb_order_pre_order_date_idx');
-        $this->dropIndex($schema, 'dtb_order', 'dtb_order_pre_payment_date_idx');
-        $this->dropIndex($schema, 'dtb_order', 'dtb_order_pre_commit_date_idx');
-        $this->dropIndex($schema, 'dtb_order', 'dtb_order_pre_update_date_idx');
+        $this->dropIndex($schema, 'dtb_order', 'dtb_order_order_email_idx');
+        $this->dropIndex($schema, 'dtb_order', 'dtb_order_order_date_idx');
+        $this->dropIndex($schema, 'dtb_order', 'dtb_order_payment_date_idx');
+        $this->dropIndex($schema, 'dtb_order', 'dtb_order_commit_date_idx');
+        $this->dropIndex($schema, 'dtb_order', 'dtb_order_update_date_idx');
         $this->dropIndex($schema, 'dtb_page_layout', 'dtb_page_layout_url_idx');
     }
 
