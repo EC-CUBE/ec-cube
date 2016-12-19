@@ -14,14 +14,14 @@ class Version20161014100031 extends AbstractMigration
     {
         $this->createIndex($schema, 'dtb_product_class', array('price02'), 'dtb_product_class_price02_idx');
         $this->createIndex($schema, 'dtb_product_class', array('stock', 'stock_unlimited'), 'dtb_product_class_stock_stock_unlimited_idx');
-        $this->createIndex($schema, 'dtb_customer', array('email'), 'dtb_customer_email_idx', array('email' => 256));
+        $this->createIndex($schema, 'dtb_customer', array('email'), 'dtb_customer_email_idx', array('email' => 191));
         $this->createIndex($schema, 'dtb_customer', array('create_date'), 'dtb_customer_create_date_idx');
         $this->createIndex($schema, 'dtb_customer', array('update_date'), 'dtb_customer_update_date_idx');
         $this->createIndex($schema, 'dtb_customer', array('last_buy_date'), 'dtb_customer_last_buy_date_idx');
         $this->createIndex($schema, 'dtb_customer', array('buy_times'), 'dtb_customer_buy_times_idx');
         $this->createIndex($schema, 'dtb_customer', array('buy_total'), 'dtb_customer_buy_total_idx');
         $this->createIndex($schema, 'dtb_order', array('pre_order_id'), 'dtb_order_pre_order_id_idx', array('pre_order_id' => 40));
-        $this->createIndex($schema, 'dtb_order', array('order_email'), 'dtb_order_order_email_idx', array('order_email' => 256));
+        $this->createIndex($schema, 'dtb_order', array('order_email'), 'dtb_order_order_email_idx', array('order_email' => 191));
         $this->createIndex($schema, 'dtb_order', array('order_date'), 'dtb_order_order_date_idx');
         $this->createIndex($schema, 'dtb_order', array('payment_date'), 'dtb_order_payment_date_idx');
         $this->createIndex($schema, 'dtb_order', array('commit_date'), 'dtb_order_commit_date_idx');
