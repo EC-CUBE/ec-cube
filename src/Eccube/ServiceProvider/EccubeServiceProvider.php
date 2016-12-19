@@ -24,11 +24,12 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Application;
-use Silex\Application as BaseApplication;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Silex\Api\BootableProviderInterface;
+use Pimple\ServiceProviderInterface;
+use Silex\Application;
 
-class EccubeServiceProvider implements ServiceProviderInterface
+class EccubeServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
     /**
      * Registers services on the given app.
@@ -38,31 +39,31 @@ class EccubeServiceProvider implements ServiceProviderInterface
      *
      * @param BaseApplication $app An Application instance
      */
-    public function register(BaseApplication $app)
+    public function register(Container $app)
     {
         // Service
-        $app['eccube.service.system'] = $app->share(function () use ($app) {
+        $app['eccube.service.system'] = function () use ($app) {
             return new \Eccube\Service\SystemService($app);
-        });
-        $app['view'] = $app->share(function () use ($app) {
+        };
+        $app['view'] = function () use ($app) {
             return $app['twig'];
-        });
-        $app['eccube.service.cart'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.service.cart'] = function () use ($app) {
             return new \Eccube\Service\CartService($app);
-        });
-        $app['eccube.service.order'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.service.order'] = function () use ($app) {
             return new \Eccube\Service\OrderService($app);
-        });
-        $app['eccube.service.tax_rule'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.service.tax_rule'] = function () use ($app) {
             return new \Eccube\Service\TaxRuleService($app['eccube.repository.tax_rule']);
-        });
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.service.plugin'] = function () use ($app) {
             return new \Eccube\Service\PluginService($app);
-        });
-        $app['eccube.service.mail'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.service.mail'] = function () use ($app) {
             return new \Eccube\Service\MailService($app);
-        });
-        $app['eccube.service.csv.export'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.service.csv.export'] = function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
             $csvService->setEntityManager($app['orm.em']);
             $csvService->setConfig($app['config']);
@@ -73,165 +74,165 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $csvService->setProductRepository($app['eccube.repository.product']);
 
             return $csvService;
-        });
-        $app['eccube.service.shopping'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.service.shopping'] = function () use ($app) {
             return new \Eccube\Service\ShoppingService($app, $app['eccube.service.cart'], $app['eccube.service.order']);
-        });
+        };
 
         // Repository
-        $app['eccube.repository.master.authority'] = $app->share(function () use ($app) {
+        $app['eccube.repository.master.authority'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Authority');
-        });
-        $app['eccube.repository.master.tag'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.tag'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Tag');
-        });
-        $app['eccube.repository.master.pref'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.pref'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Pref');
-        });
-        $app['eccube.repository.master.sex'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.sex'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Sex');
-        });
-        $app['eccube.repository.master.disp'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.disp'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\Disp');
-        });
-        $app['eccube.repository.master.product_type'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.product_type'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\ProductType');
-        });
-        $app['eccube.repository.master.page_max'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.page_max'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\PageMax');
-        });
-        $app['eccube.repository.master.order_status'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.order_status'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
-        });
-        $app['eccube.repository.master.device_type'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.device_type'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\DeviceType');
-        });
-        $app['eccube.repository.master.csv_type'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.master.csv_type'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\CsvType');
-        });
+        };
 
-        $app['eccube.repository.delivery'] = $app->share(function () use ($app) {
+        $app['eccube.repository.delivery'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Delivery');
-        });
-        $app['eccube.repository.delivery_date'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.delivery_date'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\DeliveryDate');
-        });
-        $app['eccube.repository.delivery_fee'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.delivery_fee'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\DeliveryFee');
-        });
-        $app['eccube.repository.delivery_time'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.delivery_time'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\DeliveryTime');
-        });
-        $app['eccube.repository.payment'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.payment'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Payment');
-        });
-        $app['eccube.repository.payment_option'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.payment_option'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\PaymentOption');
-        });
-        $app['eccube.repository.category'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.category'] = function () use ($app) {
             $CategoryRepository = $app['orm.em']->getRepository('Eccube\Entity\Category');
             $CategoryRepository->setApplication($app);
 
             return $CategoryRepository;
-        });
-        $app['eccube.repository.customer'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.customer'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Customer');
-        });
-        $app['eccube.repository.news'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.news'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\News');
-        });
-        $app['eccube.repository.mail_history'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.mail_history'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\MailHistory');
-        });
-        $app['eccube.repository.member'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.member'] = function () use ($app) {
             $memberRepository = $app['orm.em']->getRepository('Eccube\Entity\Member');
             $memberRepository->setEncoderFactorty($app['security.encoder_factory']);
             return $memberRepository;
-        });
-        $app['eccube.repository.order'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.order'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Order');
-        });
-        $app['eccube.repository.product'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.product'] = function () use ($app) {
             $productRepository = $app['orm.em']->getRepository('Eccube\Entity\Product');
             $productRepository->setApplication($app);
 
             return $productRepository;
-        });
-        $app['eccube.repository.product_image'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.product_image'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductImage');
-        });
-        $app['eccube.repository.product_class'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.product_class'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductClass');
-        });
-        $app['eccube.repository.product_stock'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.product_stock'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductStock');
-        });
-        $app['eccube.repository.product_tag'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.product_tag'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ProductTag');
-        });
-        $app['eccube.repository.class_name'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.class_name'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ClassName');
-        });
-        $app['eccube.repository.class_category'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.class_category'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\ClassCategory');
-        });
-        $app['eccube.repository.customer_favorite_product'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.customer_favorite_product'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerFavoriteProduct');
-        });
-        $app['eccube.repository.base_info'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.base_info'] = function () use ($app) {
             $BaseInfoRepository = $app['orm.em']->getRepository('Eccube\Entity\BaseInfo');
             $BaseInfoRepository->setApplication($app);
 
             return $BaseInfoRepository;
-        });
-        $app['eccube.repository.tax_rule'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.tax_rule'] = function () use ($app) {
             $taxRuleRepository = $app['orm.em']->getRepository('Eccube\Entity\TaxRule');
             $taxRuleRepository->setApplication($app);
 
             return $taxRuleRepository;
-        });
-        $app['eccube.repository.page_layout'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.page_layout'] = function () use ($app) {
             $pageLayoutRepository = $app['orm.em']->getRepository('Eccube\Entity\PageLayout');
             $pageLayoutRepository->setApplication($app);
 
             return $pageLayoutRepository;
-        });
-        $app['eccube.repository.block'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.block'] = function () use ($app) {
             $blockRepository = $app['orm.em']->getRepository('Eccube\Entity\Block');
             $blockRepository->setApplication($app);
 
             return $blockRepository;
-        });
-        $app['eccube.repository.order'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.order'] = function () use ($app) {
             $orderRepository = $app['orm.em']->getRepository('Eccube\Entity\Order');
             $orderRepository->setApplication($app);
 
             return $orderRepository;
-        });
-        $app['eccube.repository.customer_address'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.customer_address'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\CustomerAddress');
-        });
-        $app['eccube.repository.shipping'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.shipping'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Shipping');
-        });
-        $app['eccube.repository.customer_status'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.customer_status'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\CustomerStatus');
-        });
-        $app['eccube.repository.order_status'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.order_status'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Master\OrderStatus');
-        });
-        $app['eccube.repository.mail_template'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.mail_template'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\MailTemplate');
-        });
-        $app['eccube.repository.csv'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.csv'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Csv');
-        });
-        $app['eccube.repository.template'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.template'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Template');
-        });
-        $app['eccube.repository.authority_role'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.authority_role'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\AuthorityRole');
-        });
+        };
 
         $app['paginator'] = $app->protect(function () {
             $paginator = new \Knp\Component\Pager\Paginator();
@@ -240,51 +241,51 @@ class EccubeServiceProvider implements ServiceProviderInterface
             return $paginator;
         });
 
-        $app['eccube.repository.help'] = $app->share(function () use ($app) {
+        $app['eccube.repository.help'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Help');
-        });
-        $app['eccube.repository.plugin'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.plugin'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\Plugin');
-        });
-        $app['eccube.repository.plugin_event_handler'] = $app->share(function () use ($app) {
+        };
+        $app['eccube.repository.plugin_event_handler'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
-        });
+        };
         // em
-        if (isset($app['orm.em'])) {
-            $app['orm.em'] = $app->share($app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
-                // tax_rule
-                $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
-                $taxRuleRepository->setApplication($app);
-                $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
-                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
+        // if (isset($app['orm.em'])) {
+        //     $app['orm.em'] = $app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
+        //         // tax_rule
+        //         $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
+        //         $taxRuleRepository->setApplication($app);
+        //         $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
+        //         $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
 
-                // save
-                $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
-                $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+        //         // save
+        //         $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
+        //         $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
 
-                // clear cache
-                $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
-                $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
+        //         // clear cache
+        //         $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
+        //         $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
 
-                // filters
-                $config = $em->getConfiguration();
-                $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
-                $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
-                $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
-                $em->getFilters()->enable('soft_delete');
+        //         // filters
+        //         $config = $em->getConfiguration();
+        //         $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
+        //         $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
+        //         $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
+        //         $em->getFilters()->enable('soft_delete');
 
-                return $em;
-            }));
-        }
+        //         return $em;
+        //     });
+        //}
 
         // Form\Type
-        $app['form.type.extensions'] = $app->share($app->extend('form.type.extensions', function ($extensions) use ($app) {
+        $app['form.type.extensions'] = $app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
             $extensions[] = new \Eccube\Form\Extension\FreezeTypeExtension();
 
             return $extensions;
-        }));
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+        });
+        $app['form.types'] = $app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\NameType($app['config']);
             $types[] = new \Eccube\Form\Type\KanaType($app['config']);
             $types[] = new \Eccube\Form\Type\TelType($app['config']);
@@ -380,7 +381,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
             $types[] = new \Eccube\Form\Type\Admin\PluginManagementType();
 
             return $types;
-        }));
+        });
     }
 
     /**
@@ -390,7 +391,7 @@ class EccubeServiceProvider implements ServiceProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      */
-    public function boot(BaseApplication $app)
+    public function boot(Application $app)
     {
     }
 }

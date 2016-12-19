@@ -69,18 +69,18 @@ $app->initializePlugin();
 
 // load config dev
 $conf = $app['config'];
-$app['config'] = $app->share(function () use ($conf) {
-    $confarray = array();
-    $config_dev_file = __DIR__.'/../app/config/eccube/config_dev.yml';
-    if (file_exists($config_dev_file)) {
-        $config_dev = Yaml::parse(file_get_contents($config_dev_file));
-        if (isset($config_dev)) {
-            $confarray = array_replace_recursive($confarray, $config_dev);
-        }
-    }
+// $app['config'] = function () use ($conf) {
+//     $confarray = array();
+//     $config_dev_file = __DIR__.'/../app/config/eccube/config_dev.yml';
+//     if (file_exists($config_dev_file)) {
+//         $config_dev = Yaml::parse(file_get_contents($config_dev_file));
+//         if (isset($config_dev)) {
+//             $confarray = array_replace_recursive($confarray, $config_dev);
+//         }
+//     }
 
-    return array_replace_recursive($conf, $confarray);
-});
+//     return array_replace_recursive($conf, $confarray);
+// };
 // config_dev.ymlにmailが設定されていた場合、config_dev.ymlの設定内容を反映
 $app['swiftmailer.options'] = $app['config']['mail'];
 
@@ -92,11 +92,11 @@ if (isset($app['config']['delivery_address'])) {
 // Silex Web Profiler
 $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
     'profiler.cache_dir' => __DIR__.'/../app/cache/profiler',
-    'profiler.mount_prefix' => '/_profiler',
+    // 'profiler.mount_prefix' => '/_profiler',
 ));
 
 // Debug出力
-$app->register(new \Eccube\ServiceProvider\DebugServiceProvider());
+// $app->register(new \Eccube\ServiceProvider\DebugServiceProvider());
 
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
 

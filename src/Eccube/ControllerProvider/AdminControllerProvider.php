@@ -26,7 +26,7 @@ namespace Eccube\ControllerProvider;
 
 use Eccube\Entity\Master\CsvType;
 use Silex\Application;
-use Silex\ControllerProviderInterface;
+use Silex\Api\ControllerProviderInterface;
 
 class AdminControllerProvider implements ControllerProviderInterface
 {

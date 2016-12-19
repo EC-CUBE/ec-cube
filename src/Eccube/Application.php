@@ -93,7 +93,7 @@ class Application extends ApplicationTrait
     {
         // load config
         $app = $this;
-        $this['config'] = $this->share(function() use ($app) {
+        $this['config'] = function() use ($app) {
             $configAll = array();
             $app->parseConfig('constant', $configAll)
                 ->parseConfig('path', $configAll)
@@ -107,7 +107,7 @@ class Application extends ApplicationTrait
                 ->parseConfig('session_handler', $configAll);
 
             return $configAll;
-        });
+        };
     }
 
     public function initLogger()
@@ -138,37 +138,37 @@ class Application extends ApplicationTrait
             'http_cache.cache_dir' => __DIR__.'/../../app/cache/http/',
         ));
         $this->register(new \Silex\Provider\HttpFragmentServiceProvider());
-        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+        $this->register(new \Silex\Provider\RoutingServiceProvider());
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
         $app = $this;
-        $this->error(function (\Exception $e, $code) use ($app) {
-            if ($app['debug']) {
-                return;
-            }
+        // $this->error(function (\Exception $e, $code) use ($app) {
+        //     if ($app['debug']) {
+        //         return;
+        //     }
 
-            switch ($code) {
-                case 403:
-                    $title = 'アクセスできません。';
-                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
-                    break;
-                case 404:
-                    $title = 'ページがみつかりません。';
-                    $message = 'URLに間違いがないかご確認ください。';
-                    break;
-                default:
-                    $title = 'システムエラーが発生しました。';
-                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
-                    break;
-            }
+        //     switch ($code) {
+        //         case 403:
+        //             $title = 'アクセスできません。';
+        //             $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+        //             break;
+        //         case 404:
+        //             $title = 'ページがみつかりません。';
+        //             $message = 'URLに間違いがないかご確認ください。';
+        //             break;
+        //         default:
+        //             $title = 'システムエラーが発生しました。';
+        //             $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+        //             break;
+        //     }
 
-            return $app->render('error.twig', array(
-                'error_title' => $title,
-                'error_message' => $message,
-            ));
-        });
+        //     return $app->render('error.twig', array(
+        //         'error_title' => $title,
+        //         'error_message' => $message,
+        //     ));
+        // });
 
         // init mailer
         $this->initMailer();
@@ -212,7 +212,7 @@ class Application extends ApplicationTrait
             'locale' => $this['config']['locale'],
             'translator.cache_dir' => $this['debug'] ? null : $this['config']['root_dir'].'/app/cache/translator',
         ));
-        $this['translator'] = $this->share($this->extend('translator', function ($translator, \Silex\Application $app) {
+        $this['translator'] = $this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
@@ -226,7 +226,7 @@ class Application extends ApplicationTrait
             }
 
             return $translator;
-        }));
+        });
     }
 
     public function initSession()
@@ -259,12 +259,12 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
-        $this['twig'] = $this->share($this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+        $this['twig'] = $this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
             return $twig;
-        }));
+        });
 
         $this->before(function (Request $request, \Silex\Application $app) {
             $app['admin'] = false;
@@ -277,7 +277,7 @@ class Application extends ApplicationTrait
             }
 
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+            $app['twig'] = $app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
                 $paths = array();
 
                 // 互換性がないのでprofiler とproduction 時のcacheを分離する
@@ -308,7 +308,7 @@ class Application extends ApplicationTrait
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
                 return $twig;
-            }));
+            });
 
             // 管理画面のIP制限チェック.
             if ($app->isAdminRequest()) {
@@ -420,7 +420,7 @@ class Application extends ApplicationTrait
             'dbs.options' => array(
                 'default' => $this['config']['database']
             )));
-        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Silex\Provider\DoctrineOrmManagerRegistryProvider());
+        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
 
         // プラグインのmetadata定義を合わせて行う.
         $pluginConfigs = $this->getPluginConfigAll();
@@ -474,7 +474,7 @@ class Application extends ApplicationTrait
             }
         }
 
-        $this->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+        $this->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
             'orm.em.options' => $options,
             'orm.custom.functions.string' => array(
@@ -564,32 +564,32 @@ class Application extends ApplicationTrait
             array('^/mypage', 'ROLE_USER'),
         );
 
-        $this['eccube.password_encoder'] = $this->share(function ($app) {
+        $this['eccube.password_encoder'] = function ($app) {
             return new \Eccube\Security\Core\Encoder\PasswordEncoder($app['config']);
-        });
-        $this['security.encoder_factory'] = $this->share(function ($app) {
+        };
+        $this['security.encoder_factory'] = function ($app) {
             return new \Symfony\Component\Security\Core\Encoder\EncoderFactory(array(
                 'Eccube\Entity\Customer' => $app['eccube.password_encoder'],
                 'Eccube\Entity\Member' => $app['eccube.password_encoder'],
             ));
-        });
-        $this['eccube.event_listner.security'] = $this->share(function ($app) {
-            return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
-        });
-        $this['user'] = function ($app) {
-            $token = $app['security']->getToken();
-
-            return ($token !== null) ? $token->getUser() : null;
         };
+        $this['eccube.event_listner.security'] = function ($app) {
+            return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
+        };
+        // $this['user'] = function ($app) {
+        //     $token = $app['security']->getToken();
+
+        //     return ($token !== null) ? $token->getUser() : null;
+        // };
 
         // ログイン時のイベントを設定.
         $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
 
         // Voterの設定
         $app = $this;
-        $this['authority_voter'] = $this->share(function ($app) {
+        $this['authority_voter'] = function ($app) {
             return new \Eccube\Security\Voter\AuthorityVoter($app);
-        });
+        };
 
         $app['security.voters'] = $app->extend('security.voters', function ($voters) use ($app) {
             $voters[] = $app['authority_voter'];
@@ -597,9 +597,9 @@ class Application extends ApplicationTrait
             return $voters;
         });
 
-        $this['security.access_manager'] = $this->share(function ($app) {
+        $this['security.access_manager'] = function ($app) {
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
-        });
+        };
 
     }
 
@@ -610,10 +610,10 @@ class Application extends ApplicationTrait
         }
 
         // setup event dispatcher
-        $this->initPluginEventDispatcher();
+        // $this->initPluginEventDispatcher();
 
         // load plugin
-        $this->loadPlugin();
+        // $this->loadPlugin();
 
         $this->initializedPlugin = true;
     }
@@ -621,9 +621,9 @@ class Application extends ApplicationTrait
     public function initPluginEventDispatcher()
     {
         // EventDispatcher
-        $this['eccube.event.dispatcher'] = $this->share(function () {
+        $this['eccube.event.dispatcher'] = function () {
             return new EventDispatcher();
-        });
+        };
 
         $app = $this;
 
@@ -868,13 +868,13 @@ class Application extends ApplicationTrait
 
             // const
             if (isset($config['const'])) {
-                $this['config'] = $this->share($this->extend('config', function ($eccubeConfig) use ($config) {
+                $this['config'] = $this->extend('config', function ($eccubeConfig) use ($config) {
                     $eccubeConfig[$config['code']] = array(
                         'const' => $config['const'],
                     );
 
                     return $eccubeConfig;
-                }));
+                });
             }
 
             if ($plugin && $plugin->getEnable() == Constant::DISABLED) {

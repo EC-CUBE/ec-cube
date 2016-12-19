@@ -33,11 +33,11 @@ class [code]ServiceProvider implements ServiceProviderInterface
         $app->match('/plugin/[lower_code]/hello', 'Plugin\[code]\Controller\[code]Controller::index')->bind('plugin_[code]_hello');
 
         // Form
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+        $app['form.types'] = $app->extend('form.types', function ($types) use ($app) {
             $types[] = new [code]ConfigType();
 
             return $types;
-        }));
+        });
 
         // Repository
 
@@ -51,13 +51,13 @@ class [code]ServiceProvider implements ServiceProviderInterface
         // プラグイン独自の定数はconfig.ymlの「const」パラメータに対して定義し、$app['[lower_code]config']['定数名']で利用可能
         // if (isset($app['config']['[code]']['const'])) {
         //     $config = $app['config'];
-        //     $app['[lower_code]config'] = $app->share(function () use ($config) {
+        //     $app['[lower_code]config'] = function () use ($config) {
         //         return $config['[code]']['const'];
         //     });
         // }
 
         // ログファイル設定
-        $app['monolog.logger.[lower_code]'] = $app->share(function ($app) {
+        $app['monolog.logger.[lower_code]'] = function ($app) {
 
             $logger = new $app['monolog.logger.class']('[lower_code]');
 
@@ -80,7 +80,7 @@ class [code]ServiceProvider implements ServiceProviderInterface
             );
 
             return $logger;
-        });
+        };
 
     }
 

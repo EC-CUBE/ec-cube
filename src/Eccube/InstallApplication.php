@@ -48,7 +48,7 @@ class InstallApplication extends ApplicationTrait
         }
 
         // load config
-        $app['config'] = $app->share(function() {
+        $app['config'] = function() {
             $distPath = __DIR__.'/../../src/Eccube/Resource/config';
 
             $configConstant = array();
@@ -66,7 +66,7 @@ class InstallApplication extends ApplicationTrait
             $config = array_replace_recursive($configConstant, $configLog);
 
             return $config;
-        });
+        };
 
         $distPath = __DIR__.'/../../src/Eccube/Resource/config';
         $config_dist = Yaml::parse(file_get_contents($distPath.'/config.yml.dist'));
@@ -88,7 +88,7 @@ class InstallApplication extends ApplicationTrait
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
-        $app['translator'] = $app->share($app->extend('translator', function($translator, \Silex\Application $app) {
+        $app['translator'] = $app->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
@@ -105,7 +105,7 @@ class InstallApplication extends ApplicationTrait
             $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', $app['locale']);
 
             return $translator;
-        }));
+        });
 
         $app->mount('', new ControllerProvider\InstallControllerProvider());
         $app->register(new ServiceProvider\InstallServiceProvider());

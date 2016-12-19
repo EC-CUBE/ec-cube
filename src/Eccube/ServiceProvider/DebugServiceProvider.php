@@ -66,7 +66,7 @@ class DebugServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['var_dumper.cloner'] = $app->share(function ($app) {
+        $app['var_dumper.cloner'] = function ($app) {
             $cloner = new VarCloner();
 
             if (isset($app['debug.max_items'])) {
@@ -78,37 +78,37 @@ class DebugServiceProvider implements ServiceProviderInterface
             }
 
             return $cloner;
-        });
+        };
 
-        $app['data_collector.templates'] = $app->share($app->extend('data_collector.templates', function ($templates) {
+        $app['data_collector.templates'] = $app->extend('data_collector.templates', function ($templates) {
             return array_merge($templates, array(array('dump', '@Debug/Profiler/dump.html.twig')));
-        }));
-
-        $app['data_collector.dump'] = $app->share(function ($app) {
-            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format']);
         });
 
-        $app['data_collectors'] = $app->share($app->extend('data_collectors', function ($collectors, $app) {
-            $collectors['dump'] = $app->share(function ($app) {
+        $app['data_collector.dump'] = function ($app) {
+            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format']);
+        };
+
+        $app['data_collectors'] = $app->extend('data_collectors', function ($collectors, $app) {
+            $collectors['dump'] = function ($app) {
                 return $app['data_collector.dump'];
-            });
+            };
 
             return $collectors;
-        }));
+        });
 
-        $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+        $app['twig'] = $app->extend('twig', function ($twig, $app) {
             if (class_exists('\Symfony\Bridge\Twig\Extension\DumpExtension')) {
                 $twig->addExtension(new DumpExtension($app['var_dumper.cloner']));
             }
 
             return $twig;
-        }));
+        });
 
-        $app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem', function ($loader, $app) {
+        $app['twig.loader.filesystem'] = $app->extend('twig.loader.filesystem', function ($loader, $app) {
             $loader->addPath($app['debug.templates_path'], 'Debug');
 
             return $loader;
-        }));
+        });
 
         $app['debug.templates_path'] = function () {
             $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
