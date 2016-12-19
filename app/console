@@ -19,6 +19,7 @@ $app->register(
     )
 );
 
+
 // Migration
 $app->register(new \Dbtlr\MigrationProvider\Provider\MigrationServiceProvider(), array(
     'db.migrations.path' => __DIR__ . '/../src/Eccube/Resource/doctrine/migration',
@@ -29,9 +30,13 @@ $app->initializePlugin();
 $app->boot();
 
 $console = $app["console"];
-$console->add(new Eccube\Command\RouterCommand($app));
-$console->add(new Eccube\Command\CacheClearCommand($app));
-$console->add(new Eccube\Command\PluginCommand($app));
+
+//ヘルパー追加
+$console->getHelperSet()->set(new \Symfony\Component\Console\Helper\QuestionHelper(), 'question');
+
+$console->add(new Eccube\Command\RouterCommand());
+$console->add(new Eccube\Command\CacheClearCommand());
+$console->add(new Eccube\Command\PluginCommand());
 $console->add(new Eccube\Command\ConfigCommand());
 
 $console->run();
