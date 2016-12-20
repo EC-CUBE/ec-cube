@@ -238,7 +238,7 @@ class ApplicationTrait extends \Silex\Application
         }
         $this['monolog']->debug('Template Event Name : ' . $eventName);
 
-        $this['eccube.event.dispatcher']->dispatch($eventName, $event);
+        // $this['eccube.event.dispatcher']->dispatch($eventName, $event);
 
         if ($response instanceof StreamedResponse) {
             $response->setCallback(function () use ($twig, $view, $parameters) {

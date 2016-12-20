@@ -97,17 +97,17 @@ class CartService
     protected function loadProductClassFromCart()
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
-        $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
-        $excludes = $softDeleteFilter->getExcludes();
-        $softDeleteFilter->setExcludes(array(
-            'Eccube\Entity\ProductClass',
-        ));
+        // $softDeleteFilter = $this->entityManager->getFilters()->getFilter('soft_delete');
+        // $excludes = $softDeleteFilter->getExcludes();
+        // $softDeleteFilter->setExcludes(array(
+        //     'Eccube\Entity\ProductClass',
+        // ));
 
-        foreach ($this->cart->getCartItems() as $CartItem) {
-            $this->loadProductClassFromCartItem($CartItem);
-        }
+        // foreach ($this->cart->getCartItems() as $CartItem) {
+        //     $this->loadProductClassFromCartItem($CartItem);
+        // }
 
-        $softDeleteFilter->setExcludes($excludes);
+        // $softDeleteFilter->setExcludes($excludes);
     }
 
     /**
