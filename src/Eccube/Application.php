@@ -23,6 +23,7 @@
 
 namespace Eccube;
 
+use Binfo\Silex\MobileDetectServiceProvider;
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
@@ -142,6 +143,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new MobileDetectServiceProvider());
 
         $app = $this;
         $this->error(function (\Exception $e, $code) use ($app) {
