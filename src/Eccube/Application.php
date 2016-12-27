@@ -950,14 +950,6 @@ class Application extends ApplicationTrait
                 }
             }
         }
-
-        $driverChain = $this['orm.em']->getConfiguration()->getMetadataDriverImpl();
-        $drivers = $driverChain->getDrivers();
-        foreach ($drivers as $namespace => $driver) {
-            if ($driver instanceof \Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver) {
-                $driver->addExtendedEntity('Eccube\Entity\OrigProduct');
-            }
-        }
     }
 
     /**
