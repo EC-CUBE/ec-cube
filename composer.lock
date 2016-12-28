@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc362f4ce4a66cd4cf9a8d56065c86a5",
+    "content-hash": "2f90b55c580c261fbb771e01affa5329",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1459,6 +1459,328 @@
             "time": "2016-07-04T18:40:58+00:00"
         },
         {
+            "name": "sensio/framework-extra-bundle",
+            "version": "v3.0.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
+                "reference": "c38bc608e12e81089d5d9dfbf72775ed553c61af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/c38bc608e12e81089d5d9dfbf72775ed553c61af",
+                "reference": "c38bc608e12e81089d5d9dfbf72775ed553c61af",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "~2.2",
+                "symfony/dependency-injection": "~2.3|~3.0",
+                "symfony/framework-bundle": "~2.3|~3.0"
+            },
+            "require-dev": {
+                "symfony/asset": "~2.7|~3.0",
+                "symfony/browser-kit": "~2.3|~3.0",
+                "symfony/dom-crawler": "~2.3|~3.0",
+                "symfony/expression-language": "~2.4|~3.0",
+                "symfony/finder": "~2.3|~3.0",
+                "symfony/phpunit-bridge": "~3.2",
+                "symfony/psr-http-message-bridge": "^0.3",
+                "symfony/security-bundle": "~2.4|~3.0",
+                "symfony/templating": "~2.3|~3.0",
+                "symfony/translation": "~2.3|~3.0",
+                "symfony/twig-bundle": "~2.3|~3.0",
+                "symfony/yaml": "~2.3|~3.0",
+                "twig/twig": "~1.11|~2.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "suggest": {
+                "symfony/expression-language": "",
+                "symfony/psr-http-message-bridge": "To use the PSR-7 converters",
+                "symfony/security-bundle": ""
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sensio\\Bundle\\FrameworkExtraBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "This bundle provides a way to configure your controllers with annotations",
+            "keywords": [
+                "annotations",
+                "controllers"
+            ],
+            "time": "2016-12-14T08:30:06+00:00"
+        },
+        {
+            "name": "sergiors/annotations-service-provider",
+            "version": "1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sergiors/annotations-service-provider.git",
+                "reference": "bef1ff5be6f820f045c55ea1b36fef8ffd9f2d0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sergiors/annotations-service-provider/zipball/bef1ff5be6f820f045c55ea1b36fef8ffd9f2d0c",
+                "reference": "bef1ff5be6f820f045c55ea1b36fef8ffd9f2d0c",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "~1.2",
+                "sergiors/doctrine-cache-service-provider": "~1.0",
+                "silex/silex": "~1.3"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "~2.0",
+                "phing/phing": "~2.10",
+                "phploc/phploc": "~2.1",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": "~4.8",
+                "sebastian/phpcpd": "~2.0",
+                "squizlabs/php_codesniffer": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sergiors\\Silex\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sérgio Rafael Siqueira",
+                    "email": "sergio@inbep.com.br"
+                }
+            ],
+            "description": "Doctrine Annotations for Silex",
+            "time": "2016-02-24 23:58:58"
+        },
+        {
+            "name": "sergiors/doctrine-cache-service-provider",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sergiors/doctrine-cache-service-provider.git",
+                "reference": "3d6a25d5c0bb1cc062c246e94b2e6b931c1754d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sergiors/doctrine-cache-service-provider/zipball/3d6a25d5c0bb1cc062c246e94b2e6b931c1754d2",
+                "reference": "3d6a25d5c0bb1cc062c246e94b2e6b931c1754d2",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/cache": "~1.4",
+                "silex/silex": "~1.3"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "~2.0",
+                "phing/phing": "~2.10",
+                "phploc/phploc": "~2.1",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": "~4.8",
+                "sebastian/phpcpd": "~2.0",
+                "squizlabs/php_codesniffer": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sergiors\\Silex\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sérgio Rafael Siqueira",
+                    "email": "sergio@inbep.com.br"
+                }
+            ],
+            "description": "Doctrine Cache for Silex",
+            "time": "2016-01-28T01:44:26+00:00"
+        },
+        {
+            "name": "sergiors/routing-service-provider",
+            "version": "1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sergiors/routing-service-provider.git",
+                "reference": "77759dbb3d5070050dc438bd9560a36309a197e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sergiors/routing-service-provider/zipball/77759dbb3d5070050dc438bd9560a36309a197e6",
+                "reference": "77759dbb3d5070050dc438bd9560a36309a197e6",
+                "shasum": ""
+            },
+            "require": {
+                "silex/silex": "~1.3",
+                "symfony/config": "~2.8|~3.0",
+                "symfony/routing": "~2.8|~3.0"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "~2.0",
+                "phing/phing": "~2.10",
+                "phploc/phploc": "~2.1",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": "~4.8",
+                "sebastian/phpcpd": "~2.0",
+                "sergiors/config-service-provider": "~1.1",
+                "squizlabs/php_codesniffer": "~2.1",
+                "symfony/yaml": "~2.8|~3.0"
+            },
+            "suggest": {
+                "sergiors/config-service-provider": "For using placeholder in YAML files",
+                "symfony/yaml": "For using the YAML loader"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sergiors\\Silex\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sérgio Rafael Siqueira",
+                    "email": "sergio@inbep.com.br"
+                }
+            ],
+            "description": "Import your routes from YAML, PHP files or Directory.",
+            "time": "2016-01-28 02:37:19"
+        },
+        {
+            "name": "sergiors/sensio-framework-extra-service-provider",
+            "version": "1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sergiors/sensio-framework-extra-service-provider.git",
+                "reference": "ba8e3afa0243e88913266e45d11e2b1e96be3955"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sergiors/sensio-framework-extra-service-provider/zipball/ba8e3afa0243e88913266e45d11e2b1e96be3955",
+                "reference": "ba8e3afa0243e88913266e45d11e2b1e96be3955",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5",
+                "sensio/framework-extra-bundle": "^3.0",
+                "sergiors/annotations-service-provider": "1.x-dev",
+                "sergiors/routing-service-provider": "1.x-dev",
+                "sergiors/templating-service-provider": "~1",
+                "silex/silex": "^1.3",
+                "symfony/expression-language": "^2.7|~3.0"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "~2.0",
+                "phing/phing": "~2.10",
+                "phploc/phploc": "~2.1",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": "~4.8",
+                "sebastian/phpcpd": "~2.0",
+                "squizlabs/php_codesniffer": "~2.1",
+                "symfony/psr-http-message-bridge": "^0.2.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "suggest": {
+                "sergiors/doctrine-manager-registry-service-provider": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sergiors\\Silex\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sérgio Rafael Siqueira",
+                    "email": "sergio@inbep.com.br"
+                }
+            ],
+            "description": "SensioFrameworkExtraBundle for Silex",
+            "time": "2016-05-25 16:34:25"
+        },
+        {
+            "name": "sergiors/templating-service-provider",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sergiors/templating-service-provider.git",
+                "reference": "a6dc29f53e862bbd7abf2532d55de3932c9a8cfc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sergiors/templating-service-provider/zipball/a6dc29f53e862bbd7abf2532d55de3932c9a8cfc",
+                "reference": "a6dc29f53e862bbd7abf2532d55de3932c9a8cfc",
+                "shasum": ""
+            },
+            "require": {
+                "silex/silex": "~1.3",
+                "symfony/templating": "~2.7|~3.0"
+            },
+            "require-dev": {
+                "pdepend/pdepend": "~2.0",
+                "phing/phing": "~2.10",
+                "phploc/phploc": "~2.1",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": "~4.8",
+                "sebastian/phpcpd": "~2.0",
+                "squizlabs/php_codesniffer": "~2.1",
+                "symfony/twig-bridge": "~2.7|~3.0",
+                "twig/twig": "~1.22"
+            },
+            "suggest": {
+                "symfony/twig-bridge": "For using the Twig",
+                "twig/twig": "For using the Twig"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sergiors\\Silex\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sérgio Rafael Siqueira",
+                    "email": "sergio@inbep.com.br"
+                }
+            ],
+            "description": "Template engine implementation using PHP or Twig for Silex",
+            "time": "2016-01-28T03:33:52+00:00"
+        },
+        {
             "name": "silex/silex",
             "version": "v1.3.5",
             "source": {
@@ -1632,6 +1954,61 @@
                 "mailer"
             ],
             "time": "2016-11-24T01:01:23+00:00"
+        },
+        {
+            "name": "symfony/asset",
+            "version": "v2.8.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/asset.git",
+                "reference": "df2cb3686ae534e3f8775fdd0274b9bbff8bb83c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/asset/zipball/df2cb3686ae534e3f8775fdd0274b9bbff8bb83c",
+                "reference": "df2cb3686ae534e3f8775fdd0274b9bbff8bb83c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "symfony/http-foundation": "~2.4"
+            },
+            "suggest": {
+                "symfony/http-foundation": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Asset\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Asset Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-09-24T15:56:40+00:00"
         },
         {
             "name": "symfony/class-loader",
@@ -1975,6 +2352,69 @@
             "time": "2016-08-23T13:37:31+00:00"
         },
         {
+            "name": "symfony/dependency-injection",
+            "version": "v2.8.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dependency-injection.git",
+                "reference": "51a7b5385fb0f42e5edbdb2cfbad1a011ecdaee7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/51a7b5385fb0f42e5edbdb2cfbad1a011ecdaee7",
+                "reference": "51a7b5385fb0f42e5edbdb2cfbad1a011ecdaee7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "conflict": {
+                "symfony/expression-language": "<2.6"
+            },
+            "require-dev": {
+                "symfony/config": "~2.2|~3.0.0",
+                "symfony/expression-language": "~2.6|~3.0.0",
+                "symfony/yaml": "~2.3.42|~2.7.14|~2.8.7|~3.0.7"
+            },
+            "suggest": {
+                "symfony/config": "",
+                "symfony/expression-language": "For using expressions in service container configuration",
+                "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\DependencyInjection\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony DependencyInjection Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-12-08T14:41:31+00:00"
+        },
+        {
             "name": "symfony/doctrine-bridge",
             "version": "v2.8.15",
             "source": {
@@ -2165,6 +2605,55 @@
             "time": "2016-10-13T01:43:15+00:00"
         },
         {
+            "name": "symfony/expression-language",
+            "version": "v2.8.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/expression-language.git",
+                "reference": "2b667229749832a918e4b1d22e185f4ed98b63ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/2b667229749832a918e4b1d22e185f4ed98b63ac",
+                "reference": "2b667229749832a918e4b1d22e185f4ed98b63ac",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\ExpressionLanguage\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony ExpressionLanguage Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-11-03T07:52:58+00:00"
+        },
+        {
             "name": "symfony/filesystem",
             "version": "v2.8.15",
             "source": {
@@ -2335,6 +2824,98 @@
             "description": "Symfony Form Component",
             "homepage": "https://symfony.com",
             "time": "2016-12-06T14:06:08+00:00"
+        },
+        {
+            "name": "symfony/framework-bundle",
+            "version": "v2.8.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/framework-bundle.git",
+                "reference": "e9af03ff66fbcd6fccd77e8cc6fa01547ecbef61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/framework-bundle/zipball/e9af03ff66fbcd6fccd77e8cc6fa01547ecbef61",
+                "reference": "e9af03ff66fbcd6fccd77e8cc6fa01547ecbef61",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "~1.0",
+                "doctrine/cache": "~1.0",
+                "php": ">=5.3.9",
+                "symfony/asset": "~2.7|~3.0.0",
+                "symfony/class-loader": "~2.1|~3.0.0",
+                "symfony/config": "~2.8",
+                "symfony/dependency-injection": "~2.8",
+                "symfony/event-dispatcher": "~2.8|~3.0.0",
+                "symfony/filesystem": "~2.3|~3.0.0",
+                "symfony/finder": "~2.0,>=2.0.5|~3.0.0",
+                "symfony/http-foundation": "~2.7",
+                "symfony/http-kernel": "~2.8.8",
+                "symfony/polyfill-mbstring": "~1.0",
+                "symfony/routing": "~2.8|~3.0.0",
+                "symfony/security-core": "~2.6.13|~2.7.9|~2.8|~3.0.0",
+                "symfony/security-csrf": "~2.6|~3.0.0",
+                "symfony/stopwatch": "~2.3|~3.0.0",
+                "symfony/templating": "~2.1|~3.0.0",
+                "symfony/translation": "~2.8"
+            },
+            "require-dev": {
+                "phpdocumentor/reflection": "^1.0.7",
+                "symfony/browser-kit": "~2.4|~3.0.0",
+                "symfony/console": "~2.8.8|~3.0.8",
+                "symfony/css-selector": "~2.0,>=2.0.5|~3.0.0",
+                "symfony/dom-crawler": "~2.0,>=2.0.5|~3.0.0",
+                "symfony/expression-language": "~2.6|~3.0.0",
+                "symfony/form": "^2.8.4",
+                "symfony/polyfill-intl-icu": "~1.0",
+                "symfony/process": "~2.0,>=2.0.5|~3.0.0",
+                "symfony/property-info": "~2.8|~3.0.0",
+                "symfony/security": "~2.6|~3.0.0",
+                "symfony/validator": "~2.5|~3.0.0",
+                "symfony/yaml": "~2.0,>=2.0.5|~3.0.0",
+                "twig/twig": "~1.23|~2.0"
+            },
+            "suggest": {
+                "symfony/console": "For using the console commands",
+                "symfony/form": "For using forms",
+                "symfony/process": "For using the server:run, server:start, server:stop, and server:status commands",
+                "symfony/property-info": "For using the property_info service",
+                "symfony/serializer": "For using the serializer service",
+                "symfony/validator": "For using validation",
+                "symfony/yaml": "For using the debug:config and lint:yaml commands"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Bundle\\FrameworkBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony FrameworkBundle",
+            "homepage": "https://symfony.com",
+            "time": "2016-12-13T09:38:12+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -3554,6 +4135,61 @@
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
             "time": "2016-06-29T05:29:29+00:00"
+        },
+        {
+            "name": "symfony/templating",
+            "version": "v2.8.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/templating.git",
+                "reference": "3cb06c69801f450803b67095b1d8aeff110b5815"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/templating/zipball/3cb06c69801f450803b67095b1d8aeff110b5815",
+                "reference": "3cb06c69801f450803b67095b1d8aeff110b5815",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "psr/log": "~1.0"
+            },
+            "suggest": {
+                "psr/log": "For using debug logging in loaders"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Templating\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Templating Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-09-06T10:55:00+00:00"
         },
         {
             "name": "symfony/translation",
@@ -5284,7 +5920,10 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/migrations": 20
+        "doctrine/migrations": 20,
+        "sergiors/routing-service-provider": 20,
+        "sergiors/annotations-service-provider": 20,
+        "sergiors/sensio-framework-extra-service-provider": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -5294,6 +5933,6 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "5.3.9"
+        "php": "5.5"
     }
 }

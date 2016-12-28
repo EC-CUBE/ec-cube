@@ -16,6 +16,7 @@ $autoload = __DIR__.'/vendor/autoload.php';
 
 if (file_exists($autoload) && is_readable($autoload)) {
     $loader = require $autoload;
+    \Doctrine\Common\Annotations\Annotationregistry::registerLoader([$loader, 'loadClass']);
 } else {
     die('Composer is not installed.');
 }

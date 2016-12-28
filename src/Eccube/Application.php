@@ -36,6 +36,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
+use Sergiors\Silex\Provider\RoutingServiceProvider;
+use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
+use Sergiors\Silex\Provider\AnnotationsServiceProvider;
+use Sergiors\Silex\Provider\TemplatingServiceProvider;
+use Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider;
 
 class Application extends ApplicationTrait
 {
@@ -182,6 +187,28 @@ class Application extends ApplicationTrait
         // init security
         $this->initSecurity();
 
+        $this['annotations.options'] = [
+            'cache_driver' => 'filesystem',
+            'cache_dir' => $this['config']['root_dir'].'/app/cache/annotations',
+        ];
+
+        $this->register(new \Sergiors\Silex\Provider\RoutingServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider(),
+        [
+            'cache.options' => [
+                'driver' => 'filesystem',
+                'cache_dir' => $this['config']['root_dir'].'/app/cache/annotations'
+            ],
+        ]);
+        $this->register(new \Sergiors\Silex\Provider\TemplatingServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider(),
+        [
+            'request' => [
+                'auto_convert' => true
+            ]
+        ]);
+
         // init ec-cube service provider
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
@@ -190,14 +217,10 @@ class Application extends ApplicationTrait
         $this->mount('', new ControllerProvider\FrontControllerProvider());
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
-
-        // $this->register(new \DDesrosiers\SilexAnnotations\AnnotationServiceProvider(), array(
-        //     // "annot.cache" => new ApcCache(),
-        //     "annot.controllerDir" => __DIR__.'/../../app/Eccube/Controller',
-        //     "annot.controllerNamespace" => "Eccube2\\Controller\\"
-        // ));
-
-        // add transaction listener
+        $this['annotations.debug'] = true;
+        $this['routes'] = $this->share($this->extend('routes', function ($routes, \Silex\Application $app ) {
+                return $this['sensio_framework_extra.routing.loader.annot_dir']->load($this['config']['root_dir'].'/app/Eccube');
+        }));
         $this['dispatcher']->addSubscriber(new TransactionListener($this));
 
         // init http cache

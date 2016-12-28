@@ -93,7 +93,7 @@
     },
     "config": {
         "platform": {
-            "php": "7"
+            "php": "5.5"
         }
     }
 }
