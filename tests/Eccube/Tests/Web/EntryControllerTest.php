@@ -223,27 +223,33 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithNotFound()
     {
-        try {
-            $client = $this->createClient();
-            $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => 'aaaaa')));
-            $this->fail();
-        } catch (HttpException\NotFoundHttpException $e) {
-            $this->expected = '※ 既に会員登録が完了しているか、無効なURLです。';
-            $this->actual = $e->getMessage();
+        // debugはONの時に404ページ表示しない例外になります。
+        if($this->app['debug'] == true){
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
-        $this->verify();
+        $client = $this->createClient();
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => 'aaaaa')));
+        // debugはOFFの時に404ページが表示します。
+        if($this->app['debug'] == false){
+            $this->expected = 404;
+            $this->actual = $client->getResponse()->getStatusCode();
+            $this->verify();
+        }
     }
 
     public function testActivateWithAbort()
     {
-        try {
-            $client = $this->createClient();
-            $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => '+++++++')));
-            $this->fail();
-        } catch (HttpException\AccessDeniedHttpException $e) {
-            $this->expected = '不正なアクセスです。';
-            $this->actual = $e->getMessage();
+        // debugはONの時に403ページ表示しない例外になります。
+        if($this->app['debug'] == true){
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
         }
-        $this->verify();
+        $client = $this->createClient();
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => '+++++++')));
+        // debugはOFFの時に403ページが表示します。
+        if($this->app['debug'] == false){
+            $this->expected = 403;
+            $this->actual = $client->getResponse()->getStatusCode();
+            $this->verify();
+        }
     }
 }

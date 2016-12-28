@@ -128,7 +128,8 @@ class BlockController extends AbstractController
                     }
                 }
 
-                \Eccube\Util\Cache::clear($app, false);
+                //twigテンプレートのみ削除
+                \Eccube\Util\Cache::clear($app, false, true);
 
                 $event = new EventArgs(
                     array(
@@ -191,7 +192,8 @@ class BlockController extends AbstractController
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_BLOCK_DELETE_COMPLETE, $event);
 
             $app->addSuccess('admin.delete.complete', 'admin');
-            \Eccube\Util\Cache::clear($app, false);
+            //twigテンプレートのみ削除
+            \Eccube\Util\Cache::clear($app, false, true);
         }
 
 

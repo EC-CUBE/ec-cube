@@ -245,9 +245,12 @@ class Generator {
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param integer $product_class_num 商品規格の生成数
+     * @param string $image_type 生成する画像タイプ.
+     *        abstract, animals, business, cats, city, food, night, life, fashion, people, nature, sports, technics, transport から選択可能
+     *        null の場合は、画像を生成せずにファイル名のみを設定する.
      * @return \Eccube\Entity\Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3)
+    public function createProduct($product_name = null, $product_class_num = 3, $image_type = null)
     {
         $faker = $this->getFaker();
         $Member = $this->app['eccube.repository.member']->find(2);
@@ -272,9 +275,18 @@ class Generator {
 
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
+            if ($image_type) {
+                $image = $faker->image(
+                    __DIR__.'/../../../../html/upload/save_image',
+                    $faker->numberBetween(480, 640),
+                    $faker->numberBetween(480, 640),
+                    $image_type, false);
+            } else {
+                $image = $faker->word.'.jpg';
+            }
             $ProductImage
                 ->setCreator($Member)
-                ->setFileName($faker->word.'.jpg')
+                ->setFileName($image)
                 ->setRank($i)
                 ->setProduct($Product);
             $this->app['orm.em']->persist($ProductImage);

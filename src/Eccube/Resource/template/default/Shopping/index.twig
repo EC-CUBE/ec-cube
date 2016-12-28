@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 $(function() {
 
     $('.delivery').on('change', function() {
+<<<<<<< HEAD
         $('#shopping_order_mode').val('delivery');
         $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
     });
@@ -33,6 +34,15 @@ $(function() {
     $('.payment').on('change', function() {
         $('#shopping_order_mode').val('payment');
         $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+=======
+        $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
+        return false;
+    });
+
+    $('.payment').on('change', function() {
+        $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
+        return false;
+>>>>>>> symfony2.8
     });
 
     $('.btn-shipping').click(function() {

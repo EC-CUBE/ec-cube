@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Controller\Install;
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
@@ -40,21 +40,17 @@ use Symfony\Component\Yaml\Yaml;
 
 class InstallController
 {
+
+    const MCRYPT = 'mcrypt';
+
     private $app;
-
     private $PDO;
-
     private $config_path;
-
     private $dist_path;
-
     private $cache_path;
-
     private $session_data;
-
     private $required_modules = array('pdo', 'phar', 'mbstring', 'zlib', 'ctype', 'session', 'JSON', 'xml', 'libxml', 'OpenSSL', 'zip', 'cURL', 'fileinfo');
-
-    private $recommended_module = array('hash', 'mcrypt');
+    private $recommended_module = array('hash', self::MCRYPT);
 
     const SESSION_KEY = 'eccube.session.install';
 
@@ -111,8 +107,8 @@ class InstallController
         $this->checkModules($app);
 
         return $app['twig']->render('step1.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -134,8 +130,8 @@ class InstallController
         }
 
         return $app['twig']->render('step2.twig', array(
-            'protectedDirs' => $protectedDirs,
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'protectedDirs' => $protectedDirs,
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -174,7 +170,7 @@ class InstallController
                 if (count($allowHost) > 0) {
                     $sessionData['admin_allow_hosts'] = Str::convertLineFeed(implode("\n", $allowHost));
                 }
-                $sessionData['admin_force_ssl'] = (bool)$config['force_ssl'];
+                $sessionData['admin_force_ssl'] = (bool) $config['force_ssl'];
 
                 // メール設定
                 $config_file = $this->config_path . '/mail.yml';
@@ -199,8 +195,8 @@ class InstallController
         }
 
         return $app['twig']->render('step3.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -215,12 +211,11 @@ class InstallController
 
         if (empty($sessionData['database'])) {
 
-            $config_file = $this->config_path.'/database.yml';
+            $config_file = $this->config_path . '/database.yml';
             $fs = new Filesystem();
 
             if ($fs->exists($config_file)) {
                 // すでに登録されていた場合、登録データを表示
-
                 // データベース設定
                 $config = Yaml::parse(file_get_contents($config_file));
                 $database = $config['database'];
@@ -243,8 +238,8 @@ class InstallController
         }
 
         return $app['twig']->render('step4.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -283,7 +278,6 @@ class InstallController
                 $this
                     ->setPDO()
                     ->update();
-
             }
 
 
@@ -305,8 +299,8 @@ class InstallController
         }
 
         return $app['twig']->render('step5.twig', array(
-            'form' => $form->createView(),
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'form' => $form->createView(),
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -322,8 +316,8 @@ class InstallController
         $adminUrl = $host . $basePath . '/' . $config['admin_dir'];
 
         return $app['twig']->render('complete.twig', array(
-            'admin_url' => $adminUrl,
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'admin_url' => $adminUrl,
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -334,7 +328,6 @@ class InstallController
         ob_flush();
         flush();
     }
-
 
     private function checkModules($app)
     {
@@ -350,6 +343,11 @@ class InstallController
 
         foreach ($this->recommended_module as $module) {
             if (!extension_loaded($module)) {
+                if ($module == self::MCRYPT && PHP_VERSION_ID >= 70100) {
+                    //The mcrypt extension has been deprecated in PHP 7.1.x 
+                    //http://php.net/manual/en/migration71.deprecated.php
+                    continue;
+                }
                 $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
             }
         }
@@ -385,7 +383,6 @@ class InstallController
         try {
             $this->PDO = \Doctrine\DBAL\DriverManager::getConnection($config['database'], new \Doctrine\DBAL\Configuration());
             $this->PDO->connect();
-
         } catch (\Exception $e) {
             $this->PDO->close();
             throw $e;
@@ -433,7 +430,6 @@ class InstallController
                             __DIR__ . '/../../Resource/doctrine/master',
                         ),
                     ),
-
                 ),
             )
         ));
@@ -548,7 +544,6 @@ class InstallController
                 // 同一の管理者IDであればパスワードのみ更新
                 $sth = $this->PDO->prepare("UPDATE dtb_member set password = :admin_pass, salt = :salt, update_date = current_timestamp WHERE login_id = :login_id;");
                 $sth->execute(array(':admin_pass' => $encodedPassword, ':salt' => $salt, ':login_id' => $this->session_data['login_id']));
-
             } else {
                 // 新しい管理者IDが入力されたらinsert
                 $sth = $this->PDO->prepare("INSERT INTO dtb_member (login_id, password, salt, work, del_flg, authority, creator_id, rank, update_date, create_date,name,department) VALUES (:login_id, :admin_pass , :salt , '1', '0', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP');");
@@ -576,7 +571,6 @@ class InstallController
 
         return $this;
     }
-
 
     private function getMigration()
     {
@@ -610,6 +604,7 @@ class InstallController
             // nullを渡すと最新バージョンまでマイグレートする
             $migration->migrate(null, false);
         } catch (MigrationException $e) {
+            
         }
 
         return $this;
@@ -671,9 +666,7 @@ class InstallController
 
         $fs = new Filesystem();
         $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/config.yml.dist')
+            $target, $replace, file_get_contents($this->dist_path . '/config.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -705,7 +698,8 @@ class InstallController
         }
 
         if ($data['database'] != 'pdo_sqlite') {
-            switch ($data['database']) {
+            switch ($data['database'])
+            {
                 case 'pdo_pgsql':
                     if (empty($data['db_port'])) {
                         $data['db_port'] = '5432';
@@ -731,19 +725,16 @@ class InstallController
 
             $fs = new Filesystem();
             $content = str_replace(
-                $target,
-                $replace,
-                file_get_contents($this->dist_path . '/database.yml.dist')
+                $target, $replace, file_get_contents($this->dist_path . '/database.yml.dist')
             );
-
         } else {
             $content = Yaml::dump(
-                array(
-                    'database' => array(
-                        'driver' => 'pdo_sqlite',
-                        'path' => realpath($this->config_path.'/eccube.db')
+                    array(
+                        'database' => array(
+                            'driver' => 'pdo_sqlite',
+                            'path' => realpath($this->config_path . '/eccube.db')
+                        )
                     )
-                )
             );
         }
         $fs->dumpFile($config_file, $content);
@@ -769,9 +760,7 @@ class InstallController
 
         $fs = new Filesystem();
         $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/mail.yml.dist')
+            $target, $replace, file_get_contents($this->dist_path . '/mail.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -798,9 +787,7 @@ class InstallController
 
         $fs = new Filesystem();
         $content = str_replace(
-            $target,
-            $replace,
-            file_get_contents($this->dist_path . '/path.yml.dist')
+            $target, $replace, file_get_contents($this->dist_path . '/path.yml.dist')
         );
         $fs->dumpFile($config_file, $content);
 
@@ -855,7 +842,6 @@ class InstallController
         return $this;
     }
 
-
     /**
      * マイグレーション画面を表示する.
      *
@@ -867,7 +853,7 @@ class InstallController
     public function migration(InstallApplication $app, Request $request)
     {
         return $app['twig']->render('migration.twig', array(
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 
@@ -894,9 +880,9 @@ class InstallController
             return $app->redirect($app->url('migration_end'));
         } else {
             return $app['twig']->render('migration_plugin.twig', array(
-                'Plugins' => $Plugins,
-                'version' => Constant::VERSION,
-                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                    'Plugins' => $Plugins,
+                    'version' => Constant::VERSION,
+                    'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
             ));
         }
     }
@@ -919,7 +905,7 @@ class InstallController
         \Eccube\Util\Cache::clear($config_app, true);
 
         return $app['twig']->render('migration_end.twig', array(
-            'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
+                'publicPath' => '..' . RELATIVE_PUBLIC_DIR_PATH . '/',
         ));
     }
 }

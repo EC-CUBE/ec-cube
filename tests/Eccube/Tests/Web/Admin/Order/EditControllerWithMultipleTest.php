@@ -401,7 +401,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                 'Product' => $ProductClass->getProduct()->getId(),
                 'ProductClass' => $ProductClass->getId(),
                 'price' => $ProductClass->getPrice02(),
-                'quantity' => $faker->randomNumber(2),
+                'quantity' => $faker->numberBetween(1, 9),
                 'product_name' => $ProductClass->getProduct()->getName(),
                 'product_code' => $ProductClass->getCode(),
             );
