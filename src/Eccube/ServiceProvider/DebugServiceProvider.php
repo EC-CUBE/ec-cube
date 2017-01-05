@@ -123,8 +123,15 @@ class DebugServiceProvider implements ServiceProviderInterface
         // configuration for CLI mode is overridden in HTTP mode on
         // 'kernel.request' event
         VarDumper::setHandler(function ($var) use ($app) {
-            $dumper = new CliDumper();
-            $dumper->dump($app['var_dumper.cloner']->cloneVar($var));
+            $dumper = $app['data_collector.dump'];
+            $cloner = $app['var_dumper.cloner'];
+
+            $handler = function ($var) use ($dumper, $cloner) {
+                $dumper->dump($cloner->cloneVar($var));
+            };
+
+            VarDumper::setHandler($handler);
+            $handler($var);
         });
 
         $app['dispatcher']->addSubscriber(new DumpListener($app['var_dumper.cloner'], $app['data_collector.dump']));
