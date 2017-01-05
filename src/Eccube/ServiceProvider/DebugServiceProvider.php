@@ -36,6 +36,7 @@ use Symfony\Component\HttpKernel\DataCollector\DumpDataCollector;
 use Symfony\Component\HttpKernel\EventListener\DumpListener;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\VarDumper;
 
 
@@ -90,7 +91,7 @@ class DebugServiceProvider implements ServiceProviderInterface, BootableProvider
         });
 
         $app['data_collector.dump'] = function ($app) {
-            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format']);
+            return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format'], null, null, new HtmlDumper());
         };
 
         $app->extend('data_collectors', function ($collectors, $app) {
