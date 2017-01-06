@@ -218,9 +218,11 @@ class Application extends ApplicationTrait
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
         $this['annotations.debug'] = true;
-        $this['routes'] = $this->share($this->extend('routes', function ($routes, \Silex\Application $app ) {
+        if (php_sapi_name() !== 'cli') {
+            $this['routes'] = $this->share($this->extend('routes', function ($routes, \Silex\Application $app ) {
                 return $this['sensio_framework_extra.routing.loader.annot_dir']->load($this['config']['root_dir'].'/app/Eccube');
-        }));
+            }));
+        }
         $this['dispatcher']->addSubscriber(new TransactionListener($this));
 
         // init http cache
@@ -462,6 +464,17 @@ class Application extends ApplicationTrait
                 __DIR__.'/Resource/doctrine/master',
             ),
         );
+        // ここを有効にすると本体の Entity でもアノテーションが使える
+        // が、 Yaml との共存はできない模様...
+        // $ormMappings[] = array(
+        //     'type' => 'annotation',
+        //     'namespace' => 'Eccube\Entity',
+        //     'path' => array(
+        //         __DIR__.'/Entity',
+        //         __DIR__.'/Entity/master',
+        //     ),
+        //     'use_simple_annotation_reader' => false,
+        // );
 
         foreach ($pluginConfigs as $code) {
             $config = $code['config'];
@@ -475,6 +488,12 @@ class Application extends ApplicationTrait
                     'type' => 'yml',
                     'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
                     'path' => $paths,
+                );
+                $ormMappings[] = array(
+                    'type' => 'annotation',
+                    'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                    'path' => $paths,
+                    'use_simple_annotation_reader' => false,
                 );
             }
         }
@@ -524,10 +543,12 @@ class Application extends ApplicationTrait
         // $ormMappingsの1要素ごとにDriverが生成されている.
         $drivers = $chain->getDrivers();
         foreach ($drivers as $namespace => $oldDriver) {
-            /** @var $newDriver \Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver */
-            $newDriver = new YamlDriver($oldDriver->getLocator());
-            // 修正したDriverに差し替える. メソッド名はaddだけど実際はsetしてる.
-            $chain->addDriver($newDriver, $namespace);
+            if (method_exists($oldDriver, 'getLocator')) {
+                /** @var $newDriver \Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver */
+                $newDriver = new YamlDriver($oldDriver->getLocator());
+                // 修正したDriverに差し替える. メソッド名はaddだけど実際はsetしてる.
+                $chain->addDriver($newDriver, $namespace);
+            }
         }
     }
 

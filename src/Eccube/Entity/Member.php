@@ -27,9 +27,14 @@ namespace Eccube\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
 
 /**
- * Member
+ * member
+ * @Entity
  */
 class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
 {
@@ -73,6 +78,8 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     }
 
     /**
+     * @Id
+     * @Column(name="member_id")
      * @var integer
      */
     private $id;
