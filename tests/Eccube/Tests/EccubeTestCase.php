@@ -425,7 +425,7 @@ abstract class EccubeTestCase extends WebTestCase
         $app = new Application();
         $app['debug'] = true;
         $app->initialize();
-        $app->initPluginEventDispatcher();
+        $app->initializePlugin();
         $app['session.test'] = true;
         $app['exception_handler']->disable();
 
