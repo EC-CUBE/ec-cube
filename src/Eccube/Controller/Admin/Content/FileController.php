@@ -67,15 +67,17 @@ class FileController extends AbstractController
         $isTopDir = ($topDir === $nowDir);
         $parentDir = substr($nowDir, 0, strrpos($nowDir, '/'));
 
-        switch ($request->get('mode')) {
-            case 'create':
-                $this->create($app, $request);
-                break;
-            case 'upload':
-                $this->upload($app, $request);
-                break;
-            default:
-                break;
+        if ('POST' === $request->getMethod()) {
+            switch ($request->get('mode')) {
+                case 'create':
+                    $this->create($app, $request);
+                    break;
+                case 'upload':
+                    $this->upload($app, $request);
+                    break;
+                default:
+                    break;
+            }
         }
 
         $tree = $this->getTree($topDir, $request);
