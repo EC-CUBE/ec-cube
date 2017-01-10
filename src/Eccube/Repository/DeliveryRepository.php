@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -34,35 +34,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class DeliveryRepository extends EntityRepository
 {
-    public function findOrCreate($id)
+
+    public function findOrCreate($id, $Creator = null, $ProductType = null)
     {
         if ($id == 0) {
             $em = $this->getEntityManager();
-            $Creator = $em
-                ->getRepository('\Eccube\Entity\Member')
-                ->find(2);
-            $ProductType = $em
-                ->getRepository('\Eccube\Entity\Master\ProductType')
-                ->find(1);
 
-            $Delivery = $this->findOneBy(array(), array('rank' => 'DESC'));
-
-            $rank = 1;
-            if ($Delivery) {
-                $rank = $Delivery->getRank() + 1;
+            if ($Creator == null) {
+                $Creator = $em->getRepository('\Eccube\Entity\Member')->findOneBy(array(), array('rank' => 'DESC'));
             }
 
-            $Delivery = new \Eccube\Entity\Delivery();
-            $Delivery
-                ->setRank($rank)
-                ->setDelFlg(0)
-                ->setCreator($Creator)
-                ->setProductType($ProductType);
+            if ($ProductType == null) {
+                $ProductType = $em->getRepository('\Eccube\Entity\Master\ProductType')->findOneBy(array(), array('rank' => 'DESC'));
+            }
 
+            $Delivery = $this->createDelivery($Creator, $ProductType);
         } else {
             $Delivery = $this->find($id);
-
         }
+
+        return $Delivery;
+    }
+
+    /**
+     * create Delivery
+     * @param \Eccube\Entity\Member $Creator
+     * @param \Eccube\Entity\Master\ProductType $ProductType
+     * @return \Eccube\Entity\Delivery
+     */
+    private function createDelivery($Creator, $ProductType)
+    {
+        $DeliveryOld = $this->findOneBy(array(), array('rank' => 'DESC'));
+
+        $rank = 1;
+        if ($DeliveryOld) {
+            $rank = $DeliveryOld->getRank() + 1;
+        }
+
+        $Delivery = new \Eccube\Entity\Delivery();
+        $Delivery
+            ->setRank($rank)
+            ->setDelFlg(0)
+            ->setCreator($Creator)
+            ->setProductType($ProductType);
 
         return $Delivery;
     }
@@ -83,7 +97,6 @@ class DeliveryRepository extends EntityRepository
             ->getResult();
 
         return $deliveries;
-
     }
 
     /**
@@ -109,10 +122,8 @@ class DeliveryRepository extends EntityRepository
                     }
                 }
             }
-
         }
 
         return array_values($arr);
-
     }
 }

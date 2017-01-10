@@ -59,8 +59,13 @@ class PaymentController extends AbstractController
 
     public function edit(Application $app, Request $request, $id = null)
     {
+        $Creator = null;
+        if ($id == 0 && $app['security']->getToken() && $app['security']->isGranted('ROLE_ADMIN')) {
+            $Creator = $app['security']->getToken()->getUser();
+        }
+
         $Payment = $app['eccube.repository.payment']
-            ->findOrCreate($id);
+            ->findOrCreate($id, $Creator);
 
         $builder = $app['form.factory']
             ->createBuilder('payment_register');

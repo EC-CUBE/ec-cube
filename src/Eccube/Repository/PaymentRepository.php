@@ -35,33 +35,43 @@ use Doctrine\ORM\Query;
  */
 class PaymentRepository extends EntityRepository
 {
-    public function findOrCreate($id)
+    public function findOrCreate($id, $Creator = null)
     {
         if ($id == 0) {
-            $Creator = $this
-                ->getEntityManager()
-                ->getRepository('\Eccube\Entity\Member')
-                ->find(2);
-
-            $Payment = $this->findOneBy(array(), array('rank' => 'DESC'));
-
-            $rank = 1;
-            if ($Payment) {
-                $rank = $Payment->getRank() + 1;
+            $em = $this->getEntityManager();
+            if ($Creator == null) {
+                $Creator = $em->getRepository('\Eccube\Entity\Member')->findOneBy(array(), array('rank' => 'DESC'));
             }
 
-            $Payment = new \Eccube\Entity\Payment();
-            $Payment
-                ->setRank($rank)
-                ->setDelFlg(0)
-                ->setFixFlg(1)
-                ->setChargeFlg(1)
-                ->setCreator($Creator);
-
+            $Payment = $this->createPayment($Creator);
         } else {
             $Payment = $this->find($id);
-
         }
+
+        return $Payment;
+    }
+
+    /**
+     * create Payment
+     * @param \Eccube\Entity\Member $Creator
+     * @return \Eccube\Entity\Payment
+     */
+    private function createPayment($Creator)
+    {
+        $PaymentOld = $this->findOneBy(array(), array('rank' => 'DESC'));
+
+        $rank = 1;
+        if ($PaymentOld) {
+            $rank = $PaymentOld->getRank() + 1;
+        }
+
+        $Payment = new \Eccube\Entity\Payment();
+        $Payment
+            ->setRank($rank)
+            ->setDelFlg(0)
+            ->setFixFlg(1)
+            ->setChargeFlg(1)
+            ->setCreator($Creator);
 
         return $Payment;
     }
