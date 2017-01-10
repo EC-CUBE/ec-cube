@@ -295,7 +295,7 @@ class AdminController extends AbstractController
 
         return $qb
             ->where($qb->expr()->notIn('os.id', $excludes))
-            ->orderBy('os.rank', 'DESC')
+            ->orderBy('os.rank', 'ASC')
             ->getQuery()
             ->getResult();
     }
