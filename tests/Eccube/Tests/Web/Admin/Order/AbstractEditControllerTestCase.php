@@ -38,7 +38,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'Product' => $Product->getId(),
                 'ProductClass' => $ProductClasses[0]->getId(),
                 'price' => $ProductClasses[0]->getPrice02(),
-                'quantity' => $faker->randomNumber(2),
+                'quantity' => $faker->numberBetween(1, 999),
                 'tax_rate' => 8, // XXX ハードコーディング
                 'tax_rule' => 1,
                 'product_name' => $Product->getName(),
