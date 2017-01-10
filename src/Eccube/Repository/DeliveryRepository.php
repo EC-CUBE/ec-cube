@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +20,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -34,7 +32,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class DeliveryRepository extends EntityRepository
 {
-
     public function findOrCreate($id, $Creator = null, $ProductType = null)
     {
         if ($id == 0) {
@@ -97,6 +94,7 @@ class DeliveryRepository extends EntityRepository
             ->getResult();
 
         return $deliveries;
+
     }
 
     /**
@@ -125,5 +123,6 @@ class DeliveryRepository extends EntityRepository
         }
 
         return array_values($arr);
+
     }
 }
