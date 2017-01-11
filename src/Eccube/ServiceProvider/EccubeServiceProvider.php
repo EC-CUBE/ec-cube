@@ -375,6 +375,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
             $types[] = new \Eccube\Form\Type\Admin\CacheType($app['config']);
 
             $types[] = new \Eccube\Form\Type\Admin\MasterdataType($app);
+            $types[] = new \Eccube\Form\Type\Admin\MasterdataDataType($app);
             $types[] = new \Eccube\Form\Type\Admin\MasterdataEditType($app);
 
             $types[] = new \Eccube\Form\Type\Admin\PluginLocalInstallType();

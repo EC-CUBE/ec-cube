@@ -80,18 +80,6 @@ $(function() {
     })($, formPropStateSubscriber);
 });
 </script>
-<script>
-    function fnConfirm(action) {
-        document.search_form.action = action;
-        document.search_form.submit();
-    }
-    function fnCopy(action) {
-        if (confirm('この商品情報を複製しても宜しいですか？')) {
-            document.search_form.action = action;
-            document.search_form.submit();
-        }
-    }
-</script>
 {% endblock javascript %}
 
 {% block main %}

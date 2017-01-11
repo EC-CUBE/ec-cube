@@ -27,10 +27,12 @@ $(function() {
 
     $('.delivery').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
+        return false;
     });
 
     $('.payment').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
+        return false;
     });
 
     $('.btn-shipping').click(function() {

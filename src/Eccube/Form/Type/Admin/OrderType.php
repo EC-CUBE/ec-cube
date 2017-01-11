@@ -216,13 +216,13 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('OrderDetails', 'collection', array(
-                'type' => new OrderDetailType($app),
+                'type' => 'order_detail',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
             ->add('Shippings', 'collection', array(
-                'type' => new ShippingType($app),
+                'type' => 'shipping',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

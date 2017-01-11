@@ -9,6 +9,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 {
     protected $Products;
     protected $filepath;
+    
+    private $categoriesIdList = array();
 
     public function setUp()
     {
@@ -110,6 +112,34 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Products);
         $this->verify();
 
+        // ProductCategoryTest
+        //カテゴリーIDs
+        foreach($csv as $csvRow){
+            $csvCat[md5($csvRow[2])] = $csvRow[10];
+        }
+        foreach ($Products as $Product){
+            $nameHash = md5($Product->getName());
+            if(!isset($csvCat[$nameHash])){
+                continue;
+            }
+            // expected categories is
+            $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
+            $actualIds = array();
+            /* @var $Product \Eccube\Entity\Product */
+            foreach ($Product->getProductCategories() as $ProductCategory){
+                /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+                $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
+                $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
+                $this->actual = $ProductCategory->getCategoryId();
+                $this->verify();
+            }
+            foreach($expectedIds as $catId){
+                $this->expected = $catId;
+                $this->actual = $actualIds[$catId];
+                $this->verify();
+            }
+        }
+
         $this->assertRegexp('/商品登録CSVファイルをアップロードしました。/u',
             $crawler->filter('div.alert-success')->text());
 
@@ -167,6 +197,26 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             foreach ($ProductClasses as $ProductClass) {
                 if (preg_match('/fork-0[0-9]-new/', $ProductClass->getCode())) {
                     $new_count++;
+                }
+            }
+            
+            // categories
+            $dateTimeNow = new \DateTime('-20 minutes');
+            // check only new records
+            if($Product->getUpdateDate() > $dateTimeNow){
+                $expectedCategoryIds = array();
+                $actualCategoryIds = array();
+                foreach ($Product->getProductCategories() as $ProductCategory){
+                    $expectedCategoryIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
+                    $actualCategoryIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
+                    foreach($this->getParentsCategoriesId($ProductCategory->getCategoryId()) as $catId){
+                        $expectedCategoryIds[$catId] = $catId;
+                    }
+                }
+                foreach ($expectedCategoryIds as $catId){
+                    $this->expected = $catId;
+                    $this->actual = $actualCategoryIds[$catId];
+                    $this->verify();
                 }
             }
         }
@@ -239,6 +289,35 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->expected = 6;
         $this->actual = $result[1]['class_category_id2'];
         $this->verify('class_category_id2 は 6');
+        
+        // ProductCategoryTest
+        //カテゴリーIDs
+        foreach($csv as $csvRow){
+            $csvCat[md5($csvRow[2])] = $csvRow[10];
+        }
+        foreach ($Products as $Product){
+            $nameHash = md5($Product->getName());
+            if(!isset($csvCat[$nameHash])){
+                continue;
+            }
+            // expected categories is
+            $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
+            $actualIds = array();
+            /* @var $Product \Eccube\Entity\Product */
+            foreach ($Product->getProductCategories() as $ProductCategory){
+                /* @var $ProductCategory \Eccube\Entity\ProductCategory */
+                $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
+                $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
+                $this->actual = $ProductCategory->getCategoryId();
+                $this->verify();
+            }
+            foreach($expectedIds as $catId){
+                $this->expected = $catId;
+                $this->actual = $actualIds[$catId];
+                $this->verify();
+            }
+        }
+        
     }
 
     public function testCsvTemplateWithProduct()
@@ -338,5 +417,37 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             array('import_file' => $file)
         );
         return $crawler;
+    }
+    
+    private function getExpectedCategoriesIdList($categoriesStr)
+    {
+        $catIds = array();
+        $tmp = explode(',', $categoriesStr);
+        foreach($tmp as $id){
+            $id = trim($id);
+            if(is_numeric($id)){
+                $catIds[$id] = (int) $id;
+                foreach ($this->getParentsCategoriesId($id) as $parentCategoryId){
+                    $catIds[$parentCategoryId] = $parentCategoryId;
+                }
+            }
+        }
+        return $catIds;
+    }
+    
+    private function getParentsCategoriesId($categoryId)
+    {
+        if(!isset($this->categoriesIdList[$categoryId])){
+            $this->categoriesIdList[$categoryId] = array();
+            $Category = $this->app['eccube.repository.category']->find($categoryId);
+            if($Category){
+                $this->categoriesIdList[$categoryId][$Category->getId()] = $Category->getId(); 
+                foreach($Category->getPath() as $ParentCategory){
+                    $this->categoriesIdList[$categoryId][$ParentCategory->getId()] = $ParentCategory->getId(); 
+                }
+            }
+        }
+        
+        return $this->categoriesIdList[$categoryId];
     }
 }

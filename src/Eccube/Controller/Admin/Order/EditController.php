@@ -539,7 +539,7 @@ class EditController extends AbstractController
                 $page_no = 1;
 
                 $searchData = array(
-                    'name' => $request->get('id'),
+                    'id' => $request->get('id'),
                 );
 
                 if ($categoryId = $request->get('category_id')) {
@@ -559,7 +559,7 @@ class EditController extends AbstractController
             }
 
             $qb = $app['eccube.repository.product']
-                ->getQueryBuilderBySearchData($searchData);
+                ->getQueryBuilderBySearchDataForAdmin($searchData);
 
             $event = new EventArgs(
                 array(

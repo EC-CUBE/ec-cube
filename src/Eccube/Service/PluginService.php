@@ -346,9 +346,6 @@ class PluginService
             if ($plugin->getCode() != $config['code']) {
                 throw new PluginException('new/old plugin code is different.');
             }
-            if ($plugin->getName() != $config['name']) {
-                throw new PluginException('new/old plugin name is different.');
-            }
 
             $pluginBaseDir = $this->calcPluginDir($config['code']);
             $this->deleteFile($tmp); // テンポラリのファイルを削除
