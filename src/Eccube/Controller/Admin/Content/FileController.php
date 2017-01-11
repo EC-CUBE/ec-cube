@@ -144,8 +144,6 @@ class FileController extends AbstractController
                 $fs->mkdir($nowDir . '/' . $filename);
             }
         }
-
-        return $app->redirect($app->url('admin_content_file'));
     }
 
     public function delete(Application $app, Request $request)
