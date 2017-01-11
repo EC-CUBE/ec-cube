@@ -48,7 +48,7 @@ class MailTemplateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'mail_template';
     }

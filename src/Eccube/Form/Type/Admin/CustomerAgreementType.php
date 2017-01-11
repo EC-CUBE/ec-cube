@@ -55,7 +55,7 @@ class CustomerAgreementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'customer_agreement';
     }

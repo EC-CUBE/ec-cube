@@ -131,7 +131,7 @@ class DeliveryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'delivery';
     }

@@ -56,7 +56,7 @@ class PluginLocalInstallType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'plugin_local_install';
     }

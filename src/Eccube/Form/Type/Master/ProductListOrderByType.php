@@ -68,7 +68,7 @@ class ProductListOrderByType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'product_list_order_by';
     }

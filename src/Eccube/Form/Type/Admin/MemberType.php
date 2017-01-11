@@ -122,7 +122,7 @@ class MemberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_member';
     }

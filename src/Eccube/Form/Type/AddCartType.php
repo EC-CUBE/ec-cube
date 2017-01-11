@@ -44,11 +44,9 @@ class AddCartType extends AbstractType
 
     public function __construct(
         $config,
-        \Symfony\Component\Security\Core\SecurityContext $security,
         \Eccube\Repository\CustomerFavoriteProductRepository $customerFavoriteProductRepository
     ) {
         $this->config = $config;
-        $this->security = $security;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
     }
 
@@ -160,7 +158,7 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'add_cart';
     }

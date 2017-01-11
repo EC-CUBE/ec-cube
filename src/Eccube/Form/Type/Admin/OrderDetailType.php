@@ -162,7 +162,7 @@ class OrderDetailType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'order_detail';
     }

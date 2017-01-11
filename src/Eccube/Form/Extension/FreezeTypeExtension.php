@@ -25,10 +25,11 @@
 namespace Eccube\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * FreezeTypeExtension.
@@ -75,7 +76,7 @@ class FreezeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'freeze' => false,
@@ -85,6 +86,6 @@ class FreezeTypeExtension extends AbstractTypeExtension
 
     public function getExtendedType()
     {
-        return 'form';
+        return FromType::class;
     }
 }

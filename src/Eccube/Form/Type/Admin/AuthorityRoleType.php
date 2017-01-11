@@ -87,7 +87,7 @@ class AuthorityRoleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_authority_role';
     }

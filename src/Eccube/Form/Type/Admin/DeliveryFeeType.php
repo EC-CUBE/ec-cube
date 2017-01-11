@@ -55,7 +55,7 @@ class DeliveryFeeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'delivery_fee';
     }

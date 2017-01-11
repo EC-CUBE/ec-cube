@@ -24,6 +24,9 @@
 
 namespace Eccube\Tests\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\AddressType;
+
 class AddressTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -45,12 +48,9 @@ class AddressTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
-            ->add('address', 'address')
+            ->createBuilder(FormType::class)
+            ->add('address', AddressType::class)
             ->getForm();
     }
 
@@ -107,10 +107,8 @@ class AddressTypeTest extends AbstractTypeTestCase
     public function testRequiredAddNotBlank_Pref()
     {
         $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
-            ->add('address', 'address', array(
+            ->createBuilder(FormType::class)
+            ->add('address', AddressType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -125,10 +123,8 @@ class AddressTypeTest extends AbstractTypeTestCase
     public function testRequiredAddNotBlank_Addr01()
     {
         $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
-            ->add('address', 'address', array(
+            ->createBuilder(FormType::class)
+            ->add('address', AddressType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -143,10 +139,8 @@ class AddressTypeTest extends AbstractTypeTestCase
     public function testRequiredAddNotBlank_Addr02()
     {
         $this->form = $this->app['form.factory']
-            ->createBuilder('form', null, array(
-                'csrf_protection' => false,
-            ))
-            ->add('address', 'address', array(
+            ->createBuilder(FormType::class)
+            ->add('address', AddressType::class, array(
                 'required' => true,
             ))
             ->getForm();

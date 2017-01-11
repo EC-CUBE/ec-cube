@@ -78,7 +78,7 @@ class ShoppingMultipleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'shopping_multiple';
     }

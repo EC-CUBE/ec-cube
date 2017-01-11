@@ -163,7 +163,7 @@ class Step3Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'install_step3';
     }

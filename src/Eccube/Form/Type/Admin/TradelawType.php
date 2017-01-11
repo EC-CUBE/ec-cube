@@ -137,7 +137,7 @@ class TradelawType extends AbstractType
             ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'tradelaw';
     }

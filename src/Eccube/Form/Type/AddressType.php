@@ -27,8 +27,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\Master\PrefType;
 
 class AddressType extends AbstractType
 {
@@ -69,9 +71,9 @@ class AddressType extends AbstractType
         }
 
         $builder
-            ->add($options['pref_name'], 'pref', array_merge_recursive($options['options'], $options['pref_options']))
-            ->add($options['addr01_name'], 'text', array_merge_recursive($options['options'], $options['addr01_options']))
-            ->add($options['addr02_name'], 'text', array_merge_recursive($options['options'], $options['addr02_options']))
+            ->add($options['pref_name'], PrefType::class, array_merge_recursive($options['options'], $options['pref_options']))
+            ->add($options['addr01_name'], TextType::class, array_merge_recursive($options['options'], $options['addr01_options']))
+            ->add($options['addr02_name'], TextType::class, array_merge_recursive($options['options'], $options['addr02_options']))
         ;
 
         $builder->setAttribute('pref_name', $options['pref_name']);
@@ -118,7 +120,7 @@ class AddressType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'address';
     }

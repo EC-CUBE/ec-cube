@@ -59,7 +59,7 @@ class MasterdataEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_system_masterdata_edit';
     }

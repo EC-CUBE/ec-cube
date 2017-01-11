@@ -105,7 +105,7 @@ class EntryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         // todo entry,mypageで共有されているので名前を変更する
         return 'entry';

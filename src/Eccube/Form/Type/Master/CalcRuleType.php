@@ -44,7 +44,7 @@ class CalcRuleType extends AbstractType
         return 'master';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'calc_rule';
     }

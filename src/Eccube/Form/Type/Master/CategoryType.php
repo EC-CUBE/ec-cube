@@ -52,7 +52,7 @@ class CategoryType extends AbstractType
         return 'master';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'category';
     }

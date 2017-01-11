@@ -53,7 +53,7 @@ class PageLayoutType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_page_layout';
     }

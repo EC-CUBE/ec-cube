@@ -53,7 +53,7 @@ class SexType extends AbstractType
         return 'master';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'sex';
     }

@@ -44,7 +44,7 @@ class ProductTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'product_type';
     }

@@ -92,10 +92,9 @@ class Application extends ApplicationTrait
     public function initConfig()
     {
         // load config
-        $app = $this;
-        $this['config'] = function() use ($app) {
+        $this['config'] = function() {
             $configAll = array();
-            $app->parseConfig('constant', $configAll)
+            $this->parseConfig('constant', $configAll)
                 ->parseConfig('path', $configAll)
                 ->parseConfig('config', $configAll)
                 ->parseConfig('database', $configAll)

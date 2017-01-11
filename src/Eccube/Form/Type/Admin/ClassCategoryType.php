@@ -69,7 +69,7 @@ class ClassCategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_class_category';
     }

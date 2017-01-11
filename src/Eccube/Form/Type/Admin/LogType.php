@@ -77,7 +77,7 @@ class LogType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_system_log';
     }

@@ -29,4 +29,5 @@
           </exclude>
         </whitelist>
     </filter>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
 </phpunit>

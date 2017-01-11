@@ -53,7 +53,7 @@ class CustomerStatusType extends AbstractType
         return 'master';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'customer_status';
     }

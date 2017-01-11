@@ -212,7 +212,7 @@ class SearchCustomerType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_search_customer';
     }
