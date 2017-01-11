@@ -34,7 +34,7 @@ class FaxType extends AbstractType
      */
     public function getParent()
     {
-        return 'tel';
+        return TelType::class;
     }
 
     /**

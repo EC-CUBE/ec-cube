@@ -23,6 +23,10 @@
 
 namespace Eccube\Tests\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\FaxType;
+use Eccube\Form\Type\TelType;
+
 class FaxTypeTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Eccube\Application */
@@ -135,9 +139,8 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
 
         $app = $this->createApplication();
 
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'fax', array(
+        $this->form = $app['form.factory']->createBuilder(FormType::class)
+            ->add('tel', FaxType::class, array(
                 'required' => false,
             ))
             ->getForm();
@@ -262,7 +265,7 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->createApplication();
         $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -277,7 +280,7 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->createApplication();
         $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -292,7 +295,7 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->createApplication();
         $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -309,17 +312,17 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
         // \Eccube\Applicationは重いから呼ばない
         $app = new \Silex\Application();
         $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
+        // $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+        $app['eccube.service.plugin'] = function () use ($app) {
             return new \Eccube\Service\PluginService($app);
-        });
+        };
 
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+        $app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\TelType();
             $types[] = new \Eccube\Form\Type\FaxType();
 
             return $types;
-        }));
+        });
 
         return $app;
     }

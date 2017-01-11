@@ -40,20 +40,20 @@ class InstallServiceProvider implements ServiceProviderInterface
      */
     public function register(BaseApplication $app)
     {
-        $app['form.type.extensions'] = $app->extend('form.type.extensions', function ($extensions) use ($app) {
+        $app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
 
             return $extensions;
-        }));
+        });
 
-        $app['form.types'] = $app->extend('form.types', function ($types) use ($app) {
+        $app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\Install\Step1Type($app);
             $types[] = new \Eccube\Form\Type\Install\Step3Type($app);
             $types[] = new \Eccube\Form\Type\Install\Step4Type($app);
             $types[] = new \Eccube\Form\Type\Install\Step5Type($app);
 
             return $types;
-        }));
+        });
     }
 
     /**

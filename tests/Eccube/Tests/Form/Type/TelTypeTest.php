@@ -23,7 +23,11 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class TelTypeTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\AddressType;
+
+class TelTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -144,20 +148,11 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $app = $this->createApplication();
-
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('tel', TelType::class, array(
                 'required' => false,
             ))
             ->getForm();
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-        $this->form = null;
     }
 
     /**
@@ -248,9 +243,8 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testRequiredAddNotBlank_Tel()
     {
-        $app = $this->createApplication();
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('tel', 'tel', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -263,23 +257,23 @@ class TelTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function createApplication()
-    {
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        });
+    // public function createApplication()
+    // {
+    //     $app = new \Silex\Application();
+    //     $app->register(new \Silex\Provider\FormServiceProvider());
+    //     // $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
+    //     $app['eccube.service.plugin'] = function () use ($app) {
+    //         return new \Eccube\Service\PluginService($app);
+    //     };
 
-        // fix php5.3
-        $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
-            $types[] = new \Eccube\Form\Type\TelType($self->config);
+    //     // fix php5.3
+    //     $self = $this;
+    //     $app->extend('form.types', function ($types) use ($app, $self) {
+    //         $types[] = new \Eccube\Form\Type\TelType($self->config);
 
-            return $types;
-        }));
+    //         return $types;
+    //     });
 
-        return $app;
-    }
+    //     return $app;
+    // }
 }
