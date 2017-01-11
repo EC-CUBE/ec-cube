@@ -225,13 +225,13 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         // debugはONの時に404ページ表示しない例外になります。
         if($this->app['debug'] == true){
-            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+            $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException');
         }
         $client = $this->createClient();
         $crawler = $client->request('GET', $this->app['url_generator']->generate('entry_activate', array('secret_key' => 'aaaaa')));
         // debugはOFFの時に404ページが表示します。
         if($this->app['debug'] == false){
-            $this->expected = 404;
+            $this->expected = 403;
             $this->actual = $client->getResponse()->getStatusCode();
             $this->verify();
         }
