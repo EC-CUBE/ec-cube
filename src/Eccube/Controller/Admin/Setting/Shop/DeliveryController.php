@@ -65,10 +65,9 @@ class DeliveryController extends AbstractController
 
     public function edit(Application $app, Request $request, $id = 0)
     {
-        $Creator = $app['security']->getToken()->getUser();
         /* @var $Delivery \Eccube\Entity\Delivery */
         $Delivery = $app['eccube.repository.delivery']
-            ->findOrCreate($id, $Creator);
+            ->findOrCreate($id);
 
         // FormType: DeliveryFeeの生成
         $Prefs = $app['eccube.repository.master.pref']
