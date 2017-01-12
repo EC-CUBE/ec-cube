@@ -151,7 +151,6 @@ $(function() {
 
     $(".delete-item").on("click", function(){
         $(this).parents(".item_box").remove();
-        order_details_count--;
 
         onChangeOrderDetailCount(order_details_count);
     });
