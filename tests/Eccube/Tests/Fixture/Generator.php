@@ -115,6 +115,8 @@ class Generator {
             ->setSalt($this->app['eccube.repository.customer']->createSalt(5))
             ->setSecretKey($this->app['eccube.repository.customer']->getUniqueSecretKey($this->app))
             ->setStatus($Status)
+            ->setCreateDate(new \DateTime()) // FIXME
+            ->setUpdateDate(new \DateTime())
             ->setDelFlg(Constant::DISABLED);
         $Customer->setPassword($this->app['eccube.repository.customer']->encryptPassword($this->app, $Customer));
         $this->app['orm.em']->persist($Customer);
@@ -266,6 +268,8 @@ class Generator {
             ->setName($product_name)
             ->setCreator($Member)
             ->setStatus($Disp)
+            ->setCreateDate(new \DateTime()) // FIXME
+            ->setUpdateDate(new \DateTime())
             ->setDelFlg(Constant::DISABLED)
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->text());
@@ -288,6 +292,7 @@ class Generator {
                 ->setCreator($Member)
                 ->setFileName($image)
                 ->setRank($i)
+                ->setCreateDate(new \DateTime()) // FIXME
                 ->setProduct($Product);
             $this->app['orm.em']->persist($ProductImage);
             $this->app['orm.em']->flush($ProductImage);
@@ -310,6 +315,8 @@ class Generator {
         for ($i = 0; $i < $product_class_num; $i++) {
             $ProductStock = new ProductStock();
             $ProductStock
+                ->setCreateDate(new \DateTime()) // FIXME
+                ->setUpdateDate(new \DateTime())
                 ->setCreator($Member)
                 ->setStock($faker->randomNumber(3));
             $this->app['orm.em']->persist($ProductStock);
@@ -325,6 +332,8 @@ class Generator {
                 ->setStockUnlimited(false)
                 ->setPrice02($faker->randomNumber(5))
                 ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
+                ->setCreateDate(new \DateTime()) // FIXME
+                ->setUpdateDate(new \DateTime())
                 ->setDelFlg(Constant::DISABLED);
 
             if (array_key_exists($i, $ClassCategories1)) {
@@ -346,6 +355,8 @@ class Generator {
         // デフォルトの商品規格生成
         $ProductStock = new ProductStock();
         $ProductStock
+            ->setCreateDate(new \DateTime()) // FIXME
+            ->setUpdateDate(new \DateTime())
             ->setCreator($Member)
             ->setStock($faker->randomNumber(3));
         $this->app['orm.em']->persist($ProductStock);
@@ -366,6 +377,8 @@ class Generator {
             ->setPrice02($faker->randomNumber(5))
             ->setDeliveryDate($DeliveryDates[$faker->numberBetween(0, 8)])
             ->setStockUnlimited(false)
+            ->setCreateDate(new \DateTime()) // FIXME
+            ->setUpdateDate(new \DateTime())
             ->setProduct($Product);
         $this->app['orm.em']->persist($ProductClass);
         $this->app['orm.em']->flush($ProductClass);
@@ -577,6 +590,8 @@ class Generator {
             ->setDescription($faker->paragraph())
             ->setConfirmUrl($faker->url)
             ->setRank($faker->randomNumber(2))
+            ->setCreateDate(new \DateTime()) // FIXME
+            ->setUpdateDate(new \DateTime())
             ->setCreator($Member)
             ->setProductType($ProductType)
             ->setDelFlg(Constant::DISABLED);

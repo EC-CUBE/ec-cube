@@ -269,22 +269,24 @@ abstract class EccubeTestCase extends WebTestCase
         $app['debug'] = true;
 
         // ログの内容をERRORレベルでしか出力しないように設定を上書き
-        // $app->extend('config', function ($config, $app) {
-        //     $config['log']['log_level'] = 'ERROR';
-        //     $config['log']['action_level'] = 'ERROR';
-        //     $config['log']['passthru_level'] = 'ERROR';
+        if (!$app->offsetExists('config')) {
+            $app->extend('config', function ($config, $app) {
+            $config['log']['log_level'] = 'ERROR';
+            $config['log']['action_level'] = 'ERROR';
+            $config['log']['passthru_level'] = 'ERROR';
 
-        //     $channel = $config['log']['channel'];
-        //     foreach (array('monolog', 'front', 'admin') as $key) {
-        //         $channel[$key]['log_level'] = 'ERROR';
-        //         $channel[$key]['action_level'] = 'ERROR';
-        //         $channel[$key]['passthru_level'] = 'ERROR';
-        //     }
-        //     $config['log']['channel'] = $channel;
+            $channel = $config['log']['channel'];
+            foreach (array('monolog', 'front', 'admin') as $key) {
+                $channel[$key]['log_level'] = 'ERROR';
+                $channel[$key]['action_level'] = 'ERROR';
+                $channel[$key]['passthru_level'] = 'ERROR';
+            }
+            $config['log']['channel'] = $channel;
 
-        //     return $config;
-        // });
-        $app->initLogger();
+            return $config;
+                });
+            $app->initLogger();
+        }
 
         $app->initialize();
         $app->initializePlugin();
@@ -294,7 +296,9 @@ abstract class EccubeTestCase extends WebTestCase
         $app['form.csrf_provider'] = function () {
             return new CsrfTokenMock();
         };
-        $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
+        if (!$app->offsetExists('eccube.fixture.generator')) {
+            $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
+        }
         $app->boot();
 
         return $app;
@@ -378,7 +382,8 @@ abstract class EccubeTestCase extends WebTestCase
             $request = $client->delete(self::MAILCATCHER_URL.'messages');
             $request->send();
         } catch (\Exception $e) {
-            $this->app->log('['.get_class().'] '.$e->getMessage());
+            // FIXME
+            // $this->app->log('['.get_class().'] '.$e->getMessage());
         }
     }
 

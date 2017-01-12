@@ -66,7 +66,7 @@ abstract class AbstractInstallWebTestCase extends WebTestCase
         //$app->initialize();
         //$app->initPluginEventDispatcher();
         $app['session.test'] = true;
-        $app['exception_handler']->disable();
+        unset($app['exception_handler']);
 
         $app->boot();
 

@@ -25,6 +25,8 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,7 +46,7 @@ class RepeatedPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'type' => 'text', // type password だと入力欄を空にされてしまうので、widgetで対応
+            'type' => TextType::class, // type password だと入力欄を空にされてしまうので、widgetで対応
             'required' => true,
             'error_bubbling' => false,
             'invalid_message' => 'form.member.password.invalid',
@@ -79,7 +81,7 @@ class RepeatedPasswordType extends AbstractType
      */
     public function getParent()
     {
-        return 'repeated';
+        return RepeatedType::class;
     }
 
     /**

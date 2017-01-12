@@ -23,6 +23,9 @@
 
 namespace Eccube\Tests\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\RepeatedEmailType;
+
 class RepeatedEmailTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -43,10 +46,8 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        $app = $this->createApplication();
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('email', 'repeated_email', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('email', RepeatedEmailType::class, array(
             ))
             ->getForm();
     }
@@ -96,25 +97,5 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
-    }
-
-    public function createApplication()
-    {
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        });
-
-        // fix php5.3
-        $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
-            $types[] = new \Eccube\Form\Type\RepeatedEmailType();
-
-            return $types;
-        }));
-
-        return $app;
     }
 }

@@ -258,7 +258,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.form.templates' => array('Form/form_layout.twig'),
         ));
-        $this['twig'] = $this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+        $this->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
             $twig->addExtension(new \Eccube\Twig\Extension\EccubeExtension($app));
             $twig->addExtension(new \Twig_Extension_StringLoader());
 
@@ -294,39 +294,39 @@ class Application extends ApplicationTrait
                 // $twig->setCache($cache);
                 $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
-            // // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            // $app['twig'] = $app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
-            //     $paths = array();
+            // フロント or 管理画面ごとにtwigの探索パスを切り替える.
+            $app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+                $paths = array();
 
-            //     // 互換性がないのでprofiler とproduction 時のcacheを分離する
-            //     if (isset($app['profiler'])) {
-            //         $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
-            //     } else {
-            //         $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
-            //     }
+                // 互換性がないのでprofiler とproduction 時のcacheを分離する
+                if (isset($app['profiler'])) {
+                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
+                } else {
+                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                }
 
-            //     if ($app->isAdminRequest()) {
-            //         if (file_exists(__DIR__.'/../../app/template/admin')) {
-            //             $paths[] = __DIR__.'/../../app/template/admin';
-            //         }
-            //         $paths[] = $app['config']['template_admin_realdir'];
-            //         $paths[] = __DIR__.'/../../app/Plugin';
-            //         $cache = $cacheBaseDir.'admin';
+                if ($app->isAdminRequest()) {
+                    if (file_exists(__DIR__.'/../../app/template/admin')) {
+                        $paths[] = __DIR__.'/../../app/template/admin';
+                    }
+                    $paths[] = $app['config']['template_admin_realdir'];
+                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $cache = $cacheBaseDir.'admin';
 
-            //     } else {
-            //         if (file_exists($app['config']['template_realdir'])) {
-            //             $paths[] = $app['config']['template_realdir'];
-            //         }
-            //         $paths[] = $app['config']['template_default_realdir'];
-            //         $paths[] = __DIR__.'/../../app/Plugin';
-            //         $cache = $cacheBaseDir.$app['config']['template_code'];
-            //         $app['front'] = true;
-            //     }
-            //     $twig->setCache($cache);
-            //     $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+                } else {
+                    if (file_exists($app['config']['template_realdir'])) {
+                        $paths[] = $app['config']['template_realdir'];
+                    }
+                    $paths[] = $app['config']['template_default_realdir'];
+                    $paths[] = __DIR__.'/../../app/Plugin';
+                    $cache = $cacheBaseDir.$app['config']['template_code'];
+                    $app['front'] = true;
+                }
+                $twig->setCache($cache);
+                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
-            //     return $twig;
-            // });
+                return $twig;
+            });
 
             // 管理画面のIP制限チェック.
             // if ($app->isAdminRequest()) {
@@ -341,35 +341,34 @@ class Application extends ApplicationTrait
         }, self::EARLY_EVENT);
 
         // twigのグローバル変数を定義.
-        $app = $this;
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) {
             // 未ログイン時にマイページや管理画面以下にアクセスするとSubRequestで実行されるため,
             // $event->isMasterRequest()ではなく、グローバル変数が初期化済かどうかの判定を行う
-            if (isset($app['twig_global_initialized']) && $app['twig_global_initialized'] === true) {
+            if (isset($this['twig_global_initialized']) && $this['twig_global_initialized'] === true) {
                 return;
             }
             // ショップ基本情報
-            $BaseInfo = $app['eccube.repository.base_info']->get();
-            $app['twig']->addGlobal('BaseInfo', $BaseInfo);
+            $BaseInfo = $this['eccube.repository.base_info']->get();
+            $this['twig']->addGlobal('BaseInfo', $BaseInfo);
 
-            if ($app->isAdminRequest()) {
+            if ($this->isAdminRequest()) {
                 // 管理画面
                 // 管理画面メニュー
                 $menus = array('', '', '');
-                $app['twig']->addGlobal('menus', $menus);
+                $this['twig']->addGlobal('menus', $menus);
 
-                $Member = $app->user();
+                $Member = $this->user();
                 if (is_object($Member)) {
                     // ログインしていれば管理者のロールを取得
-                    $AuthorityRoles = $app['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
+                    $AuthorityRoles = $this['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
 
                     $roles = array();
                     foreach ($AuthorityRoles as $AuthorityRole) {
                         // 管理画面でメニュー制御するため相対パス全てをセット
-                        $roles[] = $app['request']->getBaseUrl().'/'.$app['config']['admin_route'].$AuthorityRole->getDenyUrl();
+                        $roles[] = $this['request']->getBaseUrl().'/'.$this['config']['admin_route'].$AuthorityRole->getDenyUrl();
                     }
 
-                    $app['twig']->addGlobal('AuthorityRoles', $roles);
+                    $this['twig']->addGlobal('AuthorityRoles', $roles);
                 }
 
             } else {
@@ -387,18 +386,18 @@ class Application extends ApplicationTrait
                 }
 
                 try {
-                    $DeviceType = $app['eccube.repository.master.device_type']
+                    $DeviceType = $this['eccube.repository.master.device_type']
                         ->find(\Eccube\Entity\Master\DeviceType::DEVICE_TYPE_PC);
-                    $PageLayout = $app['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
+                    $PageLayout = $this['eccube.repository.page_layout']->getByUrl($DeviceType, $route);
                 } catch (\Doctrine\ORM\NoResultException $e) {
-                    $PageLayout = $app['eccube.repository.page_layout']->newPageLayout($DeviceType);
+                    $PageLayout = $this['eccube.repository.page_layout']->newPageLayout($DeviceType);
                 }
 
-                $app['twig']->addGlobal('PageLayout', $PageLayout);
-                $app['twig']->addGlobal('title', $PageLayout->getName());
+                $this['twig']->addGlobal('PageLayout', $PageLayout);
+                $this['twig']->addGlobal('title', $PageLayout->getName());
             }
 
-            $app['twig_global_initialized'] = true;
+            $this['twig_global_initialized'] = true;
         });
     }
 
@@ -434,11 +433,16 @@ class Application extends ApplicationTrait
 
     public function initDoctrine()
     {
-        $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'dbs.options' => array(
-                'default' => $this['config']['database']
-            )));
-        $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
+        if (!$this->offsetExists('dbs')) {
+            $this->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+                'dbs.options' => array(
+                    'default' => $this['config']['database']
+                )
+            ));
+        }
+        if (!$this->offsetExists('orm.ems')) {
+            $this->register(new \Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider());
+        }
 
         // プラグインのmetadata定義を合わせて行う.
         $pluginConfigs = $this->getPluginConfigAll();
@@ -492,31 +496,17 @@ class Application extends ApplicationTrait
             }
         }
 
-        $this->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
-            'orm.em.options' => $options,
-            'orm.custom.functions.string' => array(
-                'NORMALIZE' => 'Eccube\Doctrine\ORM\Query\Normalize',
-            ),
-            'orm.custom.functions.numeric' => array(
-                'EXTRACT' => 'Eccube\Doctrine\ORM\Query\Extract',
-            ),
-        ));
-
-        /**
-         * YamlDriverのPHP7対応. Doctrine2.4で修正されれば不要.
-         * @see https://github.com/EC-CUBE/ec-cube/issues/1338
-         */
-        $config = $this['orm.em']->getConfiguration();
-        /** @var $driver \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain */
-        $chain = $config->getMetadataDriverImpl();
-        // $ormMappingsの1要素ごとにDriverが生成されている.
-        $drivers = $chain->getDrivers();
-        foreach ($drivers as $namespace => $oldDriver) {
-            /** @var $newDriver \Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver */
-            $newDriver = new YamlDriver($oldDriver->getLocator());
-            // 修正したDriverに差し替える. メソッド名はaddだけど実際はsetしてる.
-            $chain->addDriver($newDriver, $namespace);
+        if (!$this->offsetExists('orm.ems')) {
+            $this->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+                'orm.proxies_dir' => __DIR__.'/../../app/cache/doctrine/proxies',
+                'orm.em.options' => $options,
+                'orm.custom.functions.string' => array(
+                    'NORMALIZE' => 'Eccube\Doctrine\ORM\Query\Normalize',
+                ),
+                'orm.custom.functions.numeric' => array(
+                    'EXTRACT' => 'Eccube\Doctrine\ORM\Query\Extract',
+                ),
+            ));
         }
     }
 
@@ -601,7 +591,7 @@ class Application extends ApplicationTrait
         // };
 
         // ログイン時のイベントを設定.
-        $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
+        // FIXME $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
 
         // Voterの設定
         $app = $this;

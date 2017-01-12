@@ -33,7 +33,6 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 
 /**
  * CustomerRepository
@@ -356,9 +355,7 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
      */
     public function createSalt($byte)
     {
-        $generator = new SecureRandom();
-
-        return bin2hex($generator->nextBytes($byte));
+        return bin2hex(openssl_random_pseudo_bytes($byte));
     }
 
     /**

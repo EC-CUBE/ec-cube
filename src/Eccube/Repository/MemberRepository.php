@@ -31,7 +31,6 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -275,9 +274,7 @@ class MemberRepository extends EntityRepository implements UserProviderInterface
      */
     public function createSalt($byte)
     {
-        $generator = new SecureRandom();
-
-        return bin2hex($generator->nextBytes($byte));
+        return bin2hex(openssl_random_pseudo_bytes($byte));
     }
 
     /**

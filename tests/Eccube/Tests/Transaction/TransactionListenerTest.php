@@ -43,10 +43,12 @@ class TransactionListenerTest extends WebTestCase
 
     public function tearDown()
     {
-        $this->app['orm.em']->close();
-        $this->app['orm.em'] = null;
-        Application::clearInstance();
-        $this->app = null;
+        if ($this->app['orm.em']) {
+            $this->app['orm.em']->close();
+            $this->app['orm.em'] = null;
+            Application::clearInstance();
+            $this->app = null;
+        }
     }
 
     /**
@@ -262,7 +264,7 @@ class TransactionListenerTest extends WebTestCase
         $app['debug'] = true;
 
         // ログの内容をERRORレベルでしか出力しないように設定を上書き
-        $app['config'] = $app->share($app->extend('config', function ($config, \Silex\Application $app) {
+        $app->extend('config', function ($config, \Silex\Application $app) {
             $config['log']['log_level'] = 'ERROR';
             $config['log']['action_level'] = 'ERROR';
             $config['log']['passthru_level'] = 'ERROR';
@@ -276,7 +278,7 @@ class TransactionListenerTest extends WebTestCase
             $config['log']['channel'] = $channel;
 
             return $config;
-        }));
+        });
         $app->initLogger();
 
         $app->initialize();

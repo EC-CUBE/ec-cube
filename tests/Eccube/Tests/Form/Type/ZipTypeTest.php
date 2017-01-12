@@ -23,6 +23,9 @@
 
 namespace Eccube\Tests\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\ZipType;
+
 class ZipTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -44,11 +47,8 @@ class ZipTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-
-        $app = $this->createApplication();
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('zip', 'zip')
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('zip', ZipType::class)
             ->getForm();
     }
 
@@ -94,9 +94,8 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip01()
     {
-        $app = $this->createApplication();
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('zip', 'zip', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('zip', ZipType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -109,9 +108,8 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip02()
     {
-        $app = $this->createApplication();
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('zip', 'zip', array(
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('zip', ZipType::class, array(
                 'required' => true,
             ))
             ->getForm();
@@ -120,25 +118,5 @@ class ZipTypeTest extends AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-    }
-
-    public function createApplication()
-    {
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = $app->share(function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        });
-
-        // fix php5.3
-        $self = $this;
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app, $self) {
-            $types[] = new \Eccube\Form\Type\ZipType($self->config);
-
-            return $types;
-        }));
-
-        return $app;
     }
 }

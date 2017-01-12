@@ -251,32 +251,32 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
             return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
         };
         // em
-        // if (isset($app['orm.em'])) {
-        //     $app['orm.em'] = $app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
-        //         // tax_rule
-        //         $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
-        //         $taxRuleRepository->setApplication($app);
-        //         $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
-        //         $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
+        if (!$app->offsetExists('orm.em')) {
+            $app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
+                // tax_rule
+                $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
+                $taxRuleRepository->setApplication($app);
+                $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
+                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
 
-        //         // save
-        //         $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
-        //         $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
+                // save
+                $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
+                $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
 
-        //         // clear cache
-        //         $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
-        //         $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
+                // clear cache
+                $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
+                $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
 
-        //         // filters
-        //         $config = $em->getConfiguration();
-        //         $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
-        //         $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
-        //         $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
-        //         $em->getFilters()->enable('soft_delete');
+                // filters
+                $config = $em->getConfiguration();
+                $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
+                $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
+                $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
+                $em->getFilters()->enable('soft_delete');
 
-        //         return $em;
-        //     });
-        //}
+                return $em;
+            });
+        }
 
         // Form\Type
         $app['form.type.extensions'] = $app->extend('form.type.extensions', function ($extensions) use ($app) {

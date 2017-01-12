@@ -17,7 +17,7 @@ class FixtureServiceProvider implements ServiceProviderInterface, BootableProvid
 {
     public function register(Container $app)
     {
-        $app['eccube.fixture.generator'] = function () use ($app) {
+        $app['eccube.fixture.generator'] = function ($app) {
             return new FixtureGenerator($app);
         };
     }
