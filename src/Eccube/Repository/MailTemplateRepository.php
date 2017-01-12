@@ -35,15 +35,13 @@ use Eccube\Common\Constant;
  */
 class MailTemplateRepository extends EntityRepository
 {
-    public function findOrCreate($id, $Creator = null)
+    public function findOrCreate($id)
     {
         if ($id == 0) {
-            if ($Creator == null) {
-                $Creator = $this
-                    ->getEntityManager()
-                    ->getRepository('\Eccube\Entity\Member')
-                    ->findOneBy(array(), array('rank' => 'ASC'));
-            }
+            $Creator = $this
+                ->getEntityManager()
+                ->getRepository('\Eccube\Entity\Member')
+                ->findOneBy(array(), array('rank' => 'ASC'));
 
             $MailTemplate = new \Eccube\Entity\MailTemplate();
             $MailTemplate
