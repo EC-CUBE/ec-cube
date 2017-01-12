@@ -23,7 +23,10 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class NameTypeTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Eccube\Form\Type\NameType;
+
+class NameTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -44,24 +47,12 @@ class NameTypeTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
-
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-
-        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
-            $config['config']['name_len'] = 50;
-            $types[] = new \Eccube\Form\Type\NameType($config['config']); // Nameに依存する
-            return $types;
-        }));
-
-        // CSRF tokenを無効にしてFormを作成
-        $this->form = $app['form.factory']->createBuilder('form', null, array('csrf_protection' => false))
-            ->add('name', 'name')
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('name', NameType::class)
             ->getForm();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         $this->form = null;

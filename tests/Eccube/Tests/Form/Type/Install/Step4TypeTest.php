@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Form\Type\Install;
 
+use Eccube\Form\Type\Install\Step4Type;
+
 class Step4TypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -46,11 +48,8 @@ class Step4TypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('install_step4', null, array(
-                'csrf_protection' => false,
-            ))
+            ->createBuilder(Step4Type::class)
             ->getForm();
     }
 

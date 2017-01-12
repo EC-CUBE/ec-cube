@@ -289,7 +289,7 @@ abstract class EccubeTestCase extends WebTestCase
         $app->initialize();
         $app->initializePlugin();
         $app['session.test'] = true;
-        // $app['exception_handler']->disable();
+        unset($this->app['exception_handler']);
 
         $app['form.csrf_provider'] = function () {
             return new CsrfTokenMock();

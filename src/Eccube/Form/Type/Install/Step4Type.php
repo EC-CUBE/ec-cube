@@ -26,6 +26,9 @@ namespace Eccube\Form\Type\Install;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
@@ -59,7 +62,7 @@ class Step4Type extends AbstractType
         }
 
         $builder
-            ->add('database', 'choice', array(
+            ->add('database', ChoiceType::class, array(
                 'label' => 'データベースの種類',
                 'choices' => $database,
                 'expanded' => false,
@@ -68,27 +71,27 @@ class Step4Type extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('database_host', 'text', array(
+            ->add('database_host', TextType::class, array(
                 'label' => 'データベースのホスト名',
                 'required' => false,
             ))
-            ->add('database_port', 'text', array(
+            ->add('database_port', TextType::class, array(
                 'label' => 'ポート番号',
                 'required' => false,
             ))
-            ->add('database_name', 'text', array(
+            ->add('database_name', TextType::class, array(
                 'label' => 'データベース名',
                 'constraints' => array(
                     new Assert\Callback(array($this, 'validate')),
                 ),
             ))
-            ->add('database_user', 'text', array(
+            ->add('database_user', TextType::class, array(
                 'label' => 'ユーザ名',
                 'constraints' => array(
                     new Assert\Callback(array($this, 'validate')),
                 ),
             ))
-            ->add('database_password', 'password', array(
+            ->add('database_password', PasswordType::class, array(
                 'label' => 'パスワード',
                 'required' => false,
             ))

@@ -27,7 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Eccube\Form\Type\FaxType;
 use Eccube\Form\Type\TelType;
 
-class FaxTypeTest extends \PHPUnit_Framework_TestCase
+class FaxTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -137,8 +137,6 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $app = $this->createApplication();
-
         $this->form = $app['form.factory']->createBuilder(FormType::class)
             ->add('tel', FaxType::class, array(
                 'required' => false,
@@ -146,7 +144,7 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
             ->getForm();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         $this->form = null;
@@ -304,26 +302,5 @@ class FaxTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-    }
-
-    public function createApplication()
-    {
-
-        // \Eccube\Applicationは重いから呼ばない
-        $app = new \Silex\Application();
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        // $app->register(new \Eccube\ServiceProvider\ValidatorServiceProvider());
-        $app['eccube.service.plugin'] = function () use ($app) {
-            return new \Eccube\Service\PluginService($app);
-        };
-
-        $app->extend('form.types', function ($types) use ($app) {
-            $types[] = new \Eccube\Form\Type\TelType();
-            $types[] = new \Eccube\Form\Type\FaxType();
-
-            return $types;
-        });
-
-        return $app;
     }
 }

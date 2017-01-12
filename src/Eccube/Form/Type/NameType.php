@@ -25,10 +25,11 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class NameType extends AbstractType
@@ -69,8 +70,8 @@ class NameType extends AbstractType
         }
 
         $builder
-            ->add($options['lastname_name'], 'text', array_merge_recursive($options['options'], $options['lastname_options']))
-            ->add($options['firstname_name'], 'text', array_merge_recursive($options['options'], $options['firstname_options']))
+            ->add($options['lastname_name'], TextType::class, array_merge_recursive($options['options'], $options['lastname_options']))
+            ->add($options['firstname_name'], TextType::class, array_merge_recursive($options['options'], $options['firstname_options']))
         ;
 
         $builder->setAttribute('lastname_name', $options['lastname_name']);
@@ -90,7 +91,7 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'options' => array(),

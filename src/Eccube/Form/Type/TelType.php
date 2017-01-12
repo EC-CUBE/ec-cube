@@ -50,9 +50,9 @@ class TelType extends AbstractType
         $options['tel03_options']['required'] = $options['required'];
         // required の場合は NotBlank も追加する
         if ($options['required']) {
-            $options['options']['constraints'] = array(
+            $options['options']['constraints'] = array_merge(array(
                 new Assert\NotBlank(array()),
-            );
+            ), $options['options']['constraints']);
         }
 
         if (!isset($options['options']['error_bubbling'])) {
@@ -113,7 +113,7 @@ class TelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'options' => array(),
+            'options' => array('constraints' => array()),
             'tel01_options' => array(
                 'constraints' => array(
                     new Assert\Type(array('type' => 'numeric', 'message' => 'form.type.numeric.invalid')), //todo  messageは汎用的に出来ないものか?

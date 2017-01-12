@@ -24,11 +24,13 @@
 
 namespace Eccube\ServiceProvider;
 
-use Eccube\Application;
-use Silex\Application as BaseApplication;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Silex\Api\BootableProviderInterface;
+use Pimple\ServiceProviderInterface;
+use Silex\Application;
 
-class InstallServiceProvider implements ServiceProviderInterface
+
+class InstallServiceProvider  implements ServiceProviderInterface, BootableProviderInterface
 {
     /**
      * Registers services on the given app.
@@ -36,9 +38,9 @@ class InstallServiceProvider implements ServiceProviderInterface
      * This method should only be used to configure services and parameters.
      * It should not get services.
      *
-     * @param BaseApplication $app An Application instance
+     * @param Container $app An Pimple\Container instance
      */
-    public function register(BaseApplication $app)
+    public function register(Container $app)
     {
         $app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
@@ -63,7 +65,7 @@ class InstallServiceProvider implements ServiceProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      */
-    public function boot(BaseApplication $app)
+    public function boot(Application $app)
     {
     }
 }

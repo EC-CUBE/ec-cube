@@ -23,7 +23,7 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class PriceTypeTest extends \PHPUnit_Framework_TestCase
+class PriceTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;

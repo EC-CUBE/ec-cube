@@ -23,7 +23,7 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
+class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -53,7 +53,7 @@ class RepeatedPasswordTypeTest extends \PHPUnit_Framework_TestCase
             ->getForm();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         $this->form = null;

@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace Eccube\Tests\Form\Type\Master;
+namespace Eccube\Tests\Form\Type;
 
-class ZipTypeTest extends \PHPUnit_Framework_TestCase
+class ZipTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;

@@ -23,7 +23,7 @@
 
 namespace Eccube\Tests\Form\Type;
 
-class RepeatedEmailTypeTest extends \PHPUnit_Framework_TestCase
+class RepeatedEmailTypeTest extends AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -51,7 +51,7 @@ class RepeatedEmailTypeTest extends \PHPUnit_Framework_TestCase
             ->getForm();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         parent::tearDown();
         $this->form = null;

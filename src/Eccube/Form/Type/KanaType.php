@@ -85,7 +85,7 @@ class KanaType extends AbstractType
      */
     public function getParent()
     {
-        return 'name';
+        return NameType::class;
     }
 
     /**
