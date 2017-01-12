@@ -94,8 +94,15 @@ $(function() {
 
         var data = $(this).data();
         shipment_idx = data.idx;
-        shipmentItem_idx = $('.shipment_item_idx' + shipment_idx).length;
-
+        
+        shipmentItem_idx = 0;
+        for(i = 0; i < shipping_details_count.length; i++) { 
+            console.log(shipping_details_count[i]);
+            if (shipping_details_count[i].idx == shipment_idx) {
+                shipmentItem_idx = shipping_details_count[i].cnt;
+            }
+        }
+        
         $.ajax({
             type: 'POST',
             dataType: 'html',
@@ -117,7 +124,21 @@ $(function() {
     // 受注明細行の行数カウンタ.
     // 受注登録・編集画面上でグローバルな変数.
     // search_product.twig/order_detail_prototype.twigで利用しています.
-    order_details_count = '{{ form.OrderDetails|length }}';
+    {% if form.OrderDetails is empty %}
+        {% set maxIndex = 0 %}
+    {% else %}
+        {% set maxIndex = max(form.OrderDetails|keys) + 1 %}
+    {% endif %}
+    order_details_count = '{{ maxIndex }}';
+    
+    var shipping_details_count = [];
+    {% for shippingKey, shippingForm in form.Shippings %}
+        {% if shippingForm.ShipmentItems is empty %}
+            shipping_details_count.push({idx:{{ shippingKey }}, cnt:0});
+        {% else %}
+            shipping_details_count.push({idx:{{ shippingKey }}, cnt:{{ max(shippingForm.ShipmentItems|keys) + 1 }} });
+        {% endif %}
+    {% endfor %}
 
     // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
     $("input").on("keydown", function(e) {
