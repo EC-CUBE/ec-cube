@@ -191,7 +191,7 @@ class Application extends ApplicationTrait
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
         // add transaction listener
-        $this['dispatcher']->addSubscriber(new TransactionListener($this));
+        // FIXME  $this['dispatcher']->addSubscriber(new TransactionListener($this));
 
         // init http cache
         $this->initCacheRequest();
@@ -274,70 +274,73 @@ class Application extends ApplicationTrait
             } else {
                 $app['front'] = true;
             }
-                if ($app->isAdminRequest()) {
-                    if (file_exists(__DIR__.'/../../app/template/admin')) {
-                        $paths[] = __DIR__.'/../../app/template/admin';
-                    }
-                    $paths[] = $app['config']['template_admin_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    // $cache = $cacheBaseDir.'admin';
-
-                } else {
-                    if (file_exists($app['config']['template_realdir'])) {
-                        $paths[] = $app['config']['template_realdir'];
-                    }
-                    $paths[] = $app['config']['template_default_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    // $cache = $cacheBaseDir.$app['config']['template_code'];
-                    $app['front'] = true;
+            if ($app->isAdminRequest()) {
+                if (file_exists(__DIR__.'/../../app/template/admin')) {
+                    $paths[] = __DIR__.'/../../app/template/admin';
                 }
-                // $twig->setCache($cache);
-                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+                $paths[] = $app['config']['template_admin_realdir'];
+                $paths[] = __DIR__.'/../../app/Plugin';
+                // $cache = $cacheBaseDir.'admin';
+
+            } else {
+                if (file_exists($app['config']['template_realdir'])) {
+                    $paths[] = $app['config']['template_realdir'];
+                }
+                $paths[] = $app['config']['template_default_realdir'];
+                $paths[] = __DIR__.'/../../app/Plugin';
+                // $cache = $cacheBaseDir.$app['config']['template_code'];
+                $app['front'] = true;
+            }
+            // $twig->setCache($cache);
+            $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
 
             // フロント or 管理画面ごとにtwigの探索パスを切り替える.
-            $app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
-                $paths = array();
+            if (!$app->offsetExists('twig')) {
 
-                // 互換性がないのでprofiler とproduction 時のcacheを分離する
-                if (isset($app['profiler'])) {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
-                } else {
-                    $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
-                }
+                $app->extend('twig', function (\Twig_Environment $twig, \Silex\Application $app) {
+                        $paths = array();
 
-                if ($app->isAdminRequest()) {
-                    if (file_exists(__DIR__.'/../../app/template/admin')) {
-                        $paths[] = __DIR__.'/../../app/template/admin';
+                        // 互換性がないのでprofiler とproduction 時のcacheを分離する
+                        if (isset($app['profiler'])) {
+                            $cacheBaseDir = __DIR__.'/../../app/cache/twig/profiler/';
+                        } else {
+                            $cacheBaseDir = __DIR__.'/../../app/cache/twig/production/';
+                        }
+
+                        if ($app->isAdminRequest()) {
+                            if (file_exists(__DIR__.'/../../app/template/admin')) {
+                                $paths[] = __DIR__.'/../../app/template/admin';
+                            }
+                            $paths[] = $app['config']['template_admin_realdir'];
+                            $paths[] = __DIR__.'/../../app/Plugin';
+                            $cache = $cacheBaseDir.'admin';
+
+                        } else {
+                            if (file_exists($app['config']['template_realdir'])) {
+                                $paths[] = $app['config']['template_realdir'];
+                            }
+                            $paths[] = $app['config']['template_default_realdir'];
+                            $paths[] = __DIR__.'/../../app/Plugin';
+                            $cache = $cacheBaseDir.$app['config']['template_code'];
+                            $app['front'] = true;
+                        }
+                        $twig->setCache($cache);
+                        $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
+
+                        return $twig;
                     }
-                    $paths[] = $app['config']['template_admin_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    $cache = $cacheBaseDir.'admin';
-
-                } else {
-                    if (file_exists($app['config']['template_realdir'])) {
-                        $paths[] = $app['config']['template_realdir'];
-                    }
-                    $paths[] = $app['config']['template_default_realdir'];
-                    $paths[] = __DIR__.'/../../app/Plugin';
-                    $cache = $cacheBaseDir.$app['config']['template_code'];
-                    $app['front'] = true;
-                }
-                $twig->setCache($cache);
-                $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem($paths));
-
-                return $twig;
-            });
-
+                );
+            }
             // 管理画面のIP制限チェック.
-            // if ($app->isAdminRequest()) {
-            //     // IP制限チェック
-            //     $allowHost = $app['config']['admin_allow_host'];
-            //     if (count($allowHost) > 0) {
-            //         if (array_search($app['request']->getClientIp(), $allowHost) === false) {
-            //             throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
-            //         }
-            //     }
-            // }
+            if ($app->isAdminRequest()) {
+                // IP制限チェック
+                $allowHost = $app['config']['admin_allow_host'];
+                if (count($allowHost) > 0) {
+                    if (array_search($app['request']->getClientIp(), $allowHost) === false) {
+                        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+                    }
+                }
+            }
         }, self::EARLY_EVENT);
 
         // twigのグローバル変数を定義.
@@ -621,7 +624,7 @@ class Application extends ApplicationTrait
         // $this->initPluginEventDispatcher();
 
         // load plugin
-        // $this->loadPlugin();
+        $this->loadPlugin();
 
         $this->initializedPlugin = true;
     }
@@ -633,15 +636,13 @@ class Application extends ApplicationTrait
             return new EventDispatcher();
         };
 
-        $app = $this;
-
         // hook point
-        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) {
             if (!$event->isMasterRequest()) {
                 return;
             }
             $hookpoint = 'eccube.event.app.before';
-            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
+            $this['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         }, self::EARLY_EVENT);
 
         $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
