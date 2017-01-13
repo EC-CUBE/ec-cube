@@ -63,7 +63,7 @@ class SaveEventSubscriber implements EventSubscriber
             $entity->setUpdateDate(new \DateTime());
         }
 
-        if ($this->app['security']->getToken() && $this->app['security']->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
+        if ($this->app['security.token_storage']->getToken() && $this->app['security.authorization_checker']->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
             $Member = $this->app['security']->getToken()->getUser();
             $entity->setCreator($Member);
         }

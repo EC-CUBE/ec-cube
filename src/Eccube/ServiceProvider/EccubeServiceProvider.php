@@ -250,33 +250,6 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
         $app['eccube.repository.plugin_event_handler'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
         };
-        // em
-        if (!$app->offsetExists('orm.em')) {
-            $app->extend('orm.em', function (\Doctrine\ORM\EntityManager $em, \Silex\Application $app) {
-                // tax_rule
-                $taxRuleRepository = $em->getRepository('Eccube\Entity\TaxRule');
-                $taxRuleRepository->setApplication($app);
-                $taxRuleService = new \Eccube\Service\TaxRuleService($taxRuleRepository);
-                $em->getEventManager()->addEventSubscriber(new \Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber($taxRuleService));
-
-                // save
-                $saveEventSubscriber = new \Eccube\Doctrine\EventSubscriber\SaveEventSubscriber($app);
-                $em->getEventManager()->addEventSubscriber($saveEventSubscriber);
-
-                // clear cache
-                $clearCacheEventSubscriber = new \Eccube\Doctrine\EventSubscriber\ClearCacheEventSubscriber($app);
-                $em->getEventManager()->addEventSubscriber($clearCacheEventSubscriber);
-
-                // filters
-                $config = $em->getConfiguration();
-                $config->addFilter("soft_delete", '\Eccube\Doctrine\Filter\SoftDeleteFilter');
-                $config->addFilter("nostock_hidden", '\Eccube\Doctrine\Filter\NoStockHiddenFilter');
-                $config->addFilter("incomplete_order_status_hidden", '\Eccube\Doctrine\Filter\OrderStatusFilter');
-                $em->getFilters()->enable('soft_delete');
-
-                return $em;
-            });
-        }
 
         // Form\Type
         $app->extend('form.type.extensions', function ($extensions) use ($app) {
