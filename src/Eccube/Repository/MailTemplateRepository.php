@@ -38,15 +38,8 @@ class MailTemplateRepository extends EntityRepository
     public function findOrCreate($id)
     {
         if ($id == 0) {
-            $Creator = $this
-                ->getEntityManager()
-                ->getRepository('\Eccube\Entity\Member')
-                ->findOneBy(array(), array('rank' => 'ASC'));
-
             $MailTemplate = new \Eccube\Entity\MailTemplate();
-            $MailTemplate
-                ->setDelFlg(Constant::DISABLED)
-                ->setCreator($Creator);
+            $MailTemplate->setDelFlg(Constant::DISABLED);
         } else {
             $MailTemplate = $this->find($id);
 
