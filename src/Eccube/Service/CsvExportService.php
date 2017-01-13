@@ -410,7 +410,16 @@ class CsvExportService
         } else {
             $searchData = array();
         }
-
+        //商品マスターで在庫なしを選択後にCSVダウンロードをすると在庫なし以外の商品も含まれる
+        $status = $request->get('status');
+        if ($status) {
+            if ($status != $this->config['admin_product_stock_status']) {
+                $em = $this->getEntityManager();
+                $searchData['link_status'] = $em->getRepository('\Eccube\Entity\Master\Disp')->find($status);
+            } else {
+                $searchData['stock_status'] = Constant::DISABLED;
+            }
+        }
         // 商品データのクエリビルダを構築.
         $qb = $this->productRepository
             ->getQueryBuilderBySearchDataForAdmin($searchData);
