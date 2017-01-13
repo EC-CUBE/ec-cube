@@ -152,7 +152,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
-        $this->error(function (\Exception $e, $code) {
+        $this->error(function (\Exception $e, Request $request, $code) {
             if ($this['debug']) {
                 return;
             }
@@ -621,11 +621,6 @@ class Application extends \Silex\Application
         $this['eccube.event_listner.security'] = function ($app) {
             return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         };
-        // $this['user'] = function ($app) {
-        //     $token = $app['security']->getToken();
-
-        //     return ($token !== null) ? $token->getUser() : null;
-        // };
 
         // ログイン時のイベントを設定.
         // FIXME $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));

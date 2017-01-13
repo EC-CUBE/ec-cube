@@ -77,37 +77,39 @@ class SecurityTraitTest extends EccubeTestCase
         $this->assertEquals('5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==', $app->encodePassword($user, 'foo'));
     }
 
-    // public function createApplication($users = array())
-    // {
-    //     $app = \Eccube\Application::getInstance();
+    public function createApplication($users = array())
+    {
+        $app = \Eccube\Application::getInstance();
+        $app['debug'] = true;
+        if (!$app->offsetExists('config')) {
+            // ログの内容をERRORレベルでしか出力しないように設定を上書き
+            $app->extend('config', function ($config, $app) {
+            $config['log']['log_level'] = 'ERROR';
+            $config['log']['action_level'] = 'ERROR';
+            $config['log']['passthru_level'] = 'ERROR';
 
-    //     // ログの内容をERRORレベルでしか出力しないように設定を上書き
-    //     // $app->extend('config', function ($config, \Silex\Application $app) {
-    //     //     $config['log']['log_level'] = 'ERROR';
-    //     //     $config['log']['action_level'] = 'ERROR';
-    //     //     $config['log']['passthru_level'] = 'ERROR';
+            $channel = $config['log']['channel'];
+            foreach (array('monolog', 'front', 'admin') as $key) {
+                $channel[$key]['log_level'] = 'ERROR';
+                $channel[$key]['action_level'] = 'ERROR';
+                $channel[$key]['passthru_level'] = 'ERROR';
+            }
+            $config['log']['channel'] = $channel;
 
-    //     //     $channel = $config['log']['channel'];
-    //     //     foreach (array('monolog', 'front', 'admin') as $key) {
-    //     //         $channel[$key]['log_level'] = 'ERROR';
-    //     //         $channel[$key]['action_level'] = 'ERROR';
-    //     //         $channel[$key]['passthru_level'] = 'ERROR';
-    //     //     }
-    //     //     $config['log']['channel'] = $channel;
+            return $config;
+                });
+            $app->initLogger();
+        }
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'default' => array(
+                    'http' => true,
+                    'users' => $users,
+                ),
+            ),
+        ));
 
-    //     //     return $config;
-    //     // });
-    //     // $app->initLogger();
-
-    //     $app->register(new SecurityServiceProvider(), array(
-    //         'security.firewalls' => array(
-    //             'default' => array(
-    //                 'http' => true,
-    //                 'users' => $users,
-    //             ),
-    //         ),
-    //     ));
-
-    //     return $app;
-    // }
+        $app->initialize();
+        return $app;
+    }
 }
