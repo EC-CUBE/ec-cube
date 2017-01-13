@@ -66,7 +66,7 @@ class PriceTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
         $this->form = $this->app['form.factory']
-            ->createBuilder(PriceType::class)
+            ->createBuilder(PriceType::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 
@@ -105,7 +105,8 @@ class PriceTypeTest extends AbstractTypeTestCase
 
     public function testNotRequiredOption()
     {
-        $form = $this->app['form.factory']->createBuilder(FormType::class)
+        $form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('price', PriceType::class, array(
                 'required' => false,
             ))

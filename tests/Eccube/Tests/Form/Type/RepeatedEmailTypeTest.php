@@ -46,7 +46,8 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+        $this->form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('email', RepeatedEmailType::class, array(
             ))
             ->getForm();

@@ -94,7 +94,7 @@ class KanaTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+        $this->form = $this->app['form.factory']->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('kana', KanaType::class)
             ->getForm();
     }

@@ -30,7 +30,7 @@ class LoginControllerTest extends AbstractWebTestCase
 
     public function testRoutingAdminLogin()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_login'));
+        $this->client->request('GET', $this->app->url('admin_login'));
 
         // ログイン
         $this->assertEquals(
@@ -43,7 +43,7 @@ class LoginControllerTest extends AbstractWebTestCase
     public function testRoutingAdminLoginCheck()
     {
         $crawler = $this->client->request(
-            'POST', $this->app['url_generator']->generate('admin_login'),
+            'POST', $this->app->url('admin_login'),
             array(
                 'login_id' => 'admin',
                 'password' => 'password',
@@ -51,12 +51,12 @@ class LoginControllerTest extends AbstractWebTestCase
             )
         );
 
-        $this->assertNotNull($this->app['security']->getToken(), 'ログインしているかどうか');
+        $this->assertNotNull($this->app['security.token_storage']->getToken(), 'ログインしているかどうか');
     }
 
     public function testRoutingAdminLogin_ログインしていない場合は401エラーがかえる()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_homepage'));
+        $this->client->request('GET', $this->app->url('admin_homepage'));
 
         // ログイン
         $this->assertEquals(

@@ -36,7 +36,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminIndex()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('admin_homepage'));
+        $crawler = $this->client->request('GET', $this->app['url_generator']->generate('admin_homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 

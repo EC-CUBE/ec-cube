@@ -49,7 +49,7 @@ class AddressTypeTest extends AbstractTypeTestCase
         parent::setUp();
 
         $this->form = $this->app['form.factory']
-            ->createBuilder(FormType::class)
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class)
             ->getForm();
     }
@@ -107,7 +107,7 @@ class AddressTypeTest extends AbstractTypeTestCase
     public function testRequiredAddNotBlank_Pref()
     {
         $this->form = $this->app['form.factory']
-            ->createBuilder(FormType::class)
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class, array(
                 'required' => true,
             ))
@@ -123,7 +123,7 @@ class AddressTypeTest extends AbstractTypeTestCase
     public function testRequiredAddNotBlank_Addr01()
     {
         $this->form = $this->app['form.factory']
-            ->createBuilder(FormType::class)
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class, array(
                 'required' => true,
             ))
@@ -139,7 +139,7 @@ class AddressTypeTest extends AbstractTypeTestCase
     public function testRequiredAddNotBlank_Addr02()
     {
         $this->form = $this->app['form.factory']
-            ->createBuilder(FormType::class)
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class, array(
                 'required' => true,
             ))

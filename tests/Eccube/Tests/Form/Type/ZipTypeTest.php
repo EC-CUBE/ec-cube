@@ -47,7 +47,8 @@ class ZipTypeTest extends AbstractTypeTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+        $this->form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class)
             ->getForm();
     }
@@ -94,7 +95,8 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip01()
     {
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+        $this->form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class, array(
                 'required' => true,
             ))
@@ -108,7 +110,8 @@ class ZipTypeTest extends AbstractTypeTestCase
 
     public function testRequiredAddNotBlank_Zip02()
     {
-        $this->form = $this->app['form.factory']->createBuilder(FormType::class)
+        $this->form = $this->app['form.factory']
+            ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('zip', ZipType::class, array(
                 'required' => true,
             ))

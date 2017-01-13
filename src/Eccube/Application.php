@@ -549,6 +549,7 @@ class Application extends \Silex\Application
     public function initSecurity()
     {
         $this->register(new \Silex\Provider\SecurityServiceProvider());
+        $this->register(new \Silex\Provider\CsrfServiceProvider());
         $this->register(new \Silex\Provider\RememberMeServiceProvider());
 
         $this['security.firewalls'] = array(
