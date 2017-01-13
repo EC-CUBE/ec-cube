@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -35,43 +35,27 @@ use Doctrine\ORM\Query;
  */
 class PaymentRepository extends EntityRepository
 {
-    public function findOrCreate($id, $Creator = null)
+
+    public function findOrCreate($id)
     {
         if ($id == 0) {
-            $em = $this->getEntityManager();
-            if ($Creator == null) {
-                $Creator = $em->getRepository('\Eccube\Entity\Member')->findOneBy(array(), array('rank' => 'DESC'));
+
+            $Payment = $this->findOneBy(array(), array('rank' => 'DESC'));
+
+            $rank = 1;
+            if ($Payment) {
+                $rank = $Payment->getRank() + 1;
             }
 
-            $Payment = $this->createPayment($Creator);
+            $Payment = new \Eccube\Entity\Payment();
+            $Payment
+                ->setRank($rank)
+                ->setDelFlg(0)
+                ->setFixFlg(1)
+                ->setChargeFlg(1);
         } else {
             $Payment = $this->find($id);
         }
-
-        return $Payment;
-    }
-
-    /**
-     * create Payment
-     * @param \Eccube\Entity\Member $Creator
-     * @return \Eccube\Entity\Payment
-     */
-    private function createPayment($Creator)
-    {
-        $PaymentOld = $this->findOneBy(array(), array('rank' => 'DESC'));
-
-        $rank = 1;
-        if ($PaymentOld) {
-            $rank = $PaymentOld->getRank() + 1;
-        }
-
-        $Payment = new \Eccube\Entity\Payment();
-        $Payment
-            ->setRank($rank)
-            ->setDelFlg(0)
-            ->setFixFlg(1)
-            ->setChargeFlg(1)
-            ->setCreator($Creator);
 
         return $Payment;
     }
@@ -86,7 +70,6 @@ class PaymentRepository extends EntityRepository
             ->getResult(Query::HYDRATE_ARRAY);
 
         return $result;
-
     }
 
     /**
@@ -145,7 +128,6 @@ class PaymentRepository extends EntityRepository
                 }
 
                 $payments = $arr;
-
             } else {
                 $payments = $p;
             }
@@ -153,6 +135,5 @@ class PaymentRepository extends EntityRepository
         }
 
         return $payments;
-
     }
 }
