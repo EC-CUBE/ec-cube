@@ -25,6 +25,7 @@
 namespace Eccube\Controller\Block;
 
 use Eccube\Application;
+use Eccube\Form\Type\SearchProductBlockType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,7 @@ class SearchProductController
     {
         /** @var $form \Symfony\Component\Form\Form */
         $builder = $app['form.factory']
-            ->createNamedBuilder('', 'search_product_block')
+            ->createNamedBuilder('', SearchProductBlockType::class)
             ->setMethod('GET');
 
         $event = new EventArgs(
@@ -44,7 +45,7 @@ class SearchProductController
             ),
             $request
         );
-        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
+        // $app['eccube.event.dispatcher']->dispatch(EccubeEvents::FRONT_BLOCK_SEARCH_PRODUCT_INDEX_INITIALIZE, $event);
 
         /** @var $request \Symfony\Component\HttpFoundation\Request */
         $request = $app['request_stack']->getMasterRequest();

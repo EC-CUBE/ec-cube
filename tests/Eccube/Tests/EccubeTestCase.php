@@ -300,6 +300,7 @@ abstract class EccubeTestCase extends WebTestCase
             $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
         }
         $app->boot();
+        $app->flush();
 
         return $app;
     }

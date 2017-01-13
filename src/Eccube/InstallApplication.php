@@ -26,8 +26,17 @@ namespace Eccube;
 use Eccube\Application\ApplicationTrait;
 use Symfony\Component\Yaml\Yaml;
 
-class InstallApplication extends ApplicationTrait
+class InstallApplication extends \Silex\Application
 {
+    use \Silex\Application\FormTrait;
+    use \Silex\Application\UrlGeneratorTrait;
+    use \Silex\Application\MonologTrait;
+    use \Silex\Application\SwiftmailerTrait;
+    use \Silex\Application\SecurityTrait;
+    use \Eccube\Application\ApplicationTrait;
+    use \Eccube\Application\SecurityTrait;
+    use \Eccube\Application\TwigTrait;
+
     public function __construct(array $values = array())
     {
         $app = $this;

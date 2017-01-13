@@ -169,6 +169,7 @@ class MypageControllerTest extends AbstractWebTestCase
             'GET',
             $this->app->path('mypage_history', array('id' => 999999999))
         );
+
         // debugはOFFの時に404ページが表示します。
         if($this->app['debug'] == false){
             $this->expected = 404;

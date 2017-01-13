@@ -279,13 +279,12 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
         }
 
         // Form\Type
-        $app['form.type.extensions'] = $app->extend('form.type.extensions', function ($extensions) use ($app) {
+        $app->extend('form.type.extensions', function ($extensions) use ($app) {
             $extensions[] = new \Eccube\Form\Extension\HelpTypeExtension();
             $extensions[] = new \Eccube\Form\Extension\FreezeTypeExtension();
-
             return $extensions;
         });
-        $app['form.types'] = $app->extend('form.types', function ($types) use ($app) {
+        $app->extend('form.types', function ($types) use ($app) {
             $types[] = new \Eccube\Form\Type\NameType($app['config']);
             $types[] = new \Eccube\Form\Type\KanaType($app['config']);
             $types[] = new \Eccube\Form\Type\TelType($app['config']);

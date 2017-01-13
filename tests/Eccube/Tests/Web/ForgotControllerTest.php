@@ -107,7 +107,7 @@ class ForgotControllerTest extends AbstractWebTestCase
                 'GET',
                 '/forgot/reset/a___aaa'
             );
-           
+
         // debugはOFFの時に403ページが表示します。
         if($this->app['debug'] == false){
             $this->expected = 403;
@@ -123,7 +123,7 @@ class ForgotControllerTest extends AbstractWebTestCase
             $this->setExpectedException('\Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
         }
         $client = $this->createClient();
-        
+
         $crawler = $client->request(
            'GET',
            '/forgot/reset/aaaa'

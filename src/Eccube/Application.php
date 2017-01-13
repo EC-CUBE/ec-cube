@@ -37,8 +37,17 @@ use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
 
-class Application extends ApplicationTrait
+class Application extends \Silex\Application
 {
+    use \Silex\Application\FormTrait;
+    use \Silex\Application\UrlGeneratorTrait;
+    use \Silex\Application\MonologTrait;
+    use \Silex\Application\SwiftmailerTrait;
+    use \Silex\Application\SecurityTrait;
+    use \Eccube\Application\ApplicationTrait;
+    use \Eccube\Application\SecurityTrait;
+    use \Eccube\Application\TwigTrait;
+
     protected static $instance;
 
     protected $initialized = false;
@@ -142,32 +151,31 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
 
-        $app = $this;
-        // $this->error(function (\Exception $e, $code) use ($app) {
-        //     if ($app['debug']) {
-        //         return;
-        //     }
+        $this->error(function (\Exception $e, $code) {
+            if ($this['debug']) {
+                return;
+            }
 
-        //     switch ($code) {
-        //         case 403:
-        //             $title = 'アクセスできません。';
-        //             $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
-        //             break;
-        //         case 404:
-        //             $title = 'ページがみつかりません。';
-        //             $message = 'URLに間違いがないかご確認ください。';
-        //             break;
-        //         default:
-        //             $title = 'システムエラーが発生しました。';
-        //             $message = '大変お手数ですが、サイト管理者までご連絡ください。';
-        //             break;
-        //     }
+            switch ($code) {
+                case 403:
+                    $title = 'アクセスできません。';
+                    $message = 'お探しのページはアクセスができない状況にあるか、移動もしくは削除された可能性があります。';
+                    break;
+                case 404:
+                    $title = 'ページがみつかりません。';
+                    $message = 'URLに間違いがないかご確認ください。';
+                    break;
+                default:
+                    $title = 'システムエラーが発生しました。';
+                    $message = '大変お手数ですが、サイト管理者までご連絡ください。';
+                    break;
+            }
 
-        //     return $app->render('error.twig', array(
-        //         'error_title' => $title,
-        //         'error_message' => $message,
-        //     ));
-        // });
+            return $this->render('error.twig', array(
+                'error_title' => $title,
+                'error_message' => $message,
+            ));
+        });
 
         // init mailer
         $this->initMailer();

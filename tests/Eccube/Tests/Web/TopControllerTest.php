@@ -29,7 +29,7 @@ class TopControllerTest extends AbstractWebTestCase
 
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
+        $crawler = $this->client->request('GET', $this->app->url('homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
