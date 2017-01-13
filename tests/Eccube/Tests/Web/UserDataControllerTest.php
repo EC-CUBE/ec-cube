@@ -21,6 +21,7 @@ class UserDataControllerTest extends AbstractWebTestCase
 
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->app['config'];
+        $this->app->offsetUnset('config'); // XXX config を変更するため freeze を解除
         $config['template_default_realdir'] = vfsStream::url('rootDir');
         $config['user_data_realdir'] = $config['template_default_realdir'].'/user_data';
         mkdir($config['user_data_realdir']);

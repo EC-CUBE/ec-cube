@@ -132,6 +132,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $NewCustomer = $this->app['eccube.repository.customer']->findOneBy(array('email' => $form['email']));
+        $this->assertNotNull($NewCustomer);
         $this->assertTrue($form['email'] == $NewCustomer->getEmail());
     }
 

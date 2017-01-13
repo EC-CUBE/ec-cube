@@ -35,7 +35,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminSettingSystemMember()
     {
-        $this->client->request('GET',
+        $crawler = $this->client->request('GET',
             $this->app->url('admin_setting_system_member')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

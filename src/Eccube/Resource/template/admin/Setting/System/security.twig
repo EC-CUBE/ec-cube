@@ -64,7 +64,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                     <div id="site_security_box__force_ssl" class="form-group">
                         <label class="col-sm-3 col-lg-2 form-inline">SSL制限</label>
                         <div class="col-sm-9 col-lg-10">
-                            {% if app.request.secure %}
+                            {% if app.request_stack.currentrequest.secure %}
                                 {{ form_widget(form.force_ssl) }}
                                 {{ form_errors(form.force_ssl) }}
                             {% else %}

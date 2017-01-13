@@ -64,8 +64,7 @@ class SaveEventSubscriber implements EventSubscriber
         }
 
         if ($this->app['security.token_storage']->getToken() && $this->app['security.authorization_checker']->isGranted('ROLE_ADMIN') && method_exists($entity, 'setCreator')) {
-            $Member = $this->app['security']->getToken()->getUser();
-            $entity->setCreator($Member);
+            $entity->setCreator($this->app->user());
         }
     }
 

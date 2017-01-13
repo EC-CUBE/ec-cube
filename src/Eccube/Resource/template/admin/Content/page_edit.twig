@@ -58,7 +58,7 @@
                                 {% if editable %}
                                     {{ url('top') }}{{ app.config.user_data_route }}/{{ form_widget(form.url) }}
                                 {% else %}
-                                    {{ app.request.schemeAndHttpHost }}{{ app.request.basePath }}{{ app.routes.get(form.url.vars.value).path }}
+                                    {{ app.request_stack.currentrequest.schemeAndHttpHost }}{{ app.request_stack.currentrequest.basePath }}{{ app.routes.get(form.url.vars.value).path }}
                                     {{ form_widget(form.url, { type : 'hidden' } ) }}
                                 {% endif %}
                                 {{ form_errors(form.url) }}

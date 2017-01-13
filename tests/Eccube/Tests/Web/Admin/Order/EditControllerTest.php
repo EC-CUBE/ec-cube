@@ -332,6 +332,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
         $SavedOrder = $this->app['eccube.repository.order']->find($savedOderId);
 
+        $this->assertNotNull($SavedOrder);
         $this->expected = $this->Customer->getSex();
         $this->actual = $SavedOrder->getSex();
         $this->verify('会員の性別が保存されている');

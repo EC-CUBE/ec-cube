@@ -44,6 +44,7 @@ class Application extends \Silex\Application
     use \Silex\Application\MonologTrait;
     use \Silex\Application\SwiftmailerTrait;
     use \Silex\Application\SecurityTrait;
+    use \Silex\Application\TranslationTrait;
     use \Eccube\Application\ApplicationTrait;
     use \Eccube\Application\SecurityTrait;
     use \Eccube\Application\TwigTrait;
@@ -653,7 +654,7 @@ class Application extends \Silex\Application
         }
 
         // setup event dispatcher
-        // $this->initPluginEventDispatcher();
+        $this->initPluginEventDispatcher();
 
         // load plugin
         $this->loadPlugin();
@@ -677,48 +678,48 @@ class Application extends \Silex\Application
             $this['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         }, self::EARLY_EVENT);
 
-        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
+        $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) {
             if (!$event->isMasterRequest()) {
                 return;
             }
             $route = $event->getRequest()->attributes->get('_route');
             $hookpoint = "eccube.event.controller.$route.before";
-            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
+            $this['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($app) {
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) {
             if (!$event->isMasterRequest()) {
                 return;
             }
             $route = $event->getRequest()->attributes->get('_route');
             $hookpoint = "eccube.event.controller.$route.after";
-            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
+            $this['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) use ($app) {
+        $this->on(KernelEvents::RESPONSE, function (FilterResponseEvent $event) {
             if (!$event->isMasterRequest()) {
                 return;
             }
             $hookpoint = 'eccube.event.app.after';
-            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
+            $this['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         }, self::LATE_EVENT);
 
-        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($app) {
+        $this->on(KernelEvents::TERMINATE, function (PostResponseEvent $event) {
             $route = $event->getRequest()->attributes->get('_route');
             $hookpoint = "eccube.event.controller.$route.finish";
-            $app['eccube.event.dispatcher']->dispatch($hookpoint, $event);
+            $this['eccube.event.dispatcher']->dispatch($hookpoint, $event);
         });
 
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) {
             if (!$event->isMasterRequest()) {
                 return;
             }
             $route = $event->getRequest()->attributes->get('_route');
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
+            $this['eccube.event.dispatcher']->dispatch('eccube.event.render.'.$route.'.before', $event);
         });
 
         // Request Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function (\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::REQUEST, function (\Symfony\Component\HttpKernel\Event\GetResponseEvent $event) {
 
             if (!$event->isMasterRequest()) {
                 return;
@@ -730,26 +731,26 @@ class Application extends \Silex\Application
                 return;
             }
 
-            $app['monolog']->debug('KernelEvents::REQUEST '.$route);
+            $this['monolog']->debug('KernelEvents::REQUEST '.$route);
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
+            $this['eccube.event.dispatcher']->dispatch('eccube.event.app.request', $event);
 
             if (strpos($route, 'admin') === 0) {
                 // 管理画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.request', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.admin.request', $event);
             } else {
                 // フロント画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.request', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.front.request', $event);
             }
 
             // ルーティング単位
-            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.request", $event);
+            $this['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.request", $event);
 
         }, 30); // Routing(32)が解決しし, 認証判定(8)が実行される前のタイミング.
 
         // Controller Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) {
 
             if (!$event->isMasterRequest()) {
                 return;
@@ -761,25 +762,25 @@ class Application extends \Silex\Application
                 return;
             }
 
-            $app['monolog']->debug('KernelEvents::CONTROLLER '.$route);
+            $this['monolog']->debug('KernelEvents::CONTROLLER '.$route);
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.controller', $event);
+            $this['eccube.event.dispatcher']->dispatch('eccube.event.app.controller', $event);
 
             if (strpos($route, 'admin') === 0) {
                 // 管理画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.controller', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.admin.controller', $event);
             } else {
                 // フロント画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.controller', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.front.controller', $event);
             }
 
             // ルーティング単位
-            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.controller", $event);
+            $this['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.controller", $event);
         });
 
         // Response Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE, function (\Symfony\Component\HttpKernel\Event\FilterResponseEvent $event) {
             if (!$event->isMasterRequest()) {
                 return;
             }
@@ -790,25 +791,25 @@ class Application extends \Silex\Application
                 return;
             }
 
-            $app['monolog']->debug('KernelEvents::RESPONSE '.$route);
+            $this['monolog']->debug('KernelEvents::RESPONSE '.$route);
 
             // ルーティング単位
-            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.response", $event);
+            $this['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.response", $event);
 
             if (strpos($route, 'admin') === 0) {
                 // 管理画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.response', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.admin.response', $event);
             } else {
                 // フロント画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.response', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.front.response', $event);
             }
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.response', $event);
+            $this['eccube.event.dispatcher']->dispatch('eccube.event.app.response', $event);
         });
 
         // Exception Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function (\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::EXCEPTION, function (\Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event) {
 
             if (!$event->isMasterRequest()) {
                 return;
@@ -820,25 +821,25 @@ class Application extends \Silex\Application
                 return;
             }
 
-            $app['monolog']->debug('KernelEvents::EXCEPTION '.$route);
+            $this['monolog']->debug('KernelEvents::EXCEPTION '.$route);
 
             // ルーティング単位
-            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.exception", $event);
+            $this['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.exception", $event);
 
             if (strpos($route, 'admin') === 0) {
                 // 管理画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.exception', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.admin.exception', $event);
             } else {
                 // フロント画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.exception', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.front.exception', $event);
             }
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.exception', $event);
+            $this['eccube.event.dispatcher']->dispatch('eccube.event.app.exception', $event);
         });
 
         // Terminate Event
-        $this->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function (\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) use ($app) {
+        $this->on(\Symfony\Component\HttpKernel\KernelEvents::TERMINATE, function (\Symfony\Component\HttpKernel\Event\PostResponseEvent $event) {
 
             $route = $event->getRequest()->attributes->get('_route');
 
@@ -846,21 +847,21 @@ class Application extends \Silex\Application
                 return;
             }
 
-            $app['monolog']->debug('KernelEvents::TERMINATE '.$route);
+            $this['monolog']->debug('KernelEvents::TERMINATE '.$route);
 
             // ルーティング単位
-            $app['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.terminate", $event);
+            $this['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.terminate", $event);
 
             if (strpos($route, 'admin') === 0) {
                 // 管理画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.admin.terminate', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.admin.terminate', $event);
             } else {
                 // フロント画面
-                $app['eccube.event.dispatcher']->dispatch('eccube.event.front.terminate', $event);
+                $this['eccube.event.dispatcher']->dispatch('eccube.event.front.terminate', $event);
             }
 
             // 全体
-            $app['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
+            $this['eccube.event.dispatcher']->dispatch('eccube.event.app.terminate', $event);
         });
     }
 
