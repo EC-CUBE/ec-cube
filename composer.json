@@ -11,7 +11,7 @@
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
     "require": {
-        "php": ">=5.6",
+        "php": ">=5.5.9",
         "silex/silex": "*",
         "silex/web-profiler": "*",
         "doctrine/orm": "*",
@@ -54,6 +54,7 @@
         "symfony/web-profiler-bundle": ">=2.7,<3.2",
         "symfony/var-dumper": ">=2.7,<3.2",
         "symfony/debug-bundle": ">=2.7,<3.2",
+        "symfony/inflector": ">=2.7,<3.2",
         "psr/log": "^1.0",
         "composer/ca-bundle": "^1.0",
         "ext-mbstring": "*"
@@ -66,7 +67,7 @@
         "symfony/browser-kit": ">=2.7,<3.2",
         "friendsofphp/php-cs-fixer": "^1.11",
         "satooshi/php-coveralls": "~1.0",
-        "symfony/phpunit-bridge": "^3.2"
+        "symfony/phpunit-bridge": ">=2.7,<3.2"
     },
     "autoload": {
         "files": [ "src/Eccube/Resource/functions/log.php" ],
@@ -90,7 +91,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.6"
+            "php": "5.5.9"
         }
     }
 }
