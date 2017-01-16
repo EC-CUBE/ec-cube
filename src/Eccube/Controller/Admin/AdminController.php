@@ -122,6 +122,7 @@ class AdminController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
+        $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
         $Orders = $this->getOrderEachStatus($app['orm.em'], $excludes);
@@ -143,6 +144,7 @@ class AdminController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
+        $excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
         $salesToday = $this->getSalesByDay($app['orm.em'], new \DateTime(), $excludes);
