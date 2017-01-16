@@ -29,6 +29,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Eccube\Form\Type\MasterType;
 
 class PageMaxType extends AbstractType
 {
@@ -78,6 +79,6 @@ class PageMaxType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

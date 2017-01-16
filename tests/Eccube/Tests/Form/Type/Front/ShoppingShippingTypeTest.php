@@ -23,10 +23,12 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
+use Eccube\Form\Type\Front\ShoppingShippingType;
+
 /**
  * CustomerAddressTypeと同じものなので基本不要
  */
-class ShoppingShippingType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+class ShoppingShippingTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
     protected $app;
@@ -72,7 +74,7 @@ class ShoppingShippingType extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('shopping_shipping', null, array(
+            ->createBuilder(ShoppingShippingType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

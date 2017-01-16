@@ -25,9 +25,16 @@
 namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\RepeatedEmailType;
 
 /**
  * ゲスト購入のお客様情報入力画面
@@ -52,13 +59,13 @@ class NonMemberType extends AbstractType
         $config = $this->config;
 
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', 'kana', array(
+            ->add('kana', KanaType::class, array(
                 'required' => true,
             ))
-            ->add('company_name', 'text', array(
+            ->add('company_name', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -66,16 +73,16 @@ class NonMemberType extends AbstractType
                     )),
                 ),
             ))
-            ->add('zip', 'zip', array(
+            ->add('zip', ZipType::class, array(
                 'required' => true,
             ))
-            ->add('address', 'address', array(
+            ->add('address', AddressType::class, array(
                 'required' => true,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => true,
             ))
-            ->add('email', 'repeated_email');
+            ->add('email', RepeatedEmailType::class);
     }
 
     /**

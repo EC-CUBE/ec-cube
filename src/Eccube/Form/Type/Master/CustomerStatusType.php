@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Eccube\Form\Type\MasterType;
 
 class CustomerStatusType extends AbstractType
 {
@@ -50,7 +51,7 @@ class CustomerStatusType extends AbstractType
 
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 
     public function getBlockPrefix()

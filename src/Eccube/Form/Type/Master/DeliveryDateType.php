@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Master;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Eccube\Form\Type\MasterType;
 
 class DeliveryDateType extends AbstractType
 {
@@ -54,6 +55,6 @@ class DeliveryDateType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

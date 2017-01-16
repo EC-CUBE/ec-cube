@@ -53,7 +53,7 @@ class ShoppingShippingType extends AbstractType
      */
     public function getParent()
     {
-        return 'customer_address';
+        return CustomerAddressType::class;
     }
 
     /**

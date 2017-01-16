@@ -29,6 +29,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Eccube\Form\Type\MasterType;
 
 class ProductListOrderByType extends AbstractType
 {
@@ -78,6 +79,6 @@ class ProductListOrderByType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Eccube\Form\Type\MasterType;
 
 class OrderStatusType extends AbstractType
 {
@@ -55,6 +56,6 @@ class OrderStatusType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }

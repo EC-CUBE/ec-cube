@@ -29,6 +29,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Eccube\Form\Type\MasterType;
 
 class DispType extends AbstractType
 {
@@ -48,7 +49,7 @@ class DispType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 
     /**

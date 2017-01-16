@@ -28,6 +28,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
+use Eccube\Form\Type\MasterType;
 
 class CategoryType extends AbstractType
 {
@@ -49,7 +50,7 @@ class CategoryType extends AbstractType
 
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 
     public function getBlockPrefix()

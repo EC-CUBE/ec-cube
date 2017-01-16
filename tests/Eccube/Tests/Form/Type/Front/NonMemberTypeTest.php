@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Front;
 
+use Eccube\Form\Type\Front\NonMemberType;
+
 class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -68,7 +70,7 @@ class NonMemberTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('nonmember', null, array(
+            ->createBuilder(NonMemberType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

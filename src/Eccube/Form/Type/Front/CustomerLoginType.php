@@ -25,6 +25,9 @@
 namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -44,7 +47,7 @@ class CustomerLoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('login_email', 'email', array( // todo text -> email ?
+        $builder->add('login_email', EmailType::class, array( // todo text -> email ?
             'attr' => array(
                 'max_length' => 320, // todo
             ),
@@ -54,10 +57,10 @@ class CustomerLoginType extends AbstractType
             ),
             'data' => $this->session->get('_security.last_username'),
         ));
-        $builder->add('login_memory', 'checkbox', array(
+        $builder->add('login_memory', CheckboxType::class, array(
             'required' => false,
         ));
-        $builder->add('login_pass', 'password', array(
+        $builder->add('login_pass', PasswordType::class, array(
             'attr' => array(
                 'max_length' => 320, // todo
             ),

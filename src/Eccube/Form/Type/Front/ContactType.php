@@ -25,8 +25,15 @@
 namespace Eccube\Form\Type\Front;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\TelType;
 
 class ContactType extends AbstractType
 {
@@ -43,29 +50,29 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'required' => true,
             ))
-            ->add('kana', 'kana', array(
+            ->add('kana', KanaType::class, array(
                 'required' => false,
             ))
-            ->add('zip', 'zip', array(
+            ->add('zip', ZipType::class, array(
                 'required' => false,
             ))
-            ->add('address', 'address', array(
+            ->add('address', AddressType::class, array(
                 'required' => false,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => false,
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Email(array('strict' => true)),
                 ),
             ))
-            ->add('contents', 'textarea', array(
+            ->add('contents', TextareaType::class, array(
                 'help' => 'form.contact.contents.help',
                 'constraints' => array(
                     new Assert\NotBlank(),

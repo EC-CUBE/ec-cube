@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Master;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
+use Eccube\Form\Type\MasterType;
 
 class MailTemplateType extends AbstractType
 {
@@ -58,6 +59,6 @@ class MailTemplateType extends AbstractType
      */
     public function getParent()
     {
-        return 'master';
+        return MasterType::class;
     }
 }
