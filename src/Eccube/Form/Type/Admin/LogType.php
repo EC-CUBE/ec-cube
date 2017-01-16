@@ -25,6 +25,8 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -54,7 +56,7 @@ class LogType extends AbstractType
         }
 
         $builder
-            ->add('files', 'choice', array(
+            ->add('files', ChoiceType::class, array(
                 'label' => 'ログファイル',
                 'choices' => $files,
                 'data' => 'site_'.date('Y-m-d').'.log',
@@ -64,7 +66,7 @@ class LogType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('line_max', 'text', array(
+            ->add('line_max', TextType::class, array(
                 'label' => '表示行数',
                 'data' => '50',
                 'constraints' => array(

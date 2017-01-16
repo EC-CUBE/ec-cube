@@ -26,9 +26,15 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\Master\OrderStatusType;
+use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\Master\PaymentType;
 
 class SearchOrderType extends AbstractType
 {
@@ -47,28 +53,28 @@ class SearchOrderType extends AbstractType
         $config = $this->config;
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
-            ->add('multi', 'text', array(
+            ->add('multi', TextType::class, array(
                 'label' => '受注ID・注文者名・注文者（フリガナ）・注文者会社名',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $config['stext_len'])),
                 ),
             ))
-            ->add('status', 'order_status', array(
+            ->add('status', OrderStatusType::class, array(
                 'label' => '対応状況',
             ))
-            ->add('multi_status', 'order_status', array(
+            ->add('multi_status', OrderStatusType::class, array(
                 'label' => '対応状況',
                 'expanded' => true,
                 'multiple' => true,
             ))
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'required' => false,
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'required' => false,
             ))
-            ->add('tel', 'text', array(
+            ->add('tel', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
@@ -77,91 +83,91 @@ class SearchOrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('sex', 'sex', array(
+            ->add('sex', SexType::class, array(
                 'label' => '性別',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ))
-            ->add('payment', 'payment', array(
+            ->add('payment', PaymentType::class, array(
                 'label' => '支払方法',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
             ))
-            ->add('order_date_start', 'date', array(
+            ->add('order_date_start', DateType::class, array(
                 'label' => '受注日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('order_date_end', 'date', array(
+            ->add('order_date_end', DateType::class, array(
                 'label' => '受注日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('payment_date_start', 'date', array(
+            ->add('payment_date_start', DateType::class, array(
                 'label' => '入金日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('payment_date_end', 'date', array(
+            ->add('payment_date_end', DateType::class, array(
                 'label' => '入金日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('commit_date_start', 'date', array(
+            ->add('commit_date_start', DateType::class, array(
                 'label' => '発送日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('commit_date_end', 'date', array(
+            ->add('commit_date_end', DateType::class, array(
                 'label' => '発送日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('update_date_start', 'date', array(
+            ->add('update_date_start', DateType::class, array(
                 'label' => '更新日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('update_date_end', 'date', array(
+            ->add('update_date_end', DateType::class, array(
                 'label' => '更新日(TO)',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('payment_total_start', 'integer', array(
+            ->add('payment_total_start', IntegerType::class, array(
                 'label' => '購入金額(下限)',
                 'required' => false,
             ))
-            ->add('payment_total_end', 'integer', array(
+            ->add('payment_total_end', IntegerType::class, array(
                 'label' => '購入金額(上限)',
                 'required' => false,
             ))
-            ->add('buy_product_name', 'text', array(
+            ->add('buy_product_name', TextType::class, array(
                 'label' => '購入商品名',
                 'required' => false,
             ))
@@ -169,7 +175,7 @@ class SearchOrderType extends AbstractType
 
         $builder->add(
             $builder
-                ->create('kana', 'text', array(
+                ->create('kana', TextType::class, array(
                     'required' => false,
                     'constraints' => array(
                         new Assert\Regex(array(

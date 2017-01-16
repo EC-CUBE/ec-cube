@@ -26,13 +26,25 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\Constant;
 use Eccube\Form\DataTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\ZipType;
+use Eccube\Form\Type\TelType;
 
 class OrderType extends AbstractType
 {
@@ -54,7 +66,7 @@ class OrderType extends AbstractType
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -62,7 +74,7 @@ class OrderType extends AbstractType
                     ),
                 ),
             ))
-            ->add('kana', 'kana', array(
+            ->add('kana', KanaType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -70,7 +82,7 @@ class OrderType extends AbstractType
                     ),
                 ),
             ))
-            ->add('company_name', 'text', array(
+            ->add('company_name', TextType::class, array(
                 'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
@@ -79,7 +91,7 @@ class OrderType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
+            ->add('zip', ZipType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -87,7 +99,7 @@ class OrderType extends AbstractType
                     ),
                 ),
             ))
-            ->add('address', 'address', array(
+            ->add('address', AddressType::class, array(
                 'required' => false,
                 'pref_options' => array(
                     'constraints' => array(
@@ -112,7 +124,7 @@ class OrderType extends AbstractType
                     ),
                 ),
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'required' => false,
                 'label' => 'メールアドレス',
                 'constraints' => array(
@@ -120,7 +132,7 @@ class OrderType extends AbstractType
                     new Assert\Email(array('strict' => true)),
                 ),
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -128,11 +140,11 @@ class OrderType extends AbstractType
                     ),
                 ),
             ))
-            ->add('fax', 'tel', array(
+            ->add('fax', TelType::class, array(
                 'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('company_name', 'text', array(
+            ->add('company_name', TextType::class, array(
                 'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
@@ -141,7 +153,7 @@ class OrderType extends AbstractType
                     ))
                 ),
             ))
-            ->add('message', 'textarea', array(
+            ->add('message', TextareaType::class, array(
                 'label' => 'お問い合わせ',
                 'required' => false,
                 'constraints' => array(
@@ -150,10 +162,10 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('discount', 'money', array(
+            ->add('discount', MoneyType::class, array(
                 'label' => '値引き',
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -161,10 +173,10 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('delivery_fee_total', 'money', array(
+            ->add('delivery_fee_total', MoneyType::class, array(
                 'label' => '送料',
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -172,10 +184,10 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('charge', 'money', array(
+            ->add('charge', MoneyType::class, array(
                 'label' => '手数料',
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -183,7 +195,7 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('note', 'textarea', array(
+            ->add('note', TextareaType::class, array(
                 'label' => 'SHOP用メモ欄',
                 'required' => false,
                 'constraints' => array(
@@ -192,11 +204,11 @@ class OrderType extends AbstractType
                     )),
                 ),
             ))
-            ->add('OrderStatus', 'entity', array(
+            ->add('OrderStatus', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\OrderStatus',
-                'property' => 'name',
-                'empty_value' => '選択してください',
-                'empty_data' => null,
+                // 'property' => 'name',
+                // FIXME 'empty_value' => '選択してください',
+                // 'empty_data' => null,
                 'query_builder' => function($er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.rank', 'ASC');
@@ -205,30 +217,30 @@ class OrderType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('Payment', 'entity', array(
+            ->add('Payment', EntityType::class, array(
                 'required' => false,
                 'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
-                'empty_value' => '選択してください',
-                'empty_data' => null,
+                // 'property' => 'method',
+                // FIXME 'empty_value' => '選択してください',
+                // 'empty_data' => null,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('OrderDetails', 'collection', array(
-                'type' => 'order_detail',
+            ->add('OrderDetails', CollectionType::class, array(
+                // FIXME 'type' => 'order_detail',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('Shippings', 'collection', array(
-                'type' => 'shipping',
+            ->add('Shippings', CollectionType::class, array(
+                // FIXME 'type' => 'shipping',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ));
         $builder
-            ->add($builder->create('Customer', 'hidden')
+            ->add($builder->create('Customer', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->app['orm.em'],
                     '\Eccube\Entity\Customer'
@@ -313,7 +325,7 @@ class OrderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\Order',

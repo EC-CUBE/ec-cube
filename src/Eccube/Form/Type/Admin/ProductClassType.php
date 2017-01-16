@@ -26,12 +26,19 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\Master\ProductTypeType;
+use Eccube\Form\Type\Master\DeliveryDateType;
 
 class ProductClassType extends AbstractType
 {
@@ -50,11 +57,11 @@ class ProductClassType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('code', 'text', array(
+            ->add('code', TextType::class, array(
                 'label' => '商品コード',
                 'required' => false,
             ))
-            ->add('stock', 'number', array(
+            ->add('stock', NumberType::class, array(
                 'label' => '在庫数',
                 'required' => false,
                 'constraints' => array(
@@ -64,7 +71,7 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('sale_limit', 'number', array(
+            ->add('sale_limit', NumberType::class, array(
                 'label' => '販売制限数',
                 'required' => false,
                 'constraints' => array(
@@ -77,10 +84,10 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('price01', 'money', array(
+            ->add('price01', MoneyType::class, array(
                 'label' => '通常価格',
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -92,10 +99,10 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('price02', 'money', array(
+            ->add('price02', MoneyType::class, array(
                 'label' => '販売価格',
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -107,7 +114,7 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('tax_rate', 'text', array(
+            ->add('tax_rate', TextType::class, array(
                 'label' => '消費税率',
                 'required' => false,
                 'constraints' => array(
@@ -118,10 +125,10 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('delivery_fee', 'money', array(
+            ->add('delivery_fee', MoneyType::class, array(
                 'label' => '商品送料',
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'required' => false,
                 'constraints' => array(
                     new Assert\Regex(array(
@@ -130,7 +137,7 @@ class ProductClassType extends AbstractType
                     )),
                 ),
             ))
-            ->add('product_type', 'product_type', array(
+            ->add('product_type', ProductTypeType::class, array(
                 'label' => '商品種別',
                 'multiple' => false,
                 'expanded' => false,
@@ -138,12 +145,12 @@ class ProductClassType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('delivery_date', 'delivery_date', array(
+            ->add('delivery_date', DeliveryDateType::class, array(
                 'label' => 'お届け可能日',
                 'required' => false,
-                'empty_value' => '指定なし',
+                // FIXME 'empty_value' => '指定なし',
             ))
-            ->add('add', 'checkbox', array(
+            ->add('add', CheckboxType::class, array(
                 'label' => false,
                 'required' => false,
                 'value' => 1,
@@ -160,7 +167,7 @@ class ProductClassType extends AbstractType
         $transformer = new DataTransformer\IntegerToBooleanTransformer();
 
         $builder
-            ->add($builder->create('stock_unlimited', 'checkbox', array(
+            ->add($builder->create('stock_unlimited', CheckboxType::class, array(
                 'label' => '無制限',
                 'value' => '1',
                 'required' => false,
@@ -172,10 +179,10 @@ class ProductClassType extends AbstractType
             '\Eccube\Entity\ClassCategory'
         );
         $builder
-            ->add($builder->create('ClassCategory1', 'hidden')
+            ->add($builder->create('ClassCategory1', HiddenType::class)
                 ->addModelTransformer($transformer)
             )
-            ->add($builder->create('ClassCategory2', 'hidden')
+            ->add($builder->create('ClassCategory2', HiddenType::class)
                 ->addModelTransformer($transformer)
             );
     }
@@ -183,7 +190,7 @@ class ProductClassType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\ProductClass',

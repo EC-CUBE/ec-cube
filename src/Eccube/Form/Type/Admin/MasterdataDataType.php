@@ -24,6 +24,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,7 +47,7 @@ class MasterdataDataType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array(
@@ -58,7 +59,7 @@ class MasterdataDataType extends AbstractType
                     )),
                 ),
             ))
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'required' => false,
             ))
             ;

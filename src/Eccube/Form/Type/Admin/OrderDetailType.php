@@ -26,10 +26,13 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderDetailType extends AbstractType
@@ -49,14 +52,14 @@ class OrderDetailType extends AbstractType
         $config = $this->app['config'];
 
         $builder
-            ->add('new', 'hidden', array(
+            ->add('new', HiddenType::class, array(
                 'required' => false,
                 'mapped' => false,
                 'data' => 1
             ))
-            ->add('price', 'money', array(
+            ->add('price', MoneyType::class, array(
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -64,7 +67,7 @@ class OrderDetailType extends AbstractType
                     )),
                 ),
             ))
-            ->add('quantity', 'text', array(
+            ->add('quantity', TextType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -76,7 +79,7 @@ class OrderDetailType extends AbstractType
                     )),
                 ),
             ))
-            ->add('tax_rate', 'text', array(
+            ->add('tax_rate', TextType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -88,22 +91,22 @@ class OrderDetailType extends AbstractType
                     )),
                 )
             ))
-            ->add('product_name', 'hidden')
-            ->add('product_code', 'hidden')
-            ->add('class_name1', 'hidden')
-            ->add('class_name2', 'hidden')
-            ->add('class_category_name1', 'hidden')
-            ->add('class_category_name2', 'hidden')
-            ->add('tax_rule', 'hidden')
+            ->add('product_name', HiddenType::class)
+            ->add('product_code', HiddenType::class)
+            ->add('class_name1', HiddenType::class)
+            ->add('class_name2', HiddenType::class)
+            ->add('class_category_name1', HiddenType::class)
+            ->add('class_category_name2', HiddenType::class)
+            ->add('tax_rule', HiddenType::class)
         ;
 
         $builder
-            ->add($builder->create('Product', 'hidden')
+            ->add($builder->create('Product', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->app['orm.em'],
                     '\Eccube\Entity\Product'
                 )))
-            ->add($builder->create('ProductClass', 'hidden')
+            ->add($builder->create('ProductClass', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->app['orm.em'],
                     '\Eccube\Entity\ProductClass'
@@ -152,7 +155,7 @@ class OrderDetailType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Eccube\Entity\OrderDetail',

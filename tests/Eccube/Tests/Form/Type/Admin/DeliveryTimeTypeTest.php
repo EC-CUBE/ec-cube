@@ -23,6 +23,8 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Form\Type\Admin\DeliveryTimeType;
+
 class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
     /** @var \Eccube\Application */
@@ -42,7 +44,7 @@ class DeliveryTimeTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder('delivery_time', null, array(
+            ->createBuilder(DeliveryTimeType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

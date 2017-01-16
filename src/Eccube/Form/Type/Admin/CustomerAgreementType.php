@@ -25,6 +25,8 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -43,13 +45,13 @@ class CustomerAgreementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('customer_agreement', 'textarea', array(
+            ->add('customer_agreement', TextareaType::class, array(
                 'required' => true,
                 'label' => '利用規約',
                 'constraints' => array(
                     new Assert\NotBlank()),
             ))
-            ->add('save', 'submit', array('label' => 'この内容で登録する'));
+            ->add('save', SubmitType::class, array('label' => 'この内容で登録する'));
     }
 
     /**

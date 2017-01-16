@@ -26,6 +26,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Eccube\Form\Type\Admin\OrderDetailType;
 
 class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
@@ -49,7 +50,7 @@ class OrderDetailTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->app['form.factory']
-            ->createBuilder('order_detail', null, array(
+            ->createBuilder(OrderDetailType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();

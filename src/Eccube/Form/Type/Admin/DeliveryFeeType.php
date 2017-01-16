@@ -27,6 +27,7 @@ namespace Eccube\Form\Type\Admin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Eccube\Form\Type\PriceType;
 
 class DeliveryFeeType extends AbstractType
 {
@@ -36,7 +37,7 @@ class DeliveryFeeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fee', 'price', array(
+            ->add('fee', PriceType::class, array(
                 'label' => false,
             ))
         ;

@@ -26,6 +26,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Eccube\Form\Type\Admin\PaymentRegisterType;
 
 class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 {
@@ -50,7 +51,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->app['form.factory']
-            ->createBuilder('payment_register', null, array(
+            ->createBuilder(PaymentRegisterType::class, null, array(
                 'csrf_protection' => false,
             ))
             ->getForm();
