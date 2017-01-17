@@ -26,6 +26,9 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
@@ -40,25 +43,25 @@ class DeliveryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => '配送業者名',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank,
                 ),
             ))
-            ->add('service_name', 'text', array(
+            ->add('service_name', TextType::class, array(
                 'label' => '名称',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('description', 'textarea', array(
+            ->add('description', TextareaType::class, array(
                 'label' => 'ショップ用メモ欄',
                 'required' => false,
             ))
-            ->add('confirm_url', 'text', array(
+            ->add('confirm_url', TextType::class, array(
                 'label' => '伝票No.URL',
                 'required' => false,
                 'constraints' => array(
@@ -84,7 +87,7 @@ class DeliveryType extends AbstractType
                 },
                 'mapped' => false,
             ))
-            ->add('delivery_times', 'collection', array(
+            ->add('delivery_times', CollectionType::class, array(
                 'label' => 'お届け時間',
                 'required' => false,
                 'type' => 'delivery_time',
@@ -95,11 +98,11 @@ class DeliveryType extends AbstractType
             ->add('free_all', 'price', array(
                 'label' => false,
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'required' => false,
                 'mapped' => false
             ))
-            ->add('delivery_fees', 'collection', array(
+            ->add('delivery_fees', CollectionType::class, array(
                 'label' => '都道府県別設定',
                 'required' => true,
                 'type' => 'delivery_fee',

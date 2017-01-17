@@ -24,6 +24,11 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,7 +48,7 @@ class NewsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', 'date', array(
+            ->add('date', DateType::class, array(
                 'label' => '日付',
                 'required' => true,
                 'input' => 'datetime',
@@ -54,7 +59,7 @@ class NewsType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                 'label' => 'タイトル',
                 'required' => true,
                 'constraints' => array(
@@ -62,7 +67,7 @@ class NewsType extends AbstractType
                     new Assert\Length(array('max' => $this->config['mtext_len'])),
                 ),
             ))
-            ->add('url', 'text', array(
+            ->add('url', TextType::class, array(
                 'label' => 'URL',
                 'required' => false,
                 'constraints' => array(
@@ -70,19 +75,19 @@ class NewsType extends AbstractType
                     new Assert\Length(array('max' => $this->config['mtext_len'])),
                 ),
             ))
-            ->add('link_method', 'checkbox', array(
+            ->add('link_method', CheckboxType::class, array(
                 'required' => false,
                 'label' => '別ウィンドウを開く',
                 'value' => '1',
             ))
-            ->add('comment', 'textarea', array(
+            ->add('comment', TextareaType::class, array(
                 'label' => '本文',
                 'required' => false,
                 'constraints' => array(
                     new Assert\Length(array('max' => $this->config['ltext_len'])),
                 ),
             ))
-            ->add('select', 'hidden', array(
+            ->add('select', HiddenType::class, array(
                 'data' => '0',
             ));
     }

@@ -27,11 +27,11 @@ namespace Eccube\Repository;
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Member;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * MemberRepository

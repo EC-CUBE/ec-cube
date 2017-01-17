@@ -24,9 +24,9 @@
 
 namespace Eccube\Repository;
 
-use Eccube\Util\Str;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Eccube\Util\Str;
 
 /**
  * OrderRepository

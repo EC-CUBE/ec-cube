@@ -27,10 +27,10 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
-use Eccube\Form\Type\Admin\MasterdataType;
-use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\MasterdataEditType;
+use Eccube\Form\Type\Admin\MasterdataType;
 use Symfony\Component\HttpFoundation\Request;
 
 class MasterdataController extends AbstractController

@@ -24,12 +24,12 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Eccube\Form\Type\MasterType;
 
 class ProductListOrderByType extends AbstractType
 {

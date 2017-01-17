@@ -11,15 +11,15 @@
 
 namespace Eccube\ServiceProvider;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 use Silex\ConstraintValidatorFactory;
-use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\DefaultTranslator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
-use Silex\Api\BootableProviderInterface;
-use Pimple\ServiceProviderInterface;
-use Pimple\Container;
+use Symfony\Component\Validator\Validator;
 
 /**
  * Symfony Validator component Provider.

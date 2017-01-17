@@ -13,8 +13,8 @@
 
 namespace Eccube\Doctrine\ORM\Tools\Pagination;
 
-use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\AST\SelectStatement;
+use Doctrine\ORM\Query\SqlWalker;
 
 /**
  * Wraps the query in order to accurately count the root objects.

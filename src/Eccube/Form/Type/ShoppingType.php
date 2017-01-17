@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,7 +54,7 @@ class ShoppingType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('message', 'textarea', array(
+            ->add('message', TextareaType::class, array(
                 'required' => false,
                 'data' => $message,
                 'constraints' => array(

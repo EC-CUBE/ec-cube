@@ -24,12 +24,12 @@
 
 namespace Eccube\Command\PluginCommand;
 
+use Eccube\Command\PluginCommand\AbstractPluginGenerator;
 use Eccube\Common\Constant;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 use Eccube\Entity\Plugin;
 use Eccube\Entity\PluginEventHandler;
-use Eccube\Command\PluginCommand\AbstractPluginGenerator;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 class PluginGenerator extends AbstractPluginGenerator
 {

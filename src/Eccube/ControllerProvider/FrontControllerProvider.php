@@ -24,8 +24,8 @@
 
 namespace Eccube\ControllerProvider;
 
-use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
+use Silex\Application;
 
 class FrontControllerProvider implements ControllerProviderInterface
 {

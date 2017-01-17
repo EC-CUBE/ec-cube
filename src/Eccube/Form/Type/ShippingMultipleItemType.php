@@ -26,6 +26,8 @@ namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -50,7 +52,7 @@ class ShippingMultipleItemType extends AbstractType
 
 
         $builder
-            ->add('quantity', 'integer', array(
+            ->add('quantity', IntegerType::class, array(
                 'attr' => array(
                     'min' => 1,
                     'maxlength' => $this->app['config']['int_len'],
@@ -95,7 +97,7 @@ class ShippingMultipleItemType extends AbstractType
                             $addresses[$i] = $CustomerAddress->getShippingMultipleDefaultName();
                             $i++;
                         }
-                        $form->add('customer_address', 'choice', array(
+                        $form->add('customer_address', ChoiceType::class, array(
                             'choices' => $addresses,
                             'constraints' => array(
                                 new Assert\NotBlank(),

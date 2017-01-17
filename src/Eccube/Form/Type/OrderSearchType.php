@@ -26,6 +26,11 @@ namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,7 +52,7 @@ class OrderSearchType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('order_id_start', 'integer', array(
+            ->add('order_id_start', IntegerType::class, array(
                 'label' => '注文番号',
                 'required' => false,
                 'constraints' => array(
@@ -56,7 +61,7 @@ class OrderSearchType extends AbstractType
                     )),
                 ),
             ))
-            ->add('order_id_end', 'integer', array(
+            ->add('order_id_end', IntegerType::class, array(
                 'label' => '注文番号',
                 'required' => false,
                 'constraints' => array(
@@ -68,19 +73,19 @@ class OrderSearchType extends AbstractType
             ->add('status', 'order_status', array(
                 'label' => '対応状況',
             ))
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'required' => false,
             ))
-            ->add('kana', 'text', array(
+            ->add('kana', TextType::class, array(
                 'required' => false,
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'required' => false,
             ))
             ->add('tel', 'tel', array(
                 'required' => false,
             ))
-            ->add('birth_start', 'birthday', array(
+            ->add('birth_start', BirthdayType::class, array(
                 'label' => '誕生日',
                 'required' => false,
                 'input' => 'datetime',
@@ -88,7 +93,7 @@ class OrderSearchType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('birth_end', 'birthday', array(
+            ->add('birth_end', BirthdayType::class, array(
                 'label' => '誕生日',
                 'required' => false,
                 'input' => 'datetime',
@@ -108,7 +113,7 @@ class OrderSearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ))
-            ->add('order_date_start', 'date', array(
+            ->add('order_date_start', DateType::class, array(
                 'label' => '注文日',
                 'required' => false,
                 'input' => 'datetime',
@@ -116,7 +121,7 @@ class OrderSearchType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('order_date_end', 'date', array(
+            ->add('order_date_end', DateType::class, array(
                 'label' => '注文日',
                 'required' => false,
                 'input' => 'datetime',
@@ -124,7 +129,7 @@ class OrderSearchType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('update_date_start', 'date', array(
+            ->add('update_date_start', DateType::class, array(
                 'label' => '更新日',
                 'required' => false,
                 'input' => 'datetime',
@@ -132,7 +137,7 @@ class OrderSearchType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('update_date_end', 'date', array(
+            ->add('update_date_end', DateType::class, array(
                 'label' => '更新日',
                 'required' => false,
                 'input' => 'datetime',
@@ -140,15 +145,15 @@ class OrderSearchType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('payment_total_start', 'integer', array(
+            ->add('payment_total_start', IntegerType::class, array(
                 'label' => '購入金額',
                 'required' => false,
             ))
-            ->add('payment_total_end', 'integer', array(
+            ->add('payment_total_end', IntegerType::class, array(
                 'label' => '購入金額',
                 'required' => false,
             ))
-            ->add('buy_product_name', 'text', array(
+            ->add('buy_product_name', TextType::class, array(
                 'label' => '購入商品名',
                 'required' => false,
             ))

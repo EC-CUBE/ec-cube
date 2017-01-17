@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,7 +50,7 @@ class ShoppingMultipleType extends AbstractType
                 'choices' => $deliveries,
                 'data' => $delivery,
             ))
-            ->add('deliveryDate', 'choice', array(
+            ->add('deliveryDate', ChoiceType::class, array(
                 'choices' => $deliveryDates,
                 'required' => false,
                 'empty_value' => '指定なし',

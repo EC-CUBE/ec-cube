@@ -25,9 +25,9 @@
 namespace Eccube\Controller\Block;
 
 use Eccube\Application;
-use Eccube\Form\Type\SearchProductBlockType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\SearchProductBlockType;
 use Symfony\Component\HttpFoundation\Request;
 
 class SearchProductController

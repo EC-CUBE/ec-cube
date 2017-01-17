@@ -24,18 +24,18 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\Master\CategoryType;
+use Eccube\Form\Type\Master\PrefType;
+use Eccube\Form\Type\Master\SexType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Form\Type\Master\CategoryType;
-use Eccube\Form\Type\Master\PrefType;
-use Eccube\Form\Type\Master\SexType;
 
 class SearchCustomerType extends AbstractType
 {

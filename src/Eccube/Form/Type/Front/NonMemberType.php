@@ -24,17 +24,17 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\RepeatedEmailType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Form\Type\AddressType;
-use Eccube\Form\Type\NameType;
-use Eccube\Form\Type\KanaType;
-use Eccube\Form\Type\ZipType;
-use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\RepeatedEmailType;
 
 /**
  * ゲスト購入のお客様情報入力画面

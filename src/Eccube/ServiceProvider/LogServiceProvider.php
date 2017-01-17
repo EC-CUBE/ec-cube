@@ -5,10 +5,10 @@ namespace Eccube\ServiceProvider;
 use Eccube\EventListener\LogListener;
 use Eccube\Log\Logger;
 use Eccube\Log\Monolog\Helper\LogHelper;
-use Silex\Application;
-use Silex\Api\BootableProviderInterface;
-use Pimple\ServiceProviderInterface;
 use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
+use Silex\Application;
 
 /**
  * Class LogServiceProvider

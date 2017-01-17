@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -55,7 +56,7 @@ class AuthorityRoleType extends AbstractType
                 'required' => false,
                 'empty_value' => 'form.empty_value',
             ))
-            ->add('deny_url', 'text', array(
+            ->add('deny_url', TextType::class, array(
                 'label' => '拒否URL',
                 'required' => false,
             ))

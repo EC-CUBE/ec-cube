@@ -26,6 +26,9 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,7 +49,7 @@ class SearchProductType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('id', 'text', array(
+            ->add('id', TextType::class, array(
                 'label' => '商品ID',
                 'required' => false,
             ))
@@ -70,7 +73,7 @@ class SearchProductType extends AbstractType
                 'multiple'=> true,
                 'required' => false,
             ))
-            ->add('create_date_start', 'date', array(
+            ->add('create_date_start', DateType::class, array(
                 'label' => '登録日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
@@ -78,7 +81,7 @@ class SearchProductType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('create_date_end', 'date', array(
+            ->add('create_date_end', DateType::class, array(
                 'label' => '登録日(TO)',
                 'required' => false,
                 'input' => 'datetime',
@@ -86,7 +89,7 @@ class SearchProductType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('update_date_start', 'date', array(
+            ->add('update_date_start', DateType::class, array(
                 'label' => '更新日(FROM)',
                 'required' => false,
                 'input' => 'datetime',
@@ -94,7 +97,7 @@ class SearchProductType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('update_date_end', 'date', array(
+            ->add('update_date_end', DateType::class, array(
                 'label' => '更新日(TO)',
                 'required' => false,
                 'input' => 'datetime',
@@ -102,7 +105,7 @@ class SearchProductType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
-            ->add('link_status', 'hidden', array(
+            ->add('link_status', HiddenType::class, array(
                 'mapped' => false,
             ))
         ;

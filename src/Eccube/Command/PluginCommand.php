@@ -24,16 +24,16 @@
 
 namespace Eccube\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Command\PluginCommand\PluginGenerator;
 use Eccube\Command\PluginCommand\EntityFromDbGenerator;
 use Eccube\Command\PluginCommand\EntityFromYamlGenerator;
+use Eccube\Command\PluginCommand\PluginGenerator;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginCommand extends \Knp\Command\Command
 {

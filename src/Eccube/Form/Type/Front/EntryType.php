@@ -24,23 +24,23 @@
 
 namespace Eccube\Form\Type\Front;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\Master\JobType;
+use Eccube\Form\Type\Master\SexType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\RepeatedEmailType;
+use Eccube\Form\Type\RepeatedPasswordType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Form\Type\AddressType;
-use Eccube\Form\Type\NameType;
-use Eccube\Form\Type\KanaType;
-use Eccube\Form\Type\ZipType;
-use Eccube\Form\Type\TelType;
-use Eccube\Form\Type\RepeatedEmailType;
-use Eccube\Form\Type\RepeatedPasswordType;
-use Eccube\Form\Type\Master\JobType;
-use Eccube\Form\Type\Master\SexType;
 
 class EntryType extends AbstractType
 {

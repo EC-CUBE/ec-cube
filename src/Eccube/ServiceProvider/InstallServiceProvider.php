@@ -25,8 +25,8 @@
 namespace Eccube\ServiceProvider;
 
 use Pimple\Container;
-use Silex\Api\BootableProviderInterface;
 use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 
 

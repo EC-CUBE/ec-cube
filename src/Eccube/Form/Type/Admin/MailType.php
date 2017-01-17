@@ -25,6 +25,8 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -44,21 +46,21 @@ class MailType extends AbstractType
                 ),
                 'mapped' => false,
             ))
-            ->add('subject', 'text', array(
+            ->add('subject', TextType::class, array(
                 'label' => '件名',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('header', 'textarea', array(
+            ->add('header', TextareaType::class, array(
                 'label' => 'ヘッダー',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('footer', 'textarea', array(
+            ->add('footer', TextareaType::class, array(
                 'label' => 'フッター',
                 'required' => true,
                 'constraints' => array(

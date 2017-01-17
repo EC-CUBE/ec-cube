@@ -23,9 +23,9 @@
 
 namespace Eccube\Util;
 
+use Eccube\Application;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Eccube\Application;
 
 /**
  * キャッシュ関連のユーティリティクラス.

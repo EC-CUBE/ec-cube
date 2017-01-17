@@ -24,8 +24,8 @@
 
 namespace Eccube\Command\PluginCommand;
 
-use Symfony\Component\Yaml\Yaml;
 use Eccube\Command\PluginCommand\AbstractPluginGenerator;
+use Symfony\Component\Yaml\Yaml;
 
 class EntityFromDbGenerator extends AbstractPluginGenerator
 {

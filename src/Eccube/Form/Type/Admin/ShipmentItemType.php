@@ -26,6 +26,9 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -49,14 +52,14 @@ class ShipmentItemType extends AbstractType
         $config = $this->app['config'];
 
         $builder
-            ->add('new', 'hidden', array(
+            ->add('new', HiddenType::class, array(
                 'required' => false,
                 'mapped' => false,
                 'data' => 1
             ))
-            ->add('price', 'money', array(
+            ->add('price', MoneyType::class, array(
                 'currency' => 'JPY',
-                'precision' => 0,
+                'scale' => 0,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -64,7 +67,7 @@ class ShipmentItemType extends AbstractType
                     )),
                 ),
             ))
-            ->add('quantity', 'text', array(
+            ->add('quantity', TextType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -72,12 +75,12 @@ class ShipmentItemType extends AbstractType
                     )),
                 ),
             ))
-            ->add('product_name', 'hidden')
-            ->add('product_code', 'hidden')
-            ->add('class_name1', 'hidden')
-            ->add('class_name2', 'hidden')
-            ->add('class_category_name1', 'hidden')
-            ->add('class_category_name2', 'hidden')
+            ->add('product_name', HiddenType::class)
+            ->add('product_code', HiddenType::class)
+            ->add('class_name1', HiddenType::class)
+            ->add('class_name2', HiddenType::class)
+            ->add('class_category_name1', HiddenType::class)
+            ->add('class_category_name2', HiddenType::class)
         ;
 
         $builder

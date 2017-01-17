@@ -25,6 +25,9 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
@@ -48,7 +51,7 @@ class BlockType extends AbstractType
         $app = $this->app;
 
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'ブロック名',
                 'required' => true,
                 'constraints' => array(
@@ -58,7 +61,7 @@ class BlockType extends AbstractType
                     ))
                 )
             ))
-            ->add('file_name', 'text', array(
+            ->add('file_name', TextType::class, array(
                 'label' => 'ファイル名',
                 'required' => true,
                 'constraints' => array(
@@ -71,7 +74,7 @@ class BlockType extends AbstractType
                     )),
                 )
             ))
-            ->add('block_html', 'textarea', array(
+            ->add('block_html', TextareaType::class, array(
                 'label' => 'ブロックデータ',
                 'mapped' => false,
                 'required' => false,
@@ -81,7 +84,7 @@ class BlockType extends AbstractType
                 'class' => 'Eccube\Entity\Master\DeviceType',
                 'property' => 'id',
             ))
-            ->add('id', 'hidden')
+            ->add('id', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();

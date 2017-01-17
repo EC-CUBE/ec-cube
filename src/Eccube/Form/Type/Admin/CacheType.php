@@ -26,6 +26,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -56,7 +57,7 @@ class CacheType extends AbstractType
         }
 
         $builder
-            ->add('cache', 'choice', array(
+            ->add('cache', ChoiceType::class, array(
                 'label' => 'キャッシュディレクトリ',
                 'choices' => $cacheDirs,
                 'expanded' => true,

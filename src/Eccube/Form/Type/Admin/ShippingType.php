@@ -28,6 +28,9 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -70,7 +73,7 @@ class ShippingType extends AbstractType
                     ),
                 ),
             ))
-            ->add('company_name', 'text', array(
+            ->add('company_name', TextType::class, array(
                 'label' => '会社名',
                 'required' => false,
                 'constraints' => array(
@@ -135,7 +138,7 @@ class ShippingType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            ->add('shipping_delivery_date', 'date', array(
+            ->add('shipping_delivery_date', DateType::class, array(
                 'label' => 'お届け日',
                 'placeholder' => '',
                 'format' => 'yyyy-MM-dd',
@@ -144,7 +147,7 @@ class ShippingType extends AbstractType
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($BaseInfo) {
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
-                    $form->add('ShipmentItems', 'collection', array(
+                    $form->add('ShipmentItems', CollectionType::class, array(
                         'type' => 'shipment_item',
                         'allow_add' => true,
                         'allow_delete' => true,

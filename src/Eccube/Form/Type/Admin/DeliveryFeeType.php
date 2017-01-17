@@ -24,10 +24,10 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Eccube\Form\Type\PriceType;
 
 class DeliveryFeeType extends AbstractType
 {

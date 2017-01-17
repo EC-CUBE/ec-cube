@@ -24,9 +24,9 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use Eccube\Application;
 
 class SaveEventSubscriber implements EventSubscriber

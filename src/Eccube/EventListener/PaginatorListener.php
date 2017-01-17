@@ -2,12 +2,12 @@
 
 namespace Eccube\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Doctrine\ORM\Query;
+use Eccube\Doctrine\ORM\Tools\Pagination\CountWalker;
+use Eccube\Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\Event\ItemsEvent;
 use Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QuerySubscriber;
-use Doctrine\ORM\Query;
-use Eccube\Doctrine\ORM\Tools\Pagination\Paginator;
-use Eccube\Doctrine\ORM\Tools\Pagination\CountWalker;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PaginatorListener implements EventSubscriberInterface
 {

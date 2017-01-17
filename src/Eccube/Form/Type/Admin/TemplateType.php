@@ -26,6 +26,8 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -47,7 +49,7 @@ class TemplateType extends AbstractType
         $config = $this->config;
 
         $builder
-            ->add('code', 'text', array(
+            ->add('code', TextType::class, array(
                 'label' => 'テンプレートコード',
                 'required' => true,
                 'constraints' => array(
@@ -60,7 +62,7 @@ class TemplateType extends AbstractType
                     )),
                 ),
             ))
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'テンプレート名',
                 'required' => true,
                 'constraints' => array(
@@ -70,7 +72,7 @@ class TemplateType extends AbstractType
                     )),
                 ),
             ))
-            ->add('file', 'file', array(
+            ->add('file', FileType::class, array(
                 'label' => 'テンプレートファイル',
                 'mapped' => false,
                 'required' => true,

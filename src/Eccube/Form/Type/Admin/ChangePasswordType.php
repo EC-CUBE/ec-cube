@@ -24,6 +24,8 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
@@ -47,14 +49,14 @@ class ChangePasswordType extends AbstractType
     {
         $app = $this->app;
         $builder
-            ->add('current_password', 'password', array(
+            ->add('current_password', PasswordType::class, array(
                 'label' => '現在のパスワード',
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new UserPassword(),
                 ),
             ))
-            ->add('change_password', 'repeated', array(
+            ->add('change_password', RepeatedType::class, array(
                 'first_options'  => array(
                     'label' => '新しいパスワード',
                 ),
