@@ -27,6 +27,8 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Form\Type\Admin\MasterdataType;
+use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +39,7 @@ class MasterdataController extends AbstractController
     {
         $data = array();
 
-        $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
+        $builder = $app['form.factory']->createBuilder(MasterdataType::class);
 
         $event = new EventArgs(
             array(
@@ -87,7 +89,7 @@ class MasterdataController extends AbstractController
             }
         }
 
-        $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit', $data);
+        $builder2 = $app['form.factory']->createBuilder(MasterdataEditType::class, $data);
 
         $event = new EventArgs(
             array(
@@ -107,7 +109,7 @@ class MasterdataController extends AbstractController
 
     public function edit(Application $app, Request $request)
     {
-        $builder2 = $app['form.factory']->createBuilder('admin_system_masterdata_edit');
+        $builder2 = $app['form.factory']->createBuilder(MasterdataEditType::class);
 
         $event = new EventArgs(
             array(
@@ -165,7 +167,7 @@ class MasterdataController extends AbstractController
             }
         }
 
-        $builder = $app['form.factory']->createBuilder('admin_system_masterdata');
+        $builder = $app['form.factory']->createBuilder(MasterdataType::class);
 
         $event = new EventArgs(
             array(

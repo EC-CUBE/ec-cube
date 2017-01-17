@@ -24,6 +24,8 @@
 namespace Eccube\Form\Type\Admin;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,13 +48,13 @@ class MasterdataEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('data', 'collection', array(
-                'type' => 'admin_system_masterdata_data',
+            ->add('data', CollectionType::class, array(
+                // FIXME 'type' => 'admin_system_masterdata_data',
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
-            ->add('masterdata_name', 'hidden');
+            ->add('masterdata_name', HiddenType::class);
         ;
     }
 

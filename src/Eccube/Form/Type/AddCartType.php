@@ -25,6 +25,9 @@
 namespace Eccube\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -43,8 +46,8 @@ class AddCartType extends AbstractType
     public $Product = null;
 
     public function __construct(
-        $config,
-        \Eccube\Repository\CustomerFavoriteProductRepository $customerFavoriteProductRepository
+        $config = null,
+        \Eccube\Repository\CustomerFavoriteProductRepository $customerFavoriteProductRepository = null
     ) {
         $this->config = $config;
         $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
@@ -61,17 +64,17 @@ class AddCartType extends AbstractType
         $ProductClasses = $Product->getProductClasses();
 
         $builder
-            ->add('mode', 'hidden', array(
+            ->add('mode', HiddenType::class, array(
                 'data' => 'add_cart',
             ))
-            ->add('product_id', 'hidden', array(
+            ->add('product_id', HiddenType::class, array(
                 'data' => $Product->getId(),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Regex(array('pattern' => '/^\d+$/')),
                 ),
             ))
-            ->add('product_class_id', 'hidden', array(
+            ->add('product_class_id', HiddenType::class, array(
                 'data' => count($ProductClasses) === 1 ? $ProductClasses[0]->getId() : '',
                 'constraints' => array(
                     new Assert\Regex(array('pattern' => '/^\d+$/')),
@@ -80,7 +83,7 @@ class AddCartType extends AbstractType
 
         if ($Product->getStockFind()) {
             $builder
-                ->add('quantity', 'integer', array(
+                ->add('quantity', IntegerType::class, array(
                     'data' => 1,
                     'attr' => array(
                         'min' => 1,
@@ -97,13 +100,13 @@ class AddCartType extends AbstractType
             ;
             if ($Product && $Product->getProductClasses()) {
                 if (!is_null($Product->getClassName1())) {
-                    $builder->add('classcategory_id1', 'choice', array(
+                    $builder->add('classcategory_id1', ChoiceType::class, array(
                         'label' => $Product->getClassName1(),
                         'choices'   => array('__unselected' => '選択してください') + $Product->getClassCategories1(),
                     ));
                 }
                 if (!is_null($Product->getClassName2())) {
-                    $builder->add('classcategory_id2', 'choice', array(
+                    $builder->add('classcategory_id2', ChoiceType::class, array(
                         'label' => $Product->getClassName2(),
                         'choices' => array('__unselected' => '選択してください'),
                     ));
@@ -115,7 +118,7 @@ class AddCartType extends AbstractType
                 $form = $event->getForm();
                 if (!is_null($Product->getClassName2())) {
                     if ($data['classcategory_id1']) {
-                        $form->add('classcategory_id2', 'choice', array(
+                        $form->add('classcategory_id2', ChoiceType::class, array(
                             'label' => $Product->getClassName2(),
                             'choices' => array('__unselected' => '選択してください') + $Product->getClassCategories2($data['classcategory_id1']),
                         ));

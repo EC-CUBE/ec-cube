@@ -39,7 +39,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request(
+        $crawler = $this->client->request(
             'GET',
             $this->app->url('admin_setting_system_masterdata')
         );

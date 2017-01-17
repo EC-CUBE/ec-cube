@@ -26,6 +26,10 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Form\Type\SearchProductType;
+use Eccube\Form\Type\AddCartType;
+use Eccube\Form\Type\Master\ProductListMaxType;
+use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
@@ -58,7 +62,7 @@ class ProductController
 
         // searchForm
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createNamedBuilder('', 'search_product');
+        $builder = $app['form.factory']->createNamedBuilder('', SearchProductType::class);
         $builder->setAttribute('freeze', true);
         $builder->setAttribute('freeze_display_text', false);
         if ($request->getMethod() === 'GET') {
@@ -95,14 +99,14 @@ class ProductController
         $pagination = $app['paginator']()->paginate(
             $qb,
             !empty($searchData['pageno']) ? $searchData['pageno'] : 1,
-            $searchData['disp_number']->getId()
+            1// $searchData['disp_number']->getId()
         );
 
         // addCart form
         $forms = array();
         foreach ($pagination as $Product) {
             /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-            $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
+            $builder = $app['form.factory']->createNamedBuilder('', AddCartType::class, null, array(
                 'product' => $Product,
                 'allow_extra_fields' => true,
             ));
@@ -141,8 +145,8 @@ class ProductController
         }
 
         // 表示件数
-        $builder = $app['form.factory']->createNamedBuilder('disp_number', 'product_list_max', null, array(
-            'empty_data' => null,
+        $builder = $app['form.factory']->createNamedBuilder('disp_number', ProductListMaxType::class, null, array(
+            // 'empty_data' => null,
             'required' => false,
             'label' => '表示件数',
             'allow_extra_fields' => true,
@@ -164,7 +168,7 @@ class ProductController
         $dispNumberForm->handleRequest($request);
 
         // ソート順
-        $builder = $app['form.factory']->createNamedBuilder('orderby', 'product_list_order_by', null, array(
+        $builder = $app['form.factory']->createNamedBuilder('orderby', ProductListMaxType::class, null, array(
             'empty_data' => null,
             'required' => false,
             'label' => '表示順',
