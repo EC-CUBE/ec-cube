@@ -31,6 +31,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Eccube\Form\Type\Master\CategoryType;
+use Eccube\Form\Type\Master\DispType;
 
 class SearchProductType extends AbstractType
 {
@@ -63,12 +65,12 @@ class SearchProductType extends AbstractType
                 'required' => false,
             ))
              */
-            ->add('category_id', 'category', array(
+            ->add('category_id', CategoryType::class, array(
                 'label' => 'カテゴリ',
-                'empty_value' => '選択してください',
+                // FIXME 'empty_value' => '選択してください',
                 'required' => false,
             ))
-            ->add('status', 'disp', array(
+            ->add('status', DispType::class, array(
                 'label' => '種別',
                 'multiple'=> true,
                 'required' => false,
@@ -79,7 +81,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('create_date_end', DateType::class, array(
                 'label' => '登録日(TO)',
@@ -87,7 +89,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
                 'label' => '更新日(FROM)',
@@ -95,7 +97,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
                 'label' => '更新日(TO)',
@@ -103,7 +105,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('link_status', HiddenType::class, array(
                 'mapped' => false,
