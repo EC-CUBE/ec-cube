@@ -228,13 +228,13 @@ class OrderType extends AbstractType
                 ),
             ))
             ->add('OrderDetails', CollectionType::class, array(
-                // FIXME 'type' => 'order_detail',
+                'entry_type' => OrderDetailType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
             ))
             ->add('Shippings', CollectionType::class, array(
-                // FIXME 'type' => 'shipping',
+                'entry_type' => ShippingType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

@@ -24,6 +24,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\Master\CategoryType;
+use Eccube\Form\Type\Master\DispType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -31,8 +33,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Eccube\Form\Type\Master\CategoryType;
-use Eccube\Form\Type\Master\DispType;
 
 class SearchProductType extends AbstractType
 {

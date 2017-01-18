@@ -26,6 +26,12 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\KanaType;
+use Eccube\Form\Type\NameType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -57,7 +63,7 @@ class ShippingType extends AbstractType
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder
-            ->add('name', 'name', array(
+            ->add('name', NameType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -65,7 +71,7 @@ class ShippingType extends AbstractType
                     ),
                 ),
             ))
-            ->add('kana', 'kana', array(
+            ->add('kana', KanaType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -82,7 +88,7 @@ class ShippingType extends AbstractType
                     ))
                 ),
             ))
-            ->add('zip', 'zip', array(
+            ->add('zip', ZipType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -90,7 +96,7 @@ class ShippingType extends AbstractType
                     ),
                 ),
             ))
-            ->add('address', 'address', array(
+            ->add('address', AddressType::class, array(
                 'required' => false,
                 'pref_options' => array(
                     'constraints' => array(
@@ -115,7 +121,7 @@ class ShippingType extends AbstractType
                     ),
                 ),
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => false,
                 'options' => array(
                     'constraints' => array(
@@ -123,17 +129,17 @@ class ShippingType extends AbstractType
                     ),
                 ),
             ))
-            ->add('fax', 'tel', array(
+            ->add('fax', TelTYpe::class, array(
                 'label' => 'FAX番号',
                 'required' => false,
             ))
-            ->add('Delivery', 'entity', array(
+            ->add('Delivery', EntityType::class, array(
                 'required' => false,
                 'label' => '配送業者',
                 'class' => 'Eccube\Entity\Delivery',
-                'property' => 'name',
-                'empty_value' => '選択してください',
-                'empty_data' => null,
+                // 'property' => 'name',
+                // FIXME 'empty_valuey' => '選択してください',
+                // 'empty_data' => null,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
@@ -168,12 +174,12 @@ class ShippingType extends AbstractType
                 $Delivery = $data->getDelivery();
 
                 // お届け時間を配送業者で絞り込み
-                $form->add('DeliveryTime', 'entity', array(
+                $form->add('DeliveryTime', EntityType::class, array(
                     'label' => 'お届け時間',
                     'class' => 'Eccube\Entity\DeliveryTime',
-                    'property' => 'delivery_time',
-                    'empty_value' => '指定なし',
-                    'empty_data' => null,
+                    // 'property' => 'delivery_time',
+                    // FIXME 'empty_valuey' => '指定なし',
+                    // 'empty_data' => null,
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) use($Delivery) {
                         return $er->createQueryBuilder('dt')
@@ -197,12 +203,12 @@ class ShippingType extends AbstractType
                 $Delivery = $app['eccube.repository.delivery']->find($value);
 
                 // お届け時間を配送業者で絞り込み
-                $form->add('DeliveryTime', 'entity', array(
+                $form->add('DeliveryTime', EntityType::class, array(
                     'label' => 'お届け時間',
                     'class' => 'Eccube\Entity\DeliveryTime',
-                    'property' => 'delivery_time',
-                    'empty_value' => '指定なし',
-                    'empty_data' => null,
+                    // 'property' => 'delivery_time',
+                    // FIXME 'empty_valuey' => '指定なし',
+                    // 'empty_data' => null,
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) use($Delivery) {
                         return $er->createQueryBuilder('dt')

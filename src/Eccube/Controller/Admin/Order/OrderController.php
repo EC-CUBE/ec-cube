@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\SearchOrderType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -42,7 +43,7 @@ class OrderController extends AbstractController
         $session = $request->getSession();
 
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_order');
+            ->createBuilder(SearchOrderType::class);
 
         $event = new EventArgs(
             array(

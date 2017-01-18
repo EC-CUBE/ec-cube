@@ -30,6 +30,9 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\OrderType;
+use Eccube\Form\Type\Admin\SearchCustomerType;
+use Eccube\Form\Type\Admin\SearchProductType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -67,7 +70,7 @@ class EditController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder('order', $TargetOrder);
+            ->createBuilder(OrderType::class, $TargetOrder);
 
         $event = new EventArgs(
             array(
@@ -255,7 +258,7 @@ class EditController extends AbstractController
 
         // 会員検索フォーム
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_customer');
+            ->createBuilder(SearchCustomerType::class);
 
         $event = new EventArgs(
             array(
@@ -272,7 +275,7 @@ class EditController extends AbstractController
 
         // 商品検索フォーム
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_product');
+            ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
             array(

@@ -119,7 +119,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getCsrfTokenForAnchor()
     {
-        $token = $this->app['form.csrf_provider']->getToken(Constant::TOKEN_NAME)->getValue();
+        $token = $this->app['csrf.token_manager']->getToken(Constant::TOKEN_NAME)->getValue();
         return 'token-for-anchor=\'' . $token . '\'';
     }
 
