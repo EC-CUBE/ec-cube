@@ -455,6 +455,8 @@ class ProductController extends AbstractController
                     $Product->addProductTag($ProductTag);
                     $app['orm.em']->persist($ProductTag);
                 }
+
+                $Product->setUpdateDate(new \DateTime());
                 $app['orm.em']->flush();
 
                 log_info('商品登録完了', array($id));

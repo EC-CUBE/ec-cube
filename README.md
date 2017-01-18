@@ -19,7 +19,7 @@
 
 ## インストール
 
-### [EC-CUBE 3.xのインストール方法](http://ec-cube.github.io/install.html)
+### [EC-CUBE 3.xのインストール方法](http://ec-cube.github.io/quickstart_install)
 
 
 ### 動作確認環境
