@@ -154,6 +154,8 @@ class OrderType extends AbstractType
                 'label' => '値引き',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -165,6 +167,8 @@ class OrderType extends AbstractType
                 'label' => '送料',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
@@ -176,6 +180,8 @@ class OrderType extends AbstractType
                 'label' => '手数料',
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
