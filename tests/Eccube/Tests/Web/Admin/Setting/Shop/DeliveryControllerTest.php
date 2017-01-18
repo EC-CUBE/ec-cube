@@ -237,7 +237,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         // 47 93 ?
         for ($i = 48; $i <= 93; $i++) {
             $tmpFee = $faker->randomNumber(5);
-            if (mt_rand(1, 2) == 1) {
+            if (mt_rand(0, 1)) {
                 $tmpFee = number_format($tmpFee);
             }
             $deliveryFree[$i] = array('fee' => $tmpFee);

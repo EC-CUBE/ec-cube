@@ -44,6 +44,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $app = $this->app;
         $Product = $this->createProduct();
 
+
         // Main
         $redirectUrl = $app->url('admin_product_product_class', array('id' => $Product->getId()));
         $this->client->request(

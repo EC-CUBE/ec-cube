@@ -34,11 +34,22 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function createFormData()
     {
         $faker = $this->getFaker();
+
+        $price01 = $faker->randomNumber(5);
+        if (mt_rand(0, 1)) {
+            $price01 = number_format($price01);
+        }
+
+        $price02 = $faker->randomNumber(5);
+        if (mt_rand(0, 1)) {
+            $price02 = number_format($price02);
+        }
+
         $form = array(
             'class' => array(
                 'product_type' => 1,
-                'price01' => $faker->randomNumber(5),
-                'price02' => $faker->randomNumber(5),
+                'price01' => $price01,
+                'price02' => $price01,
                 'stock' => $faker->randomNumber(3),
                 'stock_unlimited' => 0,
                 'code' => $faker->word,
