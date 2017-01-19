@@ -190,6 +190,17 @@ class Application extends \Silex\Application
         // init security
         $this->initSecurity();
 
+        $this->register(new \Sergiors\Silex\Provider\RoutingServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\TemplatingServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider(),
+        [
+            'request' => [
+                'auto_convert' => true
+            ]
+        ]);
+        $this['annotations.debug'] = true;
         // init ec-cube service provider
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
@@ -199,6 +210,11 @@ class Application extends \Silex\Application
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
+        if (php_sapi_name() !== 'cli') {
+            $this->extend('routes', function ($routes, \Silex\Application $app) {
+                return $this['sensio_framework_extra.routing.loader.annot_dir']->load($this['config']['root_dir'].'/app/Eccube');
+            });
+        }
         // add transaction listener
         // FIXME  $this['dispatcher']->addSubscriber(new TransactionListener($this));
 
@@ -467,6 +483,18 @@ class Application extends \Silex\Application
                 __DIR__.'/Resource/doctrine/master',
             ),
         );
+
+        // ここを有効にすると本体の Entity でもアノテーションが使える
+        // が、 Yaml との共存はできない模様...
+        // $ormMappings[] = array(
+        //     'type' => 'annotation',
+        //     'namespace' => 'Eccube\Entity',
+        //     'path' => array(
+        //         __DIR__.'/Entity',
+        //         __DIR__.'/Entity/master',
+        //     ),
+        //     'use_simple_annotation_reader' => false,
+        // );
 
         foreach ($pluginConfigs as $code) {
             $config = $code['config'];
