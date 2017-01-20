@@ -63,6 +63,58 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
         $app['eccube.service.mail'] = function () use ($app) {
             return new \Eccube\Service\MailService($app);
         };
+        $app['eccube.calculate.context'] = function () use ($app) {
+                return new \Eccube\Service\Calculator\CalculateContext();
+        };
+        $app['eccube.service.calculate'] = $app->protect(function ($Order, $Customer) use ($app) {
+                $Service = new \Eccube\Service\CalculateService($Order, $Customer);
+                $Context = $app['eccube.calculate.context'];
+                $Context->setCalculateStrategies($app['eccube.calculate.strategies']($Order));
+                $Context->setOrder($Order);
+                $Service->setContext($Context);
+                return $Service;
+        });
+
+        $app['eccube.service.payment'] = $app->protect(function ($clazz) use ($app) {
+                return new $clazz;
+        });
+
+        $app['eccube.calculate.strategies'] = $app->protect(function ($Order) use ($app) {
+            // デフォルトのストラテジーをセットしておく
+            $Strategies = [     // ArrayIterator にしたい
+                $app['eccube.calculate.strategy.shipping']($Order),
+                $app['eccube.calculate.strategy.tax']($Order)
+            ];
+            return $Strategies;
+        });
+        $app['eccube.calculate.strategy.shipping'] = $app->protect(function ($Order) use ($app) {
+                $Strategy = new \Eccube\Service\Calculator\Strategy\ShippingStrategy();
+                $Strategy->setApplication($app);
+                $Strategy->setOrder($Order);
+                return $Strategy;
+        });
+        $app['eccube.calculate.strategy.tax'] = $app->protect(function ($Order) use ($app) {
+                $Strategy = new \Eccube\Service\Calculator\Strategy\TaxStrategy();
+                $Strategy->setApplication($app);
+                $Strategy->setOrder($Order);
+                return $Strategy;
+        });
+
+        $app['payment.method'] = $app->protect(function ($clazz, $form) use ($app) {
+                $PaymentMethod = new $clazz;
+                $PaymentMethod->setApplication($app);
+                $PaymentMethod->setFormType($form);
+                return $PaymentMethod;
+        });
+
+        $app['payment.method.request'] = $app->protect(function ($clazz, $form, $request) use ($app) {
+                $PaymentMethod = new $clazz;
+                $PaymentMethod->setApplication($app);
+                $PaymentMethod->setFormType($form);
+                $PaymentMethod->setRequest($request);
+                return $PaymentMethod;
+        });
+
         $app['eccube.service.csv.export'] = function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
             $csvService->setEntityManager($app['orm.em']);
@@ -298,7 +350,11 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
             $types[] = new \Eccube\Form\Type\ShippingItemType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleType($app);
             $types[] = new \Eccube\Form\Type\ShippingMultipleItemType($app);
-            $types[] = new \Eccube\Form\Type\ShoppingType();
+            $types[] = new \Eccube\Form\Type\ShoppingType($app);
+
+            $types[] = new \Eccube\Form\Type\Shopping\OrderType($app, $app['eccube.repository.order'], $app['eccube.repository.delivery']);
+            $types[] = new \Eccube\Form\Type\Shopping\ShippingType($app);
+            $types[] = new \Eccube\Form\Type\Shopping\ShipmentItemType($app);
 
             // front
             $types[] = new \Eccube\Form\Type\Front\EntryType($app['config']);

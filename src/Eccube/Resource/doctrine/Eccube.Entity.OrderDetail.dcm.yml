@@ -66,11 +66,11 @@ Eccube\Entity\OrderDetail:
             joinColumn:
                 name: product_id
                 referencedColumnName: product_id
-                nullable: false
+                nullable: true
         ProductClass:
             targetEntity: Eccube\Entity\ProductClass
             joinColumn:
                 name: product_class_id
                 referencedColumnName: product_class_id
-                nullable: false
+                nullable: true
     lifecycleCallbacks: {  }

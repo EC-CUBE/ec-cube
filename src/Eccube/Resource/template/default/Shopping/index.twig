@@ -26,6 +26,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 $(function() {
 
     $('.delivery').on('change', function() {
+<<<<<<< HEAD
+        $('#shopping_order_mode').val('delivery');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+    });
+
+    $('.payment').on('change', function() {
+        $('#shopping_order_mode').val('payment');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+=======
         $('#shopping-form').attr('action', '{{ url("shopping_delivery") }}').submit();
         return false;
     });
@@ -33,23 +42,38 @@ $(function() {
     $('.payment').on('change', function() {
         $('#shopping-form').attr('action', '{{ url("shopping_payment") }}').submit();
         return false;
+>>>>>>> symfony2.8
     });
 
     $('.btn-shipping').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping_order_mode').val('shipping_change');
+        $('#shopping_order_param').val($(this).data('id'));
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
         $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
     $('.btn-shipping-edit').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping_order_mode').val('shipping_edit_change');
+        $('#shopping_order_param').val($(this).data('id'));
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
         $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
     $('.btn-shipping-multiple').click(function() {
-        $('#shopping-form').attr('action', $(this).attr('href')).submit();
+        $('#shopping_order_mode').val('shipping_multiple_change');
+        $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+
         $('#shopping-form').attr('action', '{{ url("shopping_confirm") }}');
+        $('#shopping_order_mode').val('');
+        $('#shopping_order_param').val('');
         return false;
     });
 
@@ -163,6 +187,8 @@ $(function() {
         </div><!-- /.row -->
         <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">
             {{ form_widget(form._token) }}
+            {{ form_widget(form.mode) }}
+            {{ form_widget(form.param) }}
             <div id="shopping_confirm" class="row">
                 <div id="confirm_main" class="col-sm-8">
                     <div id="cart_box" class="cart_item table">
@@ -253,20 +279,20 @@ $(function() {
                             {{ shipping.tel01 }}-{{ shipping.tel02 }}-{{ shipping.tel03 }}</p>
                             <div id="shopping_confirm_box__shipping_delivery--{{ idx }}" class="form-inline form-group">
                                 <label>配送方法</label>
-                                {{ form_widget(form.shippings[idx].delivery, {'attr': {'class': 'delivery'}}) }}
-                                {{ form_errors(form.shippings[idx].delivery) }}
+                                {{ form_widget(form.Shippings[idx].Delivery, {'attr': {'class': 'delivery'}}) }}
+                                {{ form_errors(form.Shippings[idx].Delivery) }}
                             </div>
 
                             <div id="shopping_confirm_box__shipping_delivery_date_time--{{ idx }}" class="form-inline form-group">
                                 <label>お届け日</label>
-                                {{ form_widget(form.shippings[idx].shippingDeliveryDate) }}<br class="sp">
+                                {{ form_widget(form.Shippings[idx].shipping_delivery_date) }}<br class="sp">
                                 <label>お届け時間</label>
-                                {{ form_widget(form.shippings[idx].deliveryTime) }}
+                                {{ form_widget(form.Shippings[idx].DeliveryTime) }}
                             </div>
                             {% if is_granted('ROLE_USER') %}
-                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping" data-id="{{ shipping.id }}">変更</a></p>
                             {% else %}
-                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit">変更</a></p>
+                            <p id="shopping_confirm_box__edit_button--{{ idx }}" class="btn_edit"><a href="{{ url('shopping_shipping_edit_change', {'id': shipping.id}) }}" class="btn btn-default btn-sm btn-shipping-edit" data-id="{{ shipping.id }}">変更</a></p>
                             {% endif %}
                         </div>
                         {% if loop.last == false%}<hr>{% endif %}
@@ -280,15 +306,15 @@ $(function() {
                     <div id="payment_list" class="column">
                         <div id="payment_list__body" class="form-group">
                             <ul id="payment_list__list" class="payment_list">
-                            {% for key, child in form.payment %}
+                            {% for key, child in form.Payment %}
                             <li>
                                 {{ form_widget(child, {'attr': {'class': 'payment' }}) }}
-                                {% if form.payment.vars.choices[key].data.payment_image is not null %}
+                                {% if form.Payment.vars.choices[key].data.payment_image is not null %}
                                 <img src="{{ app.config.image_save_urlpath }}/{{ form.payment.vars.choices[key].data.payment_image }}">
                                 {% endif %}
                             </li>
                             {% endfor %}
-                            {{ form_errors(form.payment) }}
+                            {{ form_errors(form.Payment) }}
                             </ul>
                         </div>
                     </div>

@@ -36,6 +36,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
+use Sergiors\Silex\Provider\RoutingServiceProvider;
+use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
+use Sergiors\Silex\Provider\AnnotationsServiceProvider;
+use Sergiors\Silex\Provider\TemplatingServiceProvider;
+use Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider;
 
 class Application extends \Silex\Application
 {
@@ -200,7 +205,7 @@ class Application extends \Silex\Application
                 'auto_convert' => true
             ]
         ]);
-        $this['annotations.debug'] = true;
+
         // init ec-cube service provider
         $this->register(new ServiceProvider\EccubeServiceProvider());
 
@@ -483,6 +488,17 @@ class Application extends \Silex\Application
                 __DIR__.'/Resource/doctrine/master',
             ),
         );
+        // ここを有効にすると本体の Entity でもアノテーションが使える
+        // が、 Yaml との共存はできない模様...
+        // $ormMappings[] = array(
+        //     'type' => 'annotation',
+        //     'namespace' => 'Eccube\Entity',
+        //     'path' => array(
+        //         __DIR__.'/Entity',
+        //         __DIR__.'/Entity/master',
+        //     ),
+        //     'use_simple_annotation_reader' => false,
+        // );
 
         // ここを有効にすると本体の Entity でもアノテーションが使える
         // が、 Yaml との共存はできない模様...
@@ -508,6 +524,12 @@ class Application extends \Silex\Application
                     'type' => 'yml',
                     'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
                     'path' => $paths,
+                );
+                $ormMappings[] = array(
+                    'type' => 'annotation',
+                    'namespace' => 'Plugin\\'.$config['code'].'\\Entity',
+                    'path' => $paths,
+                    'use_simple_annotation_reader' => false,
                 );
             }
         }

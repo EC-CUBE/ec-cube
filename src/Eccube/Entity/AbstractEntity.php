@@ -25,7 +25,9 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Util\Inflector;
+use Doctrine\ORM\Mapping\MappedSuperclass;
 
+/** @MappedSuperclass */
 abstract class AbstractEntity implements \ArrayAccess
 {
 
