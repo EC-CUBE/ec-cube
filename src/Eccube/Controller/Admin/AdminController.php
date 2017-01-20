@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\QueryBuilder;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -289,12 +290,14 @@ class AdminController extends AbstractController
 
     protected function findOrderStatus($em, array $excludes)
     {
+        /* @var $qb QueryBuilder */
         $qb = $em
             ->getRepository('Eccube\Entity\Master\OrderStatus')
             ->createQueryBuilder('os');
 
         return $qb
             ->where($qb->expr()->notIn('os.id', $excludes))
+            ->orderBy('os.rank', 'ASC')
             ->getQuery()
             ->getResult();
     }
