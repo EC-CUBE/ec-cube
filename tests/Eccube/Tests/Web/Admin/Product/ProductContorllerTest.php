@@ -49,7 +49,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             'class' => array(
                 'product_type' => 1,
                 'price01' => $price01,
-                'price02' => $price01,
+                'price02' => $price02,
                 'stock' => $faker->randomNumber(3),
                 'stock_unlimited' => 0,
                 'code' => $faker->word,
