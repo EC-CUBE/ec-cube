@@ -220,7 +220,7 @@ class ProductController
         }
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
+        $builder = $app['form.factory']->createNamedBuilder('', AddCartType::class, null, array(
             'product' => $Product,
             'id_add_product_id' => false,
         ));

@@ -34,6 +34,8 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
+use Eccube\Form\Type\Front\CustomerLoginType;
+use Eccube\Form\Type\Front\NonMemberType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -717,7 +719,7 @@ class ShoppingController extends AbstractController
         }
 
         /* @var $form \Symfony\Component\Form\FormInterface */
-        $builder = $app['form.factory']->createNamedBuilder('', 'customer_login');
+        $builder = $app['form.factory']->createNamedBuilder('', CustomerLoginType::class);
 
         if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $Customer = $app->user();
@@ -768,7 +770,7 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('cart'));
         }
 
-        $builder = $app['form.factory']->createBuilder('nonmember');
+        $builder = $app['form.factory']->createBuilder(NonMemberType::class);
 
         $event = new EventArgs(
             array(
