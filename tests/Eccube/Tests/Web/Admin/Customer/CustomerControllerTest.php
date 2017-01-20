@@ -121,6 +121,9 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->subject;
         $this->verify();
+
+        //test mail resend to 仮会員.
+        $this->assertContains($BaseInfo->getEmail02(), $Message->source);
     }
 
     /**
