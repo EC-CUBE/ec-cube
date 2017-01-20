@@ -112,9 +112,9 @@ trait ApplicationTrait
      * @param Response $response
      * @return Application
      */
-    public function forwardChain($path, Request $request, array $requestParameters = [], &$response)
+    public function forwardChain($path, Request $request, array $requestParameters = [], Response &$response = null)
     {
-        $response = $this->forward($path, $request, $requestParameters = []);
+        $response = $this->forward($path, $request, $requestParameters);
         return $this;
     }
 }
