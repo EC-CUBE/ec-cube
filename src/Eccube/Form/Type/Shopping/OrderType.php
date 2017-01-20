@@ -8,6 +8,9 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -48,7 +51,7 @@ class OrderType extends AbstractType
         $builder
             ->add(
                 'message',
-                'textarea',
+                TextareaType::class,
                 [
                     'required' => false,
                     'constraints' => [
@@ -58,19 +61,19 @@ class OrderType extends AbstractType
             )
             ->add(
                 'Shippings',
-                'collection',
+                CollectionType::class,
                 [
                     'type' => '_shopping_shipping',
                 ]
             )->add(
                 'mode',
-                'hidden',
+                HiddenType::class,
                 [
                     'mapped' => false,
                 ]
             )->add(
                 'param',
-                'hidden',
+                HiddenType::class,
                 [
                     'mapped' => false,
                 ]
@@ -142,7 +145,7 @@ class OrderType extends AbstractType
         );
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return '_shopping_order';
     }

@@ -5,6 +5,8 @@ namespace Eccube\Form\Type\Shopping;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -45,7 +47,7 @@ class ShippingType extends AbstractType
         $builder
             ->add(
                 'ShipmentItems',
-                'collection',
+                CollectionType::class,
                 array(
                     'type' => '_shopping_shipment_item',
                 )
@@ -146,7 +148,7 @@ class ShippingType extends AbstractType
                 $form
                     ->add(
                         'shipping_delivery_date',
-                        'choice',
+                        ChoiceType::class,
                         array(
                             'choices' => $deliveryDates,
                             'required' => false,
@@ -216,7 +218,7 @@ class ShippingType extends AbstractType
         );
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return '_shopping_shipping';
     }

@@ -27,6 +27,11 @@ use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Eccube\EventListener\TransactionListener;
+use Sergiors\Silex\Provider\AnnotationsServiceProvider;
+use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
+use Sergiors\Silex\Provider\RoutingServiceProvider;
+use Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider;
+use Sergiors\Silex\Provider\TemplatingServiceProvider;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +41,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Yaml\Yaml;
-use Sergiors\Silex\Provider\RoutingServiceProvider;
-use Sergiors\Silex\Provider\DoctrineCacheServiceProvider;
-use Sergiors\Silex\Provider\AnnotationsServiceProvider;
-use Sergiors\Silex\Provider\TemplatingServiceProvider;
-use Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider;
 
 class Application extends \Silex\Application
 {

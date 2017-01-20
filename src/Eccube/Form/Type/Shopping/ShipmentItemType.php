@@ -32,7 +32,7 @@ class ShipmentItemType extends AbstractType
         );
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return '_shopping_shipment_item';
     }

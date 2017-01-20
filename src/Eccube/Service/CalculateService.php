@@ -1,8 +1,8 @@
 <?php
 namespace Eccube\Service;
 
-use Eccube\Service\Calculator\Strategy\CalculateStrategy;
 use Eccube\Service\Calculator\CalculateContext;
+use Eccube\Service\Calculator\Strategy\CalculateStrategy;
 
 class CalculateService
 {
