@@ -4421,3 +4421,21 @@ fieldset[disabled] .btn-link:focus {
 
 	}
 }
+
+#delivery_address_list div.is-edit {
+    position: relative;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 767px) {
+    #delivery_address_list div.is-edit p.btn_edit {
+        top: 40px;
+    }
+}
+
+/* big devices (tablet, pc..) */
+@media (min-width: 768px) {
+    #delivery_address_list div.is-edit p.btn_edit {
+        top: 30px;
+    }
+}
