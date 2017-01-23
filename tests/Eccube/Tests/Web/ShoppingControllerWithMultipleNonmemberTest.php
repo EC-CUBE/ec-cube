@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\DomCrawler\Crawler;
+
 /**
  * 非会員複数配送指定のテストケース.
  *
