@@ -348,23 +348,23 @@ class InstallController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] '.$module.' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
             if (!extension_loaded('wincache')) {
-                $app->addWarning('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
             }
         } else {
             if (!extension_loaded('apc')) {
-                $app->addWarning('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
             if (!function_exists('apache_get_modules')) {
-                $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
+                $app->addInfo('mod_rewrite が有効になっているか不明です。', 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
                 $app->addDanger('[必須] ' . 'mod_rewriteを有効にしてください。', 'install');
             }
