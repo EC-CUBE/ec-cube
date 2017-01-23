@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +22,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-
 namespace Eccube\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -34,16 +34,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class DeliveryRepository extends EntityRepository
 {
+
     public function findOrCreate($id)
     {
         if ($id == 0) {
             $em = $this->getEntityManager();
-            $Creator = $em
-                ->getRepository('\Eccube\Entity\Member')
-                ->find(2);
+
             $ProductType = $em
                 ->getRepository('\Eccube\Entity\Master\ProductType')
-                ->find(1);
+                ->findOneBy(array(), array('rank' => 'DESC'));
 
             $Delivery = $this->findOneBy(array(), array('rank' => 'DESC'));
 
@@ -56,12 +55,9 @@ class DeliveryRepository extends EntityRepository
             $Delivery
                 ->setRank($rank)
                 ->setDelFlg(0)
-                ->setCreator($Creator)
                 ->setProductType($ProductType);
-
         } else {
             $Delivery = $this->find($id);
-
         }
 
         return $Delivery;
@@ -83,7 +79,6 @@ class DeliveryRepository extends EntityRepository
             ->getResult();
 
         return $deliveries;
-
     }
 
     /**
@@ -109,10 +104,8 @@ class DeliveryRepository extends EntityRepository
                     }
                 }
             }
-
         }
 
         return array_values($arr);
-
     }
 }

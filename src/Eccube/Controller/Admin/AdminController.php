@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\QueryBuilder;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
@@ -122,6 +123,7 @@ class AdminController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_ORDER, $event);
+        $excludes = $event->getArgument('excludes');
 
         // 受注ステータスごとの受注件数.
         $Orders = $this->getOrderEachStatus($app['orm.em'], $excludes);
@@ -143,6 +145,7 @@ class AdminController extends AbstractController
             $request
         );
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ADMIM_INDEX_SALES, $event);
+        $excludes = $event->getArgument('excludes');
 
         // 今日の売上/件数
         $salesToday = $this->getSalesByDay($app['orm.em'], new \DateTime(), $excludes);
@@ -287,12 +290,14 @@ class AdminController extends AbstractController
 
     protected function findOrderStatus($em, array $excludes)
     {
+        /* @var $qb QueryBuilder */
         $qb = $em
             ->getRepository('Eccube\Entity\Master\OrderStatus')
             ->createQueryBuilder('os');
 
         return $qb
             ->where($qb->expr()->notIn('os.id', $excludes))
+            ->orderBy('os.rank', 'ASC')
             ->getQuery()
             ->getResult();
     }

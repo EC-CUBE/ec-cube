@@ -555,13 +555,19 @@ class Application extends ApplicationTrait
             ),
         );
 
+        $channel = null;
+        // 強制SSL
+        if ($this['config']['force_ssl'] == \Eccube\Common\Constant::ENABLED) {
+            $channel = "https";
+        }
+
         $this['security.access_rules'] = array(
-            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN'),
-            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
-            array('^/mypage', 'ROLE_USER'),
+            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN', $channel),
+            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY', $channel),
+            array('^/mypage', 'ROLE_USER', $channel),
         );
 
         $this['eccube.password_encoder'] = $this->share(function ($app) {
