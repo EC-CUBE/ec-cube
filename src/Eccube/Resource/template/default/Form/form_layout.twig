@@ -56,7 +56,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% if errors|length > 0 -%}
         {% if form.parent %}
             {%- for error in errors -%}
-                <p class="errormsg text-danger">{{ error.message |trans }}</p>
+                {%- if freeze_display_text -%}
+                    <p class="errormsg text-danger">{{ error.message |trans }}</p>
+                {%- endif %}
             {%- endfor -%}
         {%- endif %}
     {%- endif %}
