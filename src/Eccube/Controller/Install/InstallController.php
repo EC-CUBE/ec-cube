@@ -364,7 +364,7 @@ class InstallController
 
         if (isset($_SERVER['SERVER_SOFTWARE']) && strpos('Apache', $_SERVER['SERVER_SOFTWARE']) !== false) {
             if (!function_exists('apache_get_modules')) {
-                $app->addInfo('mod_rewrite が有効になっているか不明です。', 'install');
+                $app->addWarning('mod_rewrite が有効になっているか不明です。', 'install');
             } elseif (!in_array('mod_rewrite', apache_get_modules())) {
                 $app->addDanger('[必須] ' . 'mod_rewriteを有効にしてください。', 'install');
             }
