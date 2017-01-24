@@ -37,6 +37,17 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function createCsvAsArray($has_header = true)
     {
         $faker = $this->getFaker();
+
+        $price01 = $faker->randomNumber(5);
+        if (mt_rand(0, 1)) {
+            $price01 = number_format($price01);
+        }
+
+        $price02 = $faker->randomNumber(5);
+        if (mt_rand(0, 1)) {
+            $price02 = number_format($price02);
+        }
+
         $csv = array(
             '商品ID' => null,
             '公開ステータス(ID)' => 1,
@@ -58,8 +69,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             '在庫数' => 100,
             '在庫数無制限フラグ' => 0,
             '販売制限数' => null,
-            '通常価格' => $faker->randomNumber(5),
-            '販売価格' => $faker->randomNumber(5),
+            '通常価格' => $price01,
+            '販売価格' => $price02,
             '送料' => 0,
             '商品規格削除フラグ' => 0
         );

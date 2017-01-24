@@ -57,6 +57,8 @@ class OrderDetailType extends AbstractType
             ->add('price', 'money', array(
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
