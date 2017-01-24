@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\DomCrawler\Crawler;
+
 class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
 
@@ -244,7 +246,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
+        $this->assertContains($this->expected, $this->actual);
     }
 
     /**
