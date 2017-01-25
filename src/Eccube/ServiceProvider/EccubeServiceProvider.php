@@ -422,5 +422,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
      */
     public function boot(Application $app)
     {
+        // add transaction listener
+        $app['dispatcher']->addSubscriber(new \Eccube\EventListener\TransactionListener($app));
     }
 }

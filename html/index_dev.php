@@ -96,7 +96,7 @@ $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
 ));
 
 // Debug出力
-// $app->register(new \Eccube\ServiceProvider\DebugServiceProvider());
+$app->register(new \Eccube\ServiceProvider\DebugServiceProvider());
 
 $app->register(new \Saxulum\SaxulumWebProfiler\Provider\SaxulumWebProfilerProvider());
 
