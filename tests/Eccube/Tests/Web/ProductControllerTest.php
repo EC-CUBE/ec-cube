@@ -56,4 +56,26 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
+    /**
+     * test with category id is invalid.
+     */
+    public function testCategoryNotFound()
+    {
+        $client = $this->client;
+        $message = 'ご指定のカテゴリは存在しません。';
+        $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => 'XXX')));
+        $this->assertContains($message, $crawler->html());
+    }
+
+    /**
+     * test with category id is valid.
+     */
+    public function testCategoryFound()
+    {
+        $client = $this->client;
+        $message = '商品がみつかりました';
+        $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => '6')));
+        $this->assertContains($message, $crawler->html());
+    }
+
 }
