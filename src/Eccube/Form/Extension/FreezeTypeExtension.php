@@ -86,6 +86,6 @@ class FreezeTypeExtension extends AbstractTypeExtension
 
     public function getExtendedType()
     {
-        return FromType::class;
+        return FormType::class;
     }
 }
