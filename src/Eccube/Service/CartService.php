@@ -509,10 +509,9 @@ class CartService
     {
         $quantity = $this->getProductQuantity($productClassId) - 1;
 
+        //fix click continue minus button.
         if ($quantity > 0) {
             $this->setProductQuantity($productClassId, $quantity);
-        } else {
-            $this->removeProduct($productClassId);
         }
 
         return $this;
