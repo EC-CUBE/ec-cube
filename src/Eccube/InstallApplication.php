@@ -95,24 +95,24 @@ class InstallApplication extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => 'ja',
         ));
-        // $app['translator'] = $app->extend('translator', function($translator, \Silex\Application $app) {
-        //     $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
+        $app->extend('translator', function($translator, \Silex\Application $app) {
+            $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
-        //     $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-        //     $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
-        //     if (file_exists($file)) {
-        //         $translator->addResource('xliff', $file, $app['locale'], 'validators');
-        //     }
+            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
+            $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
+            if (file_exists($file)) {
+                $translator->addResource('xliff', $file, $app['locale'], 'validators');
+            }
 
-        //     $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
-        //     if (file_exists($file)) {
-        //         $translator->addResource('yaml', $file, $app['locale'], 'validators');
-        //     }
+            $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
+            if (file_exists($file)) {
+                $translator->addResource('yaml', $file, $app['locale'], 'validators');
+            }
 
-        //     $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', $app['locale']);
+            $translator->addResource('yaml', __DIR__.'/Resource/locale/ja.yml', $app['locale']);
 
-        //     return $translator;
-        // });
+            return $translator;
+        });
 
         $app->mount('', new ControllerProvider\InstallControllerProvider());
         $app->register(new ServiceProvider\InstallServiceProvider());

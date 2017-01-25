@@ -199,9 +199,6 @@ class Application extends \Silex\Application
         $this->mount('/'.trim($this['config']['admin_route'], '/').'/', new ControllerProvider\AdminControllerProvider());
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
-        // add transaction listener
-        // FIXME  $this['dispatcher']->addSubscriber(new TransactionListener($this));
-
         // init http cache
         $this->initCacheRequest();
 
@@ -219,8 +216,9 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
             'locale' => $this['config']['locale'],
             'translator.cache_dir' => $this['debug'] ? null : $this['config']['root_dir'].'/app/cache/translator',
+            'locale_fallbacks' => ['ja', 'en'],
         ));
-        $this['translator'] = $this->extend('translator', function ($translator, \Silex\Application $app) {
+        $this->extend('translator', function ($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
             $file = __DIR__.'/Resource/locale/validator.'.$app['locale'].'.yml';
@@ -354,6 +352,8 @@ class Application extends \Silex\Application
 
         // twigのグローバル変数を定義.
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) {
+            // TODO ログイン時のイベントを設定.
+            $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
             // 未ログイン時にマイページや管理画面以下にアクセスするとSubRequestで実行されるため,
             // $event->isMasterRequest()ではなく、グローバル変数が初期化済かどうかの判定を行う
             if (isset($this['twig_global_initialized']) && $this['twig_global_initialized'] === true) {
@@ -622,16 +622,12 @@ class Application extends \Silex\Application
             return new \Eccube\EventListener\SecurityEventListener($app['orm.em']);
         };
 
-        // ログイン時のイベントを設定.
-        // FIXME $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
-
         // Voterの設定
-        $app = $this;
         $this['authority_voter'] = function ($app) {
             return new \Eccube\Security\Voter\AuthorityVoter($app);
         };
 
-        $app['security.voters'] = $app->extend('security.voters', function ($voters) use ($app) {
+        $this->extend('security.voters', function ($voters, \Silex\Application $app) {
             $voters[] = $app['authority_voter'];
 
             return $voters;
@@ -743,7 +739,7 @@ class Application extends \Silex\Application
             // ルーティング単位
             $this['eccube.event.dispatcher']->dispatch("eccube.event.route.{$route}.request", $event);
 
-        }, 30); // Routing(32)が解決しし, 認証判定(8)が実行される前のタイミング.
+        }, 30); // Routing(32)が解決し, 認証判定(8)が実行される前のタイミング.
 
         // Controller Event
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) {
@@ -906,7 +902,7 @@ class Application extends \Silex\Application
 
             // const
             if (isset($config['const'])) {
-                $this['config'] = $this->extend('config', function ($eccubeConfig) use ($config) {
+                $this->extend('config', function ($eccubeConfig) use ($config) {
                     $eccubeConfig[$config['code']] = array(
                         'const' => $config['const'],
                     );

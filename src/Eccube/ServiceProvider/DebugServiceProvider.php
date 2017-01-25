@@ -25,7 +25,7 @@
 namespace Eccube\ServiceProvider;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
 use Symfony\Bridge\Twig\Extension\DumpExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\DataCollector\DumpDataCollector;
@@ -33,6 +33,9 @@ use Symfony\Component\HttpKernel\EventListener\DumpListener;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+
 
 /**
  * Debug Dump
@@ -62,9 +65,9 @@ use Symfony\Component\VarDumper\VarDumper;
  * @see https://github.com/jeromemacias/Silex-Debug/tree/1.0
  *
  */
-class DebugServiceProvider implements ServiceProviderInterface
+class DebugServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $app['var_dumper.cloner'] = function ($app) {
             $cloner = new VarCloner();
@@ -80,7 +83,7 @@ class DebugServiceProvider implements ServiceProviderInterface
             return $cloner;
         };
 
-        $app['data_collector.templates'] = $app->extend('data_collector.templates', function ($templates) {
+        $app->extend('data_collector.templates', function ($templates) {
             return array_merge($templates, array(array('dump', '@Debug/Profiler/dump.html.twig')));
         });
 
@@ -88,7 +91,7 @@ class DebugServiceProvider implements ServiceProviderInterface
             return new DumpDataCollector($app['stopwatch'], $app['code.file_link_format']);
         };
 
-        $app['data_collectors'] = $app->extend('data_collectors', function ($collectors, $app) {
+        $app->extend('data_collectors', function ($collectors, $app) {
             $collectors['dump'] = function ($app) {
                 return $app['data_collector.dump'];
             };
@@ -96,7 +99,7 @@ class DebugServiceProvider implements ServiceProviderInterface
             return $collectors;
         });
 
-        $app['twig'] = $app->extend('twig', function ($twig, $app) {
+        $app->extend('twig', function ($twig, $app) {
             if (class_exists('\Symfony\Bridge\Twig\Extension\DumpExtension')) {
                 $twig->addExtension(new DumpExtension($app['var_dumper.cloner']));
             }
@@ -104,7 +107,7 @@ class DebugServiceProvider implements ServiceProviderInterface
             return $twig;
         });
 
-        $app['twig.loader.filesystem'] = $app->extend('twig.loader.filesystem', function ($loader, $app) {
+        $app->extend('twig.loader.filesystem', function ($loader, $app) {
             $loader->addPath($app['debug.templates_path'], 'Debug');
 
             return $loader;
