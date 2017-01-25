@@ -15,7 +15,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Payment = $this->app['eccube.repository.payment']->find(1);
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_new']);
         for ($i = 0; $i < 10; $i++) {
-            $Customer = $this->createCustomer('user-'.$i.'@example.com');
+            $Customer = $this->createCustomer('user-' . $i . '@example.com');
             $Customer->setSex($Sex);
             $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderStatus);
@@ -51,6 +51,45 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testSearchOrderById()
+    {
+        $crawler = $this->client->request(
+            'POST', $this->app->url('admin_order'), array(
+            'admin_search_order' => array(
+                '_token' => 'dummy',
+                'multi' => '1',
+            )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    public function testSearchOrderByName()
+    {
+        $Order = $this->app['eccube.repository.order']->find(1);
+        $companyName = $Order->getCompanyName();
+        $OrderList = $this->app['eccube.repository.order']->findBy(array('company_name' => $companyName));
+        $cnt = count($OrderList);
+
+        $crawler = $this->client->request(
+            'POST', $this->app->url('admin_order'), array(
+            'admin_search_order' => array(
+                '_token' => 'dummy',
+                'multi' => $Order->getName01(),
+            )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
     }
 
     public function testIndexWithPost()
