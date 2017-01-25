@@ -72,7 +72,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderByName()
     {
-        $Order = $this->app['eccube.repository.order']->find(1);
+        $Order = $this->app['eccube.repository.order']->findOneBy(array());
         $companyName = $Order->getCompanyName();
         $OrderList = $this->app['eccube.repository.order']->findBy(array('company_name' => $companyName));
         $cnt = count($OrderList);
