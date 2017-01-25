@@ -55,11 +55,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testSearchOrderById()
     {
+        $Order = $this->app['eccube.repository.order']->findOneBy(array());
+
         $crawler = $this->client->request(
             'POST', $this->app->url('admin_order'), array(
             'admin_search_order' => array(
                 '_token' => 'dummy',
-                'multi' => '1',
+                'multi' => $Order->getId(),
             )
             )
         );
@@ -81,7 +83,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             'POST', $this->app->url('admin_order'), array(
             'admin_search_order' => array(
                 '_token' => 'dummy',
-                'multi' => $Order->getName01(),
+                'multi' => $companyName,
             )
             )
         );
