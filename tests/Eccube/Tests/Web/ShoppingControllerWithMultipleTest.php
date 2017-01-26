@@ -1917,14 +1917,14 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                     'delivery' => 1,
                     'deliveryTime' => 1,
                 ),
+                // Product type 2 with address 1 (two item)
+                array(
+                    'delivery' => 2,
+                ),
                 // Product type 1 with address 2 (one item)
                 array(
                     'delivery' => 1,
                     'deliveryTime' => 1,
-                ),
-                // Product type 2 with address 1 (two item)
-                array(
-                    'delivery' => 2,
                 ),
                 // Product type 2 with address 2 (one item)
                 array(
