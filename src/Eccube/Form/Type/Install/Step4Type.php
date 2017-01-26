@@ -64,7 +64,7 @@ class Step4Type extends AbstractType
         $builder
             ->add('database', ChoiceType::class, array(
                 'label' => 'データベースの種類',
-                'choices' => $database,
+                'choices' => array_flip($database),
                 'expanded' => false,
                 'multiple' => false,
                 'constraints' => array(
