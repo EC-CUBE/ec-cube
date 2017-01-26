@@ -84,7 +84,6 @@ class InstallApplication extends \Silex\Application
         }
 
         $app->register(new \Silex\Provider\SessionServiceProvider());
-
         $app->register(new \Silex\Provider\TwigServiceProvider(), array(
             'twig.path' => array(__DIR__.'/Resource/template/install'),
             'twig.form.templates' => array('bootstrap_3_horizontal_layout.html.twig'),
@@ -117,6 +116,7 @@ class InstallApplication extends \Silex\Application
 
         $app->mount('', new ControllerProvider\InstallControllerProvider());
         $app->register(new ServiceProvider\InstallServiceProvider());
+        $app->register(new \Silex\Provider\CsrfServiceProvider());
 
         $app->error(function(\Exception $e, $code) use ($app) {
             if ($code === 404) {
