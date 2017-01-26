@@ -26,6 +26,7 @@ namespace Eccube\ControllerProvider;
 
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class InstallControllerProvider implements ControllerProviderInterface
 {
