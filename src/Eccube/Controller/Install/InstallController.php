@@ -30,6 +30,10 @@ use Doctrine\DBAL\Migrations\MigrationException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Common\Constant;
+use Eccube\Form\Type\Install\Step1Type;
+use Eccube\Form\Type\Install\Step3Type;
+use Eccube\Form\Type\Install\Step4Type;
+use Eccube\Form\Type\Install\Step5Type;
 use Eccube\InstallApplication;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -95,7 +99,7 @@ class InstallController
     public function step1(InstallApplication $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('install_step1')
+            ->createBuilder(Step1Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
@@ -139,7 +143,7 @@ class InstallController
     public function step3(InstallApplication $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('install_step3')
+            ->createBuilder(Step3Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
 
@@ -204,7 +208,7 @@ class InstallController
     public function step4(InstallApplication $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('install_step4')
+            ->createBuilder(Step4Type::class)
             ->getForm();
 
         $sessionData = $this->getSessionData($request);
@@ -249,7 +253,7 @@ class InstallController
         set_time_limit(0);
         $this->app = $app;
         $form = $app['form.factory']
-            ->createBuilder('install_step5')
+            ->createBuilder(Step5Type::class)
             ->getForm();
         $sessionData = $this->getSessionData($request);
         $form->setData($sessionData);
