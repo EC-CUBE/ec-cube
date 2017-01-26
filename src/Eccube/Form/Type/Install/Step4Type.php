@@ -25,7 +25,6 @@
 namespace Eccube\Form\Type\Install;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -135,7 +134,7 @@ class Step4Type extends AbstractType
 
     public function validate($data, ExecutionContext $context, $param = null)
     {
-        $parameters = $this->app['request']->get('install_step4');
+        $parameters = $this->app['request_stack']->getCurrentRequest()->get('install_step4');
         if ($parameters['database'] != 'pdo_sqlite'){
             $context->getValidator()->validate($data, array(
                 new Assert\NotBlank()

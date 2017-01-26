@@ -35,9 +35,6 @@ class InstallControllerProvider implements ControllerProviderInterface
         /* @var $controllers \Silex\ControllerCollection */
         $controllers = $app['controllers_factory'];
 
-        $controllers->before(function (Request $request, Application $app) {
-            $app['request'] = $request;
-        });
         // installer
         $controllers->match('', "\\Eccube\\Controller\\Install\\InstallController::index")->bind('install');
         $controllers->match('/step1', "\\Eccube\\Controller\\Install\\InstallController::step1")->bind('install_step1');
