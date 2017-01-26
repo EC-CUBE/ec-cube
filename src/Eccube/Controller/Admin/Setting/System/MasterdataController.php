@@ -162,6 +162,8 @@ class MasterdataController extends AbstractController
                 }
 
                 return $app->redirect($app->url('admin_setting_system_masterdata_view', array('entity' => $data['masterdata_name'])));
+            } else {
+                $app->addError('admin.register.failed', 'admin');
             }
         }
 

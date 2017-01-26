@@ -85,9 +85,37 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * Edit name test
+     */
+    public function testEditNameIsBlank()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        // expected value
+        $this->expected = $editForm['data'][1]['name'];
+        $editForm['data'][1]['name'] = null;
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_system_masterdata_edit'),
+            array(
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            )
+        );
+        $html = $crawler->html();
+        $this->assertContains('登録できませんでした。', $html);
+        $this->assertContains('※ 入力されていません。', $html);
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $this->actual = $this->app['orm.em']->getRepository($entityName)->find($editForm['data'][1]['id'])->getName();
+        $this->verify();
+    }
+
+    /**
      * Edit test
      */
-    public function testEdit()
+    public function testEditSuccess()
     {
         $formData = $this->createFormData($this->entityTest);
         $editForm = $this->createFormDataEdit($this->entityTest);

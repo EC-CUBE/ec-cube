@@ -23,17 +23,19 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Application;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MasterdataDataType extends AbstractType
 {
     protected $app;
 
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }
@@ -53,7 +55,7 @@ class MasterdataDataType extends AbstractType
                         'max' => $app['config']['int_len'],
                     )),
                     new Assert\Regex(array(
-                        'pattern' => "/^\d+$/u",
+                        'pattern' => '/^\d+$/u',
                         'message' => 'form.type.numeric.invalid',
                     )),
                 ),
@@ -61,7 +63,13 @@ class MasterdataDataType extends AbstractType
             ->add('name', 'text', array(
                 'required' => false,
             ))
-            ;
+        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($app) {
+            $form = $event->getForm();
+            $data = $form->getData();
+            if ($data['id'] && empty($data['name'])) {
+                $form['name']->addError(new FormError($app->trans('This value should not be blank.')));
+            }
+        });
     }
 
     /**
