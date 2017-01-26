@@ -166,39 +166,38 @@ class AddCartType extends AbstractType
         return 'add_cart';
     }
 
-    // FIXME
-    // /**
-    //  * validate
-    //  *
-    //  * @param type             $data
-    //  * @param ExecutionContext $context
-    //  */
-    // public function validate($data, ExecutionContext $context)
-    // {
-    //     if ($data['mode'] !== 'add_favorite') {
-    //         $context->validateValue($data['product_class_id'], array(
-    //             new Assert\NotBlank(),
-    //         ), '[product_class_id]');
-    //         if ($this->Product->getClassName1()) {
-    //             $context->validateValue($data['classcategory_id1'], array(
-    //                 new Assert\NotBlank(),
-    //                 new Assert\NotEqualTo(array(
-    //                     'value' => '__unselected',
-    //                     'message' => 'form.type.select.notselect'
-    //                 )),
-    //             ), '[classcategory_id1]');
-    //         }
-    //         //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
-    //         if ($this->Product->getClassName2()) {
-    //             $context->validateValue($data['classcategory_id2'], array(
-    //                 new Assert\NotBlank(),
-    //                 new Assert\NotEqualTo(array(
-    //                     'value' => '__unselected',
-    //                     'message' => 'form.type.select.notselect'
-    //                 )),
-    //             ), '[classcategory_id2]');
-    //         }
+    /**
+     * validate
+     *
+     * @param type             $data
+     * @param ExecutionContext $context
+     */
+    public function validate($data, ExecutionContext $context)
+    {
+        if ($data['mode'] !== 'add_favorite') {
+            $context->getValidator()->validate($data['product_class_id'], array(
+                new Assert\NotBlank(),
+            ), '[product_class_id]');
+            if ($this->Product->getClassName1()) {
+                $context->validateValue($data['classcategory_id1'], array(
+                    new Assert\NotBlank(),
+                    new Assert\NotEqualTo(array(
+                        'value' => '__unselected',
+                        'message' => 'form.type.select.notselect'
+                    )),
+                ), '[classcategory_id1]');
+            }
+            //商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
+            if ($this->Product->getClassName2()) {
+                $context->getValidator()->validate($data['classcategory_id2'], array(
+                    new Assert\NotBlank(),
+                    new Assert\NotEqualTo(array(
+                        'value' => '__unselected',
+                        'message' => 'form.type.select.notselect'
+                    )),
+                ), '[classcategory_id2]');
+            }
 
-    //     }
-    // }
+        }
+    }
 }
