@@ -422,7 +422,7 @@ class InstallController
             'db.options' => $database['database']
         ));
 
-        $this->app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+        $this->app->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
             'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
             'orm.em.options' => array(
                 'mappings' => array(
