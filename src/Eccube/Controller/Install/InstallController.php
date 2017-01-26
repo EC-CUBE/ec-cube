@@ -415,28 +415,31 @@ class InstallController
      */
     private function getEntityManager()
     {
-        $config_file = $this->config_path . '/database.yml';
-        $database = Yaml::parse(file_get_contents($config_file));
+        if (!isset($this->app['orm.em'])) {
+            $config_file = $this->config_path . '/database.yml';
+            $database = Yaml::parse(file_get_contents($config_file));
 
-        $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
-            'db.options' => $database['database']
-        ));
+            $this->app->register(new \Silex\Provider\DoctrineServiceProvider(), array(
+                'db.options' => $database['database']
+            ));
 
-        $this->app->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
-            'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
-            'orm.em.options' => array(
-                'mappings' => array(
-                    array(
-                        'type' => 'yml',
-                        'namespace' => 'Eccube\Entity',
-                        'path' => array(
-                            __DIR__ . '/../../Resource/doctrine',
-                            __DIR__ . '/../../Resource/doctrine/master',
+            $this->app->register(new \Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider(), array(
+                'orm.proxies_dir' => __DIR__ . '/../../app/cache/doctrine',
+                'orm.em.options' => array(
+                    'mappings' => array(
+                        array(
+                            'type' => 'yml',
+                            'namespace' => 'Eccube\Entity',
+                            'path' => array(
+                                __DIR__ . '/../../Resource/doctrine',
+                                __DIR__ . '/../../Resource/doctrine/master',
+                            ),
                         ),
                     ),
-                ),
-            )
-        ));
+                )
+            ));
+
+        }
 
         return $em = $this->app['orm.em'];
     }
