@@ -137,7 +137,7 @@ class Step4Type extends AbstractType
     {
         $parameters = $this->app['request']->get('install_step4');
         if ($parameters['database'] != 'pdo_sqlite'){
-            $context->validateValue($data, array(
+            $context->getValidator()->validate($data, array(
                 new Assert\NotBlank()
             ));
         }
