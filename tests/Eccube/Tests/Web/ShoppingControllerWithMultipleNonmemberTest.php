@@ -1539,6 +1539,11 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $preOrderId = $this->app['eccube.service.cart']->getPreOrderId();
         $Order = $this->app['eccube.repository.order']->findOneBy(array('pre_order_id' => $preOrderId));
 
+        // total delivery fee
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->expected = 1000;
+        $this->verify();
+
         // two shipping
         $Shipping = $Order->getShippings();
         $this->actual = count($Shipping);
@@ -1687,6 +1692,11 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $preOrderId = $this->app['eccube.service.cart']->getPreOrderId();
         $Order = $this->app['eccube.repository.order']->findOneBy(array('pre_order_id' => $preOrderId));
 
+        // total delivery fee
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->expected = 1000;
+        $this->verify();
+
         // two shipping
         $Shipping = $Order->getShippings();
         $this->actual = count($Shipping);
@@ -1808,6 +1818,11 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $Shipping = $Order->getShippings();
         $this->actual = count($Shipping);
         $this->expected = 1;
+        $this->verify();
+
+        // total delivery fee
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->expected = 1000;
         $this->verify();
 
         // 確認画面
@@ -1992,6 +2007,11 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $Shipping = $Order->getShippings();
         $this->actual = count($Shipping);
         $this->expected = 4;
+        $this->verify();
+
+        // total delivery fee
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->expected = 2000;
         $this->verify();
 
         // 確認画面

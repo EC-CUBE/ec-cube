@@ -1539,6 +1539,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Order = $this->app['eccube.repository.order']->findOneBy(array('Customer' => $User));
         $Shipping = $Order->getShippings();
 
+        // total delivery fee
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->expected = 1000;
+        $this->verify();
+
         $this->actual = count($Shipping);
         $this->expected = 2;
         $this->verify();
@@ -1696,6 +1701,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // still only one shipping
         $this->actual = count($Shipping);
         $this->expected = 1;
+        $this->verify();
+
+        // total delivery fee
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->expected = 1000;
         $this->verify();
 
         // 確認画面
@@ -1888,6 +1898,11 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // four shipping
         $this->actual = count($Shipping);
         $this->expected = 4;
+        $this->verify();
+
+        // total delivery fee
+        $this->actual = $Order->getDeliveryFeeTotal();
+        $this->expected = 2000;
         $this->verify();
 
         // 確認画面
