@@ -186,9 +186,9 @@ function fnClass(action) {
 {% endblock javascript %}
 
 {% block main %}
+        <div class="row" id="aside_wrap">
             <form role="form" name="form1" id="form1" method="post" action="" novalidate enctype="multipart/form-data">
             {{ form_widget(form._token) }}
-            <div class="row" id="aside_wrap">
                 <div id="detail_wrap" class="col-md-9">
                     <div id="detail_box" class="box form-horizontal">
                         <div id="detail_box__header" class="box-header">
@@ -369,8 +369,8 @@ function fnClass(action) {
 
                 </div><!-- /.col -->
 
-                <div class="col_inner" id="aside_column">
-                    <div id="common_box" class="col-md-3">
+                <div class="col-md-3" id="aside_column">
+                    <div id="common_box" class="col_inner">
                         <div id="common_button_box" class="box no-header">
                             <div id="common_button_box__body" class="box-body">
                                 <div id="common_button_box__status" class="row">
@@ -459,7 +459,7 @@ function fnClass(action) {
                     </div>
                 </div><!-- /.col -->
 
-            </div>
             </form>
+        </div>
 
 {% endblock %}

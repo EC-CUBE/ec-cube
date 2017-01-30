@@ -29,8 +29,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
 <form id="form1" name="form1" method="post" action="{{ url('admin_setting_system_masterdata') }}">
+<div class="row">
     {{ form_widget(form._token) }}
-    <div class="row">
         <div id="master_edit" class="col-md-12">
             <div id="master_edit_box" class="box">
                 <div id="master_edit_box__header" class="box-header">
@@ -64,10 +64,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 </form>
 
 {% if form2.data is not empty %}
+<div class="row" id="aside_wrap">
 <form id="form2" name="form2" method="post" action="{{ url('admin_setting_system_masterdata_edit') }}">
     {{ form_widget(form2.masterdata_name) }}
     {{ form_widget(form2._token) }}
-    <div class="row" id="aside_wrap">
         <div id="result_list_box" class="col-md-9">
             <div id="result_list_box__body" class="box">
                 <div id="result_list_box__header" class="box-header">
@@ -106,8 +106,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             </div><!-- /.box-body -->
         </div>
 
-        <div class="col_inner" id="aside_column">
-            <div id="common_box" class="col-md-3">
+        <div class="col-md-3" id="aside_column">
+            <div id="common_box" class="col_inner">
                 <div id="common_button_box" class="box no-header">
                     <div id="common_button_box__body" class="box-body">
                         <div id="common_button_box__insert_button"  class="row text-center">
@@ -119,7 +119,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div><!-- /.box -->
             </div>
         </div><!-- /.col --> 
-    </div>
 </form>
+</div>
 {% endif %}
 {% endblock %}
