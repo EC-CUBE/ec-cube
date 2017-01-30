@@ -107,9 +107,6 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchByEmail()
     {
-
-        //$CustomerList = $this->app['eccube.repository.customer']->findBy(array(''));
-
         $crawler = $this->client->request(
             'POST', $this->app->path('admin_customer'), array('admin_search_customer' => array('_token' => 'dummy', 'multi' => 'ser-7'))
         );
@@ -125,7 +122,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPostSearchById()
     {
-        $Customer = $this->app['eccube.repository.customer']->findOneBy(array('deleteFlg' => 0));
+        $Customer = $this->app['eccube.repository.customer']->findOneBy(array('del_flg' => 0));
 
         $crawler = $this->client->request(
             'POST', $this->app->path('admin_customer'), array('admin_search_customer' => array('_token' => 'dummy', 'multi' => $Customer->getId()))
