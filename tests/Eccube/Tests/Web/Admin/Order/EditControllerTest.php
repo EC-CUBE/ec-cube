@@ -285,8 +285,6 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
 
         $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
-        $this->client->request('GET', $this->app->url('admin_order_edit', array('id' => $Order->getId())));
-
         $formDataForEdit = $this->createFormDataForEdit($EditedOrder);
 
         //税金計算
