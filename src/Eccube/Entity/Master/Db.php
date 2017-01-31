@@ -43,9 +43,11 @@ class Db extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * public フィールドのテスト
+     *
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @var integer
@@ -60,29 +62,6 @@ class Db extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param  string $name
-     * @return Db
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**

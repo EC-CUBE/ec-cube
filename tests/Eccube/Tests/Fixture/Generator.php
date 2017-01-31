@@ -259,11 +259,11 @@ class Generator {
         $Disp = $this->app['eccube.repository.master.disp']->find(\Eccube\Entity\Master\Disp::DISPLAY_SHOW);
         $ProductType = $this->app['eccube.repository.master.product_type']->find(1);
         $DeliveryDates = $this->app['eccube.repository.delivery_date']->findAll();
-        $Product = new Product();
+        $Product = new \Eccube2\Entity\ExtendedProduct();
         if (is_null($product_name)) {
             $product_name = $faker->word;
         }
-
+        $Db = $this->app['orm.em']->getRepository('Eccube\Entity\Master\Db')->find(1);
         $Product
             ->setName($product_name)
             ->setCreator($Member)
@@ -273,6 +273,8 @@ class Generator {
             ->setDelFlg(Constant::DISABLED)
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->text());
+        $Product->extendedParameter = "aaaa";
+        $Product->Db = $Db;
 
         $this->app['orm.em']->persist($Product);
         $this->app['orm.em']->flush($Product);

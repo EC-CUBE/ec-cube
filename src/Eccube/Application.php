@@ -503,15 +503,14 @@ class Application extends \Silex\Application
 
         // ここを有効にすると本体の Entity でもアノテーションが使える
         // が、 Yaml との共存はできない模様...
-        // $ormMappings[] = array(
-        //     'type' => 'annotation',
-        //     'namespace' => 'Eccube\Entity',
-        //     'path' => array(
-        //         __DIR__.'/Entity',
-        //         __DIR__.'/Entity/master',
-        //     ),
-        //     'use_simple_annotation_reader' => false,
-        // );
+        $ormMappings[] = array(
+            'type' => 'annotation',
+            'namespace' => 'Eccube2\Entity',
+            'path' => array(
+                __DIR__.'/../../app/Eccube/Entity',
+            ),
+            'use_simple_annotation_reader' => false,
+        );
 
         foreach ($pluginConfigs as $code) {
             $config = $code['config'];
