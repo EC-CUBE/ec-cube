@@ -2,6 +2,10 @@ Eccube\Entity\DeliveryTime:
     type: entity
     table: dtb_delivery_time
     repositoryClass: Eccube\Repository\DeliveryTimeRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

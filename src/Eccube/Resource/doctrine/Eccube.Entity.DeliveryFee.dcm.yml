@@ -2,6 +2,10 @@ Eccube\Entity\DeliveryFee:
     type: entity
     table: dtb_delivery_fee
     repositoryClass: Eccube\Repository\DeliveryFeeRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

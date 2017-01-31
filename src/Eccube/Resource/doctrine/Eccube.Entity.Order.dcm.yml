@@ -2,6 +2,10 @@ Eccube\Entity\Order:
     type: entity
     table: dtb_order
     repositoryClass: Eccube\Repository\OrderRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     indexes:
         # requires a length on MySQL
         # dtb_order_pre_order_id_idx:

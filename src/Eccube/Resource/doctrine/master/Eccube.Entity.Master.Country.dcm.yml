@@ -2,6 +2,10 @@ Eccube\Entity\Master\Country:
     type: entity
     table: mtb_country
     repositoryClass: Eccube\Repository\Master\CountryRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

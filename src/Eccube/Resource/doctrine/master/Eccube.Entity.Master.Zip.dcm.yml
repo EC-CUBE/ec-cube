@@ -2,6 +2,10 @@ Eccube\Entity\Master\Zip:
     type: entity
     table: mtb_zip
     repositoryClass: Eccube\Repository\Master\ZipRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: integer

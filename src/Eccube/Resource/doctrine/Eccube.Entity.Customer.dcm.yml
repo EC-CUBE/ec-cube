@@ -2,6 +2,10 @@ Eccube\Entity\Customer:
     type: entity
     table: dtb_customer
     repositoryClass: Eccube\Repository\CustomerRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     uniqueConstraints:
         secret_key:
             columns:

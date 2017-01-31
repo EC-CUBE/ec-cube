@@ -2,6 +2,10 @@ Eccube\Entity\OrderDetail:
     type: entity
     table: dtb_order_detail
     repositoryClass: Eccube\Repository\OrderDetailRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     indexes:
         dtb_order_detail_product_id_key:
             columns:

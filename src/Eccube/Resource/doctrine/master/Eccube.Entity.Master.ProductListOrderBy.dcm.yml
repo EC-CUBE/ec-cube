@@ -2,6 +2,10 @@ Eccube\Entity\Master\ProductListOrderBy:
     type: entity
     table: mtb_product_list_order_by
     repositoryClass: Eccube\Repository\Master\ProductListOrderByRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         id:
             type: smallint

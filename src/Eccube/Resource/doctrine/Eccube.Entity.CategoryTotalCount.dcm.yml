@@ -2,6 +2,10 @@ Eccube\Entity\CategoryTotalCount:
     type: entity
     table: dtb_category_total_count
     repositoryClass: Eccube\Repository\CategoryTotalCountRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+      name: discriminator_type
+      type: string
     id:
         category_id:
             type: integer
