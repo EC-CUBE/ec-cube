@@ -6,7 +6,9 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Inheritance Mapping に対応するため, discriminator_type カラムを追加する.
+ *
+ * EC-CUBE3.0.x からアップグレードする際は, ソースコードを更新する前に, このマイグレーションを実行する必要がある.
  */
 class Version20170131092324 extends AbstractMigration
 {
@@ -21,7 +23,7 @@ class Version20170131092324 extends AbstractMigration
         $metadatas = $em->getMetadataFactory()->getAllMetaData();
 
         foreach ($metadatas as $ClassMetadata) {
-            $type = strtolower(str_replace($ClassMetadata->namespace.'\\', '', $ClassMetadata->getName()));
+            $type = strtolower($ClassMetadata->reflClass->getShortName());
             $this->addSql('UPDATE '.$ClassMetadata->table['name']." SET discriminator_type = :type", ['type' => $type]);
             $Table = $schema->getTable($ClassMetadata->table['name']);
             $Column = $Table->getColumn('discriminator_type');
