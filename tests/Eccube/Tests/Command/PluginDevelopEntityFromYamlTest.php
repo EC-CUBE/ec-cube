@@ -2,7 +2,6 @@
 
 namespace Eccube\Tests\Command;
 
-use Guzzle\Http\Client;
 use Eccube\Application;
 use Eccube\Command\PluginCommand;
 use Symfony\Component\Console\Question\Question;
@@ -44,11 +43,11 @@ class PluginDevelopEntityFromYamlTest extends AbstractCommandTest
                 ),
                 array(
                     'input' => 'テストプラグイン名',
-                    'output' => 'only pascal case letters numbers are allowed',
+                    'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.)',
                 ),
                 array(
                     'input' => strtolower($code),
-                    'output' => 'only pascal case letters numbers are allowed',
+                    'output' => 'Please enter Plugin Code (First letter is uppercase alphabet only. alphabet and numbers are allowed.)',
                 ),
                 array(
                     'input' => $code,

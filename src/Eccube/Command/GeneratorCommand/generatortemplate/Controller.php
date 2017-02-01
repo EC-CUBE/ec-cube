@@ -12,13 +12,12 @@
 namespace Plugin\[code]\Controller;
 
 use Eccube\Application;
-use Symfony\Component\HttpFoundation\Request;
 
-class ConfigController
+class [code]Controller
 {
 
     /**
-     * [code]用設定画面
+     * [code]画面
      *
      * @param Application $app
      * @param Request $request
@@ -27,18 +26,10 @@ class ConfigController
     public function index(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']->createBuilder('[code_name]_config')->getForm();
+        // add code...
 
-            $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-
-                // add code...
-            }
-
-        return $app->render('[code]/Resource/template/admin/config.twig', array(
-            'form' => $form->createView(),
+        return $app->render('[code]/Resource/template/index.twig', array(
+            // add parameter...
         ));
     }
 

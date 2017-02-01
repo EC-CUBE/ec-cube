@@ -1,9 +1,9 @@
 <?php
+
 /*
- * This file is part of EC-CUBE
+ * This file is part of the [code]
  *
- * Copyright(c) LOCKON CO.,LTD. All Rights Reserved.
- * http://www.lockon.co.jp/
+ * Copyright (C) [year] [author]
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,10 +11,10 @@
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
+use Eccube\Application;
 use Eccube\Common\Constant;
 
 class Version[datetime] extends AbstractMigration
@@ -23,11 +23,16 @@ class Version[datetime] extends AbstractMigration
 [entityList]
     );
 
+    /**
+     * @param Schema $schema
+     */
     public function up(Schema $schema)
     {
+        // this up() migration is auto-generated, please modify it to your needs
+
         if (version_compare(Constant::VERSION, '3.0.9', '>=')) {
-            // 3,0,9 以降の場合, dcm.ymlの定義からテーブル生成を行う.
-            $app = \Eccube\Application::getInstance();
+            // 3.0.9 以降の場合、dcm.ymlの定義からテーブル生成を行う.
+            $app = Application::getInstance();
             $meta = $this->getMetadata($app['orm.em']);
             $tool = new SchemaTool($app['orm.em']);
             $tool->createSchema($meta);
@@ -37,11 +42,16 @@ class Version[datetime] extends AbstractMigration
         }
     }
 
+    /**
+     * @param Schema $schema
+     */
     public function down(Schema $schema)
     {
+        // this down() migration is auto-generated, please modify it to your needs
+
         if (version_compare(Constant::VERSION, '3.0.9', '>=')) {
-            // 3,0,9 以降の場合, dcm.ymlの定義からテーブル/シーケンスの削除を行う
-            $app = \Eccube\Application::getInstance();
+            // 3.0.9 以降の場合、dcm.ymlの定義からテーブル/シーケンスの削除を行う
+            $app = Application::getInstance();
             $meta = $this->getMetadata($app['orm.em']);
 
             $tool = new SchemaTool($app['orm.em']);
@@ -66,6 +76,11 @@ class Version[datetime] extends AbstractMigration
         }
     }
 
+    /**
+     * @param EntityManager $em
+     * @return array
+     * @throws \Doctrine\Common\Persistence\Mapping\MappingException
+     */
     protected function getMetadata(EntityManager $em)
     {
         $meta = array();
@@ -75,5 +90,6 @@ class Version[datetime] extends AbstractMigration
 
         return $meta;
     }
-    [createFunction]
+
+[createFunction]
 }

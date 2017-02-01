@@ -12,7 +12,6 @@
 namespace Plugin\[code];
 
 use Eccube\Application;
-use Eccube\Event\EventArgs;
 
 class [code]Event
 {
@@ -20,6 +19,11 @@ class [code]Event
     /** @var  \Eccube\Application $app */
     private $app;
 
+    /**
+     * [code]Event constructor.
+     *
+     * @param Application $app
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
