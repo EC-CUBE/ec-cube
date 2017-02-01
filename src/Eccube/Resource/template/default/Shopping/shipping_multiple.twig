@@ -53,7 +53,6 @@ $(function() {
         //タグのID治す
         addrow.find('[id*="multiple_list__shipping_address"]').attr('id', 'multiple_list__shipping_address--' + idx + '_' + itemIdx + '');
         addrow.find('[id*="multiple_list__shipping_quantity"]').attr('id', 'multiple_list__shipping_quantity--' + idx + '_' + itemIdx + '');
-        //$(this).find('[id*="button__delete"]').attr('id', 'button__delete--' + idx + '_' + i + '');
         addrow.find('button').each(function() {
             $(this).attr('id', 'button__delete--' + idx + '_' + itemIdx + '');
             $(this).attr('data-itemidx', idx + '-' + itemIdx);
