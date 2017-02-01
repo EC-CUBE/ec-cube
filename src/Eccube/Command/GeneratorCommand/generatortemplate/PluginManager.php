@@ -12,6 +12,7 @@
 namespace Plugin\[code];
 
 use Eccube\Application;
+use Eccube\Plugin\AbstractPluginManager;
 
 class PluginManager extends AbstractPluginManager
 {

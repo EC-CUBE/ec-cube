@@ -11,8 +11,14 @@
 
 namespace Plugin\[code]\ServiceProvider;
 
+use Eccube\Event\EventArgs;
+use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
+use Monolog\Handler\FingersCrossedHandler;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Logger;
+use Plugin\[code]\Form\Type\[code]ConfigType;
 use Silex\Application as BaseApplication;
-Plugin\[code]\Form\Type\[code]ConfigType;
+use Silex\ServiceProviderInterface;
 
 class [code]ServiceProvider implements ServiceProviderInterface
 {

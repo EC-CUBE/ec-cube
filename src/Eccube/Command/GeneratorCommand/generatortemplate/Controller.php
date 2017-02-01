@@ -12,6 +12,7 @@
 namespace Plugin\[code]\Controller;
 
 use Eccube\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class [code]Controller
 {
