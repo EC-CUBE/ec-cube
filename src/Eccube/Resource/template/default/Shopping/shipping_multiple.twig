@@ -27,49 +27,40 @@ $(function() {
     $('.add').click(function() {
         var data = $(this).data();
         var idx = data.idx;
+        var itemIdx = 0;
         var item = $('#item' + idx);
         var row = $('#item' + idx + '-0');
         var addrow = $(row).clone();
-
+        
+        item.find('.shipping_item').each(function() {
+            itemIdx = $(this).attr('data-itemidx');
+        });
+        itemIdx = 1 + parseInt(itemIdx);
+        
         // 行のID設定
-        var i = 0;
-        $('#item' + idx).find('.shipping_item').each(function() {
-            $(this).attr('id', 'item' + idx + '-' + i);
-            i++;
-        });
-        $(addrow).attr('id', 'item' + idx + '-' + i);
+        
+        addrow.attr('id', 'item' + idx + '-' + itemIdx);
+        addrow.attr('data-itemidx', itemIdx);
+        
+        //セレクトボックスのIDとNAME設定
+        addrow.find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][customer_address]');
+        addrow.find('select').attr('id', 'form[shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
 
-        // お届け先設定
-        i = 0;
-        $('#item' + idx).find('select').each(function() {
-            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
-            i++;
-        });
-        $(addrow).find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][customer_address]');
+        //INPUTのIDとNAME設定
+        addrow.find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][quantity]');
+        addrow.find('input').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_quantity');
 
-        // 数量設定
-        i = 0;
-        $('#item' + idx).find('input').each(function() {
-            $(this).attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
-            i++;
+        //タグのID治す
+        addrow.find('[id*="multiple_list__shipping_address"]').attr('id', 'multiple_list__shipping_address--' + idx + '_' + itemIdx + '');
+        addrow.find('[id*="multiple_list__shipping_quantity"]').attr('id', 'multiple_list__shipping_quantity--' + idx + '_' + itemIdx + '');
+        //$(this).find('[id*="button__delete"]').attr('id', 'button__delete--' + idx + '_' + i + '');
+        addrow.find('button').each(function() {
+            $(this).attr('id', 'button__delete--' + idx + '_' + itemIdx + '');
+            $(this).attr('data-itemidx', idx + '-' + itemIdx);
+            $(this).data('itemidx', idx + '-' + itemIdx);
+            $(this).removeAttr('style');
         });
-        $(addrow).find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + i + '][quantity]');
-
-        // 削除ボタン設定
-        i = 0;
-        $('#item' + idx).find('button').each(function() {
-            $(this).attr('data-itemidx', idx + '-' + i);
-            $(this).data('itemidx', idx + '-' + i);
-            if (i != 0) {
-                // 1行目以外の削除ボタンを表示
-                $(this).removeAttr('style');
-            }
-            i++;
-        });
-        $(addrow).find('button').attr('data-itemidx', idx + '-' + i);
-        $(addrow).find('button').data('itemidx', idx + '-' + i);
-        $(addrow).find('button').removeAttr('style');
-
+        
         $(item).append($(addrow));
     });
 
@@ -140,7 +131,7 @@ $(function() {
 
                         <div id="item{{ idx }}">
                             {% for shipping in form.shipping_multiple[idx].shipping %}
-                                <div id="item{{ idx }}-{{ loop.index0 }}" class="shipping_item item{{ idx }} form-inline" style="margin-bottom: 5px;">
+                                <div id="item{{ idx }}-{{ loop.index0 }}" data-itemidx="{{ loop.index0 }}" class="shipping_item item{{ idx }} form-inline" style="margin-bottom: 5px;">
                                     <div id="multiple_list__shipping_address--{{ idx }}_{{ loop.index0 }}" class="form-group">
                                         <label>お届け先</label>
                                         {{ form_widget(shipping.customer_address, {'attr': {'class': 'shipping'}}) }}
