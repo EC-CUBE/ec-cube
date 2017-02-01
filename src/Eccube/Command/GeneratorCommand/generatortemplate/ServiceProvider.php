@@ -11,7 +11,6 @@
 
 namespace Plugin\[code]\ServiceProvider;
 
-use Eccube\Event\EventArgs;
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\RotatingFileHandler;
