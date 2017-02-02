@@ -28,6 +28,7 @@ use Eccube\Common\Constant;
 use Eccube\Exception\PluginException;
 use Eccube\Util\Cache;
 use Eccube\Util\Str;
+use Eccube\Plugin\ConfigManager as PluginConfigManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -48,7 +49,7 @@ class PluginService
         $tmp = null;
 
         try {
-            $this->app->removePluginConfigCache();
+            PluginConfigManager::removePluginConfigCache();
             Cache::clear($this->app, false);
             $tmp = $this->createTempDir();
 
@@ -310,7 +311,7 @@ class PluginService
     {
         $em = $this->app['orm.em'];
         try {
-            $this->app->removePluginConfigCache();
+            PluginConfigManager::removePluginConfigCache();
             Cache::clear($this->app, false);
             $pluginDir = $this->calcPluginDir($plugin->getCode());
             $em->getConnection()->beginTransaction();
@@ -319,7 +320,7 @@ class PluginService
             $this->callPluginManagerMethod(Yaml::parse(file_get_contents($pluginDir.'/'.self::CONFIG_YML)), $enable ? 'enable' : 'disable');
             $em->flush();
             $em->getConnection()->commit();
-            $this->app->writePluginConfigCache();
+            PluginConfigManager::writePluginConfigCache();
         } catch (\Exception $e) {
             $em->getConnection()->rollback();
             throw $e;
@@ -333,7 +334,7 @@ class PluginService
         $pluginBaseDir = null;
         $tmp = null;
         try {
-            $this->app->removePluginConfigCache();
+            PluginConfigManager::removePluginConfigCache();
             Cache::clear($this->app, false);
             $tmp = $this->createTempDir();
 
@@ -353,7 +354,7 @@ class PluginService
             $this->unpackPluginArchive($path, $pluginBaseDir); // 問題なければ本当のplugindirへ
 
             $this->updatePlugin($plugin, $config, $event); // dbにプラグイン登録
-            $this->app->writePluginConfigCache();
+            PluginConfigManager::writePluginConfigCache();
         } catch (PluginException $e) {
             foreach (array($tmp) as $dir) {
                 if (file_exists($dir)) {
