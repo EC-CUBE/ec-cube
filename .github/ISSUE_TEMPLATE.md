@@ -1,9 +1,10 @@
 ## 概要(Overview)
 
 
-## 再現手順(Procedure) or 要望の背景 (Requirement detail)
+## 期待する内容(Expect)  or 要望 (Requirement)
 
 
+## 再現手順(Procedure)
 
 
 ### 環境 (environment)
