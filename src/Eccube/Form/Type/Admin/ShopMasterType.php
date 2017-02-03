@@ -24,6 +24,9 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Form\Type\AddressType;
+use Eccube\Form\Type\TelType;
+use Eccube\Form\Type\ZipType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -82,16 +85,16 @@ class ShopMasterType extends AbstractType
                     )),
                 )
             ))
-            ->add('zip', 'zip', array(
+            ->add('zip', ZipType::class, array(
                 'required' => false,
             ))
-            ->add('address', 'address', array(
+            ->add('address', AddressType::class, array(
                 'required' => false,
             ))
-            ->add('tel', 'tel', array(
+            ->add('tel', TelType::class, array(
                 'required' => false,
             ))
-            ->add('fax', 'tel', array(
+            ->add('fax', TelType::class, array(
                 'required' => false,
             ))
             ->add('business_hour', TextType::class, array(
@@ -273,7 +276,7 @@ class ShopMasterType extends AbstractType
 
         $builder->add(
             $builder
-                ->create('company_kana', 'text', array(
+                ->create('company_kana', TextType::class, array(
                     'label' => '会社名(フリガナ)',
                     'required' => false,
                     'constraints' => array(
@@ -290,7 +293,7 @@ class ShopMasterType extends AbstractType
 
         $builder->add(
             $builder
-                ->create('shop_kana', 'text', array(
+                ->create('shop_kana', TextType::class, array(
                     'label' => '店名(フリガナ)',
                     'required' => false,
                     'constraints' => array(

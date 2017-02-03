@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -48,7 +49,7 @@ class FileController extends AbstractController
 
     public function index(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder('form')
+        $form = $app['form.factory']->createBuilder(FormType::class)
             ->add('file', 'file')
             ->add('create_file', 'text')
             ->getForm();
@@ -114,7 +115,7 @@ class FileController extends AbstractController
     public function create(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']->createBuilder('form')
+        $form = $app['form.factory']->createBuilder(FormType::class)
             ->add('file', 'file')
             ->add('create_file', 'text')
             ->getForm();
@@ -194,7 +195,7 @@ class FileController extends AbstractController
 
     public function upload(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder('form')
+        $form = $app['form.factory']->createBuilder(FormType::class)
             ->add('file', 'file')
             ->add('create_file', 'text')
             ->getForm();

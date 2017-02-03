@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\MailHistory;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\MailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -43,7 +44,7 @@ class MailController
 
         $MailHistories = $app['eccube.repository.mail_history']->findBy(array('Order' => $id));
 
-        $builder = $app['form.factory']->createBuilder('mail');
+        $builder = $app['form.factory']->createBuilder(MailType::class);
 
         $event = new EventArgs(
             array(
@@ -205,7 +206,7 @@ class MailController
     public function mailAll(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('mail');
+        $builder = $app['form.factory']->createBuilder(MailType::class);
 
         $event = new EventArgs(
             array(

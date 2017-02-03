@@ -27,6 +27,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\CustomerAgreementType;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerAgreementController extends AbstractController
@@ -42,7 +43,7 @@ class CustomerAgreementController extends AbstractController
         $Help = $app['eccube.repository.help']->get();
 
         $builder = $app['form.factory']
-            ->createBuilder('customer_agreement', $Help);
+            ->createBuilder(CustomerAgreementType::class, $Help);
 
         $event = new EventArgs(
             array(

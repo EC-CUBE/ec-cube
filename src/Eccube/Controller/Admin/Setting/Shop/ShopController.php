@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ShopMasterType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ShopController extends AbstractController
@@ -37,7 +38,7 @@ class ShopController extends AbstractController
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder = $app['form.factory']
-            ->createBuilder('shop_master', $BaseInfo);
+            ->createBuilder(ShopMasterType::class, $BaseInfo);
 
         $event = new EventArgs(
             array(

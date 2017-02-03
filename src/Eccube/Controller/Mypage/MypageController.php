@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Exception\CartException;
+use Eccube\Form\Type\Front\CustomerLoginType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -52,7 +53,7 @@ class MypageController extends AbstractController
 
         /* @var $form \Symfony\Component\Form\FormInterface */
         $builder = $app['form.factory']
-            ->createNamedBuilder('', 'customer_login');
+            ->createNamedBuilder('', CustomerLoginType::class);
 
         if ($app->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $Customer = $app->user();

@@ -31,6 +31,8 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ProductType;
+use Eccube\Form\Type\Admin\SearchProductType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +49,7 @@ class ProductController extends AbstractController
         $session = $app['session'];
 
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_product');
+            ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
             array(
@@ -259,7 +261,7 @@ class ProductController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder('admin_product', $Product);
+            ->createBuilder(ProductType::class, $Product);
 
         // 規格あり商品の場合、規格関連情報をFormから除外
         if ($has_class) {
@@ -479,7 +481,7 @@ class ProductController extends AbstractController
 
         // 検索結果の保持
         $builder = $app['form.factory']
-            ->createBuilder('admin_search_product');
+            ->createBuilder(SearchProductType::class);
 
         $event = new EventArgs(
             array(

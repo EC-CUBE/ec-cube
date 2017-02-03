@@ -66,7 +66,7 @@ $(function() {
 {% block main %}
 <div class="row">
     <div class="col-md-12">
-        <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_category_csv_import') }}" {{ form_enctype(form) }}>
+        <form id="upload-form" class="form-inline" method="post" action="{{ url('admin_product_category_csv_import') }}" enctype="multipart/form-data">
             {{ form_widget(form._token) }}
             <div id="upload_wrap" class="box">
                 <div id="upload_box__header" class="box-header">

@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
+use Eccube\Form\Type\Admin\CacheType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,7 @@ class CacheController extends AbstractController
     public function index(Application $app, Request $request)
     {
 
-        $builder = $app['form.factory']->createBuilder('admin_cache');
+        $builder = $app['form.factory']->createBuilder(CacheType::class);
 
         $form = $builder->getForm();
 

@@ -27,6 +27,7 @@ namespace Eccube\Controller\Admin\Content;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\PageLayoutType;
 use Symfony\Component\HttpFoundation\Request;
 
 class LayoutController
@@ -50,7 +51,7 @@ class LayoutController
 
 
         $builderLayout = $app['form.factory']
-            ->createBuilder('admin_page_layout');
+            ->createBuilder(PageLayoutType::class);
 
         // 未使用ブロックの取得
         $unusedBlocks = $app['eccube.repository.page_layout']->findUnusedBlocks($DeviceType, $id);

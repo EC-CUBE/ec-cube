@@ -27,6 +27,7 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\LogType;
 use Symfony\Component\HttpFoundation\Request;
 
 class LogController
@@ -39,7 +40,7 @@ class LogController
         $formData['line_max'] = '50';
 
         $builder = $app['form.factory']
-            ->createBuilder('admin_system_log');
+            ->createBuilder(LogType::class);
 
         $event = new EventArgs(
             array(

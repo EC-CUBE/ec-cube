@@ -30,6 +30,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -69,7 +70,7 @@ class PageController extends AbstractController
         $editable = true;
 
         $builder = $app['form.factory']
-            ->createBuilder('main_edit', $PageLayout);
+            ->createBuilder(MainEditType::class, $PageLayout);
 
         $event = new EventArgs(
             array(

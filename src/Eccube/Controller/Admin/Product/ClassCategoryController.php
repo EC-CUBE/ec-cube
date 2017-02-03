@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\ClassCategoryType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -52,7 +53,7 @@ class ClassCategoryController extends AbstractController
 
         //
         $builder = $app['form.factory']
-            ->createBuilder('admin_class_category', $TargetClassCategory);
+            ->createBuilder(ClassCategoryType::class, $TargetClassCategory);
 
         $event = new EventArgs(
             array(

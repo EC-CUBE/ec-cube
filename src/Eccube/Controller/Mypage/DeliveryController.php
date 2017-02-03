@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Front\CustomerAddressType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -87,7 +88,7 @@ class DeliveryController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder('customer_address', $CustomerAddress);
+            ->createBuilder(CustomerAddressType::class, $CustomerAddress);
 
         $event = new EventArgs(
             array(

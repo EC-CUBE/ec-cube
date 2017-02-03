@@ -29,6 +29,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\CategoryType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -64,7 +65,7 @@ class CategoryController extends AbstractController
 
         //
         $builder = $app['form.factory']
-            ->createBuilder('admin_category', $TargetCategory);
+            ->createBuilder(CategoryType::class, $TargetCategory);
 
         $event = new EventArgs(
             array(
