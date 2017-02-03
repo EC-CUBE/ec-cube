@@ -34,6 +34,7 @@ use Eccube\Entity\ProductImage;
 use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Exception\CsvImportException;
+use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
@@ -60,7 +61,7 @@ class CsvImportController
      */
     public function csvProduct(Application $app, Request $request)
     {
-        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
+        $form = $app['form.factory']->createBuilder(CsvImportType::class)->getForm();
 
         $headers = $this->getProductCsvHeader();
 
@@ -412,7 +413,7 @@ class CsvImportController
     public function csvCategory(Application $app, Request $request)
     {
 
-        $form = $app['form.factory']->createBuilder('admin_csv_import')->getForm();
+        $form = $app['form.factory']->createBuilder(CsvImportType::class)->getForm();
 
         $headers = $this->getCategoryCsvHeader();
 

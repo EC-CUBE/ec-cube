@@ -29,6 +29,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\TaxRuleType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +63,7 @@ class TaxRuleController extends AbstractController
         $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder = $app['form.factory']
-            ->createBuilder('tax_rule', $TargetTaxRule);
+            ->createBuilder(TaxRuleType::class, $TargetTaxRule);
 
         $builder
             ->get('option_product_tax_rule')
@@ -164,7 +165,7 @@ class TaxRuleController extends AbstractController
     public function editParameter(Application $app, Request $request)
     {
         $builder = $app['form.factory']
-            ->createBuilder('tax_rule');
+            ->createBuilder(TaxRuleType::class);
 
         $event = new EventArgs(
             array(

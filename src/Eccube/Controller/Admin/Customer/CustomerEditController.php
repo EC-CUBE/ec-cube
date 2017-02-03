@@ -28,6 +28,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\CustomerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -58,7 +59,7 @@ class CustomerEditController extends AbstractController
 
         // 会員登録フォーム
         $builder = $app['form.factory']
-            ->createBuilder('admin_customer', $Customer);
+            ->createBuilder(CustomerType::class, $Customer);
 
         $event = new EventArgs(
             array(

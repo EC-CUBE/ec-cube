@@ -36,6 +36,7 @@ use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\NonMemberType;
+use Eccube\Form\Type\Shopping\OrderType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -132,7 +133,7 @@ class ShoppingController extends AbstractController
         //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
         // フォームの生成
-        $builder = $app['form.factory']->createBuilder('_shopping_order', $Order);
+        $builder = $app['form.factory']->createBuilder(OrderType::class, $Order);
 
         $event = new EventArgs(
             array(
@@ -195,7 +196,7 @@ class ShoppingController extends AbstractController
         }
 
         // フォームの生成
-        $builder = $app['form.factory']->createBuilder('_shopping_order', $Order);
+        $builder = $app['form.factory']->createBuilder(OrderType::class, $Order);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -260,7 +261,7 @@ class ShoppingController extends AbstractController
         }
 
         // form作成
-        $builder = $app['form.factory']->createBuilder('_shopping_order', $Order);
+        $builder = $app['form.factory']->createBuilder(OrderType::class, $Order);
 
         $event = new EventArgs(
             array(

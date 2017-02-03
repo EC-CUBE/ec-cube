@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -63,7 +64,7 @@ class PaymentController extends AbstractController
             ->findOrCreate($id);
 
         $builder = $app['form.factory']
-            ->createBuilder('payment_register');
+            ->createBuilder(PaymentRegisterType::class);
 
         $event = new EventArgs(
             array(

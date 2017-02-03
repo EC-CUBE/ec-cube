@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Front\EntryType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -55,7 +56,7 @@ class EntryController extends AbstractController
         $Customer = $app['eccube.repository.customer']->newCustomer();
 
         /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-        $builder = $app['form.factory']->createBuilder('entry', $Customer);
+        $builder = $app['form.factory']->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
             array(

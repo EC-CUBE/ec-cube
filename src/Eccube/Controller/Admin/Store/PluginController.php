@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Exception\PluginException;
+use Eccube\Form\Type\Admin\PluginLocalInstallType;
 use Eccube\Util\Str;
 use Monolog\Logger;
 use Symfony\Component\Filesystem\Filesystem;
@@ -336,7 +337,7 @@ class PluginController extends AbstractController
     public function install(Application $app, Request $request)
     {
         $form = $app['form.factory']
-            ->createBuilder('plugin_local_install')
+            ->createBuilder(PluginLocalInstallType::class)
             ->getForm();
 
         $errors = array();

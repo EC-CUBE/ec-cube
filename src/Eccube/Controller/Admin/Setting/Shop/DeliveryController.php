@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\DeliveryType;
 use Symfony\Component\HttpFoundation\Request;
 
 class DeliveryController extends AbstractController
@@ -105,7 +106,7 @@ class DeliveryController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder('delivery', $Delivery);
+            ->createBuilder(DeliveryType::class, $Delivery);
 
         $event = new EventArgs(
             array(

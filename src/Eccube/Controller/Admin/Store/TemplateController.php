@@ -26,6 +26,7 @@ namespace Eccube\Controller\Admin\Store;
 use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -219,7 +220,7 @@ class TemplateController extends AbstractController
         $Template = new \Eccube\Entity\Template();
 
         $form = $app['form.factory']
-            ->createBuilder('admin_template', $Template)
+            ->createBuilder(TemplateType::class, $Template)
             ->getForm();
 
         if ('POST' === $request->getMethod()) {
