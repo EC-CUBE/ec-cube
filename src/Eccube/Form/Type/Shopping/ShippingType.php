@@ -4,6 +4,7 @@ namespace Eccube\Form\Type\Shopping;
 
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -49,7 +50,7 @@ class ShippingType extends AbstractType
                 'ShipmentItems',
                 CollectionType::class,
                 array(
-                    'type' => '_shopping_shipment_item',
+                    'entry_type' => ShipmentItemType::class,
                 )
             );
 
@@ -78,14 +79,14 @@ class ShippingType extends AbstractType
                 $form = $event->getForm();
                 $form->add(
                     'Delivery',
-                    'entity',
+                    EntityType::class,
                     array(
                         'required' => false,
                         'label' => '配送業者',
                         'class' => 'Eccube\Entity\Delivery',
-                        'property' => 'name',
+                        'choice_label' => 'name',
                         'choices' => $Deliveries,
-                        'empty_value' => false,
+                        'placeholder' => null,
                         'constraints' => array(
                             new NotBlank(),
                         ),
@@ -152,7 +153,7 @@ class ShippingType extends AbstractType
                         array(
                             'choices' => $deliveryDates,
                             'required' => false,
-                            'empty_value' => '指定なし',
+                            'placeholder' => '指定なし',
                             'mapped' => false,
                         )
                     );
@@ -176,14 +177,14 @@ class ShippingType extends AbstractType
                 $form = $event->getForm();
                 $form->add(
                     'DeliveryTime',
-                    'entity',
+                    EntityType::class,
                     array(
                         'label' => 'お届け時間',
                         'class' => 'Eccube\Entity\DeliveryTime',
-                        'property' => 'deliveryTime',
+                        'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
                         'required' => false,
-                        'empty_value' => '指定なし',
+                        'placeholder' => '指定なし',
                         'empty_data' => null,
                     )
                 );

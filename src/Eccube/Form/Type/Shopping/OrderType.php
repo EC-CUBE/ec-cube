@@ -7,6 +7,7 @@ use Eccube\Entity\Order;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -63,7 +64,7 @@ class OrderType extends AbstractType
                 'Shippings',
                 CollectionType::class,
                 [
-                    'type' => '_shopping_shipping',
+                    'entry_type' => ShippingType::class,
                 ]
             )->add(
                 'mode',
@@ -109,10 +110,10 @@ class OrderType extends AbstractType
                 $form = $event->getForm();
                 $form->add(
                     'Payment',
-                    'entity',
+                    EntityType::class,
                     [
                         'class' => 'Eccube\Entity\Payment',
-                        'property' => 'method',
+                        'choice_label' => 'method',
                         'expanded' => true,
                         'constraints' => [
                             new NotBlank(),
