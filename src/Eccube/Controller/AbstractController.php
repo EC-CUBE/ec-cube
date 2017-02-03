@@ -37,8 +37,8 @@ class AbstractController
 
     /**
      * getBoundForm
-     * 
-     * @deprecated 
+     *
+     * @deprecated
      */
     protected function getBoundForm(Application $app, $type)
     {
@@ -59,10 +59,9 @@ class AbstractController
 
     protected function isTokenValid($app)
     {
-        $csrf = $app['form.csrf_provider'];
+        $csrf = $app['csrf.token_manager'];
         $name = Constant::TOKEN_NAME;
-
-        if (!$csrf->isTokenValid(new CsrfToken($name, $app['request']->request->get($name)))) {
+        if (!$csrf->isTokenValid(new CsrfToken($name, $app['request_stack']->getCurrentRequest()->get($name)))) {
             throw new AccessDeniedHttpException('CSRF token is invalid.');
         }
 

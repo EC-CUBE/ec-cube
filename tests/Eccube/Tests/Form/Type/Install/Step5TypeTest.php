@@ -74,7 +74,7 @@ class Step5TypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder(Step5Type::class)
+            ->createBuilder(Step5Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 

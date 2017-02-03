@@ -24,7 +24,7 @@
 
 namespace Eccube\Tests\Form\Type\Install;
 
-use Eccube\Tests\Mock\CsrfTokenMock;
+use Eccube\Tests\Mock\CsrfTokenManagerMock;
 
 abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -35,8 +35,8 @@ abstract class AbstractTypeTestCase extends \PHPUnit_Framework_TestCase
         $this->app = new \Eccube\InstallApplication();
         $this->app['session.test'] = true;
         unset($this->app['exception_handler']);
-        $this->app['form.csrf_provider'] = function () {
-            return new CsrfTokenMock();
+        $this->app['csrf.token_manager'] = function () {
+            return new CsrfTokenManagerMock();
         };
         // $this->app->boot();
     }

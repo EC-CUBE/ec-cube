@@ -98,7 +98,7 @@ class InstallApplication extends \Silex\Application
         $app->extend('translator', function($translator, \Silex\Application $app) {
             $translator->addLoader('yaml', new \Symfony\Component\Translation\Loader\YamlFileLoader());
 
-            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
+            $r = new \ReflectionClass('Symfony\Component\Validator\Validation');
             $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
             if (file_exists($file)) {
                 $translator->addResource('xliff', $file, $app['locale'], 'validators');

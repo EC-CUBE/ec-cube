@@ -56,7 +56,7 @@ class Step3TypeTest extends AbstractTypeTestCase
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->app['form.factory']
-            ->createBuilder(Step3Type::class)
+            ->createBuilder(Step3Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 

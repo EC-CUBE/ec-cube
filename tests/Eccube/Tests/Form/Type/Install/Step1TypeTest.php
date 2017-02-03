@@ -73,7 +73,7 @@ class Step1TypeTest extends AbstractTypeTestCase
         parent::setUp();
 
         $this->form = $this->app['form.factory']
-            ->createBuilder(Step1Type::class)
+            ->createBuilder(Step1Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 

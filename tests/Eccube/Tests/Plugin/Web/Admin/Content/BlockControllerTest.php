@@ -50,7 +50,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 
     public function test_routing_AdminContentBlock_edit()
     {
-        $this->client->request('GET',
+        $crawler = $this->client->request('GET',
             $this->app->url(
                 'admin_content_block_edit',
                 array('id' => 1)

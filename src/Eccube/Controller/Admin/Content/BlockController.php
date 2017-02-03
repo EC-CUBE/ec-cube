@@ -29,6 +29,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -72,7 +73,7 @@ class BlockController extends AbstractController
         }
 
         $builder = $app['form.factory']
-            ->createBuilder('block', $Block);
+            ->createBuilder(BlockType::class, $Block);
 
         $html = '';
         $previous_filename = null;
@@ -102,9 +103,9 @@ class BlockController extends AbstractController
 
         $form->get('block_html')->setData($html);
 
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) { // FIXME isSubmitted() && isValid() に修正する
                 $Block = $form->getData();
 
                 // DB登録

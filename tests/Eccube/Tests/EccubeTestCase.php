@@ -6,7 +6,6 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Eccube\Application;
 use Eccube\Entity\Customer;
-use Eccube\Tests\Mock\CsrfTokenMock;
 use Faker\Factory as Faker;
 use Guzzle\Http\Client;
 use Silex\WebTestCase;
@@ -289,13 +288,14 @@ abstract class EccubeTestCase extends WebTestCase
         }
 
         $app->initialize();
+
         $app->initializePlugin();
         $app['session.test'] = true;
-        unset($this->app['exception_handler']);
+        unset($app['exception_handler']);
 
-        $app['form.csrf_provider'] = function () {
-            return new CsrfTokenMock();
-        };
+        unset($app['csrf.token_manager']); // 上書きできないので unset する
+        $app->register(new \Eccube\Tests\ServiceProvider\CsrfMockServiceProvider());
+
         if (!$app->offsetExists('eccube.fixture.generator')) {
             $app->register(new \Eccube\Tests\ServiceProvider\FixtureServiceProvider());
         }

@@ -31,7 +31,7 @@ trait TwigTrait
         $twig = $this['twig'];
 
         // twigファイルのソースコードを読み込み, 文字列化.
-        $source = $twig->getLoader()->getSource($view);
+        $source = $twig->getLoader()->getSourceContext($view)->getCode();
 
         // イベントの実行.
         // プラグインにはテンプレートファイル名、文字列化されたtwigファイル、パラメータを渡す

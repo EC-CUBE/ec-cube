@@ -33,7 +33,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testRoutingList()
     {
         $client = $this->client;
-        $client->request('GET', $this->app->url('product_list'));
+        $crawler = $client->request('GET', $this->app->url('product_list'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $hookpoins = array(

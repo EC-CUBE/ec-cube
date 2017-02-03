@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -80,9 +81,9 @@ class BlockType extends AbstractType
                 'required' => false,
                 'constraints' => array()
             ))
-            ->add('DeviceType', 'entity', array(
+            ->add('DeviceType', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
-                'property' => 'id',
+                'choice_label' => 'id',
             ))
             ->add('id', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {
