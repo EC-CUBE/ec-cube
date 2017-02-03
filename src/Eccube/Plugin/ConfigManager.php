@@ -5,6 +5,12 @@ namespace Eccube\Plugin;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * プラグインの config.yml, event.yml を扱うクラス
+ *
+ * TODO プラグインからこのクラスをカスタマイズすることはできないので,
+        static メソッドにしているが, DI コンテナでの管理を検討する.
+ */
 class ConfigManager
 {
     /**
