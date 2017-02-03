@@ -4,6 +4,7 @@ namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManager;
 use Eccube\Application;
+use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
@@ -11,9 +12,11 @@ use Eccube\Entity\OrderDetail;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\TaxruleRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
+use Eccube\Util\Str;
 
 /**
  * OrderやOrderに関連するエンティティを構築するクラス
@@ -41,6 +44,9 @@ class OrderHelper
     /** @var TaxruleRepository */
     protected $taxRuleRepository;
 
+    /** @var  OrderStatusRepository */
+    protected $orderStatusRepository;
+
     public function __construct(Application $app)
     {
         $this->config = $app['config'];
@@ -49,6 +55,7 @@ class OrderHelper
         $this->paymentRepository = $app['eccube.repository.payment'];
         $this->deliveryRepository = $app['eccube.repository.delivery'];
         $this->taxRuleRepository = $app['eccube.repository.tax_rule'];
+        $this->orderStatusRepository = $app['eccube.repository.order_status'];
     }
 
     /**
@@ -59,21 +66,27 @@ class OrderHelper
      * @param array $CartItems
      * @return Order
      */
-    public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, array $CartItems)
+    public function createProcessingOrder(Customer $Customer, CustomerAddress $CustomerAddress, $CartItems)
     {
-        $Order = new Order($this->config['order_processing']);
+        $OrderStatus = $this->orderStatusRepository->find($this->config['order_processing']);
+        $Order = new Order($OrderStatus);
+
+        // pre_order_idを生成
         $Order->setPreOrderId($this->createPreOrderId());
 
+        // 顧客情報の設定
         $this->setCustomer($Order, $Customer);
+
+        // 明細情報の設定
         $OrderDetails = $this->createOrderDetailsFromCartItems($CartItems);
         $this->addOrderDetails($Order, $OrderDetails);
 
-        $ShipmentItemsGroupByProductType = $this->createShipmentItems($Order->getOrderDetails(), true);
+        $ShipmentItemsGroupByProductType = $this->createShipmentItemsFromOrderDetails($Order->getOrderDetails(), true);
 
         foreach ($ShipmentItemsGroupByProductType as $ShipmentItems) {
             $Shipping = $this->createShippingFromCustomerAddress($CustomerAddress);
             $this->addShipping($Order, $Shipping);
-            $this->addShippmentItems($Shipping, $ShipmentItems);
+            $this->addShipmentItems($Shipping, $ShipmentItems);
             $this->setDefaultDelivery($Shipping);
         }
 
@@ -119,7 +132,7 @@ class OrderHelper
         );
     }
 
-    public function createOrderDetailsFromCartItems(array $CartItems)
+    public function createOrderDetailsFromCartItems($CartItems)
     {
         $OrderDetails = [];
 
@@ -186,7 +199,8 @@ class OrderHelper
             ->setZipCode($CustomerAddress->getZip01().$CustomerAddress->getZip02())
             ->setPref($CustomerAddress->getPref())
             ->setAddr01($CustomerAddress->getAddr01())
-            ->setAddr02($CustomerAddress->getAddr02());
+            ->setAddr02($CustomerAddress->getAddr02())
+            ->setDelFlg(Constant::DISABLED);
 
         return $Shipping;
     }
@@ -245,7 +259,7 @@ class OrderHelper
         $Order->setPaymentMethod($Payment->getMethod());
     }
 
-    public function createShipmentItemsFromOrderDetails(array $OrderDetails, $groupByProductType = true)
+    public function createShipmentItemsFromOrderDetails($OrderDetails, $groupByProductType = true)
     {
         $ShipmentItems = [];
 
@@ -289,7 +303,7 @@ class OrderHelper
         foreach ($ShipmentItems as $ShipmentItem) {
             $Shipping->addShipmentItem($ShipmentItem);
             $ShipmentItem->setOrder($Order);
-            $ShipmentItem->setShippint($Shipping);
+            $ShipmentItem->setShipping($Shipping);
         }
     }
 
