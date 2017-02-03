@@ -27,6 +27,7 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Front\ContactType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContactController
@@ -40,7 +41,7 @@ class ContactController
      */
     public function index(Application $app, Request $request)
     {
-        $builder = $app['form.factory']->createBuilder('contact');
+        $builder = $app['form.factory']->createBuilder(ContactType::class);
 
         if ($app->isGranted('ROLE_USER')) {
             $user = $app['user'];

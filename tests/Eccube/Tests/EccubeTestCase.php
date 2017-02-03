@@ -7,7 +7,7 @@ use Doctrine\DBAL\Migrations\Migration;
 use Eccube\Application;
 use Eccube\Entity\Customer;
 use Faker\Factory as Faker;
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 use Silex\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -345,6 +345,7 @@ abstract class EccubeTestCase extends WebTestCase
         $config['mail']['password'] = null;
         $config['mail']['encryption'] = null;
         $config['mail']['auth_mode'] = null;
+        $this->app->offsetUnset('config');
         $this->app['config'] = $config;
         $this->app['swiftmailer.use_spool'] = false;
         $this->app['swiftmailer.options'] = $this->app['config']['mail'];
@@ -359,8 +360,7 @@ abstract class EccubeTestCase extends WebTestCase
     {
         try {
             $client = new Client();
-            $request = $client->get(self::MAILCATCHER_URL.'messages');
-            $response = $request->send();
+            $response = $client->get(self::MAILCATCHER_URL.'messages');
             if ($response->getStatusCode() !== 200) {
                 throw new HttpException($response->getStatusCode());
             }
@@ -380,8 +380,7 @@ abstract class EccubeTestCase extends WebTestCase
     {
         try {
             $client = new Client();
-            $request = $client->delete(self::MAILCATCHER_URL.'messages');
-            $request->send();
+            $response = $client->delete(self::MAILCATCHER_URL.'messages');
         } catch (\Exception $e) {
             // FIXME
             // $this->app->log('['.get_class().'] '.$e->getMessage());
@@ -396,8 +395,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected function getMailCatcherMessages()
     {
         $client = new Client();
-        $request = $client->get(self::MAILCATCHER_URL.'messages');
-        $response = $request->send();
+        $response = $client->get(self::MAILCATCHER_URL.'messages');
 
         return json_decode($response->getBody(true));
     }
@@ -411,8 +409,7 @@ abstract class EccubeTestCase extends WebTestCase
     protected function getMailCatcherMessage($id)
     {
         $client = new Client();
-        $request = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
-        $response = $request->send();
+        $response = $client->get(self::MAILCATCHER_URL.'messages/'.$id.'.json');
 
         return json_decode($response->getBody(true));
     }
