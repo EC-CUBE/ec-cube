@@ -113,14 +113,15 @@ class ProductController extends AbstractController
                     $session->set('eccube.admin.product.search.page_no', $page_no);
                 }
                 if (!is_null($searchData)) {
-
                     // 公開ステータス
+                    // 1:公開, 2:非公開, 3:在庫なし
                     $status = $request->get('status');
                     if (!empty($status)) {
                         if ($status != $app['config']['admin_product_stock_status']) {
                             $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
                             $searchData['stock_status'] = null;
                         } else {
+                            // 在庫なし
                             $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
                         }
@@ -129,7 +130,6 @@ class ProductController extends AbstractController
                         $searchData['link_status'] = null;
                         $searchData['stock_status'] = null;
                     }
-
                     $session->set('eccube.admin.product.search', $searchData);
 
                     // 表示件数
