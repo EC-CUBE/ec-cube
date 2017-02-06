@@ -216,13 +216,19 @@ class Application extends \Silex\Application
         Request::enableHttpMethodParameterOverride(); // PUTやDELETEできるようにする
 
         if (php_sapi_name() !== 'cli') {
-            $this->extend('routes', function ($routes, \Silex\Application $app) {
+            $this->extend('routes', function (\Symfony\Component\Routing\RouteCollection $routes, \Silex\Application $app) {
                 $loader = $this['sensio_framework_extra.routing.loader.annot_dir'];
-                $collection = $loader->load(__DIR__.'/Controller');
-                $extends = $loader->load($this['config']['root_dir'].'/app/Eccube');
-                $collection->addCollection($extends);
 
-                return $collection;
+                // 本体のルーティングをロード
+                // TODO 管理画面のルーティングは動的に設定する必要がある.
+                $collection = $loader->load(__DIR__.'/Controller');
+                $routes->addCollection($collection);
+
+                // 拡張用のルーティングをロード
+                $collection = $loader->load($this['config']['root_dir'].'/app/Eccube');
+                $routes->addCollection($collection);
+
+                return $routes;
             });
         }
 

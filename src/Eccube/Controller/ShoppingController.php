@@ -47,9 +47,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-/**
- * @Route("/shopping")
- */
 class ShoppingController extends AbstractController
 {
 
@@ -76,10 +73,12 @@ class ShoppingController extends AbstractController
     /**
      * 購入画面表示
      *
-     * @Route("")
+     * @Route("/shopping", name="shopping")
+     * @Template("Shopping/index.twig")
+     *
      * @param Application $app
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return array
      */
     public function index(Application $app, Request $request)
     {
@@ -172,10 +171,10 @@ class ShoppingController extends AbstractController
             $app['session']->set($this->sessionMultipleKey, 'multiple');
         }
 
-        return $app->render('Shopping/index.twig', array(
+        return [
             'form' => $form->createView(),
-            'Order' => $Order,
-        ));
+            'Order' => $Order
+        ];
     }
 
     /**

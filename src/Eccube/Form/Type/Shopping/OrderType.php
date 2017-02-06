@@ -113,8 +113,12 @@ class OrderType extends AbstractType
                     EntityType::class,
                     [
                         'class' => 'Eccube\Entity\Payment',
-                        'choice_label' => 'method',
+                        'choice_label' => function($Payment) {
+                            return $Payment->getMethod();
+                        },
                         'expanded' => true,
+                        'multiple' => false,
+                        'placeholder' => null,
                         'constraints' => [
                             new NotBlank(),
                         ],
