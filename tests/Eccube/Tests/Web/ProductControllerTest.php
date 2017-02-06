@@ -84,11 +84,14 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var $client Client */
         $client = $this->client;
         /** @var $crawler Crawler */
-        $crawler = $client->request('POST',
-            $this->app->url('product_detail', array('id' => $id))
-        );
+        $crawler = $client->request('POST', $this->app->url('product_detail', array('id' => $id)));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
+
+        // Case 1: render check
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('ただいま品切れ中です', $html);
+        $this->assertContains('お気に入りに追加', $html);
 
         $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
         $favoriteForm['mode'] = 'add_favorite';
@@ -96,6 +99,48 @@ class ProductControllerTest extends AbstractWebTestCase
         $client->submit($favoriteForm);
         $crawler = $client->followRedirect();
 
-        $this->assertContains('お気に入りに追加済みです', $crawler->filter('#detail_cart_box')->html());
+        // Case 2: after add favorite check
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('ただいま品切れ中です', $html);
+        $this->assertContains('お気に入りに追加済みです', $html);
+    }
+
+    /**
+     * Test product can add favorite
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1637
+     */
+    public function testProductFavoriteAdd()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+        $Product = $this->createProduct('Product stock', 1);
+        $id = $Product->getId();
+        $user = $this->createCustomer();
+        $this->loginTo($user);
+
+        /** @var $client Client */
+        $client = $this->client;
+        /** @var $crawler Crawler */
+        $crawler = $client->request('POST', $this->app->url('product_detail', array('id' => $id)));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        // Case 3: render check when 商品在庫>0
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('カートに入れる', $html);
+        $this->assertContains('お気に入りに追加', $html);
+
+        $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
+        $favoriteForm['mode'] = 'add_favorite';
+
+        $client->submit($favoriteForm);
+        $crawler = $client->followRedirect();
+
+        // Case 4: after add favorite when 商品在庫>0
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('カートに入れる', $html);
+        $this->assertContains('お気に入りに追加済みです', $html);
     }
 }
