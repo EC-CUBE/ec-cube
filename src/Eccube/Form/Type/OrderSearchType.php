@@ -91,7 +91,7 @@ class OrderSearchType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('birth_end', BirthdayType::class, array(
                 'label' => '誕生日',
@@ -99,7 +99,7 @@ class OrderSearchType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('sex', 'sex', array(
                 'label' => '性別',
@@ -119,7 +119,7 @@ class OrderSearchType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('order_date_end', DateType::class, array(
                 'label' => '注文日',
@@ -127,7 +127,7 @@ class OrderSearchType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
                 'label' => '更新日',
@@ -135,7 +135,7 @@ class OrderSearchType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
                 'label' => '更新日',
@@ -143,7 +143,7 @@ class OrderSearchType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_total_start', IntegerType::class, array(
                 'label' => '購入金額',

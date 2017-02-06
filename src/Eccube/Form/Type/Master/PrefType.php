@@ -39,7 +39,7 @@ class PrefType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\Pref',
-            'empty_value' => 'form.pref.empty_value',
+            'placeholder' => 'form.pref.empty_value',
         ));
     }
 

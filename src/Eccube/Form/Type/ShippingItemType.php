@@ -91,7 +91,7 @@ class ShippingItemType extends AbstractType
                     ->add('shippingDeliveryDate', ChoiceType::class, array(
                         'choices' => $deliveryDates,
                         'required' => false,
-                        'empty_value' => '指定なし',
+                        'placeholder' => '指定なし',
                         'mapped' => false,
                     ))
                     ->add('deliveryTime', 'entity', array(
@@ -99,7 +99,7 @@ class ShippingItemType extends AbstractType
                         'property' => 'deliveryTime',
                         'choices' => $deliveryTimes,
                         'required' => false,
-                        'empty_value' => '指定なし',
+                        'placeholder' => '指定なし',
                         'empty_data' => null,
                     ));
             })

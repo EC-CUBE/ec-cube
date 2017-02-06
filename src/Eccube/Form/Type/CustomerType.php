@@ -117,7 +117,7 @@ class CustomerType extends AbstractType
                 'years' => range(date('Y'), date('Y') - $this->config['birth_max']),
                 'widget' => 'choice',
                 'format' => 'yyyy-MM-dd',
-                'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
                 'constraints' => array(
                     new Assert\LessThanOrEqual(array(
                         'value' => date('Y-m-d'),

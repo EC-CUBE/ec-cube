@@ -138,7 +138,7 @@ class ShippingType extends AbstractType
                 'label' => '配送業者',
                 'class' => 'Eccube\Entity\Delivery',
                 // 'property' => 'name',
-                // FIXME 'empty_valuey' => '選択してください',
+                'placeholder' => '選択してください',
                 // 'empty_data' => null,
                 'constraints' => array(
                     new Assert\NotBlank(),

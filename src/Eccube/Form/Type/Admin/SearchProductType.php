@@ -67,7 +67,7 @@ class SearchProductType extends AbstractType
              */
             ->add('category_id', CategoryType::class, array(
                 'label' => 'カテゴリ',
-                // FIXME 'empty_value' => '選択してください',
+                'placeholder' => '選択してください',
                 'required' => false,
             ))
             ->add('status', DispType::class, array(
@@ -81,7 +81,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('create_date_end', DateType::class, array(
                 'label' => '登録日(TO)',
@@ -89,7 +89,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
                 'label' => '更新日(FROM)',
@@ -97,7 +97,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
                 'label' => '更新日(TO)',
@@ -105,7 +105,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('link_status', HiddenType::class, array(
                 'mapped' => false,

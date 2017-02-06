@@ -148,7 +148,7 @@ class ProductClassType extends AbstractType
             ->add('delivery_date', DeliveryDateType::class, array(
                 'label' => 'お届け可能日',
                 'required' => false,
-                // FIXME 'empty_value' => '指定なし',
+                'placeholder' => '指定なし',
             ))
             ->add('add', CheckboxType::class, array(
                 'label' => false,

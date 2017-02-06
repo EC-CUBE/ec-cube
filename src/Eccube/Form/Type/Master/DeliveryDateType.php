@@ -38,7 +38,7 @@ class DeliveryDateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\DeliveryDate',
-            // FIXME 'empty_value' => 'form.delivery_date.empty_value',
+            'placeholder' => 'form.delivery_date.empty_value',
         ));
     }
 

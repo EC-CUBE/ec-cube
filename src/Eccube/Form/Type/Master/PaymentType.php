@@ -39,7 +39,7 @@ class PaymentType extends AbstractType
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Payment',
             'property' => 'method',
-            'empty_value' => '-',
+            'placeholder' => '-',
             // fixme 何故かここはDESC
             'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('m')

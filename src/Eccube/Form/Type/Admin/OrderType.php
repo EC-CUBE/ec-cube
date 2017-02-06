@@ -207,7 +207,7 @@ class OrderType extends AbstractType
             ->add('OrderStatus', EntityType::class, array(
                 'class' => 'Eccube\Entity\Master\OrderStatus',
                 // 'property' => 'name',
-                // FIXME 'empty_value' => '選択してください',
+                'placeholder' => '選択してください',
                 // 'empty_data' => null,
                 'query_builder' => function($er) {
                     return $er->createQueryBuilder('o')
@@ -221,7 +221,7 @@ class OrderType extends AbstractType
                 'required' => false,
                 'class' => 'Eccube\Entity\Payment',
                 // 'property' => 'method',
-                // FIXME 'empty_value' => '選択してください',
+                'placeholder' => '選択してください',
                 // 'empty_data' => null,
                 'constraints' => array(
                     new Assert\NotBlank(),

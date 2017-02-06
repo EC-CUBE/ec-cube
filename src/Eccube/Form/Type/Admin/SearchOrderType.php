@@ -101,7 +101,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('order_date_end', DateType::class, array(
                 'label' => '受注日(TO)',
@@ -109,7 +109,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_date_start', DateType::class, array(
                 'label' => '入金日(FROM)',
@@ -117,7 +117,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_date_end', DateType::class, array(
                 'label' => '入金日(TO)',
@@ -125,7 +125,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('commit_date_start', DateType::class, array(
                 'label' => '発送日(FROM)',
@@ -133,7 +133,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('commit_date_end', DateType::class, array(
                 'label' => '発送日(TO)',
@@ -141,7 +141,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
                 'label' => '更新日(FROM)',
@@ -149,7 +149,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
                 'label' => '更新日(TO)',
@@ -157,7 +157,7 @@ class SearchOrderType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('payment_total_start', IntegerType::class, array(
                 'label' => '購入金額(下限)',

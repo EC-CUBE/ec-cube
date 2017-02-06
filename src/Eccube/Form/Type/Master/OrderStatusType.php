@@ -39,7 +39,7 @@ class OrderStatusType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\OrderStatus',
-            'empty_value' => '-',
+            'placeholder' => '-',
         ));
     }
 

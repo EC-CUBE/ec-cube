@@ -41,7 +41,7 @@ class CsvType extends AbstractType
             'class' => 'Eccube\Entity\Master\CsvType',
             // todo toStringがない？
             'property' => 'name',
-            'empty_value' => false,
+            'placeholder' => false,
         ));
     }
 

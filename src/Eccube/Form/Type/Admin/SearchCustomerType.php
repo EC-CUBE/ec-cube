@@ -90,7 +90,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('birth_end', BirthdayType::class, array(
                 'label' => '誕生日',
@@ -98,7 +98,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('tel', TextType::class, array(
                 'required' => false,
@@ -143,7 +143,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('create_date_end', DateType::class, array(
                 'label' => '登録日',
@@ -151,7 +151,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_start', DateType::class, array(
                 'label' => '更新日',
@@ -159,7 +159,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('update_date_end', DateType::class, array(
                 'label' => '更新日',
@@ -167,7 +167,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('last_buy_start', DateType::class, array(
                 'label' => '最終購入日',
@@ -175,7 +175,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('last_buy_end', DateType::class, array(
                 'label' => '最終購入日',
@@ -183,7 +183,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                // FIXME 'empty_value' => array('year' => '----', 'month' => '--', 'day' => '--'),
+                'placeholder' => array('year' => '----', 'month' => '--', 'day' => '--'),
             ))
             ->add('buy_product_name', TextType::class, array(
                 'label' => '購入商品名',
@@ -212,7 +212,7 @@ class SearchCustomerType extends AbstractType
                 ),
                 'expanded' => true,
                 'multiple' => true,
-                // FIXME 'empty_value' => false,
+                'placeholder' => false,
             ))
         ;
     }

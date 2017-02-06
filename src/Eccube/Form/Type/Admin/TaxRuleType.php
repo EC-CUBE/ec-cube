@@ -75,13 +75,13 @@ class TaxRuleType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd HH:mm',
                 'years' => range(date('Y'), date('Y') + 2),
-                // FIXME 'empty_value' => array(
-                //     'year' => '----',
-                //     'month' => '--',
-                //     'day' => '--',
-                //     'hours' => '--',
-                //     'minutes' => '--'
-                // ),
+                'placeholder' => array(
+                    'year' => '----',
+                    'month' => '--',
+                    'day' => '--',
+                    'hours' => '--',
+                    'minutes' => '--'
+                ),
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
