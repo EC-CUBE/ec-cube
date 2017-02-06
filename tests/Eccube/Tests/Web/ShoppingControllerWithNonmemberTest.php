@@ -333,7 +333,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         // Get shipping edit
         $crawler = $client->request('GET', $url);
-
+        // Title
         $this->assertContains('お届け先の変更', $crawler->html());
+        // Header
+        $this->assertContains('お届け先の変更', $crawler->filter('title')->html());
     }
 }

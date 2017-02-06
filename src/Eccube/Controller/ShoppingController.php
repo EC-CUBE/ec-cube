@@ -687,9 +687,13 @@ class ShoppingController extends AbstractController
      */
     public function shippingEdit(Application $app, Request $request, $id)
     {
+        // Change title when non-member.
+        $subtitle = '商品購入';
+        $title = 'お届け先の変更';
         // 配送先住所最大値判定
         $Customer = $app->user();
         if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $title = 'お届け先の追加';
             $addressCurrNum = count($app->user()->getCustomerAddresses());
             $addressMax = $app['config']['deliv_addr_max'];
             if ($addressCurrNum >= $addressMax) {
@@ -781,9 +785,14 @@ class ShoppingController extends AbstractController
             return $app->redirect($app->url('shopping'));
         }
 
+        // Subtitle for page
+        $subtitle = $subtitle.' / '.$title;
+
         return $app->render('Shopping/shipping_edit.twig', array(
             'form' => $form->createView(),
             'shippingId' => $id,
+            'subtitle' => $subtitle,
+            'title' => $title,
         ));
     }
 

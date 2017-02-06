@@ -434,6 +434,9 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // Get shipping edit
         $crawler = $client->request('GET', $url);
 
+        // Title
         $this->assertContains('お届け先の追加', $crawler->html());
+        // Header
+        $this->assertContains('お届け先の追加', $crawler->filter('title')->html());
     }
 }

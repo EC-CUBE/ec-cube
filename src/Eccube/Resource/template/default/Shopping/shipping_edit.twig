@@ -36,11 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 {% block main %}
     <h1 class="page-heading">
-    {% if is_granted('ROLE_USER') %}
-            お届け先の追加
-    {% else %}
-            お届け先の変更
-    {% endif %}
+        {{ title }}
     </h1>
     <div id="detail_wrap" class="container-fluid">
         <div id="detail_box" class="row">
