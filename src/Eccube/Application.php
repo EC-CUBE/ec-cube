@@ -23,6 +23,7 @@
 
 namespace Eccube;
 
+use Binfo\Silex\MobileDetectServiceProvider;
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
@@ -142,6 +143,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new MobileDetectServiceProvider());
 
         $app = $this;
         $this->error(function (\Exception $e, $code) use ($app) {
@@ -555,13 +557,19 @@ class Application extends ApplicationTrait
             ),
         );
 
+        $channel = null;
+        // 強制SSL
+        if ($this['config']['force_ssl'] == \Eccube\Common\Constant::ENABLED) {
+            $channel = "https";
+        }
+
         $this['security.access_rules'] = array(
-            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN'),
-            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
-            array('^/mypage', 'ROLE_USER'),
+            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN', $channel),
+            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY', $channel),
+            array('^/mypage', 'ROLE_USER', $channel),
         );
 
         $this['eccube.password_encoder'] = $this->share(function ($app) {

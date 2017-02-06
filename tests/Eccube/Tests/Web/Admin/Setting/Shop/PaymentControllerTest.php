@@ -215,12 +215,22 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function createFormData()
     {
+        $charge = 10000;
+        if (mt_rand(0, 1)) {
+            $charge = number_format($charge);
+        }
+
+        $rule_max = 10000;
+        if (mt_rand(0, 1)) {
+            $rule_max = number_format($rule_max);
+        }
+
         $form = array(
             '_token' => 'dummy',
             'method' => 'Test',
-            'charge' => '10000',
+            'charge' => $charge,
             'rule_min' => '100',
-            'rule_max' => '10000',
+            'rule_max' => $rule_max,
             'payment_image' => 'abc.png',
             'payment_image_file' => 'abc.png',
             'charge_flg' => '1',

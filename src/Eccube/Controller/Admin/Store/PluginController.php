@@ -52,7 +52,7 @@ class PluginController extends AbstractController
         $pluginForms = array();
         $configPages = array();
 
-        $Plugins = $app['eccube.repository.plugin']->findBy(array(), array('name' => 'ASC'));
+        $Plugins = $app['eccube.repository.plugin']->findBy(array(), array('code' => 'ASC'));
 
         // ファイル設置プラグインの取得.
         $unregisterdPlugins = $this->getUnregisteredPlugins($Plugins, $app);

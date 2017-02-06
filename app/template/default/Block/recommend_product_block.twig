@@ -1,0 +1,39 @@
+{#
+ * This file is part of the Recommend Product plugin
+ *
+ * Copyright (C) 2016 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+#}
+
+<!-- ▼item_list▼ -->
+<div id="item_list">
+    <div class="row">
+        {% for RecommendProduct in recommend_products %}
+            <div class="col-sm-3 col-xs-6">
+                <div class="pickup_item">
+                    <a href="{{ url('product_detail', {'id': RecommendProduct.Product.id}) }}">
+                        <div class="item_photo"><img src="{{ app.config.image_save_urlpath }}/{{ RecommendProduct.Product.mainFileName|no_image_product }}"></div>
+                        <p class="item_comment">{{ RecommendProduct.comment|raw|nl2br }}</p>
+                        <dl>
+                            <dt class="item_name">{{ RecommendProduct.Product.name }}</dt>
+                            <dd class="item_price">
+                                {% if RecommendProduct.Product.hasProductClass %}
+                                    {% if RecommendProduct.Product.getPrice02Min == RecommendProduct.Product.getPrice02Max %}
+                                        {{ RecommendProduct.Product.getPrice02IncTaxMin|price }}
+                                    {% else %}
+                                        {{ RecommendProduct.Product.getPrice02IncTaxMin|price }} ～ {{ RecommendProduct.Product.getPrice02IncTaxMax|price }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ RecommendProduct.Product.getPrice02IncTaxMin|price }}
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- ▲item_list▲ -->
