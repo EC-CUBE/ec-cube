@@ -119,7 +119,7 @@ class ProductController extends AbstractController
                     if (!empty($status)) {
                         if ($status != $app['config']['admin_product_stock_status']) {
                             $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
-                            $session->set('eccube.admin.product.search', $searchData);
+                            $searchData['stock_status'] = null;
                         } else {
                             $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
@@ -129,10 +129,11 @@ class ProductController extends AbstractController
                         $searchData['link_status'] = null;
                         $searchData['stock_status'] = null;
                     }
-                    // 表示件数
-                    $pcount = $request->get('page_count');
 
-                    $page_count = empty($pcount) ? $page_count : $pcount;
+                    $session->set('eccube.admin.product.search', $searchData);
+
+                    // 表示件数
+                    $page_count = $request->get('page_count', $page_count);
 
                     $qb = $app['eccube.repository.product']->getQueryBuilderBySearchDataForAdmin($searchData);
 
