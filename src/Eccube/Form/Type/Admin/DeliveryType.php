@@ -77,7 +77,7 @@ class DeliveryType extends AbstractType
             ->add('payments', 'entity', array(
                 'label' => '支払方法',
                 'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
+                'choice_label' => 'method',
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,

@@ -46,7 +46,7 @@ class ShoppingMultipleType extends AbstractType
         $builder
             ->add('delivery', 'entity', array(
                 'class' => 'Eccube\Entity\Delivery',
-                'property' => 'name',
+                'choice_label' => 'name',
                 'choices' => $deliveries,
                 'data' => $delivery,
             ))
@@ -57,7 +57,7 @@ class ShoppingMultipleType extends AbstractType
             ))
             ->add('deliveryTime', 'entity', array(
                 'class' => 'Eccube\Entity\DeliveryTime',
-                'property' => 'deliveryTime',
+                'choice_label' => 'deliveryTime',
                 'choices' => $delivery->getDeliveryTimes(),
                 'required' => false,
                 'placeholder' => '指定なし',

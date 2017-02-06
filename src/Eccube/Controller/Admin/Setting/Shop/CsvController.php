@@ -59,7 +59,7 @@ class CsvController extends AbstractController
 
         $builder->add('csv_not_output', 'entity', array(
             'class' => 'Eccube\Entity\Csv',
-            'property' => 'disp_name',
+            'choice_label' => 'disp_name',
             'required' => false,
             'expanded' => false,
             'multiple' => true,
@@ -70,7 +70,7 @@ class CsvController extends AbstractController
 
         $builder->add('csv_output', 'entity', array(
             'class' => 'Eccube\Entity\Csv',
-            'property' => 'disp_name',
+            'choice_label' => 'disp_name',
             'required' => false,
             'expanded' => false,
             'multiple' => true,

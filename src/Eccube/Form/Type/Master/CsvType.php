@@ -40,7 +40,7 @@ class CsvType extends AbstractType
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\CsvType',
             // todo toStringがない？
-            'property' => 'name',
+            'choice_label' => 'name',
             'placeholder' => false,
         ));
     }

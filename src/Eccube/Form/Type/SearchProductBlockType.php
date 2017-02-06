@@ -58,7 +58,7 @@ class SearchProductBlockType extends AbstractType
 
         $builder->add('category_id', EntityType::class, array(
             'class' => 'Eccube\Entity\Category',
-            // 'property' => 'NameWithLevel',
+            'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'すべての商品',
             'empty_data' => null,

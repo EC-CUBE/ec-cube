@@ -73,7 +73,7 @@ class ShippingMultipleItemType extends AbstractType
                     $Customer = $app->user();
                     $form->add('customer_address', 'entity', array(
                         'class' => 'Eccube\Entity\CustomerAddress',
-                        'property' => 'shippingMultipleDefaultName',
+                        'choice_label' => 'shippingMultipleDefaultName',
                         'query_builder' => function (EntityRepository $er) use ($Customer) {
                             return $er->createQueryBuilder('ca')
                                 ->where('ca.Customer = :Customer')

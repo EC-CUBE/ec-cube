@@ -67,7 +67,7 @@ class ProductClassController
             $builder
                 ->add('class_name1', 'entity', array(
                     'class' => 'Eccube\Entity\ClassName',
-                    'property' => 'name',
+                    'choice_label' => 'name',
                     'placeholder' => '規格1を選択',
                     'constraints' => array(
                         new Assert\NotBlank(),
@@ -75,7 +75,7 @@ class ProductClassController
                 ))
                 ->add('class_name2', 'entity', array(
                     'class' => 'Eccube\Entity\ClassName',
-                    'property' => 'name',
+                    'choice_label' => 'name',
                     'placeholder' => '規格2を選択',
                     'required' => false,
                 ));
@@ -550,13 +550,13 @@ class ProductClassController
         $form = $app->form()
             ->add('class_name1', 'entity', array(
                 'class' => 'Eccube\Entity\ClassName',
-                'property' => 'name',
+                'choice_label' => 'name',
                 'placeholder' => '規格1を選択',
                 'data' => $ClassName1,
             ))
             ->add('class_name2', 'entity', array(
                 'class' => 'Eccube\Entity\ClassName',
-                'property' => 'name',
+                'choice_label' => 'name',
                 'placeholder' => '規格2を選択',
                 'data' => $ClassName2,
             ))

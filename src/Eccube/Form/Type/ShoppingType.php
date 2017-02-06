@@ -46,7 +46,7 @@ class ShoppingType extends AbstractType
         $builder
             ->add('payment', 'entity', array(
                 'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
+                'choice_label' => 'method',
                 'choices' => $payments,
                 'data' => $payment,
                 'expanded' => true,

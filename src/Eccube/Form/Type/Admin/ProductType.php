@@ -26,6 +26,9 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
+use Eccube\Form\Type\Master\DispType;
+use Eccube\Form\Type\Master\TagType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -67,7 +70,7 @@ class ProductType extends AbstractType
 
         $builder
             // 商品規格情報
-            ->add('class', 'admin_product_class', array(
+            ->add('class', ProductClassType::class, array(
                 'mapped' => false,
             ))
             // 基本情報
@@ -90,9 +93,9 @@ class ProductType extends AbstractType
                 'label' => '商品説明(一覧)',
                 'required' => false,
             ))
-            ->add('Category', 'entity', array(
+            ->add('Category', EntityType::class, array(
                 'class' => 'Eccube\Entity\Category',
-                'property' => 'NameWithLevel',
+                'choice_label' => 'NameWithLevel',
                 'label' => '商品カテゴリ',
                 'multiple' => true,
                 'mapped' => false,
@@ -101,7 +104,7 @@ class ProductType extends AbstractType
             ))
 
             // 詳細な説明
-            ->add('Tag', 'tag', array(
+            ->add('Tag', TagType::class, array(
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
@@ -118,7 +121,7 @@ class ProductType extends AbstractType
             ))
 
             // 右ブロック
-            ->add('Status', 'disp', array(
+            ->add('Status', DispType::class, array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
@@ -130,7 +133,6 @@ class ProductType extends AbstractType
 
             // タグ
             ->add('tags', CollectionType::class, array(
-                'type' => 'hidden',
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
@@ -138,21 +140,18 @@ class ProductType extends AbstractType
             ))
             // 画像
             ->add('images', CollectionType::class, array(
-                'type' => 'hidden',
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
             ->add('add_images', CollectionType::class, array(
-                'type' => 'hidden',
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
             ))
             ->add('delete_images', CollectionType::class, array(
-                'type' => 'hidden',
                 'prototype' => true,
                 'mapped' => false,
                 'allow_add' => true,

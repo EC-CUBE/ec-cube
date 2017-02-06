@@ -131,7 +131,7 @@ class MainEditType extends AbstractType
             ))
             ->add('DeviceType', 'entity', array(
                 'class' => 'Eccube\Entity\Master\DeviceType',
-                'property' => 'id',
+                'choice_label' => 'id',
             ))
             ->add('id', HiddenType::class)
             ->addEventListener(FormEvents::POST_SUBMIT, function($event) use ($app) {

@@ -137,7 +137,7 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'label' => '配送業者',
                 'class' => 'Eccube\Entity\Delivery',
-                // 'property' => 'name',
+                'choice_label' => 'name',
                 'placeholder' => '選択してください',
                 // 'empty_data' => null,
                 'constraints' => array(
@@ -177,7 +177,7 @@ class ShippingType extends AbstractType
                 $form->add('DeliveryTime', EntityType::class, array(
                     'label' => 'お届け時間',
                     'class' => 'Eccube\Entity\DeliveryTime',
-                    // 'property' => 'delivery_time',
+                    'choice_label' => 'delivery_time',
                     // FIXME 'empty_valuey' => '指定なし',
                     // 'empty_data' => null,
                     'required' => false,
@@ -206,8 +206,8 @@ class ShippingType extends AbstractType
                 $form->add('DeliveryTime', EntityType::class, array(
                     'label' => 'お届け時間',
                     'class' => 'Eccube\Entity\DeliveryTime',
-                    // 'property' => 'delivery_time',
-                    // FIXME 'empty_valuey' => '指定なし',
+                    'choice_label' => 'delivery_time',
+                    'placeholder' => '指定なし',
                     // 'empty_data' => null,
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) use($Delivery) {
