@@ -54,6 +54,47 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testSearchOrderById()
+    {
+        $Order = $this->app['eccube.repository.order']->findOneBy(array());
+
+        $crawler = $this->client->request(
+            'POST', $this->app->url('admin_order'), array(
+            'admin_search_order' => array(
+                '_token' => 'dummy',
+                'multi' => $Order->getId(),
+            )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    public function testSearchOrderByName()
+    {
+        $Order = $this->app['eccube.repository.order']->findOneBy(array());
+        $companyName = $Order->getCompanyName();
+        $OrderList = $this->app['eccube.repository.order']->findBy(array('company_name' => $companyName));
+        $cnt = count($OrderList);
+
+        $crawler = $this->client->request(
+            'POST', $this->app->url('admin_order'), array(
+            'admin_search_order' => array(
+                '_token' => 'dummy',
+                'multi' => $companyName,
+            )
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
