@@ -86,6 +86,8 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Edit name test
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
      */
     public function testEditNameIsBlank()
     {
@@ -107,10 +109,103 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertContains('登録できませんでした。', $html);
         $this->assertContains('※ 入力されていません。', $html);
 
+        // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->actual = $this->app['orm.em']->getRepository($entityName)->find($editForm['data'][1]['id'])->getName();
         $this->verify();
     }
+
+    /**
+     * New id is null
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     */
+    public function testNewIdIsNull()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = count($editForm['data']) + 1;
+        $editForm['data'][$id]['id'] = null;
+        $editForm['data'][$id]['name'] = 'test';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_system_masterdata_edit'),
+            array(
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            )
+        );
+        $html = $crawler->html();
+        $this->assertContains('登録できませんでした。', $html);
+        $this->assertContains('※ 入力されていません。', $html);
+
+        // Cannot save
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $actual = $this->app['orm.em']->getRepository($entityName)->find($id);
+        $this->assertTrue(empty($actual));
+    }
+
+    /**
+     * Add new name test
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     */
+    public function testNewNameIsBlank()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = count($editForm['data']) + 1;
+        $editForm['data'][$id]['id'] = $id;
+        $editForm['data'][$id]['name'] = '';
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_system_masterdata_edit'),
+            array(
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            )
+        );
+        $html = $crawler->html();
+        $this->assertContains('登録できませんでした。', $html);
+        $this->assertContains('※ 入力されていません。', $html);
+
+        // Cannot save
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $actual = $this->app['orm.em']->getRepository($entityName)->find($id);
+        $this->assertTrue(empty($actual));
+    }
+
+    /**
+     * Edit id is null
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     */
+    public function testEditIdIsNull()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = $editForm['data'][1]['id'];
+        $editForm['data'][1]['id'] = null;
+
+        $crawler = $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_system_masterdata_edit'),
+            array(
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            )
+        );
+        $html = $crawler->html();
+        $this->assertContains('登録できませんでした。', $html);
+        $this->assertContains('※ 入力されていません。', $html);
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $actual = $this->app['orm.em']->getRepository($entityName)->find($id);
+        $this->assertFalse(empty($actual));
+    }
+
 
     /**
      * Edit test
@@ -152,6 +247,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData($this->entityTest);
         $editForm = $this->createFormDataEdit($this->entityTest);
         $editForm['data'][1]['id'] = null;
+        $editForm['data'][1]['name'] = null;
 
         $this->client->request(
             'POST',

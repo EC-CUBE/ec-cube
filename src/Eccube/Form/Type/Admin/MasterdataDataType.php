@@ -56,7 +56,7 @@ class MasterdataDataType extends AbstractType
                     )),
                     new Assert\Regex(array(
                         'pattern' => '/^\d+$/u',
-                        'message' => 'form.type.numeric.invalid',
+                        'message' => $app->trans('form.type.numeric.invalid'),
                     )),
                 ),
             ))
@@ -68,6 +68,10 @@ class MasterdataDataType extends AbstractType
             $data = $form->getData();
             if ($data['id'] && empty($data['name'])) {
                 $form['name']->addError(new FormError($app->trans('This value should not be blank.')));
+            }
+
+            if ($data['name'] && $data['id'] == '') {
+                $form['id']->addError(new FormError($app->trans('This value should not be blank.')));
             }
         });
     }
