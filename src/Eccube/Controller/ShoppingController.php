@@ -41,7 +41,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+/**
+ * @Route("/shopping")
+ */
 class ShoppingController extends AbstractController
 {
 
@@ -68,6 +76,7 @@ class ShoppingController extends AbstractController
     /**
      * 購入画面表示
      *
+     * @Route("")
      * @param Application $app
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -111,8 +120,8 @@ class ShoppingController extends AbstractController
             try {
                 // 受注情報を作成
                 //$Order = $app['eccube.service.shopping']->createOrder($Customer);
-                $Order = $app['eccube.heler.order']->createProcessingOrder(
-                    $Customer, $Customer->getCustomerAddresses(), $cartService->getCart()->getCartItems());
+                $Order = $app['eccube.helper.order']->createProcessingOrder(
+                    $Customer, $Customer->getCustomerAddresses()->current(), $cartService->getCart()->getCartItems());
                 $cartService->setPreOrderId($Order->getPreOrderId());
                 $cartService->save();
             } catch (CartException $e) {

@@ -218,7 +218,12 @@ class Application extends \Silex\Application
 
         if (php_sapi_name() !== 'cli') {
             $this->extend('routes', function ($routes, \Silex\Application $app) {
-                return $this['sensio_framework_extra.routing.loader.annot_dir']->load($this['config']['root_dir'].'/app/Eccube');
+                $loader = $this['sensio_framework_extra.routing.loader.annot_dir'];
+                $collection = $loader->load(__DIR__.'/Controller');
+                $extends = $loader->load($this['config']['root_dir'].'/app/Eccube');
+                $collection->addCollection($extends);
+
+                return $collection;
             });
         }
 

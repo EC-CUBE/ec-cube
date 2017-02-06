@@ -24,6 +24,7 @@
 
 namespace Eccube\ServiceProvider;
 
+use Eccube\Service\OrderHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
@@ -114,6 +115,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
                 $PaymentMethod->setRequest($request);
                 return $PaymentMethod;
         });
+
+        $app['eccube.helper.order'] = function ($app) {
+            return new OrderHelper($app);
+        };
 
         $app['eccube.service.csv.export'] = function () use ($app) {
             $csvService = new \Eccube\Service\CsvExportService();
