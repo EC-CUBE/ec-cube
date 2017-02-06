@@ -100,7 +100,6 @@ class ShippingItemType extends AbstractType
                         'choices' => $deliveryTimes,
                         'required' => false,
                         'placeholder' => '指定なし',
-                        'empty_data' => null,
                     ));
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {

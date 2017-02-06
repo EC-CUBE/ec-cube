@@ -62,7 +62,6 @@ class PageMaxType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\PageMax',
-            'empty_data' => null,
         ));
     }
 

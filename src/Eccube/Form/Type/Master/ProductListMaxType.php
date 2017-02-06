@@ -63,7 +63,6 @@ class ProductListMaxType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\ProductListMax',
-            'empty_data' => null,
         ));
     }
 

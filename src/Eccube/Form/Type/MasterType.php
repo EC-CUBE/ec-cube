@@ -42,7 +42,6 @@ class MasterType extends AbstractType
             'expanded' => false,
             'required' => false,
             'placeholder' => '選択してください',
-            'empty_data' => null,
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('m')
                     ->orderBy('m.rank', 'ASC');

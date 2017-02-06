@@ -63,7 +63,6 @@ class ProductListOrderByType extends AbstractType
     {
         $resolver->setDefaults(array(
             'class' => 'Eccube\Entity\Master\ProductListOrderBy',
-            'empty_data' => null,
         ));
     }
 

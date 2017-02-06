@@ -146,7 +146,6 @@ class ProductController
 
         // 表示件数
         $builder = $app['form.factory']->createNamedBuilder('disp_number', ProductListMaxType::class, null, array(
-            // 'empty_data' => null,
             'required' => false,
             'label' => '表示件数',
             'allow_extra_fields' => true,
@@ -169,7 +168,6 @@ class ProductController
 
         // ソート順
         $builder = $app['form.factory']->createNamedBuilder('orderby', ProductListMaxType::class, null, array(
-            'empty_data' => null,
             'required' => false,
             'label' => '表示順',
             'allow_extra_fields' => true,

@@ -185,7 +185,6 @@ class ShippingType extends AbstractType
                         'choices' => $DeliveryTimes,
                         'required' => false,
                         'placeholder' => '指定なし',
-                        'empty_data' => null,
                     )
                 );
             }

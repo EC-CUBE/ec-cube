@@ -208,7 +208,6 @@ class OrderType extends AbstractType
                 'class' => 'Eccube\Entity\Master\OrderStatus',
                 'choice_label' => 'name',
                 'placeholder' => '選択してください',
-                // 'empty_data' => null,
                 'query_builder' => function($er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.rank', 'ASC');
@@ -222,7 +221,6 @@ class OrderType extends AbstractType
                 'class' => 'Eccube\Entity\Payment',
                 'choice_label' => 'method',
                 'placeholder' => '選択してください',
-                // 'empty_data' => null,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),

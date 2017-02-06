@@ -70,14 +70,12 @@ class SearchProductType extends AbstractType
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => '全ての商品',
-            // 'empty_data' => null,
             'required' => false,
             'label' => '商品カテゴリから選ぶ',
         ));
         $builder->add('name', SearchType::class, array(
             'required' => false,
             'label' => '商品名を入力',
-            // FIXME 'empty_data' => null,
             'attr' => array(
                 'maxlength' => 50,
             ),

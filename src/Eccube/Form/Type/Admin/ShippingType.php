@@ -139,7 +139,6 @@ class ShippingType extends AbstractType
                 'class' => 'Eccube\Entity\Delivery',
                 'choice_label' => 'name',
                 'placeholder' => '選択してください',
-                // 'empty_data' => null,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
@@ -178,8 +177,7 @@ class ShippingType extends AbstractType
                     'label' => 'お届け時間',
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
-                    // FIXME 'empty_valuey' => '指定なし',
-                    // 'empty_data' => null,
+                    'placeholder' => '指定なし',
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) use($Delivery) {
                         return $er->createQueryBuilder('dt')
@@ -208,7 +206,6 @@ class ShippingType extends AbstractType
                     'class' => 'Eccube\Entity\DeliveryTime',
                     'choice_label' => 'delivery_time',
                     'placeholder' => '指定なし',
-                    // 'empty_data' => null,
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) use($Delivery) {
                         return $er->createQueryBuilder('dt')
