@@ -25,11 +25,8 @@ class AController
     {
         dump('A: initialize');
         $t = new \Eccube\Entity\Csv();
-        $app['_scope'] = function () {
-            return new ParameterBag();
-        };
-        $t->setDispName($id + 5);
-        $app['_scope']->set('csv', $t);
+        $t->setDispName($id + 100000);
+        $app['request_scope']->set('csv', $t);
         return $app->forward('/test/new', $request, ['param_init' => $id]);
     }
 }

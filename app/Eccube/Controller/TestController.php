@@ -34,17 +34,13 @@ class TestController
     {
         dump('initialize');
         $t = new \Eccube\Entity\Csv();
-        $app['_scope'] = function () {
-            return new ParameterBag();
-        };
         $t->getDispName($id);
-        $app['_scope']->set('csv', $t);
         return $app->forward('/test/new', $request, ['param_init' => $id]);
     }
 
     /**
      * @Method("GET")
-     * @Route("/")
+     * @Route("/", name="test_index")
      */
     public function index(Application $app, Request $request)
     {
@@ -62,7 +58,8 @@ class TestController
     public function newAction(Application $app, Request $request)
     {
         dump('new');
-        $t = $app['_scope']->get('csv');
+        $t = $app['request_scope']->get('csv');
+        dump($t);
         return ['id' => $t->getDispName()];
     }
 
@@ -74,6 +71,6 @@ class TestController
     {
         dump('post');
         $app->forward('/test/initialize/5', $request);
-        return ['id' => $app['_scope']->get('csv')->getDispName()];
+        return ['id' => $app['request_scope']->get('csv')->getDispName()];
     }
 }

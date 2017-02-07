@@ -27,6 +27,7 @@ namespace Eccube\ServiceProvider;
 use Eccube\Service\OrderHelper;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Silex\Api\BootableProviderInterface;
 use Silex\Application;
 
@@ -306,6 +307,10 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
         };
         $app['eccube.repository.plugin_event_handler'] = function () use ($app) {
             return $app['orm.em']->getRepository('Eccube\Entity\PluginEventHandler');
+        };
+
+        $app['request_scope'] = function () {
+            return new ParameterBag();
         };
 
         // Form\Type
