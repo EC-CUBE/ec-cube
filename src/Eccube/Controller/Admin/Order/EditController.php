@@ -62,9 +62,23 @@ class EditController extends AbstractController
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
         $OriginalOrderDetails = new ArrayCollection();
+        // 編集前のお届け先情報を保持
+        $OriginalShippings = new ArrayCollection();
+        // 編集前のお届け先のアイテム情報を保持
+        $OriginalShipmentItems = new ArrayCollection();
 
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
             $OriginalOrderDetails->add($OrderDetail);
+        }
+
+        // 編集前の情報を保持
+        foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
+            foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
+                // アイテム情報
+                $OriginalShipmentItems->add($tmpOriginalShipmentItem);
+            }
+            // お届け先情報
+            $OriginalShippings->add($tmpOriginalShippings);
         }
 
         $builder = $app['form.factory']
@@ -150,12 +164,24 @@ class EditController extends AbstractController
                                 $shipmentItems = $Shipping->getShipmentItems();
                                 /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
                                 foreach ($shipmentItems as $ShipmentItem) {
+                                    // 削除予定から商品アイテムを外す
+                                    $OriginalShipmentItems->removeElement($ShipmentItem);
                                     $ShipmentItem->setOrder($TargetOrder);
                                     $ShipmentItem->setShipping($Shipping);
                                     $app['orm.em']->persist($ShipmentItem);
                                 }
+                                // 削除予定からお届け先情報を外す
+                                $OriginalShippings->removeElement($Shipping);
                                 $Shipping->setOrder($TargetOrder);
                                 $app['orm.em']->persist($Shipping);
+                            }
+                            // 商品アイテムを削除する
+                            foreach ($OriginalShipmentItems as $OriginalShipmentItem) {
+                                $app['orm.em']->remove($OriginalShipmentItem);
+                            }
+                            // お届け先情報削除する
+                            foreach ($OriginalShippings as $OriginalShipping) {
+                                $app['orm.em']->remove($OriginalShipping);
                             }
                         } else {
 
