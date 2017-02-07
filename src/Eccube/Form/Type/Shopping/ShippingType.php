@@ -2,6 +2,7 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -112,7 +113,11 @@ class ShippingType extends AbstractType
 
                 // 配送時に最大となる商品日数を取得
                 foreach ($Order->getOrderDetails() as $detail) {
-                    $deliveryDate = $detail->getProductClass()->getDeliveryDate();
+                    $ProductClass = $detail->getProductClass();
+                    if (is_null($ProductClass)) {
+                        continue;
+                    }
+                    $deliveryDate = $ProductClass->getDeliveryDate();
                     if (is_null($deliveryDate)) {
                         continue;
                     }

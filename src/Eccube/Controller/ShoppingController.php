@@ -138,7 +138,7 @@ class ShoppingController extends AbstractController
         $app['orm.em']->refresh($Order);
 
         // 構築したOrderを集計する.
-        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+        $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
         // フォームの生成
         $builder = $app['form.factory']->createBuilder(OrderType::class, $Order);
@@ -245,6 +245,8 @@ class ShoppingController extends AbstractController
 
     /**
      * 購入処理
+     *
+     * @Route("/shopping/confirm", name="shopping_confirm")
      */
     public function confirm(Application $app, Request $request)
     {
@@ -283,11 +285,11 @@ class ShoppingController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
         // requestのバインド後、Calculatorに再集計させる
-        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+        $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
+            $Order = $form->getData();
             log_info('購入処理開始', array($Order->getId()));
 
             // トランザクション制御

@@ -229,6 +229,9 @@ class OrderHelper
         $Delivery = current($Deliveries);
         $Shipping->setDelivery($Delivery);
         $Shipping->setShippingDeliveryName($Delivery->getName());
+
+//        $deliveryFee = $this->deliversyFeeRepository->findOneBy(array('Delivery' => $Delivery, 'Pref' => $Shipping->getPref()));
+        $Shipping->setShippingDeliveryFee(500); // FIXME 配送料の取得を行う
     }
 
     public function setDefaultPayment(Order $Order)
@@ -257,6 +260,7 @@ class OrderHelper
         $Payment = current($Payments);
         $Order->setPayment($Payment);
         $Order->setPaymentMethod($Payment->getMethod());
+        $Order->setCharge($Payment->getCharge());
     }
 
     public function createShipmentItemsFromOrderDetails($OrderDetails, $groupByProductType = true)

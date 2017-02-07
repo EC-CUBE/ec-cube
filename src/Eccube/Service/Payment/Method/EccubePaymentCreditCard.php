@@ -20,6 +20,8 @@ class EccubePaymentCreditCard extends CreditCard
 
     public function apply($request)
     {
+        return false;
+        
         // XXX forward すると, ヘッダ・フッタがでない. 画面表示を伴わない処理なら OK
         $subRequest = Request::create('/shopping/shipping_multiple', 'GET', array(), $this->request->cookies->all(), array(), $this->request->server->all());
         if ($this->request->getSession()) {
