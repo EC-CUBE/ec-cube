@@ -48,6 +48,7 @@ class EccubeExtension extends \Twig_Extension
         $RoutingExtension = $this->app['twig']->getExtension('routing');
 
         return array(
+            new \Twig_SimpleFunction('is_object', array($this, 'isObject')),
             new \Twig_SimpleFunction('calc_inc_tax', array($this, 'getCalcIncTax')),
             new \Twig_SimpleFunction('active_menus', array($this, 'getActiveMenus')),
             new \Twig_SimpleFunction('csrf_token_for_anchor', array($this, 'getCsrfTokenForAnchor'), array('is_safe' => array('all'))),
@@ -223,5 +224,16 @@ class EccubeExtension extends \Twig_Extension
         }
 
         return $RoutingExtension->getUrl('homepage').'404?bind='.$name;
+    }
+
+    /**
+     * Check if the value is object
+     *
+     * @param object $value
+     * @return bool
+     */
+    public function isObject($value)
+    {
+        return is_object($value);
     }
 }

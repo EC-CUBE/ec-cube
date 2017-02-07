@@ -89,6 +89,8 @@ class ForgotController extends AbstractController
                 $app['monolog']->addInfo(
                     'send reset password mail to:'  . "{$Customer->getId()} {$Customer->getEmail()} {$request->getClientIp()}"
                 );
+            } else {
+                log_warning('Un active customer try send reset password email: ', array('Enter email' => $form->get('login_email')->getData()));
             }
 
             return $app->redirect($app->url('forgot_complete'));

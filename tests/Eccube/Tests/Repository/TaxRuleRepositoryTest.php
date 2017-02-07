@@ -22,9 +22,12 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     protected $Product;
     protected $TaxRule2;
     protected $TaxRule3;
+    
+    private $DateTimeNow = null;
 
     public function setUp()
     {
+        $this->DateTimeNow = new \DateTime('+1 minutes');
         parent::setUp();
         $this->BaseInfo = $this->app['eccube.repository.base_info']->get();
         $this->BaseInfo->setOptionProductTaxRule(0);
@@ -32,11 +35,12 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         // 2017-04-01とか指定すると, 2017年以降で結果が変わってしまうので1年後の日付を指定する
         $ApplyDate = new \DateTime('+1 years');
         $this->TaxRule1 = $this->app['eccube.repository.tax_rule']->find(1);
-        $this->TaxRule1->setApplyDate(new \DateTime());
+        $this->TaxRule1->setApplyDate($this->DateTimeNow);
         $this->TaxRule2 = $this->createTaxRule(10, $ApplyDate);
         $this->TaxRule3 = $this->createTaxRule(8, $ApplyDate);
         $this->app['orm.em']->flush();
     }
+    
 
     public function createTaxRule($tax_rate = 8, $apply_date = null)
     {
@@ -46,7 +50,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
             ->find(1);
         $Member = $this->app['eccube.repository.member']->find(2);
         if (is_null($apply_date)) {
-            $apply_date = new \DateTime();
+            $apply_date = $this->DateTimeNow;
         }
         $TaxRule
             ->setTaxRate($tax_rate)
@@ -133,9 +137,11 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function testGetByRuleWithPref()
     {
         $Pref = $this->app['eccube.repository.master.pref']->find(26);
-        $this->TaxRule2->setApplyDate(new \DateTime('-1 days'));
+        $oneDayBefore = new \DateTime('-1 days');
+        
+        $this->TaxRule2->setApplyDate($oneDayBefore);
         $this->TaxRule3
-            ->setApplyDate(new \DateTime('-1 days'))
+            ->setApplyDate($oneDayBefore)
             ->setPref($Pref);
         $this->app['orm.em']->flush();
 
@@ -155,11 +161,13 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     public function testGetByRuleWithCountry()
     {
         $Country = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\Country')->find(300);
+        $oneDayBefore = new \DateTime('-1 days');
+        
         $this->TaxRule2
-            ->setApplyDate(new \DateTime('-1 days'))
+            ->setApplyDate($oneDayBefore)
             ->setCountry($Country);
         $this->TaxRule3
-            ->setApplyDate(new \DateTime('-1 days'));
+            ->setApplyDate($oneDayBefore);
 
         $this->app['orm.em']->flush();
 
@@ -180,12 +188,13 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
         $this->app['orm.em']->flush();
+        $oneDayBefore = new \DateTime('-1 days');
 
         $this->TaxRule2
-            ->setApplyDate(new \DateTime('-1 days'))
+            ->setApplyDate($oneDayBefore)
             ->setProduct($this->Product);
         $this->TaxRule3
-            ->setApplyDate(new \DateTime('-1 days'));
+            ->setApplyDate($oneDayBefore);
 
         $this->app['orm.em']->flush();
 
@@ -206,14 +215,15 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
         $this->app['orm.em']->flush();
+        $oneDayBefore = new \DateTime('-1 days');
 
         $ProductClasses = $this->Product->getProductClasses();
         $ProductClass = $ProductClasses[1];
         $this->TaxRule2
-            ->setApplyDate(new \DateTime('-1 days'))
+            ->setApplyDate($oneDayBefore)
             ->setProductClass($ProductClass);
         $this->TaxRule3
-            ->setApplyDate(new \DateTime('-1 days'));
+            ->setApplyDate($oneDayBefore);
 
         $this->app['orm.em']->flush();
 
@@ -234,16 +244,17 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
         $this->app['orm.em']->flush();
+        $oneDayBefore = new \DateTime('-1 days');
 
         $Country = $this->app['orm.em']->getRepository('\Eccube\Entity\Master\Country')->find(300);
 
         // 国別設定
         $this->TaxRule2
-            ->setApplyDate(new \DateTime('-1 days'))
+            ->setApplyDate($oneDayBefore)
             ->setCountry($Country);
         // 商品別設定
         $this->TaxRule3
-            ->setApplyDate(new \DateTime('-1 days'))
+            ->setApplyDate($oneDayBefore)
             ->setProduct($this->Product);
 
         $this->app['orm.em']->flush();
@@ -271,9 +282,10 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
         $this->app['orm.em']->flush();
+        $fiveDaysBefore = new \DateTime('-5 days');
 
-        $this->TaxRule1->setApplyDate(new \DateTime('-5 days'));
-        $this->TaxRule2->setApplyDate(new \DateTime('-5 days'));
+        $this->TaxRule1->setApplyDate($fiveDaysBefore);
+        $this->TaxRule2->setApplyDate($fiveDaysBefore);
         $this->TaxRule3->setApplyDate(new \DateTime('-2 days'));
         $this->app['orm.em']->flush();
 

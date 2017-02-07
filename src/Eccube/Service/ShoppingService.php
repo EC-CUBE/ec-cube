@@ -29,6 +29,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderDetail;
 use Eccube\Entity\Product;
@@ -165,6 +166,14 @@ class ShoppingService
         // 受注情報を作成
         $Order = $this->getNewOrder($Customer);
         $Order->setPreOrderId($preOrderId);
+
+        // device type
+        if ($this->app['mobile_detect']->isMobile()) {
+            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_SP);
+        } else {
+            $DeviceType = $this->app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_PC);
+        }
+        $Order->setDeviceType($DeviceType);
 
         $this->em->persist($Order);
 
@@ -492,7 +501,7 @@ class ShoppingService
             ->setProductCode($ProductClass->getCode())
             ->setPrice($ProductClass->getPrice02())
             ->setQuantity($quantity)
-            ->setTaxRule($TaxRule->getId())
+            ->setTaxRule($TaxRule->getCalcRule()->getId())
             ->setTaxRate($TaxRule->getTaxRate());
 
         $ClassCategory1 = $ProductClass->getClassCategory1();

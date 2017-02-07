@@ -315,11 +315,18 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         //税金計算
         $totalTax = 0;
+        $addQuantity = 2;
         foreach ($formDataForEdit['OrderDetails'] as $indx => $orderDetail) {
-            //商品数変更3個追加
-            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + 3;
+            //商品数追加
+            $formDataForEdit['OrderDetails'][$indx]['quantity'] = $orderDetail['quantity'] + $addQuantity * count($Shippings);
             $tax = (int) $this->app['eccube.service.tax_rule']->calcTax($orderDetail['price'], $orderDetail['tax_rate'], $orderDetail['tax_rule']);
             $totalTax += $tax * $formDataForEdit['OrderDetails'][$indx]['quantity'];
+        }
+
+        foreach ($formDataForEdit['Shippings'] as &$shipping) {
+            foreach ($shipping['ShipmentItems'] as &$shipmentItem) {
+                $shipmentItem['quantity'] += $addQuantity;
+            }
         }
 
         // 管理画面で受注編集する
@@ -334,6 +341,118 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         //確認する「トータル税金」
         $this->expected = $totalTax;
         $this->actual = $EditedOrderafterEdit->getTax();
+        $this->verify();
+    }
+
+    public function testOrderEditWithShippingItemDelete()
+    {
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormDataForMultiple($Customer, $Shippings);
+        $Shippings = $Order->getShippings();
+
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formData,
+            'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $this->expected = $formData['name']['name01'];
+        $this->actual = $EditedOrder->getName01();
+        $this->verify();
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassExpected = array();
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            $stopFlag = true;
+            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
+                if ($stopFlag === true) {
+                    $stopFlag = false;
+                    $newFormData['Shippings'][$idx]['ShipmentItems'][$subIsx]['quantity'] = 0;
+                    continue;
+                }
+                $productClassExpected[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+            }
+        }
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $newFormData,
+            'mode' => 'register'
+            )
+        );
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassActual = array();
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            foreach ($Shippings['ShipmentItems'] as $subIsx => $ShipmentItem) {
+                $productClassActual[$idx][$ShipmentItem['ProductClass']] = $ShipmentItem['ProductClass'];
+            }
+        }
+
+        $this->expected = $productClassExpected;
+        $this->actual = $productClassActual;
+        $this->verify();
+    }
+
+    public function testOrderEditWithShippingDelete()
+    {
+        $Shippings = array();
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $formData = $this->createFormDataForMultiple($Customer, $Shippings);
+        $Shippings = $Order->getShippings();
+
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $formData,
+            'mode' => 'register'
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_order_edit', array('id' => $Order->getId()))));
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $this->expected = $formData['name']['name01'];
+        $this->actual = $EditedOrder->getName01();
+        $this->verify();
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassExpected = array();
+        $stopFlag = true;
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            if ($stopFlag === true) {
+                $stopFlag = false;
+                unset($newFormData['Shippings'][$idx]);
+                continue;
+            }
+            $productClassExpected[] = $Shippings;
+        }
+        $this->client->request(
+            'POST', $this->app->url('admin_order_edit', array('id' => $Order->getId())), array(
+            'order' => $newFormData,
+            'mode' => 'register'
+            )
+        );
+
+        $EditedOrder = $this->app['eccube.repository.order']->find($Order->getId());
+        $newFormData = parent::createFormDataForEdit($EditedOrder);
+
+        $productClassActual = array();
+        foreach ($newFormData['Shippings'] as $idx => $Shippings) {
+            $productClassActual[] = $Shippings;
+        }
+
+        $this->expected = $productClassExpected;
+        $this->actual = $productClassActual;
         $this->verify();
     }
 
@@ -360,7 +479,10 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                         'ProductClass' => $Item['ProductClass'],
                         'price' => $Item['price'],
                         'quantity' => $Item['quantity'],
-                        'tax_rate' => 8 // XXX ハードコーディング
+                        'tax_rate' => 8, // XXX ハードコーディング
+                        'tax_rule' => 1,
+                        'product_name' => $Item['product_name'],
+                        'product_code' => $Item['product_code'],
                     );
                 } else {
                     $OrderDetails[$Item['ProductClass']]['quantity'] += $Item['quantity'];
@@ -391,8 +513,9 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
                 'Product' => $ProductClass->getProduct()->getId(),
                 'ProductClass' => $ProductClass->getId(),
                 'price' => $ProductClass->getPrice02(),
-                'quantity' => $faker->randomNumber(2),
-                'itemidx' => ''
+                'quantity' => $faker->numberBetween(1, 9),
+                'product_name' => $ProductClass->getProduct()->getName(),
+                'product_code' => $ProductClass->getCode(),
             );
         }
         $Shipping =

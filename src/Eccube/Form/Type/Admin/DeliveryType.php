@@ -96,6 +96,8 @@ class DeliveryType extends AbstractType
                 'label' => false,
                 'currency' => 'JPY',
                 'precision' => 0,
+                'scale' => 0,
+                'grouping' => true,
                 'required' => false,
                 'mapped' => false
             ))

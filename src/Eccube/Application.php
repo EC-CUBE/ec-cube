@@ -23,6 +23,7 @@
 
 namespace Eccube;
 
+use Binfo\Silex\MobileDetectServiceProvider;
 use Eccube\Application\ApplicationTrait;
 use Eccube\Common\Constant;
 use Eccube\Doctrine\ORM\Mapping\Driver\YamlDriver;
@@ -142,6 +143,7 @@ class Application extends ApplicationTrait
         $this->register(new \Silex\Provider\FormServiceProvider());
         $this->register(new \Silex\Provider\SerializerServiceProvider());
         $this->register(new \Silex\Provider\ValidatorServiceProvider());
+        $this->register(new MobileDetectServiceProvider());
 
         $app = $this;
         $this->error(function (\Exception $e, $code) use ($app) {
@@ -555,13 +557,19 @@ class Application extends ApplicationTrait
             ),
         );
 
+        $channel = null;
+        // 強制SSL
+        if ($this['config']['force_ssl'] == \Eccube\Common\Constant::ENABLED) {
+            $channel = "https";
+        }
+
         $this['security.access_rules'] = array(
-            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN'),
-            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY'),
-            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY'),
-            array('^/mypage', 'ROLE_USER'),
+            array("^/{$this['config']['admin_route']}/login", 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array("^/{$this['config']['admin_route']}/", 'ROLE_ADMIN', $channel),
+            array('^/mypage/login', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/withdraw_complete', 'IS_AUTHENTICATED_ANONYMOUSLY', $channel),
+            array('^/mypage/change', 'IS_AUTHENTICATED_FULLY', $channel),
+            array('^/mypage', 'ROLE_USER', $channel),
         );
 
         $this['eccube.password_encoder'] = $this->share(function ($app) {
@@ -854,7 +862,7 @@ class Application extends ApplicationTrait
             try {
                 $this['eccube.service.plugin']->checkPluginArchiveContent($path, $pluginConfig['config']);
             } catch (\Eccube\Exception\PluginException $e) {
-                $this['monolog']->warning("skip {$code} config loading. config.yml not foud or invalid.", array(
+                $this['monolog']->warning("Configuration file config.yml for plugin {$code} not found or is invalid. Skipping loading.", array(
                     'path' => $path,
                     'original-message' => $e->getMessage()
                 ));
@@ -888,7 +896,7 @@ class Application extends ApplicationTrait
                 $eventExists = true;
 
                 if (!class_exists($class)) {
-                    $this['monolog']->warning("skip {$code} loading. event class not foud.", array(
+                    $this['monolog']->warning("Event class for plugin {$code} not exists.", array(
                         'class' => $class,
                     ));
                     $eventExists = false;
@@ -918,7 +926,7 @@ class Application extends ApplicationTrait
                 foreach ($config['service'] as $service) {
                     $class = '\\Plugin\\'.$config['code'].'\\ServiceProvider\\'.$service;
                     if (!class_exists($class)) {
-                        $this['monolog']->warning("skip {$code} loading. service provider class not foud.", array(
+                        $this['monolog']->warning("Service provider class for plugin {$code} not exists.", array(
                             'class' => $class,
                         ));
                         continue;
@@ -1215,6 +1223,12 @@ class Application extends ApplicationTrait
         $pluginConfigs = array();
         foreach ($finder as $dir) {
             $code = $dir->getBaseName();
+            if (!$code) {
+                //PHP5.3のgetBaseNameバグ対応
+                if (PHP_VERSION_ID < 50400) {
+                    $code = $dir->getFilename();
+                }
+            }
             $file = $dir->getRealPath().'/config.yml';
             $config = null;
             if (file_exists($file)) {

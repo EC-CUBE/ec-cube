@@ -56,11 +56,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             document.form1.action = "{{ url('admin_content_layout_preview', {id: TargetPageLayout.id}) }}";
             document.form1.target = "_blank";
             document.form1.submit();
+            return false;
         }
         function doRegister() {
             document.form1.action = "{{ url('admin_content_layout_edit', {id: TargetPageLayout.id}) }}";
             document.form1.target = "_self";
             document.form1.submit();
+            return false;
         }
     </script>
 {% endblock javascript %}
@@ -283,12 +285,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 </div>
             </div>
             <div id="common_box" class="col-md-3">
-                <div class="col_inner">
+                <div id="aside_column" class="col_inner">
                     <div id="common_button_box" class="box no-header">
                         <div id="common_button_box__body" class="box-body">
                             <div id="common_button_box__insert_button" class="row text-center">
                                 <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
-                                    <button class="btn btn-primary btn-block btn-lg" onclick="doRegister();">登録</button>
+                                    <button class="btn btn-primary btn-block btn-lg" onclick="return doRegister();">登録</button>
                                 </div>
                             </div>
                         </div><!-- /.box-body -->
@@ -310,7 +312,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                             %}
                             {% set disabled = false %}
                             {% endif %}
-                            <button  class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') or disabled %}disabled{% endif %} onclick="doPreview();">
+                            <button  class="btn btn-default btn-block btn-sm" {% if TargetPageLayout.DeviceType.id != constant('Eccube\\Entity\\Master\\DeviceType::DEVICE_TYPE_PC') or disabled %}disabled{% endif %} onclick="return doPreview();">
                                 プレビュー
                             </button>
                         </div><!-- /.box-header -->

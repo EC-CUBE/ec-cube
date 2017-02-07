@@ -363,18 +363,26 @@ class ProductController extends AbstractController
 
                 $count = 1;
                 $Categories = $form->get('Category')->getData();
+                $categoriesIdList = array();
                 foreach ($Categories as $Category) {
-                    $ProductCategory = new \Eccube\Entity\ProductCategory();
-                    $ProductCategory
-                        ->setProduct($Product)
-                        ->setProductId($Product->getId())
-                        ->setCategory($Category)
-                        ->setCategoryId($Category->getId())
-                        ->setRank($count);
-                    $app['orm.em']->persist($ProductCategory);
-                    $count++;
-                    /* @var $Product \Eccube\Entity\Product */
-                    $Product->addProductCategory($ProductCategory);
+                    foreach($Category->getPath() as $ParentCategory){
+                        if (!isset($categoriesIdList[$ParentCategory->getId()])){
+                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
+                            $app['orm.em']->persist($ProductCategory);
+                            $count++;
+                            /* @var $Product \Eccube\Entity\Product */
+                            $Product->addProductCategory($ProductCategory);
+                            $categoriesIdList[$ParentCategory->getId()] = true;
+                        }
+                    }
+                    if (!isset($categoriesIdList[$Category->getId()])){
+                        $ProductCategory = $this->createProductCategory($Product, $Category, $count);
+                        $app['orm.em']->persist($ProductCategory);
+                        $count++;
+                        /* @var $Product \Eccube\Entity\Product */
+                        $Product->addProductCategory($ProductCategory);
+                        $categoriesIdList[$Category->getId()] = true;
+                    }
                 }
 
                 // 画像の登録
@@ -448,6 +456,8 @@ class ProductController extends AbstractController
                     $Product->addProductTag($ProductTag);
                     $app['orm.em']->persist($ProductTag);
                 }
+
+                $Product->setUpdateDate(new \DateTime());
                 $app['orm.em']->flush();
 
                 log_info('商品登録完了', array($id));
@@ -779,5 +789,23 @@ class ProductController extends AbstractController
         log_info('商品CSV出力ファイル名', array($filename));
 
         return $response;
+    }
+    
+    /**
+     * ProductCategory作成
+     * @param \Eccube\Entity\Product $Product
+     * @param \Eccube\Entity\Category $Category
+     * @return \Eccube\Entity\ProductCategory
+     */
+    private function createProductCategory($Product, $Category, $count)
+    {
+        $ProductCategory = new \Eccube\Entity\ProductCategory();
+        $ProductCategory->setProduct($Product);
+        $ProductCategory->setProductId($Product->getId());
+        $ProductCategory->setCategory($Category);
+        $ProductCategory->setCategoryId($Category->getId());
+        $ProductCategory->setRank($count);
+        
+        return $ProductCategory;
     }
 }

@@ -56,7 +56,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% if errors|length > 0 -%}
         {% if form.parent %}
             {%- for error in errors -%}
-                <p class="errormsg text-danger">{{ error.message |trans }}</p>
+                {%- if freeze_display_text -%}
+                    <p class="errormsg text-danger">{{ error.message |trans }}</p>
+                {%- endif %}
             {%- endfor -%}
         {%- endif %}
     {%- endif %}
@@ -112,11 +114,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                 {%- if freeze_display_text -%}
                     {{ choice.label|trans({}, translation_domain) }}
                 {% endif %}
-                <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }}>
+                <input type="hidden" value="{{ choice.value }}" {{ block('widget_attributes') }} />
                 {% set flag = true %}
             {% endif %}
         {% endfor %}
-        {% if flag == false %}<input type="hidden" value="" {{ block('widget_attributes') }}>{% endif %}
+        {% if flag == false %}<input type="hidden" value="" {{ block('widget_attributes') }} />{% endif %}
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}
@@ -126,9 +128,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 {%- block choice_widget_expanded -%}
     {% if freeze %}
         {%- if freeze_display_text -%}
-            {{ form.vars.data.name|default(form.vars.data) }}
+            {% if is_object(form.vars.data) %}
+                {{ form.vars.data.name|default(form.vars.data) }}
+            {% else %}
+                {% for choice in choices %}
+                    {% if form.vars.data|format is same as (choice.value|format) %}
+                        {{ choice.label }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         {%- endif -%}
-        <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }}>
+        <input type="hidden" value="{{ form.vars.data.id|default(form.vars.data) }}" {{ block('widget_attributes') }} />
     {%- else -%}
         {{- parent() -}}
     {%- endif -%}

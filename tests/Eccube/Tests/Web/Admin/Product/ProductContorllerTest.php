@@ -34,11 +34,22 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function createFormData()
     {
         $faker = $this->getFaker();
+
+        $price01 = $faker->randomNumber(5);
+        if (mt_rand(0, 1)) {
+            $price01 = number_format($price01);
+        }
+
+        $price02 = $faker->randomNumber(5);
+        if (mt_rand(0, 1)) {
+            $price02 = number_format($price02);
+        }
+
         $form = array(
             'class' => array(
                 'product_type' => 1,
-                'price01' => $faker->randomNumber(5),
-                'price02' => $faker->randomNumber(5),
+                'price01' => $price01,
+                'price02' => $price02,
                 'stock' => $faker->randomNumber(3),
                 'stock_unlimited' => 0,
                 'code' => $faker->word,
@@ -78,6 +89,114 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->app->url('admin_product_product_new')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testProductSearchAll()
+    {
+        $AllProducts = $this->app['eccube.repository.product']->findAll();
+        $cnt = count($AllProducts);
+        $TestProduct = $this->createProduct();
+        $cnt++;
+
+        $post = array('admin_search_product' =>
+            array(
+                '_token' => 'dummy',
+                'id' => '',
+                'category_id' => '',
+                'create_date_start' => '',
+                'create_date_end' => '',
+                'update_date_start' => '',
+                'update_date_end' => '',
+                'link_status' => '',
+        ));
+        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+        $this->expected = '検索結果 ' . $cnt . ' 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    public function testProductSearchByName()
+    {
+        $TestProduct = $this->createProduct();
+
+        $post = array('admin_search_product' =>
+            array(
+                '_token' => 'dummy',
+                'id' => $TestProduct->getName(),
+                'category_id' => '',
+                'create_date_start' => '',
+                'create_date_end' => '',
+                'update_date_start' => '',
+                'update_date_end' => '',
+                'link_status' => '',
+        ));
+        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    public function testProductSearchById()
+    {
+        $TestProduct = $this->createProduct();
+
+        $post = array('admin_search_product' =>
+            array(
+                '_token' => 'dummy',
+                'id' => $TestProduct->getId(),
+                'category_id' => '',
+                'create_date_start' => '',
+                'create_date_end' => '',
+                'update_date_start' => '',
+                'update_date_end' => '',
+                'link_status' => '',
+        ));
+        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    public function testProductSearchByIdZero()
+    {
+        $TestProduct = $this->createProduct();
+
+        $post = array('admin_search_product' =>
+            array(
+                '_token' => 'dummy',
+                'id' => 99999999,
+                'category_id' => '',
+                'create_date_start' => '',
+                'create_date_end' => '',
+                'update_date_start' => '',
+                'update_date_end' => '',
+                'link_status' => '',
+        ));
+        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+        $this->expected = '検索条件に該当するデータがありませんでした。';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    public function testProductSearchByNameZero()
+    {
+        $TestProduct = $this->createProduct();
+
+        $post = array('admin_search_product' =>
+            array(
+                '_token' => 'dummy',
+                'id' => 'not Exists product name',
+                'category_id' => '',
+                'create_date_start' => '',
+                'create_date_end' => '',
+                'update_date_start' => '',
+                'update_date_end' => '',
+                'link_status' => '',
+        ));
+        $crawler = $this->client->request('POST', $this->app->url('admin_product'), $post);
+        $this->expected = '検索条件に該当するデータがありませんでした。';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
     }
 
     public function testRoutingAdminProductProductEdit()

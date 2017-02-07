@@ -103,6 +103,38 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * testIndexWithPostSearchByEmail
+     */
+    public function testIndexWithPostSearchByEmail()
+    {
+        $crawler = $this->client->request(
+            'POST', $this->app->path('admin_customer'), array('admin_search_customer' => array('_token' => 'dummy', 'multi' => 'ser-7'))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    /**
+     * testIndexWithPostSearchById
+     */
+    public function testIndexWithPostSearchById()
+    {
+        $Customer = $this->app['eccube.repository.customer']->findOneBy(array('del_flg' => 0));
+
+        $crawler = $this->client->request(
+            'POST', $this->app->path('admin_customer'), array('admin_search_customer' => array('_token' => 'dummy', 'multi' => $Customer->getId()))
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = '検索結果 1 件 が該当しました';
+        $this->actual = $crawler->filter('h3.box-title')->text();
+        $this->verify();
+    }
+
+    /**
      * testResend
      */
     public function testResend()
@@ -121,6 +153,9 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->subject;
         $this->verify();
+
+        //test mail resend to 仮会員.
+        $this->assertContains($BaseInfo->getEmail02(), $Message->source);
     }
 
     /**

@@ -27,6 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Application;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -50,7 +51,7 @@ class EditController extends AbstractController
 
         if (is_null($id)) {
             // 空のエンティティを作成.
-            $TargetOrder = $this->newOrder();
+            $TargetOrder = $this->newOrder($app);
         } else {
             $TargetOrder = $app['eccube.repository.order']->find($id);
             if (is_null($TargetOrder)) {
@@ -61,9 +62,23 @@ class EditController extends AbstractController
         // 編集前の受注情報を保持
         $OriginOrder = clone $TargetOrder;
         $OriginalOrderDetails = new ArrayCollection();
+        // 編集前のお届け先情報を保持
+        $OriginalShippings = new ArrayCollection();
+        // 編集前のお届け先のアイテム情報を保持
+        $OriginalShipmentItems = new ArrayCollection();
 
         foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
             $OriginalOrderDetails->add($OrderDetail);
+        }
+
+        // 編集前の情報を保持
+        foreach ($TargetOrder->getShippings() as $tmpOriginalShippings) {
+            foreach ($tmpOriginalShippings->getShipmentItems() as $tmpOriginalShipmentItem) {
+                // アイテム情報
+                $OriginalShipmentItems->add($tmpOriginalShipmentItem);
+            }
+            // お届け先情報
+            $OriginalShippings->add($tmpOriginalShippings);
         }
 
         $builder = $app['form.factory']
@@ -149,12 +164,24 @@ class EditController extends AbstractController
                                 $shipmentItems = $Shipping->getShipmentItems();
                                 /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
                                 foreach ($shipmentItems as $ShipmentItem) {
+                                    // 削除予定から商品アイテムを外す
+                                    $OriginalShipmentItems->removeElement($ShipmentItem);
                                     $ShipmentItem->setOrder($TargetOrder);
                                     $ShipmentItem->setShipping($Shipping);
                                     $app['orm.em']->persist($ShipmentItem);
                                 }
+                                // 削除予定からお届け先情報を外す
+                                $OriginalShippings->removeElement($Shipping);
                                 $Shipping->setOrder($TargetOrder);
                                 $app['orm.em']->persist($Shipping);
+                            }
+                            // 商品アイテムを削除する
+                            foreach ($OriginalShipmentItems as $OriginalShipmentItem) {
+                                $app['orm.em']->remove($OriginalShipmentItem);
+                            }
+                            // お届け先情報削除する
+                            foreach ($OriginalShippings as $OriginalShipping) {
+                                $app['orm.em']->remove($OriginalShipping);
                             }
                         } else {
 
@@ -539,7 +566,7 @@ class EditController extends AbstractController
                 $page_no = 1;
 
                 $searchData = array(
-                    'name' => $request->get('id'),
+                    'id' => $request->get('id'),
                 );
 
                 if ($categoryId = $request->get('category_id')) {
@@ -559,7 +586,7 @@ class EditController extends AbstractController
             }
 
             $qb = $app['eccube.repository.product']
-                ->getQueryBuilderBySearchData($searchData);
+                ->getQueryBuilderBySearchDataForAdmin($searchData);
 
             $event = new EventArgs(
                 array(
@@ -613,13 +640,17 @@ class EditController extends AbstractController
         }
     }
 
-    protected function newOrder()
+    protected function newOrder(Application $app)
     {
         $Order = new \Eccube\Entity\Order();
         $Shipping = new \Eccube\Entity\Shipping();
         $Shipping->setDelFlg(0);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
+
+        // device type
+        $DeviceType = $app['eccube.repository.master.device_type']->find(DeviceType::DEVICE_TYPE_ADMIN);
+        $Order->setDeviceType($DeviceType);
 
         return $Order;
     }
@@ -639,27 +670,6 @@ class EditController extends AbstractController
         /** @var $OrderDetails \Eccube\Entity\OrderDetail[] */
         $OrderDetails = $Order->getOrderDetails();
         foreach ($OrderDetails as $OrderDetail) {
-            // 新規登録の場合は, 入力されたproduct_id/produc_class_idから明細にセットする.
-            if (!$OrderDetail->getId()) {
-                $TaxRule = $app['eccube.repository.tax_rule']->getByRule($OrderDetail->getProduct(),
-                    $OrderDetail->getProductClass());
-                $OrderDetail->setTaxRule($TaxRule->getId());
-                $OrderDetail->setProductName($OrderDetail->getProduct()->getName());
-                $OrderDetail->setProductCode($OrderDetail->getProductClass()->getCode());
-                $OrderDetail->setClassName1($OrderDetail->getProductClass()->hasClassCategory1()
-                    ? $OrderDetail->getProductClass()->getClassCategory1()->getClassName()->getName()
-                    : null);
-                $OrderDetail->setClassName2($OrderDetail->getProductClass()->hasClassCategory2()
-                    ? $OrderDetail->getProductClass()->getClassCategory2()->getClassName()->getName()
-                    : null);
-                $OrderDetail->setClassCategoryName1($OrderDetail->getProductClass()->hasClassCategory1()
-                    ? $OrderDetail->getProductClass()->getClassCategory1()->getName()
-                    : null);
-                $OrderDetail->setClassCategoryName2($OrderDetail->getProductClass()->hasClassCategory2()
-                    ? $OrderDetail->getProductClass()->getClassCategory2()->getName()
-                    : null);
-            }
-
             // 税
             $tax = $app['eccube.service.tax_rule']
                 ->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule());
@@ -674,25 +684,7 @@ class EditController extends AbstractController
         $shippings = $Order->getShippings();
         /** @var \Eccube\Entity\Shipping $Shipping */
         foreach ($shippings as $Shipping) {
-            $shipmentItems = $Shipping->getShipmentItems();
             $Shipping->setDelFlg(Constant::DISABLED);
-            /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
-            foreach ($shipmentItems as $ShipmentItem) {
-                $ShipmentItem->setProductName($ShipmentItem->getProduct()->getName());
-                $ShipmentItem->setProductCode($ShipmentItem->getProductClass()->getCode());
-                $ShipmentItem->setClassName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getClassName()->getName()
-                    : null);
-                $ShipmentItem->setClassName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getClassName()->getName()
-                    : null);
-                $ShipmentItem->setClassCategoryName1($ShipmentItem->getProductClass()->hasClassCategory1()
-                    ? $ShipmentItem->getProductClass()->getClassCategory1()->getName()
-                    : null);
-                $ShipmentItem->setClassCategoryName2($ShipmentItem->getProductClass()->hasClassCategory2()
-                    ? $ShipmentItem->getProductClass()->getClassCategory2()->getName()
-                    : null);
-            }
         }
 
         // 受注データの税・小計・合計を再計算

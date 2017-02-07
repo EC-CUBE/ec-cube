@@ -100,57 +100,57 @@ class PageController extends AbstractController
             $fileName = $PageLayout->getFileName();
         }
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
-            if ($form->isValid()) {
-                $PageLayout = $form->getData();
+        $form->handleRequest($request);
 
-                if (!$editable) {
-                    $PageLayout
-                        ->setUrl($PrevPageLayout->getUrl())
-                        ->setFileName($PrevPageLayout->getFileName())
-                        ->setName($PrevPageLayout->getName());
-                }
-                // DB登録
-                $app['orm.em']->persist($PageLayout);
-                $app['orm.em']->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
 
-                // ファイル生成・更新
-                $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
-                $filePath = $templatePath.'/'.$PageLayout->getFileName().'.twig';
+            $PageLayout = $form->getData();
 
-                $fs = new Filesystem();
-                $pageData = $form->get('tpl_data')->getData();
-                $pageData = Str::convertLineFeed($pageData);
-                $fs->dumpFile($filePath, $pageData);
-
-                // 更新でファイル名を変更した場合、以前のファイルを削除
-                if ($PageLayout->getFileName() != $fileName && !is_null($fileName)) {
-                    $oldFilePath = $templatePath.'/'.$fileName.'.twig';
-                    if ($fs->exists($oldFilePath)) {
-                        $fs->remove($oldFilePath);
-                    }
-                }
-
-                $event = new EventArgs(
-                    array(
-                        'form' => $form,
-                        'PageLayout' => $PageLayout,
-                        'templatePath' => $templatePath,
-                        'filePath' => $filePath,
-                    ),
-                    $request
-                );
-                $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
-
-                $app->addSuccess('admin.register.complete', 'admin');
-
-                // twig キャッシュの削除.
-                $finder = Finder::create()->in($app['config']['root_dir'].'/app/cache/twig');
-                $fs->remove($finder);
-
-                return $app->redirect($app->url('admin_content_page_edit', array('id' => $PageLayout->getId())));
+            if (!$editable) {
+                $PageLayout
+                    ->setUrl($PrevPageLayout->getUrl())
+                    ->setFileName($PrevPageLayout->getFileName())
+                    ->setName($PageLayout->getName());
             }
+            // DB登録
+            $app['orm.em']->persist($PageLayout);
+            $app['orm.em']->flush();
+
+            // ファイル生成・更新
+            $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
+            $filePath = $templatePath.'/'.$PageLayout->getFileName().'.twig';
+
+            $fs = new Filesystem();
+            $pageData = $form->get('tpl_data')->getData();
+            $pageData = Str::convertLineFeed($pageData);
+            $fs->dumpFile($filePath, $pageData);
+
+            // 更新でファイル名を変更した場合、以前のファイルを削除
+            if ($PageLayout->getFileName() != $fileName && !is_null($fileName)) {
+                $oldFilePath = $templatePath.'/'.$fileName.'.twig';
+                if ($fs->exists($oldFilePath)) {
+                    $fs->remove($oldFilePath);
+                }
+            }
+
+            $event = new EventArgs(
+                array(
+                    'form' => $form,
+                    'PageLayout' => $PageLayout,
+                    'templatePath' => $templatePath,
+                    'filePath' => $filePath,
+                ),
+                $request
+            );
+            $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
+
+            $app->addSuccess('admin.register.complete', 'admin');
+
+            // twig キャッシュの削除.
+            $finder = Finder::create()->in($app['config']['root_dir'].'/app/cache/twig');
+            $fs->remove($finder);
+
+            return $app->redirect($app->url('admin_content_page_edit', array('id' => $PageLayout->getId())));
         }
 
         $templatePath = $app['eccube.repository.page_layout']->getWriteTemplatePath($editable);
@@ -178,6 +178,7 @@ class PageController extends AbstractController
 
         if (!$PageLayout) {
             $app->deleteMessage();
+
             return $app->redirect($app->url('admin_content_page'));
         }
 
