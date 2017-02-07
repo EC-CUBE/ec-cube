@@ -84,7 +84,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var $client Client */
         $client = $this->client;
         /** @var $crawler Crawler */
-        $crawler = $client->request('POST', $this->app->url('product_detail', array('id' => $id)));
+        $crawler = $client->request('GET', $this->app->url('product_detail', array('id' => $id)));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -123,7 +123,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var $client Client */
         $client = $this->client;
         /** @var $crawler Crawler */
-        $crawler = $client->request('POST', $this->app->url('product_detail', array('id' => $id)));
+        $crawler = $client->request('GET', $this->app->url('product_detail', array('id' => $id)));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
