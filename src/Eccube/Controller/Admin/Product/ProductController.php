@@ -116,19 +116,18 @@ class ProductController extends AbstractController
                     // 公開ステータス
                     // 1:公開, 2:非公開, 3:在庫なし
                     $status = $request->get('status');
-                    if (!empty($status)) {
-                        if ($status != $app['config']['admin_product_stock_status']) {
-                            $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
-                            $searchData['stock_status'] = null;
-                        } else {
+                    if (empty($status)) {
+                        $searchData['link_status'] = null;
+                        $searchData['stock_status'] = null;
+                    } else {
+                        $searchData['link_status'] = $app['eccube.repository.master.disp']->find($status);
+                        $searchData['stock_status'] = null;
+                        if ($status == $app['config']['admin_product_stock_status']) {
                             // 在庫なし
                             $searchData['link_status'] = null;
                             $searchData['stock_status'] = Constant::DISABLED;
                         }
                         $page_status = $status;
-                    } else {
-                        $searchData['link_status'] = null;
-                        $searchData['stock_status'] = null;
                     }
                     $session->set('eccube.admin.product.search', $searchData);
 
