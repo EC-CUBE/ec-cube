@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\ShipmentItem;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
@@ -167,20 +168,24 @@ class EditController extends AbstractController
                                 /** @var $OrderDetail \Eccube\Entity\OrderDetail */
                                 $OrderDetail->setOrder($TargetOrder);
 
-                                $NewShipmentItem = new ShipmentItem();
-                                $NewShipmentItem
-                                    ->setProduct($OrderDetail->getProduct())
-                                    ->setProductClass($OrderDetail->getProductClass())
-                                    ->setProductName($OrderDetail->getProduct()->getName())
-                                    ->setProductCode($OrderDetail->getProductClass()->getCode())
-                                    ->setClassCategoryName1($OrderDetail->getClassCategoryName1())
-                                    ->setClassCategoryName2($OrderDetail->getClassCategoryName2())
-                                    ->setClassName1($OrderDetail->getClassName1())
-                                    ->setClassName2($OrderDetail->getClassName2())
-                                    ->setPrice($OrderDetail->getPrice())
-                                    ->setQuantity($OrderDetail->getQuantity())
-                                    ->setOrder($TargetOrder);
-                                $NewShipmentItems[] = $NewShipmentItem;
+                                if ($OrderDetail->getProduct()) {
+                                    // 商品追加
+
+                                    $NewShipmentItem = new ShipmentItem();
+                                    $NewShipmentItem
+                                        ->setProduct($OrderDetail->getProduct())
+                                        ->setProductClass($OrderDetail->getProductClass())
+                                        ->setProductName($OrderDetail->getProduct()->getName())
+                                        ->setProductCode($OrderDetail->getProductClass()->getCode())
+                                        ->setClassCategoryName1($OrderDetail->getClassCategoryName1())
+                                        ->setClassCategoryName2($OrderDetail->getClassCategoryName2())
+                                        ->setClassName1($OrderDetail->getClassName1())
+                                        ->setClassName2($OrderDetail->getClassName2())
+                                        ->setPrice($OrderDetail->getPrice())
+                                        ->setQuantity($OrderDetail->getQuantity())
+                                        ->setOrder($TargetOrder);
+                                    $NewShipmentItems[] = $NewShipmentItem;
+                                }
 
                             }
                             // 配送商品の更新. delete/insert.
@@ -591,7 +596,7 @@ class EditController extends AbstractController
             $forms = array();
             foreach ($Products as $Product) {
                 /* @var $builder \Symfony\Component\Form\FormBuilderInterface */
-                $builder = $app['form.factory']->createNamedBuilder('', 'add_cart', null, array(
+                $builder = $app['form.factory']->createNamedBuilder('', AddCartType::class, null, array(
                     'product' => $Product,
                 ));
                 $addCartForm = $builder->getForm();
@@ -669,7 +674,7 @@ class EditController extends AbstractController
 
         // 集計は,この1行でいけるはず
         // プラグインで Strategy をセットしたりする
-        $this->app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+        $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
     }
 
     /**
