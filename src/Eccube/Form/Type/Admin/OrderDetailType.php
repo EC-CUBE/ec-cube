@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Application;
 use Eccube\Form\DataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -115,7 +116,7 @@ class OrderDetailType extends AbstractType
         $app = $this->app;
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($app) {
             // モーダルからのPOST時に、金額等をセットする.
-            if ('modal' === $app['request']->get('modal')) {
+            if ('modal' === $app['request_stack']->getCurrentRequest()->get('modal')) {
                 $data = $event->getData();
                 // 新規明細行の場合にセット.
                 if (isset($data['new'])) {
