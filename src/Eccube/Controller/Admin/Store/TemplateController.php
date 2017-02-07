@@ -278,16 +278,8 @@ class TemplateController extends AbstractController
 
                 // appディレクトリの存在チェック.
                 if (!file_exists($appDir)) {
-                    $form['file']->addError(new FormError('appディレクトリが見つかりません。ファイルの形式を確認してください。'));
-
-                    if (file_exists($tmpDir)) {
-                        $fs = new Filesystem();
-                        $fs->remove($tmpDir);
-                    }
-
-                    return $app->render('Store/template_add.twig', array(
-                        'form' => $form->createView(),
-                    ));
+                    $fs = new Filesystem();
+                    $fs->mkdir($appDir);
                 }
 
                 // htmlディレクトリの存在チェック.
