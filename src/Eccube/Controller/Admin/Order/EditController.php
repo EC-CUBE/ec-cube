@@ -34,12 +34,26 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * TODO 管理画面のルーティングは動的に行う.おそらくコントローラのディレクトリをフロント/管理で分ける必要がある
+ *
+ * @Route("/admin/order")
+ */
 class EditController extends AbstractController
 {
+    /**
+     * 受注登録/編集画面.
+     *
+     * @Route("/edit", name="admin_order_new")
+     * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
+     * @Template("Order/edit.twig")
+     */
     public function index(Application $app, Request $request, $id = null)
     {
         /* @var $softDeleteFilter \Eccube\Doctrine\Filter\SoftDeleteFilter */
@@ -305,14 +319,14 @@ class EditController extends AbstractController
             }
         }
 
-        return $app->render('Order/edit.twig', array(
+        return [
             'form' => $form->createView(),
             'searchCustomerModalForm' => $searchCustomerModalForm->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
             'id' => $id,
             'shippingDeliveryTimes' => $app['serializer']->serialize($times, 'json'),
-        ));
+        ];
     }
 
     /**
