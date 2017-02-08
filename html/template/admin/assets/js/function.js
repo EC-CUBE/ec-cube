@@ -220,17 +220,17 @@ $(function () {
         $form.submit();
     });
 
-
     // scroll to error message if have
-    var el = $(".errormsg");
-    if (el.length) {
-        var body = $('html, body');
-        var offsetError = el.first().offset().top;
-        var screenHeight = $(window).height();
-        var errorMargin = parseInt(screenHeight/10) + $('header').outerHeight();
+    $(window).load(function() {
+        var el = $(".errormsg");
+        if (el.length) {
+            setTimeout(function () {
+                var errorOffset = el.first().offset().top;
+                var screenHeight = $(window).height();
+                var errorMargin = parseInt(screenHeight/10) + $('header').outerHeight();
 
-        $(body).stop().animate({
-            scrollTop: offsetError - errorMargin
-        }, 500);
-    }
+                $('html, body').scrollTop(errorOffset - errorMargin);
+            }, 400);
+        }
+    });
 });
