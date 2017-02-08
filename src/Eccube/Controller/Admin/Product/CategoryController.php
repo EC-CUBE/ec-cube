@@ -219,7 +219,7 @@ class CategoryController extends AbstractController
 
             // データ行の出力.
             $app['eccube.service.csv.export']->setExportQueryBuilder($qb);
-            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) {
+            $app['eccube.service.csv.export']->exportData(function ($entity, $csvService) use ($app, $request) {
 
                 $Csvs = $csvService->getCsvs();
 
@@ -227,14 +227,27 @@ class CategoryController extends AbstractController
                 $Category = $entity;
 
                 // CSV出力項目と合致するデータを取得.
-                $row = array();
+                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
                 foreach ($Csvs as $Csv) {
-                    $row[] = $csvService->getData($Csv, $Category);
+                    $ExportCsvRow->setData($csvService->getData($Csv, $Category));
+
+                    $event = new EventArgs(
+                        array(
+                            'csvService' => $csvService,
+                            'Csv' => $Csv,
+                            'Category' => $Category,
+                            'ExportCsvRow' => $ExportCsvRow,
+                        ),
+                        $request
+                    );
+                    $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_PRODUCT_CATEGORY_CSV_EXPORT, $event);
+
+                    $ExportCsvRow->pushData();
                 }
 
                 //$row[] = number_format(memory_get_usage(true));
                 // 出力.
-                $csvService->fputcsv($row);
+                $csvService->fputcsv($ExportCsvRow->getRow());
             });
         });
 
