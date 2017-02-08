@@ -28,6 +28,8 @@ use Doctrine\ORM\EntityRepository;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Util\Str;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -428,14 +430,26 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
     {
         // 会員の場合、初回購入時間・購入時間・購入回数・購入金額を更新
 
-        $arr = array($app['config']['order_new'],
-                                $app['config']['order_pay_wait'],
-                                $app['config']['order_back_order'],
-                                $app['config']['order_deliv'],
-                                $app['config']['order_pre_end'],
-                        );
+        $countOrderStatuses = array(
+            $app['config']['order_new'],
+            $app['config']['order_pay_wait'],
+            $app['config']['order_back_order'],
+            $app['config']['order_deliv'],
+            $app['config']['order_pre_end'],
+        );
 
-        $result = $app['eccube.repository.order']->getCustomerCount($Customer, $arr);
+        $excludeOrderStatuses = array(
+            $app['config']['order_cancel'],
+            $app['config']['order_pending'],
+            $app['config']['order_processing'],
+        );
+
+        $event = new EventArgs(compact('countOrderStatuses', 'excludeOrderStatuses'));
+        $app['eccube.event.dispatcher']->dispatch(EccubeEvents::UPDATE_BUY_CUSTOMER_INITIALIZE, $event);
+        $countOrderStatuses = $event->getArgument('countOrderStatuses');
+        $excludeOrderStatuses = $event->getArgument('excludeOrderStatuses');
+
+        $result = $app['eccube.repository.order']->getCustomerCount($Customer, $countOrderStatuses);
 
         if (!empty($result)) {
             $data = $result[0];
@@ -447,12 +461,12 @@ class CustomerRepository extends EntityRepository implements UserProviderInterfa
                 $Customer->setFirstBuyDate($now);
             }
 
-            if ($orderStatusId == $app['config']['order_cancel'] ||
-                    $orderStatusId == $app['config']['order_pending'] ||
-                    $orderStatusId == $app['config']['order_processing']) {
-                // キャンセル、決済処理中、購入処理中は購入時間は更新しない
-            } else {
-                $Customer->setLastBuyDate($now);
+            $lastBuyDate = $Customer->getLastBuyDate();
+            $Customer->setLastBuyDate($now);
+            foreach ($excludeOrderStatuses as $excludeOrderStatus) {
+                if ((int)$orderStatusId === (int)$excludeOrderStatus) {
+                    $Customer->setLastBuyDate($lastBuyDate);
+                }
             }
 
             $Customer->setBuyTimes($data['buy_times']);
