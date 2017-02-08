@@ -721,6 +721,10 @@ class ShoppingService
         $orderDetails = $Order->getOrderDetails();
 
         foreach ($orderDetails as $orderDetail) {
+            if (is_null($orderDetail->getProduct())) {
+                // FIXME 配送明細を考慮する必要がある
+                continue;
+            }
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
                 return false;
@@ -737,6 +741,10 @@ class ShoppingService
 
         // 在庫チェック
         foreach ($orderDetails as $orderDetail) {
+            if (is_null($orderDetail->getProductClass())) {
+                // FIXME 配送明細を考慮する必要がある
+                continue;
+            }
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
                 // 在庫チェックあり
@@ -825,6 +833,10 @@ class ShoppingService
 
         // 在庫情報更新
         foreach ($orderDetails as $orderDetail) {
+            if (is_null($orderDetail->getProductClass())) {
+                // FIXME 配送明細を考慮する必要がある
+                continue;
+            }
             // 在庫が無制限かチェックし、制限ありなら在庫数を更新
             if ($orderDetail->getProductClass()->getStockUnlimited() == Constant::DISABLED) {
 

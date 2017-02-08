@@ -47,9 +47,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-/**
- * @Route("/shopping")
- */
 class ShoppingController extends AbstractController
 {
 
@@ -76,10 +73,12 @@ class ShoppingController extends AbstractController
     /**
      * 購入画面表示
      *
-     * @Route("")
+     * @Route("/shopping", name="shopping")
+     * @Template("Shopping/index.twig")
+     *
      * @param Application $app
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return array
      */
     public function index(Application $app, Request $request)
     {
@@ -139,7 +138,7 @@ class ShoppingController extends AbstractController
         $app['orm.em']->refresh($Order);
 
         // 構築したOrderを集計する.
-        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+        $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
         // フォームの生成
         $builder = $app['form.factory']->createBuilder(OrderType::class, $Order);
@@ -172,10 +171,10 @@ class ShoppingController extends AbstractController
             $app['session']->set($this->sessionMultipleKey, 'multiple');
         }
 
-        return $app->render('Shopping/index.twig', array(
+        return [
             'form' => $form->createView(),
-            'Order' => $Order,
-        ));
+            'Order' => $Order
+        ];
     }
 
     /**
@@ -246,6 +245,8 @@ class ShoppingController extends AbstractController
 
     /**
      * 購入処理
+     *
+     * @Route("/shopping/confirm", name="shopping_confirm")
      */
     public function confirm(Application $app, Request $request)
     {
@@ -284,11 +285,11 @@ class ShoppingController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
         // requestのバインド後、Calculatorに再集計させる
-        //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+        $app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
+            $Order = $form->getData();
             log_info('購入処理開始', array($Order->getId()));
 
             // トランザクション制御
