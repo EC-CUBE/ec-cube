@@ -47,6 +47,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+/**
+ * @Route("/shopping")
+ */
 class ShoppingController extends AbstractController
 {
 
@@ -73,7 +76,7 @@ class ShoppingController extends AbstractController
     /**
      * 購入画面表示
      *
-     * @Route("/shopping", name="shopping")
+     * @Route("/", name="shopping")
      * @Template("Shopping/index.twig")
      *
      * @param Application $app
@@ -83,19 +86,9 @@ class ShoppingController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
-
-        // カートチェック
-        if (!$cartService->isLocked()) {
-            log_info('カートが存在しません');
-            // カートが存在しない、カートがロックされていない時はエラー
-            return $app->redirect($app->url('cart'));
-        }
-
-        // カートチェック
-        if (count($cartService->getCart()->getCartItems()) <= 0) {
-            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
-            // カートが存在しない時はエラー
-            return $app->redirect($app->url('cart'));
+        $response = $app->forward($app->path("shopping_checkToCart"), $request);
+        if ($response->isRedirection() || $response->getContent()) {
+            return $response;
         }
 
         // 購入処理中の受注情報を取得
@@ -1261,4 +1254,33 @@ class ShoppingController extends AbstractController
 
         return $errors;
     }
+
+    /**
+     * カート画面のチェック
+     *
+     * @Route("/checkToCart", name="shopping_checkToCart")
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function checkToCart(Application $app, Request $request)
+    {
+        $cartService = $app['eccube.service.cart'];
+
+        // カートチェック
+        if (!$cartService->isLocked()) {
+            log_info('カートが存在しません');
+            // カートが存在しない、カートがロックされていない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+
+        // カートチェック
+        if (count($cartService->getCart()->getCartItems()) <= 0) {
+            log_info('カートに商品が入っていないためショッピングカート画面にリダイレクト');
+            // カートが存在しない時はエラー
+            return $app->redirect($app->url('cart'));
+        }
+        return new Response();
+    }
+
 }
