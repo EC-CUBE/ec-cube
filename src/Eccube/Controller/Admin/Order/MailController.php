@@ -42,6 +42,7 @@ class MailController
         }
 
         $MailHistories = $app['eccube.repository.mail_history']->findBy(array('Order' => $id));
+        $BaseInfo = $app['eccube.repository.base_info']->get();
 
         $builder = $app['form.factory']->createBuilder('mail');
 
@@ -74,12 +75,13 @@ class MailController
                             'form' => $form,
                             'Order' => $Order,
                             'MailTemplate' => $MailTemplate,
+                            'BaseInfo' => $BaseInfo,
                         ),
                         $request
                     );
                     $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_MAIL_INDEX_CHANGE, $event);
                     $form->get('template')->setData($MailTemplate);
-                    $form->get('subject')->setData($MailTemplate->getSubject());
+                    $form->get('subject')->setData('[' . $BaseInfo->getShopName() . ']' . $MailTemplate->getSubject());
                     $form->get('header')->setData($MailTemplate->getHeader());
                     $form->get('footer')->setData($MailTemplate->getFooter());
                 }
