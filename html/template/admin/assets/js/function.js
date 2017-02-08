@@ -224,6 +224,8 @@ $(function () {
     $(window).load(function() {
         var el = $(".errormsg");
         if (el.length) {
+            // Open panel when has error
+            openPanel(el.first());
             setTimeout(function () {
                 var errorOffset = el.first().offset().top;
                 var screenHeight = $(window).height();
@@ -233,4 +235,15 @@ $(function () {
             }, 400);
         }
     });
+
+    function openPanel(el) {
+        var accordion = el.parents('div.accordion');
+        if (accordion) {
+            var toggle = accordion.find('div.toggle');
+            if (!toggle.hasClass('active')) {
+                toggle.addClass('active');
+                accordion.find('div.accpanel').toggle('fast');
+            }
+        }
+    }
 });
