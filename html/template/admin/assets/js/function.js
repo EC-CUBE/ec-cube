@@ -3,12 +3,9 @@
  */
 
 jQuery(document).ready(function ($) {
-
     /*
      * Brake point Check
      */
-
-
     $(window).on('load , resize', function () {
         $('body').removeClass('pc_view md_view sp_view');
         if (window.innerWidth < 768) {
@@ -222,4 +219,18 @@ $(function () {
         $('body').append($form); // Firefox requires form to be on the page to allow submission
         $form.submit();
     });
+
+
+    // scroll to error message if have
+    var el = $(".errormsg");
+    if (el.length) {
+        var body = $('html, body');
+        var offsetError = el.first().offset().top;
+        var screenHeight = $(window).height();
+        var errorMargin = parseInt(screenHeight/10) + $('header').outerHeight();
+
+        $(body).stop().animate({
+            scrollTop: offsetError - errorMargin
+        }, 500);
+    }
 });
