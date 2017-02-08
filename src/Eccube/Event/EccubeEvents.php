@@ -601,4 +601,5 @@ final class EccubeEvents
     const SERVICE_SHOPPING_ORDER_STATUS = 'service.shopping.order.status';
     const SERVICE_SHOPPING_NOTIFY_COMPLETE = 'service.shopping.notify.complete';
 
+    const UPDATE_BUY_CUSTOMER_INITIALIZE = 'update_buy_customer.initialize';
 }
