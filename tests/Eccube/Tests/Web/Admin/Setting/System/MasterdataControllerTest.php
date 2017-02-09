@@ -206,6 +206,77 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertFalse(empty($actual));
     }
 
+    /**
+     * Edit id is zero
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     */
+    public function testEditIdIsZero()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = $editForm['data'][1]['id'];
+        $editForm['data'][1]['id'] = 0;
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_system_masterdata_edit'),
+            array(
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
+
+        $this->expected = $editForm['data'][1]['name'];
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $this->actual = $this->app['orm.em']->getRepository($entityName)->find($id)->getName();
+        $this->verify();
+
+        // message check
+        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.register.complete';
+        $this->verify();
+    }
+
+    /**
+     * Add new name zero test
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1884
+     */
+    public function testNewNameIsZero()
+    {
+        $formData = $this->createFormData($this->entityTest);
+        $editForm = $this->createFormDataEdit($this->entityTest);
+        $id = count($editForm['data']) + 1;
+        $editForm['data'][$id]['id'] = $id;
+        $editForm['data'][$id]['name'] = 0;
+
+        $this->client->request(
+            'POST',
+            $this->app->url('admin_setting_system_masterdata_edit'),
+            array(
+                'admin_system_masterdata' => $formData,
+                'admin_system_masterdata_edit' => $editForm,
+            )
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->app->url('admin_setting_system_masterdata_view', array('entity' => $formData['masterdata']))));
+
+        $data = end($editForm['data']);
+        $this->expected = $data['name'];
+
+        $entityName = str_replace('-', '\\', $formData['masterdata']);
+        $this->actual = $this->app['orm.em']->getRepository($entityName)->find($data['id'])->getName();
+        $this->verify();
+
+        // message check
+        $outPut = $this->app['session']->getFlashBag()->get('eccube.admin.success');
+        $this->actual = array_shift($outPut);
+        $this->expected = 'admin.register.complete';
+        $this->verify();
+    }
 
     /**
      * Edit test
