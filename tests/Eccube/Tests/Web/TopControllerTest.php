@@ -39,8 +39,9 @@ class TopControllerTest extends AbstractWebTestCase
     public function testTopContent()
     {
         $client = $this->createClient();
-        $crawler = $client->request('GET', $this->app->path('homepage'));
+        $crawler = $client->request('GET', $this->app->path('top'));
         $html = $crawler->html();
+        dump($crawler);
         //test product list
         $this->assertContains('商品一覧へ', $html);
 
@@ -56,7 +57,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setDeliveryFreeAmount(100);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $client->request('GET', $this->app->path('homepage'));
+        $crawler = $client->request('GET', $this->app->path('top'));
         $html = $crawler->html();
         $this->assertContains('100円以上の購入', $html);
 
@@ -64,7 +65,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setDeliveryFreeAmount(0);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $client->request('GET', $this->app->path('homepage'));
+        $crawler = $client->request('GET', $this->app->path('top'));
         $html = $crawler->html();
         $this->assertContains('0円以上の購入', $html);
     }
