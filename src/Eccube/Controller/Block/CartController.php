@@ -31,7 +31,7 @@ class CartController
     public function index(Application $app)
     {
         /** @var $Cart \Eccube\Entity\Cart */
-        $Cart = $app['eccube.service.cart']->getCart();
+        $Cart = $app['eccube.service.cart']->getCartObj();
         return $app->render('Block/cart.twig', array(
             'Cart' => $Cart,
         ));

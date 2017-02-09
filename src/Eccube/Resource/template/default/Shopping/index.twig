@@ -152,13 +152,31 @@ $(function() {
                     {% endif %}
                     </ul>
                 </div>
-                {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
+                {% for error in app.session.flashbag.get('eccube.front.error')  %}
                     <div id="confirm_flow_box__message" class="message">
                         <p class="errormsg bg-danger">
                             <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
                         </p>
                     </div>
                 {% endfor %}
+                    {% set productStr = app.session.flashbag.get('eccube.front.request.product') %}
+                    {% for error in app.session.flashbag.get('eccube.front.request.error')  %}
+                        {% set idx = loop.index0 %}
+                        {% if productStr[idx] is defined %}
+                            <div id="cart_box__message--{{ loop.index }}" class="message">
+                                <p class="errormsg bg-danger">
+                                    <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>
+                                    {{ error|trans({'%product%':productStr[idx]})|nl2br }}
+                                </p>
+                            </div>
+                        {% else %}
+                            <div id="confirm_flow_box__message--{{ loop.index }}" class="message">
+                                <p class="errormsg bg-danger">
+                                    <svg class="cb cb-warning"><use xlink:href="#cb-warning" /></svg>{{ error|trans|nl2br }}
+                                </p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
             </div><!-- /.col -->
         </div><!-- /.row -->
         <form id="shopping-form" method="post" action="{{ url('shopping_confirm') }}">

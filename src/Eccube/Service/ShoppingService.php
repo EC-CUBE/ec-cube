@@ -230,6 +230,7 @@ class ShoppingService
 
     /**
      * 受注情報を作成
+     *
      * @param $Customer
      * @return \Eccube\Entity\Order
      */
@@ -244,12 +245,14 @@ class ShoppingService
 
     /**
      * 受注情報を作成
+     *
      * @return \Eccube\Entity\Order
      */
     public function newOrder()
     {
         $OrderStatus = $this->app['eccube.repository.order_status']->find($this->app['config']['order_processing']);
         $Order = new \Eccube\Entity\Order($OrderStatus);
+
         return $Order;
     }
 
@@ -614,6 +617,7 @@ class ShoppingService
         foreach ($shipmentItems as $ShipmentItem) {
             $productDeliveryFeeTotal += $ShipmentItem->getProductClass()->getDeliveryFee() * $ShipmentItem->getQuantity();
         }
+
         return $productDeliveryFeeTotal;
     }
 
@@ -726,20 +730,32 @@ class ShoppingService
      */
     public function isOrderProduct($em, \Eccube\Entity\Order $Order)
     {
-        // 商品公開ステータスチェック
         $orderDetails = $Order->getOrderDetails();
 
         foreach ($orderDetails as $orderDetail) {
+
+            // 商品削除チェック
+            if ($orderDetail->getProductClass()->getDelFlg()) {
+                throw new ShoppingException('cart.product.delete');
+            }
+
+            // 商品公開ステータスチェック
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
-                return false;
+                throw new ShoppingException('cart.product.not.status');
             }
 
             // 購入制限数チェック
             if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
                 if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
-                    return false;
+                    throw new ShoppingException('cart.over.sale_limit');
                 }
+            }
+
+            // 購入数チェック
+            if ($orderDetail->getQuantity() < 1) {
+                // 購入数量が1未満ならエラー
+                return false;
             }
 
         }
@@ -754,8 +770,10 @@ class ShoppingService
                     $orderDetail->getProductClass()->getProductStock()->getId(), LockMode::PESSIMISTIC_WRITE
                 );
                 // 購入数量と在庫数をチェックして在庫がなければエラー
-                if ($orderDetail->getQuantity() > $productStock->getStock()) {
+                if ($productStock->getStock() < 1) {
                     return false;
+                } elseif ($orderDetail->getQuantity() > $productStock->getStock()) {
+                    throw new ShoppingException('cart.over.stock');
                 }
             }
         }

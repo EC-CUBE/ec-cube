@@ -71,6 +71,9 @@ class ProductClassType extends AbstractType
                     new Assert\Length(array(
                         'max' => 10,
                     )),
+                    new Assert\GreaterThanOrEqual(array(
+                        'value' => 1,
+                    )),
                     new Assert\Regex(array(
                         'pattern' => "/^\d+$/u",
                         'message' => 'form.type.numeric.invalid'
