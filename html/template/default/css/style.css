@@ -3256,7 +3256,7 @@ fieldset[disabled] .btn-link:focus {
 
     /****** MyPage Add address ********/
     #delivery_address_list div.is-edit p.btn_edit {
-        top: 40px;
+        top: 30%;
     }
 
 }
@@ -4337,7 +4337,7 @@ fieldset[disabled] .btn-link:focus {
 
     /****** MyPage Add address ********/
     #delivery_address_list div.is-edit p.btn_edit {
-        top: 30px;
+        top: 30%;
     }
 
 
