@@ -41,7 +41,6 @@ class TopControllerTest extends AbstractWebTestCase
         $client = $this->createClient();
         $crawler = $client->request('GET', $this->app->path('top'));
         $html = $crawler->html();
-        dump($crawler);
         //test product list
         $this->assertContains('商品一覧へ', $html);
 
