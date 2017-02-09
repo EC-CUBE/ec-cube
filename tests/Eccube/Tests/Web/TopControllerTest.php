@@ -40,15 +40,15 @@ class TopControllerTest extends AbstractWebTestCase
     {
         $client = $this->createClient();
         $crawler = $client->request('GET', $this->app->url('homepage'));
-        $html = $crawler->html();
-        //test product list
-        $this->assertContains('商品一覧へ', $html);
+//        $html = $crawler->html();
+//        //test product list
+//        $this->assertContains('商品一覧へ', $html);
 
         //test dummy link
-//        $href = $crawler->filter('.img_right a')->attr('href');
-//        $this->expected = '#';
-//        $this->actual = $href;
-//        $this->verify();
+        $href = $crawler->filter('.img_right a')->attr('href');
+        $this->expected = '#';
+        $this->actual = $href;
+        $this->verify();
 //
 //        //test delivery free display
 //        /* @var $BaseInfo \Eccube\Entity\BaseInfo */
