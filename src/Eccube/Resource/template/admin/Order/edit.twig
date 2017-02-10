@@ -347,6 +347,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                      {{ include('Order/order_detail_prototype.twig', { 'orderDetailForm': form.OrderDetails.vars.prototype }) }}
                                 {% endfilter %}">
 
+                            {{ form_errors(form.OrderDetailsErrors) }}
+
                             {% for orderDetailForm in form.OrderDetails %}
                                 <div id="product_info_list__item--{{ loop.index }}" class="item_box">
                                     {{ form_widget(orderDetailForm.Product) }}

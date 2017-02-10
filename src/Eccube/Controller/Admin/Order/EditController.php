@@ -53,6 +53,8 @@ class EditController extends AbstractController
      * @Route("/edit", name="admin_order_new")
      * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="admin_order_edit")
      * @Template("Order/edit.twig")
+     *
+     * TODO templateアノテーションを利用するかどうか検討.http://symfony.com/doc/current/best_practices/controllers.html
      */
     public function index(Application $app, Request $request, $id = null)
     {
@@ -99,10 +101,9 @@ class EditController extends AbstractController
         $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_INITIALIZE, $event);
 
         $form = $builder->getForm();
+        $form->handleRequest($request);
 
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             $event = new EventArgs(
                 array(
                     'builder' => $builder,
@@ -115,7 +116,11 @@ class EditController extends AbstractController
             $app['eccube.event.dispatcher']->dispatch(EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS, $event);
 
             // 入力情報にもとづいて再計算.
-            $this->calculate($app, $TargetOrder);
+            // TODO 購入フローのように、明細の自動生成をどこまで行うか検討する. 単純集計でよいような気がする
+            // 集計は,この1行でいけるはず
+            // プラグインで Strategy をセットしたりする
+            // TODO 編集前のOrder情報が必要かもしれない
+            $app['eccube.service.calculate']($TargetOrder, $TargetOrder->getCustomer())->calculate();
 
             // 登録ボタン押下
             switch ($request->get('mode')) {
@@ -123,6 +128,7 @@ class EditController extends AbstractController
 
                     log_info('受注登録開始', array($TargetOrder->getId()));
 
+                    // TODO 在庫の有無や販売制限数のチェックなども行う必要があるため、完了処理もcaluclatorのように抽象化できないか検討する.
                     if ($TargetOrder->getTotal() > $app['config']['max_total_fee']) {
                         log_info('受注登録入力チェックエラー', array($TargetOrder->getId()));
                         $form['charge']->addError(new FormError('合計金額の上限を超えております。'));
@@ -130,42 +136,25 @@ class EditController extends AbstractController
 
                         $BaseInfo = $app['eccube.repository.base_info']->get();
 
-                        // お支払い方法の更新
-                        $TargetOrder->setPaymentMethod($TargetOrder->getPayment()->getMethod());
-
-                        // 配送業者・お届け時間の更新
-                        $Shippings = $TargetOrder->getShippings();
-                        foreach ($Shippings as $Shipping) {
-                            $Shipping->setShippingDeliveryName($Shipping->getDelivery()->getName());
-                            if (!is_null($Shipping->getDeliveryTime())) {
-                                $Shipping->setShippingDeliveryTime($Shipping->getDeliveryTime()->getDeliveryTime());
-                            } else {
-                                $Shipping->setShippingDeliveryTime(null);
-                            }
-                        }
-
-
+                        // TODO 後続にある会員情報の更新のように、完了処理もcaluclatorのように抽象化できないか検討する.
                         // 受注日/発送日/入金日の更新.
                         $this->updateDate($app, $TargetOrder, $OriginOrder);
 
-                        // 受注明細で削除されているものをremove
+                        // 画面上で削除された明細は、受注明細で削除されているものをremove
                         foreach ($OriginalOrderDetails as $OrderDetail) {
                             if (false === $TargetOrder->getOrderDetails()->contains($OrderDetail)) {
                                 $app['orm.em']->remove($OrderDetail);
                             }
                         }
 
-
+                        // 複数配送の場合,
                         if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                             foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                                /** @var $OrderDetail \Eccube\Entity\OrderDetail */
                                 $OrderDetail->setOrder($TargetOrder);
                             }
-
-                            /** @var \Eccube\Entity\Shipping $Shipping */
+                            $Shippings = $TargetOrder->getShippings();
                             foreach ($Shippings as $Shipping) {
                                 $shipmentItems = $Shipping->getShipmentItems();
-                                /** @var \Eccube\Entity\ShipmentItem $ShipmentItem */
                                 foreach ($shipmentItems as $ShipmentItem) {
                                     $ShipmentItem->setOrder($TargetOrder);
                                     $ShipmentItem->setShipping($Shipping);
@@ -175,63 +164,32 @@ class EditController extends AbstractController
                                 $app['orm.em']->persist($Shipping);
                             }
                         } else {
-
-                            $NewShipmentItems = new ArrayCollection();
-
+                            // 単一配送の場合, ShippimentItemsはOrderDetailの内容をコピーし、delete/insertで作り直す.
+                            // TODO あまり本質的な処理ではないので簡略化したい.
+                            $Shipping = $TargetOrder->getShippings()->first();
+                            foreach ($Shipping->getShipmentItems() as $ShipmentItem) {
+                                $Shipping->removeShipmentItem($ShipmentItem);
+                                $app['orm.em']->remove($ShipmentItem);
+                            }
                             foreach ($TargetOrder->getOrderDetails() as $OrderDetail) {
-                                /** @var $OrderDetail \Eccube\Entity\OrderDetail */
                                 $OrderDetail->setOrder($TargetOrder);
-
                                 if ($OrderDetail->getProduct()) {
-                                    // 商品追加
-
-                                    $NewShipmentItem = new ShipmentItem();
-                                    $NewShipmentItem
-                                        ->setProduct($OrderDetail->getProduct())
-                                        ->setProductClass($OrderDetail->getProductClass())
-                                        ->setProductName($OrderDetail->getProduct()->getName())
-                                        ->setProductCode($OrderDetail->getProductClass()->getCode())
-                                        ->setClassCategoryName1($OrderDetail->getClassCategoryName1())
-                                        ->setClassCategoryName2($OrderDetail->getClassCategoryName2())
-                                        ->setClassName1($OrderDetail->getClassName1())
-                                        ->setClassName2($OrderDetail->getClassName2())
-                                        ->setPrice($OrderDetail->getPrice())
-                                        ->setQuantity($OrderDetail->getQuantity())
-                                        ->setOrder($TargetOrder);
-                                    $NewShipmentItems[] = $NewShipmentItem;
-                                }
-
-                            }
-                            // 配送商品の更新. delete/insert.
-                            $Shippings = $TargetOrder->getShippings();
-                            foreach ($Shippings as $Shipping) {
-                                $ShipmentItems = $Shipping->getShipmentItems();
-                                foreach ($ShipmentItems as $ShipmentItem) {
-                                    $app['orm.em']->remove($ShipmentItem);
-                                }
-                                $ShipmentItems->clear();
-                                foreach ($NewShipmentItems as $NewShipmentItem) {
-                                    $NewShipmentItem->setShipping($Shipping);
-                                    $ShipmentItems->add($NewShipmentItem);
+                                    $ShipmentItem = new ShipmentItem();
+                                    $ShipmentItem->copyProperties($OrderDetail);
+                                    $ShipmentItem->setShipping($Shipping);
+                                    $Shipping->addShipmentItem($ShipmentItem);
                                 }
                             }
-                        }
-
-                        $Customer = $TargetOrder->getCustomer();
-                        if ($Customer) {
-                            // 受注情報の会員情報を更新
-                            $TargetOrder->setSex($Customer->getSex());
-                            $TargetOrder->setJob($Customer->getJob());
-                            $TargetOrder->setBirth($Customer->getBirth());
                         }
 
                         $app['orm.em']->persist($TargetOrder);
                         $app['orm.em']->flush();
 
-                        if ($Customer) {
-                            // 会員の場合、購入回数、購入金額などを更新
-                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
-                        }
+                        // TODO 集計系に移動
+//                        if ($Customer) {
+//                            // 会員の場合、購入回数、購入金額などを更新
+//                            $app['eccube.repository.customer']->updateBuyData($app, $Customer, $TargetOrder->getOrderStatus()->getId());
+//                        }
 
                         $event = new EventArgs(
                             array(
@@ -239,7 +197,7 @@ class EditController extends AbstractController
                                 'OriginOrder' => $OriginOrder,
                                 'TargetOrder' => $TargetOrder,
                                 'OriginOrderDetails' => $OriginalOrderDetails,
-                                'Customer' => $Customer,
+                                //'Customer' => $Customer,
                             ),
                             $request
                         );
@@ -260,8 +218,6 @@ class EditController extends AbstractController
                     $form = $builder->getForm();
 
                     $Shipping = new \Eccube\Entity\Shipping();
-                    $Shipping->setDelFlg(Constant::DISABLED);
-
                     $TargetOrder->addShipping($Shipping);
 
                     $Shipping->setOrder($TargetOrder);
@@ -639,7 +595,6 @@ class EditController extends AbstractController
     {
         $Order = new \Eccube\Entity\Order();
         $Shipping = new \Eccube\Entity\Shipping();
-        $Shipping->setDelFlg(0);
         $Order->addShipping($Shipping);
         $Shipping->setOrder($Order);
 

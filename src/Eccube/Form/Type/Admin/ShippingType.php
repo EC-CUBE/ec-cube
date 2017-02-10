@@ -153,7 +153,7 @@ class ShippingType extends AbstractType
                 if ($BaseInfo->getOptionMultipleShipping() == Constant::ENABLED) {
                     $form = $event->getForm();
                     $form->add('ShipmentItems', CollectionType::class, array(
-                        'type' => 'shipment_item',
+                        'entry_type' => ShipmentItemType::class,
                         'allow_add' => true,
                         'allow_delete' => true,
                         'prototype' => true,
@@ -224,6 +224,13 @@ class ShippingType extends AbstractType
                         $form['shipping_delivery_date']->addError(new FormError('商品が追加されていません。'));
                     }
                 }
+            })
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($BaseInfo) {
+                $Shipping = $event->getData();
+                $Delivery = $Shipping->getDelivery();
+                $Shipping->setShippingDeliveryName($Delivery ? $Delivery : null);
+                $DeliveryTime = $Shipping->getDeliveryTime();
+                $Shipping->setShippingDeliveryTime($DeliveryTime ? $DeliveryTime->getDeliveryTime() : null);
             });
     }
 
