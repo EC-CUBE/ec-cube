@@ -736,19 +736,19 @@ class ShoppingService
 
             // 商品削除チェック
             if ($orderDetail->getProductClass()->getDelFlg()) {
-                throw new ShoppingException('cart.product.delete');
+                return false;
             }
 
             // 商品公開ステータスチェック
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
-                throw new ShoppingException('cart.product.not.status');
+                return false;
             }
 
             // 購入制限数チェック
             if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
                 if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
-                    throw new ShoppingException('cart.over.sale_limit');
+                    return false;
                 }
             }
 
@@ -773,7 +773,7 @@ class ShoppingService
                 if ($productStock->getStock() < 1) {
                     return false;
                 } elseif ($orderDetail->getQuantity() > $productStock->getStock()) {
-                    throw new ShoppingException('cart.over.stock');
+                    return false;
                 }
             }
         }
