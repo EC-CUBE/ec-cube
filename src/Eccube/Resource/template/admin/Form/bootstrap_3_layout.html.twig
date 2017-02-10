@@ -50,5 +50,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     {% endif %}
 {%- endblock form_widget -%}
 
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
+        <ul class="list-unstyled">
+            {%- for error in errors -%}
+                <li><span class="glyphicon glyphicon-exclamation-sign"></span> {{ include(template_from_string(error.message)) }}</li>
+            {%- endfor -%}
+        </ul>
+        {% if form.parent %}</span>{% else %}</div>{% endif %}
+    {%- endif %}
+{%- endblock form_errors %}
 
 
