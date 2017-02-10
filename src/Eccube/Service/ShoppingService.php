@@ -736,18 +736,25 @@ class ShoppingService
 
             // 商品削除チェック
             if ($orderDetail->getProductClass()->getDelFlg()) {
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('cart.product.delete');
                 return false;
             }
 
             // 商品公開ステータスチェック
             if ($orderDetail->getProduct()->getStatus()->getId() != \Eccube\Entity\Master\Disp::DISPLAY_SHOW) {
                 // 商品が非公開ならエラー
+
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('cart.product.not.status');
                 return false;
             }
 
             // 購入制限数チェック
             if (!is_null($orderDetail->getProductClass()->getSaleLimit())) {
                 if ($orderDetail->getQuantity() > $orderDetail->getProductClass()->getSaleLimit()) {
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.sale_limit');
                     return false;
                 }
             }
@@ -755,6 +762,9 @@ class ShoppingService
             // 購入数チェック
             if ($orderDetail->getQuantity() < 1) {
                 // 購入数量が1未満ならエラー
+
+                // @deprecated 3.1以降ではexceptionをthrowする
+                // throw new ShoppingException('???');
                 return false;
             }
 
@@ -771,8 +781,12 @@ class ShoppingService
                 );
                 // 購入数量と在庫数をチェックして在庫がなければエラー
                 if ($productStock->getStock() < 1) {
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.stock');
                     return false;
                 } elseif ($orderDetail->getQuantity() > $productStock->getStock()) {
+                    // @deprecated 3.1以降ではexceptionをthrowする
+                    // throw new ShoppingException('cart.over.stock');
                     return false;
                 }
             }
