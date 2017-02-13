@@ -145,7 +145,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->assertEquals(1, $quantity);
     }
 
-    public function testDownProductQuantity_Remove()
+    public function testDownProductQuantity_NotRemove()
     {
         $cartService = $this->app['eccube.service.cart'];
 
@@ -153,8 +153,8 @@ class CartServiceTest extends AbstractServiceTestCase
         $cartService->downProductQuantity(1);
 
         $quantity = $cartService->getProductQuantity(1);
-        $this->assertEquals(0, $quantity);
-        $this->assertCount(0, $cartService->getCart()->getCartItems());
+        $this->assertEquals(1, $quantity);
+        $this->assertCount(1, $cartService->getCart()->getCartItems());
     }
 
     public function testRemoveProduct()

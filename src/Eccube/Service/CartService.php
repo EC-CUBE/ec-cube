@@ -508,11 +508,8 @@ class CartService
     public function downProductQuantity($productClassId)
     {
         $quantity = $this->getProductQuantity($productClassId) - 1;
-
         if ($quantity > 0) {
             $this->setProductQuantity($productClassId, $quantity);
-        } else {
-            $this->removeProduct($productClassId);
         }
 
         return $this;
