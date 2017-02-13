@@ -788,6 +788,8 @@ class ShoppingService
                     // @deprecated 3.1以降ではexceptionをthrowする
                     // throw new ShoppingException('cart.over.stock');
                     return false;
+                } elseif ($orderDetail->getQuantity() > $productStock->getStock()) {
+                    throw new ShoppingException('cart.over.stock');
                 }
             }
         }

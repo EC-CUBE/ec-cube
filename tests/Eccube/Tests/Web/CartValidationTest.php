@@ -65,6 +65,7 @@ class CartValidationTest extends AbstractWebTestCase
         // 在庫数を設定
         $ProductClass->setStock(1);
         $this->app['orm.em']->persist($ProductClass);
+
         $arr = array(
             'product_id' => $Product->getId(),
             'mode' => 'add_cart',
@@ -352,7 +353,9 @@ class CartValidationTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $message = $crawler->filter('.errormsg')->text();
+
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')の在庫が不足しております。', $message);
+
         $this->assertContains('一度に在庫数を超える購入はできません。', $message);
 
         // check quantity on cart
@@ -571,7 +574,6 @@ class CartValidationTest extends AbstractWebTestCase
         if ($ProductClass->hasClassCategory2()) {
             $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
         }
-
         $client->request(
             'POST',
             $this->app->url('product_detail', array('id' => $productId)),
@@ -1579,6 +1581,9 @@ class CartValidationTest extends AbstractWebTestCase
         $stockInCart = 2;
         $this->scenarioCartIn($client, $productClassId, $stockInCart);
 
+        // Move to top
+        $crawler = $client->request('GET', $this->app->url('homepage'));
+
         // Remove product (delete flg)
         $Product->setDelFlg(Constant::ENABLED);
         $ProductClass->setDelFlg(Constant::ENABLED);
@@ -1760,6 +1765,9 @@ class CartValidationTest extends AbstractWebTestCase
         // add to cart
         $stockInCart = 3;
         $this->scenarioCartIn($client, $productClassId, $stockInCart);
+
+        // Move to top
+        $crawler = $client->request('GET', $this->app->url('homepage'));
 
         // sale limit
         $saleLimit = 1;
@@ -2326,7 +2334,7 @@ class CartValidationTest extends AbstractWebTestCase
         $message = $crawler->filter('body')->text();
         $this->assertContains('選択された商品('.$this->getProductName($ProductClass).')は販売制限しております。', $message);
         $this->assertContains('一度に販売制限数を超える購入はできません。', $message);
-
+      
         // check cart
         $CartItem = $this->app['eccube.service.cart']->getCart()->getCartItems()->first();
         $this->actual = $CartItem->getQuantity();
