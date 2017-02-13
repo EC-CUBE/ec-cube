@@ -148,7 +148,16 @@ class ShoppingController extends AbstractController
         // 複数配送の場合、エラーメッセージを一度だけ表示
         if (!$app['session']->has($this->sessionMultipleKey)) {
             if (count($Order->getShippings()) > 1) {
-                $app->addRequestError('shopping.multiple.delivery');
+
+                $BaseInfo = $app['eccube.repository.base_info']->get();
+
+                if (!$BaseInfo->getOptionMultipleShipping()) {
+                    // 複数配送に設定されていないのに複数配送先ができればエラー
+                    $app->addRequestError('cart.product.type.kind');
+                    return $app->redirect($app->url('cart'));
+                }
+
+                $app->addError('shopping.multiple.delivery');
             }
             $app['session']->set($this->sessionMultipleKey, 'multiple');
         }
