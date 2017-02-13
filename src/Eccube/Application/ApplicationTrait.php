@@ -270,7 +270,8 @@ class ApplicationTrait extends \Silex\Application
      */
     public function renderView($view, array $parameters = array())
     {
-        return $this['twig']->render($view, $parameters);
+        $response = $this->render($view, $parameters);
+        return $response->getContent();
     }
 
     /** UrlGeneratorTrait */
