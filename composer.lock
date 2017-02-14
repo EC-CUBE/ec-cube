@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "37fac92cd5c344d00ab6e100c76eb2e6",
+    "content-hash": "9308f6497e3fbe9f3eef1f8f1a652b7d",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1802,12 +1802,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sergiors/annotations-service-provider.git",
-                "reference": "8f339cc91be53231d9cc202449504dc89ab2f093"
+                "reference": "550e22a0c834442f964c158d4cb46a10f5a4e6e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sergiors/annotations-service-provider/zipball/8f339cc91be53231d9cc202449504dc89ab2f093",
-                "reference": "8f339cc91be53231d9cc202449504dc89ab2f093",
+                "url": "https://api.github.com/repos/sergiors/annotations-service-provider/zipball/550e22a0c834442f964c158d4cb46a10f5a4e6e5",
+                "reference": "550e22a0c834442f964c158d4cb46a10f5a4e6e5",
                 "shasum": ""
             },
             "require": {
@@ -1841,20 +1841,20 @@
                 }
             ],
             "description": "Doctrine Annotations for Silex",
-            "time": "2016-05-25 16:09:44"
+            "time": "2017-02-13 15:44:29"
         },
         {
             "name": "sergiors/doctrine-cache-service-provider",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sergiors/doctrine-cache-service-provider.git",
-                "reference": "97280515a3f74dc72f58bef02dde71efd38c8fb2"
+                "reference": "ef591601ec23182c7e5634804a479a466ee59990"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sergiors/doctrine-cache-service-provider/zipball/97280515a3f74dc72f58bef02dde71efd38c8fb2",
-                "reference": "97280515a3f74dc72f58bef02dde71efd38c8fb2",
+                "url": "https://api.github.com/repos/sergiors/doctrine-cache-service-provider/zipball/ef591601ec23182c7e5634804a479a466ee59990",
+                "reference": "ef591601ec23182c7e5634804a479a466ee59990",
                 "shasum": ""
             },
             "require": {
@@ -1887,8 +1887,8 @@
                     "email": "sergio@inbep.com.br"
                 }
             ],
-            "description": "Doctrine Cache for Silex",
-            "time": "2016-07-29T17:30:42+00:00"
+            "description": "Doctrine Cache for Pimple",
+            "time": "2017-02-04T11:55:17+00:00"
         },
         {
             "name": "sergiors/routing-service-provider",
@@ -2197,16 +2197,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.5",
+            "version": "v5.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "cd142238a339459b10da3d8234220963f392540c"
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/cd142238a339459b10da3d8234220963f392540c",
-                "reference": "cd142238a339459b10da3d8234220963f392540c",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
                 "shasum": ""
             },
             "require": {
@@ -2247,7 +2247,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-12-29T10:02:40+00:00"
+            "time": "2017-02-13T07:52:53+00:00"
         },
         {
             "name": "symfony/cache",
@@ -4985,29 +4985,33 @@
         },
         {
             "name": "fzaninotto/faker",
-            "version": "v1.6.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123"
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/44f9a286a04b80c76a4e5fb7aad8bb539b920123",
-                "reference": "44f9a286a04b80c76a4e5fb7aad8bb539b920123",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d0190b156bcca848d401fb80f31f504f37141c8d",
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3|^7.0"
+                "php": ">=5.3.3"
             },
             "require-dev": {
-                "ext-intl": "*",
                 "phpunit/phpunit": "~4.0",
                 "squizlabs/php_codesniffer": "~1.5"
             },
+            "suggest": {
+                "ext-intl": "*"
+            },
             "type": "library",
             "extra": {
-                "branch-alias": []
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
             },
             "autoload": {
                 "psr-4": {
@@ -5029,7 +5033,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-29T12:21:54+00:00"
+            "time": "2015-05-29T06:29:14+00:00"
         },
         {
             "name": "mikey179/vfsStream",
