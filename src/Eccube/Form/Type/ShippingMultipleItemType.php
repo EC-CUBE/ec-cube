@@ -25,6 +25,7 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -71,7 +72,7 @@ class ShippingMultipleItemType extends AbstractType
                 if ($app->isGranted('IS_AUTHENTICATED_FULLY')) {
                     // 会員の場合、CustomerAddressを設定
                     $Customer = $app->user();
-                    $form->add('customer_address', 'entity', array(
+                    $form->add('customer_address', EntityType::class, array(
                         'class' => 'Eccube\Entity\CustomerAddress',
                         'choice_label' => 'shippingMultipleDefaultName',
                         'query_builder' => function (EntityRepository $er) use ($Customer) {

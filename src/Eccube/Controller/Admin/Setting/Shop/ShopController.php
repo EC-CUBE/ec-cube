@@ -51,8 +51,8 @@ class ShopController extends AbstractController
 
         $form = $builder->getForm();
 
-        if ($app['request']->getMethod() === 'POST') {
-            $form->handleRequest($app['request']);
+        if ($request->getMethod() === 'POST') {
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $app['orm.em']->persist($BaseInfo);
                 $app['orm.em']->flush();

@@ -36,7 +36,9 @@ use Eccube\Exception\CartException;
 use Eccube\Exception\ShoppingException;
 use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Form\Type\Front\NonMemberType;
+use Eccube\Form\Type\ShippingMultipleType;
 use Eccube\Form\Type\Shopping\OrderType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -729,8 +731,8 @@ class ShoppingController extends AbstractController
 
         $builder = $app->form();
         $builder
-            ->add('shipping_multiple', 'collection', array(
-                'type' => 'shipping_multiple',
+            ->add('shipping_multiple', CollectionType::class, array(
+                'entry_type' => ShippingMultipleType::class,
                 'data' => $shipmentItems,
                 'allow_add' => true,
                 'allow_delete' => true,

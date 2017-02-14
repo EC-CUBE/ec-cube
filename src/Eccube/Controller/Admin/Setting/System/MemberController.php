@@ -131,7 +131,7 @@ class MemberController extends AbstractController
             }
         }
 
-        $app['security']->getToken()->setUser($LoginMember);
+        $app['security.token_storage']->getToken()->setUser($LoginMember);
 
         return $app->render('Setting/System/member_edit.twig', array(
             'form' => $form->createView(),

@@ -26,13 +26,14 @@ namespace Eccube\Controller;
 
 use Eccube\Application;
 use Eccube\Entity\BlocPosition;
+use Symfony\Component\HttpFoundation\Request;
 
 class BlockController
 {
 
-    public function index(Application $app)
+    public function index(Application $app, Request $request)
     {
-        $position = $app['request']->get('position');
+        $position = $request->get('position');
 
         $blocks = array();
 

@@ -24,6 +24,7 @@
 
 namespace Eccube\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,7 +45,7 @@ class ShoppingMultipleType extends AbstractType
         $deliveryDates = $options['deliveryDates'];
 
         $builder
-            ->add('delivery', 'entity', array(
+            ->add('delivery', EntityType::class, array(
                 'class' => 'Eccube\Entity\Delivery',
                 'choice_label' => 'name',
                 'choices' => $deliveries,
@@ -55,7 +56,7 @@ class ShoppingMultipleType extends AbstractType
                 'required' => false,
                 'placeholder' => '指定なし',
             ))
-            ->add('deliveryTime', 'entity', array(
+            ->add('deliveryTime', EntityType::class, array(
                 'class' => 'Eccube\Entity\DeliveryTime',
                 'choice_label' => 'deliveryTime',
                 'choices' => $delivery->getDeliveryTimes(),

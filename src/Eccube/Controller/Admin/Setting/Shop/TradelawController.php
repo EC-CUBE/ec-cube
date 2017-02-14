@@ -57,8 +57,8 @@ class TradelawController extends AbstractController
 
         $form = $builder->getForm();
 
-        if ('POST' === $app['request']->getMethod()) {
-            $form->handleRequest($app['request']);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $Help = $form->getData();
                 $app['orm.em']->persist($Help);

@@ -375,7 +375,7 @@ class Application extends \Silex\Application
                 // IP制限チェック
                 $allowHost = $app['config']['admin_allow_host'];
                 if (count($allowHost) > 0) {
-                    if (array_search($app['request']->getClientIp(), $allowHost) === false) {
+                    if (array_search($app['request_stack']->getCurrentRequest()->getClientIp(), $allowHost) === false) {
                         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
                     }
                 }
@@ -407,9 +407,10 @@ class Application extends \Silex\Application
                     $AuthorityRoles = $this['eccube.repository.authority_role']->findBy(array('Authority' => $Member->getAuthority()));
 
                     $roles = array();
+                    $request = $event->getRequest();
                     foreach ($AuthorityRoles as $AuthorityRole) {
                         // 管理画面でメニュー制御するため相対パス全てをセット
-                        $roles[] = $this['request']->getBaseUrl().'/'.$this['config']['admin_route'].$AuthorityRole->getDenyUrl();
+                        $roles[] = $request->getBaseUrl().'/'.$this['config']['admin_route'].$AuthorityRole->getDenyUrl();
                     }
 
                     $this['twig']->addGlobal('AuthorityRoles', $roles);

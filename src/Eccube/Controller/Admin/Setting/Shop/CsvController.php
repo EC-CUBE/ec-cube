@@ -57,7 +57,7 @@ class CsvController extends AbstractController
 
         $CsvNotOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::DISABLED), array('rank' => 'ASC'));
 
-        $builder->add('csv_not_output', 'entity', array(
+        $builder->add('csv_not_output', EntityType::class, array(
             'class' => 'Eccube\Entity\Csv',
             'choice_label' => 'disp_name',
             'required' => false,
@@ -68,7 +68,7 @@ class CsvController extends AbstractController
 
         $CsvOutput = $app['eccube.repository.csv']->findBy(array('CsvType' => $CsvType, 'enable_flg' => Constant::ENABLED), array('rank' => 'ASC'));
 
-        $builder->add('csv_output', 'entity', array(
+        $builder->add('csv_output', EntityType::class, array(
             'class' => 'Eccube\Entity\Csv',
             'choice_label' => 'disp_name',
             'required' => false,

@@ -30,6 +30,7 @@ use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Util\Str;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +57,7 @@ class TemplateController extends AbstractController
             ->findBy(array('DeviceType' => $DeviceType));
 
         $form = $app->form()
-            ->add('selected', 'hidden')
+            ->add('selected', HiddenType::class)
             ->getForm();
 
         if ('POST' === $request->getMethod()) {
