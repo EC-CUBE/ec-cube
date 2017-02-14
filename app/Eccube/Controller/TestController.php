@@ -47,6 +47,8 @@ class TestController
         dump('/');
         $id = 1;
         $app->forwardChain('/test/initialize/'.$id, $request)
+            ->forwardChain('/test/new', $request, ['param_init' => $id], $response)
+            ->forwardChain('/test/new', $request, ['param_init' => $id], $response)
             ->forwardChain('/test/new', $request, ['param_init' => $id], $response);
         return $response;
     }
