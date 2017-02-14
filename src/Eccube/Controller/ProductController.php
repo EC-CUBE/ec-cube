@@ -78,6 +78,11 @@ class ProductController
 
         $searchForm->handleRequest($request);
 
+        // 存在しないカテゴリIDが指定された場合はエラー表示.
+        if (!$searchForm['category_id']->isValid()) {
+            throw new NotFoundHttpException();
+        }
+
         // paginator
         $searchData = $searchForm->getData();
         $qb = $app['eccube.repository.product']->getQueryBuilderBySearchData($searchData);

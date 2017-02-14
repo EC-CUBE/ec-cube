@@ -56,4 +56,20 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
+    public function testRoutingListCategoryExist()
+    {
+        $client = $this->client;
+        $client->request('GET', $this->app->url('product_list', array('category_id' => '1')));
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingListCategoryNotFound()
+    {
+        // カテゴリが存在しない場合は、NotFoundHttpException
+        $this->setExpectedException(
+            '\Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+        );
+        $client = $this->client;
+        $client->request('GET', $this->app->url('product_list', array('category_id' => '999999')));
+    }
 }
