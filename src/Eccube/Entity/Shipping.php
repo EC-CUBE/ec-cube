@@ -24,6 +24,7 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Common\Constant;
 use Eccube\Util\EntityUtil;
 
 /**
@@ -201,6 +202,7 @@ class Shipping extends \Eccube\Entity\AbstractEntity
      */
     public function __construct()
     {
+        $this->setDelFlg(Constant::DISABLED);
         $this->ShipmentItems = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
