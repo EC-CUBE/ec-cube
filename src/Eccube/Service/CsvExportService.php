@@ -381,12 +381,13 @@ class CsvExportService
     public function getCustomerQueryBuilder(Request $request)
     {
         $session = $request->getSession();
-        if ($session->has('eccube.admin.customer.search')) {
-            $searchData = $session->get('eccube.admin.customer.search');
-            $this->findDeserializeObjects($searchData);
-        } else {
-            $searchData = array();
-        }
+        $viewData = $session->get('eccube.admin.customer.search', array());
+
+        $app = \Eccube\Application::getInstance();
+        $searchForm = $app['form.factory']
+            ->create('admin_search_customer', null, array('csrf_protection' => true));
+
+        $searchData = \Eccube\FormUtil::submitAndGetData($searchForm, $viewData);
 
         // 会員データのクエリビルダを構築.
         $qb = $this->customerRepository
