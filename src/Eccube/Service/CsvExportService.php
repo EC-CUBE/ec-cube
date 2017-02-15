@@ -387,7 +387,7 @@ class CsvExportService
         $searchForm = $app['form.factory']
             ->create('admin_search_customer', null, array('csrf_protection' => true));
 
-        $searchData = \Eccube\FormUtil::submitAndGetData($searchForm, $viewData);
+        $searchData = \Eccube\Util\FormUtil::submitAndGetData($searchForm, $viewData);
 
         // 会員データのクエリビルダを構築.
         $qb = $this->customerRepository
