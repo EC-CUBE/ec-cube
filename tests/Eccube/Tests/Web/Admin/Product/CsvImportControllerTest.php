@@ -368,8 +368,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function testCsvCategoryWithNew()
     {
         $csv = array(
-            array('カテゴリID', 'カテゴリ名', '親カテゴリID'),
-            array('', '新カテゴリ', '')
+            array('カテゴリID', 'カテゴリ名', '親カテゴリID', 'カテゴリ削除フラグ'),
+            array('', '新カテゴリ', '', '')
         );
         $this->filepath = $this->createCsvFromArray($csv, 'categories.csv');
 
@@ -392,7 +392,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $config['csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         $this->app['config'] = $config;
 
-        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID'."\n");
+        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ'."\n");
 
         $crawler = $this->client->request(
             'GET',

@@ -517,7 +517,29 @@ class CsvImportController
                             return $this->render($app, $form, $headers, $this->categoryTwig);
                         }
 
-                        $status = $app['eccube.repository.category']->save($Category);
+                        // カテゴリ削除フラグ対応
+                        if ($row['カテゴリ削除フラグ'] == '') {
+                            $Category->setDelFlg(Constant::DISABLED);
+                            $status = $app['eccube.repository.category']->save($Category);
+                        } else {
+                            if ($row['カテゴリ削除フラグ'] == (string)Constant::DISABLED || $row['カテゴリ削除フラグ'] == (string)Constant::ENABLED) {
+                                $Category->setDelFlg($row['カテゴリ削除フラグ']);
+                            } else {
+                                $this->addErrors(($data->key() + 1) . '行目のカテゴリ削除フラグが設定されていません。');
+                                return $this->render($app, $form, $headers, $this->categoryTwig);
+                            }
+
+                            if ($row['カテゴリ削除フラグ'] == (string)Constant::ENABLED) {
+                                $status = $app['eccube.repository.category']->delete($Category);
+
+                                if (!$status) {
+                                    $this->addErrors(($data->key() + 1) . '行目のカテゴリが、子カテゴリまたは商品が紐付いているため削除できません。');
+                                    return $this->render($app, $form, $headers, $this->categoryTwig);
+                                }
+                            } else {
+                                $status = $app['eccube.repository.category']->save($Category);
+                            }
+                        }
 
                         if (!$status) {
                             $this->addErrors(($data->key() + 1) . '行目のカテゴリが設定できません。');
@@ -1151,6 +1173,7 @@ class CsvImportController
             'カテゴリID' => 'id',
             'カテゴリ名' => 'category_name',
             '親カテゴリID' => 'parent_category_id',
+            'カテゴリ削除フラグ' => 'category_del_flg',
         );
     }
     
