@@ -27,6 +27,6 @@ class AController
         $t = new \Eccube\Entity\Csv();
         $t->setDispName($id + 100000);
         $app['request_scope']->set('csv', $t);
-        return $app->forward('/test/new', $request, ['param_init' => $id]);
+        return $app->forward('/test/new', ['param_init' => $id]);
     }
 }

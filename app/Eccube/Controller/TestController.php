@@ -35,27 +35,27 @@ class TestController
         dump('initialize');
         $t = new \Eccube\Entity\Csv();
         $t->getDispName($id);
-        return $app->forward('/test/new', $request, ['param_init' => $id]);
+        return $app->forward($app->path('test/new'), ['param_init' => $id]);
     }
 
     /**
      * @Method("GET")
-     * @Route("/", name="test_index")
+     * @Route("/", name="test/index")
      */
     public function index(Application $app, Request $request)
     {
         dump('/');
         $id = 1;
-        $app->forwardChain('/test/initialize/'.$id, $request)
-            ->forwardChain('/test/new', $request, ['param_init' => $id], $response)
-            ->forwardChain('/test/new', $request, ['param_init' => $id], $response)
-            ->forwardChain('/test/new', $request, ['param_init' => $id], $response);
+        $app->forwardChain('/test/initialize/'.$id)
+            ->forwardchain($app->path('test/new'), ['param_init' => $id], $response)
+            ->forwardChain($app->path('test/new'), ['param_init' => $id], $response)
+            ->forwardChain($app->path('test/new'), ['param_init' => $id], $response);
         return $response;
     }
 
     /**
      * @Method("GET")
-     * @Route("/new")
+     * @Route("/new", name="test/new")
      */
     public function newAction(Application $app, Request $request)
     {

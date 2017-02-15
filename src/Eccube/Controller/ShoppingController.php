@@ -86,7 +86,7 @@ class ShoppingController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $cartService = $app['eccube.service.cart'];
-        $response = $app->forward($app->path("shopping_checkToCart"), $request);
+        $response = $app->forward($app->path("shopping/checkToCart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
@@ -1258,7 +1258,7 @@ class ShoppingController extends AbstractController
     /**
      * カート画面のチェック
      *
-     * @Route("/checkToCart", name="shopping_checkToCart")
+     * @Route("/checkToCart", name="shopping/checkToCart")
      * @param Application $app
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response

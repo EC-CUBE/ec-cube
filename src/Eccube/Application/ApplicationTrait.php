@@ -81,12 +81,12 @@ trait ApplicationTrait
      * 他のコントローラにリクエストをフォワードします.
      *
      * @param string $path フォワード先のパス
-     * @param Request $request
      * @param array $requestParameters
      * @return Response
      */
-    public function forward($path, Request $request, array $requestParameters = [])
+    public function forward($path, array $requestParameters = [])
     {
+        $request = $this['request_stack']->getCurrentRequest();
 
         $subRequest = Request::create(
             $path,
@@ -107,14 +107,13 @@ trait ApplicationTrait
      * フォワードをチェーンでつなげます.
      *
      * @param string $path フォワード先のパス
-     * @param Request $request
      * @param array $requestParameters
      * @param Response $response
      * @return Application
      */
-    public function forwardChain($path, Request $request, array $requestParameters = [], Response &$response = null)
+    public function forwardChain($path, array $requestParameters = [], Response &$response = null)
     {
-        $response = $this->forward($path, $request, $requestParameters);
+        $response = $this->forward($path, $requestParameters);
         return $this;
     }
 }
