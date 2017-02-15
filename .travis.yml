@@ -10,12 +10,10 @@ cache:
     - vendor
     - $HOME/.composer/cache
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
   - 7.1
+  - 7.0
+  - 5.6
+  - 5.5
 
 matrix:
   fast_finish: true
@@ -25,10 +23,6 @@ matrix:
       sudo: required
       dist: trusty
   exclude:
-    - php: 5.3
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-    - php: 5.4
-      env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - php: 5.5
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
     - php: 5.6
@@ -39,15 +33,17 @@ matrix:
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
   allow_failures:
     - env: DB=sqlite
-    - php: 7.1
     - php: 7.0.12 # dist: trusty を動かすためのダミー. 実際にテストは実行されない
       env: DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
 
 env:
-  - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
-  - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
-  - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
-  - DB=sqlite
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=weak
+  matrix:
+    - DB=mysql USER=root DBNAME=myapp_test DBPASS=' ' DBUSER=root
+    - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres
+    - DB=pgsql USER=postgres DBNAME=myapp_test DBPASS=password DBUSER=postgres PHP_SAPI=phpdbg
+    - DB=sqlite
 
 install:
   - gem install mime-types -v 2.99.1
