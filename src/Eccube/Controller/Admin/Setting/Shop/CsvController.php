@@ -30,6 +30,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,7 +47,7 @@ class CsvController extends AbstractController
 
         $builder = $app->form();
 
-        $builder->add('csv_type', 'csv_type', array(
+        $builder->add('csv_type', \Eccube\Form\Type\Master\CsvType::class, array(
             'label' => 'CSV出力項目',
             'required' => true,
             'constraints' => array(
