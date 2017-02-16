@@ -6,6 +6,7 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Migration;
 use Eccube\Application;
 use Eccube\Entity\Customer;
+use Eccube\Util\Cache;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client;
 use Silex\WebTestCase;
@@ -45,6 +46,8 @@ abstract class EccubeTestCase extends WebTestCase
     public function tearDown()
     {
         parent::tearDown();
+
+        Cache::clear($this->app, true);
         if (!$this->isSqliteInMemory()) {
             $this->app['orm.em']->getConnection()->rollback();
             $this->app['orm.em']->getConnection()->close();
@@ -265,7 +268,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function createApplication()
     {
         $app = Application::getInstance();
-        $app['debug'] = true;
+        $app['debug'] = false;
 
         // ログの内容をERRORレベルでしか出力しないように設定を上書き
         if (!$app->offsetExists('config')) {

@@ -50,7 +50,7 @@ class Cache
 
         $filesystem = new Filesystem();
         if ($isAll) {
-            $finder = Finder::create()->in($cacheDir)->notName('.gitkeep');
+            $finder = Finder::create()->in($cacheDir)->notName('.gitkeep')->files();
             $filesystem->remove($finder);
         } elseif ($isTwig) {
             if (is_dir($cacheDir.'/twig')) {

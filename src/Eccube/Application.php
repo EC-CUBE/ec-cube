@@ -196,12 +196,19 @@ class Application extends \Silex\Application
         // init security
         $this->initSecurity();
 
-        $this->register(new \Sergiors\Silex\Provider\RoutingServiceProvider());
+        $this->register(new \Sergiors\Silex\Provider\RoutingServiceProvider(), [
+            'routing.resource' => __DIR__.'/Controller',
+            'routing.cache_dir' => __DIR__.'/../../app/cache/routing'
+        ]);
         $this->register(new \Sergiors\Silex\Provider\DoctrineCacheServiceProvider());
         $this->register(new \Sergiors\Silex\Provider\TemplatingServiceProvider());
-        $this->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider());
-        $this->register(new \Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider(),
-        [
+        $this->register(new \Sergiors\Silex\Provider\AnnotationsServiceProvider(), [
+            'annotations.options' => [
+                'cache_driver' => 'filesystem',
+                'cache_dir' => __DIR__.'/../../app/cache/annotation'
+            ]
+        ]);
+        $this->register(new \Sergiors\Silex\Provider\SensioFrameworkExtraServiceProvider(), [
             'request' => [
                 'auto_convert' => true
             ]
@@ -219,13 +226,8 @@ class Application extends \Silex\Application
         $this->extend('routes', function (\Symfony\Component\Routing\RouteCollection $routes, \Silex\Application $app) {
             $loader = $this['sensio_framework_extra.routing.loader.annot_dir'];
 
-            // 本体のルーティングをロード
-            // TODO 管理画面のルーティングは動的に設定する必要がある.
-            $collection = $loader->load(__DIR__.'/Controller');
-            $routes->addCollection($collection);
-
             // 拡張用のルーティングをロード
-            $collection = $loader->load($this['config']['root_dir'].'/app/Eccube');
+            $collection = $loader->import($this['config']['root_dir'].'/app/Eccube', 'annotation');
             $routes->addCollection($collection);
 
             return $routes;
