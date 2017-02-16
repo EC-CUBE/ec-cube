@@ -123,7 +123,7 @@ class ForgotController extends AbstractController
      */
     public function reset(Application $app, Request $request, $reset_key)
     {
-        $errors = $app['validator']->validateValue($reset_key, array(
+        $errors = $app['validator']->validate($reset_key, array(
             new Assert\NotBlank(),
             new Assert\Regex(array(
                 'pattern' => '/^[a-zA-Z0-9]+$/',
