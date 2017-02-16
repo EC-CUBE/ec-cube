@@ -203,9 +203,20 @@ class TaxRuleRepository extends EntityRepository
         });
 
         if (!empty($TaxRules)) {
-            $this->rules[$cacheKey] = $TaxRules[0];
+            $TaxRule = $TaxRules[0];
 
-            return $TaxRules[0];
+            // 商品個別税率の場合は、共通税率設定の課税規則を適用して返却
+            $RelatedProduct = $TaxRule->getProduct();
+            if (!empty($RelatedProduct)) {
+                $CommonTaxRule = $this->getByRule();
+                $CommonCalcRule = $CommonTaxRule->getCalcRule();
+                $TaxRule->setCalcRule($CommonCalcRule);
+            }
+
+            // キャッシュに保存
+            $this->rules[$cacheKey] = $TaxRule;
+
+            return $TaxRule;
         } else {
             throw new NoResultException();
         }
