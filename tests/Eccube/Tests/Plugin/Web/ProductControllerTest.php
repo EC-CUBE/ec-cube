@@ -27,6 +27,9 @@ namespace Eccube\Tests\Plugin\Web;
 use Eccube\Common\Constant;
 use Eccube\Event\EccubeEvents;
 
+/**
+ * @group plugin
+ */
 class ProductControllerTest extends AbstractWebTestCase
 {
 

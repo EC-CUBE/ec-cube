@@ -38,6 +38,7 @@ use Eccube\Tests\Plugin\CommonHookPoint\HookPointEvent;
  * また、イベントオブジェクトを利用してリダイレクトできるかどうかも検証する
  *
  * @package Eccube\Tests\Plugin\Web
+ * @group plugin
  */
 class CommonHookPointTest extends EccubeTestCase
 {

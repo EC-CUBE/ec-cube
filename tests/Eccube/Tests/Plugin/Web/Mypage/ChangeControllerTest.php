@@ -27,6 +27,9 @@ namespace Eccube\Tests\Plugin\Web\Mypage;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 
+/**
+ * @group plugin
+ */
 class ChangeControllerTest extends AbstractWebTestCase
 {
 

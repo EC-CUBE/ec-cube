@@ -26,6 +26,9 @@ namespace Eccube\Tests\Plugin\Web\Admin;
 use Eccube\Event\EccubeEvents;
 use Eccube\Tests\Plugin\Web\AbstractWebTestCase;
 
+/**
+ * @group plugin
+ */
 class LoginControllerTest extends AbstractWebTestCase
 {
 
