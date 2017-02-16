@@ -94,8 +94,14 @@ $(function() {
 
         var data = $(this).data();
         shipment_idx = data.idx;
-        shipmentItem_idx = $('.shipment_item_idx' + shipment_idx).length;
-
+        
+        shipmentItem_idx = 0;
+        for(i = 0; i < shipping_details_count.length; i++) { 
+            if (shipping_details_count[i].idx == shipment_idx) {
+                shipmentItem_idx = shipping_details_count[i].cnt;
+            }
+        }
+        
         $.ajax({
             type: 'POST',
             dataType: 'html',
@@ -117,7 +123,23 @@ $(function() {
     // 受注明細行の行数カウンタ.
     // 受注登録・編集画面上でグローバルな変数.
     // search_product.twig/order_detail_prototype.twigで利用しています.
-    order_details_count = '{{ form.OrderDetails|length }}';
+    {% if form.OrderDetails is empty %}
+        {% set maxIndex = 0 %}
+    {% else %}
+        {% set maxIndex = max(form.OrderDetails|keys) + 1 %}
+    {% endif %}
+    order_details_count = '{{ maxIndex }}';
+    
+    var shipping_details_count = [];
+    {% if BaseInfo.optionMultipleShipping %}
+        {% for shippingKey, shippingForm in form.Shippings %}
+            {% if shippingForm.ShipmentItems is empty %}
+                shipping_details_count.push({idx:{{ shippingKey }}, cnt:0});
+            {% else %}
+                shipping_details_count.push({idx:{{ shippingKey }}, cnt:{{ max(shippingForm.ShipmentItems|keys) + 1 }} });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
     // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
     $("input").on("keydown", function(e) {
@@ -130,9 +152,23 @@ $(function() {
 
     $(".delete-item").on("click", function(){
         $(this).parents(".item_box").remove();
-        order_details_count--;
 
         onChangeOrderDetailCount(order_details_count);
+    });
+    
+    $(".delete_delivery").on("click", function(){
+       var data = $(this).data();
+       $("#shipping_info_box--" + data.idx ).remove();
+       document.form1.modal.value = "calc";
+       document.form1.submit();
+    });
+    
+    $(".delete_shipping_product").on("click", function(){
+       var data = $(this).data();
+       var idKey = "order_Shippings_"+ data.idx.replace("--","_ShipmentItems_") +"_quantity";
+       $("#" + idKey ).val(0);
+       document.form1.modal.value = "calc";
+       document.form1.submit();
     });
 
     var onChangeOrderDetailCount = function(order_details_count) {
@@ -481,31 +517,34 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
             {% endif %}
             {% for shippingForm in form.Shippings %}
             {% set shippingIndex = loop.index0 %}
-            <div id="shipping_info_box--{{ loop.index }}" class="box accordion">
-                <div id="shipping_info_box__toggle--{{ loop.index }}" class="box-header toggle active">
+            <div id="shipping_info_box--{{ shippingIndex }}" class="box accordion">
+                <div id="shipping_info_box__toggle--{{ shippingIndex }}" class="box-header toggle active">
                     <h3 class="box-title">お届け先情報{% if form.Shippings|length > 1 %}({{ loop.index }}){% endif %}<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
                 </div><!-- /.box-header -->
-                    <div id="shipping_info_box__body--{{ loop.index }}" class="box-body accpanel" style="display: block;">
-                    <div id="shipping_info_list--{{ loop.index }}" class="order_list">
+                    <div id="shipping_info_box__body--{{ shippingIndex }}" class="box-body accpanel" style="display: block;">
+                    <div id="shipping_info_list--{{ shippingIndex }}" class="order_list">
                         <div class="btn_area">
-                            <ul id="shipping_info_list__menu--{{ loop.index }}">
-                                <li><a class="btn btn-default copyCustomerToShippingButton" data-idx="{{ loop.index0 }}">注文者情報をコピー</a></li>
+                            <ul id="shipping_info_list__menu--{{ shippingIndex }}">
+                                <li><a class="btn btn-default copyCustomerToShippingButton" data-idx="{{ shippingIndex }}">注文者情報をコピー</a></li>
                                 {% if BaseInfo.optionMultipleShipping %}
-                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal" data-idx="{{ loop.index0 }}">商品の追加</a></li>
+                                <li><a class="btn btn-default" data-toggle="modal" data-target="#searchProductModal" data-idx="{{ shippingIndex }}">商品の追加</a></li>
+                                {% if form.Shippings|length > 1 %}
+                                    <li><button type="button" class="btn btn-default delete_delivery" data-idx="{{ shippingIndex }}">お届け先情報を削除</button></li>
+                                {% endif %}
                                 {% endif %}
                             </ul>
                         </div>
 
                         {% if BaseInfo.optionMultipleShipping %}
                         <div class="tableish"
-                             id="shipment_item_list{{ loop.index0 }}"
+                             id="shipment_item_list{{ shippingIndex }}"
                              data-prototype="
                              {% filter escape %}
                                      {{ include('Order/shipment_item_prototype.twig', { 'shipmentItemForm': shippingForm.ShipmentItems.vars.prototype }) }}
                              {% endfilter %}">
 
-                        {% for shipmentItemForm in shippingForm.ShipmentItems %}
-                            <div id="shipment_item__id--{{ shippingIndex }}" class="item_box shipment_item_idx{{ shippingIndex }}">
+                        {% for shippingItemkey,shipmentItemForm in shippingForm.ShipmentItems %}
+                            <div id="shipment_item__id--{{ shippingIndex }}--{{ shippingItemkey }}" class="item_box shipment_item_idx{{ shippingIndex }}">
                                 {{ form_widget(shipmentItemForm.Product) }}
                                 {{ form_widget(shipmentItemForm.ProductClass) }}
                                 {{ form_widget(shipmentItemForm.Product) }}
@@ -516,11 +555,11 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 {{ form_widget(shipmentItemForm.class_name2) }}
                                 {{ form_widget(shipmentItemForm.class_category_name1) }}
                                 {{ form_widget(shipmentItemForm.class_category_name2) }}
-                                <div id="shipment_item__detail--{{ shippingIndex }}" class="item_detail">
-                                    <div id="shipment_item__name_detail--{{ shippingIndex }}" class="item_name_area">
-                                        <strong id="shipment_item__product_name--{{ shippingIndex }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
-                                        <span id="shipment_item__product_code--{{ shippingIndex }}" class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
-                                            <span id="shipment_item__class_category_name--{{ shippingIndex }}" class="item_pattern small">
+                                <div id="shipment_item__detail--{{ shippingIndex }}--{{ shippingItemkey }}" class="item_detail">
+                                    <div id="shipment_item__name_detail--{{ shippingIndex }}--{{ shippingItemkey }}" class="item_name_area">
+                                        <strong id="shipment_item__product_name--{{ shippingIndex }}--{{ shippingItemkey }}" class="item_name">{{ shipmentItemForm.vars.value.product_name }}</strong><br>
+                                        <span id="shipment_item__product_code--{{ shippingIndex }}--{{ shippingItemkey }}" class="item_id small">{{ shipmentItemForm.vars.value.product_code }}</span>
+                                            <span id="shipment_item__class_category_name--{{ shippingIndex }}--{{ shippingItemkey }}" class="item_pattern small">
                                                 {% if shipmentItemForm.vars.value.class_category_name1 is not empty %}
                                                     / (
                                                     {{ shipmentItemForm.vars.value.class_name1 }}：
@@ -534,15 +573,18 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                                 {% endif %}
                                             </span>
                                     </div>
-                                    <div id="shipment_item__info_item--{{ shippingIndex }}" class="row">
-                                        <div id="shipment_item__price--{{ shippingIndex }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                    <div id="shipment_item__info_item--{{ shippingIndex }}--{{ shippingItemkey }}" class="row">
+                                        <div id="shipment_item__price--{{ shippingIndex }}--{{ shippingItemkey }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             {{ form_widget(shipmentItemForm.price, {'read_only': 'readonly'}) }}
                                         </div>
-                                        <div id="shipment_item__quantity--{{ shippingIndex }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                        <div id="shipment_item__quantity--{{ shippingIndex }}--{{ shippingItemkey }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
                                             <span class="item_quantity">
                                                 数量：{{ form_widget(shipmentItemForm.quantity, {'attr': {'class': 'shipment_quantity'}}) }}
                                                 {{ form_errors(shipmentItemForm.quantity) }}
                                             </span>
+                                        </div>
+                                            <div id="shipment_item__delete--{{ shippingIndex }}--{{ shippingItemkey }}" class="col-md-4 col-lg-3 form-group form-inline text-right">
+                                                <button type="button" class="btn btn-default delete_shipping_product" data-idx="{{ shippingIndex }}--{{ shippingItemkey }}">削除</button>
                                         </div>
                                     </div>
                                 </div>
@@ -552,8 +594,8 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                         {% endif %}
 
                         <hr>
-                        <div id="shipment_item_detail--{{ loop.index }}" class="form-horizontal">
-                            <div id="shipment_item_detail__name--{{ loop.index }}" class="form-group">
+                        <div id="shipment_item_detail--{{ shippingIndex }}" class="form-horizontal">
+                            <div id="shipment_item_detail__name--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.name) }}
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.name.name01, { attr : { placeholder: '姓' }}) }}
@@ -562,7 +604,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_errors(shippingForm.name.name02) }}
                                 </div>
                             </div>
-                            <div id="shipment_item_detail__kana--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__kana--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.kana) }}
                                 <div class="col-sm-9 col-lg-10 input_name form-inline">
                                     {{ form_widget(shippingForm.kana.kana01, { attr : { placeholder : 'セイ' }}) }}
@@ -571,7 +613,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {{ form_errors(shippingForm.kana.kana02) }}
                                 </div>
                             </div>
-                            <div id="shipment_item_detail__company_name--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__company_name--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.company_name) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.company_name) }}
@@ -579,9 +621,9 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# 住所：郵便番号 #}
-                            <div id="shipment_item_detail__address--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__address--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.address) }}
-                                <div id="shipment_item_detail__zip--{{ loop.index }}" class="col-sm-9 col-lg-10 input_zip form-inline">
+                                <div id="shipment_item_detail__zip--{{ shippingIndex }}" class="col-sm-9 col-lg-10 input_zip form-inline">
                                     〒{{ form_widget(shippingForm.zip.zip01) }}-{{ form_widget(shippingForm.zip.zip02) }}
                                     {{ form_errors(shippingForm.zip.zip01) }}
                                     {{ form_errors(shippingForm.zip.zip02) }}
@@ -589,27 +631,27 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                             </div>
                             {# 住所：都道府県 #}
                             <div class="form-group">
-                                <div id="shipment_item_detail__pref--{{ loop.index }}" class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
+                                <div id="shipment_item_detail__pref--{{ shippingIndex }}" class="col-sm-offset-2 col-sm-9 col-lg-10 form-inline">
                                     {{ form_widget(shippingForm.address.pref) }}
                                     {{ form_errors(shippingForm.address.pref) }}
                                 </div>
                             </div>
                             {# 住所：住所1 #}
                             <div class="form-group">
-                                <div id="shipment_item_detail__addr01--{{ loop.index }}" class="col-sm-offset-2 col-sm-9 col-lg-10">
+                                <div id="shipment_item_detail__addr01--{{ shippingIndex }}" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.address.addr01, { attr : { placeholder : '市区町村名（例：千代田区神田神保町）'}} ) }}
                                     {{ form_errors(shippingForm.address.addr01) }}
                                 </div>
                             </div>
                             {# 住所：住所2 #}
                             <div class="form-group">
-                                <div id="shipment_item_detail__addr02--{{ loop.index }}" class="col-sm-offset-2 col-sm-9 col-lg-10">
+                                <div id="shipment_item_detail__addr02--{{ shippingIndex }}" class="col-sm-offset-2 col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.address.addr02, { attr : { placeholder : '番地・ビル名（例：1-3-5）' }}) }}
                                     {{ form_errors(shippingForm.address.addr02) }}
                                 </div>
                             </div>
                             {# 電話番号 #}
-                            <div id="shipment_item_detail__tel--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__tel--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.tel) }}
                                 <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                     {{ form_widget(shippingForm.tel.tel01) }}-{{ form_widget(shippingForm.tel.tel02) }}-{{ form_widget(shippingForm.tel.tel03) }}
@@ -619,7 +661,7 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# FAX番号 #}
-                            <div id="shipment_item_detail__fax--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__fax--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.fax) }}
                                 <div class="col-sm-9 col-lg-10 input_tel form-inline">
                                     {{ form_widget(shippingForm.fax.fax01) }}-{{ form_widget(shippingForm.fax.fax02) }}-{{ form_widget(shippingForm.fax.fax03) }}
@@ -627,18 +669,18 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                 </div>
                             </div>
                             {# 配送業者 #}
-                            <div id="shipment_item_detail__delivery--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__delivery--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.Delivery) }}
-                                <div id="shipment_item_detail__delivery_name--{{ loop.index }}" class="col-sm-9 col-lg-10">
+                                <div id="shipment_item_detail__delivery_name--{{ shippingIndex }}" class="col-sm-9 col-lg-10">
                                     {% if shippingForm.vars.value.shipping_delivery_name is not empty %}
                                     {{ shippingForm.vars.value.shipping_delivery_name }}<br/>
                                     {% endif %}
-                                    {{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery', 'data-idx': loop.index0}}) }}
+                                    {{ form_widget(shippingForm.Delivery, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery', 'data-idx': shippingIndex}}) }}
                                     {{ form_errors(shippingForm.Delivery) }}
                                 </div>
                             </div>
                             {# お届け時間 #}
-                            <div id="shipment_item_detail__delivery_time--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__delivery_time--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.DeliveryTime) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {% if shippingForm.vars.value.shipping_delivery_time is not empty %}
@@ -646,12 +688,12 @@ var setModeAndSubmit = function(mode, keyname, keyid) {
                                     {% else %}
                                         指定なし
                                     {% endif %}
-                                    {{ form_widget(shippingForm.DeliveryTime, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery-time', 'data-idx': loop.index0}}) }}
+                                    {{ form_widget(shippingForm.DeliveryTime, {'attr': {'style': 'width:auto', 'class': 'shipping-delivery-time', 'data-idx': shippingIndex}}) }}
                                     {{ form_errors(shippingForm.DeliveryTime) }}
                                 </div>
                             </div>
                             {# お届け日 #}
-                            <div id="shipment_item_detail__shipping_delivery_date--{{ loop.index }}" class="form-group">
+                            <div id="shipment_item_detail__shipping_delivery_date--{{ shippingIndex }}" class="form-group">
                                 {{ form_label(shippingForm.shipping_delivery_date) }}
                                 <div class="col-sm-9 col-lg-10">
                                     {{ form_widget(shippingForm.shipping_delivery_date) }}

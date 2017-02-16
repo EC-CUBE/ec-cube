@@ -50,6 +50,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
                           </div>
                           {% endfor %}
                           {% endif %}
+                            {#info section#}
+                            {% if app.session.flashBag.has('eccube.install.info') %}
+                                {% for message in app.session.flashBag.get('eccube.install.info') %}
+                                    <div class="row">
+                                        <div class="alert alert-info alert-dismissable alert-section">
+                                            <button type="button" class="close" data-dismiss="alert"><span class="alert-close" aria-hidden="true">&times;</span></button>
+                                            <svg class="cb cb-info-circle"> <use xlink:href="#cb-info-circle" /></svg> {{ message|trans }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                             <div class="page-header">
                                 <h1>ようこそ</h1>
                             </div>

@@ -1,6 +1,11 @@
 order deny,allow
 allow from all
 <IfModule mod_rewrite.c>
+    #403 Forbidden対応方法
+    #ページアクセスできない時シンボリックリンクが有効になっていない可能性あります、
+    #オプションを追加してください
+    #Options +FollowSymLinks +SymLinksIfOwnerMatch
+
     RewriteEngine On
 
     # Authorization ヘッダが取得できない環境への対応
