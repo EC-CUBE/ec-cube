@@ -150,6 +150,16 @@ class Category extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
+     * @var integer
+     */
+    private $parent_category_id;
+
+    /**
      * @var string
      */
     private $name;
@@ -216,6 +226,26 @@ class Category extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
+     * Get parent_category_id
+     *
+     * @return integer
+     */
+    public function getParentCategoryId()
+    {
+        return $this->parent_category_id;
     }
 
     /**

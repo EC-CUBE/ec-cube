@@ -12,6 +12,10 @@ Eccube\Entity\CustomerFavoriteProduct:
             generator:
                 strategy: AUTO
     fields:
+        customer_id:
+            type: integer
+        product_id:
+            type: integer
         create_date:
             type: datetime
             nullable: false

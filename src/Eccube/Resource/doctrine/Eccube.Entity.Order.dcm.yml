@@ -32,6 +32,10 @@ Eccube\Entity\Order:
             generator:
                 strategy: AUTO
     fields:
+        customer_id:
+            type: integer
+        payment_id:
+            type: integer
         pre_order_id:
             type: text
             nullable: true

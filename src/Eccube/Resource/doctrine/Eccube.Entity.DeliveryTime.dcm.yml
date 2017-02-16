@@ -12,6 +12,8 @@ Eccube\Entity\DeliveryTime:
             generator:
                 strategy: AUTO
     fields:
+        delivery_id:
+            type: integer
         delivery_time:
             type: text
             nullable: false

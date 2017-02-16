@@ -12,6 +12,8 @@ Eccube\Entity\News:
             generator:
                 strategy: AUTO
     fields:
+        creator_id:
+            type: integer
         date:
             type: datetime
             nullable: true

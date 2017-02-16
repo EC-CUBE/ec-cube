@@ -23,6 +23,16 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var string
      */
     private $file_name;
@@ -56,6 +66,26 @@ class ProductImage extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**

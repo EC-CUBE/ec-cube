@@ -35,6 +35,11 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var string
      */
     private $name;
@@ -117,6 +122,16 @@ class Delivery extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     public function setProductType(\Eccube\Entity\Master\ProductType $ProductType)

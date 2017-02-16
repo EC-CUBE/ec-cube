@@ -12,6 +12,8 @@ Eccube\Entity\CustomerAddress:
             generator:
                 strategy: AUTO
     fields:
+        customer_id:
+            type: integer
         name01:
             type: text
             nullable: true

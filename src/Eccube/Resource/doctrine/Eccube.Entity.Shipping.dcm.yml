@@ -12,6 +12,10 @@ Eccube\Entity\Shipping:
             generator:
                 strategy: AUTO
     fields:
+        order_id:
+            type: integer
+        delivery_id:
+            type: integer
         name01:
             type: text
             nullable: true

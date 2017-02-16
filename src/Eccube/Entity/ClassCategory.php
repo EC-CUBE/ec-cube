@@ -43,6 +43,16 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
+     * @var integer
+     */
+    private $class_name_id;
+
+    /**
      * @var string
      */
     private $name;
@@ -85,6 +95,26 @@ class ClassCategory extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
+
+    /**
+     * Get class_name_id
+     *
+     * @return integer
+     */
+    public function getClassNameId()
+    {
+        return $this->class_name_id;
     }
 
     /**

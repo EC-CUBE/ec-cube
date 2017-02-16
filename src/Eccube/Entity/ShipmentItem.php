@@ -70,6 +70,26 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $order_id;
+
+    /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
+     * @var integer
+     */
+    private $product_class_id;
+
+    /**
+     * @var integer
+     */
+    private $shipping_id;
+
+    /**
      * @var string
      */
     private $product_name;
@@ -128,6 +148,46 @@ class ShipmentItem extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get order_id
+     *
+     * @return integer
+     */
+    public function getOrderId()
+    {
+        return $this->order_id;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * Get product_class_id
+     *
+     * @return integer
+     */
+    public function getProductClassId()
+    {
+        return $this->product_class_id;
+    }
+
+    /**
+     * Get shipping_id
+     *
+     * @return integer
+     */
+    public function getShippingId()
+    {
+        return $this->shipping_id;
     }
 
     /**

@@ -17,6 +17,11 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
+    private $creator_id;
+
+    /**
+     * @var integer
+     */
     private $product_class_id;
 
     /**
@@ -52,6 +57,16 @@ class ProductStock extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**

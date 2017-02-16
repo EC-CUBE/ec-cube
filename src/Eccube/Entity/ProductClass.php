@@ -159,6 +159,26 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $product_id;
+
+    /**
+     * @var integer
+     */
+    private $class_category_id1;
+
+    /**
+     * @var integer
+     */
+    private $class_category_id2;
+
+    /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var string
      */
     private $code;
@@ -251,6 +271,46 @@ class ProductClass extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get product_id
+     *
+     * @return integer
+     */
+    public function getProductId()
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * Get class_category_id1
+     *
+     * @return integer
+     */
+    public function getClassCategoryId1()
+    {
+        return $this->class_category_id1;
+    }
+
+    /**
+     * Get class_category_id2
+     *
+     * @return integer
+     */
+    public function getClassCategoryId2()
+    {
+        return $this->class_category_id2;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**

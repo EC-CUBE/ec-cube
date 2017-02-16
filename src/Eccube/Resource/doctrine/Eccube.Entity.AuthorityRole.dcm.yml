@@ -12,6 +12,8 @@ Eccube\Entity\AuthorityRole:
             generator:
                 strategy: AUTO
     fields:
+        creator_id:
+            type: integer
         deny_url:
             type: text
             nullable: false

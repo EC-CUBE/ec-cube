@@ -12,6 +12,10 @@ Eccube\Entity\ProductImage:
             generator:
                 strategy: AUTO
     fields:
+        product_id:
+            type: integer
+        creator_id:
+            type: integer
         file_name:
             type: text
             nullable: false

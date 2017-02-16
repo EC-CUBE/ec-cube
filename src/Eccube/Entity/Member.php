@@ -78,6 +78,11 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     private $id;
 
     /**
+     * @var integer
+     */
+    private $creator_id;
+
+    /**
      * @var string
      */
     private $name;
@@ -150,6 +155,16 @@ class Member extends \Eccube\Entity\AbstractEntity implements UserInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get creator_id
+     *
+     * @return integer
+     */
+    public function getCreatorId()
+    {
+        return $this->creator_id;
     }
 
     /**

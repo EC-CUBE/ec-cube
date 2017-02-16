@@ -37,6 +37,11 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $customer_id;
+
+    /**
      * @var string
      */
     private $name01;
@@ -230,6 +235,16 @@ class CustomerAddress extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get customer_id
+     *
+     * @return integer
+     */
+    public function getCustomerId()
+    {
+        return $this->customer_id;
     }
 
     /**

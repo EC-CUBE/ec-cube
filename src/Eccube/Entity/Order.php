@@ -156,6 +156,16 @@ class Order extends \Eccube\Entity\AbstractEntity
     private $id;
 
     /**
+     * @var integer
+     */
+    private $customer_id;
+
+    /**
+     * @var integer
+     */
+    private $payment_id;
+
+    /**
      * @var string
      */
     private $pre_order_id;
@@ -423,6 +433,26 @@ class Order extends \Eccube\Entity\AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get customer_id
+     *
+     * @return integer
+     */
+    public function getCustomerId()
+    {
+        return $this->customer_id;
+    }
+
+    /**
+     * Get payment_id
+     *
+     * @return integer
+     */
+    public function getPaymentId()
+    {
+        return $this->payment_id;
     }
 
     /**

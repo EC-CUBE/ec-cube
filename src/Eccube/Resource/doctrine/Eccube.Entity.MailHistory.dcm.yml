@@ -12,6 +12,12 @@ Eccube\Entity\MailHistory:
             generator:
                 strategy: AUTO
     fields:
+        order_id:
+            type: integer
+        creator_id:
+            type: integer
+        template_id:
+            type: integer
         send_date:
             type: datetime
             nullable: true

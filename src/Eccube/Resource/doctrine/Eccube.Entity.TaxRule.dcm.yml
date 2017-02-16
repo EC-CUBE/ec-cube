@@ -12,6 +12,12 @@ Eccube\Entity\TaxRule:
             generator:
                 strategy: AUTO
     fields:
+        creator_id:
+            type: integer
+        product_id:
+            type: integer
+        product_class_id:
+            type: integer
         tax_rate:
             type: decimal
             nullable: false

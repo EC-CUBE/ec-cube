@@ -12,6 +12,10 @@ Eccube\Entity\ClassCategory:
             generator:
                 strategy: AUTO
     fields:
+        class_name_id:
+            type: integer
+        creator_id:
+            type: integer
         name:
             type: text
             nullable: false
