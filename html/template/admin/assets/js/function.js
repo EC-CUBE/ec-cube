@@ -220,12 +220,13 @@ $(function () {
         $form.submit();
     });
 
-    // scroll to error message if have
+    // Scroll to error message if have
     $(window).load(function() {
         var el = $(".errormsg");
         if (el.length) {
             // Open panel when has error
             openPanel(el.first());
+            // Waiting for other js and css completed before scroll to error message.
             setTimeout(function () {
                 var errorOffset = el.first().offset().top;
                 var screenHeight = $(window).height();
