@@ -26,6 +26,7 @@ namespace Eccube\Controller;
 use Eccube\Application;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Eccube\Form\Type\Front\ForgotType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception as HttpException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,7 +44,7 @@ class ForgotController extends AbstractController
     {
 
         $builder = $app['form.factory']
-            ->createNamedBuilder('', 'forgot');
+            ->createNamedBuilder('', ForgotType::class);
 
         $event = new EventArgs(
             array(
