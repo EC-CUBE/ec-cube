@@ -24,6 +24,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\BrowserKit\Client;
+
 class TopControllerTest extends AbstractWebTestCase
 {
 
@@ -38,9 +40,9 @@ class TopControllerTest extends AbstractWebTestCase
      */
     public function testTopContent()
     {
-        $crawler = $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
-        dump($this->client);
-
+        /** @var $client Client*/
+        $client = $this->client;
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage').'/index.php');
         $html = $crawler->html();
         //test product list
         $this->assertContains('商品一覧へ', $html);
@@ -57,7 +59,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setDeliveryFreeAmount(100);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
         $html = $crawler->html();
         $this->assertContains('100円以上の購入', $html);
 
@@ -65,7 +67,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setDeliveryFreeAmount(0);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
         $html = $crawler->html();
         $this->assertContains('0円以上の購入', $html);
     }
