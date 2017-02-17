@@ -25,6 +25,9 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\ProductClass;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpKernel\Client;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
@@ -56,4 +59,88 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
+    /**
+     * Test product can add favorite when out of stock.
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1637
+     */
+    public function testProductFavoriteAddWhenOutOfStock()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+        $Product = $this->createProduct('Product no stock', 1);
+        /** @var $ProductClass ProductClass */
+        $ProductClass = $Product->getProductClasses()->first();
+        $ProductClass->setStockUnlimited(Constant::DISABLED);
+        $ProductClass->setStock(0);
+        $ProductStock = $ProductClass->getProductStock();
+        $ProductStock->setStock(0);
+        $this->app['orm.em']->flush();
+        $id = $Product->getId();
+        $user = $this->createCustomer();
+        $this->loginTo($user);
+
+        /** @var $client Client */
+        $client = $this->client;
+        /** @var $crawler Crawler */
+        $crawler = $client->request('GET', $this->app->url('product_detail', array('id' => $id)));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        // Case 1: render check
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('ただいま品切れ中です', $html);
+        $this->assertContains('お気に入りに追加', $html);
+
+        $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
+        $favoriteForm['mode'] = 'add_favorite';
+
+        $client->submit($favoriteForm);
+        $crawler = $client->followRedirect();
+
+        // Case 2: after add favorite check
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('ただいま品切れ中です', $html);
+        $this->assertContains('お気に入りに追加済みです', $html);
+    }
+
+    /**
+     * Test product can add favorite
+     *
+     * @link https://github.com/EC-CUBE/ec-cube/issues/1637
+     */
+    public function testProductFavoriteAdd()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $BaseInfo->setOptionFavoriteProduct(Constant::ENABLED);
+        $Product = $this->createProduct('Product stock', 1);
+        $id = $Product->getId();
+        $user = $this->createCustomer();
+        $this->loginTo($user);
+
+        /** @var $client Client */
+        $client = $this->client;
+        /** @var $crawler Crawler */
+        $crawler = $client->request('GET', $this->app->url('product_detail', array('id' => $id)));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        // Case 3: render check when 商品在庫>0
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('カートに入れる', $html);
+        $this->assertContains('お気に入りに追加', $html);
+
+        $favoriteForm = $crawler->selectButton('お気に入りに追加')->form();
+        $favoriteForm['mode'] = 'add_favorite';
+
+        $client->submit($favoriteForm);
+        $crawler = $client->followRedirect();
+
+        // Case 4: after add favorite when 商品在庫>0
+        $html = $crawler->filter('#detail_cart_box')->html();
+        $this->assertContains('カートに入れる', $html);
+        $this->assertContains('お気に入りに追加済みです', $html);
+    }
 }
