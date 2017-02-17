@@ -52,7 +52,7 @@ install:
 before_script:
   - CODENAME=$(lsb_release -c -s)
   - if [[ $PHP_SAPI != 'phpdbg' ]] || [[ $CODENAME = 'trusty' ]]; then phpenv config-rm xdebug.ini ; fi
-  - if [[ $PHP_SAPI = 'phpdbg' ]]; then echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini ; fi
+  - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer self-update || true
   - composer install --dev --no-interaction -o
   - php ./eccube_install.php $DB none
