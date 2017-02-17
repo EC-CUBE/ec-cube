@@ -23,6 +23,7 @@
 
 
 namespace Eccube\Tests\Web;
+use Symfony\Component\DomCrawler\Crawler;
 
 class TopControllerTest extends AbstractWebTestCase
 {
@@ -39,8 +40,9 @@ class TopControllerTest extends AbstractWebTestCase
     public function testTopContent()
     {
         $client = $this->client;
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('product_list'));
-        dump($crawler);
+        $client->restart();
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
+        dump($this->client->getResponse()->getContent());
         $html = $crawler->html();
         //test product list
         $this->assertContains('商品一覧へ', $html);
