@@ -40,6 +40,7 @@ class TopControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
+        dump($crawler);
         $html = $crawler->html();
         //test product list
         $this->assertContains('商品一覧へ', $html);
