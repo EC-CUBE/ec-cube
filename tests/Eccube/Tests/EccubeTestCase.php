@@ -47,7 +47,6 @@ abstract class EccubeTestCase extends WebTestCase
     {
         parent::tearDown();
 
-        Cache::clear($this->app, true);
         if (!$this->isSqliteInMemory()) {
             $this->app['orm.em']->getConnection()->rollback();
             $this->app['orm.em']->getConnection()->close();
@@ -268,7 +267,7 @@ abstract class EccubeTestCase extends WebTestCase
     public function createApplication()
     {
         $app = Application::getInstance();
-        $app['debug'] = false;
+        $app['debug'] = true;
 
         // ログの内容をERRORレベルでしか出力しないように設定を上書き
         if (!$app->offsetExists('config')) {
