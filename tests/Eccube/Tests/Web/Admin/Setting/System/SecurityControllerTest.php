@@ -80,7 +80,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->configFile = $config['root_dir'].'/app/config/eccube/config.yml';
         $this->pathFile = $config['root_dir'].'/app/config/eccube/path.yml';
 
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
         vfsStream::create($structure);
     }
 

@@ -26,7 +26,7 @@ class UserDataControllerTest extends AbstractWebTestCase
         $config['user_data_realdir'] = $config['template_default_realdir'].'/user_data';
         mkdir($config['user_data_realdir']);
 
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         $this->DeviceType = $this->app['orm.em']
             ->getRepository('Eccube\Entity\Master\DeviceType')

@@ -138,7 +138,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
         $config = $this->app['config'];
         $config['template_realdir'] = vfsStream::url('rootDir');
         $config['template_default_realdir'] = vfsStream::url('rootDir/default');
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         file_put_contents($this->app['config']['template_realdir'].'/'.$fileName.'.twig', 'test');
 
@@ -159,7 +159,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
         $config = $this->app['config'];
         $config['template_realdir'] = vfsStream::url('rootDir');
         $config['template_default_realdir'] = vfsStream::url('rootDir/default');
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         file_put_contents($this->app['config']['template_default_realdir'].'/'.$fileName.'.twig', 'test');
 
@@ -178,7 +178,7 @@ class PageLayoutRepositoryTest extends EccubeTestCase
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->app['config'];
         $config['user_data_realdir'] = vfsStream::url('rootDir');
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         file_put_contents($this->app['config']['user_data_realdir'].'/'.$fileName.'.twig', 'test');
 

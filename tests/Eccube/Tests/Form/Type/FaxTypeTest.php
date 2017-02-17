@@ -139,10 +139,9 @@ class FaxTypeTest extends AbstractTypeTestCase
 
         // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
         $config = $this->app['config'];
-        $this->app->offsetUnset('config'); // XXX config を変更するため freeze を解除
         // test*_LengthMin のために tel_len_min を変更する
         $config['tel_len_min'] = 2;
-        $this->app['config'] = $config;
+        $this->app->overwrite('config', $config);
 
         $this->form = $this->app['form.factory']
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
