@@ -194,7 +194,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getPath($name, $parameters = array(), $relative = false)
     {
-        $RoutingExtension = $this->app['twig']->getExtension('routing');
+        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
         try {
             return $RoutingExtension->getPath($name, $parameters, $relative);
         } catch (RouteNotFoundException $e) {
@@ -217,7 +217,7 @@ class EccubeExtension extends \Twig_Extension
      */
     public function getUrl($name, $parameters = array(), $schemeRelative = false)
     {
-        $RoutingExtension = $this->app['twig']->getExtension('routing');
+        $RoutingExtension = $this->app['twig']->getExtension(RoutingExtension::class);
         try {
             return $RoutingExtension->getUrl($name, $parameters, $schemeRelative);
         } catch (RouteNotFoundException $e) {
