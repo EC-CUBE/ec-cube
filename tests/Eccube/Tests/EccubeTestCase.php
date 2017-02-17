@@ -52,8 +52,11 @@ abstract class EccubeTestCase extends WebTestCase
             $this->app['orm.em']->getConnection()->close();
         }
 
-        $this->cleanUpProperties();
-        $this->app = null;
+        // XXX PHP5.5/5.6でSegmentation Faultが発生するため
+        //$this->cleanUpProperties();
+        //$this->app = null;
+
+        \Eccube\Application::clearInstance();
     }
 
     /**
