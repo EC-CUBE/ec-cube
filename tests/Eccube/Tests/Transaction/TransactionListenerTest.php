@@ -45,10 +45,8 @@ class TransactionListenerTest extends WebTestCase
     {
         if ($this->app['orm.em']) {
             $this->app['orm.em']->close();
-            $this->app['orm.em'] = null;
-            Application::clearInstance();
-            $this->app = null;
         }
+        Application::clearInstance();
     }
 
     /**
@@ -287,7 +285,7 @@ class TransactionListenerTest extends WebTestCase
         $app->initializePlugin();
 
         $app['session.test'] = true;
-        $app->offsetUnset('exception_handler');
+        //$app->offsetUnset('exception_handler');
 
         $app->offsetUnset('csrf.token_manager');
         $app->register(new \Eccube\Tests\ServiceProvider\CsrfMockServiceProvider());
