@@ -433,6 +433,7 @@ class EccubeServiceProvider implements ServiceProviderInterface, BootableProvide
     public function boot(Application $app)
     {
         // add transaction listener
-        $app['dispatcher']->addSubscriber(new \Eccube\EventListener\TransactionListener($app));
+        // FIXME TransactionListener::onKernelTerminate が動作しないため暫定的に無効
+        // $app['dispatcher']->addSubscriber(new \Eccube\EventListener\TransactionListener($app));
     }
 }
