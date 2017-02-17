@@ -39,7 +39,7 @@ class TopControllerTest extends AbstractWebTestCase
     public function testTopContent()
     {
         $client = $this->client;
-        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('product_list'));
         dump($crawler);
         $html = $crawler->html();
         //test product list
