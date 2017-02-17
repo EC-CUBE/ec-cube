@@ -621,8 +621,9 @@ class Application extends ApplicationTrait
     {
         $config = $this['config'];
         if (isset($config['trusted_proxies_connection_only']) && !empty($config['trusted_proxies_connection_only'])) {
-            $this->before(function(Request $request, \Silex\Application $app) {
-                Request::setTrustedProxies(array_merge(array($request->server->get('REMOTE_ADDR')), $app['config']['trusted_proxies']));
+            $this->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($config) {
+                // サブリクエストのREMOTE_ADDRも動的に設定を行う必要があるため、KernelEvents::REQUESTを使用する
+                Request::setTrustedProxies(array_merge(array($event->getRequest()->server->get('REMOTE_ADDR')), $config['trusted_proxies']));
             }, self::EARLY_EVENT);
         } elseif (isset($config['trusted_proxies']) && !empty($config['trusted_proxies'])) {
             Request::setTrustedProxies($config['trusted_proxies']);
