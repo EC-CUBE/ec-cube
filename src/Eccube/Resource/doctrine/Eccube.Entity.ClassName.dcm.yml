@@ -14,6 +14,7 @@ Eccube\Entity\ClassName:
     fields:
         creator_id:
             type: integer
+            nullable: false
         name:
             type: text
             nullable: false

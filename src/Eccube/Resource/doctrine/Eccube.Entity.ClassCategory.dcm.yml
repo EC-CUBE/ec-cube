@@ -14,8 +14,10 @@ Eccube\Entity\ClassCategory:
     fields:
         class_name_id:
             type: integer
+            nullable: false
         creator_id:
             type: integer
+            nullable: false
         name:
             type: text
             nullable: false

@@ -14,6 +14,7 @@ Eccube\Entity\DeliveryTime:
     fields:
         delivery_id:
             type: integer
+            nullable: true
         delivery_time:
             type: text
             nullable: false

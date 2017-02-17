@@ -14,10 +14,13 @@ Eccube\Entity\TaxRule:
     fields:
         creator_id:
             type: integer
+            nullable: false
         product_id:
             type: integer
+            nullable: true
         product_class_id:
             type: integer
+            nullable: true
         tax_rate:
             type: decimal
             nullable: false

@@ -14,8 +14,10 @@ Eccube\Entity\CustomerFavoriteProduct:
     fields:
         customer_id:
             type: integer
+            nullable: true
         product_id:
             type: integer
+            nullable: true
         create_date:
             type: datetime
             nullable: false

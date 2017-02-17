@@ -14,6 +14,7 @@ Eccube\Entity\Member:
     fields:
         creator_id:
             type: integer
+            nullable: true
         name:
             type: text
             nullable: true

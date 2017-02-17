@@ -14,12 +14,16 @@ Eccube\Entity\ShipmentItem:
     fields:
         order_id:
             type: integer
+            nullable: false
         product_id:
             type: integer
+            nullable: false
         product_class_id:
             type: integer
+            nullable: false
         shipping_id:
             type: integer
+            nullable: false
         product_name:
             type: text
             nullable: false

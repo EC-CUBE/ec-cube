@@ -14,6 +14,7 @@ Eccube\Entity\AuthorityRole:
     fields:
         creator_id:
             type: integer
+            nullable: false
         deny_url:
             type: text
             nullable: false
