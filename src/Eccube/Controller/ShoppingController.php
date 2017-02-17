@@ -143,13 +143,16 @@ class ShoppingController extends AbstractController
 
         // フォームの生成
         $app->forward($app->path("shopping/createForm"));
+        $form = $app['request_scope']->get(OrderType::class);
+        $Order = $app['request_scope']->get('Order');
+
+        $form->handleRequest($request);
 
         // 各種変更ページへリダイレクトする
         $response = $app->forward($app->path("shopping/redirectToChange"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
         }
-
         $form = $app['request_scope']->get(OrderType::class);
         $Order = $app['request_scope']->get('Order');
 
@@ -167,7 +170,6 @@ class ShoppingController extends AbstractController
      */
     public function confirm(Application $app, Request $request)
     {
-
         // カートチェック
         $response = $app->forward($app->path("shopping/checkToCart"));
         if ($response->isRedirection() || $response->getContent()) {
@@ -183,6 +185,11 @@ class ShoppingController extends AbstractController
         // form作成
         // FIXME イベントハンドラを外から渡す
         $app->forward($app->path("shopping/createForm"));
+
+        $form = $app['request_scope']->get(OrderType::class);
+        $Order = $app['request_scope']->get('Order');
+
+        $form->handleRequest($request);
 
         // 受注処理
         $response = $app->forward($app->path("shopping/completeOrder"));
@@ -1179,8 +1186,6 @@ class ShoppingController extends AbstractController
         $form = $app['request_scope']->get(OrderType::class);
         $Order = $app['request_scope']->get('Order');
 
-        $form->handleRequest($request);
-
         // requestのバインド後、Calculatorに再集計させる
         //$app['eccube.service.calculate']($Order, $Order->getCustomer())->calculate();
 
@@ -1289,7 +1294,6 @@ class ShoppingController extends AbstractController
     {
         $Order = $app['request_scope']->get('Order');
         $form = $app['request_scope']->get(OrderType::class);
-        $form->handleRequest($request);
 
         // requestのバインド後、Calculatorに再集計させる
         $app->forward($app->path("shopping/calculateOrder"));
