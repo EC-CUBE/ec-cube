@@ -29,7 +29,7 @@ class TopControllerTest extends AbstractWebTestCase
 
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->app->url('homepage'));
+        $this->client->request('GET', $this->app['url_generator']->generate('homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -39,7 +39,7 @@ class TopControllerTest extends AbstractWebTestCase
     public function testTopContent()
     {
         $client = $this->client;
-        $crawler = $client->request('GET', $this->app->url('homepage'));
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
         $html = $crawler->html();
         //test product list
         $this->assertContains('商品一覧へ', $html);
@@ -56,7 +56,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setDeliveryFreeAmount(100);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $client->request('GET', $this->app->url('homepage'));
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
         $html = $crawler->html();
         $this->assertContains('100円以上の購入', $html);
 
@@ -64,7 +64,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setDeliveryFreeAmount(0);
         $this->app['orm.em']->persist($BaseInfo);
         $this->app['orm.em']->flush($BaseInfo);
-        $crawler = $client->request('GET', $this->app->url('homepage'));
+        $crawler = $client->request('GET', $this->app['url_generator']->generate('homepage'));
         $html = $crawler->html();
         $this->assertContains('0円以上の購入', $html);
     }
