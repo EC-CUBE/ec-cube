@@ -28,6 +28,7 @@ use Eccube\Application;
 use Eccube\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -50,7 +51,7 @@ class FileController extends AbstractController
     public function index(Application $app, Request $request)
     {
         $form = $app['form.factory']->createBuilder(FormType::class)
-            ->add('file', 'file')
+            ->add('file', FileType::class)
             ->add('create_file', 'text')
             ->getForm();
 
