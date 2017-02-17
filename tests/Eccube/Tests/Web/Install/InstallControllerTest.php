@@ -38,23 +38,18 @@ class InstallControllerTest extends AbstractInstallWebTestCase
     }
     public function testRoutingIndex()
     {
-        // @see https://github.com/silexphp/Silex/pull/862
-        // @see https://github.com/silexphp/Silex/issues/1442
-        $this->app->flush();
         $this->client->request('GET', $this->app->url('install'));
         $this->assertTrue($this->client->getResponse()->isRedirection());
     }
 
     public function testRoutingStep1()
     {
-        $this->app->flush();
         $this->client->request('GET', $this->app->url('install_step1'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingStep2()
     {
-        $this->app->flush();
         $this->client->request('GET', $this->app->url('install_step2'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -82,7 +77,6 @@ class InstallControllerTest extends AbstractInstallWebTestCase
 
     public function testRoutingStep5()
     {
-        $this->app->flush();
         $this->client->request('GET', $this->app->url('install_step5'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
