@@ -183,6 +183,30 @@ jQuery(document).ready(function ($) {
             }
         };
     };
+
+    tinymce.init({
+        selector: '.wysiwyg',
+        language: 'ja',
+        height: 300,
+        // 改行時にbrタグを適用させたくない場合、forced_root_blockをコメントアウトすること
+        forced_root_block : false,
+        paste_as_text: true,
+        paste_data_images: true,
+        image_advtab: true,
+        relative_urls: false,
+        setup: function(editor) {
+            editor.on('init', function(e) {
+                this.getDoc().body.style.fontSize = '16px';
+                this.getDoc().body.style.lineHeight = '1.2';
+            });
+        },
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste imagetools'
+        ],
+        toolbar: 'insertfile undo redo | styleselect fontsizeselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image paste code'
+    });
 });
 
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
