@@ -70,18 +70,11 @@ class DeliveryType extends AbstractType
                     new Assert\NotBlank(),
                 ),
             ))
-            // todo type paymentに変更
-            ->add('payments', 'entity', array(
+            ->add('payments', 'payment', array(
                 'label' => '支払方法',
-                'class' => 'Eccube\Entity\Payment',
-                'property' => 'method',
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-                'query_builder' => function($er) {
-                    return $er->createQueryBuilder('p')
-                        ->orderBy('p.rank', 'DESC');
-                },
                 'mapped' => false,
             ))
             ->add('delivery_times', 'collection', array(
