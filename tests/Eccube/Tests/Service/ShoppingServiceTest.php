@@ -4,7 +4,9 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Application;
 use Eccube\Common\Constant;
+use Eccube\Entity\Master\Taxrule;
 use Eccube\Entity\Shipping;
+use Eccube\Exception\ShoppingException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShoppingServiceTest extends AbstractServiceTestCase
@@ -275,11 +277,16 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         }
         $this->app['orm.em']->flush();
 
-        $this->expected = false;
-        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
-            $this->app['orm.em'],
-            $Order
-        );
+        try {
+            $this->app['eccube.service.shopping']->isOrderProduct(
+                $this->app['orm.em'],
+                $Order
+            );
+        } catch (ShoppingException $e) {
+            $this->actual = $e->getMessage();
+            $this->expected = 'cart.product.not.status';
+        }
+
         $this->verify();
     }
 
@@ -299,11 +306,16 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         }
         $this->app['orm.em']->flush();
 
-        $this->expected = false;
-        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
-            $this->app['orm.em'],
-            $Order
-        );
+        try {
+            $this->app['eccube.service.shopping']->isOrderProduct(
+                $this->app['orm.em'],
+                $Order
+            );
+        } catch (ShoppingException $e) {
+            $this->actual = $e->getMessage();
+            $this->expected = 'cart.over.sale_limit';
+        }
+
         $this->verify();
     }
 
@@ -327,11 +339,16 @@ class ShoppingServiceTest extends AbstractServiceTestCase
         }
         $this->app['orm.em']->flush();
 
-        $this->expected = false;
-        $this->actual = $this->app['eccube.service.shopping']->isOrderProduct(
-            $this->app['orm.em'],
-            $Order
-        );
+        try {
+            $this->app['eccube.service.shopping']->isOrderProduct(
+                $this->app['orm.em'],
+                $Order
+            );
+        } catch (ShoppingException $e) {
+            $this->actual = $e->getMessage();
+            $this->expected = 'cart.over.stock';
+        }
+
         $this->verify();
     }
 
@@ -534,54 +551,37 @@ class ShoppingServiceTest extends AbstractServiceTestCase
     }
 
     /**
-     * #1739のテストケース
-     * @link https://github.com/EC-CUBE/ec-cube/issues/1739
+     * #2005のテストケース
+     * @link https://github.com/EC-CUBE/ec-cube/issues/2005
      */
-    public function testGetNewOrderDetailForTaxRate()
+    public function testOrderDetailForTaxRate()
     {
-        $DefaultTaxRule = $this->app['eccube.repository.tax_rule']->find(1);
-        $DefaultTaxRule->setApplyDate(new \DateTime('-2 day'));
-        $this->app['orm.em']->flush();
 
-        // 個別税率設定を有効化
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $BaseInfo->setOptionProductTaxRule(Constant::ENABLED);
-        // 個別税率が設定された商品企画を準備
-        $Product = $this->createProduct('テスト商品', 1);
-        $ProductClassList = $Product->getProductClasses();
-        $ProductClass = $ProductClassList[0];
-        $CalcRule = $this->app['orm.em']
-            ->getRepository('Eccube\Entity\Master\Taxrule')
-            ->find(1);
-        $TaxRule = new \Eccube\Entity\TaxRule();
-        $TaxRule->setProductClass($ProductClass)
-            ->setCreator($Product->getCreator())
-            ->setProduct($Product)
-            ->setCalcRule($CalcRule)
-            ->setTaxRate(10)
-            ->setTaxAdjust(0)
-            ->setApplyDate(new \DateTime('-1 days')) // nowだとタイミングによってはテストが失敗する
-            ->setDelFlg(Constant::DISABLED);
-        $ProductClass->setTaxRule($TaxRule)
-            ->setTaxRate($TaxRule->getTaxRate());
+        $Product = $this->app['eccube.repository.product']->find(1);
+        $ProductClasses = $Product->getProductClasses();
 
-        $this->app['orm.em']->persist($TaxRule);
-        $this->app['orm.em']->flush();
+        foreach ($ProductClasses as $ProductClass) {
+            $ProductClass->setPrice02(649);
+        }
+        $this->app['orm.em']->flush($Product);
 
-        // テスト用に税率設定のキャッシュをクリア
-        $this->app['eccube.repository.tax_rule']->clearCache();
+        $this->CartService->setProductQuantity($Product->getId(), 1)->save();
 
-        // ShoppingServiceにテスト用のEntityManagerを設定
-        $ShoppingService = $this->app['eccube.service.shopping'];
-        $RefrectionClass = new \ReflectionClass(get_class($ShoppingService));
-        $Property = $RefrectionClass->getProperty('em');
-        $Property->setAccessible(true);
-        $Property->setValue($ShoppingService, $this->app['orm.em']);
+        $Order = $this->app['eccube.service.shopping']->createOrder($this->Customer);
+        $TaxRule = $this->app['eccube.repository.tax_rule']->getByRule();
 
-        $OrderDetail = $this->app['eccube.service.shopping']->getNewOrderDetail($Product, $ProductClass, 1);
+        $TaxRule->setTaxRate(Taxrule::FLOOR);
+        $this->app['orm.em']->flush($TaxRule);
 
-        $this->expected = $TaxRule->getId();
-        $this->actual = $OrderDetail->getTaxRule();
-        $this->verify('受注詳細の税率が正しく設定されている');
+        // 受注明細で設定された金額
+        foreach ($Order->getOrderDetails() as $OrderDetail) {
+
+            $this->expected = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $OrderDetail->getTaxRule())) * $OrderDetail->getQuantity();
+
+            $this->actual = ($OrderDetail->getPrice() + $this->app['eccube.service.tax_rule']->calcTax($OrderDetail->getPrice(), $OrderDetail->getTaxRate(), $TaxRule->getCalcRule()->getId())) * $OrderDetail->getQuantity();
+
+            $this->verify();
+        }
+
     }
 }

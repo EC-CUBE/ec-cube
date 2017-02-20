@@ -348,17 +348,17 @@ class InstallController
                     //http://php.net/manual/en/migration71.deprecated.php
                     continue;
                 }
-                $app->addWarning('[推奨] ' . $module . ' 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] '.$module.' 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
         if ('\\' === DIRECTORY_SEPARATOR) { // for Windows
             if (!extension_loaded('wincache')) {
-                $app->addWarning('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] WinCache 拡張モジュールが有効になっていません。', 'install');
             }
         } else {
             if (!extension_loaded('apc')) {
-                $app->addWarning('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
+                $app->addInfo('[推奨] APC 拡張モジュールが有効になっていません。', 'install');
             }
         }
 
