@@ -79,8 +79,6 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->app = $this->getSilexApplication();
-        $this->app->initialize();
-        $this->app->boot();
 
         $mode = $input->getArgument('mode');
 
