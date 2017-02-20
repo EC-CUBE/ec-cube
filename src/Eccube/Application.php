@@ -393,8 +393,6 @@ class Application extends \Silex\Application
 
         // twigのグローバル変数を定義.
         $this->on(\Symfony\Component\HttpKernel\KernelEvents::CONTROLLER, function (\Symfony\Component\HttpKernel\Event\FilterControllerEvent $event) {
-            // TODO ログイン時のイベントを設定.
-            $this['dispatcher']->addListener(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
             // 未ログイン時にマイページや管理画面以下にアクセスするとSubRequestで実行されるため,
             // $event->isMasterRequest()ではなく、グローバル変数が初期化済かどうかの判定を行う
             if (isset($this['twig_global_initialized']) && $this['twig_global_initialized'] === true) {
@@ -707,6 +705,7 @@ class Application extends \Silex\Application
             return new \Symfony\Component\Security\Core\Authorization\AccessDecisionManager($app['security.voters'], 'unanimous');
         };
 
+        $this->on(\Symfony\Component\Security\Http\SecurityEvents::INTERACTIVE_LOGIN, array($this['eccube.event_listner.security'], 'onInteractiveLogin'));
     }
 
     public function initializePlugin()
