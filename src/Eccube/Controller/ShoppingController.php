@@ -133,7 +133,7 @@ class ShoppingController extends AbstractController
         $response = $app->forward($app->path("shopping/checkToCart"));
         if ($response->isRedirection() || $response->getContent()) {
             return $response;
-       }
+        }
 
         // 受注の存在チェック
         $response = $app->forward($app->path("shopping/existsOrder"));
@@ -183,7 +183,7 @@ class ShoppingController extends AbstractController
         }
 
         // form作成
-        // FIXME イベントハンドラを外から渡す
+        // FIXME イベントハンドラを外から渡したい
         $app->forward($app->path("shopping/createForm"));
 
         $form = $app['request_scope']->get(OrderType::class);
