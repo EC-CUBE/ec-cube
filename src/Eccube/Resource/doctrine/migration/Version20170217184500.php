@@ -33,6 +33,7 @@ class Version20170217184500 extends AbstractMigration
         }
 
         if (count($appendConfig)) {
+            file_put_contents($file, "\n", FILE_APPEND);
             file_put_contents($file, Yaml::dump($appendConfig), FILE_APPEND);
         }
     }
