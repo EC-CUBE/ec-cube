@@ -81,6 +81,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertContains($message, $crawler->html());
     }
 
+    /**
      * Test product can add favorite when out of stock.
      *
      * @link https://github.com/EC-CUBE/ec-cube/issues/1637
