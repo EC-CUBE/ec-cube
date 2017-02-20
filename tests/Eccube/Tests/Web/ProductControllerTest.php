@@ -60,6 +60,28 @@ class ProductControllerTest extends AbstractWebTestCase
     }
 
     /**
+     * test with category id is invalid.
+     */
+    public function testCategoryNotFound()
+    {
+        $client = $this->client;
+        $message = 'ご指定のカテゴリは存在しません。';
+        $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => 'XXX')));
+        $this->assertContains($message, $crawler->html());
+    }
+
+    /**
+     * test with category id is valid.
+     */
+    public function testCategoryFound()
+    {
+        $client = $this->client;
+        $message = '商品がみつかりました';
+        $crawler = $client->request('GET', $this->app->url('product_list', array('category_id' => '6')));
+        $this->assertContains($message, $crawler->html());
+    }
+
+    /**
      * Test product can add favorite when out of stock.
      *
      * @link https://github.com/EC-CUBE/ec-cube/issues/1637
