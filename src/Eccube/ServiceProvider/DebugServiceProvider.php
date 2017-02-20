@@ -24,6 +24,8 @@
 
 namespace Eccube\ServiceProvider;
 
+use Eccube\Common\Constant;
+use Eccube\DataCollector\EccubeDataCollector;
 use Silex\Application;
 use Silex\Api\BootableProviderInterface;
 use Symfony\Bridge\Twig\Extension\DumpExtension;
@@ -96,8 +98,22 @@ class DebugServiceProvider implements ServiceProviderInterface, BootableProvider
                 return $app['data_collector.dump'];
             };
 
+            $collectors['eccube'] = function ($app) {
+                return new EccubeDataCollector($app);
+            };
             return $collectors;
         });
+
+        $app->extend('data_collector.templates', function ($templates, $app) {
+                array_unshift($templates, ['eccube', '@EccubeProfiler/eccube.html.twig']);
+                return $templates;
+            }
+        );
+
+        $app->extend('twig.loader.filesystem', function ($filesystem, $app) {
+                return $filesystem;
+            }
+        );
 
         $app->extend('twig', function ($twig, $app) {
             if (class_exists('\Symfony\Bridge\Twig\Extension\DumpExtension')) {
@@ -109,6 +125,7 @@ class DebugServiceProvider implements ServiceProviderInterface, BootableProvider
 
         $app->extend('twig.loader.filesystem', function ($loader, $app) {
             $loader->addPath($app['debug.templates_path'], 'Debug');
+            $loader->addPath(__DIR__.'/../Resource/template/toolbar', 'EccubeProfiler');
 
             return $loader;
         });
