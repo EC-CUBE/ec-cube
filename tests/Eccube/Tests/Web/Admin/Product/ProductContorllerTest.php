@@ -425,6 +425,36 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * Product export test
+     */
+    public function testProductExport()
+    {
+        $productName = 'test01';
+        $this->expectOutputRegex("/$productName/");
+        $this->createProduct($productName);
+        $post = array('admin_search_product' =>
+            array(
+                '_token' => 'dummy',
+                'id' => '',
+                'category_id' => '',
+                'create_date_start' => '',
+                'create_date_end' => '',
+                'update_date_start' => '',
+                'update_date_end' => '',
+                'link_status' => '',
+            ));
+        $this->client->request('POST', $this->app->url('admin_product'), $post);
+        $this->client->request(
+            'GET',
+            $this->app->url('admin_product_export')
+        );
+
+        $this->expected = 'application/octet-stream';
+        $this->actual = $this->client->getResponse()->headers->get('Content-Type');
+        $this->verify();
+    }
+
+    /**
      * 個別税率編集時のテストデータ
      * 更新前の税率 / POST値 / 期待値の配列を返す
      *
